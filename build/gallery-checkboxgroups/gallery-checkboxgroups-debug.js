@@ -305,4 +305,4 @@ Y.extend(SelectAllCheckboxGroup, CheckboxGroup,
 Y.SelectAllCheckboxGroup = SelectAllCheckboxGroup;
 
 
-}, '@VERSION@' ,{requires:['node']});
+}, '@VERSION@' ,{requires:['node-base']});
