@@ -4,7 +4,7 @@
 	<title>YUI3 ScrollIntoView Example</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssreset/reset-context-min.css"> 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssreset/reset-min.css">
 	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script> 
 	<script src="gallery-dimensions.js"></script> 
 	<script src="gallery-scrollintoview.js"></script> 
@@ -13,6 +13,18 @@
 	body
 	{
 		overflow: hidden;
+	}
+
+	h1
+	{
+		font-weight: bold;
+		margin: 10px;
+	}
+
+	p.note,
+	p.buttons
+	{
+		margin: 5px;
 	}
 
 	.container
@@ -79,13 +91,13 @@ YUI().use('gallery-scrollintoview', function(Y)
 
 <h1>YUI3 ScrollIntoView Example</h1>
 
-<p>I'm still trying to duplicate the edge case that I found.</p>
-<p>
+<p class="note">I'm still trying to duplicate the edge case that I found.</p>
+<p class="buttons">
 <button id="default">Default scroll</button>
 <button id="custom">Custom scroll</button>
 </p>
 
-<div class="container yui-cssreset" style="width:800px; height:590px; overflow:hidden;">
+<div class="container" style="width:800px; height:590px; overflow:hidden;">
 <div class="shadow"></div>
 <div class="row" style="height:590px; margin-bottom: 0;">
 <div class="module" style="width:788px; height:auto;">
