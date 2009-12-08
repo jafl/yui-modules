@@ -38,7 +38,8 @@ Y.Node.prototype.scrollIntoView = function()
 	{
 		while (1)
 		{
-			var hit_top = (ancestor.tagName.toLowerCase() == 'html');
+			var tag     = ancestor.tagName.toLowerCase();
+			var hit_top = (tag == 'html' || tag == 'body');
 
 			var a = Y.one(ancestor);
 			if (ancestor.scrollWidth - a.horizMarginBorderPadding() > ancestor.clientWidth ||
