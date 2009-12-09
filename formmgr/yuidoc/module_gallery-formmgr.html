@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-formmgr   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-formmgr&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a>
+                
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                   
+                    <h3>Module: gallery-formmgr
+                    
+
+
+                    </h3>
+                    <div class="description summary">
+                        <p>FormManager provides support for initializing a form, pre-validating
+user input, and displaying messages returned by the server.</p>
+<p><strong>Required Markup Structure</strong></p>
+<p>Each element (or tighly coupled set of elements) must be contained by
+an element that has the CSS class <code>formmgr-row</code>.  Within each
+row, validation messages are displayed inside the container with CSS
+class <code>formmgr-message-text</code>.
+<p>When a message is displayed inside a row, the CSS class
+<code>formmgr-has{type}</code> is placed on the row container and the
+containing fieldset (if any), where <code>{type}</code> is the message
+type passed to <code>displayMessage()</code>.</p>
+<p><strong>Initializing the Form</strong></p>
+<p>Default values can be either encoded in the markup or passed to the
+FormManager constructor via <code>config.default_value_map</code>.  (The
+former method is obviously better for progressive enhancement.)</p>
+<p><code>prepareForm()</code> must be called before the form is
+displayed.  To initialize focus to the first element in a form, call
+<code>initFocus()</code>.  If the form is in an overlay, you can delay
+these calls until just before showing the overlay.</p>
+<p>The default values passed to the constructor are inserted by
+<code>populateForm()</code>.  (This is automatically called by
+<code>prepareForm()</code>.)</p>
+<p><strong>Displaying Messages</strong></p>
+<p>To display a message for a single form row, call
+<code>displayMessage()</code>.  To display a message for the form in
+general, call <code>displayFormMessage()</code>.  These functions can be
+used for initializing the error display when the page loads, for
+displaying the results of pre-validation, and for displaying the results
+of submitting a form via XHR.</p>
+<p><strong>Specifying Validations</strong></p>
+<p>The following classes can be applied to a form element for
+pre-validation:</p>
+<dl>
+<dt><code>yiv-required</code></dt>
+<dd>Value must not be empty.</dd>
+<dt><code>yiv-length:[x,y]</code></dt>
+<dd>String must be at least x characters and at most y characters.
+At least one of x and y must be specified.</dd>
+<dt><code>yiv-integer:[x,y]</code></dt>
+<dd>The integer value must be at least x and at most y.
+x and y are both optional.</dd>
+<dt><code>yiv-decimal:[x,y]</code></dt>
+<dd>The decimal value must be at least x and at most y.  Exponents are
+not allowed.  x and y are both optional.</dd>
+</dl>
+<p>If we ever need to allow exponents, we can use yiv-float.</p>
+<p>The following functions allow additional pre-validation to be
+attached to individual form elements:</p>
+<dl>
+<dt><code>setRegex()</code></dt>
+<dd>Sets the regular expression that must match in order for the value
+to be acceptable.</dd>
+<dt><code>setFunction()</code></dt>
+<dd>Sets the function that must return true in order for the value to
+be acceptable.  The function is called in the scope of the Form
+object with the arguments:  the form and the element.</dd>
+</dl>
+<p><code>setErrorMessage()</code> specifies the error message to be
+displayed when a pre-validation check fails.  The valid error message
+types are:</p>
+<dl>
+<dt><code>required</code></dt>
+<dt><code>min_length</code></dt>
+<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>
+<dt><code>max_length</code></dt>
+<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>
+<dt><code>integer</code></dt>
+<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>
+<dt><code>decimal</code></dt>
+<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>
+<dt><code>regex</code></dt>
+</dl>
+<p>Functions are expected to call <code>displayMessage()</code>
+directly.</p>
+<p>More complex pre-validations can be added by overriding
+<code>postValidateForm()</code>, described below.</p>
+<p>Derived classes may also override the following functions:</p>
+<dl>
+<dt><code>prePrepareForm</code>(arguments passed to prepareForm)</dt>
+<dd>Called before filling in default values for the form elements.
+Return false to cancel dialog.</dd>
+<dt><code>postPrepareForm</code>(arguments passed to prepareForm)</dt>
+<dd>Called after filling in default values for the form elements.</dd>
+<dt><code>postValidateForm</code>(form)</dt>
+<dd>Called after performing the basic pre-validations.  Returns
+true if the form contents are acceptable.  Reports error if there
+is a problem.</dd>
+</dl>
+                    </div>
+
+
+
+                <div class="yui-gc">
+                    <div class="yui-u first">
+
+                            <p>This module contains the following classes:</p>
+                            <script>
+                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>FormManager provides support for initializing a form, pre-validating\nuser input, and displaying messages returned by the server.</p>\n<p><strong>Required Markup Structure</strong></p>\n<p>Each element (or tighly coupled set of elements) must be contained by\nan element that has the CSS class <code>formmgr-row</code>.  Within each\nrow, validation messages are displayed inside the container with CSS\nclass <code>formmgr-message-text</code>.\n<p>When a message is displayed inside a row, the CSS class\n<code>formmgr-has{type}</code> is placed on the row container and the\ncontaining fieldset (if any), where <code>{type}</code> is the message\ntype passed to <code>displayMessage()</code>.</p>\n<p><strong>Initializing the Form</strong></p>\n<p>Default values can be either encoded in the markup or passed to the\nFormManager constructor via <code>config.default_value_map</code>.  (The\nformer method is obviously better for progressive enhancement.)</p>\n<p><code>prepareForm()</code> must be called before the form is\ndisplayed.  To initialize focus to the first element in a form, call\n<code>initFocus()</code>.  If the form is in an overlay, you can delay\nthese calls until just before showing the overlay.</p>\n<p>The default values passed to the constructor are inserted by\n<code>populateForm()</code>.  (This is automatically called by\n<code>prepareForm()</code>.)</p>\n<p><strong>Displaying Messages</strong></p>\n<p>To display a message for a single form row, call\n<code>displayMessage()</code>.  To display a message for the form in\ngeneral, call <code>displayFormMessage()</code>.  These functions can be\nused for initializing the error display when the page loads, for\ndisplaying the results of pre-validation, and for displaying the results\nof submitting a form via XHR.</p>\n<p><strong>Specifying Validations</strong></p>\n<p>The following classes can be applied to a form element for\npre-validation:</p>\n<dl>\n<dt><code>yiv-required</code></dt>\n<dd>Value must not be empty.</dd>\n<dt><code>yiv-length:[x,y]</code></dt>\n<dd>String must be at least x characters and at most y characters.\nAt least one of x and y must be specified.</dd>\n<dt><code>yiv-integer:[x,y]</code></dt>\n<dd>The integer value must be at least x and at most y.\nx and y are both optional.</dd>\n<dt><code>yiv-decimal:[x,y]</code></dt>\n<dd>The decimal value must be at least x and at most y.  Exponents are\nnot allowed.  x and y are both optional.</dd>\n</dl>\n<p>If we ever need to allow exponents, we can use yiv-float.</p>\n<p>The following functions allow additional pre-validation to be\nattached to individual form elements:</p>\n<dl>\n<dt><code>setRegex()</code></dt>\n<dd>Sets the regular expression that must match in order for the value\nto be acceptable.</dd>\n<dt><code>setFunction()</code></dt>\n<dd>Sets the function that must return true in order for the value to\nbe acceptable.  The function is called in the scope of the Form\nobject with the arguments:  the form and the element.</dd>\n</dl>\n<p><code>setErrorMessage()</code> specifies the error message to be\ndisplayed when a pre-validation check fails.  The valid error message\ntypes are:</p>\n<dl>\n<dt><code>required</code></dt>\n<dt><code>min_length</code></dt>\n<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>\n<dt><code>max_length</code></dt>\n<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>\n<dt><code>integer</code></dt>\n<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>\n<dt><code>decimal</code></dt>\n<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>\n<dt><code>regex</code></dt>\n</dl>\n<p>Functions are expected to call <code>displayMessage()</code>\ndirectly.</p>\n<p>More complex pre-validations can be added by overriding\n<code>postValidateForm()</code>, described below.</p>\n<p>Derived classes may also override the following functions:</p>\n<dl>\n<dt><code>prePrepareForm</code>(arguments passed to prepareForm)</dt>\n<dd>Called before filling in default values for the form elements.\nReturn false to cancel dialog.</dd>\n<dt><code>postPrepareForm</code>(arguments passed to prepareForm)</dt>\n<dd>Called after filling in default values for the form elements.</dd>\n<dt><code>postValidateForm</code>(form)</dt>\n<dd>Called after performing the basic pre-validations.  Returns\ntrue if the form contents are acceptable.  Reports error if there\nis a problem.</dd>\n</dl>", "guessedname": "FormManager", "name": "FormManager"}];
+                            </script>
+                            <div id="splash_classList">
+                                <ul>
+                                    <li><a href="FormManager.html" title="FormManager" id="class_0">FormManager</a></li>
+                                </ul>
+                            </div>
+                    </div>
+                    <div class="yui-u">
+
+                        </div>
+                </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="FormManager.html" title="FormManager">FormManager</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="FormManager.js.html" title="FormManager.js">FormManager.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    var ALL_YUI_PROPS = [{"url": "FormManager.html#method_clearForm", "access": "", "host": "FormManager", "type": "method", "name": "clearForm"}, {"url": "FormManager.html#method_enableForm", "access": "", "host": "FormManager", "type": "method", "name": "enableForm"}, {"url": "FormManager.html#method_getForm", "access": "", "host": "FormManager", "type": "method", "name": "getForm"}, {"url": "FormManager.html#method_getStatusPrecedence", "access": "", "host": "FormManager", "type": "method", "name": "getStatusPrecedence"}, {"url": "FormManager.html#method_hasMessages", "access": "", "host": "FormManager", "type": "method", "name": "hasMessages"}, {"url": "FormManager.html#method_initFocus", "access": "", "host": "FormManager", "type": "method", "name": "initFocus"}, {"url": "FormManager.html#method_isChanged", "access": "", "host": "FormManager", "type": "method", "name": "isChanged"}, {"url": "FormManager.html#method_populateForm", "access": "", "host": "FormManager", "type": "method", "name": "populateForm"}, {"url": "FormManager.html#method_prepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prepareForm"}, {"url": "FormManager.html#method_registerButton", "access": "", "host": "FormManager", "type": "method", "name": "registerButton"}, {"url": "FormManager.html#method_setFunction", "access": "", "host": "FormManager", "type": "method", "name": "setFunction"}, {"url": "FormManager.html#method_statusTakesPrecendence", "access": "", "host": "FormManager", "type": "method", "name": "statusTakesPrecendence"}, {"url": "FormManager.html#method_validateForm", "access": "", "host": "FormManager", "type": "method", "name": "validateForm"}, {"url": "FormManager.html#config_Y.FormManager.decimal_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.decimal_value_re"}, {"url": "FormManager.html#config_Y.FormManager.integer_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.integer_value_re"}, {"url": "FormManager.html#property_Y.FormManager.row_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.row_status_prefix", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_status_prefix"}, {"url": "FormManager.html#property_Y.FormManager.status_failure_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_failure_class"}, {"url": "FormManager.html#property_Y.FormManager.status_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.status_none_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_none_class"}, {"url": "FormManager.html#config_Y.FormManager.status_order", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.status_order"}, {"url": "FormManager.html#property_Y.FormManager.status_success_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_success_class"}, {"url": "FormManager.html#config_Y.FormManager.Strings", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.Strings"}];
+    YAHOO.yuidoc.init();
+</script>
+</body>
+</html>
