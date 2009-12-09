@@ -306,14 +306,17 @@ function populateForm1()
 		{
 			e.checked = (e.value == v);
 		}
-		else if ((name == 'select' && type == 'select-one') ||
-				 name == 'textarea')
+		else if (name == 'select' && type == 'select-one')
 		{
 			e.value = v;
-			if (e.options[ e.selectedIndex ].value !== v)
+			if (e.selectedIndex >= 0 && e.options[ e.selectedIndex ].value !== v)
 			{
 				e.selectedIndex = -1;
 			}
+		}
+		else if (name == 'textarea')
+		{
+			e.value = v;
 		}
 	}
 }
