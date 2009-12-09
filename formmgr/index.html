@@ -1,0 +1,315 @@
+<!DOCTYPE html public '-//w3c//dtd html 4.01//en' http://www.w3.org/tr/html4/strict.dtd'>
+<html>
+<head>
+	<title>YUI3 Form Manager Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script> 
+	<script src="yui3/gallery-formmgr/gallery-formmgr-debug.js"></script> 
+
+	<style type="text/css">
+
+	/* core */
+
+	#form-status.formmgr-status-hidden
+	{
+		display: none;
+	}
+
+	.formmgr-message-text
+	{
+		display: none;
+	}
+
+	fieldset .formmgr-haserror .formmgr-message-text,
+	fieldset .formmgr-haswarn .formmgr-message-text,
+	fieldset .formmgr-hassuccess .formmgr-message-text,
+	fieldset .formmgr-hasinfo .formmgr-message-text
+	{
+		display: block;
+	}
+
+	/* skin */
+
+	#form-status.formmgr-status-failure
+	{
+		font-weight: bold;
+		color: #BE1E2D;
+	}
+
+	.formmgr-message-text
+	{
+		margin: 5px 0 0;
+	}
+
+	fieldset.formmgr-haserror h2,
+	fieldset .formmgr-haserror .formmgr-message-text
+	{
+		color: #BE1E2D;
+	}
+
+	fieldset .formmgr-haserror input
+	{
+		background-color: #FFCCCC;
+	}
+
+	fieldset.formmgr-haswarn h2,
+	.formmgr-haswarn .formmgr-message-text
+	{
+		color: #999900;
+	}
+
+	.formmgr-row
+	{
+		margin-bottom: 5px;
+	}
+
+	/* example skin */
+
+	fieldset
+	{
+		float: left;
+	}
+
+	label
+	{
+		display: block;
+	}
+
+	label.checkbox-label
+	{
+		display: inline;
+	}
+
+	.changed-status
+	{
+		margin-left: 20px;
+	}
+	</style>
+</head>
+<body class="yui-skin-sam">
+
+<script type="text/javascript">
+YUI().use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function(Y)
+{
+	new Y.Console(
+	{
+		plugins: [ Y.Plugin.Drag, Y.Plugin.ConsoleFilters ]
+	})
+	.render().collapse();
+
+	// create form
+
+	var f = new Y.FormManager('test_form',
+	{
+		status_node: '#form-status',
+		default_value_map:		// overrides values in markup
+		{
+			s1: 'abc',
+			b1: 1,
+			b2: 0
+		}
+	});
+
+	f.prepareForm();
+	f.initFocus();		// only do this for one form on a page
+
+	// validations
+
+	f.setErrorMessage('email',
+	{
+		required: 'Please tell us how to spam you.  (Just kidding!)',
+		regex:    'Please enter a valid email address.'
+	});
+	f.setRegex('email', /@.+\..+/);		// not trying very hard
+
+	f.setErrorMessage('zip',
+	{
+		regex: 'Please enter a valid US ZIP Code.'
+	});
+	f.setRegex('zip', /^[0-9]{5}(?:-[0-9]{4})?$/);
+
+	f.setFunction('pw', function(form)
+	{
+		if (form.pw.value != form.pw2.value)
+		{
+			f.displayMessage(form.pw, 'Your password entries did not match.', 'error');
+			f.displayMessage(form.pw2, '', 'error');
+			return false;
+		}
+
+		return true;
+	});
+
+	f.postValidateForm = function(form)
+	{
+		var count = 0;
+		Y.each([form.b1, form.b2, form.b3], function(b)
+		{
+			if (b.checked) count++;
+		});
+
+		if (count < 2)
+		{
+			f.displayMessage(form.b1, 'Please select at least two checkboxes.', 'warn');
+			return false;
+		}
+
+		return true;
+	};
+
+	// example actions
+
+	Y.one('#validate').on('click', function()
+	{
+		f.validateForm();
+	});
+
+	Y.one('#reset').on('click', function()
+	{
+		f.populateForm();	// default_value_map + values in markup
+	});
+
+	Y.one('#clear').on('click', function()
+	{
+		f.clearForm();		// values in markup
+	});
+
+	// example status display
+
+	var changed_status = Y.one('#changed-status');
+	Y.later(1000, f, function()
+	{
+		changed_status.set('innerHTML', this.isChanged() ? 'yes' : 'no');
+	},
+	null, true);
+});
+</script>
+
+<h1>YUI3 Form Manager Example</h1>
+
+<p>
+<button id="validate">Validate</button>
+<button id="reset">Reset</button>
+<button id="clear">Clear</button>
+<span class="changed-status">Data is changed: <span id="changed-status"></span></span>
+</p>
+
+<p id="form-status"></p>
+<form name="test_form">
+
+	<fieldset id="strings">
+		<h2>Strings</h2>
+		<div class="formmgr-row">
+			<label for="s1">String (required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="s1" name="s1" class="yiv-required">
+		</div>
+		<div class="formmgr-row">
+			<label for="s2">String (not required, 6-10 characters)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="s2" name="s2" class="yiv-length:[6,10]" value="abcdef">
+		</div>
+		<div class="formmgr-row">
+			<label for="s3">String (required, max 10 characters)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="s3" name="s3" class="yiv-required yiv-length:[,10]" value="abcdef">
+		</div>
+	</fieldset>
+
+	<fieldset id="integers">
+		<h2>Integers</h2>
+		<div class="formmgr-row">
+			<label for="i1">Integer (not required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="i1" name="i1" class="yiv-integer">
+		</div>
+		<div class="formmgr-row">
+			<label for="i2">Integer (required, min 10)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="i2" name="i2" class="yiv-required yiv-integer:[10,]" value="20">
+		</div>
+	</fieldset>
+
+	<fieldset id="decimals">
+		<h2>Numbers</h2>
+		<div class="formmgr-row">
+			<label for="d1">Decimal (not required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="d1" name="d1" class="yiv-decimal">
+		</div>
+		<div class="formmgr-row">
+			<label for="d2">Decimal (not required, max 3.14)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="d2" name="d2" class="yiv-decimal:[,3.14]">
+		</div>
+	</fieldset>
+
+	<br clear="all">
+
+	<fieldset id="misc">
+		<h2>Miscellaneous</h2>
+		<div class="formmgr-row">
+			<label for="m1">Menu (required)</label>
+			<p class="formmgr-message-text"></p>
+			<select id="m1" name="m1" class="yiv-required">
+				<option value="">[Select a value]</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+			</select>
+		</div>
+		<div class="formmgr-row">
+			<label for="m2">Menu (required)</label>
+			<p class="formmgr-message-text"></p>
+			<select id="m2" name="m2" size="3" class="yiv-required">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+			</select>
+		</div>
+		<div class="formmgr-row">
+			<p class="formmgr-message-text"></p>
+			<div>
+				<input type="checkbox" id="b1" name="b1" value="1">
+				<label for="b1" class="checkbox-label">Checkbox #1</label>
+			</div>
+			<div>
+				<input type="checkbox" id="b2" name="b2" value="2" checked>
+				<label for="b2" class="checkbox-label">Checkbox #2</label>
+			</div>
+			<div>
+				<input type="checkbox" id="b3" name="b3" value="3">
+				<label for="b3" class="checkbox-label">Checkbox #3</label>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset id="info">
+		<h2>Personal Info</h2>
+		<div class="formmgr-row">
+			<label for="email">Email (required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="email" name="email" class="yiv-required">
+		</div>
+		<div class="formmgr-row">
+			<label for="pw">Password (not required, 6-10 characters)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="password" id="pw" name="pw" class="yiv-required">
+		</div>
+		<div class="formmgr-row">
+			<label for="pw2">Confirm password</label>
+			<p class="formmgr-message-text"></p>
+			<input type="password" id="pw2" name="pw2">
+		</div>
+		<div class="formmgr-row">
+			<label for="zip">United States ZIP Code</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="zip" name="zip" class="yiv-required">
+		</div>
+	</fieldset>
+
+</form>
+
+</body>
+</html>
