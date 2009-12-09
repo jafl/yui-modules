@@ -23,7 +23,6 @@ InstanceManager.prototype =
 	/**
 	 * Retrieve an object.
 	 * 
-	 * @method get
 	 * @param id {String} The id of the object to retrieve.
 	 */
 	get: function(
@@ -56,7 +55,6 @@ InstanceManager.prototype =
 	/**
 	 * Store an object or ctor+args.
 	 * 
-	 * @method put
 	 * @param id {String} The id of the object.
 	 * @param objOrCtor {Object|Function|String} The object or the object's constructor.
 	 * @param args {Array} The array of arguments to pass to the constructor.
