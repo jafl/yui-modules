@@ -161,4 +161,4 @@ InstanceManager.prototype =
 Y.InstanceManager = InstanceManager;
 
 
-}, '@VERSION@' );
+}, 'gallery-2009.12.08-22' );
