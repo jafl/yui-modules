@@ -67,7 +67,9 @@
 <span class="cm"> * </span>
 <span class="cm"> * &lt;p&gt;Default values can be either encoded in the markup or passed to the</span>
 <span class="cm"> * FormManager constructor via &lt;code&gt;config.default_value_map&lt;/code&gt;.  (The</span>
-<span class="cm"> * former method is obviously better for progressive enhancement.)&lt;/p&gt;</span>
+<span class="cm"> * former method is obviously better for progressive enhancement.)  The</span>
+<span class="cm"> * values passed to the constructor override the values encoded in the</span>
+<span class="cm"> * markup.&lt;/p&gt;</span>
 <span class="cm"> * </span>
 <span class="cm"> * &lt;p&gt;&lt;code&gt;prepareForm()&lt;/code&gt; must be called before the form is</span>
 <span class="cm"> * displayed.  To initialize focus to the first element in a form, call</span>
@@ -125,22 +127,8 @@
 <span class="cm"> *		object with the arguments:  the form and the element.&lt;/dd&gt;</span>
 <span class="cm"> * &lt;/dl&gt;</span>
 <span class="cm"> *</span>
-<span class="cm"> * &lt;p&gt;&lt;code&gt;setErrorMessage()&lt;/code&gt; specifies the error message to be</span>
-<span class="cm"> * displayed when a pre-validation check fails.  The valid error message</span>
-<span class="cm"> * types are:&lt;/p&gt;</span>
-<span class="cm"> *</span>
-<span class="cm"> *	&lt;dl&gt;</span>
-<span class="cm"> *	&lt;dt&gt;&lt;code&gt;required&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="cm"> *	&lt;dt&gt;&lt;code&gt;min_length&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="cm"> *		&lt;dd&gt;&lt;code&gt;{min}&lt;/code&gt; and &lt;code&gt;{max}&lt;/code&gt; are replaced&lt;/dd&gt;</span>
-<span class="cm"> *	&lt;dt&gt;&lt;code&gt;max_length&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="cm"> *		&lt;dd&gt;&lt;code&gt;{min}&lt;/code&gt; and &lt;code&gt;{max}&lt;/code&gt; are replaced&lt;/dd&gt;</span>
-<span class="cm"> *	&lt;dt&gt;&lt;code&gt;integer&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="cm"> *		&lt;dd&gt;&lt;code&gt;{min}&lt;/code&gt; and &lt;code&gt;{max}&lt;/code&gt; are replaced&lt;/dd&gt;</span>
-<span class="cm"> *	&lt;dt&gt;&lt;code&gt;decimal&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="cm"> *		&lt;dd&gt;&lt;code&gt;{min}&lt;/code&gt; and &lt;code&gt;{max}&lt;/code&gt; are replaced&lt;/dd&gt;</span>
-<span class="cm"> *	&lt;dt&gt;&lt;code&gt;regex&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="cm"> *	&lt;/dl&gt;</span>
+<span class="cm"> * &lt;p&gt;&lt;code&gt;setErrorMessages()&lt;/code&gt; specifies the error message to be</span>
+<span class="cm"> * displayed when a pre-validation check fails.&lt;/p&gt;</span>
 <span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;Functions are expected to call &lt;code&gt;displayMessage()&lt;/code&gt;</span>
 <span class="cm"> * directly.&lt;/p&gt;</span>
@@ -171,7 +159,9 @@
 <span class="cm"> * @param config {Object} Configuration.</span>
 <span class="cm"> *		&lt;code&gt;status_node&lt;/code&gt; is an optional element in which to display</span>
 <span class="cm"> *		overall status.  &lt;code&gt;default_value_map&lt;/code&gt; is an optional</span>
-<span class="cm"> *		mapping of form element names to default values.</span>
+<span class="cm"> *		mapping of form element names to default values.  Default values</span>
+<span class="cm"> *		encoded in the markup will be merged into this map, but values</span>
+<span class="cm"> *		passed to the constructor will take precedence.</span>
 <span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">FormManager</span><span class="p">(</span>
@@ -272,7 +262,7 @@
 <span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_marker_class</span> <span class="o">=</span> <span class="s1">&#39;formmgr-message-text&#39;</span><span class="p">;</span>
 
 <span class="cm">/**</span>
-<span class="cm"> * The CSS class placed on &lt;code&gt;status_node&lt;/code&gt; when there is nothing to say.</span>
+<span class="cm"> * The CSS class placed on &lt;code&gt;status_node&lt;/code&gt; when it is empty.</span>
 <span class="cm"> * </span>
 <span class="cm"> * @property Y.FormManager.status_none_class</span>
 <span class="cm"> * @type {String}</span>
@@ -280,7 +270,9 @@
 <span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_none_class</span> <span class="o">=</span> <span class="s1">&#39;formmgr-status-hidden&#39;</span><span class="p">;</span>
 
 <span class="cm">/**</span>
-<span class="cm"> * The CSS class placed on &lt;code&gt;status_node&lt;/code&gt; when pre-validation succeeeds.</span>
+<span class="cm"> * The CSS class placed on &lt;code&gt;status_node&lt;/code&gt; when</span>
+<span class="cm"> * &lt;code&gt;displayFormMessage()&lt;/code&gt; is called with</span>
+<span class="cm"> * &lt;code&gt;error=false&lt;/code&gt;.</span>
 <span class="cm"> * </span>
 <span class="cm"> * @property Y.FormManager.status_success_class</span>
 <span class="cm"> * @type {String}</span>
@@ -288,7 +280,9 @@
 <span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_success_class</span> <span class="o">=</span> <span class="s1">&#39;formmgr-status-success&#39;</span><span class="p">;</span>
 
 <span class="cm">/**</span>
-<span class="cm"> * The CSS class placed on &lt;code&gt;status_node&lt;/code&gt; when pre-validation fails.</span>
+<span class="cm"> * The CSS class placed on &lt;code&gt;status_node&lt;/code&gt; when</span>
+<span class="cm"> * &lt;code&gt;displayFormMessage()&lt;/code&gt; is called with</span>
+<span class="cm"> * &lt;code&gt;error=true&lt;/code&gt;.</span>
 <span class="cm"> * </span>
 <span class="cm"> * @property Y.FormManager.status_failure_class</span>
 <span class="cm"> * @type {String}</span>
@@ -375,7 +369,7 @@
 <span class="cm">/**</span>
 <span class="cm"> * Get the precedence of the given status name.</span>
 <span class="cm"> * </span>
-<span class="cm"> * @method getStatusPrecedence</span>
+<span class="cm"> * @method Y.FormManager.getStatusPrecedence</span>
 <span class="cm"> * @static</span>
 <span class="cm"> * @param status {String} The name of the status value.</span>
 <span class="cm"> * @return {int} The position in the &lt;code&gt;status_order&lt;/code&gt; array.</span>
@@ -397,11 +391,11 @@
 <span class="cm">/**</span>
 <span class="cm"> * Compare two status values.</span>
 <span class="cm"> * </span>
-<span class="cm"> * @method statusTakesPrecendence</span>
+<span class="cm"> * @method Y.FormManager.statusTakesPrecendence</span>
 <span class="cm"> * @static</span>
 <span class="cm"> * @param orig_status {String} The name of the original status value.</span>
 <span class="cm"> * @param new_status {String} The name of the new status value.</span>
-<span class="cm"> * @return {boolean} true if &lt;code&gt;new_status&lt;/code&gt; takes precedence over &lt;code&gt;orig_status&lt;/code&gt;</span>
+<span class="cm"> * @return {boolean} &lt;code&gt;true&lt;/code&gt; if &lt;code&gt;new_status&lt;/code&gt; takes precedence over &lt;code&gt;orig_status&lt;/code&gt;</span>
 <span class="cm"> */</span>
 <span class="nx">FormManager</span><span class="p">.</span><span class="nx">statusTakesPrecendence</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
 	<span class="cm">/* string */</span>	<span class="nx">orig_status</span><span class="p">,</span>
@@ -410,6 +404,14 @@
 	<span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">orig_status</span> <span class="o">||</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">getStatusPrecedence</span><span class="p">(</span><span class="nx">new_status</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">getStatusPrecedence</span><span class="p">(</span><span class="nx">orig_status</span><span class="p">));</span>
 <span class="p">};</span>
 
+<span class="cm">/**</span>
+<span class="cm"> * Get the status of the given fieldset or form row.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method Y.FormManager.getElementStatus</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param e {String|Object} The descriptor or DOM element.</span>
+<span class="cm"> * @return {mixed} The status (String) or &lt;code&gt;false&lt;/code&gt;.</span>
+<span class="cm"> */</span>
 <span class="nx">FormManager</span><span class="p">.</span><span class="nx">getElementStatus</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
 	<span class="cm">/* string/object */</span>	<span class="nx">e</span><span class="p">)</span>
 <span class="p">{</span>
@@ -542,10 +544,13 @@
 
 <span class="nx">FormManager</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="cm">/**********************************************************************</span>
+	<span class="cm">/* *********************************************************************</span>
 <span class="cm">	 * Access functions.</span>
 <span class="cm">	 */</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {DOM} The form DOM element.</span>
+<span class="cm">	 */</span>
 	<span class="nx">getForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">)</span>
@@ -555,17 +560,31 @@
 		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if the form contains file inputs.  These require special treatment when submitting via XHR.</span>
+<span class="cm">	 */</span>
 	<span class="nx">hasFileInputs</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">has_file_inputs</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Set the default values for all form elements.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param default_value_map {Object} Mapping of form element names to values.</span>
+<span class="cm">	 */</span>
 	<span class="nx">setDefaultValues</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* object */</span>	<span class="nx">default_value_map</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">default_value_map</span> <span class="o">=</span> <span class="nx">default_value_map</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Set the default values for a single form element.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param field_name {String} The form element name.</span>
+<span class="cm">	 * @param default_value {String|Int|Float} The default value.</span>
+<span class="cm">	 */</span>
 	<span class="nx">setDefaultValue</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* string*/</span>		<span class="nx">field_name</span><span class="p">,</span>
 		<span class="cm">/* string */</span>	<span class="nx">default_value</span><span class="p">)</span>
@@ -573,6 +592,9 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">default_value_map</span><span class="p">[</span> <span class="nx">field_name</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">default_value</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Store the current form values in &lt;code&gt;default_value_map&lt;/code&gt;.</span>
+<span class="cm">	 */</span>
 	<span class="nx">saveCurrentValuesAsDefault</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">default_value_map</span> <span class="o">=</span> <span class="p">{};</span>
@@ -580,17 +602,40 @@
 		<span class="nx">populateForm1</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
+	<span class="cm">/* *********************************************************************</span>
 <span class="cm">	 * Validation control</span>
 <span class="cm">	 */</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Set the validation function for a form element.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param id {String|Object} The selector for the element or the element itself</span>
+<span class="cm">	 * @param f {Function|String|Object}</span>
+<span class="cm">	 *		The function to call after basic validations succeed.  If this</span>
+<span class="cm">	 *		is a String, it is resolved in the scope of the FormManager</span>
+<span class="cm">	 *		object.  If this is an object, it must be &lt;code&gt;{fn:,</span>
+<span class="cm">	 *		scope:}&lt;/code&gt;.  The function will then be invoked in the</span>
+<span class="cm">	 *		specified scope.</span>
+<span class="cm">	 */</span>
 	<span class="nx">setFunction</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">,</span>
-		<span class="cm">/* function */</span>	<span class="nx">f</span><span class="p">)</span>
+		<span class="cm">/* string */</span>				<span class="nx">id</span><span class="p">,</span>
+		<span class="cm">/* function/string/obj */</span>	<span class="nx">f</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">fn</span><span class="p">[</span> <span class="nx">getId</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">f</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * &lt;p&gt;Set the regular expression used to validate the field value.&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * &lt;p&gt;&lt;strong&gt;Since there is no default message for failed regular</span>
+<span class="cm">	 * expression validation, this function will complain if you have not</span>
+<span class="cm">	 * already called &lt;code&gt;setErrorMessages()&lt;/code&gt; or</span>
+<span class="cm">	 * &lt;code&gt;addErrorMessage&lt;/code&gt; to specify an error message.&lt;/strong&gt;&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param id {String|Object} The selector for the element or the element itself</span>
+<span class="cm">	 * @param regex {String|RegExp} The regular expression to use</span>
+<span class="cm">	 * @param flags {String} If regex is a String, these are the flags used to construct a RegExp.</span>
+<span class="cm">	 */</span>
 	<span class="nx">setRegex</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* string */</span>		<span class="nx">id</span><span class="p">,</span>
 		<span class="cm">/* string/RegExp */</span>	<span class="nx">regex</span><span class="p">,</span>
@@ -613,13 +658,42 @@
 		<span class="p">}</span>
 	<span class="p">},</span>
 
-	<span class="nx">setErrorMessage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * &lt;p&gt;Set the error messages for a form element.  This can be used to</span>
+<span class="cm">	 * override the default messages for individual elements&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * &lt;p&gt;The valid error types are:&lt;/p&gt;</span>
+<span class="cm">	 *	&lt;dl&gt;</span>
+<span class="cm">	 *	&lt;dt&gt;&lt;code&gt;required&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm">	 *	&lt;dt&gt;&lt;code&gt;min_length&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm">	 *		&lt;dd&gt;&lt;code&gt;{min}&lt;/code&gt; and &lt;code&gt;{max}&lt;/code&gt; are replaced&lt;/dd&gt;</span>
+<span class="cm">	 *	&lt;dt&gt;&lt;code&gt;max_length&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm">	 *		&lt;dd&gt;&lt;code&gt;{min}&lt;/code&gt; and &lt;code&gt;{max}&lt;/code&gt; are replaced&lt;/dd&gt;</span>
+<span class="cm">	 *	&lt;dt&gt;&lt;code&gt;integer&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm">	 *		&lt;dd&gt;&lt;code&gt;{min}&lt;/code&gt; and &lt;code&gt;{max}&lt;/code&gt; are replaced&lt;/dd&gt;</span>
+<span class="cm">	 *	&lt;dt&gt;&lt;code&gt;decimal&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm">	 *		&lt;dd&gt;&lt;code&gt;{min}&lt;/code&gt; and &lt;code&gt;{max}&lt;/code&gt; are replaced&lt;/dd&gt;</span>
+<span class="cm">	 *	&lt;dt&gt;&lt;code&gt;regex&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm">	 *		&lt;dd&gt;This &lt;string&gt;must&lt;/strong&gt; be set for elements which validate with regular expressions.&lt;/dd&gt;</span>
+<span class="cm">	 *	&lt;/dl&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param id {String|Object} The selector for the element or the element itself</span>
+<span class="cm">	 * @param map {Object} Map of error types to error messages.</span>
+<span class="cm">	 */</span>
+	<span class="nx">setErrorMessages</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">,</span>
 		<span class="cm">/* object */</span>	<span class="nx">map</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">validation_msgs</span><span class="p">[</span> <span class="nx">getId</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">map</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Set one particular error message for a form element.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param id {String|Object} The selector for the element or the element itself</span>
+<span class="cm">	 * @param error_type {String} The error message type.  Refer to setErrorMessages() for details.</span>
+<span class="cm">	 * @param msg {String} The error message</span>
+<span class="cm">	 */</span>
 	<span class="nx">addErrorMessage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">,</span>
 		<span class="cm">/* string */</span>	<span class="nx">error_type</span><span class="p">,</span>
@@ -633,10 +707,9 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">validation_msgs</span><span class="p">[</span><span class="nx">id</span><span class="p">][</span><span class="nx">error_type</span><span class="p">]</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">;</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
-<span class="cm">	 * Clear all values.</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Reset all values in the form to the defaults specified in the markup.</span>
 <span class="cm">	 */</span>
-
 	<span class="nx">clearForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">clearMessages</span><span class="p">();</span>
@@ -644,10 +717,9 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">postPopulateForm</span><span class="p">();</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
-<span class="cm">	 * Reset all values to their defaults.</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Reset all values in the form to the defaults passed to the constructor.</span>
 <span class="cm">	 */</span>
-
 	<span class="nx">populateForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">default_value_map</span><span class="p">)</span>
@@ -664,14 +736,19 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">postPopulateForm</span><span class="p">();</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Hook for performing additional actions after</span>
+<span class="cm">	 * &lt;code&gt;populateForm()&lt;/code&gt; completes.</span>
+<span class="cm">	 */</span>
 	<span class="nx">postPopulateForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
-<span class="cm">	 * Returns false if all form elements have their default values.</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Check if form values have been modified.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;false&lt;/code&gt; if all form elements have the default values passed to the constructor</span>
 <span class="cm">	 */</span>
-
 	<span class="nx">isChanged</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
@@ -727,10 +804,11 @@
 		<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
+	<span class="cm">/**</span>
 <span class="cm">	 * Prepare the form for display.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if both pre &amp; post hooks are happy</span>
 <span class="cm">	 */</span>
-
 	<span class="nx">prepareForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">getForm</span><span class="p">();</span>
@@ -748,28 +826,33 @@
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">populateForm</span><span class="p">();</span>
 
-		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">postPrepareForm</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">))</span>
-		<span class="p">{</span>
-			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-		<span class="p">}</span>
-
-		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">postPrepareForm</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Hook called before &lt;code&gt;prepareForm()&lt;/code&gt; executes.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;false&lt;/code&gt; cancels &lt;code&gt;prepareForm()&lt;/code&gt;.</span>
+<span class="cm">	 */</span>
 	<span class="nx">prePrepareForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Hook called after &lt;code&gt;prepareForm()&lt;/code&gt; executes.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {boolean} Return value from this function is returned by &lt;code&gt;prepareForm()&lt;/code&gt;.</span>
+<span class="cm">	 */</span>
 	<span class="nx">postPrepareForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
-<span class="cm">	 * Set focus to first viable element.</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Set focus to first input field.  If a page contains multiple forms,</span>
+<span class="cm">	 * only call this for one of them.</span>
 <span class="cm">	 */</span>
-
 	<span class="nx">initFocus</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
@@ -801,10 +884,9 @@
 		<span class="p">}</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
+	<span class="cm">/**</span>
 <span class="cm">	 * Validate the form.</span>
 <span class="cm">	 */</span>
-
 	<span class="nx">validateForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">clearMessages</span><span class="p">();</span>
@@ -1051,16 +1133,29 @@
 		<span class="k">return</span> <span class="nx">status</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Hook called at the end of &lt;code&gt;validateForm()&lt;/code&gt;.  This is the</span>
+<span class="cm">	 * best place to put holistic validations that touch multiple form</span>
+<span class="cm">	 * elements.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;false&lt;/code&gt; if validation fails</span>
+<span class="cm">	 */</span>
 	<span class="nx">postValidateForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* DOM element */</span>	<span class="nx">form</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
-<span class="cm">	 * Register buttons that should be disabled during submission.</span>
+	<span class="cm">/* *********************************************************************</span>
+<span class="cm">	 * Buttons can be disabled during submission.</span>
 <span class="cm">	 */</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Register a button that can be disabled.  Buttons contained within</span>
+<span class="cm">	 * the form DOM element are automatically registered.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param el {String|Object} The selector for the element or the element itself</span>
+<span class="cm">	 */</span>
 	<span class="nx">registerButton</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* string/object */</span> <span class="nx">el</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -1072,20 +1167,27 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">user_button_list</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">info</span><span class="p">);</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
-<span class="cm">	 * Form is disabled during submission</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Enable all the registered buttons.</span>
 <span class="cm">	 */</span>
-
 	<span class="nx">enableForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">setFormEnabled</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Disable all the registered buttons.</span>
+<span class="cm">	 */</span>
 	<span class="nx">disableForm</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">setFormEnabled</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Set the enabled state all the registered buttons.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param enabled {boolean} &lt;code&gt;true&lt;/code&gt; to enable the form, &lt;code&gt;false&lt;/code&gt; to disable the form</span>
+<span class="cm">	 */</span>
 	<span class="nx">setFormEnabled</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* boolean */</span>	<span class="nx">enabled</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -1104,20 +1206,32 @@
 		<span class="p">}</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
+	<span class="cm">/* *********************************************************************</span>
 <span class="cm">	 * Message display</span>
 <span class="cm">	 */</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if there are any messages displayed, of any type</span>
+<span class="cm">	 */</span>
 	<span class="nx">hasMessages</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">has_messages</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if there are any error messages displayed</span>
+<span class="cm">	 */</span>
 	<span class="nx">hasErrors</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">has_errors</span><span class="p">;</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Get the message type displayed for the row containing the specified element.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param e {String|Object} The selector for the element or the element itself</span>
+<span class="cm">	 * @return {mixed} The status (String) or &lt;code&gt;false&lt;/code&gt;.</span>
+<span class="cm">	 */</span>
 	<span class="nx">getRowStatus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* id/object */</span>	<span class="nx">e</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -1125,6 +1239,9 @@
 		<span class="k">return</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">getElementStatus</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Clear all messages in &lt;code&gt;status_node&lt;/code&gt; and the form rows.</span>
+<span class="cm">	 */</span>
 	<span class="nx">clearMessages</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">has_messages</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
@@ -1150,6 +1267,16 @@
 		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">).</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;fieldset&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">row_status_pattern</span><span class="p">);</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Display a message for the form row containing the specified element.</span>
+<span class="cm">	 * The message will only be displayed if no message with a higher</span>
+<span class="cm">	 * precedence is already visible. (see Y.FormManager.status_order)</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param e {String|Object} The selector for the element or the element itself</span>
+<span class="cm">	 * @param msg {String} The message</span>
+<span class="cm">	 * @param type {String} The message type (see Y.FormManager.status_order)</span>
+<span class="cm">	 * @param scroll {boolean} &lt;code&gt;true&lt;/code&gt; if the form row should be scrolled into view</span>
+<span class="cm">	 */</span>
 	<span class="nx">displayMessage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* id/object */</span>	<span class="nx">e</span><span class="p">,</span>
 		<span class="cm">/* string */</span>	<span class="nx">msg</span><span class="p">,</span>
@@ -1201,11 +1328,23 @@
 		<span class="p">}</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Displays a generic message in &lt;code&gt;status_node&lt;/code&gt; stating that</span>
+<span class="cm">	 * the form data failed to validate.  Override this if you want to get</span>
+<span class="cm">	 * fancy.</span>
+<span class="cm">	 */</span>
 	<span class="nx">notifyErrors</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">displayFormMessage</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">validation_error</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 	<span class="p">},</span>
 
+	<span class="cm">/**</span>
+<span class="cm">	 * Display a message in &lt;code&gt;status_node&lt;/code&gt;.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param msg {String} The message</span>
+<span class="cm">	 * @param error {boolean} &lt;code&gt;true&lt;/code&gt; if the message is an error</span>
+<span class="cm">	 * @param scroll {boolean} &lt;code&gt;true&lt;/code&gt; if &lt;code&gt;status_node&lt;/code&gt; should be scrolled into view</span>
+<span class="cm">	 */</span>
 	<span class="nx">displayFormMessage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* string */</span>	<span class="nx">msg</span><span class="p">,</span>
 		<span class="cm">/* boolean */</span>	<span class="nx">error</span><span class="p">,</span>
@@ -1282,7 +1421,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-    var ALL_YUI_PROPS = [{"url": "FormManager.html#method_clearForm", "access": "", "host": "FormManager", "type": "method", "name": "clearForm"}, {"url": "FormManager.html#method_enableForm", "access": "", "host": "FormManager", "type": "method", "name": "enableForm"}, {"url": "FormManager.html#method_getForm", "access": "", "host": "FormManager", "type": "method", "name": "getForm"}, {"url": "FormManager.html#method_getStatusPrecedence", "access": "", "host": "FormManager", "type": "method", "name": "getStatusPrecedence"}, {"url": "FormManager.html#method_hasMessages", "access": "", "host": "FormManager", "type": "method", "name": "hasMessages"}, {"url": "FormManager.html#method_initFocus", "access": "", "host": "FormManager", "type": "method", "name": "initFocus"}, {"url": "FormManager.html#method_isChanged", "access": "", "host": "FormManager", "type": "method", "name": "isChanged"}, {"url": "FormManager.html#method_populateForm", "access": "", "host": "FormManager", "type": "method", "name": "populateForm"}, {"url": "FormManager.html#method_prepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prepareForm"}, {"url": "FormManager.html#method_registerButton", "access": "", "host": "FormManager", "type": "method", "name": "registerButton"}, {"url": "FormManager.html#method_setFunction", "access": "", "host": "FormManager", "type": "method", "name": "setFunction"}, {"url": "FormManager.html#method_statusTakesPrecendence", "access": "", "host": "FormManager", "type": "method", "name": "statusTakesPrecendence"}, {"url": "FormManager.html#method_validateForm", "access": "", "host": "FormManager", "type": "method", "name": "validateForm"}, {"url": "FormManager.html#config_Y.FormManager.decimal_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.decimal_value_re"}, {"url": "FormManager.html#config_Y.FormManager.integer_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.integer_value_re"}, {"url": "FormManager.html#property_Y.FormManager.row_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.row_status_prefix", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_status_prefix"}, {"url": "FormManager.html#property_Y.FormManager.status_failure_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_failure_class"}, {"url": "FormManager.html#property_Y.FormManager.status_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.status_none_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_none_class"}, {"url": "FormManager.html#config_Y.FormManager.status_order", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.status_order"}, {"url": "FormManager.html#property_Y.FormManager.status_success_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_success_class"}, {"url": "FormManager.html#config_Y.FormManager.Strings", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.Strings"}];
+    var ALL_YUI_PROPS = [{"url": "FormManager.html#method_addErrorMessage", "access": "", "host": "FormManager", "type": "method", "name": "addErrorMessage"}, {"url": "FormManager.html#method_clearForm", "access": "", "host": "FormManager", "type": "method", "name": "clearForm"}, {"url": "FormManager.html#method_clearMessages", "access": "", "host": "FormManager", "type": "method", "name": "clearMessages"}, {"url": "FormManager.html#method_disableForm", "access": "", "host": "FormManager", "type": "method", "name": "disableForm"}, {"url": "FormManager.html#method_displayFormMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayFormMessage"}, {"url": "FormManager.html#method_displayMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayMessage"}, {"url": "FormManager.html#method_enableForm", "access": "", "host": "FormManager", "type": "method", "name": "enableForm"}, {"url": "FormManager.html#method_getForm", "access": "", "host": "FormManager", "type": "method", "name": "getForm"}, {"url": "FormManager.html#method_getRowStatus", "access": "", "host": "FormManager", "type": "method", "name": "getRowStatus"}, {"url": "FormManager.html#method_hasErrors", "access": "", "host": "FormManager", "type": "method", "name": "hasErrors"}, {"url": "FormManager.html#method_hasFileInputs", "access": "", "host": "FormManager", "type": "method", "name": "hasFileInputs"}, {"url": "FormManager.html#method_hasMessages", "access": "", "host": "FormManager", "type": "method", "name": "hasMessages"}, {"url": "FormManager.html#method_initFocus", "access": "", "host": "FormManager", "type": "method", "name": "initFocus"}, {"url": "FormManager.html#method_isChanged", "access": "", "host": "FormManager", "type": "method", "name": "isChanged"}, {"url": "FormManager.html#method_notifyErrors", "access": "", "host": "FormManager", "type": "method", "name": "notifyErrors"}, {"url": "FormManager.html#method_populateForm", "access": "", "host": "FormManager", "type": "method", "name": "populateForm"}, {"url": "FormManager.html#method_postPopulateForm", "access": "", "host": "FormManager", "type": "method", "name": "postPopulateForm"}, {"url": "FormManager.html#method_postPrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "postPrepareForm"}, {"url": "FormManager.html#method_postValidateForm", "access": "", "host": "FormManager", "type": "method", "name": "postValidateForm"}, {"url": "FormManager.html#method_prepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prepareForm"}, {"url": "FormManager.html#method_prePrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prePrepareForm"}, {"url": "FormManager.html#method_registerButton", "access": "", "host": "FormManager", "type": "method", "name": "registerButton"}, {"url": "FormManager.html#method_saveCurrentValuesAsDefault", "access": "", "host": "FormManager", "type": "method", "name": "saveCurrentValuesAsDefault"}, {"url": "FormManager.html#method_setDefaultValue", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValue"}, {"url": "FormManager.html#method_setDefaultValues", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValues"}, {"url": "FormManager.html#method_setErrorMessages", "access": "", "host": "FormManager", "type": "method", "name": "setErrorMessages"}, {"url": "FormManager.html#method_setFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "setFormEnabled"}, {"url": "FormManager.html#method_setFunction", "access": "", "host": "FormManager", "type": "method", "name": "setFunction"}, {"url": "FormManager.html#method_setRegex", "access": "", "host": "FormManager", "type": "method", "name": "setRegex"}, {"url": "FormManager.html#method_validateForm", "access": "", "host": "FormManager", "type": "method", "name": "validateForm"}, {"url": "FormManager.html#config_Y.FormManager.decimal_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.decimal_value_re"}, {"url": "FormManager.html#method_Y.FormManager.getElementStatus", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getElementStatus"}, {"url": "FormManager.html#method_Y.FormManager.getStatusPrecedence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getStatusPrecedence"}, {"url": "FormManager.html#config_Y.FormManager.integer_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.integer_value_re"}, {"url": "FormManager.html#property_Y.FormManager.row_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.row_status_prefix", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_status_prefix"}, {"url": "FormManager.html#property_Y.FormManager.status_failure_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_failure_class"}, {"url": "FormManager.html#property_Y.FormManager.status_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.status_none_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_none_class"}, {"url": "FormManager.html#config_Y.FormManager.status_order", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.status_order"}, {"url": "FormManager.html#property_Y.FormManager.status_success_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_success_class"}, {"url": "FormManager.html#method_Y.FormManager.statusTakesPrecendence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.statusTakesPrecendence"}, {"url": "FormManager.html#config_Y.FormManager.Strings", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.Strings"}];
     YAHOO.yuidoc.init();
 </script>
 </body>
