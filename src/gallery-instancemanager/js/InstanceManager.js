@@ -1,3 +1,5 @@
+"use strict";
+
 /**********************************************************************
  * <p>Stores instances of JavaScript components.  Allows a constructor to
  * be passed in place of an instance.  This enables lazy construction on

@@ -1,3 +1,5 @@
+"use strict";
+
 /**********************************************************************
  * <p>Only scrolls the browser if the object is not currently visible.</p>
  * 

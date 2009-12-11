@@ -1,3 +1,5 @@
+"use strict";
+
 /**********************************************************************
  * <p>Base class for enforcing constraints on groups of checkboxes.</p>
  *

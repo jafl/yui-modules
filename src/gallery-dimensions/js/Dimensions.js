@@ -1,3 +1,5 @@
+"use strict";
+
 var em_div = null,
 
 	the_horiz_styles =

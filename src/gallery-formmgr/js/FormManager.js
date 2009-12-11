@@ -1,3 +1,5 @@
+"use strict";
+
 /**********************************************************************
  * <p>FormManager provides support for initializing a form, pre-validating
  * user input, and displaying messages returned by the server.</p>
