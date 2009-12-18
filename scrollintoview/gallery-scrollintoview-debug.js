@@ -110,4 +110,4 @@ Y.Node.prototype.scrollIntoView = function()
 }
 
 
-}, '@VERSION@' ,{requires:['gallery-dimensions']});
+}, 'gallery-2009.12.08-22' ,{requires:['gallery-dimensions']});

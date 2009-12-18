@@ -108,4 +108,4 @@ Y.Node.prototype.parseDimensionStyle = function(
 }
 
 
-}, '@VERSION@' ,{requires:['node-style']});
+}, 'gallery-2009.12.08-22' ,{requires:['node-style']});

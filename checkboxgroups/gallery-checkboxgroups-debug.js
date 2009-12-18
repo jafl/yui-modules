@@ -1,5 +1,7 @@
 YUI.add('gallery-checkboxgroups', function(Y) {
 
+"use strict";
+
 /**********************************************************************
  * <p>Base class for enforcing constraints on groups of checkboxes.</p>
  *
@@ -64,8 +66,7 @@ CheckboxGroup.prototype =
 			cb_list);
 		}
 
-		if (cb_list instanceof Array ||
-			(cb_list && cb_list.length))
+		if (cb_list && Y.Lang.isNumber(cb_list.length))
 		{
 			for (i=0; i<cb_list.length; i++)
 			{
