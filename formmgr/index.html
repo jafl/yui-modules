@@ -160,20 +160,23 @@ YUI().use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function
 
 	// example actions
 
-	Y.one('#validate').on('click', function()
+	Y.on('click', function()
 	{
 		f.validateForm();
-	});
+	},
+	'#validate');
 
-	Y.one('#reset').on('click', function()
+	Y.on('click', function()
 	{
 		f.populateForm();	// default_value_map + values in markup
-	});
+	},
+	'#reset');
 
-	Y.one('#clear').on('click', function()
+	Y.on('click', function()
 	{
 		f.clearForm();		// values in markup
-	});
+	},
+	'#clear');
 
 	// example status display
 
