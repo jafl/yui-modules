@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-checkboxgroups   CheckboxGroup.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-checkboxgroups&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a>
+                
+                 &gt; CheckboxGroup.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">Direction</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="nx">SLIDE_UP</span><span class="o">:</span>   <span class="mi">0</span><span class="p">,</span>
+	<span class="nx">SLIDE_DOWN</span><span class="o">:</span> <span class="mi">1</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Base class for enforcing constraints on groups of checkboxes.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * &lt;p&gt;Derived classes must override &lt;code&gt;enforceConstraints()&lt;/code&gt;.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-checkboxgroups</span>
+<span class="cm"> * @class CheckboxGroup</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param cb_list {String|Object|Array} The list of checkboxes to manage</span>
+<span class="cm"> */</span>
+
+<span class="kd">function</span> <span class="nx">CheckboxGroup</span><span class="p">(</span>
+	<span class="cm">/* string/object/array */</span>	<span class="nx">cb_list</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>	<span class="c1">// derived class prototype</span>
+	<span class="p">{</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span> <span class="o">=</span> <span class="p">[];</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">ev_list</span> <span class="o">=</span> <span class="p">[];</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">cb_list</span><span class="p">);</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">direction</span>     <span class="o">=</span> <span class="nx">Direction</span><span class="p">.</span><span class="nx">SLIDE_UP</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">ignore_change</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">checkboxChanged</span><span class="p">(</span>
+	<span class="cm">/* event */</span>		<span class="nx">e</span><span class="p">,</span>
+	<span class="cm">/* object */</span>	<span class="nx">obj</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">checkboxChanged</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">CheckboxGroup</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Array} List of managed checkboxes</span>
+<span class="cm">	 */</span>
+	<span class="nx">getCheckboxList</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Same functionality as &lt;code&gt;Array.splice()&lt;/code&gt;.  Operates on the</span>
+<span class="cm">	 * list of managed checkboxes.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param start {Int} Insertion index</span>
+<span class="cm">	 * @param delete_count {Int} Number of items to remove, starting from &lt;code&gt;start&lt;/code&gt;</span>
+<span class="cm">	 * @param cb_list {String|Object|Array} The list of checkboxes to insert at &lt;code&gt;start&lt;/code&gt;</span>
+<span class="cm">	 */</span>
+	<span class="nx">splice</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>					<span class="nx">start</span><span class="p">,</span>
+		<span class="cm">/* int */</span>					<span class="nx">delete_count</span><span class="p">,</span>
+		<span class="cm">/* string/object/array */</span>	<span class="nx">cb_list</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">start</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">delete_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">ev_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">detach</span><span class="p">();</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">cb_list</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node_list</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">cb_list</span><span class="p">);</span>
+
+			<span class="nx">cb_list</span> <span class="o">=</span> <span class="p">[];</span>
+			<span class="nx">node_list</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">cb</span><span class="p">);</span>
+			<span class="p">},</span>
+			<span class="nx">cb_list</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">cb_list</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="nx">start</span><span class="o">+</span><span class="nx">i</span><span class="p">,</span> <span class="nx">k</span><span class="o">=</span><span class="p">(</span><span class="nx">i</span><span class="o">===</span><span class="mi">0</span> <span class="o">?</span> <span class="nx">delete_count</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">j</span><span class="p">,</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">cb_list</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">ev_list</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">j</span><span class="p">,</span> <span class="nx">k</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">[</span><span class="nx">j</span><span class="p">].</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">checkboxChanged</span><span class="p">,</span> <span class="k">this</span><span class="p">));</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">delete_count</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">ev_list</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">delete_count</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="nx">checkboxChanged</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* checkbox */</span>	<span class="nx">cb</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">ignore_change</span> <span class="o">||</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">length</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">allDisabled</span><span class="p">())</span>
+		<span class="p">{</span>
+			<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="nx">cb</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">cb</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">cb</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">enforceConstraints</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Derived classes must override this function to implement the desired behavior.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param cb_list {String|Object|Array} The list of checkboxes</span>
+<span class="cm">	 * @param index {Int} The index of the checkbox that changed</span>
+<span class="cm">	 */</span>
+	<span class="nx">enforceConstraints</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* array */</span>	<span class="nx">cb_list</span><span class="p">,</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if all checkboxes are checked</span>
+<span class="cm">	 */</span>
+	<span class="nx">allChecked</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;checked&#39;</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if all checkboxes are unchecked</span>
+<span class="cm">	 */</span>
+	<span class="nx">allUnchecked</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;checked&#39;</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if all checkboxes are disabled</span>
+<span class="cm">	 */</span>
+	<span class="nx">allDisabled</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">CheckboxGroup</span> <span class="o">=</span> <span class="nx">CheckboxGroup</span><span class="p">;</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="AtLeastOneCheckboxGroup.html" title="AtLeastOneCheckboxGroup">AtLeastOneCheckboxGroup</a></li>
+                                <li class=""><a href="AtMostOneCheckboxGroup.html" title="AtMostOneCheckboxGroup">AtMostOneCheckboxGroup</a></li>
+                                <li class=""><a href="CheckboxGroup.html" title="CheckboxGroup">CheckboxGroup</a></li>
+                                <li class=""><a href="SelectAllCheckboxGroup.html" title="SelectAllCheckboxGroup">SelectAllCheckboxGroup</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="AtLeastOneCheckboxGroup.js.html" title="AtLeastOneCheckboxGroup.js">AtLeastOneCheckboxGroup.js</a></li>
+                                <li class=""><a href="AtMostOneCheckboxGroup.js.html" title="AtMostOneCheckboxGroup.js">AtMostOneCheckboxGroup.js</a></li>
+                                <li class="selected"><a href="CheckboxGroup.js.html" title="CheckboxGroup.js">CheckboxGroup.js</a></li>
+                                <li class=""><a href="SelectAllCheckboxGroup.js.html" title="SelectAllCheckboxGroup.js">SelectAllCheckboxGroup.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    var ALL_YUI_PROPS = [{"url": "CheckboxGroup.html#method_allChecked", "access": "", "host": "CheckboxGroup", "type": "method", "name": "allChecked"}, {"url": "CheckboxGroup.html#method_allDisabled", "access": "", "host": "CheckboxGroup", "type": "method", "name": "allDisabled"}, {"url": "CheckboxGroup.html#method_allUnchecked", "access": "", "host": "CheckboxGroup", "type": "method", "name": "allUnchecked"}, {"url": "CheckboxGroup.html#method_enforceConstraints", "access": "", "host": "CheckboxGroup", "type": "method", "name": "enforceConstraints"}, {"url": "CheckboxGroup.html#method_getCheckboxList", "access": "", "host": "CheckboxGroup", "type": "method", "name": "getCheckboxList"}, {"url": "CheckboxGroup.html#method_splice", "access": "", "host": "CheckboxGroup", "type": "method", "name": "splice"}];
+    YAHOO.yuidoc.init();
+</script>
+</body>
+</html>
