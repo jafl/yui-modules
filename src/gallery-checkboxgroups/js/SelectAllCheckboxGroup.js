@@ -2,6 +2,12 @@
  * All checkboxes can be selected and a select-all checkbox is available
  * to check all. This check-all box is automatically changed if any other
  * checkbox changes state.
+ * 
+ * @module gallery-checkboxgroups
+ * @class SelectAllCheckboxGroup
+ * @constructor
+ * @param select_all_cb {String|Object} The checkbox that triggers "select all"
+ * @param cb_list {String|Object|Array} The list of checkboxes to manage
  */
 
 function SelectAllCheckboxGroup(

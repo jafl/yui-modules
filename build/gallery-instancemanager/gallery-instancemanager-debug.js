@@ -1,5 +1,7 @@
 YUI.add('gallery-instancemanager', function(Y) {
 
+"use strict";
+
 /**********************************************************************
  * <p>Stores instances of JavaScript components.  Allows a constructor to
  * be passed in place of an instance.  This enables lazy construction on
@@ -25,7 +27,6 @@ InstanceManager.prototype =
 	/**
 	 * Retrieve an object.
 	 * 
-	 * @method get
 	 * @param id {String} The id of the object to retrieve.
 	 */
 	get: function(
@@ -58,7 +59,6 @@ InstanceManager.prototype =
 	/**
 	 * Store an object or ctor+args.
 	 * 
-	 * @method put
 	 * @param id {String} The id of the object.
 	 * @param objOrCtor {Object|Function|String} The object or the object's constructor.
 	 * @param args {Array} The array of arguments to pass to the constructor.
@@ -161,4 +161,4 @@ InstanceManager.prototype =
 Y.InstanceManager = InstanceManager;
 
 
-}, 'gallery-2009.12.08-22' );
+}, '@VERSION@' );

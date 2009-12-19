@@ -1,5 +1,7 @@
 YUI.add('gallery-scrollintoview', function(Y) {
 
+"use strict";
+
 /**********************************************************************
  * <p>Only scrolls the browser if the object is not currently visible.</p>
  * 
@@ -110,4 +112,4 @@ Y.Node.prototype.scrollIntoView = function()
 }
 
 
-}, 'gallery-2009.12.08-22' ,{requires:['gallery-dimensions']});
+}, '@VERSION@' ,{requires:['gallery-dimensions']});

@@ -1,5 +1,7 @@
 YUI.add('gallery-dimensions', function(Y) {
 
+"use strict";
+
 var em_div = null,
 
 	the_horiz_styles =
@@ -108,4 +110,4 @@ Y.Node.prototype.parseDimensionStyle = function(
 }
 
 
-}, 'gallery-2009.12.08-22' ,{requires:['node-style']});
+}, '@VERSION@' ,{requires:['node-style']});
