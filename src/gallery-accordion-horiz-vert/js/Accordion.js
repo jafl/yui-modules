@@ -45,8 +45,11 @@ function Accordion(config)
 		return;
 	}
 
-	config          = config || {};
-	config.tabIndex = -1;
+	config = config || {};
+	if (Y.Lang.isUndefined(config.tabIndex))
+	{
+		config.tabIndex = null;
+	}
 
 	Accordion.superclass.constructor.call(this, config);
 }
