@@ -7,7 +7,7 @@
  * Otherwise, this algorithm will skip over them with unpredictable
  * results.</p>
  * 
- * @method scrollIntoView
+ * @chainable
  */
 
 Y.Node.prototype.scrollIntoView = function()

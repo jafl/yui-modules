@@ -1,3 +1,5 @@
+YUI.add('gallery-accordion-horiz-vert', function(Y) {
+
 "use strict";
 
 var use_nonzero_empty_div = (0 < Y.UA.ie && Y.UA.ie < 8),
@@ -401,7 +403,6 @@ Y.extend(Accordion, Y.Widget,
 		}
 		else
 		{
-			Y.log('ignoring titles & sections', 'info', 'Accordion');
 		}
 	},
 
@@ -1056,3 +1057,6 @@ Y.extend(Accordion, Y.Widget,
 });
 
 Y.Accordion = Accordion;
+
+
+}, '@VERSION@' ,{optional:['anim-base'], requires:['widget','selector-css3']});
