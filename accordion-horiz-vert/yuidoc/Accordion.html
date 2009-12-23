@@ -1,0 +1,1681 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-accordion-horiz-vert  Accordion   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-accordion-horiz-vert&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a>
+                 &gt; Accordion 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        
+                        
+                            Class <b property="yui:name">Accordion</b>
+                        <span class="extends">
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        <p>Class to manage an accordion, either horizontally or vertically.
+Allows either multiple open sections or only a single open section.
+Provides option to always force at lease one item to be open.</p>
+<p>When constructing from markup, use an unordered list (&lt;ul&gt;).
+Each item must contain two &lt;div&gt;'s.  The first one is used as
+the section title, and the second one is used as the section
+content.</p>
+<p>Animation is optional.  If the anim module is not available,
+animation is automatically turned off.</p>
+<p>When using a horizontal accordion:</p>
+<ul>
+<li>The widget's container must have a height.</li>
+<li>Each title must have both a width and height.</li>
+<li>Each section must have a width.</li>
+</ul>
+<p>IE doesn't accept zero height divs, so we use 1px height and zero
+opacity.  IE6 doesn't always render correctly with opacity set, so if
+animation is turned off, we don't use opacity at all.</p>
+                    </div>
+
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">Accordion</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                config
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">config</span>
+                                                    &lt;<span property="yui:type">Object</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  Widget configuration</span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="protected" rel="yui:method" resource="#method__getClip">
+                                    <h4>
+                                        <a name="method__getClip">_getClip</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        Node
+                                            <strong property="yui:name">_getClip</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Node
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the clipping container for the section content</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_allSectionsClosed">
+                                    <h4>
+                                        <a name="method_allSectionsClosed">allSectionsClosed</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">allSectionsClosed</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"><code>true</code> if all sections are closed</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_allSectionsOpen">
+                                    <h4>
+                                        <a name="method_allSectionsOpen">allSectionsOpen</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">allSectionsOpen</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"><code>true</code> if all sections are open</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_appendSection">
+                                    <h4>
+                                        <a name="method_appendSection">appendSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">appendSection</strong>
+                                           (
+                                                
+                                                        
+                                                         title
+                                                    
+                                                
+                                                        , 
+                                                         content
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Appends the section to the accordion.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">title</span>
+                                                        &lt;<span property="yui:type">String|Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section title content</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">content</span>
+                                                        &lt;<span property="yui:type">String|Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section content</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_closeAllSections">
+                                    <h4>
+                                        <a name="method_closeAllSections">closeAllSections</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">closeAllSections</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Close all sections, if possible.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_closeSection">
+                                    <h4>
+                                        <a name="method_closeSection">closeSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">closeSection</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Close the specified section.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_findSection">
+                                    <h4>
+                                        <a name="method_findSection">findSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        int|null
+                                            <strong property="yui:name">findSection</strong>
+                                           (
+                                                
+                                                        
+                                                         any
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">any</span>
+                                                        &lt;<span property="yui:type">String|Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> element inside the section or title</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            int|null
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the index of the containing section or <code>false</code> if not found</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getSection">
+                                    <h4>
+                                        <a name="method_getSection">getSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Node
+                                            <strong property="yui:name">getSection</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Node
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the container for the section content</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getSectionCount">
+                                    <h4>
+                                        <a name="method_getSectionCount">getSectionCount</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        int
+                                            <strong property="yui:name">getSectionCount</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            int
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">total number of sections</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getTitle">
+                                    <h4>
+                                        <a name="method_getTitle">getTitle</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Node
+                                            <strong property="yui:name">getTitle</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Node
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the container for the section title</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_insertSection">
+                                    <h4>
+                                        <a name="method_insertSection">insertSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">insertSection</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                                        , 
+                                                         title
+                                                    
+                                                
+                                                        , 
+                                                         content
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Inserts the section into the accordion at the specified location.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the insertion index</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">title</span>
+                                                        &lt;<span property="yui:type">String|Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section title content</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">content</span>
+                                                        &lt;<span property="yui:type">String|Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section content</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_isSectionOpen">
+                                    <h4>
+                                        <a name="method_isSectionOpen">isSectionOpen</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">isSectionOpen</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"><code>true</code> if the section is open</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_openAllSections">
+                                    <h4>
+                                        <a name="method_openAllSections">openAllSections</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">openAllSections</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Open all sections, if possible.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_openSection">
+                                    <h4>
+                                        <a name="method_openSection">openSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">openSection</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Open the specified section.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_prependSection">
+                                    <h4>
+                                        <a name="method_prependSection">prependSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">prependSection</strong>
+                                           (
+                                                
+                                                        
+                                                         title
+                                                    
+                                                
+                                                        , 
+                                                         content
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Prepends the section to the accordion.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">title</span>
+                                                        &lt;<span property="yui:type">String|Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section title content</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">content</span>
+                                                        &lt;<span property="yui:type">String|Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section content</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_removeSection">
+                                    <h4>
+                                        <a name="method_removeSection">removeSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">removeSection</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Removes the specified section.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setSection">
+                                    <h4>
+                                        <a name="method_setSection">setSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setSection</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                                        , 
+                                                         content
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Sets the contents of the specified section.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">content</span>
+                                                        &lt;<span property="yui:type">String|Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section content</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setTitle">
+                                    <h4>
+                                        <a name="method_setTitle">setTitle</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setTitle</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                                        , 
+                                                         title
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Sets the contents of the specified section title.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">title</span>
+                                                        &lt;<span property="yui:type">String|Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the title content</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_toggleSection">
+                                    <h4>
+                                        <a name="method_toggleSection">toggleSection</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">toggleSection</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Show/hide the section content.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+                        <div class="section method details">
+                            <h3 id="events">Events</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:event" resource="#event_beforeClose">
+                                    <h4>
+                                        <a name="event_beforeClose">beforeClose</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">beforeClose</strong>
+
+                                            (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires before a section is closed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">index</span>
+                                                                &lt;<span property="yui:type">int</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_beforeInsert">
+                                    <h4>
+                                        <a name="event_beforeInsert">beforeInsert</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">beforeInsert</strong>
+
+                                            (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires before a section is inserted.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">index</span>
+                                                                &lt;<span property="yui:type">int</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  the insertion index</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_beforeOpen">
+                                    <h4>
+                                        <a name="event_beforeOpen">beforeOpen</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">beforeOpen</strong>
+
+                                            (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires before a section is opened.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">index</span>
+                                                                &lt;<span property="yui:type">int</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_beforeRemove">
+                                    <h4>
+                                        <a name="event_beforeRemove">beforeRemove</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">beforeRemove</strong>
+
+                                            (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires before a section is removed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">index</span>
+                                                                &lt;<span property="yui:type">int</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_close">
+                                    <h4>
+                                        <a name="event_close">close</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">close</strong>
+
+                                            (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires after a section is closed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">index</span>
+                                                                &lt;<span property="yui:type">int</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_insert">
+                                    <h4>
+                                        <a name="event_insert">insert</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">insert</strong>
+
+                                            (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                                        , 
+                                                         size
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires after a section is inserted.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">index</span>
+                                                                &lt;<span property="yui:type">int</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  the insertion index</span>
+                                                        </dd>
+                                                        
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">size</span>
+                                                                &lt;<span property="yui:type">int</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  the final size of the section title, after animation (if any)</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_open">
+                                    <h4>
+                                        <a name="event_open">open</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">open</strong>
+
+                                            (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires after a section is opened.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">index</span>
+                                                                &lt;<span property="yui:type">int</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_remove">
+                                    <h4>
+                                        <a name="event_remove">remove</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">remove</strong>
+
+                                            (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires after a section is removed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">index</span>
+                                                                &lt;<span property="yui:type">int</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  the section index</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+                        <div class="section field details">
+                            <h3 id="configattributes">Configuration Attributes</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:attribute" resource="#config_allowAllClosed">
+                                    <h4><a name="config_allowAllClosed">allowAllClosed</a>
+                                        <code>- <span property="yui:type">{boolean}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to allow all sections to be closed at the same time.
+If not, at least one section will always be open.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: false
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_allowMultipleOpen">
+                                    <h4><a name="config_allowMultipleOpen">allowMultipleOpen</a>
+                                        <code>- <span property="yui:type">{boolean}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to allow multiple sections to be open at the same
+time.  If not, at most one section at a time will be open.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: false
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_animateDuration">
+                                    <h4><a name="config_animateDuration">animateDuration</a>
+                                        <code>- <span property="yui:type">{int}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Duration of all animations.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: whatever Y.Anim default is
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_animateEasing">
+                                    <h4><a name="config_animateEasing">animateEasing</a>
+                                        <code>- <span property="yui:type">{function}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Easing applied to all animations.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: whatever Y.Anim default is
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_animateInsertRemove">
+                                    <h4><a name="config_animateInsertRemove">animateInsertRemove</a>
+                                        <code>- <span property="yui:type">{boolean}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to animate insertion and removal of sections.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: true
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_animateOpenClose">
+                                    <h4><a name="config_animateOpenClose">animateOpenClose</a>
+                                        <code>- <span property="yui:type">{boolean}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to animate opening and closing of sections.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: true
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_animateRender">
+                                    <h4><a name="config_animateRender">animateRender</a>
+                                        <code>- <span property="yui:type">{boolean}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to animate the initial rendering of the widget.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: false
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_horizontal">
+                                    <h4><a name="config_horizontal">horizontal</a>
+                                        <code>- writeonce <span property="yui:type">{boolean}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not the accordion is horizontal.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: false
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_replaceSectionContainer">
+                                    <h4><a name="config_replaceSectionContainer">replaceSectionContainer</a>
+                                        <code>- <span property="yui:type">{boolean}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to replace the default section container node, when
+the supplied title is a node.  (If the supplied content is markup,
+it is always inserted inside the default section container.)
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: true
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_replaceTitleContainer">
+                                    <h4><a name="config_replaceTitleContainer">replaceTitleContainer</a>
+                                        <code>- <span property="yui:type">{boolean}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Whether or not to replace the default title container node, when the
+supplied title is a node.  (If the supplied title is markup, it is
+always inserted inside the default title container.)
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: true
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_sections">
+                                    <h4><a name="config_sections">sections</a>
+                                        <code>- writeonce <span property="yui:type">{String|Array}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            A CSS selector for locating nodes, an array of nodes, or an array
+of strings containing markup.  This is used to define the initial
+set of section contents.
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_titles">
+                                    <h4><a name="config_titles">titles</a>
+                                        <code>- writeonce <span property="yui:type">{String|Array}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            A CSS selector for locating nodes, an array of nodes, or an array
+of strings containing markup.  This is used to define the initial
+set of section titles.
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+
+                            </div>
+                        </div>
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="Accordion.html" title="Accordion">Accordion</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="Accordion.js.html" title="Accordion.js">Accordion.js</a></li>
+                        </ul>
+                    </div>
+
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class="protected"><a href="#method__getClip" title="_getClip">_getClip</a></li>
+                                <li class=""><a href="#method_allSectionsClosed" title="allSectionsClosed">allSectionsClosed</a></li>
+                                <li class=""><a href="#method_allSectionsOpen" title="allSectionsOpen">allSectionsOpen</a></li>
+                                <li class=""><a href="#method_appendSection" title="appendSection">appendSection</a></li>
+                                <li class=""><a href="#method_closeAllSections" title="closeAllSections">closeAllSections</a></li>
+                                <li class=""><a href="#method_closeSection" title="closeSection">closeSection</a></li>
+                                <li class=""><a href="#method_findSection" title="findSection">findSection</a></li>
+                                <li class=""><a href="#method_getSection" title="getSection">getSection</a></li>
+                                <li class=""><a href="#method_getSectionCount" title="getSectionCount">getSectionCount</a></li>
+                                <li class=""><a href="#method_getTitle" title="getTitle">getTitle</a></li>
+                                <li class=""><a href="#method_insertSection" title="insertSection">insertSection</a></li>
+                                <li class=""><a href="#method_isSectionOpen" title="isSectionOpen">isSectionOpen</a></li>
+                                <li class=""><a href="#method_openAllSections" title="openAllSections">openAllSections</a></li>
+                                <li class=""><a href="#method_openSection" title="openSection">openSection</a></li>
+                                <li class=""><a href="#method_prependSection" title="prependSection">prependSection</a></li>
+                                <li class=""><a href="#method_removeSection" title="removeSection">removeSection</a></li>
+                                <li class=""><a href="#method_setSection" title="setSection">setSection</a></li>
+                                <li class=""><a href="#method_setTitle" title="setTitle">setTitle</a></li>
+                                <li class=""><a href="#method_toggleSection" title="toggleSection">toggleSection</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="eventsList" class="module">
+                        <h4>Events</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#event_beforeClose" title="beforeClose">beforeClose</a></li>
+                                <li class=""><a href="#event_beforeInsert" title="beforeInsert">beforeInsert</a></li>
+                                <li class=""><a href="#event_beforeOpen" title="beforeOpen">beforeOpen</a></li>
+                                <li class=""><a href="#event_beforeRemove" title="beforeRemove">beforeRemove</a></li>
+                                <li class=""><a href="#event_close" title="close">close</a></li>
+                                <li class=""><a href="#event_insert" title="insert">insert</a></li>
+                                <li class=""><a href="#event_open" title="open">open</a></li>
+                                <li class=""><a href="#event_remove" title="remove">remove</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="configList" class="module">
+                        <h4>Configuration Attributes</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#config_allowAllClosed" title="allowAllClosed">allowAllClosed</a></li>
+                                <li class=""><a href="#config_allowMultipleOpen" title="allowMultipleOpen">allowMultipleOpen</a></li>
+                                <li class=""><a href="#config_animateDuration" title="animateDuration">animateDuration</a></li>
+                                <li class=""><a href="#config_animateEasing" title="animateEasing">animateEasing</a></li>
+                                <li class=""><a href="#config_animateInsertRemove" title="animateInsertRemove">animateInsertRemove</a></li>
+                                <li class=""><a href="#config_animateOpenClose" title="animateOpenClose">animateOpenClose</a></li>
+                                <li class=""><a href="#config_animateRender" title="animateRender">animateRender</a></li>
+                                <li class=""><a href="#config_horizontal" title="horizontal">horizontal</a></li>
+                                <li class=""><a href="#config_replaceSectionContainer" title="replaceSectionContainer">replaceSectionContainer</a></li>
+                                <li class=""><a href="#config_replaceTitleContainer" title="replaceTitleContainer">replaceTitleContainer</a></li>
+                                <li class=""><a href="#config_sections" title="sections">sections</a></li>
+                                <li class=""><a href="#config_titles" title="titles">titles</a></li>
+                        </ul>
+                    </div>
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    var ALL_YUI_PROPS = [{"url": "Accordion.html#config_allowAllClosed", "access": "", "host": "Accordion", "type": "config", "name": "allowAllClosed"}, {"url": "Accordion.html#config_allowMultipleOpen", "access": "", "host": "Accordion", "type": "config", "name": "allowMultipleOpen"}, {"url": "Accordion.html#method_allSectionsClosed", "access": "", "host": "Accordion", "type": "method", "name": "allSectionsClosed"}, {"url": "Accordion.html#method_allSectionsOpen", "access": "", "host": "Accordion", "type": "method", "name": "allSectionsOpen"}, {"url": "Accordion.html#config_animateDuration", "access": "", "host": "Accordion", "type": "config", "name": "animateDuration"}, {"url": "Accordion.html#config_animateEasing", "access": "", "host": "Accordion", "type": "config", "name": "animateEasing"}, {"url": "Accordion.html#config_animateInsertRemove", "access": "", "host": "Accordion", "type": "config", "name": "animateInsertRemove"}, {"url": "Accordion.html#config_animateOpenClose", "access": "", "host": "Accordion", "type": "config", "name": "animateOpenClose"}, {"url": "Accordion.html#config_animateRender", "access": "", "host": "Accordion", "type": "config", "name": "animateRender"}, {"url": "Accordion.html#method_appendSection", "access": "", "host": "Accordion", "type": "method", "name": "appendSection"}, {"url": "Accordion.html#event_beforeClose", "access": "", "host": "Accordion", "type": "event", "name": "beforeClose"}, {"url": "Accordion.html#event_beforeInsert", "access": "", "host": "Accordion", "type": "event", "name": "beforeInsert"}, {"url": "Accordion.html#event_beforeOpen", "access": "", "host": "Accordion", "type": "event", "name": "beforeOpen"}, {"url": "Accordion.html#event_beforeRemove", "access": "", "host": "Accordion", "type": "event", "name": "beforeRemove"}, {"url": "Accordion.html#event_close", "access": "", "host": "Accordion", "type": "event", "name": "close"}, {"url": "Accordion.html#method_closeAllSections", "access": "", "host": "Accordion", "type": "method", "name": "closeAllSections"}, {"url": "Accordion.html#method_closeSection", "access": "", "host": "Accordion", "type": "method", "name": "closeSection"}, {"url": "Accordion.html#method_findSection", "access": "", "host": "Accordion", "type": "method", "name": "findSection"}, {"url": "Accordion.html#method__getClip", "access": "protected", "host": "Accordion", "type": "method", "name": "_getClip"}, {"url": "Accordion.html#method_getSection", "access": "", "host": "Accordion", "type": "method", "name": "getSection"}, {"url": "Accordion.html#method_getSectionCount", "access": "", "host": "Accordion", "type": "method", "name": "getSectionCount"}, {"url": "Accordion.html#method_getTitle", "access": "", "host": "Accordion", "type": "method", "name": "getTitle"}, {"url": "Accordion.html#config_horizontal", "access": "", "host": "Accordion", "type": "config", "name": "horizontal"}, {"url": "Accordion.html#event_insert", "access": "", "host": "Accordion", "type": "event", "name": "insert"}, {"url": "Accordion.html#method_insertSection", "access": "", "host": "Accordion", "type": "method", "name": "insertSection"}, {"url": "Accordion.html#method_isSectionOpen", "access": "", "host": "Accordion", "type": "method", "name": "isSectionOpen"}, {"url": "Accordion.html#event_open", "access": "", "host": "Accordion", "type": "event", "name": "open"}, {"url": "Accordion.html#method_openAllSections", "access": "", "host": "Accordion", "type": "method", "name": "openAllSections"}, {"url": "Accordion.html#method_openSection", "access": "", "host": "Accordion", "type": "method", "name": "openSection"}, {"url": "Accordion.html#method_prependSection", "access": "", "host": "Accordion", "type": "method", "name": "prependSection"}, {"url": "Accordion.html#event_remove", "access": "", "host": "Accordion", "type": "event", "name": "remove"}, {"url": "Accordion.html#method_removeSection", "access": "", "host": "Accordion", "type": "method", "name": "removeSection"}, {"url": "Accordion.html#config_replaceSectionContainer", "access": "", "host": "Accordion", "type": "config", "name": "replaceSectionContainer"}, {"url": "Accordion.html#config_replaceTitleContainer", "access": "", "host": "Accordion", "type": "config", "name": "replaceTitleContainer"}, {"url": "Accordion.html#config_sections", "access": "", "host": "Accordion", "type": "config", "name": "sections"}, {"url": "Accordion.html#method_setSection", "access": "", "host": "Accordion", "type": "method", "name": "setSection"}, {"url": "Accordion.html#method_setTitle", "access": "", "host": "Accordion", "type": "method", "name": "setTitle"}, {"url": "Accordion.html#config_titles", "access": "", "host": "Accordion", "type": "config", "name": "titles"}, {"url": "Accordion.html#method_toggleSection", "access": "", "host": "Accordion", "type": "method", "name": "toggleSection"}];
+    YAHOO.yuidoc.init();
+</script>
+</body>
+</html>
