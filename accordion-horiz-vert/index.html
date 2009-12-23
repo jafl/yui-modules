@@ -90,7 +90,7 @@ function(Y)
 {
 	new Y.Console(
 	{
-		plugins: [ Y.Plugin.Drag, Y.Plugin.ConsoleFilters ]
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui-console-hd']}}, Y.Plugin.ConsoleFilters ]
 	})
 	.render().collapse();
 
