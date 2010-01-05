@@ -1,0 +1,1159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-accordion-horiz-vert   Accordion.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-accordion-horiz-vert&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a>
+                
+                 &gt; Accordion.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">use_nonzero_empty_div</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">),</span>
+	<span class="nx">section_min_size</span> <span class="o">=</span> <span class="p">(</span><span class="nx">use_nonzero_empty_div</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Class to manage an accordion, either horizontally or vertically.</span>
+<span class="cm"> * Allows either multiple open sections or only a single open section.</span>
+<span class="cm"> * Provides option to always force at lease one item to be open.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;An accordion can be constructed from existing markup or from strings</span>
+<span class="cm"> * containing HTML.  Existing markup can be provided either by setting</span>
+<span class="cm"> * &lt;code&gt;contentBox&lt;/code&gt; or by specifying CSS selectors.  See the</span>
+<span class="cm"> * &lt;code&gt;titles&lt;/code&gt; and &lt;code&gt;sections&lt;/code&gt; attributes.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;When constructing from existing markup via &lt;code&gt;contentBox&lt;/code&gt;,</span>
+<span class="cm"> * use an unordered list (&amp;lt;ul&amp;gt;).  Each item must contain two</span>
+<span class="cm"> * &amp;lt;div&amp;gt;&#39;s.  The first one is used as the section title, and the</span>
+<span class="cm"> * second one is used as the section content.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;Animation is optional.  If the anim module is not available,</span>
+<span class="cm"> * animation is automatically turned off.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * &lt;p&gt;When using a horizontal accordion:&lt;/p&gt;</span>
+<span class="cm"> * &lt;ul&gt;</span>
+<span class="cm"> * &lt;li&gt;The widget&#39;s container must have a height.&lt;/li&gt;</span>
+<span class="cm"> * &lt;li&gt;Each title must have both a width and height.&lt;/li&gt;</span>
+<span class="cm"> * &lt;li&gt;Each section must have a width.&lt;/li&gt;</span>
+<span class="cm"> * &lt;/ul&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;IE doesn&#39;t accept zero height divs, so we use 1px height and zero</span>
+<span class="cm"> * opacity.  IE6 doesn&#39;t always render correctly with opacity set, so if</span>
+<span class="cm"> * animation is turned off, we don&#39;t use opacity at all.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-accordion-horiz-vert</span>
+<span class="cm"> * @class Accordion</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object} Widget configuration</span>
+<span class="cm"> */</span>
+
+<span class="kd">function</span> <span class="nx">Accordion</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>	<span class="c1">// derived class prototype</span>
+	<span class="p">{</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="nx">config</span>          <span class="o">=</span> <span class="nx">config</span> <span class="o">||</span> <span class="p">{};</span>
+	<span class="nx">config</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+	<span class="nx">Accordion</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">initAnimationFlag</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">filterAnimationFlag</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nx">Accordion</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;accordion&quot;</span><span class="p">;</span>
+
+<span class="nx">Accordion</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Whether or not the accordion is horizontal.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config horizontal</span>
+<span class="cm">	 * @type {boolean}</span>
+<span class="cm">	 * @default false</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
+	<span class="nx">horizontal</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">false</span><span class="p">,</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * A CSS selector for locating nodes, an array of nodes, or an array</span>
+<span class="cm">	 * of strings containing markup.  This is used to define the initial</span>
+<span class="cm">	 * set of section titles.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config titles</span>
+<span class="cm">	 * @type {String|Array}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
+	<span class="nx">titles</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Whether or not to replace the default title container node, when the</span>
+<span class="cm">	 * supplied title is a node.  (If the supplied title is markup, it is</span>
+<span class="cm">	 * always inserted inside the default title container.)</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config replaceTitleContainer</span>
+<span class="cm">	 * @type {boolean}</span>
+<span class="cm">	 * @default true</span>
+<span class="cm">	 */</span>
+	<span class="nx">replaceTitleContainer</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">true</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * A CSS selector for locating nodes, an array of nodes, or an array</span>
+<span class="cm">	 * of strings containing markup.  This is used to define the initial</span>
+<span class="cm">	 * set of section contents.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config sections</span>
+<span class="cm">	 * @type {String|Array}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
+	<span class="nx">sections</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Whether or not to replace the default section container node, when</span>
+<span class="cm">	 * the supplied title is a node.  (If the supplied content is markup,</span>
+<span class="cm">	 * it is always inserted inside the default section container.)</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config replaceSectionContainer</span>
+<span class="cm">	 * @type {boolean}</span>
+<span class="cm">	 * @default true</span>
+<span class="cm">	 */</span>
+	<span class="nx">replaceSectionContainer</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">true</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Whether or not to allow all sections to be closed at the same time.</span>
+<span class="cm">	 * If not, at least one section will always be open.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config allowAllClosed</span>
+<span class="cm">	 * @type {boolean}</span>
+<span class="cm">	 * @default false</span>
+<span class="cm">	 */</span>
+	<span class="nx">allowAllClosed</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">false</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span><span class="p">,</span>
+		<span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="c1">// save internally so it can be modified without recursion</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">allow_all_closed</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Whether or not to allow multiple sections to be open at the same</span>
+<span class="cm">	 * time.  If not, at most one section at a time will be open.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config allowMultipleOpen</span>
+<span class="cm">	 * @type {boolean}</span>
+<span class="cm">	 * @default false</span>
+<span class="cm">	 */</span>
+	<span class="nx">allowMultipleOpen</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">false</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Whether or not to animate the initial rendering of the widget.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config animateRender</span>
+<span class="cm">	 * @type {boolean}</span>
+<span class="cm">	 * @default false</span>
+<span class="cm">	 */</span>
+	<span class="nx">animateRender</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">false</span><span class="p">,</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span><span class="p">,</span>
+		<span class="nx">setter</span><span class="o">:</span>    <span class="nx">filterAnimationFlag</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Whether or not to animate insertion and removal of sections.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config animateInsertRemove</span>
+<span class="cm">	 * @type {boolean}</span>
+<span class="cm">	 * @default true</span>
+<span class="cm">	 */</span>
+	<span class="nx">animateInsertRemove</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">valueFn</span><span class="o">:</span>   <span class="nx">initAnimationFlag</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span><span class="p">,</span>
+		<span class="nx">setter</span><span class="o">:</span>    <span class="nx">filterAnimationFlag</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Whether or not to animate opening and closing of sections.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config animateOpenClose</span>
+<span class="cm">	 * @type {boolean}</span>
+<span class="cm">	 * @default true</span>
+<span class="cm">	 */</span>
+	<span class="nx">animateOpenClose</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">valueFn</span><span class="o">:</span>   <span class="nx">initAnimationFlag</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span><span class="p">,</span>
+		<span class="nx">setter</span><span class="o">:</span>    <span class="nx">filterAnimationFlag</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Duration of all animations.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config animateDuration</span>
+<span class="cm">	 * @type {int}</span>
+<span class="cm">	 * @default whatever Y.Anim default is</span>
+<span class="cm">	 */</span>
+	<span class="nx">animateDuration</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">null</span><span class="p">,</span>		<span class="c1">// accept Y.Anim default</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">value</span><span class="p">));</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Easing applied to all animations.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config animateEasing</span>
+<span class="cm">	 * @type {function}</span>
+<span class="cm">	 * @default whatever Y.Anim default is</span>
+<span class="cm">	 */</span>
+	<span class="nx">animateEasing</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">null</span><span class="p">,</span>		<span class="c1">// accept Y.Anim default</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">value</span><span class="p">));</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Accordion</span><span class="p">.</span><span class="nx">HTML_PARSER</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="nx">titles</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">content_box</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">content_box</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;li div:nth-child(1)&#39;</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="nx">sections</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">content_box</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">content_box</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;li div:nth-child(2)&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @event beforeInsert</span>
+<span class="cm"> * @description Fires before a section is inserted.</span>
+<span class="cm"> * @param index {int} the insertion index</span>
+<span class="cm"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * @event insert</span>
+<span class="cm"> * @description Fires after a section is inserted.</span>
+<span class="cm"> * @param index {int} the insertion index</span>
+<span class="cm"> * @param size {int} the final size of the section title, after animation (if any)</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @event beforeRemove</span>
+<span class="cm"> * @description Fires before a section is removed.</span>
+<span class="cm"> * @param index {int} the section index</span>
+<span class="cm"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * @event remove</span>
+<span class="cm"> * @description Fires after a section is removed.</span>
+<span class="cm"> * @param index {int} the section index</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @event beforeOpen</span>
+<span class="cm"> * @description Fires before a section is opened.</span>
+<span class="cm"> * @param index {int} the section index</span>
+<span class="cm"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * @event open</span>
+<span class="cm"> * @description Fires after a section is opened.</span>
+<span class="cm"> * @param index {int} the section index</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @event beforeClose</span>
+<span class="cm"> * @description Fires before a section is closed.</span>
+<span class="cm"> * @param index {int} the section index</span>
+<span class="cm"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * @event close</span>
+<span class="cm"> * @description Fires after a section is closed.</span>
+<span class="cm"> * @param index {int} the section index</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">open_class</span>   <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">Accordion</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;open&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">closed_class</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">Accordion</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;closed&#39;</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">cleanContainer</span><span class="p">(</span>
+	<span class="cm">/* Node */</span>	<span class="nx">el</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">purgeElement</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+	<span class="k">while</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">hasChildNodes</span><span class="p">())</span>
+	<span class="p">{</span>
+		<span class="nx">el</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">lastChild</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Accordion</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="p">,</span>
+<span class="p">{</span>
+	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span> <span class="o">=</span> <span class="p">[];</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;horizontal&#39;</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span> <span class="o">=</span> <span class="s1">&#39;width&#39;</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">slide_size_name</span>  <span class="o">=</span> <span class="s1">&#39;offsetWidth&#39;</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fixed_style_name</span> <span class="o">=</span> <span class="s1">&#39;height&#39;</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fixed_size_name</span>  <span class="o">=</span> <span class="s1">&#39;offsetHeight&#39;</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span>	<span class="c1">// vertical</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span> <span class="o">=</span> <span class="s1">&#39;height&#39;</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">slide_size_name</span>  <span class="o">=</span> <span class="s1">&#39;offsetHeight&#39;</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fixed_style_name</span> <span class="o">=</span> <span class="s1">&#39;width&#39;</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fixed_size_name</span>  <span class="o">=</span> <span class="s1">&#39;offsetWidth&#39;</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;allowMultipleOpenChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+				<span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">closeAllSections</span><span class="p">();</span>
+			<span class="p">}</span>
+		<span class="p">});</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;allowAllClosedChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+				<span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">allSectionsClosed</span><span class="p">())</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">toggleSection</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">});</span>
+	<span class="p">},</span>
+
+	<span class="nx">renderUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;boundingBox&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;horizontal&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;horiz&#39;</span> <span class="o">:</span> <span class="s1">&#39;vert&#39;</span><span class="p">));</span>
+
+		<span class="kd">var</span> <span class="nx">titles</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;titles&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">titles</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">titles</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">titles</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">sections</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;sections&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">sections</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">sections</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">sections</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">titles</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">NodeList</span> <span class="o">&amp;&amp;</span> <span class="nx">sections</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">NodeList</span> <span class="o">&amp;&amp;</span>
+			<span class="nx">titles</span><span class="p">.</span><span class="nx">size</span><span class="p">()</span> <span class="o">==</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">size</span><span class="p">())</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">save_animate_insert</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateInsertRemove&#39;</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;animateInsertRemove&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateRender&#39;</span><span class="p">));</span>
+
+			<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">appendSection</span><span class="p">(</span><span class="nx">titles</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">),</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
+			<span class="p">}</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;animateInsertRemove&#39;</span><span class="p">,</span> <span class="nx">save_animate_insert</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">titles</span> <span class="k">instanceof</span> <span class="nb">Array</span> <span class="o">&amp;&amp;</span> <span class="nx">sections</span> <span class="k">instanceof</span> <span class="nb">Array</span> <span class="o">&amp;&amp;</span>
+				 <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="nx">sections</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">save_animate_insert</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateInsertRemove&#39;</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;animateInsertRemove&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateRender&#39;</span><span class="p">));</span>
+
+			<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">titles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">appendSection</span><span class="p">(</span><span class="nx">titles</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">sections</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+			<span class="p">}</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;animateInsertRemove&#39;</span><span class="p">,</span> <span class="nx">save_animate_insert</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;ignoring titles &amp; sections&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;Accordion&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {int} total number of sections</span>
+<span class="cm">	 */</span>
+	<span class="nx">getSectionCount</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param index {int} the section index</span>
+<span class="cm">	 * @return {Node} the container for the section title</span>
+<span class="cm">	 */</span>
+	<span class="nx">getTitle</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">title</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Sets the contents of the specified section title.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {int} the section index</span>
+<span class="cm">	 * @param title {String|Node} the title content</span>
+<span class="cm">	 */</span>
+	<span class="nx">setTitle</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>			<span class="nx">index</span><span class="p">,</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">title</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">title</span><span class="p">;</span>
+		<span class="nx">cleanContainer</span><span class="p">(</span><span class="nx">t</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">el</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">title</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">t</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">title</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="nx">el</span> <span class="o">=</span> <span class="nx">title</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">el</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;replaceTitleContainer&#39;</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">);</span>
+			<span class="nx">p</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">t</span><span class="p">);</span>
+			<span class="nx">p</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">title</span> <span class="o">=</span> <span class="nx">el</span><span class="p">;</span>
+
+			<span class="nx">el</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">));</span>
+			<span class="nx">el</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">?</span> <span class="nx">open_class</span> <span class="o">:</span> <span class="nx">closed_class</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">t</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">use_nonzero_empty_div</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">t</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="nx">t</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param index {int} the section index</span>
+<span class="cm">	 * @return {Node} the container for the section content</span>
+<span class="cm">	 */</span>
+	<span class="nx">getSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Sets the contents of the specified section.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {int} the section index</span>
+<span class="cm">	 * @param content {String|Node} the section content</span>
+<span class="cm">	 */</span>
+	<span class="nx">setSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>			<span class="nx">index</span><span class="p">,</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">content</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span><span class="p">;</span>
+		<span class="nx">cleanContainer</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">el</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">content</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">el</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">d</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">content</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="nx">el</span> <span class="o">=</span> <span class="nx">content</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">el</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;replaceSectionContainer&#39;</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">);</span>
+			<span class="nx">p</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+			<span class="nx">p</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span> <span class="o">=</span> <span class="nx">el</span><span class="p">;</span>
+
+			<span class="nx">el</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">));</span>
+			<span class="nx">el</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">?</span> <span class="nx">open_class</span> <span class="o">:</span> <span class="nx">closed_class</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">d</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 * @param index {int} the section index</span>
+<span class="cm">	 * @return {Node} the clipping container for the section content</span>
+<span class="cm">	 */</span>
+	<span class="nx">_getClip</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">clip</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Prepends the section to the accordion.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param title {String|Node} the section title content</span>
+<span class="cm">	 * @param content {String|Node} the section content</span>
+<span class="cm">	 */</span>
+	<span class="nx">prependSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">title</span><span class="p">,</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">content</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">insertSection</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">title</span><span class="p">,</span> <span class="nx">content</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Appends the section to the accordion.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param title {String|Node} the section title content</span>
+<span class="cm">	 * @param content {String|Node} the section content</span>
+<span class="cm">	 */</span>
+	<span class="nx">appendSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">title</span><span class="p">,</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">content</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">insertSection</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="nx">title</span><span class="p">,</span> <span class="nx">content</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Inserts the section into the accordion at the specified location.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {int} the insertion index</span>
+<span class="cm">	 * @param title {String|Node} the section title content</span>
+<span class="cm">	 * @param content {String|Node} the section content</span>
+<span class="cm">	 */</span>
+	<span class="nx">insertSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>			<span class="nx">index</span><span class="p">,</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">title</span><span class="p">,</span>
+		<span class="cm">/* string/object */</span> <span class="nx">content</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeInsert&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+
+		<span class="c1">// create title</span>
+
+		<span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">));</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">));</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">closed_class</span><span class="p">);</span>
+
+		<span class="c1">// create content clipping</span>
+
+		<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">));</span>
+		<span class="nx">c</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;content-clip&#39;</span><span class="p">));</span>
+		<span class="nx">c</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span><span class="p">,</span> <span class="nx">section_min_size</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateOpenClose&#39;</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">c</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;opacity&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="c1">// create content</span>
+
+		<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">));</span>
+		<span class="nx">d</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">));</span>
+		<span class="nx">d</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">closed_class</span><span class="p">);</span>
+		<span class="nx">c</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
+
+		<span class="c1">// save in our list</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+		<span class="p">{</span>
+			<span class="nx">title</span><span class="o">:</span>   <span class="nx">t</span><span class="p">,</span>
+			<span class="nx">clip</span><span class="o">:</span>    <span class="nx">c</span><span class="p">,</span>
+			<span class="nx">content</span><span class="o">:</span> <span class="nx">d</span><span class="p">,</span>
+			<span class="nx">open</span><span class="o">:</span>    <span class="kc">false</span><span class="p">,</span>
+			<span class="nx">anim</span><span class="o">:</span>    <span class="kc">null</span>
+		<span class="p">});</span>
+
+		<span class="c1">// insert and show title</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="nx">title</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">t</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">setTitle</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">title</span><span class="p">);</span>
+		<span class="nx">t</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">title</span><span class="p">;</span>
+
+		<span class="kd">var</span> <span class="nx">size</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">slide_size_name</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateInsertRemove&#39;</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">t</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span><span class="p">,</span> <span class="nx">section_min_size</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+
+			<span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span>
+			<span class="p">{</span>
+				<span class="nx">node</span><span class="o">:</span> <span class="nx">t</span><span class="p">,</span>
+				<span class="nx">from</span><span class="o">:</span>
+				<span class="p">{</span>
+					<span class="nx">opacity</span><span class="o">:</span> <span class="mi">0</span>
+				<span class="p">},</span>
+				<span class="nx">to</span><span class="o">:</span>
+				<span class="p">{</span>
+					<span class="nx">opacity</span><span class="o">:</span> <span class="mi">1</span>
+				<span class="p">}</span>
+			<span class="p">};</span>
+
+			<span class="nx">params</span><span class="p">.</span><span class="nx">to</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">size</span><span class="p">;</span>
+
+			<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_createAnimator</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
+
+			<span class="nx">anim</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
+			<span class="p">{</span>	
+				<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">title</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+			<span class="p">},</span>
+			<span class="k">this</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+
+			<span class="nx">anim</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+		<span class="p">}</span>
+
+		<span class="c1">// insert content container</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">content</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">setSection</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">content</span><span class="p">);</span>
+			<span class="nx">d</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="o">+</span><span class="mi">1</span><span class="p">].</span><span class="nx">title</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="c1">// post processing</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;insert&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">size</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">allow_all_closed</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">allSectionsClosed</span><span class="p">())</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">toggleSection</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="c1">// return containers for futher manipulation</span>
+
+		<span class="k">return</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="nx">t</span><span class="p">,</span> <span class="nx">content</span><span class="o">:</span> <span class="nx">d</span> <span class="p">};</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Removes the specified section.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {int} the section index</span>
+<span class="cm">	 */</span>
+	<span class="nx">removeSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeRemove&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+
+		<span class="kd">function</span> <span class="nx">onCompleteRemoveSection</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+			<span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">onCompleteArgs</span> <span class="o">=</span>
+		<span class="p">[</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">),</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">title</span><span class="p">,</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">clip</span>
+		<span class="p">];</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateInsertRemove&#39;</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span>
+			<span class="p">{</span>
+				<span class="nx">node</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">clip</span><span class="p">,</span>
+				<span class="nx">from</span><span class="o">:</span>
+				<span class="p">{</span>
+					<span class="nx">opacity</span><span class="o">:</span> <span class="mi">1</span>
+				<span class="p">},</span>
+				<span class="nx">to</span><span class="o">:</span>
+				<span class="p">{</span>
+					<span class="nx">opacity</span><span class="o">:</span> <span class="mi">0</span>
+				<span class="p">}</span>
+			<span class="p">};</span>
+
+			<span class="nx">params</span><span class="p">.</span><span class="nx">to</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">section_min_size</span><span class="p">;</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_startAnimator</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">params</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="nx">params</span><span class="p">.</span><span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">title</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">anim</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_createAnimator</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
+			<span class="nx">anim</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="nx">onCompleteRemoveSection</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">onCompleteArgs</span><span class="p">);</span>
+			<span class="nx">anim</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="nx">onCompleteRemoveSection</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">onCompleteArgs</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">allow_all_closed</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">allSectionsClosed</span><span class="p">())</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">toggleSection</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;remove&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param {String|Node} any element inside the section or title</span>
+<span class="cm">	 * @return {int|null} the index of the containing section or &lt;code&gt;false&lt;/code&gt; if not found</span>
+<span class="cm">	 */</span>
+	<span class="nx">findSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string|element */</span>	<span class="nx">el</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">el</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">el</span><span class="p">));</span>
+
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">title</span>   <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">title</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">content</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">el</span> <span class="o">==</span> <span class="nx">title</span>   <span class="o">||</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="nx">el</span><span class="p">)</span> <span class="o">||</span>
+				<span class="nx">el</span> <span class="o">==</span> <span class="nx">content</span> <span class="o">||</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="nx">el</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if the section is open</span>
+<span class="cm">	 */</span>
+	<span class="nx">isSectionOpen</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Open the specified section.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {int} the section index</span>
+<span class="cm">	 */</span>
+	<span class="nx">openSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">toggleSection</span><span class="p">(</span><span class="nx">index</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Close the specified section.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {int} the section index</span>
+<span class="cm">	 */</span>
+	<span class="nx">closeSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">toggleSection</span><span class="p">(</span><span class="nx">index</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if all sections are open</span>
+<span class="cm">	 */</span>
+	<span class="nx">allSectionsOpen</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">open</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if all sections are closed</span>
+<span class="cm">	 */</span>
+	<span class="nx">allSectionsClosed</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">open</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Show/hide the section content.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {int} the section index</span>
+<span class="cm">	 */</span>
+	<span class="nx">toggleSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;allowMultipleOpen&#39;</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">save</span>              <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">allow_all_closed</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">allow_all_closed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">closeAllSections</span><span class="p">();</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">allow_all_closed</span> <span class="o">=</span> <span class="nx">save</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">allow_all_closed</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">allSectionsClosed</span><span class="p">())</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="k">return</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="kd">function</span> <span class="nx">onCompleteOpenSection</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">clip</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="kd">function</span> <span class="nx">onCompleteCloseSection</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeOpen&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">title</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">closed_class</span><span class="p">,</span> <span class="nx">open_class</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">closed_class</span><span class="p">,</span> <span class="nx">open_class</span><span class="p">);</span>
+
+			<span class="kd">var</span> <span class="nx">size</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">slide_size_name</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateOpenClose&#39;</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span>
+				<span class="p">{</span>
+					<span class="nx">node</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">clip</span><span class="p">,</span>
+					<span class="nx">from</span><span class="o">:</span>
+					<span class="p">{</span>
+						<span class="nx">opacity</span><span class="o">:</span> <span class="mi">0</span>
+					<span class="p">},</span>
+					<span class="nx">to</span><span class="o">:</span>
+					<span class="p">{</span>
+						<span class="nx">opacity</span><span class="o">:</span> <span class="mi">1</span>
+					<span class="p">}</span>
+				<span class="p">};</span>
+
+				<span class="nx">params</span><span class="p">.</span><span class="nx">to</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">size</span><span class="p">;</span>
+
+				<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_startAnimator</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">params</span><span class="p">);</span>
+				<span class="nx">anim</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="nx">onCompleteOpenSection</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">else</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">clip</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">clip</span><span class="p">;</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">clip</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="s1">&#39;opacity&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">clip</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;opacity&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="nx">onCompleteOpenSection</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeClose&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">title</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">open_class</span><span class="p">,</span> <span class="nx">closed_class</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">open_class</span><span class="p">,</span> <span class="nx">closed_class</span><span class="p">);</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateOpenClose&#39;</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span>
+				<span class="p">{</span>
+					<span class="nx">node</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">clip</span><span class="p">,</span>
+					<span class="nx">from</span><span class="o">:</span>
+					<span class="p">{</span>
+						<span class="nx">opacity</span><span class="o">:</span> <span class="mi">1</span>
+					<span class="p">},</span>
+					<span class="nx">to</span><span class="o">:</span>
+					<span class="p">{</span>
+						<span class="nx">opacity</span><span class="o">:</span> <span class="mi">0</span>
+					<span class="p">}</span>
+				<span class="p">};</span>
+
+				<span class="nx">params</span><span class="p">.</span><span class="nx">to</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">section_min_size</span><span class="p">;</span>
+
+				<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_startAnimator</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">params</span><span class="p">);</span>
+				<span class="nx">anim</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="nx">onCompleteCloseSection</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">else</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">clip</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span><span class="p">,</span> <span class="nx">section_min_size</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+				<span class="nx">onCompleteCloseSection</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Open all sections, if possible.</span>
+<span class="cm">	 */</span>
+	<span class="nx">openAllSections</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;allowMultipleOpen&#39;</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">open</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">toggleSection</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Close all sections, if possible.</span>
+<span class="cm">	 */</span>
+	<span class="nx">closeAllSections</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">first</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">open</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">allow_all_closed</span> <span class="o">&amp;&amp;</span> <span class="nx">first</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">first</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="k">else</span>
+				<span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">toggleSection</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">allow_all_closed</span> <span class="o">&amp;&amp;</span> <span class="nx">first</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">toggleSection</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="c1">// create an animator with our configured duration and easing</span>
+
+	<span class="nx">_createAnimator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* object */</span>	<span class="nx">params</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">duration</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateDuration&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">duration</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">params</span><span class="p">.</span><span class="nx">duration</span> <span class="o">=</span> <span class="nx">duration</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">easing</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateEasing&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">easing</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">params</span><span class="p">.</span><span class="nx">easing</span> <span class="o">=</span> <span class="nx">easing</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="c1">// Register the animator for a section and start it.</span>
+
+	<span class="nx">_startAnimator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>		<span class="nx">index</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">params</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">anim</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">anim</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">anim</span><span class="p">.</span><span class="nx">stop</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">anim</span> <span class="o">=</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_createAnimator</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
+
+		<span class="nx">anim</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">anim</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span> <span class="nx">index</span> <span class="p">].</span><span class="nx">anim</span> <span class="o">==</span> <span class="nx">anim</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span> <span class="nx">index</span> <span class="p">].</span><span class="nx">anim</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">anim</span><span class="p">);</span>
+
+		<span class="nx">anim</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+
+		<span class="k">return</span> <span class="nx">anim</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Accordion</span> <span class="o">=</span> <span class="nx">Accordion</span><span class="p">;</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Accordion.html" title="Accordion">Accordion</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="Accordion.js.html" title="Accordion.js">Accordion.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    var ALL_YUI_PROPS = [{"url": "Accordion.html#config_allowAllClosed", "access": "", "host": "Accordion", "type": "config", "name": "allowAllClosed"}, {"url": "Accordion.html#config_allowMultipleOpen", "access": "", "host": "Accordion", "type": "config", "name": "allowMultipleOpen"}, {"url": "Accordion.html#method_allSectionsClosed", "access": "", "host": "Accordion", "type": "method", "name": "allSectionsClosed"}, {"url": "Accordion.html#method_allSectionsOpen", "access": "", "host": "Accordion", "type": "method", "name": "allSectionsOpen"}, {"url": "Accordion.html#config_animateDuration", "access": "", "host": "Accordion", "type": "config", "name": "animateDuration"}, {"url": "Accordion.html#config_animateEasing", "access": "", "host": "Accordion", "type": "config", "name": "animateEasing"}, {"url": "Accordion.html#config_animateInsertRemove", "access": "", "host": "Accordion", "type": "config", "name": "animateInsertRemove"}, {"url": "Accordion.html#config_animateOpenClose", "access": "", "host": "Accordion", "type": "config", "name": "animateOpenClose"}, {"url": "Accordion.html#config_animateRender", "access": "", "host": "Accordion", "type": "config", "name": "animateRender"}, {"url": "Accordion.html#method_appendSection", "access": "", "host": "Accordion", "type": "method", "name": "appendSection"}, {"url": "Accordion.html#event_beforeClose", "access": "", "host": "Accordion", "type": "event", "name": "beforeClose"}, {"url": "Accordion.html#event_beforeInsert", "access": "", "host": "Accordion", "type": "event", "name": "beforeInsert"}, {"url": "Accordion.html#event_beforeOpen", "access": "", "host": "Accordion", "type": "event", "name": "beforeOpen"}, {"url": "Accordion.html#event_beforeRemove", "access": "", "host": "Accordion", "type": "event", "name": "beforeRemove"}, {"url": "Accordion.html#event_close", "access": "", "host": "Accordion", "type": "event", "name": "close"}, {"url": "Accordion.html#method_closeAllSections", "access": "", "host": "Accordion", "type": "method", "name": "closeAllSections"}, {"url": "Accordion.html#method_closeSection", "access": "", "host": "Accordion", "type": "method", "name": "closeSection"}, {"url": "Accordion.html#method_findSection", "access": "", "host": "Accordion", "type": "method", "name": "findSection"}, {"url": "Accordion.html#method__getClip", "access": "protected", "host": "Accordion", "type": "method", "name": "_getClip"}, {"url": "Accordion.html#method_getSection", "access": "", "host": "Accordion", "type": "method", "name": "getSection"}, {"url": "Accordion.html#method_getSectionCount", "access": "", "host": "Accordion", "type": "method", "name": "getSectionCount"}, {"url": "Accordion.html#method_getTitle", "access": "", "host": "Accordion", "type": "method", "name": "getTitle"}, {"url": "Accordion.html#config_horizontal", "access": "", "host": "Accordion", "type": "config", "name": "horizontal"}, {"url": "Accordion.html#event_insert", "access": "", "host": "Accordion", "type": "event", "name": "insert"}, {"url": "Accordion.html#method_insertSection", "access": "", "host": "Accordion", "type": "method", "name": "insertSection"}, {"url": "Accordion.html#method_isSectionOpen", "access": "", "host": "Accordion", "type": "method", "name": "isSectionOpen"}, {"url": "Accordion.html#event_open", "access": "", "host": "Accordion", "type": "event", "name": "open"}, {"url": "Accordion.html#method_openAllSections", "access": "", "host": "Accordion", "type": "method", "name": "openAllSections"}, {"url": "Accordion.html#method_openSection", "access": "", "host": "Accordion", "type": "method", "name": "openSection"}, {"url": "Accordion.html#method_prependSection", "access": "", "host": "Accordion", "type": "method", "name": "prependSection"}, {"url": "Accordion.html#event_remove", "access": "", "host": "Accordion", "type": "event", "name": "remove"}, {"url": "Accordion.html#method_removeSection", "access": "", "host": "Accordion", "type": "method", "name": "removeSection"}, {"url": "Accordion.html#config_replaceSectionContainer", "access": "", "host": "Accordion", "type": "config", "name": "replaceSectionContainer"}, {"url": "Accordion.html#config_replaceTitleContainer", "access": "", "host": "Accordion", "type": "config", "name": "replaceTitleContainer"}, {"url": "Accordion.html#config_sections", "access": "", "host": "Accordion", "type": "config", "name": "sections"}, {"url": "Accordion.html#method_setSection", "access": "", "host": "Accordion", "type": "method", "name": "setSection"}, {"url": "Accordion.html#method_setTitle", "access": "", "host": "Accordion", "type": "method", "name": "setTitle"}, {"url": "Accordion.html#config_titles", "access": "", "host": "Accordion", "type": "config", "name": "titles"}, {"url": "Accordion.html#method_toggleSection", "access": "", "host": "Accordion", "type": "method", "name": "toggleSection"}];
+    YAHOO.yuidoc.init();
+</script>
+</body>
+</html>
