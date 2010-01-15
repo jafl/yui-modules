@@ -1,6 +1,7 @@
 "use strict";
 
 var use_nonzero_empty_div = (0 < Y.UA.ie && Y.UA.ie < 8),
+	browser_can_animate = !(0 < Y.UA.ie && Y.UA.ie < 8),
 	section_min_size = (use_nonzero_empty_div ? 1 : 0);
 
 /**********************************************************************
@@ -50,6 +51,10 @@ function Accordion(config)
 	{
 		config.tabIndex = null;
 	}
+	if (Y.Lang.isUndefined(config.horizontal))
+	{
+		config.horizontal = false;
+	}
 
 	Accordion.superclass.constructor.call(this, config);
 }
@@ -61,7 +66,7 @@ function initAnimationFlag()
 
 function filterAnimationFlag(value)
 {
-	return (value && !Y.Lang.isUndefined(Y.Anim));
+	return (value && browser_can_animate && !Y.Lang.isUndefined(Y.Anim));
 }
 
 Accordion.NAME = "accordion";
@@ -476,7 +481,7 @@ Y.extend(Accordion, Y.Widget,
 
 		if (use_nonzero_empty_div)
 		{
-			t.setStyle('display', t.innerHTML ? '' : 'none');
+			t.setStyle('display', t.get('innerHTML') ? '' : 'none');
 		}
 	},
 
@@ -525,7 +530,7 @@ Y.extend(Accordion, Y.Widget,
 
 			this.section_list[index].content = el;
 
-			el.addClass(this.getClassName('content'));
+			el.addClass(this.getClassName('section'));
 			el.addClass(this.section_list[index].open ? open_class : closed_class);
 		}
 		else if (el)
@@ -594,7 +599,7 @@ Y.extend(Accordion, Y.Widget,
 		// create content clipping
 
 		var c = new Y.Node(document.createElement('div'));
-		c.addClass(this.getClassName('content-clip'));
+		c.addClass(this.getClassName('section-clip'));
 		c.setStyle(this.slide_style_name, section_min_size+'px');
 		if (this.get('animateOpenClose'))
 		{
@@ -604,7 +609,7 @@ Y.extend(Accordion, Y.Widget,
 		// create content
 
 		var d = new Y.Node(document.createElement('div'));
-		d.addClass(this.getClassName('content'));
+		d.addClass(this.getClassName('section'));
 		d.addClass(closed_class);
 		c.appendChild(d);
 
