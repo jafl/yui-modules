@@ -6,42 +6,76 @@
 
 	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 	<script src="gallery-accordion-horiz-vert-debug.js"></script>
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssreset/reset-min.css" />
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssbase/base-min.css" />
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssfonts/fonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-accordion-horiz-vert-core.css" />
 
 	<style type="text/css">
 
-	/* YUI3 Accordion Examples Page Styling 
-	 */
+	/* example skin */
 
-	h1 {padding-left:10px;}
-	#controls {float:right;width:300px;padding:10px;margin-right:10px;background-color:#ccc;}
-	#accordions {margin:0 340px 0 10px;padding:0 10px 10px;background-color:#aaa;}
-	#accordions h4 {padding:10px 0 6px;}
+	#controls
+	{
+		float: right;
+		width: 27em;
+	}
 
-	/* YUI3 Accordion Sample Skin Styling
-	 */
+	.vert-container
+	{
+		width: 300px;
+		float: left;
+	}
 
-	.accordion-test-vert,
-	.accordion-test-horiz {width:auto;background-color:#fff;}
-	.accordion-test-horiz {height:150px;}
-	.accordion-test-horiz .yui-accordion-section-clip .yui-accordion-section {height:128px;width:20em;}
-	.my-title-vert,	
-	.my-title-horiz {background-color:#ccc;margin:1px;}
-	.my-title-horiz {height:148px;}
-	.my-title-horiz a,
-	.my-title-vert a {display:block;text-align:center;cursor:pointer;}
-	.my-title-vert a {padding:4px 0;}
-	.my-title-horiz a {height:148px;padding:62px 4px 0;}
-	.my-title-vert a:focus,
-	.my-title-horiz a:focus,
-	.my-title-vert a:hover,
-	.my-title-horiz a:hover {background-color:#eee;}
-	.my-section-vert,
-	.my-section-horiz {margin:1px;padding:10px;}
-	.my-section-vert-constrained {height: 50px;}
+	.horiz-container
+	{
+		margin-left: 20px;
+		float: left;
+	}
+
+	.accordion-test-vert
+	{
+		width: 150px;
+		border: 1px solid black;
+		padding: 2px;
+	}
+
+	.accordion-test-horiz
+	{
+		height: 108px;
+		border: 1px solid black;
+		padding: 2px;
+	}
+
+	.my-title-horiz,
+	.my-title-vert
+	{
+		color: #333333;
+		border: 2px solid #999999;
+		padding: 2px;
+		font-weight: bold;
+		text-align: center;
+		cursor: pointer;
+	}
+
+	.my-title-horiz
+	{
+		width: 25px;
+		height: 100px;
+	}
+
+	.my-section-horiz
+	{
+		width: 100px;
+		height: 108px;
+	}
+
+	.my-section-vert-constrained
+	{
+		height: 50px;
+	}
+
+	.yui-accordion-title-focused
+	{
+		background-color: #EEE;
+	}
 	</style>
 </head>
 <body class="yui-skin-sam">
@@ -90,14 +124,17 @@ function(Y)
 		],
 		sections:
 		[
-			'<div class="my-section-vert"><p>testing</p></div>',
-			'<div class="my-section-vert"><p>testing testing</p></div>',
-			'<div class="my-section-vert my-section-vert-constrained"><p>testing</p><p>testing</p><p>testing</p></div>'
+			'<p>testing</p>',
+			'<p>testing testing</p>',
+			'<div class="my-section-vert-constrained"><p>testing</p><p>testing</p><p>testing</p></div>'
 		]
 	});
 
 	vjs.after('render', function()
 	{
+		var box = this.get('contentBox');
+		box.all('.yui-accordion-section').addClass('my-section-vert');
+
 		Y.on('click', onTitleClicked, '#accordion-test-vert-js .my-title-vert', null, vjs);
 	});
 
@@ -115,7 +152,7 @@ function(Y)
 		[
 			'<p>testing</p>',
 			'<p>testing testing</p>',
-			'<p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p>'
+			'<p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p>'
 		]
 	});
 
@@ -131,8 +168,7 @@ function(Y)
 	var vm = new Y.Accordion(
 	{
 		contentBox: '#accordion-test-vert-markup-content',	// switch to srcNode when 3.1 released
-		replaceTitleContainer:   false,
-		replaceSectionContainer: false
+		replaceTitleContainer: false
 	});
 
 	vm.after('render', function()
@@ -349,7 +385,7 @@ function(Y)
 
 	<p>Notes</p>
 	<ul>
-		<li><a href="variable_width.html">Click here</a> to see variable width examples.</li>
+		<li><a href="index.html">Click here</a> to see fixed width examples.</li>
 		<li>For the horizontal accordion:
 			<ul>
 				<li>The accordion container requires <code>height</code></li>
@@ -363,46 +399,58 @@ function(Y)
 	</ul>
 </div>
 
-<div id="accordions">
-	<h4>Vertical</h4>
-	<div id="accordion-test-vert-js" class="accordion-test-vert"></div>
+<div>
+	<div class="vert-container">
+		<h4>Vertical</h4>
+		<div id="accordion-test-vert-js" class="accordion-test-vert"></div>
+	</div>
 
-	<h4>Horizontal</h4>
-	<div id="accordion-test-horiz-js" class="accordion-test-horiz"></div>
+	<div class="horiz-container">
+		<h4>Horizontal</h4>
+		<div id="accordion-test-horiz-js" class="accordion-test-horiz"></div>
+	</div>
+</div>
 
-	<h4>Vertical (from markup)</h4>
-	<div id="accordion-test-vert-markup" class="accordion-test-vert"></div>
-	<ul id="accordion-test-vert-markup-content">
-		<li>
-			<div class="my-title-vert"><a href="javascript:void(0);">#1</a></div>
-			<div class="my-section-vert"><p>testing</p></div>
-		</li>
-		<li>
-			<div class="my-title-vert"><a href="javascript:void(0);">#2</a></div>
-			<div class="my-section-vert"><p>testing testing</p></div>
-		</li>
-		<li>
-			<div class="my-title-vert"><a href="javascript:void(0);">#3</a></div>
-			<div class="my-section-vert my-section-vert-constrained"><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p></div>
-		</li>
-	</ul>
+<br clear="left"/>
 
-	<h4>Horizontal (from markup)</h4>
-	<div id="accordion-test-horiz-markup" class="accordion-test-horiz"></div>
-	<ul id="accordion-test-horiz-markup-content">
-		<li>
-			<div class="my-title-horiz"><a href="javascript:void(0);">#1</a></div>
-			<div class="my-section-horiz"><p>testing</p></div>
-		</li>
-		<li>
-			<div class="my-title-horiz"><a href="javascript:void(0);">#2</a></div>
-			<div class="my-section-horiz"><p>testing testing</p></div>
-		</li>
-		<li>
-			<div class="my-title-horiz"><a href="javascript:void(0);">#3</a></div>
-			<div class="my-section-horiz"><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p></div>
-		</li>
-	</ul>
+<div>
+	<div class="vert-container">
+		<h4>Vertical</h4>
+		<div id="accordion-test-vert-markup" class="accordion-test-vert"></div>
+		<ul id="accordion-test-vert-markup-content">
+			<li>
+				<div class="my-title-vert"><a href="javascript:void(0);">#1</a></div>
+				<div class="my-section-vert"><p>testing</p></div>
+			</li>
+			<li>
+				<div class="my-title-vert"><a href="javascript:void(0);">#2</a></div>
+				<div class="my-section-vert"><p>testing testing</p></div>
+			</li>
+			<li>
+				<div class="my-title-vert"><a href="javascript:void(0);">#3</a></div>
+				<div class="my-section-vert my-section-vert-constrained"><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p></div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="horiz-container">
+		<h4>Horizontal</h4>
+		<div id="accordion-test-horiz-markup" class="accordion-test-horiz"></div>
+		<ul id="accordion-test-horiz-markup-content">
+			<li>
+				<div class="my-title-horiz"><a href="javascript:void(0);">#1</a></div>
+				<div class="my-section-horiz"><p>testing</p></div>
+			</li>
+			<li>
+				<div class="my-title-horiz"><a href="javascript:void(0);">#2</a></div>
+				<div class="my-section-horiz"><p>testing testing</p></div>
+			</li>
+			<li>
+				<div class="my-title-horiz"><a href="javascript:void(0);">#3</a></div>
+				<div class="my-section-horiz"><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p></div>
+			</li>
+		</ul>
+	</div>
 </div>
 
 <script type="text/javascript">
