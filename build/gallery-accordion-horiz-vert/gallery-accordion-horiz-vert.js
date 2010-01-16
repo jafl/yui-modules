@@ -593,13 +593,13 @@ Y.extend(Accordion, Y.Widget,
 
 		// create title
 
-		var t = new Y.Node(document.createElement('div'));
+		var t = Y.Node.create('<div/>');
 		t.addClass(this.getClassName('title'));
 		t.addClass(closed_class);
 
 		// create content clipping
 
-		var c = new Y.Node(document.createElement('div'));
+		var c = Y.Node.create('<div/>');
 		c.addClass(this.getClassName('section-clip'));
 		c.setStyle(this.slide_style_name, section_min_size+'px');
 		if (this.get('animateOpenClose'))
@@ -609,7 +609,7 @@ Y.extend(Accordion, Y.Widget,
 
 		// create content
 
-		var d = new Y.Node(document.createElement('div'));
+		var d = Y.Node.create('<div/>');
 		d.addClass(this.getClassName('section'));
 		d.addClass(closed_class);
 		c.appendChild(d);
