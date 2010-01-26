@@ -526,6 +526,8 @@ Y.extend(Accordion, Y.Widget,
 
 		if (el && this.get('replaceSectionContainer'))
 		{
+			var display = d.getStyle('display');
+
 			var p = d.get('parentNode');
 			p.removeChild(d);
 			p.appendChild(el);
@@ -534,6 +536,7 @@ Y.extend(Accordion, Y.Widget,
 
 			el.addClass(this.getClassName('section'));
 			el.addClass(this.section_list[index].open ? open_class : closed_class);
+			el.setStyle('display', display);
 		}
 		else if (el)
 		{
@@ -613,6 +616,7 @@ Y.extend(Accordion, Y.Widget,
 		var d = Y.Node.create('<div/>');
 		d.addClass(this.getClassName('section'));
 		d.addClass(closed_class);
+		d.setStyle('display', 'none');
 		c.appendChild(d);
 
 		// save in our list
@@ -896,11 +900,14 @@ Y.extend(Accordion, Y.Widget,
 
 		function onCompleteCloseSection(type, index)
 		{
+			this.section_list[index].content.setStyle('display', 'none');
 			this.fire('close', index);
 		}
 
 		if (!this.section_list[index].open)
 		{
+			this.section_list[index].content.setStyle('display', 'block');
+
 			this.fire('beforeOpen', index);
 
 			this.section_list[index].open = true;
