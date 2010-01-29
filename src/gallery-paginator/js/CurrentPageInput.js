@@ -1,0 +1,135 @@
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+*/
+
+/**
+ * Generates an input field for setting the current page.
+ *
+ * @module gallery-paginator
+ * @namespace Y.Paginator.ui
+ * @class CurrentPageInput
+ * @for Y.Paginator
+ * @constructor
+ * @param p {Pagintor} Paginator instance to attach to
+ */
+Paginator.ui.CurrentPageInput = function(
+	/* Paginator */	p)
+{
+	this.paginator = p;
+
+	p.on('destroy',            this.destroy, this);
+	p.on('recordOffsetChange', this.update,  this);
+	p.on('rowsPerPageChange',  this.update,  this);
+	p.on('totalRecordsChange', this.update,  this);
+
+	p.on('pageInputClassChange', this.update, this);
+};
+
+/**
+ * Decorates Paginator instances with new attributes. Called during
+ * Paginator instantiation.
+ * @method init
+ * @param p {Paginator} Paginator instance to decorate
+ * @static
+ */
+Paginator.ui.CurrentPageInput.init = function(
+	/* Paginator */	p)
+{
+	/**
+	 * CSS class assigned to the span
+	 * @attribute pageInputClass
+	 * @default 'yui-paginator-page-input'
+	 */
+	p.addAttr('pageInputClass', {
+		value : Y.ClassNameManager.getClassName(Paginator.NAME, 'page-input'),
+		validator : Y.Lang.isString
+	});
+
+	/**
+	 * Used as innerHTML for the span.
+	 * @attribute pageInputTemplate
+	 * @default '{currentPage} of {totalPages}'
+	 */
+	p.addAttr('pageInputTemplate', {
+		value : '{currentPage} of {totalPages}',
+		validator : Y.Lang.isString
+	});
+};
+
+Paginator.ui.CurrentPageInput.prototype =
+{
+	/**
+	 * Removes the span node and clears event listeners.
+	 * @method destroy
+	 * @private
+	 */
+	destroy: function()
+	{
+		this.span.remove(true);
+		this.span       = null;
+		this.input      = null;
+		this.page_count = null;
+	},
+
+	/**
+	 * Generate the nodes and return the appropriate node given the current
+	 * pagination state.
+	 * @method render
+	 * @param id_base {string} used to create unique ids for generated nodes
+	 * @return {HTMLElement}
+	 */
+	render: function(
+		id_base)
+	{
+		this.span = Y.Node.create(
+			'<span id="'+id_base+'-page-input">' +
+			YAHOO.lang.substitute(this.paginator.get('pageInputTemplate'),
+			{
+				currentPage: '<input class="yui-page-input"></input>',
+				totalPages: '<span class="yui-page-count"></span>'
+			}) +
+			'</span>');
+		this.span.set('className', this.paginator.get('pageInputClass'));
+
+		this.input = this.span.one('input');
+		this.input.on('change', this._onChange, this);
+		this.input.on('key', this._onReturnKey, 'down:13', this);
+
+		this.page_count = this.span.one('span.yui-page-count');
+
+		this.update();
+
+		return this.span;
+	},
+
+	/**
+	 * Swap the link and span nodes if appropriate.
+	 * @method update
+	 * @param e {CustomEvent} The calling change event
+	 */
+	update: function(
+		/* CustomEvent */ e)
+	{
+		if (e && e.prevValue === e.newValue)
+		{
+			return;
+		}
+
+		this.span.set('className', this.paginator.get('pageInputClass'));
+		this.input.set('value', this.paginator.getCurrentPage());
+		this.page_count.set('innerHTML', this.paginator.getTotalPages());
+	},
+
+	_onChange: function(e)
+	{
+		this.paginator.setPage(parseInt(this.input.value, 10));
+	},
+
+	_onReturnKey: function(e)
+	{
+		e.halt(true);
+		this.paginator.setPage(parseInt(this.input.value, 10));
+	}
+};
