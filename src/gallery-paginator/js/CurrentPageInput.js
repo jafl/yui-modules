@@ -85,7 +85,7 @@ Paginator.ui.CurrentPageInput.prototype =
 	{
 		this.span = Y.Node.create(
 			'<span id="'+id_base+'-page-input">' +
-			YAHOO.lang.substitute(this.paginator.get('pageInputTemplate'),
+			Y.substitute(this.paginator.get('pageInputTemplate'),
 			{
 				currentPage: '<input class="yui-page-input"></input>',
 				totalPages: '<span class="yui-page-count"></span>'

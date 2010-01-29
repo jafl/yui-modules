@@ -85,7 +85,7 @@ Paginator.ui.ItemRangeDropdown.prototype =
 	{
 		this.span = Y.Node.create(
 			'<span id="'+id_base+'-item-range">' +
-			YAHOO.lang.substitute(this.paginator.get('itemRangeDropdownTemplate'),
+			Y.substitute(this.paginator.get('itemRangeDropdownTemplate'),
 			{
 				N: '<select class="yui-current-item-range"></select>',
 				M: '<span class="yui-item-count"></span>'

@@ -421,16 +421,16 @@ Y.extend(Paginator, Y.Widget,
     /**
      * Replaces a marker node with a rendered UI component, determined by the
      * yui-paginator-ui-(UI component class name) in the marker's className. e.g.
-     * yui-paginator-ui-PageLinks => new YAHOO.widget.Paginator.ui.PageLinks(this)
+     * yui-paginator-ui-PageLinks => new Y.Paginator.ui.PageLinks(this)
      *
      * @method renderUIComponent
      * @param marker {HTMLElement} the marker node to replace
      * @param id_base {String} string base the component's generated id
      */
     renderUIComponent : function (marker, id_base) {
-        var par    = marker.parentNode,
+        var par    = marker.get('parentNode'),
             clazz  = this.getClassName('ui'),
-            name   = new RegExp(clazz+'-(\\w+)').exec(marker.className),
+            name   = new RegExp(clazz+'-(\\w+)').exec(marker.get('className')),
             UIComp = name && Paginator.ui[name[1]],
             comp;
 
@@ -470,15 +470,14 @@ Y.extend(Paginator, Y.Widget,
             }
 
             visible = visible || alwaysVisible;
-            this.get('boundingBox').setStyle('display', visible ? '' : 'none');
+            this.get('contentBox').setStyle('display', visible ? '' : 'none');
         }
     },
 
     /**
      * Get the total number of pages in the data set according to the current
      * rowsPerPage and totalRecords values.  If totalRecords is not set, or
-     * set to YAHOO.widget.Paginator.VALUE_UNLIMITED, returns
-     * YAHOO.widget.Paginator.VALUE_UNLIMITED.
+     * set to Y.Paginator.VALUE_UNLIMITED, returns Y.Paginator.VALUE_UNLIMITED.
      * @method getTotalPages
      * @return {number}
      */
@@ -612,7 +611,7 @@ Y.extend(Paginator, Y.Widget,
             if (this.get('updateOnChange') || silent) {
                 this.set('recordOffset', (page - 1) * this.get('rowsPerPage'));
             } else {
-                this.fireEvent('changeRequest',this.getState({'page':page}));
+                this.fire('changeRequest',this.getState({'page':page}));
             }
         }
     },
@@ -639,7 +638,7 @@ Y.extend(Paginator, Y.Widget,
             if (this.get('updateOnChange') || silent) {
                 this.set('rowsPerPage',rpp);
             } else {
-                this.fireEvent('changeRequest',
+                this.fire('changeRequest',
                     this.getState({'rowsPerPage':+rpp}));
             }
         }
@@ -666,7 +665,7 @@ Y.extend(Paginator, Y.Widget,
             if (this.get('updateOnChange') || silent) {
                 this.set('totalRecords',total);
             } else {
-                this.fireEvent('changeRequest',
+                this.fire('changeRequest',
                     this.getState({'totalRecords':+total}));
             }
         }
@@ -694,7 +693,7 @@ Y.extend(Paginator, Y.Widget,
             if (this.get('updateOnChange') || silent) {
                 this.set('recordOffset',offset);
             } else {
-                this.fireEvent('changeRequest',
+                this.fire('changeRequest',
                     this.getState({'recordOffset':+offset}));
             }
         }
@@ -906,7 +905,7 @@ Y.extend(Paginator, Y.Widget,
         if (Y.Lang.isObject(state)) {
             var current = state.before;
             delete state.before;
-            this.fireEvent('pageChange',{
+            this.fire('pageChange',{
                 type      : 'pageChange',
                 prevValue : state.page,
                 newValue  : current.page,
