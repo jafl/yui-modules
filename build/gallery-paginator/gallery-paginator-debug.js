@@ -1,5 +1,15 @@
 YUI.add('gallery-paginator', function(Y) {
 
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+*/
+
+Y.Node.DOM_EVENTS.key =
+{
+	on: Y.Env.evt.plugins.key.on
+};
 "use strict";
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
@@ -1518,7 +1528,7 @@ Paginator.ui.ItemRangeDropdown.prototype =
 
 		var page    = this.paginator.getCurrentPage();
 		var count   = this.paginator.getTotalPages();
-		var options = this.menu.get('options');
+		var options = Y.Node.getDOMNode(this.menu).options;
 
 		options.length = 0;
 		for (var i=1; i<=count; i++)
@@ -2549,4 +2559,4 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
 };
 
 
-}, '@VERSION@' ,{requires:['widget','substitute']});
+}, '@VERSION@' ,{requires:['widget','event-key','substitute']});

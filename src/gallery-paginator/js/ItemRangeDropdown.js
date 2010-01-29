@@ -118,7 +118,7 @@ Paginator.ui.ItemRangeDropdown.prototype =
 
 		var page    = this.paginator.getCurrentPage();
 		var count   = this.paginator.getTotalPages();
-		var options = this.menu.get('options');
+		var options = Y.Node.getDOMNode(this.menu).options;
 
 		options.length = 0;
 		for (var i=1; i<=count; i++)
