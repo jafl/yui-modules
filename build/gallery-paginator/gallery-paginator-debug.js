@@ -1009,7 +1009,7 @@ Paginator.ui.CurrentPageInput.prototype =
 			Y.substitute(this.paginator.get('pageInputTemplate'),
 			{
 				currentPage: '<input class="yui-page-input"></input>',
-				totalPages: '<span class="yui-page-count"></span>'
+				totalPages:  '<span class="yui-page-count"></span>'
 			}) +
 			'</span>');
 		this.span.set('className', this.paginator.get('pageInputClass'));
@@ -1487,8 +1487,8 @@ Paginator.ui.ItemRangeDropdown.prototype =
 			'<span id="'+id_base+'-item-range">' +
 			Y.substitute(this.paginator.get('itemRangeDropdownTemplate'),
 			{
-				N: '<select class="yui-current-item-range"></select>',
-				M: '<span class="yui-item-count"></span>'
+				currentRange: '<select class="yui-current-item-range"></select>',
+				totalItems:   '<span class="yui-item-count"></span>'
 			}) +
 			'</span>');
 		this.span.set('className', this.paginator.get('itemRangeDropdownClass'));

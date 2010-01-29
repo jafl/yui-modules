@@ -87,8 +87,8 @@ Paginator.ui.ItemRangeDropdown.prototype =
 			'<span id="'+id_base+'-item-range">' +
 			Y.substitute(this.paginator.get('itemRangeDropdownTemplate'),
 			{
-				N: '<select class="yui-current-item-range"></select>',
-				M: '<span class="yui-item-count"></span>'
+				currentRange: '<select class="yui-current-item-range"></select>',
+				totalItems:   '<span class="yui-item-count"></span>'
 			}) +
 			'</span>');
 		this.span.set('className', this.paginator.get('itemRangeDropdownClass'));

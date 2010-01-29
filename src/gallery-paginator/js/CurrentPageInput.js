@@ -88,7 +88,7 @@ Paginator.ui.CurrentPageInput.prototype =
 			Y.substitute(this.paginator.get('pageInputTemplate'),
 			{
 				currentPage: '<input class="yui-page-input"></input>',
-				totalPages: '<span class="yui-page-count"></span>'
+				totalPages:  '<span class="yui-page-count"></span>'
 			}) +
 			'</span>');
 		this.span.set('className', this.paginator.get('pageInputClass'));
