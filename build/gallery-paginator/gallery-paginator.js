@@ -35,24 +35,7 @@ http://developer.yahoo.net/yui/license.txt
  * configuration.
  */
 function Paginator(config) {
-    var UNLIMITED = Paginator.VALUE_UNLIMITED,
-        initialPage, records, perPage, startIndex;
-
     Paginator.superclass.constructor.call(this, config);
-
-    this._selfSubscribe();
-    this.initUIComponents();
-
-    // Calculate the initial record offset
-    initialPage = this.get('initialPage');
-    records     = this.get('totalRecords');
-    perPage     = this.get('rowsPerPage');
-    if (initialPage > 1 && perPage !== UNLIMITED) {
-        startIndex = (initialPage - 1) * perPage;
-        if (records === UNLIMITED || startIndex < records) {
-            this.set('recordOffset',startIndex);
-        }
-    }
 }
 
 
@@ -327,7 +310,6 @@ Y.extend(Paginator, Y.Widget,
             initialPage, records, perPage, startIndex;
 
         this._selfSubscribe();
-        this.initUIComponents();
 
         // Calculate the initial record offset
         initialPage = this.get('initialPage');
@@ -349,34 +331,16 @@ Y.extend(Paginator, Y.Widget,
      */
     _selfSubscribe : function () {
         // Listen for changes to totalRecords and alwaysVisible 
-        this.on('totalRecordsChange',this.updateVisibility,this);
-        this.on('alwaysVisibleChange',this.updateVisibility,this);
+        this.after('totalRecordsChange',this.updateVisibility,this);
+        this.after('alwaysVisibleChange',this.updateVisibility,this);
 
         // Fire the pageChange event when appropriate
-        this.on('totalRecordsChange',this._handleStateChange,this);
-        this.on('recordOffsetChange',this._handleStateChange,this);
-        this.on('rowsPerPageChange',this._handleStateChange,this);
+        this.after('totalRecordsChange',this._handleStateChange,this);
+        this.after('recordOffsetChange',this._handleStateChange,this);
+        this.after('rowsPerPageChange',this._handleStateChange,this);
 
         // Update recordOffset when totalRecords is reduced below
-        this.on('totalRecordsChange',this._syncRecordOffset,this);
-    },
-
-    /**
-     * Initialize registered ui components onto this instance.
-     * @method initUIComponents
-     * @private
-     */
-    initUIComponents : function () {
-        var ui = Paginator.ui,
-            name,UIComp;
-        for (name in ui) {
-            if (ui.hasOwnProperty(name)) {
-                UIComp = ui[name];
-                if (Y.Lang.isObject(UIComp) && Y.Lang.isFunction(UIComp.init)) {
-                    UIComp.init(this);
-                }
-            }
-        }
+        this.after('totalRecordsChange',this._syncRecordOffset,this);
     },
 
     renderUI : function () {
@@ -939,9 +903,7 @@ http://developer.yahoo.net/yui/license.txt
  * Generates an input field for setting the current page.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class CurrentPageInput
- * @for Y.Paginator
+ * @class Paginator.ui.CurrentPageInput
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -950,43 +912,34 @@ Paginator.ui.CurrentPageInput = function(
 {
 	this.paginator = p;
 
-	p.on('destroy',            this.destroy, this);
-	p.on('recordOffsetChange', this.update,  this);
-	p.on('rowsPerPageChange',  this.update,  this);
-	p.on('totalRecordsChange', this.update,  this);
+	p.on('destroy',               this.destroy, this);
+	p.after('recordOffsetChange', this.update,  this);
+	p.after('rowsPerPageChange',  this.update,  this);
+	p.after('totalRecordsChange', this.update,  this);
 
-	p.on('pageInputClassChange', this.update, this);
+	p.after('pageInputClassChange', this.update, this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the span
+ * @attribute pageInputClass
+ * @default 'yui-paginator-page-input'
  */
-Paginator.ui.CurrentPageInput.init = function(
-	/* Paginator */	p)
+Paginator.ATTRS.pageInputClass =
 {
-	/**
-	 * CSS class assigned to the span
-	 * @attribute pageInputClass
-	 * @default 'yui-paginator-page-input'
-	 */
-	p.addAttr('pageInputClass', {
-		value : Y.ClassNameManager.getClassName(Paginator.NAME, 'page-input'),
-		validator : Y.Lang.isString
-	});
+	value : Y.ClassNameManager.getClassName(Paginator.NAME, 'page-input'),
+	validator : Y.Lang.isString
+};
 
-	/**
-	 * Used as innerHTML for the span.
-	 * @attribute pageInputTemplate
-	 * @default '{currentPage} of {totalPages}'
-	 */
-	p.addAttr('pageInputTemplate', {
-		value : '{currentPage} of {totalPages}',
-		validator : Y.Lang.isString
-	});
+/**
+ * Used as innerHTML for the span.
+ * @attribute pageInputTemplate
+ * @default '{currentPage} of {totalPages}'
+ */
+Paginator.ATTRS.pageInputTemplate =
+{
+	value : '{currentPage} of {totalPages}',
+	validator : Y.Lang.isString
 };
 
 Paginator.ui.CurrentPageInput.prototype =
@@ -1043,7 +996,7 @@ Paginator.ui.CurrentPageInput.prototype =
 	update: function(
 		/* CustomEvent */ e)
 	{
-		if (e && e.prevValue === e.newValue)
+		if (e && e.prevVal === e.newVal)
 		{
 			return;
 		}
@@ -1055,13 +1008,13 @@ Paginator.ui.CurrentPageInput.prototype =
 
 	_onChange: function(e)
 	{
-		this.paginator.setPage(parseInt(this.input.value, 10));
+		this.paginator.setPage(parseInt(this.input.get('value'), 10));
 	},
 
 	_onReturnKey: function(e)
 	{
 		e.halt(true);
-		this.paginator.setPage(parseInt(this.input.value, 10));
+		this.paginator.setPage(parseInt(this.input.get('value'), 10));
 	}
 };
 /*
@@ -1075,9 +1028,7 @@ http://developer.yahoo.net/yui/license.txt
  * E.g. "Now viewing page 1 of 13".
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class CurrentPageReport
- * @for Y.Paginator
+ * @class Paginator.ui.CurrentPageReport
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -1085,78 +1036,71 @@ Paginator.ui.CurrentPageReport = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange', this.update,this);
-    p.on('rowsPerPageChange', this.update,this);
-    p.on('totalRecordsChange',this.update,this);
+    p.after('recordOffsetChange', this.update,this);
+    p.after('rowsPerPageChange', this.update,this);
+    p.after('totalRecordsChange',this.update,this);
 
-    p.on('pageReportClassChange', this.update,this);
-    p.on('pageReportTemplateChange', this.update,this);
+    p.after('pageReportClassChange', this.update,this);
+    p.after('pageReportTemplateChange', this.update,this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the span containing the info.
+ * @attribute pageReportClass
+ * @default 'yui-paginator-current'
  */
-Paginator.ui.CurrentPageReport.init = function (p) {
+Paginator.ATTRS.pageReportClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'current'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the span containing the info.
-     * @attribute pageReportClass
-     * @default 'yui-paginator-current'
-     */
-    p.addAttr('pageReportClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'current'),
-        validator : Y.Lang.isString
-    });
+/**
+ * Used as innerHTML for the span.  Place holders in the form of {name}
+ * will be replaced with the so named value from the key:value map
+ * generated by the function held in the pageReportValueGenerator attribute.
+ * @attribute pageReportTemplate
+ * @default '({currentPage} of {totalPages})'
+ * @see pageReportValueGenerator attribute
+ */
+Paginator.ATTRS.pageReportTemplate =
+{
+    value : '({currentPage} of {totalPages})',
+    validator : Y.Lang.isString
+};
 
-    /**
-     * Used as innerHTML for the span.  Place holders in the form of {name}
-     * will be replaced with the so named value from the key:value map
-     * generated by the function held in the pageReportValueGenerator attribute.
-     * @attribute pageReportTemplate
-     * @default '({currentPage} of {totalPages})'
-     * @see pageReportValueGenerator attribute
-     */
-    p.addAttr('pageReportTemplate', {
-        value : '({currentPage} of {totalPages})',
-        validator : Y.Lang.isString
-    });
+/**
+ * Function to generate the value map used to populate the
+ * pageReportTemplate.  The function is passed the Paginator instance as a
+ * parameter.  The default function returns a map with the following keys:
+ * <ul>
+ * <li>currentPage</li>
+ * <li>totalPages</li>
+ * <li>startIndex</li>
+ * <li>endIndex</li>
+ * <li>startRecord</li>
+ * <li>endRecord</li>
+ * <li>totalRecords</li>
+ * </ul>
+ * @attribute pageReportValueGenarator
+ */
+Paginator.ATTRS.pageReportValueGenerator =
+{
+    value : function (paginator) {
+        var curPage = paginator.getCurrentPage(),
+            records = paginator.getPageRecords();
 
-    /**
-     * Function to generate the value map used to populate the
-     * pageReportTemplate.  The function is passed the Paginator instance as a
-     * parameter.  The default function returns a map with the following keys:
-     * <ul>
-     * <li>currentPage</li>
-     * <li>totalPages</li>
-     * <li>startIndex</li>
-     * <li>endIndex</li>
-     * <li>startRecord</li>
-     * <li>endRecord</li>
-     * <li>totalRecords</li>
-     * </ul>
-     * @attribute pageReportValueGenarator
-     */
-    p.addAttr('pageReportValueGenerator', {
-        value : function (paginator) {
-            var curPage = paginator.getCurrentPage(),
-                records = paginator.getPageRecords();
-
-            return {
-                'currentPage' : records ? curPage : 0,
-                'totalPages'  : paginator.getTotalPages(),
-                'startIndex'  : records ? records[0] : 0,
-                'endIndex'    : records ? records[1] : 0,
-                'startRecord' : records ? records[0] + 1 : 0,
-                'endRecord'   : records ? records[1] + 1 : 0,
-                'totalRecords': paginator.get('totalRecords')
-            };
-        },
-        validator : Y.Lang.isFunction
-    });
+        return {
+            'currentPage' : records ? curPage : 0,
+            'totalPages'  : paginator.getTotalPages(),
+            'startIndex'  : records ? records[0] : 0,
+            'endIndex'    : records ? records[1] : 0,
+            'startRecord' : records ? records[0] + 1 : 0,
+            'endRecord'   : records ? records[1] + 1 : 0,
+            'totalRecords': paginator.get('totalRecords')
+        };
+    },
+    validator : Y.Lang.isFunction
 };
 
 /**
@@ -1221,7 +1165,7 @@ Paginator.ui.CurrentPageReport.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
@@ -1241,9 +1185,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the link to jump to the first page.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class FirstPageLink
- * @for Y.Paginator
+ * @class Paginator.ui.FirstPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -1251,42 +1193,34 @@ Paginator.ui.FirstPageLink = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange',this.update,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this.update,this);
+    p.after('recordOffsetChange',this.update,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this.update,this);
 
-    p.on('firstPageLinkLabelChange',this.rebuild,this);
-    p.on('firstPageLinkClassChange',this.rebuild,this);
+    p.after('firstPageLinkLabelChange',this.rebuild,this);
+    p.after('firstPageLinkClassChange',this.rebuild,this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * Used as innerHTML for the first page link/span.
+ * @attribute firstPageLinkLabel
+ * @default '&lt;&lt; first'
  */
-Paginator.ui.FirstPageLink.init = function (p) {
+Paginator.ATTRS.firstPageLinkLabel =
+{
+    value : '&lt;&lt; first',
+    validator : Y.Lang.isString
+};
 
-    /**
-     * Used as innerHTML for the first page link/span.
-     * @attribute firstPageLinkLabel
-     * @default '&lt;&lt; first'
-     */
-    p.addAttr('firstPageLinkLabel', {
-        value : '&lt;&lt; first',
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * CSS class assigned to the link/span
-     * @attribute firstPageLinkClass
-     * @default 'yui-paginator-first'
-     */
-    p.addAttr('firstPageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'first'),
-        validator : Y.Lang.isString
-    });
+/**
+ * CSS class assigned to the link/span
+ * @attribute firstPageLinkClass
+ * @default 'yui-paginator-first'
+ */
+Paginator.ATTRS.firstPageLinkClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'first'),
+    validator : Y.Lang.isString
 };
 
 // Instance members and methods
@@ -1359,7 +1293,7 @@ Paginator.ui.FirstPageLink.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
@@ -1383,7 +1317,7 @@ Paginator.ui.FirstPageLink.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     rebuild : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
@@ -1418,9 +1352,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to display a menu for selecting the range of items to display.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class ItemRangeDropdown
- * @for Y.Paginator
+ * @class Paginator.ui.ItemRangeDropdown
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -1429,43 +1361,34 @@ Paginator.ui.ItemRangeDropdown = function(
 {
 	this.paginator = p;
 
-	p.on('destroy',            this.destroy, this);
-	p.on('recordOffsetChange', this.update,  this);
-	p.on('rowsPerPageChange',  this.update,  this);
-	p.on('totalRecordsChange', this.update,  this);
+	p.on('destroy',               this.destroy, this);
+	p.after('recordOffsetChange', this.update,  this);
+	p.after('rowsPerPageChange',  this.update,  this);
+	p.after('totalRecordsChange', this.update,  this);
 
-	p.on('itemRangeDropdownClassChange', this.update, this);
+	p.after('itemRangeDropdownClassChange', this.update, this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the span
+ * @attribute itemRangeDropdownClass
+ * @default 'yui-paginator-ir-dropdown'
  */
-Paginator.ui.ItemRangeDropdown.init = function(
-	/* Paginator */	p)
+Paginator.ATTRS.itemRangeDropdownClass =
 {
-	/**
-	 * CSS class assigned to the span
-	 * @attribute itemRangeDropdownClass
-	 * @default 'yui-paginator-ir-dropdown'
-	 */
-	p.addAttr('itemRangeDropdownClass', {
-		value : Y.ClassNameManager.getClassName(Paginator.NAME, 'ir-dropdown'),
-		validator : Y.Lang.isString
-	});
+	value : Y.ClassNameManager.getClassName(Paginator.NAME, 'ir-dropdown'),
+	validator : Y.Lang.isString
+};
 
-	/**
-	 * Used as innerHTML for the span.
-	 * @attribute itemRangeDropdownTemplate
-	 * @default '{currentRange} of {totalItems}'
-	 */
-	p.addAttr('itemRangeDropdownTemplate', {
-		value : '{currentRange} of {totalItems}',
-		validator : Y.Lang.isString
-	});
+/**
+ * Used as innerHTML for the span.
+ * @attribute itemRangeDropdownTemplate
+ * @default '{currentRange} of {totalItems}'
+ */
+Paginator.ATTRS.itemRangeDropdownTemplate =
+{
+	value : '{currentRange} of {totalItems}',
+	validator : Y.Lang.isString
 };
 
 Paginator.ui.ItemRangeDropdown.prototype =
@@ -1521,7 +1444,7 @@ Paginator.ui.ItemRangeDropdown.prototype =
 	update: function(
 		/* CustomEvent */ e)
 	{
-		if (e && e.prevValue === e.newValue)
+		if (e && e.prevVal === e.newVal)
 		{
 			return;
 		}
@@ -1561,9 +1484,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the link to jump to the last page.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class LastPageLink
- * @for Y.Paginator
+ * @class Paginator.ui.LastPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -1571,42 +1492,34 @@ Paginator.ui.LastPageLink = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange',this.update,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this.update,this);
+    p.after('recordOffsetChange',this.update,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this.update,this);
 
-	p.on('lastPageLinkClassChange', this.rebuild, this);
-	p.on('lastPageLinkLabelChange', this.rebuild, this);
+	p.after('lastPageLinkClassChange', this.rebuild, this);
+	p.after('lastPageLinkLabelChange', this.rebuild, this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param paginator {Paginator} Paginator instance to decorate
- * @static
+  * CSS class assigned to the link/span
+  * @attribute lastPageLinkClass
+  * @default 'yui-paginator-last'
+  */
+Paginator.ATTRS.lastPageLinkClass =
+{
+     value : Y.ClassNameManager.getClassName(Paginator.NAME, 'last'),
+     validator : Y.Lang.isString
+};
+
+/**
+ * Used as innerHTML for the last page link/span.
+ * @attribute lastPageLinkLabel
+ * @default 'last &gt;&gt;'
  */
-Paginator.ui.LastPageLink.init = function (p) {
-
-    /**
-     * CSS class assigned to the link/span
-     * @attribute lastPageLinkClass
-     * @default 'yui-paginator-last'
-     */
-    p.addAttr('lastPageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'last'),
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * Used as innerHTML for the last page link/span.
-     * @attribute lastPageLinkLabel
-     * @default 'last &gt;&gt;'
-     */
-    p.addAttr('lastPageLinkLabel', {
-        value : 'last &gt;&gt;',
-        validator : Y.Lang.isString
-    });
+Paginator.ATTRS.lastPageLinkLabel =
+{
+    value : 'last &gt;&gt;',
+    validator : Y.Lang.isString
 };
 
 Paginator.ui.LastPageLink.prototype = {
@@ -1704,11 +1617,11 @@ Paginator.ui.LastPageLink.prototype = {
      * @param e {CustomEvent} The calling change event (ignored)
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
-        var par   = this.current ? this.current.parentNode : null,
+        var par   = this.current ? this.current.get('parentNode') : null,
             after = this.link;
 
         if (par) {
@@ -1731,11 +1644,11 @@ Paginator.ui.LastPageLink.prototype = {
 
     /**
      * Rebuild the markup.
-     * @method update
+     * @method rebuild
      * @param e {CustomEvent} The calling change event (ignored)
      */
     rebuild : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
@@ -1770,9 +1683,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the link to jump to the next page.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class NextPageLink
- * @for Y.Paginator
+ * @class Paginator.ui.NextPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -1780,42 +1691,34 @@ Paginator.ui.NextPageLink = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange', this.update,this);
-    p.on('rowsPerPageChange', this.update,this);
-    p.on('totalRecordsChange', this.update,this);
+    p.after('recordOffsetChange', this.update,this);
+    p.after('rowsPerPageChange', this.update,this);
+    p.after('totalRecordsChange', this.update,this);
 
-	p.on('nextPageLinkClassChange', this.rebuild, this);
-	p.on('nextPageLinkLabelChange', this.rebuild, this);
+	p.after('nextPageLinkClassChange', this.rebuild, this);
+	p.after('nextPageLinkLabelChange', this.rebuild, this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the link/span
+ * @attribute nextPageLinkClass
+ * @default 'yui-paginator-next'
  */
-Paginator.ui.NextPageLink.init = function (p) {
+Paginator.ATTRS.nextPageLinkClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'next'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the link/span
-     * @attribute nextPageLinkClass
-     * @default 'yui-paginator-next'
-     */
-    p.addAttr('nextPageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'next'),
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * Used as innerHTML for the next page link/span.
-     * @attribute nextPageLinkLabel
-     * @default 'next &gt;'
-     */
-    p.addAttr('nextPageLinkLabel', {
-        value : 'next &gt;',
-        validator : Y.Lang.isString
-    });
+/**
+ * Used as innerHTML for the next page link/span.
+ * @attribute nextPageLinkLabel
+ * @default 'next &gt;'
+ */
+Paginator.ATTRS.nextPageLinkLabel =
+{
+    value : 'next &gt;',
+    validator : Y.Lang.isString
 };
 
 Paginator.ui.NextPageLink.prototype = {
@@ -1889,12 +1792,12 @@ Paginator.ui.NextPageLink.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
         var last = this.paginator.getTotalPages(),
-            par  = this.current ? this.current.parentNode : null;
+            par  = this.current ? this.current.get('parentNode') : null;
 
         if (this.paginator.getCurrentPage() !== last) {
             if (par && this.current === this.span) {
@@ -1911,11 +1814,11 @@ Paginator.ui.NextPageLink.prototype = {
 
     /**
      * Rebuild the markup.
-     * @method update
+     * @method rebuild
      * @param e {CustomEvent} The calling change event
      */
     rebuild : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
@@ -1950,9 +1853,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the page links
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class PageLinks
- * @for Y.Paginator
+ * @class Paginator.ui.PageLinks
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -1960,76 +1861,71 @@ Paginator.ui.PageLinks = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange',this.update,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this.update,this);
+    p.after('recordOffsetChange',this.update,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this.update,this);
 
-    p.on('pageLinksContainerClassChange', this.rebuild,this);
-    p.on('pageLinkClassChange', this.rebuild,this);
-    p.on('currentPageClassChange', this.rebuild,this);
-    p.on('pageLinksChange', this.rebuild,this);
+    p.after('pageLinksContainerClassChange', this.rebuild,this);
+    p.after('pageLinkClassChange', this.rebuild,this);
+    p.after('currentPageClassChange', this.rebuild,this);
+    p.after('pageLinksChange', this.rebuild,this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the span containing the page links.
+ * @attribute pageLinksContainerClass
+ * @default 'yui-paginator-pages'
  */
-Paginator.ui.PageLinks.init = function (p) {
+Paginator.ATTRS.pageLinksContainerClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'pages'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the span containing the page links.
-     * @attribute pageLinksContainerClass
-     * @default 'yui-paginator-pages'
-     */
-    p.addAttr('pageLinksContainerClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'pages'),
-        validator : Y.Lang.isString
-    });
+/**
+ * CSS class assigned to each page link/span.
+ * @attribute pageLinkClass
+ * @default 'yui-paginator-page'
+ */
+Paginator.ATTRS.pageLinkClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'page'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to each page link/span.
-     * @attribute pageLinkClass
-     * @default 'yui-paginator-page'
-     */
-    p.addAttr('pageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'page'),
-        validator : Y.Lang.isString
-    });
+/**
+ * CSS class assigned to the current page span.
+ * @attribute currentPageClass
+ * @default 'yui-paginator-current-page'
+ */
+Paginator.ATTRS.currentPageClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'current-page'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the current page span.
-     * @attribute currentPageClass
-     * @default 'yui-paginator-current-page'
-     */
-    p.addAttr('currentPageClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'current-page'),
-        validator : Y.Lang.isString
-    });
+/**
+ * Maximum number of page links to display at one time.
+ * @attribute pageLinks
+ * @default 10
+ */
+Paginator.ATTRS.pageLinks =
+{
+    value : 10,
+    validator : Paginator.isNumeric
+};
 
-    /**
-     * Maximum number of page links to display at one time.
-     * @attribute pageLinks
-     * @default 10
-     */
-    p.addAttr('pageLinks', {
-        value : 10,
-        validator : Paginator.isNumeric
-    });
-
-    /**
-     * Function used generate the innerHTML for each page link/span.  The
-     * function receives as parameters the page number and a reference to the
-     * paginator object.
-     * @attribute pageLabelBuilder
-     * @default function (page, paginator) { return page; }
-     */
-    p.addAttr('pageLabelBuilder', {
-        value : function (page, paginator) { return page; },
-        validator : Y.Lang.isFunction
-    });
+/**
+ * Function used generate the innerHTML for each page link/span.  The
+ * function receives as parameters the page number and a reference to the
+ * paginator object.
+ * @attribute pageLabelBuilder
+ * @default function (page, paginator) { return page; }
+ */
+Paginator.ATTRS.pageLabelBuilder =
+{
+    value : function (page, paginator) { return page; },
+    validator : Y.Lang.isFunction
 };
 
 /**
@@ -2119,7 +2015,7 @@ Paginator.ui.PageLinks.prototype = {
         this.container.on('click',this.onClick,this);
 
         // Call update, flagging a need to rebuild
-        this.update({newValue : null, rebuild : true});
+        this.update({newVal : null, rebuild : true});
 
         return this.container;
     },
@@ -2130,7 +2026,7 @@ Paginator.ui.PageLinks.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
@@ -2186,7 +2082,7 @@ Paginator.ui.PageLinks.prototype = {
      * @param e {DOMEvent} The click event
      */
     onClick : function (e) {
-        var t = e.get('target');
+        var t = e.target;
         if (t && t.hasClass(this.paginator.get('pageLinkClass'))) {
 
             e.halt();
@@ -2206,9 +2102,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the link to jump to the previous page.
  *
  * @module gallery-paginator
- * @namespace YAHOO.widget.Paginator.ui
- * @class PreviousPageLink
- * @for YAHOO.widget.Paginator
+ * @class Paginator.ui.PreviousPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -2216,42 +2110,34 @@ Paginator.ui.PreviousPageLink = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange',this.update,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this.update,this);
+    p.after('recordOffsetChange',this.update,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this.update,this);
 
-    p.on('previousPageLinkLabelChange',this.update,this);
-    p.on('previousPageLinkClassChange',this.update,this);
+    p.after('previousPageLinkLabelChange',this.update,this);
+    p.after('previousPageLinkClassChange',this.update,this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the link/span
+ * @attribute previousPageLinkClass
+ * @default 'yui-paginator-previous'
  */
-Paginator.ui.PreviousPageLink.init = function (p) {
+Paginator.ATTRS.previousPageLinkClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'previous'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the link/span
-     * @attribute previousPageLinkClass
-     * @default 'yui-paginator-previous'
-     */
-    p.addAttr('previousPageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'previous'),
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * Used as innerHTML for the previous page link/span.
-     * @attribute previousPageLinkLabel
-     * @default '&lt; prev'
-     */
-    p.addAttr('previousPageLinkLabel', {
-        value : '&lt; prev',
-        validator : Y.Lang.isString
-    });
+/**
+ * Used as innerHTML for the previous page link/span.
+ * @attribute previousPageLinkLabel
+ * @default '&lt; prev'
+ */
+Paginator.ATTRS.previousPageLinkLabel =
+{
+    value : '&lt; prev',
+    validator : Y.Lang.isString
 };
 
 Paginator.ui.PreviousPageLink.prototype = {
@@ -2323,11 +2209,11 @@ Paginator.ui.PreviousPageLink.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
-        var par = this.current ? this.current.parentNode : null;
+        var par = this.current ? this.current.get('parentNode') : null;
         if (this.paginator.getCurrentPage() > 1) {
             if (par && this.current === this.span) {
                 par.replaceChild(this.link,this.current);
@@ -2360,10 +2246,8 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * ui Component to generate the rows-per-page dropdown
  *
- * @namespace YAHOO.widget.Paginator.ui
- * @class RowsPerPageDropdown
- * @for YAHOO.widget.Paginator
- *
+ * @module gallery-paginator
+ * @class Paginator.ui.RowsPerPageDropdown
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -2371,54 +2255,47 @@ Paginator.ui.RowsPerPageDropdown = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this._handleTotalRecordsChange,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this._handleTotalRecordsChange,this);
 
-    p.on('rowsPerPageDropdownClassChange',this.rebuild,this);
-    p.on('rowsPerPageDropdownTitleChange',this.rebuild,this);
-    p.on('rowsPerPageOptionsChange',this.rebuild,this);
+    p.after('rowsPerPageDropdownClassChange',this.rebuild,this);
+    p.after('rowsPerPageDropdownTitleChange',this.rebuild,this);
+    p.after('rowsPerPageOptionsChange',this.rebuild,this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the select node
+ * @attribute rowsPerPageDropdownClass
+ * @default 'yui-paginator-rpp-options'
  */
-Paginator.ui.RowsPerPageDropdown.init = function (p) {
+Paginator.ATTRS.rowsPerPageDropdownClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'rpp-options'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the select node
-     * @attribute rowsPerPageDropdownClass
-     * @default 'yui-paginator-rpp-options'
-     */
-    p.addAttr('rowsPerPageDropdownClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'rpp-options'),
-        validator : Y.Lang.isString
-    });
+/**
+ * CSS class assigned to the select node
+ * @attribute rowsPerPageDropdownTitle
+ * @default 'Rows per page'
+ */
+Paginator.ATTRS.rowsPerPageDropdownTitle =
+{
+    value : 'Rows per page',
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the select node
-     * @attribute rowsPerPageDropdownClass
-     * @default 'yui-paginator-rpp-options'
-     */
-    p.addAttr('rowsPerPageDropdownTitle', {
-        value : 'Rows per page',
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * Array of available rows-per-page sizes.  Converted into select options.
-     * Array values may be positive integers or object literals in the form<br>
-     * { value : NUMBER, text : STRING }
-     * @attribute rowsPerPageOptions
-     * @default []
-     */
-    p.addAttr('rowsPerPageOptions', {
-        value : [],
-        validator : Y.Lang.isArray
-    });
+/**
+ * Array of available rows-per-page sizes.  Converted into select options.
+ * Array values may be positive integers or object literals in the form<br>
+ * { value : NUMBER, text : STRING }
+ * @attribute rowsPerPageOptions
+ * @default []
+ */
+Paginator.ATTRS.rowsPerPageOptions =
+{
+    value : [],
+    validator : Y.Lang.isArray
 };
 
 Paginator.ui.RowsPerPageDropdown.prototype = {
@@ -2476,7 +2353,7 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
         var p       = this.paginator,
             sel     = this.select,
             options = p.get('rowsPerPageOptions'),
-            opts    = sel.get('options'),
+            opts    = Y.Node.getDOMNode(sel).options,
             opt,cfg,val,i,len;
 
         this.all = null;
@@ -2512,17 +2389,17 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
         var rpp     = this.paginator.get('rowsPerPage')+'',
-            options = this.select.get('options'),
+            options = Y.Node.getDOMNode(this.select).options,
             i,len;
 
         for (i = 0, len = options.length; i < len; ++i) {
             if (options[i].value === rpp) {
-                options[i].set('selected', true);
+                options[i].selected = true;
                 break;
             }
         }
@@ -2535,7 +2412,7 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
      */
     onChange : function (e) {
         this.paginator.setRowsPerPage(
-            parseInt(this.select.get('options')[this.select.selectedIndex].get('value'),10));
+            parseInt(Y.Node.getDOMNode(this.select).options[this.select.get('selectedIndex')].value,10));
     },
 
     /**
@@ -2547,13 +2424,13 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
      * @protected
      */
     _handleTotalRecordsChange : function (e) {
-        if (!this.all || (e && e.prevValue === e.newValue)) {
+        if (!this.all || (e && e.prevVal === e.newVal)) {
             return;
         }
 
-        this.all.set('value', e.newValue);
+        this.all.set('value', e.newVal);
         if (this.all.get('selected')) {
-            this.paginator.set('rowsPerPage',e.newValue);
+            this.paginator.set('rowsPerPage',e.newVal);
         }
     }
 };

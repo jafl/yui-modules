@@ -8,9 +8,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the link to jump to the next page.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class NextPageLink
- * @for Y.Paginator
+ * @class Paginator.ui.NextPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -18,42 +16,34 @@ Paginator.ui.NextPageLink = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange', this.update,this);
-    p.on('rowsPerPageChange', this.update,this);
-    p.on('totalRecordsChange', this.update,this);
+    p.after('recordOffsetChange', this.update,this);
+    p.after('rowsPerPageChange', this.update,this);
+    p.after('totalRecordsChange', this.update,this);
 
-	p.on('nextPageLinkClassChange', this.rebuild, this);
-	p.on('nextPageLinkLabelChange', this.rebuild, this);
+	p.after('nextPageLinkClassChange', this.rebuild, this);
+	p.after('nextPageLinkLabelChange', this.rebuild, this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the link/span
+ * @attribute nextPageLinkClass
+ * @default 'yui-paginator-next'
  */
-Paginator.ui.NextPageLink.init = function (p) {
+Paginator.ATTRS.nextPageLinkClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'next'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the link/span
-     * @attribute nextPageLinkClass
-     * @default 'yui-paginator-next'
-     */
-    p.addAttr('nextPageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'next'),
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * Used as innerHTML for the next page link/span.
-     * @attribute nextPageLinkLabel
-     * @default 'next &gt;'
-     */
-    p.addAttr('nextPageLinkLabel', {
-        value : 'next &gt;',
-        validator : Y.Lang.isString
-    });
+/**
+ * Used as innerHTML for the next page link/span.
+ * @attribute nextPageLinkLabel
+ * @default 'next &gt;'
+ */
+Paginator.ATTRS.nextPageLinkLabel =
+{
+    value : 'next &gt;',
+    validator : Y.Lang.isString
 };
 
 Paginator.ui.NextPageLink.prototype = {
@@ -127,12 +117,12 @@ Paginator.ui.NextPageLink.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
         var last = this.paginator.getTotalPages(),
-            par  = this.current ? this.current.parentNode : null;
+            par  = this.current ? this.current.get('parentNode') : null;
 
         if (this.paginator.getCurrentPage() !== last) {
             if (par && this.current === this.span) {
@@ -149,11 +139,11 @@ Paginator.ui.NextPageLink.prototype = {
 
     /**
      * Rebuild the markup.
-     * @method update
+     * @method rebuild
      * @param e {CustomEvent} The calling change event
      */
     rebuild : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 

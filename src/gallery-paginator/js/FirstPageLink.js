@@ -8,9 +8,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the link to jump to the first page.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class FirstPageLink
- * @for Y.Paginator
+ * @class Paginator.ui.FirstPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -18,42 +16,34 @@ Paginator.ui.FirstPageLink = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange',this.update,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this.update,this);
+    p.after('recordOffsetChange',this.update,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this.update,this);
 
-    p.on('firstPageLinkLabelChange',this.rebuild,this);
-    p.on('firstPageLinkClassChange',this.rebuild,this);
+    p.after('firstPageLinkLabelChange',this.rebuild,this);
+    p.after('firstPageLinkClassChange',this.rebuild,this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * Used as innerHTML for the first page link/span.
+ * @attribute firstPageLinkLabel
+ * @default '&lt;&lt; first'
  */
-Paginator.ui.FirstPageLink.init = function (p) {
+Paginator.ATTRS.firstPageLinkLabel =
+{
+    value : '&lt;&lt; first',
+    validator : Y.Lang.isString
+};
 
-    /**
-     * Used as innerHTML for the first page link/span.
-     * @attribute firstPageLinkLabel
-     * @default '&lt;&lt; first'
-     */
-    p.addAttr('firstPageLinkLabel', {
-        value : '&lt;&lt; first',
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * CSS class assigned to the link/span
-     * @attribute firstPageLinkClass
-     * @default 'yui-paginator-first'
-     */
-    p.addAttr('firstPageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'first'),
-        validator : Y.Lang.isString
-    });
+/**
+ * CSS class assigned to the link/span
+ * @attribute firstPageLinkClass
+ * @default 'yui-paginator-first'
+ */
+Paginator.ATTRS.firstPageLinkClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'first'),
+    validator : Y.Lang.isString
 };
 
 // Instance members and methods
@@ -126,7 +116,7 @@ Paginator.ui.FirstPageLink.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
@@ -150,7 +140,7 @@ Paginator.ui.FirstPageLink.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     rebuild : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 

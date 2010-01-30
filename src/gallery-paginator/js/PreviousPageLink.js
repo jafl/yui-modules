@@ -8,9 +8,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the link to jump to the previous page.
  *
  * @module gallery-paginator
- * @namespace YAHOO.widget.Paginator.ui
- * @class PreviousPageLink
- * @for YAHOO.widget.Paginator
+ * @class Paginator.ui.PreviousPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -18,42 +16,34 @@ Paginator.ui.PreviousPageLink = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange',this.update,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this.update,this);
+    p.after('recordOffsetChange',this.update,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this.update,this);
 
-    p.on('previousPageLinkLabelChange',this.update,this);
-    p.on('previousPageLinkClassChange',this.update,this);
+    p.after('previousPageLinkLabelChange',this.update,this);
+    p.after('previousPageLinkClassChange',this.update,this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the link/span
+ * @attribute previousPageLinkClass
+ * @default 'yui-paginator-previous'
  */
-Paginator.ui.PreviousPageLink.init = function (p) {
+Paginator.ATTRS.previousPageLinkClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'previous'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the link/span
-     * @attribute previousPageLinkClass
-     * @default 'yui-paginator-previous'
-     */
-    p.addAttr('previousPageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'previous'),
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * Used as innerHTML for the previous page link/span.
-     * @attribute previousPageLinkLabel
-     * @default '&lt; prev'
-     */
-    p.addAttr('previousPageLinkLabel', {
-        value : '&lt; prev',
-        validator : Y.Lang.isString
-    });
+/**
+ * Used as innerHTML for the previous page link/span.
+ * @attribute previousPageLinkLabel
+ * @default '&lt; prev'
+ */
+Paginator.ATTRS.previousPageLinkLabel =
+{
+    value : '&lt; prev',
+    validator : Y.Lang.isString
 };
 
 Paginator.ui.PreviousPageLink.prototype = {
@@ -125,11 +115,11 @@ Paginator.ui.PreviousPageLink.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
-        var par = this.current ? this.current.parentNode : null;
+        var par = this.current ? this.current.get('parentNode') : null;
         if (this.paginator.getCurrentPage() > 1) {
             if (par && this.current === this.span) {
                 par.replaceChild(this.link,this.current);

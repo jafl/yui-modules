@@ -8,9 +8,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the page links
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class PageLinks
- * @for Y.Paginator
+ * @class Paginator.ui.PageLinks
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -18,76 +16,71 @@ Paginator.ui.PageLinks = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange',this.update,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this.update,this);
+    p.after('recordOffsetChange',this.update,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this.update,this);
 
-    p.on('pageLinksContainerClassChange', this.rebuild,this);
-    p.on('pageLinkClassChange', this.rebuild,this);
-    p.on('currentPageClassChange', this.rebuild,this);
-    p.on('pageLinksChange', this.rebuild,this);
+    p.after('pageLinksContainerClassChange', this.rebuild,this);
+    p.after('pageLinkClassChange', this.rebuild,this);
+    p.after('currentPageClassChange', this.rebuild,this);
+    p.after('pageLinksChange', this.rebuild,this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the span containing the page links.
+ * @attribute pageLinksContainerClass
+ * @default 'yui-paginator-pages'
  */
-Paginator.ui.PageLinks.init = function (p) {
+Paginator.ATTRS.pageLinksContainerClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'pages'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the span containing the page links.
-     * @attribute pageLinksContainerClass
-     * @default 'yui-paginator-pages'
-     */
-    p.addAttr('pageLinksContainerClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'pages'),
-        validator : Y.Lang.isString
-    });
+/**
+ * CSS class assigned to each page link/span.
+ * @attribute pageLinkClass
+ * @default 'yui-paginator-page'
+ */
+Paginator.ATTRS.pageLinkClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'page'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to each page link/span.
-     * @attribute pageLinkClass
-     * @default 'yui-paginator-page'
-     */
-    p.addAttr('pageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'page'),
-        validator : Y.Lang.isString
-    });
+/**
+ * CSS class assigned to the current page span.
+ * @attribute currentPageClass
+ * @default 'yui-paginator-current-page'
+ */
+Paginator.ATTRS.currentPageClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'current-page'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the current page span.
-     * @attribute currentPageClass
-     * @default 'yui-paginator-current-page'
-     */
-    p.addAttr('currentPageClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'current-page'),
-        validator : Y.Lang.isString
-    });
+/**
+ * Maximum number of page links to display at one time.
+ * @attribute pageLinks
+ * @default 10
+ */
+Paginator.ATTRS.pageLinks =
+{
+    value : 10,
+    validator : Paginator.isNumeric
+};
 
-    /**
-     * Maximum number of page links to display at one time.
-     * @attribute pageLinks
-     * @default 10
-     */
-    p.addAttr('pageLinks', {
-        value : 10,
-        validator : Paginator.isNumeric
-    });
-
-    /**
-     * Function used generate the innerHTML for each page link/span.  The
-     * function receives as parameters the page number and a reference to the
-     * paginator object.
-     * @attribute pageLabelBuilder
-     * @default function (page, paginator) { return page; }
-     */
-    p.addAttr('pageLabelBuilder', {
-        value : function (page, paginator) { return page; },
-        validator : Y.Lang.isFunction
-    });
+/**
+ * Function used generate the innerHTML for each page link/span.  The
+ * function receives as parameters the page number and a reference to the
+ * paginator object.
+ * @attribute pageLabelBuilder
+ * @default function (page, paginator) { return page; }
+ */
+Paginator.ATTRS.pageLabelBuilder =
+{
+    value : function (page, paginator) { return page; },
+    validator : Y.Lang.isFunction
 };
 
 /**
@@ -177,7 +170,7 @@ Paginator.ui.PageLinks.prototype = {
         this.container.on('click',this.onClick,this);
 
         // Call update, flagging a need to rebuild
-        this.update({newValue : null, rebuild : true});
+        this.update({newVal : null, rebuild : true});
 
         return this.container;
     },
@@ -188,7 +181,7 @@ Paginator.ui.PageLinks.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
@@ -244,7 +237,7 @@ Paginator.ui.PageLinks.prototype = {
      * @param e {DOMEvent} The click event
      */
     onClick : function (e) {
-        var t = e.get('target');
+        var t = e.target;
         if (t && t.hasClass(this.paginator.get('pageLinkClass'))) {
 
             e.halt();

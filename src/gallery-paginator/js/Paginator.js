@@ -23,24 +23,7 @@ http://developer.yahoo.net/yui/license.txt
  * configuration.
  */
 function Paginator(config) {
-    var UNLIMITED = Paginator.VALUE_UNLIMITED,
-        initialPage, records, perPage, startIndex;
-
     Paginator.superclass.constructor.call(this, config);
-
-    this._selfSubscribe();
-    this.initUIComponents();
-
-    // Calculate the initial record offset
-    initialPage = this.get('initialPage');
-    records     = this.get('totalRecords');
-    perPage     = this.get('rowsPerPage');
-    if (initialPage > 1 && perPage !== UNLIMITED) {
-        startIndex = (initialPage - 1) * perPage;
-        if (records === UNLIMITED || startIndex < records) {
-            this.set('recordOffset',startIndex);
-        }
-    }
 }
 
 
@@ -315,7 +298,6 @@ Y.extend(Paginator, Y.Widget,
             initialPage, records, perPage, startIndex;
 
         this._selfSubscribe();
-        this.initUIComponents();
 
         // Calculate the initial record offset
         initialPage = this.get('initialPage');
@@ -337,34 +319,16 @@ Y.extend(Paginator, Y.Widget,
      */
     _selfSubscribe : function () {
         // Listen for changes to totalRecords and alwaysVisible 
-        this.on('totalRecordsChange',this.updateVisibility,this);
-        this.on('alwaysVisibleChange',this.updateVisibility,this);
+        this.after('totalRecordsChange',this.updateVisibility,this);
+        this.after('alwaysVisibleChange',this.updateVisibility,this);
 
         // Fire the pageChange event when appropriate
-        this.on('totalRecordsChange',this._handleStateChange,this);
-        this.on('recordOffsetChange',this._handleStateChange,this);
-        this.on('rowsPerPageChange',this._handleStateChange,this);
+        this.after('totalRecordsChange',this._handleStateChange,this);
+        this.after('recordOffsetChange',this._handleStateChange,this);
+        this.after('rowsPerPageChange',this._handleStateChange,this);
 
         // Update recordOffset when totalRecords is reduced below
-        this.on('totalRecordsChange',this._syncRecordOffset,this);
-    },
-
-    /**
-     * Initialize registered ui components onto this instance.
-     * @method initUIComponents
-     * @private
-     */
-    initUIComponents : function () {
-        var ui = Paginator.ui,
-            name,UIComp;
-        for (name in ui) {
-            if (ui.hasOwnProperty(name)) {
-                UIComp = ui[name];
-                if (Y.Lang.isObject(UIComp) && Y.Lang.isFunction(UIComp.init)) {
-                    UIComp.init(this);
-                }
-            }
-        }
+        this.after('totalRecordsChange',this._syncRecordOffset,this);
     },
 
     renderUI : function () {

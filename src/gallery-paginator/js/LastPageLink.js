@@ -8,9 +8,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the link to jump to the last page.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class LastPageLink
- * @for Y.Paginator
+ * @class Paginator.ui.LastPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -18,42 +16,34 @@ Paginator.ui.LastPageLink = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('recordOffsetChange',this.update,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this.update,this);
+    p.after('recordOffsetChange',this.update,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this.update,this);
 
-	p.on('lastPageLinkClassChange', this.rebuild, this);
-	p.on('lastPageLinkLabelChange', this.rebuild, this);
+	p.after('lastPageLinkClassChange', this.rebuild, this);
+	p.after('lastPageLinkLabelChange', this.rebuild, this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param paginator {Paginator} Paginator instance to decorate
- * @static
+  * CSS class assigned to the link/span
+  * @attribute lastPageLinkClass
+  * @default 'yui-paginator-last'
+  */
+Paginator.ATTRS.lastPageLinkClass =
+{
+     value : Y.ClassNameManager.getClassName(Paginator.NAME, 'last'),
+     validator : Y.Lang.isString
+};
+
+/**
+ * Used as innerHTML for the last page link/span.
+ * @attribute lastPageLinkLabel
+ * @default 'last &gt;&gt;'
  */
-Paginator.ui.LastPageLink.init = function (p) {
-
-    /**
-     * CSS class assigned to the link/span
-     * @attribute lastPageLinkClass
-     * @default 'yui-paginator-last'
-     */
-    p.addAttr('lastPageLinkClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'last'),
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * Used as innerHTML for the last page link/span.
-     * @attribute lastPageLinkLabel
-     * @default 'last &gt;&gt;'
-     */
-    p.addAttr('lastPageLinkLabel', {
-        value : 'last &gt;&gt;',
-        validator : Y.Lang.isString
-    });
+Paginator.ATTRS.lastPageLinkLabel =
+{
+    value : 'last &gt;&gt;',
+    validator : Y.Lang.isString
 };
 
 Paginator.ui.LastPageLink.prototype = {
@@ -151,11 +141,11 @@ Paginator.ui.LastPageLink.prototype = {
      * @param e {CustomEvent} The calling change event (ignored)
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
-        var par   = this.current ? this.current.parentNode : null,
+        var par   = this.current ? this.current.get('parentNode') : null,
             after = this.link;
 
         if (par) {
@@ -178,11 +168,11 @@ Paginator.ui.LastPageLink.prototype = {
 
     /**
      * Rebuild the markup.
-     * @method update
+     * @method rebuild
      * @param e {CustomEvent} The calling change event (ignored)
      */
     rebuild : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 

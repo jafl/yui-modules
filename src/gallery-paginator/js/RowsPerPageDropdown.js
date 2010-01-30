@@ -7,10 +7,8 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * ui Component to generate the rows-per-page dropdown
  *
- * @namespace YAHOO.widget.Paginator.ui
- * @class RowsPerPageDropdown
- * @for YAHOO.widget.Paginator
- *
+ * @module gallery-paginator
+ * @class Paginator.ui.RowsPerPageDropdown
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -18,54 +16,47 @@ Paginator.ui.RowsPerPageDropdown = function (p) {
     this.paginator = p;
 
     p.on('destroy',this.destroy,this);
-    p.on('rowsPerPageChange',this.update,this);
-    p.on('totalRecordsChange',this._handleTotalRecordsChange,this);
+    p.after('rowsPerPageChange',this.update,this);
+    p.after('totalRecordsChange',this._handleTotalRecordsChange,this);
 
-    p.on('rowsPerPageDropdownClassChange',this.rebuild,this);
-    p.on('rowsPerPageDropdownTitleChange',this.rebuild,this);
-    p.on('rowsPerPageOptionsChange',this.rebuild,this);
+    p.after('rowsPerPageDropdownClassChange',this.rebuild,this);
+    p.after('rowsPerPageDropdownTitleChange',this.rebuild,this);
+    p.after('rowsPerPageOptionsChange',this.rebuild,this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the select node
+ * @attribute rowsPerPageDropdownClass
+ * @default 'yui-paginator-rpp-options'
  */
-Paginator.ui.RowsPerPageDropdown.init = function (p) {
+Paginator.ATTRS.rowsPerPageDropdownClass =
+{
+    value : Y.ClassNameManager.getClassName(Paginator.NAME, 'rpp-options'),
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the select node
-     * @attribute rowsPerPageDropdownClass
-     * @default 'yui-paginator-rpp-options'
-     */
-    p.addAttr('rowsPerPageDropdownClass', {
-        value : Y.ClassNameManager.getClassName(Paginator.NAME, 'rpp-options'),
-        validator : Y.Lang.isString
-    });
+/**
+ * CSS class assigned to the select node
+ * @attribute rowsPerPageDropdownTitle
+ * @default 'Rows per page'
+ */
+Paginator.ATTRS.rowsPerPageDropdownTitle =
+{
+    value : 'Rows per page',
+    validator : Y.Lang.isString
+};
 
-    /**
-     * CSS class assigned to the select node
-     * @attribute rowsPerPageDropdownClass
-     * @default 'yui-paginator-rpp-options'
-     */
-    p.addAttr('rowsPerPageDropdownTitle', {
-        value : 'Rows per page',
-        validator : Y.Lang.isString
-    });
-
-    /**
-     * Array of available rows-per-page sizes.  Converted into select options.
-     * Array values may be positive integers or object literals in the form<br>
-     * { value : NUMBER, text : STRING }
-     * @attribute rowsPerPageOptions
-     * @default []
-     */
-    p.addAttr('rowsPerPageOptions', {
-        value : [],
-        validator : Y.Lang.isArray
-    });
+/**
+ * Array of available rows-per-page sizes.  Converted into select options.
+ * Array values may be positive integers or object literals in the form<br>
+ * { value : NUMBER, text : STRING }
+ * @attribute rowsPerPageOptions
+ * @default []
+ */
+Paginator.ATTRS.rowsPerPageOptions =
+{
+    value : [],
+    validator : Y.Lang.isArray
 };
 
 Paginator.ui.RowsPerPageDropdown.prototype = {
@@ -123,7 +114,7 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
         var p       = this.paginator,
             sel     = this.select,
             options = p.get('rowsPerPageOptions'),
-            opts    = sel.get('options'),
+            opts    = Y.Node.getDOMNode(sel).options,
             opt,cfg,val,i,len;
 
         this.all = null;
@@ -159,17 +150,17 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
      * @param e {CustomEvent} The calling change event
      */
     update : function (e) {
-        if (e && e.prevValue === e.newValue) {
+        if (e && e.prevVal === e.newVal) {
             return;
         }
 
         var rpp     = this.paginator.get('rowsPerPage')+'',
-            options = this.select.get('options'),
+            options = Y.Node.getDOMNode(this.select).options,
             i,len;
 
         for (i = 0, len = options.length; i < len; ++i) {
             if (options[i].value === rpp) {
-                options[i].set('selected', true);
+                options[i].selected = true;
                 break;
             }
         }
@@ -182,7 +173,7 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
      */
     onChange : function (e) {
         this.paginator.setRowsPerPage(
-            parseInt(this.select.get('options')[this.select.selectedIndex].get('value'),10));
+            parseInt(Y.Node.getDOMNode(this.select).options[this.select.get('selectedIndex')].value,10));
     },
 
     /**
@@ -194,13 +185,13 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
      * @protected
      */
     _handleTotalRecordsChange : function (e) {
-        if (!this.all || (e && e.prevValue === e.newValue)) {
+        if (!this.all || (e && e.prevVal === e.newVal)) {
             return;
         }
 
-        this.all.set('value', e.newValue);
+        this.all.set('value', e.newVal);
         if (this.all.get('selected')) {
-            this.paginator.set('rowsPerPage',e.newValue);
+            this.paginator.set('rowsPerPage',e.newVal);
         }
     }
 };

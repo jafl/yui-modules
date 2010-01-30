@@ -8,9 +8,7 @@ http://developer.yahoo.net/yui/license.txt
  * Generates an input field for setting the current page.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class CurrentPageInput
- * @for Y.Paginator
+ * @class Paginator.ui.CurrentPageInput
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -19,43 +17,34 @@ Paginator.ui.CurrentPageInput = function(
 {
 	this.paginator = p;
 
-	p.on('destroy',            this.destroy, this);
-	p.on('recordOffsetChange', this.update,  this);
-	p.on('rowsPerPageChange',  this.update,  this);
-	p.on('totalRecordsChange', this.update,  this);
+	p.on('destroy',               this.destroy, this);
+	p.after('recordOffsetChange', this.update,  this);
+	p.after('rowsPerPageChange',  this.update,  this);
+	p.after('totalRecordsChange', this.update,  this);
 
-	p.on('pageInputClassChange', this.update, this);
+	p.after('pageInputClassChange', this.update, this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the span
+ * @attribute pageInputClass
+ * @default 'yui-paginator-page-input'
  */
-Paginator.ui.CurrentPageInput.init = function(
-	/* Paginator */	p)
+Paginator.ATTRS.pageInputClass =
 {
-	/**
-	 * CSS class assigned to the span
-	 * @attribute pageInputClass
-	 * @default 'yui-paginator-page-input'
-	 */
-	p.addAttr('pageInputClass', {
-		value : Y.ClassNameManager.getClassName(Paginator.NAME, 'page-input'),
-		validator : Y.Lang.isString
-	});
+	value : Y.ClassNameManager.getClassName(Paginator.NAME, 'page-input'),
+	validator : Y.Lang.isString
+};
 
-	/**
-	 * Used as innerHTML for the span.
-	 * @attribute pageInputTemplate
-	 * @default '{currentPage} of {totalPages}'
-	 */
-	p.addAttr('pageInputTemplate', {
-		value : '{currentPage} of {totalPages}',
-		validator : Y.Lang.isString
-	});
+/**
+ * Used as innerHTML for the span.
+ * @attribute pageInputTemplate
+ * @default '{currentPage} of {totalPages}'
+ */
+Paginator.ATTRS.pageInputTemplate =
+{
+	value : '{currentPage} of {totalPages}',
+	validator : Y.Lang.isString
 };
 
 Paginator.ui.CurrentPageInput.prototype =
@@ -112,7 +101,7 @@ Paginator.ui.CurrentPageInput.prototype =
 	update: function(
 		/* CustomEvent */ e)
 	{
-		if (e && e.prevValue === e.newValue)
+		if (e && e.prevVal === e.newVal)
 		{
 			return;
 		}
@@ -124,12 +113,12 @@ Paginator.ui.CurrentPageInput.prototype =
 
 	_onChange: function(e)
 	{
-		this.paginator.setPage(parseInt(this.input.value, 10));
+		this.paginator.setPage(parseInt(this.input.get('value'), 10));
 	},
 
 	_onReturnKey: function(e)
 	{
 		e.halt(true);
-		this.paginator.setPage(parseInt(this.input.value, 10));
+		this.paginator.setPage(parseInt(this.input.get('value'), 10));
 	}
 };

@@ -8,9 +8,7 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to display a menu for selecting the range of items to display.
  *
  * @module gallery-paginator
- * @namespace Y.Paginator.ui
- * @class ItemRangeDropdown
- * @for Y.Paginator
+ * @class Paginator.ui.ItemRangeDropdown
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
  */
@@ -19,43 +17,34 @@ Paginator.ui.ItemRangeDropdown = function(
 {
 	this.paginator = p;
 
-	p.on('destroy',            this.destroy, this);
-	p.on('recordOffsetChange', this.update,  this);
-	p.on('rowsPerPageChange',  this.update,  this);
-	p.on('totalRecordsChange', this.update,  this);
+	p.on('destroy',               this.destroy, this);
+	p.after('recordOffsetChange', this.update,  this);
+	p.after('rowsPerPageChange',  this.update,  this);
+	p.after('totalRecordsChange', this.update,  this);
 
-	p.on('itemRangeDropdownClassChange', this.update, this);
+	p.after('itemRangeDropdownClassChange', this.update, this);
 };
 
 /**
- * Decorates Paginator instances with new attributes. Called during
- * Paginator instantiation.
- * @method init
- * @param p {Paginator} Paginator instance to decorate
- * @static
+ * CSS class assigned to the span
+ * @attribute itemRangeDropdownClass
+ * @default 'yui-paginator-ir-dropdown'
  */
-Paginator.ui.ItemRangeDropdown.init = function(
-	/* Paginator */	p)
+Paginator.ATTRS.itemRangeDropdownClass =
 {
-	/**
-	 * CSS class assigned to the span
-	 * @attribute itemRangeDropdownClass
-	 * @default 'yui-paginator-ir-dropdown'
-	 */
-	p.addAttr('itemRangeDropdownClass', {
-		value : Y.ClassNameManager.getClassName(Paginator.NAME, 'ir-dropdown'),
-		validator : Y.Lang.isString
-	});
+	value : Y.ClassNameManager.getClassName(Paginator.NAME, 'ir-dropdown'),
+	validator : Y.Lang.isString
+};
 
-	/**
-	 * Used as innerHTML for the span.
-	 * @attribute itemRangeDropdownTemplate
-	 * @default '{currentRange} of {totalItems}'
-	 */
-	p.addAttr('itemRangeDropdownTemplate', {
-		value : '{currentRange} of {totalItems}',
-		validator : Y.Lang.isString
-	});
+/**
+ * Used as innerHTML for the span.
+ * @attribute itemRangeDropdownTemplate
+ * @default '{currentRange} of {totalItems}'
+ */
+Paginator.ATTRS.itemRangeDropdownTemplate =
+{
+	value : '{currentRange} of {totalItems}',
+	validator : Y.Lang.isString
 };
 
 Paginator.ui.ItemRangeDropdown.prototype =
@@ -111,7 +100,7 @@ Paginator.ui.ItemRangeDropdown.prototype =
 	update: function(
 		/* CustomEvent */ e)
 	{
-		if (e && e.prevValue === e.newValue)
+		if (e && e.prevVal === e.newVal)
 		{
 			return;
 		}
