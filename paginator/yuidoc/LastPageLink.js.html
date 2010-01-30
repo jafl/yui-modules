@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-paginator   LastPageLink.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-paginator&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a>
+                
+                 &gt; LastPageLink.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">Copyright (c) 2009, Yahoo! Inc. All rights reserved.</span>
+<span class="cm">Code licensed under the BSD License:</span>
+<span class="cm">http://developer.yahoo.net/yui/license.txt</span>
+<span class="cm">*/</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * ui Component to generate the link to jump to the last page.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module gallery-paginator</span>
+<span class="cm"> * @class Paginator.ui.LastPageLink</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param p {Pagintor} Paginator instance to attach to</span>
+<span class="cm"> */</span>
+<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">LastPageLink</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+
+    <span class="nx">p</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;destroy&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">destroy</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;recordOffsetChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;rowsPerPageChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;totalRecordsChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+
+	<span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;lastPageLinkClassChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rebuild</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	<span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;lastPageLinkLabelChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rebuild</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm">  * CSS class assigned to the link/span</span>
+<span class="cm">  * @attribute lastPageLinkClass</span>
+<span class="cm">  * @default &#39;yui-paginator-last&#39;</span>
+<span class="cm">  */</span>
+<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">lastPageLinkClass</span> <span class="o">=</span>
+<span class="p">{</span>
+     <span class="nx">value</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">Paginator</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;last&#39;</span><span class="p">),</span>
+     <span class="nx">validator</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Used as innerHTML for the last page link/span.</span>
+<span class="cm"> * @attribute lastPageLinkLabel</span>
+<span class="cm"> * @default &#39;last &amp;gt;&amp;gt;&#39;</span>
+<span class="cm"> */</span>
+<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">lastPageLinkLabel</span> <span class="o">=</span>
+<span class="p">{</span>
+    <span class="nx">value</span> <span class="o">:</span> <span class="s1">&#39;last &amp;gt;&amp;gt;&#39;</span><span class="p">,</span>
+    <span class="nx">validator</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+<span class="p">};</span>
+
+<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">LastPageLink</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Currently placed HTMLElement node</span>
+<span class="cm">     * @property current</span>
+<span class="cm">     * @type HTMLElement</span>
+<span class="cm">     * @private</span>
+<span class="cm">     */</span>
+    <span class="nx">current</span>   <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Link HTMLElement node</span>
+<span class="cm">     * @property link</span>
+<span class="cm">     * @type HTMLElement</span>
+<span class="cm">     * @private</span>
+<span class="cm">     */</span>
+    <span class="nx">link</span>      <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Span node (inactive link)</span>
+<span class="cm">     * @property span</span>
+<span class="cm">     * @type HTMLElement</span>
+<span class="cm">     * @private</span>
+<span class="cm">     */</span>
+    <span class="nx">span</span>      <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Empty place holder node for when the last page link is inappropriate to</span>
+<span class="cm">     * display in any form (unlimited paging).</span>
+<span class="cm">     * @property na</span>
+<span class="cm">     * @type HTMLElement</span>
+<span class="cm">     * @private</span>
+<span class="cm">     */</span>
+    <span class="nx">na</span>        <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+
+
+    <span class="cm">/**</span>
+<span class="cm">     * Removes the link/span node and clears event listeners</span>
+<span class="cm">     * @method destroy</span>
+<span class="cm">     * @private</span>
+<span class="cm">     */</span>
+    <span class="nx">destroy</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">na</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">na</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Generate the nodes and return the appropriate node given the current</span>
+<span class="cm">     * pagination state.</span>
+<span class="cm">     * @method render</span>
+<span class="cm">     * @param id_base {string} used to create unique ids for generated nodes</span>
+<span class="cm">     * @return {HTMLElement}</span>
+<span class="cm">     */</span>
+    <span class="nx">render</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">id_base</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">p</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">,</span>
+            <span class="nx">c</span>     <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lastPageLinkClass&#39;</span><span class="p">),</span>
+            <span class="nx">label</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lastPageLinkLabel&#39;</span><span class="p">),</span>
+            <span class="nx">last</span>  <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">();</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">link</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
+            <span class="s1">&#39;&lt;a href=&quot;#&quot; id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-last-link&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">label</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">onClick</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
+            <span class="s1">&#39;&lt;span id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-last-span&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">label</span><span class="o">+</span><span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">na</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
+            <span class="s1">&#39;&lt;span id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-last-na&quot;&gt;&lt;/span&gt;&#39;</span><span class="p">);</span>
+
+        <span class="k">switch</span> <span class="p">(</span><span class="nx">last</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="nx">Paginator</span><span class="p">.</span><span class="nx">VALUE_UNLIMITED</span> <span class="o">:</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">na</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">case</span> <span class="nx">p</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span> <span class="o">:</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="k">default</span> <span class="o">:</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Swap the link, span, and na nodes if appropriate.</span>
+<span class="cm">     * @method update</span>
+<span class="cm">     * @param e {CustomEvent} The calling change event (ignored)</span>
+<span class="cm">     */</span>
+    <span class="nx">update</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kd">var</span> <span class="nx">par</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nx">after</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">par</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">())</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="nx">Paginator</span><span class="p">.</span><span class="nx">VALUE_UNLIMITED</span> <span class="o">:</span>
+                    <span class="nx">after</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">na</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span> <span class="o">:</span>
+                    <span class="nx">after</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">!==</span> <span class="nx">after</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">par</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="nx">after</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="nx">after</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Rebuild the markup.</span>
+<span class="cm">     * @method rebuild</span>
+<span class="cm">     * @param e {CustomEvent} The calling change event (ignored)</span>
+<span class="cm">     */</span>
+    <span class="nx">rebuild</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kd">var</span> <span class="nx">p</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">,</span>
+            <span class="nx">c</span>     <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lastPageLinkClass&#39;</span><span class="p">),</span>
+            <span class="nx">label</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lastPageLinkLabel&#39;</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">label</span><span class="p">);</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">label</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Listener for the link&#39;s onclick event.  Passes to setPage method.</span>
+<span class="cm">     * @method onClick</span>
+<span class="cm">     * @param e {DOMEvent} The click event</span>
+<span class="cm">     */</span>
+    <span class="nx">onClick</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">setPage</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Paginator.html" title="Paginator">Paginator</a></li>
+                                <li class=""><a href="Paginator.ui.CurrentPageInput.html" title="Paginator.ui.CurrentPageInput">Paginator.ui.CurrentPageInput</a></li>
+                                <li class=""><a href="Paginator.ui.CurrentPageReport.html" title="Paginator.ui.CurrentPageReport">Paginator.ui.CurrentPageReport</a></li>
+                                <li class=""><a href="Paginator.ui.FirstPageLink.html" title="Paginator.ui.FirstPageLink">Paginator.ui.FirstPageLink</a></li>
+                                <li class=""><a href="Paginator.ui.ItemRangeDropdown.html" title="Paginator.ui.ItemRangeDropdown">Paginator.ui.ItemRangeDropdown</a></li>
+                                <li class=""><a href="Paginator.ui.LastPageLink.html" title="Paginator.ui.LastPageLink">Paginator.ui.LastPageLink</a></li>
+                                <li class=""><a href="Paginator.ui.NextPageLink.html" title="Paginator.ui.NextPageLink">Paginator.ui.NextPageLink</a></li>
+                                <li class=""><a href="Paginator.ui.PageLinks.html" title="Paginator.ui.PageLinks">Paginator.ui.PageLinks</a></li>
+                                <li class=""><a href="Paginator.ui.PreviousPageLink.html" title="Paginator.ui.PreviousPageLink">Paginator.ui.PreviousPageLink</a></li>
+                                <li class=""><a href="Paginator.ui.RowsPerPageDropdown.html" title="Paginator.ui.RowsPerPageDropdown">Paginator.ui.RowsPerPageDropdown</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="CurrentPageInput.js.html" title="CurrentPageInput.js">CurrentPageInput.js</a></li>
+                                <li class=""><a href="CurrentPageReport.js.html" title="CurrentPageReport.js">CurrentPageReport.js</a></li>
+                                <li class=""><a href="event-key-patch.js.html" title="event-key-patch.js">event-key-patch.js</a></li>
+                                <li class=""><a href="FirstPageLink.js.html" title="FirstPageLink.js">FirstPageLink.js</a></li>
+                                <li class=""><a href="ItemRangeDropdown.js.html" title="ItemRangeDropdown.js">ItemRangeDropdown.js</a></li>
+                                <li class="selected"><a href="LastPageLink.js.html" title="LastPageLink.js">LastPageLink.js</a></li>
+                                <li class=""><a href="NextPageLink.js.html" title="NextPageLink.js">NextPageLink.js</a></li>
+                                <li class=""><a href="PageLinks.js.html" title="PageLinks.js">PageLinks.js</a></li>
+                                <li class=""><a href="Paginator.js.html" title="Paginator.js">Paginator.js</a></li>
+                                <li class=""><a href="PreviousPageLink.js.html" title="PreviousPageLink.js">PreviousPageLink.js</a></li>
+                                <li class=""><a href="RowsPerPageDropdown.js.html" title="RowsPerPageDropdown.js">RowsPerPageDropdown.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2010 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    var ALL_YUI_PROPS = [{"url": "Paginator.ui.RowsPerPageDropdown.html#property_all", "access": "protected", "host": "Paginator.ui.RowsPerPageDropdown", "type": "property", "name": "all"}, {"url": "Paginator.html#config_alwaysVisible", "access": "", "host": "Paginator", "type": "config", "name": "alwaysVisible"}, {"url": "Paginator.html#event_alwaysVisibleChange", "access": "", "host": "Paginator", "type": "event", "name": "alwaysVisibleChange"}, {"url": "Paginator.html#property__batch", "access": "protected", "host": "Paginator", "type": "property", "name": "_batch"}, {"url": "Paginator.ui.PageLinks.html#method_calculateRange", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "calculateRange"}, {"url": "Paginator.html#event_changeRequest", "access": "", "host": "Paginator", "type": "event", "name": "changeRequest"}, {"url": "Paginator.ui.PageLinks.html#config_currentPageClass", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "currentPageClass"}, {"url": "Paginator.ui.PageLinks.html#event_currentPageClassChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "currentPageClassChange"}, {"url": "Paginator.html#method__firePageChange", "access": "protected", "host": "Paginator", "type": "method", "name": "_firePageChange"}, {"url": "Paginator.ui.FirstPageLink.html#config_firstPageLinkClass", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "config", "name": "firstPageLinkClass"}, {"url": "Paginator.ui.FirstPageLink.html#event_firstPageLinkClassChange", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "event", "name": "firstPageLinkClassChange"}, {"url": "Paginator.ui.FirstPageLink.html#config_firstPageLinkLabel", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "config", "name": "firstPageLinkLabel"}, {"url": "Paginator.ui.FirstPageLink.html#event_firstPageLinkLabelChange", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "event", "name": "firstPageLinkLabelChange"}, {"url": "Paginator.html#method_getCurrentPage", "access": "", "host": "Paginator", "type": "method", "name": "getCurrentPage"}, {"url": "Paginator.html#method_getNextPage", "access": "", "host": "Paginator", "type": "method", "name": "getNextPage"}, {"url": "Paginator.html#method_getPageRecords", "access": "", "host": "Paginator", "type": "method", "name": "getPageRecords"}, {"url": "Paginator.html#method_getPreviousPage", "access": "", "host": "Paginator", "type": "method", "name": "getPreviousPage"}, {"url": "Paginator.html#method_getRowsPerPage", "access": "", "host": "Paginator", "type": "method", "name": "getRowsPerPage"}, {"url": "Paginator.html#method_getStartIndex", "access": "", "host": "Paginator", "type": "method", "name": "getStartIndex"}, {"url": "Paginator.html#method_getState", "access": "", "host": "Paginator", "type": "method", "name": "getState"}, {"url": "Paginator.html#method_getTotalPages", "access": "", "host": "Paginator", "type": "method", "name": "getTotalPages"}, {"url": "Paginator.html#method_getTotalRecords", "access": "", "host": "Paginator", "type": "method", "name": "getTotalRecords"}, {"url": "Paginator.html#method__handleStateChange", "access": "protected", "host": "Paginator", "type": "method", "name": "_handleStateChange"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#method__handleTotalRecordsChange", "access": "protected", "host": "Paginator.ui.RowsPerPageDropdown", "type": "method", "name": "_handleTotalRecordsChange"}, {"url": "Paginator.html#method_hasNextPage", "access": "", "host": "Paginator", "type": "method", "name": "hasNextPage"}, {"url": "Paginator.html#method_hasPage", "access": "", "host": "Paginator", "type": "method", "name": "hasPage"}, {"url": "Paginator.html#method_hasPreviousPage", "access": "", "host": "Paginator", "type": "method", "name": "hasPreviousPage"}, {"url": "Paginator.html#config_id", "access": "", "host": "Paginator", "type": "config", "name": "id"}, {"url": "Paginator.html#event_idChange", "access": "", "host": "Paginator", "type": "event", "name": "idChange"}, {"url": "Paginator.html#config_initialPage", "access": "", "host": "Paginator", "type": "config", "name": "initialPage"}, {"url": "Paginator.html#event_initialPageChange", "access": "", "host": "Paginator", "type": "event", "name": "initialPageChange"}, {"url": "Paginator.ui.ItemRangeDropdown.html#config_itemRangeDropdownClass", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "config", "name": "itemRangeDropdownClass"}, {"url": "Paginator.ui.ItemRangeDropdown.html#event_itemRangeDropdownClassChange", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "event", "name": "itemRangeDropdownClassChange"}, {"url": "Paginator.ui.ItemRangeDropdown.html#config_itemRangeDropdownTemplate", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "config", "name": "itemRangeDropdownTemplate"}, {"url": "Paginator.ui.ItemRangeDropdown.html#event_itemRangeDropdownTemplateChange", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "event", "name": "itemRangeDropdownTemplateChange"}, {"url": "Paginator.ui.LastPageLink.html#config_lastPageLinkClass", "access": "", "host": "Paginator.ui.LastPageLink", "type": "config", "name": "lastPageLinkClass"}, {"url": "Paginator.ui.LastPageLink.html#event_lastPageLinkClassChange", "access": "", "host": "Paginator.ui.LastPageLink", "type": "event", "name": "lastPageLinkClassChange"}, {"url": "Paginator.ui.LastPageLink.html#config_lastPageLinkLabel", "access": "", "host": "Paginator.ui.LastPageLink", "type": "config", "name": "lastPageLinkLabel"}, {"url": "Paginator.ui.LastPageLink.html#event_lastPageLinkLabelChange", "access": "", "host": "Paginator.ui.LastPageLink", "type": "event", "name": "lastPageLinkLabelChange"}, {"url": "Paginator.ui.NextPageLink.html#config_nextPageLinkClass", "access": "", "host": "Paginator.ui.NextPageLink", "type": "config", "name": "nextPageLinkClass"}, {"url": "Paginator.ui.NextPageLink.html#event_nextPageLinkClassChange", "access": "", "host": "Paginator.ui.NextPageLink", "type": "event", "name": "nextPageLinkClassChange"}, {"url": "Paginator.ui.NextPageLink.html#config_nextPageLinkLabel", "access": "", "host": "Paginator.ui.NextPageLink", "type": "config", "name": "nextPageLinkLabel"}, {"url": "Paginator.ui.NextPageLink.html#event_nextPageLinkLabelChange", "access": "", "host": "Paginator.ui.NextPageLink", "type": "event", "name": "nextPageLinkLabelChange"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#method_onChange", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "method", "name": "onChange"}, {"url": "Paginator.ui.FirstPageLink.html#method_onClick", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "method", "name": "onClick"}, {"url": "Paginator.ui.LastPageLink.html#method_onClick", "access": "", "host": "Paginator.ui.LastPageLink", "type": "method", "name": "onClick"}, {"url": "Paginator.ui.NextPageLink.html#method_onClick", "access": "", "host": "Paginator.ui.NextPageLink", "type": "method", "name": "onClick"}, {"url": "Paginator.ui.PageLinks.html#method_onClick", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "onClick"}, {"url": "Paginator.ui.PreviousPageLink.html#method_onClick", "access": "", "host": "Paginator.ui.PreviousPageLink", "type": "method", "name": "onClick"}, {"url": "Paginator.html#event_pageChange", "access": "", "host": "Paginator", "type": "event", "name": "pageChange"}, {"url": "Paginator.html#property__pageChanged", "access": "protected", "host": "Paginator", "type": "property", "name": "_pageChanged"}, {"url": "Paginator.ui.CurrentPageInput.html#config_pageInputClass", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "config", "name": "pageInputClass"}, {"url": "Paginator.ui.CurrentPageInput.html#event_pageInputClassChange", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "event", "name": "pageInputClassChange"}, {"url": "Paginator.ui.CurrentPageInput.html#config_pageInputTemplate", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "config", "name": "pageInputTemplate"}, {"url": "Paginator.ui.CurrentPageInput.html#event_pageInputTemplateChange", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "event", "name": "pageInputTemplateChange"}, {"url": "Paginator.ui.PageLinks.html#config_pageLabelBuilder", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "pageLabelBuilder"}, {"url": "Paginator.ui.PageLinks.html#event_pageLabelBuilderChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "pageLabelBuilderChange"}, {"url": "Paginator.ui.PageLinks.html#config_pageLinkClass", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "pageLinkClass"}, {"url": "Paginator.ui.PageLinks.html#event_pageLinkClassChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "pageLinkClassChange"}, {"url": "Paginator.ui.PageLinks.html#config_pageLinks", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "pageLinks"}, {"url": "Paginator.ui.PageLinks.html#event_pageLinksChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "pageLinksChange"}, {"url": "Paginator.ui.PageLinks.html#config_pageLinksContainerClass", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "pageLinksContainerClass"}, {"url": "Paginator.ui.PageLinks.html#event_pageLinksContainerClassChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "pageLinksContainerClassChange"}, {"url": "Paginator.ui.CurrentPageReport.html#config_pageReportClass", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "config", "name": "pageReportClass"}, {"url": "Paginator.ui.CurrentPageReport.html#event_pageReportClassChange", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "event", "name": "pageReportClassChange"}, {"url": "Paginator.ui.CurrentPageReport.html#config_pageReportTemplate", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "config", "name": "pageReportTemplate"}, {"url": "Paginator.ui.CurrentPageReport.html#event_pageReportTemplateChange", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "event", "name": "pageReportTemplateChange"}, {"url": "Paginator.ui.CurrentPageReport.html#config_pageReportValueGenarator", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "config", "name": "pageReportValueGenarator"}, {"url": "Paginator.ui.CurrentPageReport.html#event_pageReportValueGenaratorChange", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "event", "name": "pageReportValueGenaratorChange"}, {"url": "Paginator.html#method_Paginator.isNumeric", "access": "", "host": "Paginator", "type": "method", "name": "Paginator.isNumeric"}, {"url": "Paginator.html#property_Paginator.TEMPLATE_DEFAULT", "access": "", "host": "Paginator", "type": "property", "name": "Paginator.TEMPLATE_DEFAULT"}, {"url": "Paginator.html#property_Paginator.TEMPLATE_ROWS_PER_PAGE", "access": "", "host": "Paginator", "type": "property", "name": "Paginator.TEMPLATE_ROWS_PER_PAGE"}, {"url": "Paginator.html#method_Paginator.toNumber", "access": "", "host": "Paginator", "type": "method", "name": "Paginator.toNumber"}, {"url": "Paginator.html#property_Paginator.ui", "access": "", "host": "Paginator", "type": "property", "name": "Paginator.ui"}, {"url": "Paginator.html#property_Paginator.VALUE_UNLIMITED", "access": "", "host": "Paginator", "type": "property", "name": "Paginator.VALUE_UNLIMITED"}, {"url": "Paginator.ui.PreviousPageLink.html#config_previousPageLinkClass", "access": "", "host": "Paginator.ui.PreviousPageLink", "type": "config", "name": "previousPageLinkClass"}, {"url": "Paginator.ui.PreviousPageLink.html#event_previousPageLinkClassChange", "access": "", "host": "Paginator.ui.PreviousPageLink", "type": "event", "name": "previousPageLinkClassChange"}, {"url": "Paginator.ui.PreviousPageLink.html#config_previousPageLinkLabel", "access": "", "host": "Paginator.ui.PreviousPageLink", "type": "config", "name": "previousPageLinkLabel"}, {"url": "Paginator.ui.PreviousPageLink.html#event_previousPageLinkLabelChange", "access": "", "host": "Paginator.ui.PreviousPageLink", "type": "event", "name": "previousPageLinkLabelChange"}, {"url": "Paginator.ui.FirstPageLink.html#method_rebuild", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "method", "name": "rebuild"}, {"url": "Paginator.ui.LastPageLink.html#method_rebuild", "access": "", "host": "Paginator.ui.LastPageLink", "type": "method", "name": "rebuild"}, {"url": "Paginator.ui.NextPageLink.html#method_rebuild", "access": "", "host": "Paginator.ui.NextPageLink", "type": "method", "name": "rebuild"}, {"url": "Paginator.ui.PageLinks.html#method_rebuild", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "rebuild"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#method_rebuild", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "method", "name": "rebuild"}, {"url": "Paginator.html#config_recordOffset", "access": "", "host": "Paginator", "type": "config", "name": "recordOffset"}, {"url": "Paginator.html#event_recordOffsetChange", "access": "", "host": "Paginator", "type": "event", "name": "recordOffsetChange"}, {"url": "Paginator.ui.CurrentPageInput.html#method_render", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "method", "name": "render"}, {"url": "Paginator.ui.CurrentPageReport.html#method_render", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "method", "name": "render"}, {"url": "Paginator.ui.FirstPageLink.html#method_render", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "method", "name": "render"}, {"url": "Paginator.ui.ItemRangeDropdown.html#method_render", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "method", "name": "render"}, {"url": "Paginator.ui.LastPageLink.html#method_render", "access": "", "host": "Paginator.ui.LastPageLink", "type": "method", "name": "render"}, {"url": "Paginator.ui.NextPageLink.html#method_render", "access": "", "host": "Paginator.ui.NextPageLink", "type": "method", "name": "render"}, {"url": "Paginator.ui.PageLinks.html#method_render", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "render"}, {"url": "Paginator.ui.PreviousPageLink.html#method_render", "access": "", "host": "Paginator.ui.PreviousPageLink", "type": "method", "name": "render"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#method_render", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "method", "name": "render"}, {"url": "Paginator.html#method__renderTemplate", "access": "protected", "host": "Paginator", "type": "method", "name": "_renderTemplate"}, {"url": "Paginator.html#method_renderUIComponent", "access": "", "host": "Paginator", "type": "method", "name": "renderUIComponent"}, {"url": "Paginator.html#config_rowsPerPage", "access": "", "host": "Paginator", "type": "config", "name": "rowsPerPage"}, {"url": "Paginator.html#event_rowsPerPageChange", "access": "", "host": "Paginator", "type": "event", "name": "rowsPerPageChange"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#config_rowsPerPageDropdownClass", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "config", "name": "rowsPerPageDropdownClass"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#event_rowsPerPageDropdownClassChange", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "event", "name": "rowsPerPageDropdownClassChange"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#config_rowsPerPageDropdownTitle", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "config", "name": "rowsPerPageDropdownTitle"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#event_rowsPerPageDropdownTitleChange", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "event", "name": "rowsPerPageDropdownTitleChange"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#config_rowsPerPageOptions", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "config", "name": "rowsPerPageOptions"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#event_rowsPerPageOptionsChange", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "event", "name": "rowsPerPageOptionsChange"}, {"url": "Paginator.html#method__selfSubscribe", "access": "protected", "host": "Paginator", "type": "method", "name": "_selfSubscribe"}, {"url": "Paginator.html#method_setPage", "access": "", "host": "Paginator", "type": "method", "name": "setPage"}, {"url": "Paginator.html#method_setRowsPerPage", "access": "", "host": "Paginator", "type": "method", "name": "setRowsPerPage"}, {"url": "Paginator.html#method_setStartIndex", "access": "", "host": "Paginator", "type": "method", "name": "setStartIndex"}, {"url": "Paginator.html#method_setState", "access": "", "host": "Paginator", "type": "method", "name": "setState"}, {"url": "Paginator.html#method_setTotalRecords", "access": "", "host": "Paginator", "type": "method", "name": "setTotalRecords"}, {"url": "Paginator.ui.CurrentPageReport.html#method_sprintf", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "method", "name": "sprintf"}, {"url": "Paginator.html#property__state", "access": "protected", "host": "Paginator", "type": "property", "name": "_state"}, {"url": "Paginator.html#method__syncRecordOffset", "access": "protected", "host": "Paginator", "type": "method", "name": "_syncRecordOffset"}, {"url": "Paginator.html#config_template", "access": "", "host": "Paginator", "type": "config", "name": "template"}, {"url": "Paginator.html#event_templateChange", "access": "", "host": "Paginator", "type": "event", "name": "templateChange"}, {"url": "Paginator.html#config_totalRecords", "access": "", "host": "Paginator", "type": "config", "name": "totalRecords"}, {"url": "Paginator.html#event_totalRecordsChange", "access": "", "host": "Paginator", "type": "event", "name": "totalRecordsChange"}, {"url": "Paginator.ui.CurrentPageInput.html#method_update", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "method", "name": "update"}, {"url": "Paginator.ui.CurrentPageReport.html#method_update", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "method", "name": "update"}, {"url": "Paginator.ui.FirstPageLink.html#method_update", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "method", "name": "update"}, {"url": "Paginator.ui.ItemRangeDropdown.html#method_update", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "method", "name": "update"}, {"url": "Paginator.ui.LastPageLink.html#method_update", "access": "", "host": "Paginator.ui.LastPageLink", "type": "method", "name": "update"}, {"url": "Paginator.ui.NextPageLink.html#method_update", "access": "", "host": "Paginator.ui.NextPageLink", "type": "method", "name": "update"}, {"url": "Paginator.ui.PageLinks.html#method_update", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "update"}, {"url": "Paginator.ui.PreviousPageLink.html#method_update", "access": "", "host": "Paginator.ui.PreviousPageLink", "type": "method", "name": "update"}, {"url": "Paginator.ui.RowsPerPageDropdown.html#method_update", "access": "", "host": "Paginator.ui.RowsPerPageDropdown", "type": "method", "name": "update"}, {"url": "Paginator.html#config_updateOnChange", "access": "", "host": "Paginator", "type": "config", "name": "updateOnChange"}, {"url": "Paginator.html#event_updateOnChangeChange", "access": "", "host": "Paginator", "type": "event", "name": "updateOnChangeChange"}, {"url": "Paginator.html#method_updateVisibility", "access": "", "host": "Paginator", "type": "method", "name": "updateVisibility"}];
+    YAHOO.yuidoc.init();
+</script>
+</body>
+</html>

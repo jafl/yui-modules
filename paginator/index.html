@@ -1,0 +1,84 @@
+<!DOCTYPE html public '-//w3c//dtd html 4.01//en' http://www.w3.org/tr/html4/strict.dtd'>
+<html>
+<head>
+	<title>YUI3 Checkbox Groups Examples</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+	<script src="gallery-paginator-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssreset/reset-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssbase/base-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssfonts/fonts-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
+</head>
+<body>
+
+<script type="text/javascript">
+YUI().use('gallery-paginator', function(Y)
+{
+	function update(
+		/* object */	state)
+	{
+		this.setPage(state.page, true);
+		this.setRowsPerPage(state.rowsPerPage, true);
+	}
+
+	var p = new Y.Paginator(
+	{
+		totalRecords: 25,
+		rowsPerPage:5,
+		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}'
+	});
+	p.on('changeRequest', update, p);
+	p.render('#pg1');
+
+	p = new Y.Paginator(
+	{
+		totalRecords: 25,
+		rowsPerPage:5,
+		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {CurrentPageInput} {NextPageLink} {LastPageLink}',
+		firstPageLinkLabel:    '|&lt;',
+		previousPageLinkLabel: '&lt;',
+		nextPageLinkLabel:     '&gt;',
+		lastPageLinkLabel:     '&gt;|'
+	});
+	p.on('changeRequest', update, p);
+	p.render('#pg2');
+
+	p = new Y.Paginator(
+	{
+		totalRecords: 25,
+		rowsPerPage:5,
+		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {ItemRangeDropdown} {NextPageLink} {LastPageLink}',
+		firstPageLinkLabel:    '|&lt;',
+		previousPageLinkLabel: '&lt;',
+		nextPageLinkLabel:     '&gt;',
+		lastPageLinkLabel:     '&gt;|'
+	});
+	p.on('changeRequest', update, p);
+	p.render('#pg3');
+
+	p = new Y.Paginator(
+	{
+		totalRecords: 200,
+		rowsPerPage:5,
+		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {CurrentPageInput} {ItemRangeDropdown} {PageLinks} {NextPageLink} {LastPageLink} Rows per page: {RowsPerPageDropdown}',
+		rowsPerPageOptions:    [5,10,25]
+	});
+	p.on('changeRequest', update, p);
+	p.render('#pg4');
+});
+</script>
+
+<h1>YUI3 Paginator Examples</h1>
+
+<div id="pg1"></div>
+<hr>
+<div id="pg2"></div>
+<hr>
+<div id="pg3"></div>
+<hr>
+<div id="pg4"></div>
+
+</body>
+</html>
