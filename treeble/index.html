@@ -1,0 +1,206 @@
+<!DOCTYPE html public '-//w3c//dtd html 4.01//en' http://www.w3.org/tr/html4/strict.dtd'>
+<html>
+<head>
+	<title>YUI 2 Treeble Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<!-- Combo-handled YUI CSS files: --> 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset-fonts-grids/reset-fonts-grids.css&2.8.0r4/build/datatable/assets/skins/sam/datatable.css"> 
+	<!-- Combo-handled YUI JS files: --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script> 
+
+	<style type="text/css">
+	.yui-dt td.satg-treeble-nub
+	{
+		border-right-color: transparent;
+	}
+
+	.yui-dt .satg-row-toggle a.satg-treeble-collapse-nub
+	{
+		padding:0 8px;
+		height:14px;
+		margin-left:2px;
+		*display:inline-block;
+	}
+
+	.yui-dt .satg-row-open a.satg-treeble-collapse-nub
+	{
+		background:url(http://s.yimg.com/nh/i/us/apex/en_us/sprite/dealio-sprite-18.png) no-repeat 0 -925px;
+	}
+	.yui-dt .satg-row-closed a.satg-treeble-collapse-nub
+	{
+		background:url(http://s.yimg.com/nh/i/us/apex/en_us/sprite/dealio-sprite-18.png) no-repeat 3px -978px;
+	}
+
+	.yui-dt td .satg-treeble-depth-1
+	{
+		padding-left: 10px;
+	}
+	.yui-dt td .satg-treeble-depth-2
+	{
+		padding-left: 20px;
+	}
+	.yui-dt td .satg-treeble-depth-3
+	{
+		padding-left: 30px;
+	}
+	</style>
+</head>
+<body class="yui-skin-sam">
+
+<script type="text/javascript">
+Event.onDOMReady(function(){
+
+	YAHOO.namespace('example');
+
+	var Dom = YAHOO.util.Dom,
+		Event = YAHOO.util.Event,
+		DT = YAHOO.widget.DataTable;
+
+	YAHOO.example.Data = {
+		bookorders: [
+			{id:"001", quantity:1, amount:4, title:"A Book About Nothing",
+				kiddies:
+				[
+					{id:"105", quantity:1, amount:4, title:"XXX"},
+					{id:"106", quantity:null, amount:12.12345, title:"YYY",
+						kiddies:
+						[
+							{id:"115", quantity:1, amount:4, title:"AAA",
+								kiddies:
+								[
+									{id:"128", quantity:1, amount:4, title:"GGG"},
+									{id:"129", quantity:null, amount:12.12345, title:"HHH"},
+									{id:"130", quantity:12, amount:1.25, title:"III"}
+								]},
+							{id:"116", quantity:null, amount:12.12345, title:"BBB"},
+							{id:"117", quantity:12, amount:1.25, title:"CCC",
+								kiddies:
+								[
+									{id:"138", quantity:1, amount:4, title:"GGG"},
+									{id:"139", quantity:null, amount:12.12345, title:"HHH"},
+									{id:"140", quantity:12, amount:1.25, title:"III"}
+								]}
+						]},
+					{id:"107", quantity:12, amount:1.25, title:"ZZZ"}
+				]},
+			{id:"002", quantity:null, amount:12.12345, title:"The Meaning of Life"},
+			{id:"003", quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud"},
+			{id:"004", quantity:6, amount:3.5, title:"Read Me Twice"},
+			{id:"005", quantity:1, amount:4, title:"A Book About Nothing",
+				kiddies:
+				[
+					{id:"208", quantity:1, amount:4, title:"GGG"},
+					{id:"209", quantity:null, amount:12.12345, title:"HHH"},
+					{id:"210", quantity:12, amount:1.25, title:"III"}
+				]},
+			{id:"006", quantity:null, amount:12.12345, title:"The Meaning of Life"},
+			{id:"007", quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud"},
+			{id:"008", quantity:6, amount:3.5, title:"Read Me Twice"},
+			{id:"009", quantity:1, amount:4, title:"A Book About Nothing"},
+			{id:"010", quantity:null, amount:12.12345, title:"The Meaning of Life"},
+			{id:"011", quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud"},
+			{id:"012", quantity:6, amount:3.5, title:"Read Me Twice"}
+		]
+	};
+
+
+	// Local datasource
+
+	function localGenerateRequest(state, path)
+	{
+		return state;
+	};
+
+	YAHOO.example.localDataTable = new YAHOO.widget.ScrollingDataTable(
+
+		//Root element id
+		"table", 
+
+		//Column configuration
+		[
+			{key:"toggle_column", label:"", formatter:
+				function(elCell, oRecord, oColumn, oData)
+				{
+					Dom.addClass(elCell.parentNode, 'satg-treeble-nub');
+					if (oRecord.getData('kiddies'))
+					{
+						var path  = oRecord.getData('_yui_node_path');
+						var open  = this.rowIsOpen(path);
+						var clazz = open ? 'satg-row-open' : 'satg-row-closed';
+
+						Dom.addClass(elCell, 'satg-row-toggle');
+						Dom.replaceClass(elCell, /satg-row-(open|closed)/, clazz);
+						elCell.innerHTML = '<a class="satg-treeble-collapse-nub" href="javascript:void(0);"></a>';
+
+						Event.on(elCell, 'click', function(e, path)
+						{
+							this.toggleRow(path);
+						},
+						path, this);
+					}
+				}
+			},
+			{key:"id", sortable:true, resizeable:true,
+				formatter: function(elCell, oRecord, oColumn, oData)
+				{
+					var depth_class  = 'satg-treeble-depth-'+oRecord.getData('_yui_node_depth');
+					elCell.innerHTML = '<span class="'+depth_class+'">'+oData+'</span>';
+				}},
+			{key:"title", sortable:true, resizeable:true},
+			{key:"amount", formatter:DT.formatCurrency, sortable:true, resizeable:true},
+			{key:"quantity", formatter:DT.formatNumber, sortable:true, resizeable:true}
+		],
+
+		//Data Source 
+		new YAHOO.util.TreebleDataSource(
+			new YAHOO.util.DataSource(
+				YAHOO.example.Data.bookorders,
+				{
+					responseType: YAHOO.util.DataSource.TYPE_JSARRAY,
+					responseSchema:
+					{
+						fields:
+						[
+							"id","quantity","amount","title",
+							{key: 'kiddies', parser: 'datasource'}
+						]
+					}
+				}
+			),
+			{
+				childNodesKey:          'kiddies',
+				generateRequest:        localGenerateRequest,
+				totalRecordsReturnExpr: '.meta.totalRecords'
+			}
+		),
+
+		//Attribute Config
+		{
+			paginator: new YAHOO.widget.Paginator({
+				rowsPerPage:25,
+				rowsPerPageOptions:[5,10,25,50],
+				containers:'table-pagination',
+				template:'{FirstPageLink}{PreviousPageLink}{PageLinks}{NextPageLink}{LastPageLink}{RowsPerPageDropdown}'
+			}),
+			initialRequest: {startIndex:0,results:25},
+			dynamicData: true,
+			generateRequest: DT.generateTreebleDataSourceRequest,
+			handleDataReturnPayload: function(oRequest, oResponse, oPayload)
+			{
+				oPayload.totalRecords = oResponse.meta.totalRecords;
+				return oPayload;
+			}
+		}
+	);
+});
+</script>
+
+
+<h1>YUI 2 Treeble Example</h1>
+
+<div id="table"></div>
+<div id="table-pagination"></div>
+
+</body>
+</html>
