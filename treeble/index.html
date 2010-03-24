@@ -4,10 +4,12 @@
 	<title>YUI 2 Treeble Example</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-	<!-- Combo-handled YUI CSS files: --> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset-fonts-grids/reset-fonts-grids.css&2.8.0r4/build/datatable/assets/skins/sam/datatable.css"> 
-	<!-- Combo-handled YUI JS files: --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script> 
+	<!-- Combo-handled YUI CSS files: -->
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/paginator/assets/skins/sam/paginator.css&2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
+	<!-- Combo-handled YUI JS files: -->
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/paginator/paginator-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+
+	<script type="text/javascript" src="Treeble.js"></script>
 
 	<style type="text/css">
 	.yui-dt td.satg-treeble-nub
@@ -34,21 +36,38 @@
 
 	.yui-dt td .satg-treeble-depth-1
 	{
-		padding-left: 10px;
+		padding-left: 15px;
 	}
 	.yui-dt td .satg-treeble-depth-2
 	{
-		padding-left: 20px;
+		padding-left: 30px;
 	}
 	.yui-dt td .satg-treeble-depth-3
 	{
-		padding-left: 30px;
+		padding-left: 45px;
 	}
 	</style>
 </head>
 <body class="yui-skin-sam">
 
 <script type="text/javascript">
+(function(){
+
+	YAHOO.namespace('hacked');
+
+	YAHOO.hacked.ScrollingDataTable = function(elContainer,aColumnDefs,oDataSource,oConfigs)
+	{
+        if (YAHOO.lang.isFunction(oConfigs.handleDataReturnPayload)) {
+            this.handleDataReturnPayload = oConfigs.handleDataReturnPayload;
+        }
+
+		YAHOO.widget.ScrollingDataTable.superclass.constructor.apply(this, arguments);
+	};
+
+	YAHOO.lang.extend(YAHOO.hacked.ScrollingDataTable, YAHOO.widget.ScrollingDataTable, {});
+
+})();
+
 YAHOO.util.Event.onDOMReady(function(){
 
 	YAHOO.namespace('example');
@@ -59,48 +78,79 @@ YAHOO.util.Event.onDOMReady(function(){
 
 	YAHOO.example.Data = {
 		bookorders: [
-			{id:"001", quantity:1, amount:4, title:"A Book About Nothing",
+			{title:"Fantasy",
 				kiddies:
 				[
-					{id:"105", quantity:1, amount:4, title:"XXX"},
-					{id:"106", quantity:null, amount:12.12345, title:"YYY",
+					{year:"1898-1963", title:"C.S. Lewis",
 						kiddies:
 						[
-							{id:"115", quantity:1, amount:4, title:"AAA",
+							{year:"1950-1956", title:"Narnia",
 								kiddies:
 								[
-									{id:"128", quantity:1, amount:4, title:"GGG"},
-									{id:"129", quantity:null, amount:12.12345, title:"HHH"},
-									{id:"130", quantity:12, amount:1.25, title:"III"}
+									{year:1950, quantity:10, title:"The Lion, the Witch and the Wardrobe"},
+									{year:1951, quantity:5, title:"Prince Caspian: The Return to Narnia"},
+									{year:1952, quantity:2, title:"The Voyage of the Dawn Treader"},
+									{year:1953, quantity:6, title:"The Silver Chair"},
+									{year:1954, quantity:9, title:"The Horse and His Boy"},
+									{year:1955, quantity:4, title:"The Magician's Nephew"},
+									{year:1956, quantity:8, title:"The Last Battle"}
 								]},
-							{id:"116", quantity:null, amount:12.12345, title:"BBB"},
-							{id:"117", quantity:12, amount:1.25, title:"CCC",
+							{year:"1938-1945", title:"Space Trilogy",
 								kiddies:
 								[
-									{id:"138", quantity:1, amount:4, title:"GGG"},
-									{id:"139", quantity:null, amount:12.12345, title:"HHH"},
-									{id:"140", quantity:12, amount:1.25, title:"III"}
+									{year:1938, quantity:10, title:"Out of the Silent Planet"},
+									{year:1943, quantity:5, title:"Perelandra"},
+									{year:1945, quantity:2, title:"That Hideous Strength"}
 								]}
 						]},
-					{id:"107", quantity:12, amount:1.25, title:"ZZZ"}
+					{year:"1946-", title:"Philip Pullman",
+						kiddies:
+						[
+							{year:"1995-2000", title:"His Dark Materials",
+								kiddies:
+								[
+									{year:1995, quantity:7, title:"Northern Lights"},
+									{year:1997, quantity:5, title:"The Subtle Knife"},
+									{year:2000, quantity:8, title:"The Amber Spyglass"}
+								]}
+						]},
+					{year:"1892-1973", title:"J. R. R. Tolkien",
+						kiddies:
+						[
+							{year:1937, quantity:5, title:"The Hobbit"},
+							{year:"1937-1949", title:"The Lord of the Rings",
+								kiddies:
+								[
+									{year:1955, quantity:12, title:"The Fellowship of the Ring"},
+									{year:1955, quantity:0, title:"The Two Towers"},
+									{year:1955, quantity:8, title:"The Return of the King"}
+								]}
+						]}
 				]},
-			{id:"002", quantity:null, amount:12.12345, title:"The Meaning of Life"},
-			{id:"003", quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud"},
-			{id:"004", quantity:6, amount:3.5, title:"Read Me Twice"},
-			{id:"005", quantity:1, amount:4, title:"A Book About Nothing",
+			{title:"Science Fiction",
 				kiddies:
 				[
-					{id:"208", quantity:1, amount:4, title:"GGG"},
-					{id:"209", quantity:null, amount:12.12345, title:"HHH"},
-					{id:"210", quantity:12, amount:1.25, title:"III"}
+					{year:"1928-1982", title:"Philip K. Dick",
+						kiddies:
+						[
+							{year:1966, quantity:5, title:"Do Androids Dream of Electric Sheep?"}
+						]},
+					{year:"1907-1988", title:"Robert A. Heinlein",
+						kiddies:
+						[
+							{year:1959, quantity:4, title:"Starship Troopers"},
+							{year:1961, quantity:7, title:"Stranger in a Strange Land"},
+							{year:1966, quantity:3, title:"The Moon Is a Harsh Mistress"}
+						]},
+					{year:"1912-2000", title:"A. E. van Vogt",
+						kiddies:
+						[
+							{year:1946, quantity:3, title:"Slan"},
+							{year:1950, quantity:5, title:"The Voyage of the Space Beagle"},
+							{year:1970, quantity:8, title:"Quest for the Future"}
+						]}
 				]},
-			{id:"006", quantity:null, amount:12.12345, title:"The Meaning of Life"},
-			{id:"007", quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud"},
-			{id:"008", quantity:6, amount:3.5, title:"Read Me Twice"},
-			{id:"009", quantity:1, amount:4, title:"A Book About Nothing"},
-			{id:"010", quantity:null, amount:12.12345, title:"The Meaning of Life"},
-			{id:"011", quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud"},
-			{id:"012", quantity:6, amount:3.5, title:"Read Me Twice"}
+			{title:"Xenobiology"}
 		]
 	};
 
@@ -112,7 +162,7 @@ YAHOO.util.Event.onDOMReady(function(){
 		return state;
 	};
 
-	YAHOO.example.localDataTable = new YAHOO.widget.ScrollingDataTable(
+	YAHOO.example.localDataTable = new YAHOO.hacked.ScrollingDataTable(
 
 		//Root element id
 		"table", 
@@ -141,15 +191,14 @@ YAHOO.util.Event.onDOMReady(function(){
 					}
 				}
 			},
-			{key:"id", sortable:true, resizeable:true,
+			{key:"title", resizeable:true,
 				formatter: function(elCell, oRecord, oColumn, oData)
 				{
 					var depth_class  = 'satg-treeble-depth-'+oRecord.getData('_yui_node_depth');
 					elCell.innerHTML = '<span class="'+depth_class+'">'+oData+'</span>';
 				}},
-			{key:"title", sortable:true, resizeable:true},
-			{key:"amount", formatter:DT.formatCurrency, sortable:true, resizeable:true},
-			{key:"quantity", formatter:DT.formatNumber, sortable:true, resizeable:true}
+			{key:"year", resizeable:true},
+			{key:"quantity", resizeable:true}
 		],
 
 		//Data Source 
@@ -162,7 +211,7 @@ YAHOO.util.Event.onDOMReady(function(){
 					{
 						fields:
 						[
-							"id","quantity","amount","title",
+							"id","quantity","year","title",
 							{key: 'kiddies', parser: 'datasource'}
 						]
 					}
