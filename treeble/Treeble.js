@@ -764,12 +764,6 @@ lang.augmentObject(util.TreebleDataSource, DS);
  */
 DS.parseDataSource = function(oData)
 {
-	var root = this;
-	if (this instanceof DT)
-	{
-		root = this.ds;
-	}
-
 	if (!oData)
 	{
 		return null;
@@ -789,8 +783,8 @@ DS.parseDataSource = function(oData)
 
 		var ds = new util.FunctionDataSource(fn,
 		{
-			responseSchema:  root.responseSchema,
-			maxCacheEntries: root.maxCacheEntries
+			responseSchema:  this.responseSchema,
+			maxCacheEntries: this.maxCacheEntries
 		});
 
 		if (scope)
@@ -804,16 +798,16 @@ DS.parseDataSource = function(oData)
 		return new util.DataSource(oData.liveData,
 		{
 			dataType:        oData.dataType,
-			responseSchema:  root.responseSchema,
-			maxCacheEntries: root.maxCacheEntries
+			responseSchema:  this.responseSchema,
+			maxCacheEntries: this.maxCacheEntries
 		});
 	}
 	else
 	{
 		return new util.DataSource(oData,
 		{
-			responseSchema:  root.responseSchema,
-			maxCacheEntries: root.maxCacheEntries
+			responseSchema:  this.responseSchema,
+			maxCacheEntries: this.maxCacheEntries
 		});
 	}
 };
