@@ -419,7 +419,7 @@ function treeSuccess(oRequest, oParsedResponse, reqIndex)
 
 	var sliceStartIndex = req.start - dataStartIndex;
 	req.data            = oParsedResponse.results.slice(sliceStartIndex, req.end - dataStartIndex + 1);
-	setNodeInfo(req.data, req.start, req.path);
+	setNodeInfo(req.data, req.start, req.path, req.ds);
 
 	var parent = (req.path.length > 0 ? getNode.call(this, req.path) : null);
 	var open   = (parent !== null ? parent.children : this._open);
@@ -455,15 +455,17 @@ function treeFailure(oRequest, oParsedResponse, reqIndex)
 }
 
 function setNodeInfo(
-	/* array */	list,
-	/* int */	offset,
-	/* array */	path)
+	/* array */			list,
+	/* int */			offset,
+	/* array */			path,
+	/* datasource */	ds)
 {
 	var depth = path.length;
 	for (var i=0; i<list.length; i++)
 	{
 		list[i]._yui_node_depth = depth;
 		list[i]._yui_node_path  = path.concat(offset+i);
+		list[i]._yui_node_ds    = ds;
 	}
 }
 

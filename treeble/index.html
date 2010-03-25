@@ -7,7 +7,7 @@
 	<!-- Combo-handled YUI CSS files: -->
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/paginator/assets/skins/sam/paginator.css&2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
 	<!-- Combo-handled YUI JS files: -->
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/paginator/paginator-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/dragdrop/dragdrop-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/paginator/paginator-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
 
 	<script type="text/javascript" src="Treeble.js"></script>
 
@@ -198,7 +198,7 @@ YAHOO.util.Event.onDOMReady(function(){
 					elCell.innerHTML = '<span class="'+depth_class+'">'+oData+'</span>';
 				}},
 			{key:"year", label:"Year", resizeable:true},
-			{key:"quantity", label:"Quantity", resizeable:true}
+			{key:"quantity", label:"Quantity", resizeable:true, editor:new YAHOO.widget.TextboxCellEditor({validator:DT.validateNumber})}
 		],
 
 		//Data Source 
@@ -242,6 +242,47 @@ YAHOO.util.Event.onDOMReady(function(){
 			}
 		}
 	);
+
+	// Cell editing
+
+	function highlightEditableCell(oArgs)
+	{
+		var elCell = oArgs.target;
+		var rec    = this.getRecord(elCell);
+		if (Dom.hasClass(elCell, "yui-dt-editable") &&
+			YAHOO.lang.isNumber(rec.getData("quantity")))
+		{
+			this.highlightCell(elCell);
+		}
+	}
+
+	function editCell(oArgs)
+	{
+		var elCell = oArgs.target;
+		var rec    = this.getRecord(elCell);
+		if (Dom.hasClass(elCell, "yui-dt-editable") &&
+			YAHOO.lang.isNumber(rec.getData("quantity")))
+		{
+			this.onEventShowCellEditor(oArgs);
+		}
+	}
+
+	function saveValue(oArgs)
+	{
+		// This is a rather strange thing to do, but it demonstrates
+		// that we can get the DataSource and modify the value.  An XHR
+		// request would make more sense, but the data happens to be local.
+
+		var rec  = oArgs.editor.getRecord();
+		var ds   = rec.getData('_yui_node_ds');
+		var path = rec.getData('_yui_node_path');
+		ds.liveData[ path[ path.length-1 ] ].quantity = oArgs.newData;
+	}
+
+	YAHOO.example.localDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);
+	YAHOO.example.localDataTable.subscribe("cellMouseoutEvent", YAHOO.example.localDataTable.onEventUnhighlightCell);
+	YAHOO.example.localDataTable.subscribe("cellClickEvent", editCell);
+	YAHOO.example.localDataTable.subscribe("editorSaveEvent", saveValue);
 });
 </script>
 
