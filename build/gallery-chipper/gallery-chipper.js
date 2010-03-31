@@ -42,6 +42,8 @@ Y.Chipper =
 	 * Throw objects into the chipper.  If an object does not implement
 	 * destroy(), it is ignored.
 	 * 
+	 * @method Y.Chipper.destroy
+	 * @static
 	 * @param objs {Object/Array} The object(s) to destroy.
 	 */
 	destroy: function(

@@ -1057,18 +1057,18 @@ FormManager.prototype =
 			{
 				this.displayMessage(e[i], info.error, 'error');
 				status = false;
-			}
-			if (!info.keepGoing)
-			{
 				continue;
 			}
 
-			if (this.validation.regex[e_id] &&
-				!this.validation.regex[e_id].test(e[i].value))
+			if (info.keepGoing)
 			{
-				this.displayMessage(e[i], msg_list ? msg_list.regex : null, 'error');
-				status = false;
-				continue;
+				if (this.validation.regex[e_id] &&
+					!this.validation.regex[e_id].test(e[i].value))
+				{
+					this.displayMessage(e[i], msg_list ? msg_list.regex : null, 'error');
+					status = false;
+					continue;
+				}
 			}
 
 			var f     = this.validation.fn[e_id];
@@ -1143,6 +1143,14 @@ FormManager.prototype =
 		};
 
 		this.user_button_list.push(info);
+	},
+
+	/**
+	 * @return {boolean} <code>true</code> if form is enabled
+	 */
+	isFormEnabled: function()
+	{
+		return this.enabled;
 	},
 
 	/**
@@ -1253,7 +1261,7 @@ FormManager.prototype =
 	 * @param e {String|Object} The selector for the element or the element itself
 	 * @param msg {String} The message
 	 * @param type {String} The message type (see Y.FormManager.status_order)
-	 * @param scroll {boolean} <code>true</code> if the form row should be scrolled into view
+	 * @param scroll {boolean} (Optional) <code>true</code> if the form row should be scrolled into view
 	 */
 	displayMessage: function(
 		/* id/object */	e,
