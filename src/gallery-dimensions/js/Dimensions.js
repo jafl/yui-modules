@@ -43,7 +43,7 @@ Y.emToPx = function(
 		document.body.appendChild(em_div);
 	}
 	return em_count * (em_div.offsetWidth / 10.0);
-}
+};
 
 /**********************************************************************
  * <p>Computes the size of everything surrounding the element's content.</p>
@@ -62,7 +62,7 @@ Y.Node.prototype.horizMarginBorderPadding = function()
 	this);
 
 	return w;
-}
+};
 
 /**********************************************************************
  * <p>Computes the size of everything surrounding the element's content.</p>
@@ -81,7 +81,7 @@ Y.Node.prototype.vertMarginBorderPadding = function()
 	this);
 
 	return h;
-}
+};
 
 /**********************************************************************
  * <p>Returns the size of the style in pixels.</p>
@@ -105,4 +105,4 @@ Y.Node.prototype.parseDimensionStyle = function(
 	}
 
 	return Math.round(v);
-}
+};
