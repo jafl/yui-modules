@@ -711,7 +711,7 @@ FormManager.prototype =
 	{
 		if (!this.form)
 		{
-			this.form = document.forms[ this.form_name ];
+			this.form = Y.config.doc.forms[ this.form_name ];
 		}
 		return this.form;
 	},

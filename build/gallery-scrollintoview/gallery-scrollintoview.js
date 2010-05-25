@@ -59,8 +59,8 @@ Y.Node.prototype.scrollIntoView = function()
 			ancestor = ancestor.offsetParent || ancestor.parentNode;
 		}
 
-		var scrollX = (hit_top ? document.documentElement.scrollLeft || document.body.scrollLeft : ancestor.scrollLeft);
-		var scrollY = (hit_top ? document.documentElement.scrollTop || document.body.scrollTop : ancestor.scrollTop);
+		var scrollX = (hit_top ? Y.config.doc.documentElement.scrollLeft || Y.config.doc.body.scrollLeft : ancestor.scrollLeft);
+		var scrollY = (hit_top ? Y.config.doc.documentElement.scrollTop || Y.config.doc.body.scrollTop : ancestor.scrollTop);
 
 		var d =
 		{

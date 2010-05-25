@@ -33,14 +33,14 @@ Y.emToPx = function(
 {
 	if (!em_div)
 	{
-		em_div = document.createElement('div');
+		em_div                  = Y.config.doc.createElement('div');
 		em_div.style.position   = 'absolute';
 		em_div.style.top        = '-10000px';
 		em_div.style.left       = '-10000px';
 		em_div.style.visibility = 'hidden';
 		em_div.style.width      = '10em';
 		em_div.style.height     = '10em';
-		document.body.appendChild(em_div);
+		Y.config.doc.body.appendChild(em_div);
 	}
 	return em_count * (em_div.offsetWidth / 10.0);
 };
