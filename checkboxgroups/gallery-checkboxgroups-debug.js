@@ -2,17 +2,22 @@ YUI.add('gallery-checkboxgroups', function(Y) {
 
 "use strict";
 
-/**********************************************************************
- * <p>Base class for enforcing constraints on groups of checkboxes.</p>
- *
- * <p>Derived classes must override enforceConstraints.</p>
- */
-
 var Direction =
 {
 	SLIDE_UP:   0,
 	SLIDE_DOWN: 1
 };
+
+/**********************************************************************
+ * <p>Base class for enforcing constraints on groups of checkboxes.</p>
+ *
+ * <p>Derived classes must override <code>enforceConstraints()</code>.</p>
+ * 
+ * @module gallery-checkboxgroups
+ * @class CheckboxGroup
+ * @constructor
+ * @param cb_list {String|Object|Array} The list of checkboxes to manage
+ */
 
 function CheckboxGroup(
 	/* string/object/array */	cb_list)
@@ -39,11 +44,22 @@ function checkboxChanged(
 
 CheckboxGroup.prototype =
 {
+	/**
+	 * @return {Array} List of managed checkboxes
+	 */
 	getCheckboxList: function()
 	{
 		return this.cb_list;
 	},
 
+	/**
+	 * Same functionality as <code>Array.splice()</code>.  Operates on the
+	 * list of managed checkboxes.
+	 * 
+	 * @param start {Int} Insertion index
+	 * @param delete_count {Int} Number of items to remove, starting from <code>start</code>
+	 * @param cb_list {String|Object|Array} The list of checkboxes to insert at <code>start</code>
+	 */
 	splice: function(
 		/* int */					start,
 		/* int */					delete_count,
@@ -102,18 +118,27 @@ CheckboxGroup.prototype =
 		}
 	},
 
+	/**
+	 * Derived classes must override this function to implement the desired behavior.
+	 * 
+	 * @param cb_list {String|Object|Array} The list of checkboxes
+	 * @param index {Int} The index of the checkbox that changed
+	 */
 	enforceConstraints: function(
 		/* array */	cb_list,
 		/* int */	index)
 	{
 	},
 
+	/**
+	 * @return {boolean} <code>true</code> if all checkboxes are checked
+	 */
 	allChecked: function()
 	{
 		var count = this.cb_list.length;
 		for (var i=0; i<count; i++)
 		{
-			if (!this.cb_list[i].get('checked'))
+			if (!this.cb_list[i].get('disabled') && !this.cb_list[i].get('checked'))
 			{
 				return false;
 			}
@@ -122,6 +147,9 @@ CheckboxGroup.prototype =
 		return true;
 	},
 
+	/**
+	 * @return {boolean} <code>true</code> if all checkboxes are unchecked
+	 */
 	allUnchecked: function()
 	{
 		var count = this.cb_list.length;
@@ -136,6 +164,9 @@ CheckboxGroup.prototype =
 		return true;
 	},
 
+	/**
+	 * @return {boolean} <code>true</code> if all checkboxes are disabled
+	 */
 	allDisabled: function()
 	{
 		var count = this.cb_list.length;
@@ -157,6 +188,11 @@ Y.CheckboxGroup = CheckboxGroup;
  * the active, adjacent one is turned on.  The exact algorithm is explained
  * in "Tog on Interface".  The checkboxes are assumed to be ordered in the
  * order they were added.
+ * 
+ * @module gallery-checkboxgroups
+ * @class AtLeastOneCheckboxGroup
+ * @constructor
+ * @param cb_list {String|Object|Array} The list of checkboxes to manage
  */
 
 function AtLeastOneCheckboxGroup(
@@ -232,6 +268,11 @@ Y.AtLeastOneCheckboxGroup = AtLeastOneCheckboxGroup;
 /**********************************************************************
  * At most one checkbox can be selected.  If one is turned on, the active
  * one is turned off.
+ * 
+ * @module gallery-checkboxgroups
+ * @class AtMostOneCheckboxGroup
+ * @constructor
+ * @param cb_list {String|Object|Array} The list of checkboxes to manage
  */
 
 function AtMostOneCheckboxGroup(
@@ -267,6 +308,12 @@ Y.AtMostOneCheckboxGroup = AtMostOneCheckboxGroup;
  * All checkboxes can be selected and a select-all checkbox is available
  * to check all. This check-all box is automatically changed if any other
  * checkbox changes state.
+ * 
+ * @module gallery-checkboxgroups
+ * @class SelectAllCheckboxGroup
+ * @constructor
+ * @param select_all_cb {String|Object} The checkbox that triggers "select all"
+ * @param cb_list {String|Object|Array} The list of checkboxes to manage
  */
 
 function SelectAllCheckboxGroup(
@@ -291,7 +338,10 @@ Y.extend(SelectAllCheckboxGroup, CheckboxGroup,
 		var checked = this.select_all_cb.get('checked');
 		for (var i=0; i<this.cb_list.length; i++)
 		{
-			this.cb_list[i].set('checked', checked);
+			if (!this.cb_list[i].get('disabled'))
+			{
+				this.cb_list[i].set('checked', checked);
+			}
 		}
 	},
 
