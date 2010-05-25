@@ -32,7 +32,10 @@ Y.extend(SelectAllCheckboxGroup, CheckboxGroup,
 		var checked = this.select_all_cb.get('checked');
 		for (var i=0; i<this.cb_list.length; i++)
 		{
-			this.cb_list[i].set('checked', checked);
+			if (!this.cb_list[i].get('disabled'))
+			{
+				this.cb_list[i].set('checked', checked);
+			}
 		}
 	},
 

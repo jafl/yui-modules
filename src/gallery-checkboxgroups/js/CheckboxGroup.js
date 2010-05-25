@@ -136,7 +136,7 @@ CheckboxGroup.prototype =
 		var count = this.cb_list.length;
 		for (var i=0; i<count; i++)
 		{
-			if (!this.cb_list[i].get('checked'))
+			if (!this.cb_list[i].get('disabled') && !this.cb_list[i].get('checked'))
 			{
 				return false;
 			}
