@@ -2,7 +2,19 @@
 
 function copy()
 {
-	cp ../../build/gallery-$1 ../../../../jafl.github-yui3/$1;
+	cp -f ../../build/gallery-$1 ../../../../jafl.github-yui3/$1;
+}
+
+function copy_css()
+{
+	cp -f ../../build/gallery-$1/assets/skins/sam/gallery-$1.css \
+	      ../../../../jafl.github-yui3/$1/assets/;
+
+	cp -f ../../build/gallery-$1/assets/skins/sam/*.gif \
+	      ../../../../jafl.github-yui3/$1/assets/;
+
+	cp -f ../../build/gallery-$1/assets/skins/sam/*.png \
+	      ../../../../jafl.github-yui3/$1/assets/;
 }
 
 copy accordion-horiz-vert/gallery-accordion-horiz-vert-debug.js;
@@ -13,9 +25,11 @@ copy checkboxgroups/gallery-checkboxgroups-debug.js;
 copy formmgr/gallery-formmgr-debug.js;
 
 copy paginator/gallery-paginator-debug.js;
-cp ../../build/gallery-paginator/assets/skins/sam/gallery-paginator.css \
-   ../../../../jafl.github-yui3/paginator/assets/gallery-paginator.css;
+copy_css paginator
+
+copy querybuilder/gallery-querybuilder-debug.js;
+copy_css querybuilder
 
 copy scrollintoview/gallery-scrollintoview-debug.js;
-cp ../../build/gallery-dimensions/gallery-dimensions-debug.js \
-   ../../../../jafl.github-yui3/scrollintoview/gallery-dimensions-debug.js;
+cp -f ../../build/gallery-dimensions/gallery-dimensions-debug.js \
+      ../../../../jafl.github-yui3/scrollintoview/gallery-dimensions-debug.js;
