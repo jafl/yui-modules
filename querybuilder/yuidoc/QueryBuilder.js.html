@@ -138,7 +138,6 @@
 	<span class="p">}</span>
 
 	<span class="c1">// list of variables that can be queried</span>
-	<span class="c1">// { name, type, text, value_list { value, text }, validation }</span>
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">var_list</span> <span class="o">=</span> <span class="nx">var_list</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 
@@ -169,7 +168,7 @@
 	<span class="nx">chooseVarPrompt</span><span class="o">:</span>
 	<span class="p">{</span>
 		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Choose a Variable&#39;</span><span class="p">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">o</span><span class="p">));</span> <span class="p">},</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
 	<span class="p">},</span>
 
@@ -495,16 +494,13 @@
 		<span class="kd">var</span> <span class="nx">var_menu</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">row_index</span><span class="p">].</span><span class="nx">var_menu</span><span class="p">;</span>
 		<span class="kd">var</span> <span class="nx">selected_var</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">var_list</span><span class="p">[</span> <span class="nx">var_menu</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;selectedIndex&#39;</span><span class="p">)</span> <span class="p">];</span>
 
-		<span class="k">if</span> <span class="p">(</span><span class="nx">selected_var</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">cells</span> <span class="o">=</span> <span class="p">[];</span>
-		<span class="p">}</span>
-		<span class="k">else</span>
+		<span class="kd">var</span> <span class="nx">cells</span> <span class="o">=</span> <span class="p">[];</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">selected_var</span><span class="p">.</span><span class="nx">type</span> <span class="o">!=</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">row_index</span><span class="p">].</span><span class="nx">plugin</span> <span class="o">=</span> 
 				<span class="k">new</span> <span class="nx">QueryBuilder</span><span class="p">.</span><span class="nx">plugin_mapping</span><span class="p">[</span> <span class="nx">selected_var</span><span class="p">.</span><span class="nx">type</span> <span class="p">](</span>
 					<span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pluginConfig&#39;</span><span class="p">));</span>
-			<span class="kd">var</span> <span class="nx">cells</span> <span class="o">=</span>
+			<span class="nx">cells</span> <span class="o">=</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">row_index</span><span class="p">].</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
 					<span class="nx">row_index</span><span class="p">,</span> <span class="nx">selected_var</span><span class="p">,</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">op_list</span><span class="p">[</span> <span class="nx">selected_var</span><span class="p">.</span><span class="nx">type</span> <span class="p">],</span> <span class="nx">value</span><span class="p">);</span>
@@ -640,7 +636,7 @@
 				<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">plugin</span><span class="p">.</span><span class="nx">toDatabaseQuery</span><span class="p">();</span>
 				<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span> <span class="nx">row</span><span class="p">.</span><span class="nx">var_menu</span><span class="p">.</span><span class="nx">value</span> <span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">j</span><span class="p">]));</span>
+					<span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span> <span class="nx">row</span><span class="p">.</span><span class="nx">var_menu</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span> <span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">j</span><span class="p">]));</span>
 				<span class="p">}</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
