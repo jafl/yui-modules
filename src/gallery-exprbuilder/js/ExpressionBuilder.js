@@ -69,7 +69,10 @@ ExpressionBuilder.ATTRS =
 
 	/**
 	 * The QueryBuilder to help the user construct the expression.  The
-	 * widget must not be rendered.
+	 * widget must not be rendered.  For each variable type, the values of
+	 * the configured operations must be the pattern to be inserted into
+	 * the expression. {value} will be replaced by the value entered by the
+	 * user.
 	 * 
 	 * @config queryBuilder
 	 * @type {Y.QueryBuilder}
@@ -80,6 +83,21 @@ ExpressionBuilder.ATTRS =
 	{
 		validator: function(o) { return (!o || o instanceof Y.QueryBuilder); },
 		writeOnce: true
+	},
+
+	/**
+	 * A map of QueryBuilder operators to objects defining
+	 * {operator,pattern}.  This is needed if a variable type generates
+	 * multiple values, and the values must be combined with something
+	 * other than AND.
+	 * 
+	 * @config combinatorMap
+	 * @type {Object}
+	 * @default null
+	 */
+	combinatorMap:
+	{
+		validator: Y.Lang.isObject
 	},
 
 	/**
@@ -328,7 +346,7 @@ function insertQB(e)
 		var combinator = map && map[ q[1] ];
 		if (combinator)
 		{
-			op      = combinator.op;
+			op      = combinator.operator;
 			pattern = combinator.pattern;
 		}
 
