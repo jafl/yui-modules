@@ -1,0 +1,155 @@
+<!DOCTYPE html public '-//w3c//dtd html 4.01//en' http://www.w3.org/tr/html4/strict.dtd'>
+<html>
+<head>
+	<title>YUI 3 QueryBuilder Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js"></script>
+	<script src="gallery-exprbuilder-debug.js"></script>
+	<script src="gallery-querybuilder-debug.js"></script>
+	<script src="gallery-formmgr-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssreset/reset-min.css">
+	<link rel="stylesheet" type="text/css" href="assets/gallery-querybuilder.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-exprbuilder.css" />
+
+	<style type="text/css">
+	#expr_row
+	{
+		margin-top: 10px;
+		border: 1px solid black;
+		padding: 10px;
+	}
+
+	#sql-expr
+	{
+		width: 40em;
+	}
+
+	.formmgr-haserror .formmgr-message-text
+	{
+		color: #BE1E2D;
+	}
+
+	.formmgr-haserror textarea
+	{
+		background-color: #FFCCCC;
+	}
+
+	#controls
+	{
+		margin-top: 10px;
+	}
+	</style>
+</head>
+<body class="yui3-skin-sam">
+
+<script type="text/javascript">
+YUI({
+//	base: '../yui3/',
+//	filter: 'debug'
+}).use('gallery-exprbuilder', 'gallery-formmgr', function(Y)
+{
+	var var_list =
+	[
+		{
+			name: 'url',
+			type: 'string',
+			text: 'URL',
+			validation: 'yiv-length:[,3000]'
+		},
+		{
+			name: 'impressions',
+			type: 'number',
+			text: 'Impressions (1000\'s)',
+			validation: 'yiv-integer'
+		},
+		{
+			name: 'ctr',
+			type: 'number',
+			text: 'Click-through rate (%)',
+			validation: 'yiv-decimal:[0,]'
+		},
+		{
+			name: 'flag',
+			type: 'select',
+			text: 'Flagged',
+			value_list:
+			[
+				{ value: "true",  text: 'True' },
+				{ value: "false", text: 'False' }
+			]
+		},
+		{
+			name: 'submission_status',
+			type: 'select',
+			text: 'Status',
+			value_list:
+			[
+				{ value: "I", text: 'Action Required' },
+				{ value: "S", text: 'Submitted' },
+				{ value: "A", text: 'Submission Accepted' },
+				{ value: "B", text: 'Submission Auto-Accepted' }
+			]
+		}
+	];
+
+	var ops =
+	{
+		string:
+		[
+			{ value: " = '{value}'",      text: 'Is' },
+			{ value: " LIKE '%{value}%'", text: 'Contains' },
+			{ value: " LIKE '{value}%'",  text: 'Starts with' },
+			{ value: " LIKE '%{value}'",  text: 'Ends with' }
+		],
+
+		number:
+		[
+			{ value: ' = ',  text: '= Equals' },
+			{ value: ' < ',  text: '< Less than' },
+			{ value: ' <= ', text: '<= Less than or equal to' },
+			{ value: ' > ',  text: '> Greater than' },
+			{ value: ' >= ', text: '>= Greater than or equal to' }
+		],
+
+		select:
+		[
+			" = '{value}'"
+		]
+	};
+
+	var query = new Y.QueryBuilder(var_list, ops);
+	// rendered by ExpressionBuilder
+
+	var form = new Y.FormManager('expr_form');
+	form.prepareForm();
+
+	var expr = new Y.ExpressionBuilder(
+	{
+		fieldName:    'sql_expr',
+		fieldId:      'sql-expr',
+		formMgr:      form,
+		queryBuilder: query
+	});
+	expr.render('#expr');
+
+	Y.on('click', form.validateForm, '#validate', form);
+});
+</script>
+
+<h1>YUI 3 ExpressionBuilder Example</h1>
+
+<form name="expr_form">
+	<div id="expr_row" class="formmgr-row">
+		<label for="sql-expr">SQL Expression</label>
+		<p class="formmgr-message-text"></p>
+		<div id="expr"></div>
+	</div>
+</form>
+
+<div id="controls">
+	<button id="validate">Validate</button>
+</div>
+
+</body>
+</html>
