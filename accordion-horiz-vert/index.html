@@ -4,11 +4,11 @@
 	<title>YUI 3 Accordion Examples</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-	<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+	<script src="http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js"></script>
 	<script src="gallery-accordion-horiz-vert-debug.js"></script>
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssreset/reset-min.css" />
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssbase/base-min.css" />
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.0.0/build/cssfonts/fonts-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssreset/reset-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssbase/base-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssfonts/fonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-accordion-horiz-vert-core.css" />
 
 	<style type="text/css">
@@ -27,7 +27,7 @@
 	.accordion-test-vert,
 	.accordion-test-horiz {width:auto;background-color:#fff;}
 	.accordion-test-horiz {height:150px;}
-	.accordion-test-horiz .yui-accordion-section-clip .yui-accordion-section {height:128px;width:20em;}
+	.accordion-test-horiz .yui3-accordion-section-clip .yui3-accordion-section {height:128px;width:20em;}
 	.my-title-vert,	
 	.my-title-horiz {background-color:#ccc;margin:1px;}
 	.my-title-horiz {height:148px;}
@@ -44,10 +44,13 @@
 	.my-section-vert-constrained {height: 50px;}
 	</style>
 </head>
-<body class="yui-skin-sam">
+<body class="yui3-skin-sam">
 
 <script type="text/javascript">
-YUI().use(
+YUI({
+//	base: '../yui3/',
+//	filter: 'debug'
+}).use(
 	'gallery-accordion-horiz-vert',
 	'anim-base',
 	'node-focusmanager',
@@ -56,7 +59,7 @@ function(Y)
 {
 	new Y.Console(
 	{
-		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui-console-hd']}}, Y.Plugin.ConsoleFilters ]
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
 	})
 	.render().collapse();
 
@@ -122,39 +125,33 @@ function(Y)
 	hjs.after('render', function()
 	{
 		var box = this.get('contentBox');
-		box.all('.yui-accordion-title').addClass('my-title-horiz');
-		box.all('.yui-accordion-section').addClass('my-section-horiz');
+		box.all('.yui3-accordion-title').addClass('my-title-horiz');
+		box.all('.yui3-accordion-section').addClass('my-section-horiz');
 
 		Y.on('click', onTitleClicked, '#accordion-test-horiz-js .my-title-horiz', null, hjs);
 	});
 
 	var vm = new Y.Accordion(
 	{
-		contentBox: '#accordion-test-vert-markup-content',	// switch to srcNode when 3.1 released
+		srcNode: '#accordion-test-vert-markup-content',
 		replaceTitleContainer:   false,
 		replaceSectionContainer: false
 	});
 
 	vm.after('render', function()
 	{
-		// remove when switch to srcNode
-		document.getElementById('accordion-test-vert-markup-content').style.visibility = 'visible';
-
 		Y.on('click', onTitleClicked, '#accordion-test-vert-markup .my-title-vert', null, vm);
 	});
 
 	var hm = new Y.Accordion(
 	{
-		contentBox:    '#accordion-test-horiz-markup-content',	// switch to srcNode when 3.1 released
+		srcNode:       '#accordion-test-horiz-markup-content',
 		horizontal:    true,
 		animateRender: true
 	});
 
 	hm.after('render', function()
 	{
-		// remove when switch to srcNode
-		document.getElementById('accordion-test-horiz-markup-content').style.visibility = 'visible';
-
 		Y.on('click', onTitleClicked, '#accordion-test-horiz-markup .my-title-horiz', null, hm);
 	});
 
@@ -181,7 +178,7 @@ function(Y)
 			var node = a.get('contentBox');
 			node.plug(Y.Plugin.NodeFocusManager,
 			{
-				descendants: '.yui-accordion-title a',
+				descendants: '.yui3-accordion-title a',
 				keys:        keys,
 				focusClass:
 				{
@@ -372,7 +369,7 @@ function(Y)
 
 	<h4>Vertical (from markup)</h4>
 	<div id="accordion-test-vert-markup" class="accordion-test-vert"></div>
-	<ul id="accordion-test-vert-markup-content">
+	<ul id="accordion-test-vert-markup-content" class="yui3-widget-loading">
 		<li>
 			<div class="my-title-vert"><a href="javascript:void(0);">#1</a></div>
 			<div class="my-section-vert"><p>testing</p></div>
@@ -389,7 +386,7 @@ function(Y)
 
 	<h4>Horizontal (from markup)</h4>
 	<div id="accordion-test-horiz-markup" class="accordion-test-horiz"></div>
-	<ul id="accordion-test-horiz-markup-content">
+	<ul id="accordion-test-horiz-markup-content" class="yui3-widget-loading">
 		<li>
 			<div class="my-title-horiz"><a href="javascript:void(0);">#1</a></div>
 			<div class="my-section-horiz"><p>testing</p></div>
@@ -404,12 +401,6 @@ function(Y)
 		</li>
 	</ul>
 </div>
-
-<script type="text/javascript">
-// make it look nicer when JavaScript is enabled
-document.getElementById('accordion-test-vert-markup-content').style.visibility = 'hidden';
-document.getElementById('accordion-test-horiz-markup-content').style.visibility = 'hidden';
-</script>
 
 </body>
 </html>
