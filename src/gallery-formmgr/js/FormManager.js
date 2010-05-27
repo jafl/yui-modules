@@ -972,10 +972,6 @@ FormManager.prototype =
 			return false;
 		}
 
-		// clear all errors
-
-		this.clearMessages();
-
 		// fill in starting values
 
 		this.populateForm();
@@ -1244,6 +1240,14 @@ FormManager.prototype =
 		for (var i=0; i<this.form.elements.length; i++)
 		{
 			var e = this.form.elements[i];
+
+			var name = e.tagName.toLowerCase();
+			var type = (e.type ? e.type.toLowerCase() : null);
+			if (name == 'button' || type == 'submit' || type == 'reset')
+			{
+				continue;
+			}
+
 			var p = Y.one(e).ancestor('.'+FormManager.row_marker_class);
 			if (p && p.hasClass(row_status_pattern))
 			{
@@ -1282,7 +1286,7 @@ FormManager.prototype =
 		{
 			if (msg)
 			{
-				p.all('.'+FormManager.status_marker_class).set('innerHTML', msg);
+				p.one('.'+FormManager.status_marker_class).set('innerHTML', msg);
 			}
 
 			p.removeClass(row_status_pattern);
@@ -1361,7 +1365,7 @@ FormManager.prototype =
 		}
 		else
 		{
-			Y.log(msg, 'error', 'FormManager');
+			Y.log(msg, 'warn', 'FormManager');
 		}
 	}
 };

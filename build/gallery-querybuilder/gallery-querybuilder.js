@@ -9,22 +9,61 @@ var has_bubble_problem = (0 < Y.UA.ie && Y.UA.ie < 9);
  * searching.  All the conditions are either AND'ed or OR'ed.  For a more
  * general query builder, see gallery-exprbuilder.</p>
  * 
+ * <p>The default package provides two data types:  String (which can also
+ * be used for numbers) and Select (which provides a menu of options).  The
+ * plugin API allows defining additional data types, e.g., date range or
+ * multi-select.  A plugin must implement the following functions:</p>
+ * 
+ * <dl>
+ * <dt><code>constructor(qb, config)</code></dt>
+ * <dd>The arguments passed to the constructor are the QueryBuilder instance
+ *		and the <code>pluginConfig</code> set on the QueryBuilder instance.
+ *		At the minimum, this function should initalize form field name patterns
+ *		using <code>config.field_prefix</code>.</dd>
+ * <dt><code>create(query_index, var_config, op_list, value)</code><dt>
+ * <dd>This function must create the additional cells for the query row and
+ *		populate these cells appropriately.  (The QueryBuilder widget will
+ *		insert the cells into the table.)  <code>var_config</code> is the
+ *		item from the QueryBuilder's <code>var_list</code> that the user
+ *		selected.  <code>op_list</code> is the item from the QueryBuilder's
+ *		<code>operators</code> which matches the variable selected by the
+ *		user.  <code>value</code> is optional.  If specified, it is the
+ *		initial value(s) to be displayed by the plugin.</dd>
+ * <dt><code>postCreate(query_index, var_config, op_list, value)</code></dt>
+ * <dd>Optional.  If it exists, it will be called after the cells returned by
+ *		<code>create()</code> have been inserted into the table.  The arguments
+ *		are the same as <code>create()</code>.</dd>
+ * <dt><code>destroy()</code></dt>
+ * <dd>Destroy the plugin.  (The QueryBuilder widget will remove the cells
+ *		and purge all events.)</dd>
+ * <dt><code>updateName(new_index)</code></dt>
+ * <dd>Update the names of the form fields managed by the plugin.</dd>
+ * <dt><code>set(query_index, data)</code></dt>
+ * <dd>Set the displayed value(s) by extracting values from data (a map)
+ *		based on the current names of the plugin's form fields.</dd>
+ * <dt><code>toDatabaseQuery()</code></dt>
+ * <dd>Return an array of arrays.  Each inner array contains an operation
+ *		and a value.  The default String and Select plugins each return
+ *		a single inner array.  A date range plugin would return two inner
+ *		arrays, one for the start date and one for the end date.</dd>
+ * </dl>
+ * 
  * @module gallery-querybuilder
  * @class QueryBuilder
  * @constructor
  * @param var_list {Array} List of variables that be included in the query.
  *		Each item in the list is an object containing:
  *		<dl>
- *		<dt><code>name</code></dt>
+ *		<dt>name</dt>
  *		<dd>The name of the variable.  Set as the <code>value</code> for the select option.</dd>
- *		<dt><code>type</code></dd>
- *		<dt>The variable type.  Used to determine which plugin to instantiate.
+ *		<dt>type</dt>
+ *		<dd>The variable type.  Used to determine which plugin to instantiate.
  *			Must match a key in <code>Y.QueryBuilder.plugin_mapping</code>.
- *			(You can add new plugins to this global mapping.)</dt>
- *		<dd><code>text</code></dd>
- *		<dt>The text displayed when the variable is selected.</dt>
- *		<dd>plugin-specific configuration</dd>
- *		<dt>Plugins may defines additional configuration.</dt>
+ *			(You can add new plugins to this global mapping.)</dd>
+ *		<dt>text</dt>
+ *		<dd>The text displayed when the variable is selected.</dd>
+ *		<dt>plugin-specific configuration</dt>
+ *		<dd>Plugins may defines additional configuration.</dd>
  *		</dl>
  * @param operators {Object} Map of variable types to list of operators.
  *		Each operator is an object defining <code>value</code> and <code>text</code>.
@@ -52,7 +91,6 @@ function QueryBuilder(
 	}
 
 	// list of variables that can be queried
-	// { name, type, text, value_list { value, text }, validation }
 
 	this.var_list = var_list.slice(0);
 
@@ -83,7 +121,7 @@ QueryBuilder.ATTRS =
 	chooseVarPrompt:
 	{
 		value:     'Choose a Variable',
-		validator: function(o) { return (o && Y.Lang.isString(o)); },
+		validator: Y.Lang.isString,
 		writeOnce: true
 	},
 
@@ -409,16 +447,13 @@ Y.extend(QueryBuilder, Y.Widget,
 		var var_menu     = this.row_list[row_index].var_menu;
 		var selected_var = this.var_list[ var_menu.get('selectedIndex') ];
 
-		if (selected_var.type == 'none')
-		{
-			var cells = [];
-		}
-		else
+		var cells = [];
+		if (selected_var.type != 'none')
 		{
 			this.row_list[row_index].plugin = 
 				new QueryBuilder.plugin_mapping[ selected_var.type ](
 					this, this.get('pluginConfig'));
-			var cells =
+			cells =
 				this.row_list[row_index].plugin.create(
 					row_index, selected_var,
 					this.op_list[ selected_var.type ], value);
@@ -554,7 +589,7 @@ Y.extend(QueryBuilder, Y.Widget,
 				var list = plugin.toDatabaseQuery();
 				for (var j=0; j<list.length; j++)
 				{
-					result.push([ row.var_menu.value ].concat(list[j]));
+					result.push([ row.var_menu.get('value') ].concat(list[j]));
 				}
 			}
 		}
@@ -860,7 +895,7 @@ QueryBuilder.Select.prototype =
 
 	toDatabaseQuery: function()
 	{
-		return [ [ this.db_query_equals, this.value_menu.value ] ];
+		return [ [ this.db_query_equals, this.value_menu.get('value') ] ];
 	},
 
 	/**********************************************************************

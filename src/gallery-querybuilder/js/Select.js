@@ -75,7 +75,7 @@ QueryBuilder.Select.prototype =
 
 	toDatabaseQuery: function()
 	{
-		return [ [ this.db_query_equals, this.value_menu.value ] ];
+		return [ [ this.db_query_equals, this.value_menu.get('value') ] ];
 	},
 
 	/**********************************************************************

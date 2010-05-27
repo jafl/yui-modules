@@ -89,7 +89,6 @@ function QueryBuilder(
 	}
 
 	// list of variables that can be queried
-	// { name, type, text, value_list { value, text }, validation }
 
 	this.var_list = var_list.slice(0);
 
@@ -120,7 +119,7 @@ QueryBuilder.ATTRS =
 	chooseVarPrompt:
 	{
 		value:     'Choose a Variable',
-		validator: function(o) { return (o && Y.Lang.isString(o)); },
+		validator: Y.Lang.isString,
 		writeOnce: true
 	},
 
@@ -446,16 +445,13 @@ Y.extend(QueryBuilder, Y.Widget,
 		var var_menu     = this.row_list[row_index].var_menu;
 		var selected_var = this.var_list[ var_menu.get('selectedIndex') ];
 
-		if (selected_var.type == 'none')
-		{
-			var cells = [];
-		}
-		else
+		var cells = [];
+		if (selected_var.type != 'none')
 		{
 			this.row_list[row_index].plugin = 
 				new QueryBuilder.plugin_mapping[ selected_var.type ](
 					this, this.get('pluginConfig'));
-			var cells =
+			cells =
 				this.row_list[row_index].plugin.create(
 					row_index, selected_var,
 					this.op_list[ selected_var.type ], value);
@@ -591,7 +587,7 @@ Y.extend(QueryBuilder, Y.Widget,
 				var list = plugin.toDatabaseQuery();
 				for (var j=0; j<list.length; j++)
 				{
-					result.push([ row.var_menu.value ].concat(list[j]));
+					result.push([ row.var_menu.get('value') ].concat(list[j]));
 				}
 			}
 		}
