@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"ExpressionBuilder": "gallery-ExpressionBuilder"};
+YAHOO.env.classMap = {"ExpressionBuilder": "gallery-exprbuilder"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;
