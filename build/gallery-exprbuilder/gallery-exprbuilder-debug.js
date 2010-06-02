@@ -562,7 +562,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 		var markup =
 			'<form name="{qbf}">' +
 				'<div class="{qb}"></div>' +
-				'<div class="{qbctl}">' +
+				'<div class="{qbctl} formmgr-row">' +
 					'<button class="{ic}">{insert}</button>' +
 					'<button class="{rc}">{reset}</button>' +
 				'</div>' +
