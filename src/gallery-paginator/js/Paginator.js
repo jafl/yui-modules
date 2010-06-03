@@ -204,22 +204,6 @@ Paginator.ATTRS =
         validator : Y.Lang.isBoolean
     },
 
-    /**
-     * Update the UI immediately upon interaction.  If false, changeRequest
-     * subscribers or other external code will need to explicitly set the
-     * new values in the paginator to trigger repaint.
-     * @attribute updateOnChange
-     * @type boolean
-     * @default false
-     * @deprecated use changeRequest listener that calls setState
-     */
-    updateOnChange: {
-        value     : false,
-        validator : Y.Lang.isBoolean
-    },
-
-
-
     // Read only attributes
 
     /**
@@ -572,7 +556,7 @@ Y.extend(Paginator, Y.Widget,
      */
     setPage : function (page,silent) {
         if (this.hasPage(page) && page !== this.getCurrentPage()) {
-            if (this.get('updateOnChange') || silent) {
+            if (silent) {
                 this.set('recordOffset', (page - 1) * this.get('rowsPerPage'));
             } else {
                 this.fire('changeRequest',this.getState({'page':page}));
@@ -599,7 +583,7 @@ Y.extend(Paginator, Y.Widget,
     setRowsPerPage : function (rpp,silent) {
         if (Paginator.isNumeric(rpp) && +rpp > 0 &&
             +rpp !== this.get('rowsPerPage')) {
-            if (this.get('updateOnChange') || silent) {
+            if (silent) {
                 this.set('rowsPerPage',rpp);
             } else {
                 this.fire('changeRequest',
@@ -626,7 +610,7 @@ Y.extend(Paginator, Y.Widget,
     setTotalRecords : function (total,silent) {
         if (Paginator.isNumeric(total) && +total >= 0 &&
             +total !== this.get('totalRecords')) {
-            if (this.get('updateOnChange') || silent) {
+            if (silent) {
                 this.set('totalRecords',total);
             } else {
                 this.fire('changeRequest',
@@ -654,7 +638,7 @@ Y.extend(Paginator, Y.Widget,
     setStartIndex : function (offset,silent) {
         if (Paginator.isNumeric(offset) && +offset >= 0 &&
             +offset !== this.get('recordOffset')) {
-            if (this.get('updateOnChange') || silent) {
+            if (silent) {
                 this.set('recordOffset',offset);
             } else {
                 this.fire('changeRequest',
