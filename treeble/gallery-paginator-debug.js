@@ -34,15 +34,6 @@ Y.mix(Paginator, {
     NAME: "paginator",
 
     /**
-     * Incrementing index used to give instances unique ids.
-     * @static
-     * @property Paginator.id
-     * @type number
-     * @private
-     */
-    id : 0,
-
-    /**
      * Base of id strings used for ui components.
      * @static
      * @property Paginator.ID_BASE
@@ -215,7 +206,7 @@ Paginator.ATTRS =
      * @final
      */
     id: {
-        value    : Paginator.id++,
+        value    : Y.guid(),
         readOnly : true
     }
 };
@@ -553,8 +544,7 @@ Y.extend(Paginator, Y.Widget,
      * Set the current page to the provided page number if possible.
      * @method setPage
      * @param newPage {number} the new page number
-     * @param silent {boolean} whether to forcibly avoid firing the
-     * changeRequest event
+     * @param silent {boolean} whether to forcibly avoid firing the changeRequest event
      */
     setPage : function (page,silent) {
         if (this.hasPage(page) && page !== this.getCurrentPage()) {
@@ -579,8 +569,7 @@ Y.extend(Paginator, Y.Widget,
      * Set the number of rows per page.
      * @method setRowsPerPage
      * @param rpp {number} the new number of rows per page
-     * @param silent {boolean} whether to forcibly avoid firing the
-     * changeRequest event
+     * @param silent {boolean} whether to forcibly avoid firing the changeRequest event
      */
     setRowsPerPage : function (rpp,silent) {
         if (Paginator.isNumeric(rpp) && +rpp > 0 &&
