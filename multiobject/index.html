@@ -1,0 +1,111 @@
+<!DOCTYPE html public '-//w3c//dtd html 4.01//en' http://www.w3.org/tr/html4/strict.dtd'>
+<html>
+<head>
+	<title>YUI 3 MultiObject Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.1.1/build/yui/yui.js"></script>
+	<script src="gallery-multiobject-debug.js"></script>
+	<script src="gallery-paginator-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssreset/reset-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssbase/base-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssfonts/fonts-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
+</head>
+<body class="yui3-skin-sam">
+
+<script type="text/javascript">
+YUI({
+	base: '../yui3/',
+	filter: 'raw'
+}).use('gallery-multiobject', 'gallery-paginator', function(Y)
+{
+	function update(
+		/* object */	state)
+	{
+		this.setPage(state.page, true);
+		this.setRowsPerPage(state.rowsPerPage, true);
+	}
+
+	var p1 = new Y.Paginator(
+	{
+		totalRecords: 25,
+		rowsPerPage:5,
+		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}'
+	});
+	p1.render('#pg1');
+
+	var p2 = new Y.Paginator(
+	{
+		totalRecords: 25,
+		rowsPerPage:5,
+		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {CurrentPageInput} {NextPageLink} {LastPageLink}',
+		firstPageLinkLabel:    '|&lt;',
+		previousPageLinkLabel: '&lt;',
+		nextPageLinkLabel:     '&gt;',
+		lastPageLinkLabel:     '&gt;|'
+	});
+	p2.render('#pg2');
+
+	var p3 = new Y.Paginator(
+	{
+		totalRecords: 25,
+		rowsPerPage:5,
+		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {ItemRangeDropdown} {NextPageLink} {LastPageLink}',
+		firstPageLinkLabel:    '|&lt;',
+		previousPageLinkLabel: '&lt;',
+		nextPageLinkLabel:     '&gt;',
+		lastPageLinkLabel:     '&gt;|'
+	});
+	p3.render('#pg3');
+
+	var p = new Y.MultiObject([p1, p2, p3]);
+	p.on('changeRequest', update, p);
+
+	Y.one('#set-page-3').on('click', function(e)
+	{
+		this.setPage(3);
+	},
+	p2);
+
+	// test API
+
+	var log = '';
+
+	log += p.getRowsPerPage();
+	log += '<br>'+p.get('template');
+
+	p.multi_set_primary_item_index(1);
+
+	log += '<br><br>'+p.getRowsPerPage();
+	log += '<br>'+p.get('template');
+
+	p.multi_set_primary_item_index(0);
+	p.multi_set_return_all_results(true);
+
+	log += '<br><br>'+p.getRowsPerPage();
+	log += '<br>'+p.get('template').join('<br>');
+
+	p.multi_set_return_all_results(false);
+
+	log += '<br><br>'+p.multi_get_all('getRowsPerPage');
+	log += '<br>'+p.multi_get_all('get', 'template').join('<br>');
+
+	Y.one('#output').set('innerHTML', log);
+});
+</script>
+
+<h1>YUI 3 MultiObject Example</h1>
+
+<div id="pg1"></div>
+<hr>
+<div id="pg2"></div>
+<hr>
+<div id="pg3"></div>
+<hr>
+<button id="set-page-3">Jump to page 3</button>
+<hr>
+<pre id="output"></pre>
+
+</body>
+</html>
