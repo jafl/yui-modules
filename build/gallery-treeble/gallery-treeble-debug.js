@@ -798,6 +798,15 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 	{
 		this._cancelAllRequests();
 
+		if (this._callback)
+		{
+			var r = this._callback.request;
+			if (r.sort !== e.request.sort || r.dir !== e.request.dir)
+			{
+				this._open = [];
+			}
+		}
+
 		this._callback            = e;
 		this._generating_requests = true;
 
