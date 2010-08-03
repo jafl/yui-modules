@@ -648,7 +648,7 @@ Y.extend(QueryBuilder, Y.Widget,
 	{
 		// This must use a select tag!
 
-		var markup = '<select name="{n}" class="{c}" />';
+		var markup = '<select name="{n}" class="formmgr-field {c}" />';
 
 		return Y.Lang.substitute(markup,
 		{
@@ -794,7 +794,7 @@ QueryBuilder.String.prototype =
 	{
 		// This must use a select tag!
 
-		var markup = '<select name="{n}" class="{c}" />';
+		var markup = '<select name="{n}" class="formmgr-field {c}" />';
 
 		return Y.Lang.substitute(markup,
 		{
@@ -809,7 +809,7 @@ QueryBuilder.String.prototype =
 	{
 		// This must use an input tag!
 
-		var markup = '<input type="text" name="{n}" class="yiv-required {c}"/>';
+		var markup = '<input type="text" name="{n}" class="yiv-required formmgr-field {c}"/>';
 
 		return Y.Lang.substitute(markup,
 		{
@@ -917,7 +917,7 @@ QueryBuilder.Select.prototype =
 	{
 		// This must use a select tag!
 
-		var markup = '<select name="{n}" class="{c}" />';
+		var markup = '<select name="{n}" class="formmgr-field {c}" />';
 
 		return Y.Lang.substitute(markup,
 		{

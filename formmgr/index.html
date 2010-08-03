@@ -48,7 +48,8 @@
 		color: #BE1E2D;
 	}
 
-	fieldset .formmgr-haserror input
+	fieldset input.formmgr-haserror,
+	fieldset select.formmgr-haserror
 	{
 		background-color: #FFCCCC;
 	}
@@ -206,17 +207,17 @@ YUI().use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function
 		<div class="formmgr-row">
 			<label for="s1">String (required)</label>
 			<p class="formmgr-message-text"></p>
-			<input type="text" id="s1" name="s1" class="yiv-required">
+			<input type="text" id="s1" name="s1" class="formmgr-field yiv-required">
 		</div>
 		<div class="formmgr-row">
 			<label for="s2">String (not required, 6-10 characters)</label>
 			<p class="formmgr-message-text"></p>
-			<input type="text" id="s2" name="s2" class="yiv-length:[6,10]" value="abcdef">
+			<input type="text" id="s2" name="s2" class="formmgr-field yiv-length:[6,10]" value="abcdef">
 		</div>
 		<div class="formmgr-row">
 			<label for="s3">String (required, max 10 characters)</label>
 			<p class="formmgr-message-text"></p>
-			<input type="text" id="s3" name="s3" class="yiv-required yiv-length:[,10]" value="abcdef">
+			<input type="text" id="s3" name="s3" class="formmgr-field yiv-required yiv-length:[,10]" value="abcdef">
 		</div>
 	</fieldset>
 
@@ -225,12 +226,18 @@ YUI().use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function
 		<div class="formmgr-row">
 			<label for="i1">Integer (not required)</label>
 			<p class="formmgr-message-text"></p>
-			<input type="text" id="i1" name="i1" class="yiv-integer">
+			<input type="text" id="i1" name="i1" class="formmgr-field yiv-integer">
 		</div>
 		<div class="formmgr-row">
 			<label for="i2">Integer (required, min 10)</label>
 			<p class="formmgr-message-text"></p>
-			<input type="text" id="i2" name="i2" class="yiv-required yiv-integer:[10,]" value="20">
+			<input type="text" id="i2" name="i2" class="formmgr-field yiv-required yiv-integer:[10,]" value="20">
+		</div>
+		<div class="formmgr-row">
+			<label for="i2">Range (required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="r1" name="r1" class="formmgr-field yiv-required yiv-integer:[-10,]" value="-5">
+			<input type="text" id="r2" name="r2" class="formmgr-field yiv-required yiv-integer:[,10]" value="5">
 		</div>
 	</fieldset>
 
@@ -239,12 +246,12 @@ YUI().use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function
 		<div class="formmgr-row">
 			<label for="d1">Decimal (not required)</label>
 			<p class="formmgr-message-text"></p>
-			<input type="text" id="d1" name="d1" class="yiv-decimal">
+			<input type="text" id="d1" name="d1" class="formmgr-field yiv-decimal">
 		</div>
 		<div class="formmgr-row">
 			<label for="d2">Decimal (not required, max 3.14)</label>
 			<p class="formmgr-message-text"></p>
-			<input type="text" id="d2" name="d2" class="yiv-decimal:[,3.14]">
+			<input type="text" id="d2" name="d2" class="formmgr-field yiv-decimal:[,3.14]">
 		</div>
 	</fieldset>
 
@@ -255,7 +262,7 @@ YUI().use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function
 		<div class="formmgr-row">
 			<label for="m1">Menu (required)</label>
 			<p class="formmgr-message-text"></p>
-			<select id="m1" name="m1" class="yiv-required">
+			<select id="m1" name="m1" class="formmgr-field yiv-required">
 				<option value="">[Select a value]</option>
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -265,7 +272,7 @@ YUI().use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function
 		<div class="formmgr-row">
 			<label for="m2">Menu (required)</label>
 			<p class="formmgr-message-text"></p>
-			<select id="m2" name="m2" size="3" class="yiv-required">
+			<select id="m2" name="m2" size="3" class="formmgr-field yiv-required">
 				<option value="1">1</option>
 				<option value="2">2</option>
 				<option value="3">3</option>
@@ -293,22 +300,22 @@ YUI().use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function
 		<div class="formmgr-row">
 			<label for="email">Email (required)</label>
 			<p class="formmgr-message-text"></p>
-			<input type="text" id="email" name="email" class="yiv-required">
+			<input type="text" id="email" name="email" class="formmgr-field yiv-required">
 		</div>
 		<div class="formmgr-row">
 			<label for="pw">Password (not required, 6-10 characters)</label>
 			<p class="formmgr-message-text"></p>
-			<input type="password" id="pw" name="pw" class="yiv-required">
+			<input type="password" id="pw" name="pw" class="formmgr-field yiv-required">
 		</div>
 		<div class="formmgr-row">
 			<label for="pw2">Confirm password</label>
 			<p class="formmgr-message-text"></p>
-			<input type="password" id="pw2" name="pw2">
+			<input type="password" id="pw2" name="pw2" class="formmgr-field">
 		</div>
 		<div class="formmgr-row">
 			<label for="zip">United States ZIP Code</label>
 			<p class="formmgr-message-text"></p>
-			<input type="text" id="zip" name="zip" class="yiv-required">
+			<input type="text" id="zip" name="zip" class="formmgr-field yiv-required">
 		</div>
 	</fieldset>
 

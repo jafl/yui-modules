@@ -541,7 +541,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 	{
 		var markup =
 			'<div class="{td}">' +
-				'<textarea id="{tid}" name="{tn}" class="{ta}"></textarea>' +
+				'<textarea id="{tid}" name="{tn}" class="formmgr-field {ta}"></textarea>' +
 			'</div>' +
 			'<div class="{fctl}">' +
 				'<button class="{pc}">{paren}</button>' +
