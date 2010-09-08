@@ -61,6 +61,12 @@
 
                     <div class="summary description" property="yui:description">
                         <p>Hierarchical data source.</p>
+<p>TreebleDataSource converts a tree of DataSources into a flat list of
+visible items.  The merged list must be paginated if the number of child
+nodes might be very large.  To turn on this feature, set
+paginateChildren:true.</p>
+<p>The tree must be immutable.  The total number of items available from
+each DataSource must remain constant.</p>
                     </div>
 
                         <div class="section constructor details" rel="yui:constructor" resource="#constructor">
@@ -242,10 +248,6 @@ passed in as a completion function.
                                                          oData
                                                     
                                                 
-                                                        , 
-                                                         treeble_config
-                                                    
-                                                
                                             )
                                         </code>
                                         
@@ -253,10 +255,6 @@ passed in as a completion function.
                                             <p>Converts data to a DataSource.  Data can be an object containing both
 <code>dataType</code> and <code>liveData</code>, or it can be <q>free
 form</q>, e.g., an array of records or an XHR URL.</p>
-<p>In order to provide the second argument
-(<code>treeble_config</code>), configure the DataSchema field's parser
-to be the result from calling <code>Y.rbind(Y.Parsers.treebledatasource,
-null, treeble_config)</code>.</p>
                                         </div>
 
                                         <div class="description">
@@ -268,12 +266,6 @@ null, treeble_config)</code>.</p>
                                                         &lt;<span property="yui:type">mixed</span>&gt;
                                                         </code>
                                                         <span property="yui:description">  Data to convert.</span>
-                                                        </dd>
-                                                        <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">treeble_config</span>
-                                                        &lt;<span property="yui:type">Object</span>&gt;
-                                                        </code>
-                                                        <span property="yui:description">  Treeble configuration to set on the new DataSource.</span>
                                                         </dd>
                                                 </dl>
 
@@ -341,7 +333,7 @@ contain the following configuration:</p>
 <dt>generateRequest</dt>
 <dd>(required) The function to convert the initial request into
 a request usable by the actual DataSource.  This function takes
-two arguments: state {sort,dir,startIndex,resultCount} and path
+two arguments: state (sort,dir,startIndex,resultCount) and path
 (an array of node indices telling how to reach the node).
 </dd>
 <dt>requestCfg</dt>
@@ -372,6 +364,22 @@ entire data set.  If this is not provided,
 <code>totalRecordsExpr</code> must be specified.  If both are provided,
 <code>totalRecordsExpr</code> takes priority.</dd>
 </dl>
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_uniqueIdKey">
+                                    <h4><a name="config_uniqueIdKey">uniqueIdKey</a>
+                                        <code>- <span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The key in each record that stores an identifier which is unique
+across the entire tree.  If this is not specified, then all nodes
+will close when the data is sorted.
                                         </div>
                                     </div>
  
@@ -427,6 +435,7 @@ entire data set.  If this is not provided,
                         <ul class="content">        
                                 <li class=""><a href="#config_paginateChildren" title="paginateChildren">paginateChildren</a></li>
                                 <li class=""><a href="#config_root" title="root">root</a></li>
+                                <li class=""><a href="#config_uniqueIdKey" title="uniqueIdKey">uniqueIdKey</a></li>
                         </ul>
                     </div>
 
@@ -439,7 +448,7 @@ entire data set.  If this is not provided,
 	</div>
 </div>
 <script type="text/javascript">
-    var ALL_YUI_PROPS = [{"url": "TreebleDataSource.html#method_isOpen", "access": "", "host": "TreebleDataSource", "type": "method", "name": "isOpen"}, {"url": "TreebleDataSource.html#config_paginateChildren", "access": "", "host": "TreebleDataSource", "type": "config", "name": "paginateChildren"}, {"url": "TreebleDataSource.html#config_root", "access": "", "host": "TreebleDataSource", "type": "config", "name": "root"}, {"url": "TreebleDataSource.html#method_toggle", "access": "", "host": "TreebleDataSource", "type": "method", "name": "toggle"}, {"url": "TreebleDataSource.html#method_Y.Parsers.treebledatasource", "access": "", "host": "TreebleDataSource", "type": "method", "name": "Y.Parsers.treebledatasource"}];
+    var ALL_YUI_PROPS = [{"url": "TreebleDataSource.html#method_isOpen", "access": "", "host": "TreebleDataSource", "type": "method", "name": "isOpen"}, {"url": "TreebleDataSource.html#config_paginateChildren", "access": "", "host": "TreebleDataSource", "type": "config", "name": "paginateChildren"}, {"url": "TreebleDataSource.html#config_root", "access": "", "host": "TreebleDataSource", "type": "config", "name": "root"}, {"url": "TreebleDataSource.html#method_toggle", "access": "", "host": "TreebleDataSource", "type": "method", "name": "toggle"}, {"url": "TreebleDataSource.html#config_uniqueIdKey", "access": "", "host": "TreebleDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "TreebleDataSource.html#method_Y.Parsers.treebledatasource", "access": "", "host": "TreebleDataSource", "type": "method", "name": "Y.Parsers.treebledatasource"}];
     YAHOO.yuidoc.init();
 </script>
 </body>
