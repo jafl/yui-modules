@@ -302,8 +302,6 @@ YUI({
 	var container = Y.one('#treeble');
 	function renderTable(response)
 	{
-//		var t = new Date();
-
 		var s = '<table>';
 
 		s += '<tr>';
@@ -374,8 +372,6 @@ YUI({
 		}
 
 		pg.setTotalRecords(response.meta.totalRecords);
-
-//		Y.log('render: ' + ((new Date()).getTime() - t.getTime()), 'warn');
 	}
 
 	function reloadTable()
@@ -406,11 +402,7 @@ YUI({
 
 	function toggleRow(path)
 	{
-//		var t = new Date();
-
 		ds.toggle(path, {}, reloadTable);
-
-//		Y.log('toggle: ' + ((new Date()).getTime() - t.getTime()), 'warn');
 	}
 
 	reloadTable();
