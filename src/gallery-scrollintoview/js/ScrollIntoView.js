@@ -79,7 +79,7 @@ Y.Node.prototype.scrollIntoView = function()
 		}
 		else if (r.bottom > d.bottom)
 		{
-			dy = r.bottom - d.bottom;
+			dy = Math.min(r.bottom - d.bottom, r.top - d.top);
 		}
 
 		var dx = 0;
@@ -93,7 +93,7 @@ Y.Node.prototype.scrollIntoView = function()
 		}
 		else if (r.right > d.right)
 		{
-			dx = r.right - d.right;
+			dx = Math.min(r.right - d.right, r.left - d.left);
 		}
 
 		if (hit_top)
