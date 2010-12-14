@@ -418,6 +418,48 @@ lang.extend(util.BulkEditDataSource, DS,
 	},
 
 	/**
+	 * Returns the current value of the specified item in the specified record.
+	 */
+	getValue: function(
+		/* int */		record_index,
+		/* string */	key)
+	{
+		if (!this._dataIsLocal())
+		{
+			YAHOO.log('BulkEditDataSource.getValue() can only be called when using a local datasource', 'error', 'BulkEditDataSource');
+			return;
+		}
+
+		var j = fromDisplayIndex.call(this, record_index);
+		if (j === false)
+		{
+			return false;
+		}
+
+		j = this._index[j];
+		if (inserted_re.test(j))
+		{
+			var record_id = j.substr(inserted_prefix.length);
+			var record    = this._new[ record_id ];
+		}
+		else
+		{
+			var record    = this.liveData.liveData[j];
+			var record_id = record[ this.uniqueIdKey ];
+		}
+
+		if (this._diff[ record_id ] &&
+			!lang.isUndefined(this._diff[ record_id ][ key ]))
+		{
+			return this._diff[ record_id ][ key ];
+		}
+		else
+		{
+			return record[key];
+		}
+	},
+
+	/**
 	 * When using a remote datasource, this will include changes made to
 	 * deleted records.
 	 */

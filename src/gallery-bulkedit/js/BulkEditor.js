@@ -751,7 +751,7 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 
 		if (!this.validation_el)
 		{
-			this.validation_el = document.createElement(input);
+			this.validation_el = document.createElement('input');
 		}
 
 		if (!this.validation_keys)
@@ -759,7 +759,7 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 			this.validation_keys = [];
 			for (var key in this.fields)
 			{
-				if (YAHOO.lang.hasOwnPropety(this.fields, key) &&
+				if (YAHOO.lang.hasOwnProperty(this.fields, key) &&
 					this.fields[key].validation)
 				{
 					this.validation_keys.push(key);
@@ -767,13 +767,48 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 			}
 		}
 
-		var count = this.ds.getRecordCount();
+		var count     = this.ds.getRecordCount();
+		var page_size = this.pg.getRowsPerPage();
 		for (var i=0; i<count; i++)
 		{
+			var status = true;
 			for (var j=0; j<this.validation_keys.length; j++)
 			{
 				var key   = this.validation_keys[j];
+				var field = this.fields[key];
 				var value = this.ds.getValue(i, key);
+
+				var info = null;
+				if (field.validation.css)
+				{
+					this.validation_el.value     = value;
+					this.validation_el.className = field.validation.css;
+
+					info = Form.validateFromCSSData(this.validation_el);
+					if (info.error)
+					{
+						status = false;
+						break;
+					}
+				}
+
+				if (!info || info.keepGoing)
+				{
+					if (field.validation.regex instanceof RegExp &&
+						!field.validation.regex.test(value))
+					{
+						status = false;
+						break;
+					}
+				}
+			}
+
+			if (!status)
+			{
+				j = Math.floor(i / page_size);
+				i = (j+1)*page_size - 1;	// skip to next page
+
+				this.page_status[j] = 'error';
 			}
 		}
 
