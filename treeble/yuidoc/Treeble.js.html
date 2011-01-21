@@ -68,7 +68,7 @@
 		<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;treeble-nub&#39;</span><span class="p">);</span>
 
 		<span class="kd">var</span> <span class="nx">ds</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">datasource</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;datasource&#39;</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;childNodesKey&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">).</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">childNodesKey</span><span class="p">;</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span>
 		<span class="p">{</span>
@@ -93,6 +93,18 @@
 
 		<span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
 	<span class="p">};</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * &lt;p&gt;Default formatter for indented column.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * @method Y.Treeble.treeValueFormatter</span>
+<span class="cm"> * @static</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Treeble&quot;</span><span class="p">).</span><span class="nx">treeValueFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">depth_class</span> <span class="o">=</span> <span class="s1">&#39;treeble-depth-&#39;</span><span class="o">+</span><span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">_yui_node_depth</span><span class="p">;</span>
+	<span class="k">return</span> <span class="s1">&#39;&lt;span class=&quot;&#39;</span><span class="o">+</span><span class="nx">depth_class</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="o">+</span><span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">;</span>
 <span class="p">};</span>
 </pre></div>
 
@@ -138,7 +150,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-    var ALL_YUI_PROPS = [{"url": "TreebleDataSource.html#method_isOpen", "access": "", "host": "TreebleDataSource", "type": "method", "name": "isOpen"}, {"url": "TreebleDataSource.html#config_paginateChildren", "access": "", "host": "TreebleDataSource", "type": "config", "name": "paginateChildren"}, {"url": "TreebleDataSource.html#config_root", "access": "", "host": "TreebleDataSource", "type": "config", "name": "root"}, {"url": "TreebleDataSource.html#method_toggle", "access": "", "host": "TreebleDataSource", "type": "method", "name": "toggle"}, {"url": "TreebleDataSource.html#config_uniqueIdKey", "access": "", "host": "TreebleDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "TreebleDataSource.html#method_Y.Parsers.treebledatasource", "access": "", "host": "TreebleDataSource", "type": "method", "name": "Y.Parsers.treebledatasource"}, {"url": "Treeble.html#method_Y.Treeble.twistdownFormatter", "access": "", "host": "Treeble", "type": "method", "name": "Y.Treeble.twistdownFormatter"}];
+    var ALL_YUI_PROPS = [{"url": "TreebleDataSource.html#method_isOpen", "access": "", "host": "TreebleDataSource", "type": "method", "name": "isOpen"}, {"url": "TreebleDataSource.html#config_paginateChildren", "access": "", "host": "TreebleDataSource", "type": "config", "name": "paginateChildren"}, {"url": "TreebleDataSource.html#config_root", "access": "", "host": "TreebleDataSource", "type": "config", "name": "root"}, {"url": "TreebleDataSource.html#method_toggle", "access": "", "host": "TreebleDataSource", "type": "method", "name": "toggle"}, {"url": "TreebleDataSource.html#config_uniqueIdKey", "access": "", "host": "TreebleDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "TreebleDataSource.html#method_Y.Parsers.treebledatasource", "access": "", "host": "TreebleDataSource", "type": "method", "name": "Y.Parsers.treebledatasource"}, {"url": "Treeble.html#method_Y.Treeble.treeValueFormatter", "access": "", "host": "Treeble", "type": "method", "name": "Y.Treeble.treeValueFormatter"}, {"url": "Treeble.html#method_Y.Treeble.twistdownFormatter", "access": "", "host": "Treeble", "type": "method", "name": "Y.Treeble.twistdownFormatter"}];
     YAHOO.yuidoc.init();
 </script>
 </body>
