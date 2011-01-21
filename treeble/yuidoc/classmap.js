@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"TreebleDataSource": "gallery-treeble"};
+YAHOO.env.classMap = {"Treeble": "gallery-treeble", "TreebleDataSource": "gallery-treeble"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;

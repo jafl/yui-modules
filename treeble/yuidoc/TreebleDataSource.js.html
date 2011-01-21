@@ -193,7 +193,7 @@
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="nx">uniqueIdKey</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">uniqueIdKey</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">);</span>
 
 	<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">k</span><span class="o">&lt;</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">k</span><span class="o">++</span><span class="p">)</span>
@@ -552,9 +552,9 @@
 				<span class="p">}</span>
 				<span class="k">else</span>
 				<span class="p">{</span>
-					<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">slice</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+					<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">slice</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
 					<span class="p">{</span>
-						<span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">path</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">!=</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">path</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+						<span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">path</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">!=</span> <span class="nx">slice</span><span class="p">.</span><span class="nx">path</span><span class="p">[</span><span class="nx">j</span><span class="p">])</span>
 						<span class="p">{</span>
 							<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;TreebleDataSource found path mismatch&#39;</span><span class="p">);</span>
 							<span class="k">break</span><span class="p">;</span>
@@ -577,7 +577,7 @@
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="nx">request</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span>
+	<span class="nx">request</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">_req</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">req</span>             <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_req</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
@@ -678,7 +678,7 @@
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">error</span>    <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">error</span><span class="p">;</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">;</span>
-	<span class="nx">Y</span><span class="p">.</span><span class="nx">DataSource</span><span class="p">.</span><span class="nx">Local</span><span class="p">.</span><span class="nx">issueCallback</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">setNodeInfo</span><span class="p">(</span>
@@ -745,7 +745,7 @@
 	<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="p">{};</span>
 	<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_topResponse</span><span class="p">);</span>
 	<span class="nx">response</span><span class="p">.</span><span class="nx">results</span> <span class="o">=</span> <span class="p">[];</span>
-	<span class="nx">response</span>         <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+	<span class="nx">response</span>         <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
 	<span class="nx">count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_slices</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 	<span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
@@ -775,7 +775,7 @@
 	<span class="p">}</span>
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span> <span class="o">=</span> <span class="nx">response</span><span class="p">;</span>
-	<span class="nx">Y</span><span class="p">.</span><span class="nx">DataSource</span><span class="p">.</span><span class="nx">Local</span><span class="p">.</span><span class="nx">issueCallback</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">toggleSuccess</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">node</span><span class="p">,</span> <span class="nx">completion</span><span class="p">)</span>
@@ -1001,7 +1001,7 @@
 	<span class="kd">var</span> <span class="nx">treeble_config</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">treeble_config</span><span class="p">;</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;Local&#39;</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">treeble_config</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">treeble_config</span><span class="p">);</span>
+		<span class="nx">treeble_config</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">treeble_config</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 		<span class="k">delete</span> <span class="nx">treeble_config</span><span class="p">.</span><span class="nx">startIndexExpr</span><span class="p">;</span>
 		<span class="k">delete</span> <span class="nx">treeble_config</span><span class="p">.</span><span class="nx">totalRecordsExpr</span><span class="p">;</span>
 	<span class="p">}</span>
@@ -1015,12 +1015,12 @@
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">ds</span><span class="p">.</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">schemaPluginConfig</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">ds</span><span class="p">.</span><span class="nx">plug</span><span class="p">(</span><span class="nx">ds</span><span class="p">.</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">schemaPluginConfig</span><span class="p">);</span>
+		<span class="nx">ds</span><span class="p">.</span><span class="nx">plug</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">ds</span><span class="p">.</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">schemaPluginConfig</span><span class="p">,</span> <span class="kc">true</span><span class="p">));</span>
 	<span class="p">}</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">ds</span><span class="p">.</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">cachePluginConfig</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">ds</span><span class="p">.</span><span class="nx">plug</span><span class="p">(</span><span class="nx">ds</span><span class="p">.</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">cachePluginConfig</span><span class="p">);</span>
+		<span class="nx">ds</span><span class="p">.</span><span class="nx">plug</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">ds</span><span class="p">.</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">cachePluginConfig</span><span class="p">,</span> <span class="kc">true</span><span class="p">));</span>
 	<span class="p">}</span>
 
 	<span class="k">return</span> <span class="nx">ds</span><span class="p">;</span>
@@ -1043,6 +1043,7 @@
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
+                                <li class=""><a href="Treeble.html" title="Treeble">Treeble</a></li>
                                 <li class=""><a href="TreebleDataSource.html" title="TreebleDataSource">TreebleDataSource</a></li>
                         </ul>
                     </div>
@@ -1050,6 +1051,7 @@
                     <div id="fileList" class="module">
                         <h4>Files</h4>
                         <ul class="content">        
+                                <li class=""><a href="Treeble.js.html" title="Treeble.js">Treeble.js</a></li>
                                 <li class="selected"><a href="TreebleDataSource.js.html" title="TreebleDataSource.js">TreebleDataSource.js</a></li>
                         </ul>
                     </div>
@@ -1063,11 +1065,11 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2010 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">
-    var ALL_YUI_PROPS = [{"url": "TreebleDataSource.html#method_isOpen", "access": "", "host": "TreebleDataSource", "type": "method", "name": "isOpen"}, {"url": "TreebleDataSource.html#config_paginateChildren", "access": "", "host": "TreebleDataSource", "type": "config", "name": "paginateChildren"}, {"url": "TreebleDataSource.html#config_root", "access": "", "host": "TreebleDataSource", "type": "config", "name": "root"}, {"url": "TreebleDataSource.html#method_toggle", "access": "", "host": "TreebleDataSource", "type": "method", "name": "toggle"}, {"url": "TreebleDataSource.html#config_uniqueIdKey", "access": "", "host": "TreebleDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "TreebleDataSource.html#method_Y.Parsers.treebledatasource", "access": "", "host": "TreebleDataSource", "type": "method", "name": "Y.Parsers.treebledatasource"}];
+    var ALL_YUI_PROPS = [{"url": "TreebleDataSource.html#method_isOpen", "access": "", "host": "TreebleDataSource", "type": "method", "name": "isOpen"}, {"url": "TreebleDataSource.html#config_paginateChildren", "access": "", "host": "TreebleDataSource", "type": "config", "name": "paginateChildren"}, {"url": "TreebleDataSource.html#config_root", "access": "", "host": "TreebleDataSource", "type": "config", "name": "root"}, {"url": "TreebleDataSource.html#method_toggle", "access": "", "host": "TreebleDataSource", "type": "method", "name": "toggle"}, {"url": "TreebleDataSource.html#config_uniqueIdKey", "access": "", "host": "TreebleDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "TreebleDataSource.html#method_Y.Parsers.treebledatasource", "access": "", "host": "TreebleDataSource", "type": "method", "name": "Y.Parsers.treebledatasource"}, {"url": "Treeble.html#method_Y.Treeble.twistdownFormatter", "access": "", "host": "Treeble", "type": "method", "name": "Y.Treeble.twistdownFormatter"}];
     YAHOO.yuidoc.init();
 </script>
 </body>
