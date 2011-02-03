@@ -2,7 +2,7 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: gallery-paginator   LastPageLink.js  (YUI Library)</title>
+	<title>API: gallery-paginator  Paginator.ui.ValidationPageLinks   (YUI Library)</title>
 
 	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
 	<link rel="stylesheet" type="text/css" href="assets/api.css" />
@@ -19,8 +19,8 @@
         <h3>gallery-paginator&nbsp; <span class="subtitle">1.0.0</span></h3>
         <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
             &gt; <a href="./module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a>
+                 &gt; Paginator.ui.ValidationPageLinks 
                 
-                 &gt; LastPageLink.js (source view) 
         <form onsubmit="return false">
             <div id="propertysearch">
                 Search: <input autocomplete="off" id="searchinput" />
@@ -43,212 +43,143 @@
                 </fieldset>
             </form>
 
-                    <div id="srcout">
-                        <style>
-                            #doc3 .classopts { display:none; }
-                        </style>
-                        <div class="highlight"><pre><span class="cm">/*</span>
-<span class="cm">Copyright (c) 2009, Yahoo! Inc. All rights reserved.</span>
-<span class="cm">Code licensed under the BSD License:</span>
-<span class="cm">http://developer.yahoo.net/yui/license.txt</span>
-<span class="cm">*/</span>
+                    <h2>
+                        
 
-<span class="cm">/**</span>
-<span class="cm"> * ui Component to generate the link to jump to the last page.</span>
-<span class="cm"> *</span>
-<span class="cm"> * @module gallery-paginator</span>
-<span class="cm"> * @class Paginator.ui.LastPageLink</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> * @param p {Pagintor} Paginator instance to attach to</span>
-<span class="cm"> */</span>
-<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">LastPageLink</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+                        
+                        
+                            Class <b property="yui:name">Paginator.ui.ValidationPageLinks</b>
+                        <span class="extends">
+                        </span>
 
-    <span class="nx">p</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;destroy&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">destroy</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;recordOffsetChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;rowsPerPageChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;totalRecordsChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
 
-	<span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;lastPageLinkClassChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rebuild</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-	<span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;lastPageLinkLabelChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rebuild</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-<span class="p">};</span>
+                    <div class="summary description" property="yui:description">
+                        Adds per-page error notification to Paginator.ui.PageLinks.
+                    </div>
 
-<span class="cm">/**</span>
-<span class="cm">  * CSS class assigned to the link/span</span>
-<span class="cm">  * @attribute lastPageLinkClass</span>
-<span class="cm">  * @default &#39;yui-paginator-last&#39;</span>
-<span class="cm">  */</span>
-<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">lastPageLinkClass</span> <span class="o">=</span>
-<span class="p">{</span>
-     <span class="nx">value</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">Paginator</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;last&#39;</span><span class="p">),</span>
-     <span class="nx">validator</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
-<span class="p">};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Used as innerHTML for the last page link/span.</span>
-<span class="cm"> * @attribute lastPageLinkLabel</span>
-<span class="cm"> * @default &#39;last &amp;gt;&amp;gt;&#39;</span>
-<span class="cm"> */</span>
-<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">lastPageLinkLabel</span> <span class="o">=</span>
-<span class="p">{</span>
-    <span class="nx">value</span> <span class="o">:</span> <span class="s1">&#39;last &amp;gt;&amp;gt;&#39;</span><span class="p">,</span>
-    <span class="nx">validator</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
-<span class="p">};</span>
-
-<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">LastPageLink</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * Currently placed HTMLElement node</span>
-<span class="cm">     * @property current</span>
-<span class="cm">     * @type HTMLElement</span>
-<span class="cm">     * @private</span>
-<span class="cm">     */</span>
-    <span class="nx">current</span>   <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * Link HTMLElement node</span>
-<span class="cm">     * @property link</span>
-<span class="cm">     * @type HTMLElement</span>
-<span class="cm">     * @private</span>
-<span class="cm">     */</span>
-    <span class="nx">link</span>      <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * Span node (inactive link)</span>
-<span class="cm">     * @property span</span>
-<span class="cm">     * @type HTMLElement</span>
-<span class="cm">     * @private</span>
-<span class="cm">     */</span>
-    <span class="nx">span</span>      <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * Empty place holder node for when the last page link is inappropriate to</span>
-<span class="cm">     * display in any form (unlimited paging).</span>
-<span class="cm">     * @property na</span>
-<span class="cm">     * @type HTMLElement</span>
-<span class="cm">     * @private</span>
-<span class="cm">     */</span>
-    <span class="nx">na</span>        <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-
-
-    <span class="cm">/**</span>
-<span class="cm">     * Removes the link/span node and clears event listeners</span>
-<span class="cm">     * @method destroy</span>
-<span class="cm">     * @private</span>
-<span class="cm">     */</span>
-    <span class="nx">destroy</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">na</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">na</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="p">},</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * Generate the nodes and return the appropriate node given the current</span>
-<span class="cm">     * pagination state.</span>
-<span class="cm">     * @method render</span>
-<span class="cm">     * @param id_base {string} used to create unique ids for generated nodes</span>
-<span class="cm">     * @return {HTMLElement}</span>
-<span class="cm">     */</span>
-    <span class="nx">render</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">id_base</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">p</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">,</span>
-            <span class="nx">c</span>     <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lastPageLinkClass&#39;</span><span class="p">),</span>
-            <span class="nx">label</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lastPageLinkLabel&#39;</span><span class="p">),</span>
-            <span class="nx">last</span>  <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">();</span>
-
-        <span class="k">this</span><span class="p">.</span><span class="nx">link</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;a href=&quot;#&quot; id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-last-link&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">label</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">onClick</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
-
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;span id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-last-span&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">label</span><span class="o">+</span><span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
-
-        <span class="k">this</span><span class="p">.</span><span class="nx">na</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;span id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-last-na&quot;&gt;&lt;/span&gt;&#39;</span><span class="p">);</span>
-
-        <span class="k">switch</span> <span class="p">(</span><span class="nx">last</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">case</span> <span class="nx">Paginator</span><span class="p">.</span><span class="nx">VALUE_UNLIMITED</span> <span class="o">:</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">na</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-
-            <span class="k">case</span> <span class="nx">p</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span> <span class="o">:</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-
-            <span class="k">default</span> <span class="o">:</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">;</span>
-    <span class="p">},</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * Swap the link, span, and na nodes if appropriate.</span>
-<span class="cm">     * @method update</span>
-<span class="cm">     * @param e {CustomEvent} The calling change event (ignored)</span>
-<span class="cm">     */</span>
-    <span class="nx">update</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="kd">var</span> <span class="nx">par</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="nx">after</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">;</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nx">par</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">switch</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">())</span> <span class="p">{</span>
-                <span class="k">case</span> <span class="nx">Paginator</span><span class="p">.</span><span class="nx">VALUE_UNLIMITED</span> <span class="o">:</span>
-                    <span class="nx">after</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">na</span><span class="p">;</span>
-                    <span class="k">break</span><span class="p">;</span>
-
-                <span class="k">case</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span> <span class="o">:</span>
-                    <span class="nx">after</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">;</span>
-                    <span class="k">break</span><span class="p">;</span>
-            <span class="p">}</span>
-
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">!==</span> <span class="nx">after</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">par</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="nx">after</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="nx">after</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * Rebuild the markup.</span>
-<span class="cm">     * @method rebuild</span>
-<span class="cm">     * @param e {CustomEvent} The calling change event (ignored)</span>
-<span class="cm">     */</span>
-    <span class="nx">rebuild</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="kd">var</span> <span class="nx">p</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">,</span>
-            <span class="nx">c</span>     <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lastPageLinkClass&#39;</span><span class="p">),</span>
-            <span class="nx">label</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lastPageLinkLabel&#39;</span><span class="p">);</span>
-
-        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">label</span><span class="p">);</span>
-
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">label</span><span class="p">);</span>
-    <span class="p">},</span>
-
-    <span class="cm">/**</span>
-<span class="cm">     * Listener for the link&#39;s onclick event.  Passes to setPage method.</span>
-<span class="cm">     * @method onClick</span>
-<span class="cm">     * @param e {DOMEvent} The click event</span>
-<span class="cm">     */</span>
-    <span class="nx">onClick</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">setPage</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">());</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-</pre></div>
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">Paginator.ui.ValidationPageLinks</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                p
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">p</span>
+                                                    &lt;<span property="yui:type">Pagintor</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  Paginator instance to attach to</span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
 
                     </div>
+
+                    <div rel="yui:methods" resource="#methods">
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+                        <div class="section method details">
+                            <h3 id="events">Events</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:event" resource="#event_pageStatusChange">
+                                    <h4>
+                                        <a name="event_pageStatusChange">pageStatusChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">pageStatusChange</strong>
+
+                                            (
+                                                
+                                                        
+                                                         event
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the value for the configuration attribute 'pageStatus' is changed. You can listen for the event using the <a href="Attribute.html#method_on">on</a> method if you wish to be notified before the attribute's value has changed, or using the <a href="Event.Target.html#method_after">after</a> method if you wish to be notified after the attribute's value has changed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">event</span>
+                                                                &lt;<span property="yui:type">Event.Facade</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">An Event Facade object with      the following attribute specific properties added:	<dl>		<dt>prevVal</dt>		<dd>The value of the attribute, prior to it being set</dd>		<dt>newVal</dt>		<dd>The value the attribute is to be set to</dd>		<dt>attrName</dt>		<dd>The name of the attribute being set</dd>		<dt>subAttrName</dt>		<dd>If setting a property within the attribute's value,           the name of the sub-attribute property being set</dd>	</dl></span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+                        <div class="section field details">
+                            <h3 id="configattributes">Configuration Attributes</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:attribute" resource="#config_pageStatus">
+                                    <h4><a name="config_pageStatus">pageStatus</a>
+                                        <code>- <span property="yui:type">object</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Array of status strings for each page.  If the status value for a page
+is not empty, it is used to build a CSS class for the page:
+yui3-has&lt;status&gt;
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+
+                            </div>
+                        </div>
+
+                    </div>
+
 			</div>
 		</div>
 		<div class="yui-b">
@@ -274,7 +205,7 @@
                                 <li class=""><a href="Paginator.ui.PageLinks.html" title="Paginator.ui.PageLinks">Paginator.ui.PageLinks</a></li>
                                 <li class=""><a href="Paginator.ui.PreviousPageLink.html" title="Paginator.ui.PreviousPageLink">Paginator.ui.PreviousPageLink</a></li>
                                 <li class=""><a href="Paginator.ui.RowsPerPageDropdown.html" title="Paginator.ui.RowsPerPageDropdown">Paginator.ui.RowsPerPageDropdown</a></li>
-                                <li class=""><a href="Paginator.ui.ValidationPageLinks.html" title="Paginator.ui.ValidationPageLinks">Paginator.ui.ValidationPageLinks</a></li>
+                                <li class="selected"><a href="Paginator.ui.ValidationPageLinks.html" title="Paginator.ui.ValidationPageLinks">Paginator.ui.ValidationPageLinks</a></li>
                         </ul>
                     </div>
 
@@ -285,7 +216,7 @@
                                 <li class=""><a href="CurrentPageReport.js.html" title="CurrentPageReport.js">CurrentPageReport.js</a></li>
                                 <li class=""><a href="FirstPageLink.js.html" title="FirstPageLink.js">FirstPageLink.js</a></li>
                                 <li class=""><a href="ItemRangeDropdown.js.html" title="ItemRangeDropdown.js">ItemRangeDropdown.js</a></li>
-                                <li class="selected"><a href="LastPageLink.js.html" title="LastPageLink.js">LastPageLink.js</a></li>
+                                <li class=""><a href="LastPageLink.js.html" title="LastPageLink.js">LastPageLink.js</a></li>
                                 <li class=""><a href="NextPageLink.js.html" title="NextPageLink.js">NextPageLink.js</a></li>
                                 <li class=""><a href="PageLinks.js.html" title="PageLinks.js">PageLinks.js</a></li>
                                 <li class=""><a href="Paginator.js.html" title="Paginator.js">Paginator.js</a></li>
@@ -297,7 +228,19 @@
 
 
 
+                    <div id="eventsList" class="module">
+                        <h4>Events</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#event_pageStatusChange" title="pageStatusChange">pageStatusChange</a></li>
+                        </ul>
+                    </div>
 
+                    <div id="configList" class="module">
+                        <h4>Configuration Attributes</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#config_pageStatus" title="pageStatus">pageStatus</a></li>
+                        </ul>
+                    </div>
 
             </div>
 		</div>
