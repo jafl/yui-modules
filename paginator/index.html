@@ -39,6 +39,16 @@ YUI({
 	{
 		totalRecords: 25,
 		rowsPerPage:5,
+		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {ValidationPageLinks} {NextPageLink} {LastPageLink}'
+	});
+	p.on('changeRequest', update);
+	p.render('#pg5');
+	p.set('pageStatus', [ null, 'error', null, 'warn', null ]);
+
+	p = new Y.Paginator(
+	{
+		totalRecords: 25,
+		rowsPerPage:5,
 		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {CurrentPageInput} {NextPageLink} {LastPageLink}',
 		firstPageLinkLabel:    '|&lt;',
 		previousPageLinkLabel: '&lt;',
@@ -75,10 +85,13 @@ YUI({
 
 <h1><a href="http://yuilibrary.com/gallery/show/paginator">YUI 3 Paginator</a> Examples</h1>
 
+<p><a href="/yui3-gallery/querybuilder/">Show me an example with DataTable</a></p>
 <p><a href="yuidoc">Show me the documentation</a></p>
 <p><a href="/yui3-gallery/">Back to project list</a></p>
 
 <div id="pg1"></div>
+<hr>
+<div id="pg5"></div>
 <hr>
 <div id="pg2"></div>
 <hr>

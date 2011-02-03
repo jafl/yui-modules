@@ -218,6 +218,14 @@ function changeVar(
 	}
 }
 
+function keyUp(e)
+{
+	if (e.keyCode != 13)
+	{
+		this._notifyChanged();
+	}
+}
+
 Y.extend(QueryBuilder, Y.Widget,
 {
 	initializer: function(config)
@@ -234,7 +242,7 @@ Y.extend(QueryBuilder, Y.Widget,
 	{
 		var container = this.get('contentBox');
 		container.on('change', this._notifyChanged, this);
-		container.on('keyup', this._notifyChanged, this);
+		container.on('keyup', keyUp, this);
 
 		this.table = Y.Node.create('<table></table>');
 		container.appendChild(this.table);
