@@ -1,41 +1,32 @@
-"use strict";
-
 /**********************************************************************
  * Adds per-page error notification to Paginator.ui.PageLinks.
  */
 
-var Dom = YAHOO.util.Dom,
-	Event = YAHOO.util.Event,
-	Paginator = YAHOO.widget.Paginator;
-
-Paginator.ui.SATGValidationPageLinks = function(
+Paginator.ui.ValidationPageLinks = function(
 	/* Paginator */	p)
 {
-	Paginator.ui.SATGValidationPageLinks.superclass.constructor.call(this, p);
+	Paginator.ui.ValidationPageLinks.superclass.constructor.call(this, p);
 
-    this.paginator.subscribe('pageStatusChange', this.rebuild, null, this);
+    p.after('pageStatusChange', this.rebuild, this);
 };
 
-var status_prefix = 'satg-has';
+var vpl_status_prefix = 'yui3-has';
 
-Paginator.ui.SATGValidationPageLinks.init = function(p)
+/**
+ * Array of status strings for each page.
+ * @attribute pageStatus
+ */
+Paginator.ATTRS.pageStatus =
 {
-	/**
-	 * Array of status strings for each page.
-	 * @attribute pageStatus
-	 */
-	p.setAttributeConfig('pageStatus',
-	{
-		value:     [],
-		validator: YAHOO.lang.isArray
-	});
+	value:     [],
+	validator: Y.Lang.isArray
 };
 
-YAHOO.lang.extend(Paginator.ui.SATGValidationPageLinks, Paginator.ui.PageLinks, 
+Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks, 
 { 
 	update: function(e)
 	{
-		if (e && e.prevValue === e.newValue)
+		if (e && e.prevVal === e.newVal)
 		{
 			return;
 		}
@@ -58,17 +49,17 @@ YAHOO.lang.extend(Paginator.ui.SATGValidationPageLinks, Paginator.ui.PageLinks,
 			var content = '';
 			for (var i=range[0]; i<=range[1]; i++)
 			{
-				content +=  YAHOO.lang.substitute(i === currentPage ? curr_markup : link_markup,
+				content += Y.Lang.sub(i === currentPage ? curr_markup : link_markup,
 				{
 					link:   linkClass,
 					curr:   (i === currentPage ? this.paginator.get('currentPageClass') : ''),
-					status: status[i-1] ? status_prefix + status[i-1] : '',
+					status: status[i-1] ? vpl_status_prefix + status[i-1] : '',
 					page:   i,
 					label:  labelBuilder(i, this.paginator)
 				});
 			}
 
-			this.container.innerHTML = content;
+			this.container.set('innerHTML', content);
 		}
 	}
 	
