@@ -13,7 +13,10 @@ Paginator.ui.ValidationPageLinks = function(
 var vpl_status_prefix = 'yui3-has';
 
 /**
- * Array of status strings for each page.
+ * Array of status strings for each page.  If the status value for a page
+ * is not empty, it is used to build a CSS class for the page:
+ * yui3-has&lt;status&gt;
+ * 
  * @attribute pageStatus
  */
 Paginator.ATTRS.pageStatus =
