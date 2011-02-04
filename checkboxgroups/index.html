@@ -17,11 +17,14 @@
 <body>
 
 <script type="text/javascript">
-YUI().use('gallery-checkboxgroups', function(Y)
+YUI({
+//	filter: 'debug'
+}).use('gallery-checkboxgroups', function(Y)
 {
 	new Y.AtLeastOneCheckboxGroup('.at-least-one');
 	new Y.AtMostOneCheckboxGroup('.at-most-one');
 	new Y.SelectAllCheckboxGroup('#selectAllCB', '.select-all');
+	new Y.EnableIfAnyCheckboxGroup('.enable-if-any', '.managed');
 });
 </script>
 
@@ -34,7 +37,7 @@ YUI().use('gallery-checkboxgroups', function(Y)
 
 <form name="at_least_one_form">
 
-	<ul class="checkbox-list" id="at-least-one">
+	<ul class="checkbox-list">
 		<li>
 			<input type="checkbox" class="at-least-one" name="l1" value="1" checked>
 			<label for="l1">A</label>
@@ -59,7 +62,7 @@ YUI().use('gallery-checkboxgroups', function(Y)
 
 <form name="at_most_one_form">
 
-	<ul class="checkbox-list" id="at-most-one">
+	<ul class="checkbox-list">
 		<li>
 			<input type="checkbox" class="at-most-one" name="m1" value="1">
 			<label for="m1">X</label>
@@ -86,26 +89,53 @@ YUI().use('gallery-checkboxgroups', function(Y)
 		<label>Select All</label>
 	</li>
 	<li>
-		<input type="checkbox" class="select-all" name="testField" value="1">
+		<input type="checkbox" class="select-all" name="a1" value="1">
 		<label>Lorem</label>
 	</li>
 	<li>
-		<input type="checkbox" class="select-all" name="testField" value="2">
+		<input type="checkbox" class="select-all" name="a2" value="2">
 		<label>Ipsum</label>
 	</li>
 	<li>
-		<input type="checkbox" class="select-all" name="testField" value="3" disabled>
+		<input type="checkbox" class="select-all" name="a3" value="3" disabled>
 		<label>Dolor</label>
 	</li>
 	<li>
-		<input type="checkbox" class="select-all" name="testField" value="4">
+		<input type="checkbox" class="select-all" name="a4" value="4">
 		<label>Sit</label>
 	</li>
 	<li>
-		<input type="checkbox" class="select-all" name="testField" value="5">
+		<input type="checkbox" class="select-all" name="a5" value="5">
 		<label>Amet</label>
 	</li>
 </ul>
+
+</form>
+
+<p>If any of the following checkboxes are checked, then the buttons will be enabled.</p>
+
+<form name="enable_if_any_form">
+
+	<div>
+		<button class="managed">Button #1</button>
+		<button class="managed">Button #2</button>
+		<button class="managed">Button #3</button>
+	</div>
+
+	<ul class="checkbox-list">
+		<li>
+			<input type="checkbox" class="enable-if-any" name="e1" value="1">
+			<label for="m1">P</label>
+		</li>
+		<li>
+			<input type="checkbox" class="enable-if-any" name="e2" value="1" disabled>
+			<label for="m2">Q</label>
+		</li>
+		<li>
+			<input type="checkbox" class="enable-if-any" name="e3" value="1">
+			<label for="m3">R</label>
+		</li>
+	</ul>
 
 </form>
 
