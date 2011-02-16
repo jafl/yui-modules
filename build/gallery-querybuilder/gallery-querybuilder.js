@@ -972,4 +972,4 @@ QueryBuilder.plugin_mapping =
 };
 
 
-}, '@VERSION@' ,{requires:['widget','substitute'], optional:['gallery-formmgr','gallery-scrollintoview']});
+}, '@VERSION@' ,{requires:['widget','substitute'], optional:['gallery-formmgr','gallery-scrollintoview'], skinnable:true});

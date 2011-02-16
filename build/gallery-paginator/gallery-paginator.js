@@ -2412,6 +2412,11 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
 };
 /**********************************************************************
  * Adds per-page error notification to Paginator.ui.PageLinks.
+ *
+ * @module gallery-paginator
+ * @class Paginator.ui.ValidationPageLinks
+ * @constructor
+ * @param p {Pagintor} Paginator instance to attach to
  */
 
 Paginator.ui.ValidationPageLinks = function(
@@ -2481,4 +2486,4 @@ Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
 });
 
 
-}, '@VERSION@' ,{requires:['widget','event-key','substitute']});
+}, '@VERSION@' ,{requires:['widget','event-key','substitute'], skinnable:true});
