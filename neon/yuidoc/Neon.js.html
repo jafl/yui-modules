@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-neon   Neon.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-neon&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-neon.html" title="gallery-neon">gallery-neon</a>
+                
+                 &gt; Neon.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Overrides Y.Node.show() to make it look like a flickering neon</span>
+<span class="cm"> * sign.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-neon</span>
+<span class="cm"> * @class Y.Plugin.Neon</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object} configuration</span>
+<span class="cm"> */</span>
+
+<span class="kd">function</span> <span class="nx">Neon</span><span class="p">(</span>
+	<span class="cm">/* object */</span> <span class="nx">config</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">Neon</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">Neon</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;NeonPlugin&quot;</span><span class="p">;</span>
+<span class="nx">Neon</span><span class="p">.</span><span class="nx">NS</span>   <span class="o">=</span> <span class="s2">&quot;neon&quot;</span><span class="p">;</span>
+
+<span class="nx">Neon</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Background (starting) color.  Must be parseable by Y.Color.toRGB().</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config backgroundColor</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 */</span>
+	<span class="nx">backgroundColor</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Text (ending) color.  Must be parseable by Y.Color.toRGB().</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config textColor</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 */</span>
+	<span class="nx">textColor</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Text shadow *template* for setting text-shadow CSS3 property.  Use</span>
+<span class="cm">	 * {color} to mark where color should be inserted.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config textShadow</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 */</span>
+	<span class="nx">textShadow</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * The number of flickers before the text stays visible.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config flickerCount</span>
+<span class="cm">	 * @type {int}</span>
+<span class="cm">	 * @default 10</span>
+<span class="cm">	 */</span>
+	<span class="nx">flickerCount</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="mi">10</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * The easing to apply to the color animation.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config easing</span>
+<span class="cm">	 * @type {Function}</span>
+<span class="cm">	 * @default Y.Easing.easeIn</span>
+<span class="cm">	 */</span>
+	<span class="nx">easing</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">Easing</span><span class="p">.</span><span class="nx">easeIn</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">neonOff</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">1000</span><span class="o">/</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">flicker_max</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">flicker_count</span><span class="p">)),</span> <span class="k">this</span><span class="p">,</span> <span class="nx">neonOn</span><span class="p">);</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">neonOn</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">flicker_count</span><span class="o">--</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">flicker_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;easing&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span>
+		<span class="p">{</span>
+			<span class="nx">r</span><span class="o">:</span> <span class="nx">fn</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">flicker_count</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">end_color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">10</span><span class="p">),</span> <span class="k">this</span><span class="p">.</span><span class="nx">start_color</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="k">this</span><span class="p">.</span><span class="nx">end_color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="k">this</span><span class="p">.</span><span class="nx">flicker_max</span><span class="p">),</span>
+			<span class="nx">g</span><span class="o">:</span> <span class="nx">fn</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">flicker_count</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">end_color</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="mi">10</span><span class="p">),</span> <span class="k">this</span><span class="p">.</span><span class="nx">start_color</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="k">this</span><span class="p">.</span><span class="nx">end_color</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="k">this</span><span class="p">.</span><span class="nx">flicker_max</span><span class="p">),</span>
+			<span class="nx">b</span><span class="o">:</span> <span class="nx">fn</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">flicker_count</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">end_color</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="mi">10</span><span class="p">),</span> <span class="k">this</span><span class="p">.</span><span class="nx">start_color</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="k">this</span><span class="p">.</span><span class="nx">end_color</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="k">this</span><span class="p">.</span><span class="nx">flicker_max</span><span class="p">)</span>
+		<span class="p">};</span>
+
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">1000</span><span class="o">/</span><span class="k">this</span><span class="p">.</span><span class="nx">flicker_count</span><span class="p">),</span> <span class="k">this</span><span class="p">,</span> <span class="nx">neonOff</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">else</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span>
+		<span class="p">{</span>
+			<span class="nx">r</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">end_color</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+			<span class="nx">g</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">end_color</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+			<span class="nx">b</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">end_color</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+		<span class="p">};</span>
+	<span class="p">}</span>
+
+	<span class="nx">color</span> <span class="o">=</span> <span class="s1">&#39;rgb(&#39;</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">color</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">color</span><span class="p">.</span><span class="nx">g</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">color</span><span class="p">.</span><span class="nx">b</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;)&#39;</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="nx">color</span><span class="p">);</span>
+
+	<span class="kd">var</span> <span class="nx">shadow</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;textShadow&#39;</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">shadow</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;textShadow&#39;</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">shadow</span><span class="p">,</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">toHex</span><span class="p">(</span><span class="nx">color</span><span class="p">)</span> <span class="p">}));</span>
+	<span class="p">}</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">show</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_isHidden</span><span class="p">())</span>
+	<span class="p">{</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">plugin</span>           <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">neon</span><span class="p">;</span>
+	<span class="nx">plugin</span><span class="p">.</span><span class="nx">node</span>          <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+	<span class="nx">plugin</span><span class="p">.</span><span class="nx">flicker_max</span>   <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">plugin</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;flickerCount&#39;</span><span class="p">));</span>
+	<span class="nx">plugin</span><span class="p">.</span><span class="nx">flicker_count</span> <span class="o">=</span> <span class="nx">plugin</span><span class="p">.</span><span class="nx">flicker_max</span><span class="p">;</span>
+	<span class="nx">plugin</span><span class="p">.</span><span class="nx">start_color</span>   <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">re_RGB</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">toRGB</span><span class="p">(</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;backgroundColor&#39;</span><span class="p">)));</span>
+	<span class="nx">plugin</span><span class="p">.</span><span class="nx">end_color</span>     <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">re_RGB</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Color</span><span class="p">.</span><span class="nx">toRGB</span><span class="p">(</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;textColor&#39;</span><span class="p">)));</span>
+
+	<span class="nx">neonOn</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">plugin</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Neon</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span>
+<span class="p">{</span>
+	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">show</span> <span class="o">=</span> <span class="nx">show</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Plugin&quot;</span><span class="p">);</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Neon</span> <span class="o">=</span> <span class="nx">Neon</span><span class="p">;</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Y.Plugin.Neon.html" title="Y.Plugin.Neon">Y.Plugin.Neon</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="Neon.js.html" title="Neon.js">Neon.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    var ALL_YUI_PROPS = [{"url": "Y.Plugin.Neon.html#config_backgroundColor", "access": "", "host": "Y.Plugin.Neon", "type": "config", "name": "backgroundColor"}, {"url": "Y.Plugin.Neon.html#config_easing", "access": "", "host": "Y.Plugin.Neon", "type": "config", "name": "easing"}, {"url": "Y.Plugin.Neon.html#config_flickerCount", "access": "", "host": "Y.Plugin.Neon", "type": "config", "name": "flickerCount"}, {"url": "Y.Plugin.Neon.html#config_textColor", "access": "", "host": "Y.Plugin.Neon", "type": "config", "name": "textColor"}, {"url": "Y.Plugin.Neon.html#config_textShadow", "access": "", "host": "Y.Plugin.Neon", "type": "config", "name": "textShadow"}];
+    YAHOO.yuidoc.init();
+</script>
+</body>
+</html>

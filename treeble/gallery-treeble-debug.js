@@ -1039,4 +1039,4 @@ Y.namespace("Treeble").treeValueFormatter = function(o)
 };
 
 
-}, '@VERSION@' ,{requires:['datasource']});
+}, '@VERSION@' ,{requires:['datasource'], skinnable:true});

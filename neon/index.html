@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Neon Sign</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
+	<script src="gallery-neon-debug.js"></script>
+
+	<style type="text/css">
+	body { background-color: black; color: white; }
+	a, a.visited { color: #AAAAFF; }
+	#text { font-weight: bold; font-size: 300%; }
+	</style>
+</head>
+<body>
+
+<script type="text/javascript">
+YUI({
+	filter: 'debug'
+}).use(
+	'gallery-neon',
+function(Y)
+{
+	var node = Y.one('#text');
+	node.plug(Y.Plugin.Neon,
+	{
+		backgroundColor: 'black',
+		textColor:       'white',
+		textShadow:      '{color} 0px 0px 10px, {color} 0px 0px 20px'
+	});
+
+	Y.on('click', node.show, '#show', node);
+	Y.on('click', node.hide, '#hide', node);
+
+	node.show();
+});
+</script>
+
+<h1><a href="http://yuilibrary.com/gallery/show/neon">YUI 3 Neon</a> Example</h1>
+
+<p><a href="yuidoc">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<button id="show">Show</button>
+<button id="hide">Hide</button>
+
+<div id="text" style="display:none;">
+	<p>F2E</p>
+	<p>Front End Engineering</p>
+</div>
+
+</body>
+</html>
