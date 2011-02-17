@@ -1081,4 +1081,4 @@ Y.extend(Accordion, Y.Widget,
 Y.Accordion = Accordion;
 
 
-}, '@VERSION@' ,{optional:['anim-base'], skinnable:true, requires:['widget','selector-css3']});
+}, '@VERSION@' ,{requires:['widget','selector-css3'], optional:['anim-base'], skinnable:true});
