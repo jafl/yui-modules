@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Canvas Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
+	<script src="gallery-canvas-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+YUI({
+//	filter: 'debug'
+}).use(
+	'gallery-canvas',
+function(Y)
+{
+	var canvas = Y.Node.create('<canvas width="110" height="110" tabindex="0"></canvas>');
+	Y.one('#container').appendChild(canvas);
+
+	var context = new Y.Canvas.Context2d(canvas);
+
+	var p =
+	[
+		{ dy:10 },
+		{ dx:10 },
+		{ dx:-10, dy:-10 }
+	];
+
+	context.beginPath();
+	context.moveTo(30,10);
+	context.poly(p);
+	context.stroke();
+
+	context.roundedRect(10, 50, 40, 90, 5);
+	context.stroke();
+
+	context.beginPath();
+	context.arc(70,40, 10, 0,Math.PI, true);
+	context.stroke();
+
+	context.beginPath();
+	context.moveTo(50,50);
+	context.quadraticCurveTo(50,100, 100,100);
+	context.stroke();
+
+	context.beginPath();
+	context.moveTo(50,50);
+	context.bezierCurveTo(50,100, 100,50, 100,100);
+	context.stroke();
+
+	context.beginPath();
+	context.moveTo(10,30);
+	context.poly(p);
+	context.set('fillStyle', 'red');
+	context.fill();
+
+	context.beginPath();
+	context.moveTo(30,30);
+	context.poly(p);
+	context.set('fillStyle', 'green');
+	context.fill();
+
+	context.beginPath();
+	context.moveTo(10,10);
+	context.poly(p);
+	context.stroke();
+
+	context.save();
+	context.rotate(Math.PI/4);
+	context.translate(40,0);
+	context.beginPath();
+	context.moveTo(40,40);
+	context.poly(p);
+	context.stroke();
+	context.restore();
+});
+</script>
+
+<h1><a href="http://yuilibrary.com/gallery/show/canvas">YUI 3 Canvas</a> Example</h1>
+
+<p><a href="yuidoc">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<div id="container"></div>
+
+</body>
+</html>
