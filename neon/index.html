@@ -33,6 +33,11 @@ function(Y)
 	Y.on('click', node.show, '#show', node);
 	Y.on('click', node.hide, '#hide', node);
 
+	node.on('neon:finished', function()
+	{
+		Y.one('#done').show();
+	});
+
 	node.show();
 });
 </script>
@@ -49,6 +54,8 @@ function(Y)
 	<p>F2E</p>
 	<p>Front End Engineering</p>
 </div>
+
+<p id="done" style="display:none;">Done!</p>
 
 </body>
 </html>

@@ -7,7 +7,7 @@ YUI.add('gallery-neon', function(Y) {
  * sign.</p>
  * 
  * @module gallery-neon
- * @class Neon
+ * @class Y.Plugin.Neon
  * @constructor
  * @param config {Object} configuration
  */
@@ -126,6 +126,11 @@ function neonOn()
 	}
 
 	this.node.setStyle('display', '');
+
+	if (this.flicker_count === 0)
+	{
+		this.node.fire('neon:finished');
+	}
 }
 
 function show()
