@@ -59,7 +59,9 @@
 <span class="cm"> * &lt;p&gt;The default package provides two data types:  String (which can also</span>
 <span class="cm"> * be used for numbers) and Select (which provides a menu of options).  The</span>
 <span class="cm"> * plugin API allows defining additional data types, e.g., date range or</span>
-<span class="cm"> * multi-select.  A plugin must implement the following functions:&lt;/p&gt;</span>
+<span class="cm"> * multi-select.  Every plugin must be registered in</span>
+<span class="cm"> * &lt;code&gt;Y.QueryBuilder.plugin_mapping&lt;/code&gt;.  Plugins must implement the</span>
+<span class="cm"> * following functions:&lt;/p&gt;</span>
 <span class="cm"> * </span>
 <span class="cm"> * &lt;dl&gt;</span>
 <span class="cm"> * &lt;dt&gt;&lt;code&gt;constructor(qb, config)&lt;/code&gt;&lt;/dt&gt;</span>
@@ -143,7 +145,7 @@
 
 	<span class="c1">// list of possible query operations for each data type</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">op_list</span>      <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">operators</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">op_list</span>      <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">operators</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">op_list</span><span class="p">.</span><span class="nx">none</span> <span class="o">=</span> <span class="p">[];</span>
 
 	<span class="c1">// table rows containing the query elements</span>
@@ -265,6 +267,14 @@
 	<span class="p">}</span>
 <span class="p">}</span>
 
+<span class="kd">function</span> <span class="nx">keyUp</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">!=</span> <span class="mi">13</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_notifyChanged</span><span class="p">();</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
 <span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">QueryBuilder</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
@@ -281,7 +291,7 @@
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">);</span>
 		<span class="nx">container</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_notifyChanged</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-		<span class="nx">container</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_notifyChanged</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+		<span class="nx">container</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">,</span> <span class="nx">keyUp</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">table</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;table&gt;&lt;/table&gt;&#39;</span><span class="p">);</span>
 		<span class="nx">container</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">table</span><span class="p">);</span>
@@ -293,7 +303,10 @@
 	<span class="p">{</span>
 		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">plugin</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
+			<span class="p">}</span>
 		<span class="p">}</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">row_list</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
@@ -327,7 +340,7 @@
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">operators</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">op_list</span>      <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">operators</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">op_list</span>      <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">operators</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">op_list</span><span class="p">.</span><span class="nx">none</span> <span class="o">=</span> <span class="p">[];</span>
 		<span class="p">}</span>
 
@@ -644,7 +657,7 @@
 		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
+	<span class="cm">/*</span>
 <span class="cm">	 * API for plugins</span>
 <span class="cm">	 */</span>
 
@@ -667,7 +680,7 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;queryChanged&#39;</span><span class="p">);</span>
 	<span class="p">},</span>
 
-	<span class="cm">/**********************************************************************</span>
+	<span class="cm">/*</span>
 <span class="cm">	 * Form element names.</span>
 <span class="cm">	 */</span>
 
@@ -695,7 +708,7 @@
 	<span class="p">{</span>
 		<span class="c1">// This must use a select tag!</span>
 
-		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;select name=&quot;{n}&quot; class=&quot;{c}&quot; /&gt;&#39;</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;select name=&quot;{n}&quot; class=&quot;formmgr-field {c}&quot; /&gt;&#39;</span><span class="p">;</span>
 
 		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
 		<span class="p">{</span>
@@ -771,7 +784,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2010 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">

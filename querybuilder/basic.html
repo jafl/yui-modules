@@ -1,0 +1,136 @@
+<!DOCTYPE html public '-//w3c//dtd html 4.01//en' http://www.w3.org/tr/html4/strict.dtd'>
+<html>
+<head>
+	<title>YUI 3 QueryBuilder Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
+	<script src="gallery-querybuilder-debug.js"></script>
+	<script src="gallery-formmgr-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
+	<link rel="stylesheet" type="text/css" href="assets/gallery-querybuilder.css" />
+
+	<style type="text/css">
+	#query
+	{
+		margin-top: 10px;
+		border: 1px solid black;
+		padding: 10px;
+	}
+
+	#controls
+	{
+		margin-top: 10px;
+	}
+
+	.plug
+	{
+		margin: 10px 0;
+	}
+	</style>
+</head>
+<body class="yui3-skin-sam">
+
+<script type="text/javascript">
+YUI({
+//	base: '../yui3/',
+//	filter: 'debug'
+}).use('gallery-querybuilder', 'gallery-formmgr', function(Y)
+{
+	var var_list =
+	[
+		{
+			name: 'url',
+			type: 'string',
+			text: 'URL',
+			validation: 'yiv-length:[,3000]'
+		},
+		{
+			name: 'impressions',
+			type: 'number',
+			text: 'Impressions (1000\'s)',
+			validation: 'yiv-integer'
+		},
+		{
+			name: 'ctr',
+			type: 'number',
+			text: 'Click-through rate (%)',
+			validation: 'yiv-decimal:[0,]'
+		},
+		{
+			name: 'flag',
+			type: 'select',
+			text: 'Flagged',
+			value_list:
+			[
+				{ value: "true",  text: 'True' },
+				{ value: "false", text: 'False' }
+			]
+		},
+		{
+			name: 'submission_status',
+			type: 'select',
+			text: 'Status',
+			value_list:
+			[
+				{ value: "I", text: 'Action Required' },
+				{ value: "S", text: 'Submitted' },
+				{ value: "A", text: 'Submission Accepted' },
+				{ value: "B", text: 'Submission Auto-Accepted' }
+			]
+		}
+	];
+
+	var ops =
+	{
+		string:
+		[
+			{ value: 'equal',       text: 'Is' },
+			{ value: 'contains',    text: 'Contains' },
+			{ value: 'starts-with', text: 'Starts with' },
+			{ value: 'ends-with',   text: 'Ends with' }
+		],
+
+		number:
+		[
+			{ value: 'equal',         text: '= Equals' },
+			{ value: 'less',          text: '< Less than' },
+			{ value: 'less-equal',    text: '<= Less than or equal to' },
+			{ value: 'greater',       text: '> Greater than' },
+			{ value: 'greater-equal', text: '>= Greater than or equal to' }
+		],
+
+		select:
+		[
+			'EQUALS'
+		]
+	};
+
+	var query = new Y.QueryBuilder(var_list, ops);
+	query.render('#query');
+
+	var form = new Y.FormManager('query_form');
+	form.prepareForm();
+
+	Y.on('click', form.validateForm, '#validate', form);
+});
+</script>
+
+<h1><a href="http://yuilibrary.com/gallery/show/querybuilder">YUI 3 QueryBuilder</a> Example</h1>
+
+<form name="query_form">
+	<div id="query"></div>
+</form>
+
+<div id="controls">
+	<button id="validate">Validate</button>
+</div>
+
+<p class="plug">For a more general way to build an expression, see <a href="http://yuilibrary.com/gallery/show/exprbuilder">Expression Builder</a>.
+
+<p><a href="index.html">Show me an example using DataTable</a></p>
+<p><a href="yuidoc">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+</body>
+</html>

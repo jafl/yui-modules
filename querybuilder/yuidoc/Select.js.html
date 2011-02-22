@@ -104,6 +104,15 @@
 		<span class="k">return</span> <span class="p">[</span> <span class="nx">value_cell</span> <span class="p">];</span>
 	<span class="p">},</span>
 
+	<span class="nx">postCreate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>		<span class="nx">filter_index</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">var_config</span><span class="p">,</span>
+		<span class="cm">/* array */</span>		<span class="nx">op_list</span><span class="p">,</span>
+		<span class="cm">/* array */</span>		<span class="nx">value</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+	<span class="p">},</span>
+
 	<span class="nx">destroy</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
@@ -146,7 +155,7 @@
 	<span class="p">{</span>
 		<span class="c1">// This must use a select tag!</span>
 
-		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;select name=&quot;{n}&quot; class=&quot;{c}&quot; /&gt;&#39;</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;select name=&quot;{n}&quot; class=&quot;formmgr-field {c}&quot; /&gt;&#39;</span><span class="p">;</span>
 
 		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
 		<span class="p">{</span>
@@ -198,7 +207,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2010 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">
