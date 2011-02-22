@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-algorithms   Array.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-algorithms&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a>
+                
+                 &gt; Array.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * &lt;p&gt;Useful algorithms not provided by browsers.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module gallery-algorithms</span>
+<span class="cm"> * @class Y.Array</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Swaps two elements.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method Y.Array.swap</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param list {Array} the list on which to operate</span>
+<span class="cm"> * @param i {int} first index</span>
+<span class="cm"> * @param j {int} second index</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">swap</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span><span class="nx">i</span><span class="p">,</span><span class="nx">j</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">tmp</span> <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+	<span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+	<span class="nx">list</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">tmp</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;A -1,0,+1 comparator for case-sensitive string comparison.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method Y.Array.compareStringsCaseSensitive</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param s1 {String} first string</span>
+<span class="cm"> * @param s2 {String} second string</span>
+<span class="cm"> * @return -1 if s1&amp;lt;s2, 0 if s1==s2, +1 if s1&amp;gt;s2</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">compareStringsCaseSensitive</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span> <span class="nx">s2</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">s1</span> <span class="o">==</span> <span class="nx">s2</span><span class="p">)</span>
+		<span class="p">{</span>
+		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="k">else</span>
+		<span class="p">{</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">s1</span> <span class="o">&lt;</span> <span class="nx">s2</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+		<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;A -1,0,+1 comparator for case-insensitive string comparison.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method Y.Array.compareStringsCaseInsensitive</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param s1 {String} first string</span>
+<span class="cm"> * @param s2 {String} second string</span>
+<span class="cm"> * @return -1 if s1&amp;lt;s2, 0 if s1==s2, +1 if s1&amp;gt;s2</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">compareStringsCaseInsensitive</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span> <span class="nx">s2</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">compareStringsCaseSensitive</span><span class="p">(</span><span class="nx">s1</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">(),</span> <span class="nx">s2</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">());</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Converts a -1,0,+1 comparator into a boolean comparator, for use by</span>
+<span class="cm"> * Y.Array.find().&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method Y.Array.compareForFind</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param f {Function} -1,0,+1 comparator function</span>
+<span class="cm"> * @return {Function} function that returns true if the arguments are equal</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">compareForFind</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">f</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="p">};</span>
+<span class="p">};</span>
+
+<span class="cm">/*</span>
+<span class="cm">quick sort history:</span>
+
+<span class="cm">  Copyright (c) 2006 John Lindal</span>
+<span class="cm">  Copyright (c) 2003 Scandinavian Digital Systems AB</span>
+
+<span class="cm">  Adapted from http://www.digsys.se</span>
+
+<span class="cm">  Freeware: The source code and its methods and algorithms may be</span>
+<span class="cm">            used as desired without restrictions.</span>
+<span class="cm">*/</span>
+
+<span class="kd">function</span> <span class="nx">qsort1</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span><span class="nx">i1</span><span class="p">,</span><span class="nx">i2</span><span class="p">,</span><span class="nx">compare</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">m</span><span class="p">,</span> <span class="nx">ip</span><span class="p">,</span> <span class="nx">im</span><span class="p">,</span> <span class="nx">pivot</span><span class="p">,</span> <span class="nx">s</span><span class="p">,</span> <span class="nx">b</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">compare</span><span class="p">)</span>
+		<span class="p">{</span>
+		<span class="nx">compare</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">compareStringsCaseSensitive</span><span class="p">;</span>
+		<span class="p">}</span>
+
+	<span class="nx">im</span><span class="o">=</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">i1</span><span class="o">+</span><span class="nx">i2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// Note, im may be equal to i1 but never to i2</span>
+	<span class="nx">n</span><span class="o">=</span><span class="nx">im</span><span class="p">;</span>
+	<span class="nx">ip</span><span class="o">=</span><span class="nx">n</span><span class="o">--</span><span class="p">;</span>
+	<span class="nx">pivot</span><span class="o">=</span><span class="nx">list</span><span class="p">[</span><span class="nx">ip</span><span class="p">];</span>
+	<span class="k">while</span> <span class="p">(</span><span class="nx">n</span><span class="o">&gt;=</span><span class="nx">i1</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">)</span>
+		<span class="p">{</span>
+		<span class="nx">m</span><span class="o">=</span><span class="nx">n</span><span class="o">--</span><span class="p">;</span>
+		<span class="nx">b</span><span class="o">=</span><span class="p">(</span><span class="nx">compare</span><span class="p">(</span><span class="nx">pivot</span><span class="p">,</span> <span class="nx">list</span><span class="p">[</span><span class="nx">m</span><span class="p">])</span><span class="o">===</span><span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="nx">n</span><span class="o">=</span><span class="nx">im</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// n may be equal to i2 but not i2+1 (at this point)</span>
+	<span class="k">while</span> <span class="p">(</span><span class="nx">n</span><span class="o">&lt;=</span><span class="nx">i2</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">)</span>
+		<span class="p">{</span>
+		<span class="nx">m</span><span class="o">=</span><span class="nx">n</span><span class="o">++</span><span class="p">;</span>
+		<span class="nx">b</span><span class="o">=</span><span class="p">(</span><span class="nx">compare</span><span class="p">(</span><span class="nx">pivot</span><span class="p">,</span> <span class="nx">list</span><span class="p">[</span><span class="nx">m</span><span class="p">])</span><span class="o">===</span><span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">compare</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">m</span><span class="p">],</span> <span class="nx">pivot</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+		<span class="nx">ip</span><span class="o">=</span><span class="nx">m</span><span class="p">;</span>
+		<span class="nx">pivot</span><span class="o">=</span><span class="nx">list</span><span class="p">[</span><span class="nx">ip</span><span class="p">];</span>
+		<span class="p">}</span>
+	<span class="nx">n</span><span class="o">=</span><span class="nx">i1</span><span class="p">;</span>  <span class="c1">// Left</span>
+	<span class="nx">m</span><span class="o">=</span><span class="nx">i2</span><span class="p">;</span>  <span class="c1">// Right</span>
+	<span class="k">while</span> <span class="p">(</span><span class="nx">n</span><span class="o">&lt;=</span><span class="nx">m</span><span class="p">)</span>
+		<span class="p">{</span>
+		<span class="k">while</span> <span class="p">(</span><span class="nx">compare</span><span class="p">(</span><span class="nx">pivot</span><span class="p">,</span> <span class="nx">list</span><span class="p">[</span><span class="nx">n</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="p">{</span>
+			<span class="nx">n</span><span class="o">++</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="k">while</span> <span class="p">(</span><span class="nx">compare</span><span class="p">(</span><span class="nx">pivot</span><span class="p">,</span> <span class="nx">list</span><span class="p">[</span><span class="nx">m</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="p">{</span>
+			<span class="nx">m</span><span class="o">--</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">n</span><span class="o">&lt;</span><span class="nx">m</span><span class="p">)</span>
+			<span class="p">{</span>
+			<span class="nx">s</span><span class="o">=</span><span class="nx">list</span><span class="p">[</span><span class="nx">m</span><span class="p">];</span>
+			<span class="nx">list</span><span class="p">[</span><span class="nx">m</span><span class="p">]</span><span class="o">=</span><span class="nx">list</span><span class="p">[</span><span class="nx">n</span><span class="p">];</span>
+			<span class="nx">list</span><span class="p">[</span><span class="nx">n</span><span class="p">]</span><span class="o">=</span><span class="nx">s</span><span class="p">;</span>
+			<span class="nx">m</span><span class="o">--</span><span class="p">;</span>
+			<span class="nx">n</span><span class="o">++</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">qsortRange</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span><span class="nx">first</span><span class="p">,</span><span class="nx">last</span><span class="p">,</span><span class="nx">compare</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">center</span><span class="p">;</span> <span class="c1">// This local var is the only recursive stack space used</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">first</span><span class="o">&lt;</span><span class="nx">last</span><span class="p">)</span>
+		<span class="p">{</span>
+		<span class="nx">center</span><span class="o">=</span><span class="nx">qsort1</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span><span class="nx">first</span><span class="p">,</span><span class="nx">last</span><span class="p">,</span><span class="nx">compare</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">center</span><span class="o">!=-</span><span class="mi">1</span><span class="p">)</span>
+			<span class="p">{</span>
+			<span class="nx">qsortRange</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span><span class="nx">first</span><span class="p">,</span><span class="nx">center</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="nx">compare</span><span class="p">);</span>
+			<span class="nx">qsortRange</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span><span class="nx">center</span><span class="p">,</span><span class="nx">last</span><span class="p">,</span><span class="nx">compare</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Quick sort the given list.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method Y.Array.quickSort</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param list {Array} the list to search (sorted on the compare function)</span>
+<span class="cm"> * @param compare {Function} the comparison function (default: Y.Array.compareStringsCaseSensitive)</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">quickSort</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span><span class="nx">compare</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">qsortRange</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">compare</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/*</span>
+<span class="cm">binary search history:</span>
+
+<span class="cm">	Dobrica Pavlinusic, dpavlin@rot13.org 2004-09-06</span>
+<span class="cm">	Matko Andjelinic, matko.andjelinic@gmail.com 2004-09-09 (contributed OO implementation)</span>
+<span class="cm">*/</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Binary search.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method Y.Array.binarySearch</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param list {Array} the list to search (sorted on the compare function)</span>
+<span class="cm"> * @param target {Mixed} the object to search for</span>
+<span class="cm"> * @param compare {Function} the comparison function (default: Y.Array.compareStringsCaseSensitive)</span>
+<span class="cm"> * @return {int} index of matched item or -1 if no match</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">binarySearch</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">target</span><span class="p">,</span> <span class="nx">compare</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">list</span> <span class="o">||</span> <span class="o">!</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">||</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">target</span><span class="p">))</span>
+		<span class="p">{</span>
+		<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+		<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">compare</span><span class="p">)</span>
+		<span class="p">{</span>
+		<span class="nx">compare</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">compareStringsCaseSensitive</span><span class="p">;</span>
+		<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">low</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">high</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+	<span class="kd">var</span> <span class="nx">lastTry</span><span class="p">;</span>
+	<span class="k">while</span> <span class="p">(</span><span class="nx">low</span> <span class="o">&lt;=</span> <span class="nx">high</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">mid</span>  <span class="o">=</span> <span class="p">(</span><span class="nx">low</span> <span class="o">+</span> <span class="nx">high</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">aTry</span> <span class="o">=</span> <span class="p">(</span><span class="nx">mid</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">mid</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">compare</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">aTry</span><span class="p">],</span> <span class="nx">target</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">low</span> <span class="o">=</span> <span class="nx">aTry</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="k">continue</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">high</span> <span class="o">=</span> <span class="nx">aTry</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="k">continue</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">high</span> <span class="o">=</span> <span class="nx">aTry</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+			<span class="nx">lastTry</span> <span class="o">=</span> <span class="nx">aTry</span><span class="p">;</span>
+			<span class="k">continue</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="nx">aTry</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">lastTry</span><span class="p">)</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="nx">lastTry</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Y.Array.html" title="Y.Array">Y.Array</a></li>
+                                <li class=""><a href="Y.ArrayList.html" title="Y.ArrayList">Y.ArrayList</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="Array.js.html" title="Array.js">Array.js</a></li>
+                                <li class=""><a href="ArrayList.js.html" title="ArrayList.js">ArrayList.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    var ALL_YUI_PROPS = [{"url": "Y.Array.html#method_Y.Array.binarySearch", "access": "", "host": "Y.Array", "type": "method", "name": "Y.Array.binarySearch"}, {"url": "Y.Array.html#method_Y.Array.compareForFind", "access": "", "host": "Y.Array", "type": "method", "name": "Y.Array.compareForFind"}, {"url": "Y.Array.html#method_Y.Array.compareStringsCaseInsensitive", "access": "", "host": "Y.Array", "type": "method", "name": "Y.Array.compareStringsCaseInsensitive"}, {"url": "Y.Array.html#method_Y.Array.compareStringsCaseSensitive", "access": "", "host": "Y.Array", "type": "method", "name": "Y.Array.compareStringsCaseSensitive"}, {"url": "Y.ArrayList.html#method_Y.ArrayList.binarySearch", "access": "", "host": "Y.ArrayList", "type": "method", "name": "Y.ArrayList.binarySearch"}, {"url": "Y.ArrayList.html#method_Y.ArrayList.quickSort", "access": "", "host": "Y.ArrayList", "type": "method", "name": "Y.ArrayList.quickSort"}, {"url": "Y.ArrayList.html#method_Y.ArrayList.setComparator", "access": "", "host": "Y.ArrayList", "type": "method", "name": "Y.ArrayList.setComparator"}, {"url": "Y.ArrayList.html#method_Y.ArrayList.swap", "access": "", "host": "Y.ArrayList", "type": "method", "name": "Y.ArrayList.swap"}, {"url": "Y.Array.html#method_Y.Array.quickSort", "access": "", "host": "Y.Array", "type": "method", "name": "Y.Array.quickSort"}, {"url": "Y.Array.html#method_Y.Array.swap", "access": "", "host": "Y.Array", "type": "method", "name": "Y.Array.swap"}];
+    YAHOO.yuidoc.init();
+</script>
+</body>
+</html>
