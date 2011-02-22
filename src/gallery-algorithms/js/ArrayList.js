@@ -16,7 +16,7 @@ if (Y.ArrayList)
 		/**
 		 * <p>Swap two elements.</p>
 		 * 
-		 * @method Y.ArrayList.setComparator
+		 * @method Y.ArrayList.swap
 		 * @param i {int} first index
 		 * @param j {int} second index
 		 */
@@ -29,7 +29,7 @@ if (Y.ArrayList)
 		 * <p>Set comparison function.</p>
 		 * 
 		 * @method Y.ArrayList.setComparator
-		 * @param compare {Function} the comparison function to use when sorting and searching
+		 * @param compare {Function} the -1,0,+1 comparison function to use when sorting and searching
 		 */
 		setComparator: function(compare)
 		{
