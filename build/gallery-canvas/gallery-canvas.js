@@ -11,16 +11,9 @@ function mirror(r, s, name)
 }
 
 /**********************************************************************
- * <p>Wrapper for a canvas 2d context.  Just like Y.Node, use get()
- * and set() to modify attributes.</p>
- *
- * <ul>
- * <li>Same api as the native 2d context.</li>
- * <li>move() and line() take relative coordinates.  (They only work when the transformation matrix is constant.)</li>
- * <li>Rounded rectangles.</li>
- * <li>Store polygons as a list of points instead of code.</li>
- * <li>Option for horizontal and vertical strokes to be pixel aligned.</li>
- * </ul>
+ * <p>Wrapper for a canvas 2d context.  It exposes the exact same api as
+ * the native 2d context, plus some extras, documented below.  Just like
+ * Y.Node, use get() and set() to modify attributes.</p>
  * 
  * @module gallery-canvas
  * @class Y.Canvas.Context2d
@@ -111,6 +104,10 @@ Context2d.prototype =
 
 	/**
 	 * Move relative to the current pen location (set via moveTo or move).
+	 * This only works when the transformation matrix is constant!
+	 * 
+	 * @param dx {int}
+	 * @param dy {int}
 	 */
 	move: function(dx,dy)
 	{
@@ -126,6 +123,10 @@ Context2d.prototype =
 
 	/**
 	 * Move relative to the current pen location.
+	 * This only works when the transformation matrix is constant!
+	 * 
+	 * @param dx {int}
+	 * @param dy {int}
 	 */
 	line: function(dx,dy)
 	{

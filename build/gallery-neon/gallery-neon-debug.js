@@ -7,7 +7,7 @@ YUI.add('gallery-neon', function(Y) {
  * sign.</p>
  * 
  * @module gallery-neon
- * @class Neon
+ * @class Y.Plugin.Neon
  * @constructor
  * @param config {Object} configuration
  */
