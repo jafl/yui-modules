@@ -1,0 +1,84 @@
+/**********************************************************************
+ * <p>Square root.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.SquareRoot
+ * @constructor
+ */
+
+function MathSquareRoot(
+	/* MathFunction */	f)
+{
+	MathSquareRoot.superclass.constructor.call(this, "sqrt", f);
+}
+
+Y.extend(MathSquareRoot, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Math.sqrt(this.args[0].evaluate());
+	},
+
+	prepareToRender: function(
+		/* Context2d */		context,
+		/* point */			top_left,
+		/* percentage */	font_size,
+		/* array */			rect_list)
+	{
+		var arg       = this.args[0];
+		var arg_index = arg.prepareToRender(context, top_left, font_size, rect_list);
+
+		var arg_info = rect_list.get(arg_index);
+		var arg_h    = arg_info.rect.bottom - arg_info.rect.top;
+
+		var leading  = 1+Math.round(2.0*arg_h/(4.0*Math.sqrt(3.0)));
+		var trailing = 3;
+		var extra    = 4;
+
+		rect_list.shift(arg_index, leading, extra);		// make space for square root sign
+
+		var r =
+		{
+			top:    top_left.y,
+			left:   top_left.x,
+			bottom: arg_info.rect.bottom,
+			right:  arg_info.rect.right + trailing
+		};
+
+		return rect_list.add(r, arg_info.midline, font_size, this);
+	},
+
+	render: function(
+		/* Context2d */		context,
+		/* array */			rect_list)
+	{
+		var info = rect_list.find(this);
+		this._drawSquareRoot(context, info.rect);
+		this.args[0].render(context, rect_list);
+	},
+
+	_drawSquareRoot: function(
+		/* Context2d */		context,
+		/* rect */			rect)
+	{
+		var h = rect.bottom - rect.top;
+		var x = rect.left;
+		var y = rect.top + Math.round(3.0*h/4.0);
+		var w = Math.round((h-3)/(4.0*Math.sqrt(3.0)));
+
+		context.beginPath();
+		context.moveTo(x,y);
+		x += w;
+		y  = rect.bottom - 1;
+		context.lineTo(x,y);
+		x += w;
+		y  = rect.top+2;
+		context.lineTo(x,y);
+		x  = rect.right-1;
+		context.lineTo(x,y);
+		context.line(0, Math.round(h/8.0));
+		context.stroke();
+	}
+});
+
+MathFunction.SquareRoot = MathSquareRoot;
