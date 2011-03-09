@@ -1,9 +1,12 @@
 YUI.add('gallery-io-multiresponse', function(Y) {
 
 /**
- * Extends the IO base class to enable multiple responses using an iframe
- * as the transport medium.  Each response fires the response event.  The
- * request only firest the start and end events.
+ * <p>Extends the IO base class to enable multiple responses using an
+ * iframe as the transport medium.  Each response fires the response event.
+ * The request only fires the start and end events.</p>
+ * 
+ * <p>To keep the iframe after it has finished loading, set debug:true in
+ * the configuration passed to Y.io().</p>
  * 
  * @module io
  * @submodule io-multi-response
@@ -68,11 +71,12 @@ function _removeData(f, o) {
  * @param {object} f HTML form object.
  * @param {object} id The Transaction ID.
  * @param {object} uri Qualified path to transaction resource.
+ * @param {string} method POST or GET.
  * @return {void}
  */
-function _setAttrs(f, id, uri) {
+function _setAttrs(f, id, uri, method) {
     f.setAttribute('action', uri);
-    f.setAttribute('method', 'POST');
+    f.setAttribute('method', method || 'POST');
     f.setAttribute('target', 'io-multi-response-' + id );
     f.setAttribute(Y.UA.ie && !_std ? 'encoding' : 'enctype', 'multipart/form-data');
 }
@@ -149,11 +153,11 @@ function _destroy(id, c) {
         Y.Event.purgeElement('#io-multi-response-' + id, false);
         Y.one('body').removeChild(Y.one('#io-multi-response-' + id));
         Y.log('The iframe for transaction ' + id + ' has been destroyed.', 'info', 'io');
+    }
 
-        if (c.form.id.indexOf('io-multi-response-form-') === 0) {
-            Y.one('body').removeChild(Y.one('#' + c.form.id));
-            Y.log('The temporary form for transaction ' + id + ' has been destroyed.', 'info', 'io');
-        }
+    if (c.form.id.indexOf('io-multi-response-form-') === 0) {
+        Y.one('body').removeChild(Y.one('#' + c.form.id));
+        Y.log('The temporary form for transaction ' + id + ' has been destroyed.', 'info', 'io');
     }
 }
 
@@ -237,13 +241,14 @@ function _send(o, uri, c) {
         fields,
         // Track original HTML form attribute values.
         attr = {
+            method: f.getAttribute('method'),
             action: f.getAttribute('action'),
             target: f.getAttribute('target')
         };
 
     // Initialize the HTML form properties in case they are
     // not defined in the HTML form.
-    _setAttrs(f, o.id, uri);
+    _setAttrs(f, o.id, uri, c.method);
     if (c.data) {
         fields = _addData(f, c.data);
     }
@@ -337,7 +342,7 @@ Y.io.upload = function(o, uri, c) {
         }
     };
 
-    c.data = (c.data || '') + 'callback=' + encodeURIComponent('YUI.Env.io_multi_response_callback[' + o.id + ']');
+    c.data = (c.data || '') + 'callback=' + encodeURIComponent('window.parent.YUI.Env.io_multi_response_callback[' + o.id + ']');
 
     if (c.form && !c.form.id) {
         delete c.form;
