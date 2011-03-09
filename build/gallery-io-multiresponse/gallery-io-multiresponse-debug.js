@@ -1,12 +1,34 @@
 YUI.add('gallery-io-multiresponse', function(Y) {
 
 /**
- * Extends the IO base class to enable multiple responses using an iframe
- * as the transport medium.  Each response fires the response event.  The
- * request only firest the start and end events.
+ * <p>Extends the IO base class to enable multiple responses using an
+ * iframe as the transport medium.  Each response fires the response event.
+ * The only events that are fired are the start and end events.</p>
+ * 
+ * <p>All the YUI 3 IO features are supported, so the request can be sent
+ * as either GET (for simple query args) or POST (for anything, even file
+ * uploads).  The module uses an iframe to send the request and includes a
+ * callback parameter.  (So you cannot include a parameter named
+ * <q>callback</q>.)  For each response, the server must send a script
+ * block invoking the callback, similar to JSONP.  Unlike JSONP, however,
+ * requests can only be made to your own server because the callback will
+ * reference <code>window.parent</code>.  In order to trigger script
+ * parsing in all browsers, the first chunk of data that the server writes
+ * to the connection must be at least 1024 bytes.</p>
+ * 
+ * <p>Due to the way that the request data is parsed, it is not safe to
+ * send JSON-encoded data using the standard YUI 3 IO methods.  However, if
+ * you define <code>json</code> in the configuration passed to
+ * <code>Y.io()</code>, then the data will be passed to the server under
+ * the <code>json</code> parameter.  (If you pass an object, it will be
+ * serialized with <code>Y.JSON.stringify()</code>.)
+ * 
+ * <p>To keep the iframe after it has finished loading, set
+ * <code>debug:true</code> in the configuration passed to
+ * <code>Y.io()</code>.</p>
  * 
  * @module io
- * @submodule io-multi-response
+ * @class Y.IO~multiresponse
  */
 
 var w = Y.config.win,
@@ -17,12 +39,12 @@ var w = Y.config.win,
 /**
  * @description Parses the POST data object and creates hidden form elements
  * for each key-value, and appends them to the HTML form object.
- * @method appendData
+ * @method _addData
  * @private
  * @static
  * @param {object} f HTML form object.
  * @param {string} s The key-value POST data.
- * @return {array} e Array of created fields.
+ * @return {array} Array of created fields.
  */
 function _addData(f, s) {
     var o = [],
@@ -42,9 +64,33 @@ function _addData(f, s) {
 }
 
 /**
+ * @description Adds JSON encoded data to the form.
+ * @method _addJSON
+ * @private
+ * @static
+ * @param {object} f HTML form object.
+ * @param {string|object} s The JSON data or object to serialize.
+ * @return {array} created fields.
+ */
+function _addJSON(f, s) {
+    if (!Y.Lang.isString(s)) {
+        s = Y.JSON.stringify(s);
+    }
+
+    var el  = d.createElement('input');
+    el.type = 'hidden';
+    el.name = 'json';
+    el.value = s;
+    f.appendChild(el);
+    Y.log('key: json and value: ' + s + ' added as form data.', 'info', 'io');
+
+    return el;
+}
+
+/**
  * @description Removes the custom fields created to pass additional POST
  * data, along with the HTML form fields.
- * @method f
+ * @method _removeData
  * @private
  * @static
  * @param {object} f HTML form object.
@@ -68,11 +114,12 @@ function _removeData(f, o) {
  * @param {object} f HTML form object.
  * @param {object} id The Transaction ID.
  * @param {object} uri Qualified path to transaction resource.
+ * @param {string} method POST or GET.
  * @return {void}
  */
-function _setAttrs(f, id, uri) {
+function _setAttrs(f, id, uri, method) {
     f.setAttribute('action', uri);
-    f.setAttribute('method', 'POST');
+    f.setAttribute('method', method || 'POST');
     f.setAttribute('target', 'io-multi-response-' + id );
     f.setAttribute(Y.UA.ie && !_std ? 'encoding' : 'enctype', 'multipart/form-data');
 }
@@ -136,7 +183,7 @@ function _clearTimeout(id) {
 }
 
 /**
- * @description
+ * @description Destroy the iframe and temp form, if any.
  * @method _destroy
  * @private
  * @static
@@ -149,11 +196,11 @@ function _destroy(id, c) {
         Y.Event.purgeElement('#io-multi-response-' + id, false);
         Y.one('body').removeChild(Y.one('#io-multi-response-' + id));
         Y.log('The iframe for transaction ' + id + ' has been destroyed.', 'info', 'io');
+    }
 
-        if (c.form.id.indexOf('io-multi-response-form-') === 0) {
-            Y.one('body').removeChild(Y.one('#' + c.form.id));
-            Y.log('The temporary form for transaction ' + id + ' has been destroyed.', 'info', 'io');
-        }
+    if (c.form.id.indexOf('io-multi-response-form-') === 0) {
+        Y.one('body').removeChild(Y.one('#' + c.form.id));
+        Y.log('The temporary form for transaction ' + id + ' has been destroyed.', 'info', 'io');
     }
 }
 
@@ -224,7 +271,7 @@ function _createForm(c) {
 /**
  * @description Uploads HTML form data, inclusive of files/attachments,
  * using the iframe created in _create to facilitate the transaction.
- * @method _upload
+ * @method _send
  * @private
  * @static
  * @param {o} o The transaction object
@@ -234,18 +281,22 @@ function _createForm(c) {
  */
 function _send(o, uri, c) {
     var f = (typeof c.form.id === 'string') ? d.getElementById(c.form.id) : c.form.id,
-        fields,
+        fields = [],
         // Track original HTML form attribute values.
         attr = {
+            method: f.getAttribute('method'),
             action: f.getAttribute('action'),
             target: f.getAttribute('target')
         };
 
     // Initialize the HTML form properties in case they are
     // not defined in the HTML form.
-    _setAttrs(f, o.id, uri);
+    _setAttrs(f, o.id, uri, c.method);
     if (c.data) {
         fields = _addData(f, c.data);
+    }
+    if (c.json) {
+        fields.push(_addJSON(f, c.json));
     }
 
     // Start polling if a callback is present and the timeout
@@ -337,7 +388,7 @@ Y.io.upload = function(o, uri, c) {
         }
     };
 
-    c.data = (c.data || '') + 'callback=' + encodeURIComponent('YUI.Env.io_multi_response_callback[' + o.id + ']');
+    c.data = (c.data || '') + 'callback=' + encodeURIComponent('window.parent.YUI.Env.io_multi_response_callback[' + o.id + ']');
 
     if (c.form && !c.form.id) {
         delete c.form;
@@ -373,4 +424,4 @@ Y.io = function(uri, c, i) {
 Y.mix(Y.io, orig_io);
 
 
-}, '@VERSION@' ,{requires:['io-upload-iframe']});
+}, '@VERSION@' ,{optional:['json-stringify'], requires:['io-upload-iframe']});
