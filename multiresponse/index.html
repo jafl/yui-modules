@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>YUI 3 Multi-response Example</title>
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-debug.js"></script>
+	<script src="gallery-io-multiresponse-debug.js"></script>
+</head>
+
+<body>
+
+<div id="responses"></div>
+
+<script type="text/javascript">
+YUI({
+	filter: 'debug',
+}).use('gallery-io-multiresponse', function(Y)
+{
+	Y.io('simulated-multi-response.html',
+	{
+		multiresponse: true,
+//		debug: true,	// to keep iframe after finished loading
+		on:
+		{
+			response: function(id, data, obj)
+			{
+				alert(obj.response.foo + ":" + data);
+			}
+		},
+		arguments:
+		{
+			response:
+			{
+				foo: 'x',
+				bar: 'y'
+			}
+		}
+	});
+});
+</script>
+
+</body>
+</html>
