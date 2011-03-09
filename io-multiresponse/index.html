@@ -14,13 +14,26 @@
 <script type="text/javascript">
 YUI({
 //	filter: 'debug',
-}).use('gallery-io-multiresponse', function(Y)
+}).use('gallery-io-multiresponse', 'json', 'querystring', function(Y)
 {
+	// Use "Live HTTP Headers" in Firefox to see the query args (data and
+	// json) that is sent to the server.
+
 	Y.io('simulated-multi-response.html',
 	{
 		method: 'GET',
 		multiresponse: true,
 		debug: true,	// to keep iframe after finished loading
+		data:
+		{
+			a:1,
+			x:'y'
+		},
+		json:
+		{
+			b:2,
+			y:'z'
+		},
 		on:
 		{
 			response: function(id, data, obj)
