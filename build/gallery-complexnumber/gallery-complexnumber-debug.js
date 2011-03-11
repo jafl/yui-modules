@@ -18,8 +18,54 @@ function ComplexNumber(real, imag)
 	this.i = imag;
 }
 
+/**
+ * Construct a ComplexNumber from polar coordinates.
+ * 
+ * @param magnitude {number}
+ * @param phase {number}
+ * @return ComplexNumber
+ */
+ComplexNumber.fromPolar = function(magnitude, phase)
+{
+	return new ComplexNumber(
+		magnitude * Math.cos(phase),
+		magnitude * Math.sin(phase));
+};
+
 ComplexNumber.prototype =
 {
+	/**
+	 * @return {number} real component
+	 */
+	real: function()
+	{
+		return this.r;
+	},
+
+	/**
+	 * @return {number} imaginary component
+	 */
+	imag: function()
+	{
+		return this.i;
+	},
+
+	/**
+	 * @return {number} length of the vector in the complex plane
+	 */
+	magnitude: function()
+	{
+		return ComplexMath.abs(this);
+	},
+
+	/**
+	 * @return {number} angle of the vector (in radians) in the complex plane relative to the positive real axis
+	 */
+	phase: function()
+	{
+		return Math.atan2(this.i, this.r);
+	},
+
 	/**
 	 * Equivalent of += operator.
 	 * @param v {number}
@@ -90,36 +136,21 @@ ComplexNumber.prototype =
 			this.r /= v;
 			this.i /= v;
 		}
-	},
-
-	/**
-	 * @return {number} length of the vector in the complex plane
-	 */
-	magnitude: function()
-	{
-		return ComplexMath.abs(this);
-	},
-
-	/**
-	 * @return {number} angle of the vector (in radians) in the complex plane relative to the positive real axis
-	 */
-	phase: function()
-	{
-		return Math.atan2(this.i, this.r);
 	}
 };
 
 Y.ComplexNumber = ComplexNumber;
 /**********************************************************************
- * <p>Wrapper for a canvas 2d context.  It exposes the exact same api as
- * the native 2d context, plus some extras, documented below.  Just like
- * Y.Node, use get() and set() to modify attributes.</p>
+ * <p>This collection of functions provides the complex number equivalent
+ * of the built-in JavaScript Math namespace, along with the basic
+ * arithmetic operations (since JavaScript does not support operator
+ * overloading).</p>
  * 
  * @module gallery-complexnumber
  * @class Y.ComplexMath
  */
 
-Y.ComplexMath =
+ComplexMath =
 {
 	/**
 	 * Square root of -1.
@@ -127,30 +158,25 @@ Y.ComplexMath =
 	I: new ComplexNumber(0,1),
 
 	/**
-	 * @param v1 {number}
-	 * @param v2 {number}
-	 * @return {number} v1+v2
+	 * @return {number} sum of all the arguments
 	 */
-	add: function(v1, v2)
+	sum: function()
 	{
-		var c1 = v1 instanceof ComplexNumber,
-			c2 = v2 instanceof ComplexNumber;
-		if (c1 && c2)
+		var s = new ComplexNumber(0,0);
+		Y.Array.each(arguments, function(v)
 		{
-			return new ComplexNumber(v1.r+v2.r, v1.i+v2.i);
-		}
-		else if (c1)
-		{
-			return new ComplexNumber(v1.r+v2, v1.i);
-		}
-		else if (c2)
-		{
-			return new ComplexNumber(v1+v2.r, v2.i);
-		}
-		else
-		{
-			return v1+v2;
-		}
+			if (v instanceof ComplexNumber)
+			{
+				s.r += v.r;
+				s.i += v.i;
+			}
+			else
+			{
+				s.r += v;
+			}
+		});
+
+		return s;
 	},
 
 	/**
@@ -208,6 +234,20 @@ Y.ComplexMath =
 	},
 
 	/**
+	 * @return {number} product of all the arguments
+	 */
+	product: function()
+	{
+		var s = 1;
+		Y.Array.each(arguments, function(v)
+		{
+			s = ComplexMath.multiply(s, v);
+		});
+
+		return s;
+	},
+
+	/**
 	 * @param v1 {number}
 	 * @param v2 {number}
 	 * @return {number} v1/v2
@@ -252,6 +292,114 @@ Y.ComplexMath =
 		{
 			return Math.abs(v);
 		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} cosine of the argument
+	 */
+	cos: function(v)
+	{
+		if (v instanceof ComplexNumber)
+		{
+			return new ComplexNumber(
+				 Math.cos(v.r)*Math.cosh(v.i),
+				-Math.sin(v.r)*Math.sinh(v.i));
+		}
+		else
+		{
+			return Math.cos(v);
+		}
+	},
+
+	/**
+	 * @param v1 {number}
+	 * @param v2 {number}
+	 * @return {number} net value of two impedances in parallel
+	 */
+	parallel: function(v1, v2)
+	{
+		if (v1 instanceof ComplexNumber || v2 instanceof ComplexNumber)
+		{
+			return ComplexMath.divide(
+				ComplexMath.multiply(v1, v2),
+				ComplexMath.add(v1, v2));
+		}
+		else
+		{
+			return Math.parallel(v1, v2);
+		}
+	},
+
+	/**
+	 * @param v {number} value
+	 * @param e {number} exponent
+	 * @return {number} value raised to the exponent
+	 */
+	pow: function(v, e)
+	{
+		if (v instanceof ComplexNumber)
+		{
+			return ComplexNumber.fromPolar(
+				Math.pow(v.magnitude(), e),
+				v.phase() * e);
+		}
+		else
+		{
+			return Math.pow(v,e);
+		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} sine of the argument
+	 */
+	sin: function(v)
+	{
+		if (v instanceof ComplexNumber)
+		{
+			return new ComplexNumber(
+				Math.sin(v.r)*Math.cosh(v.i),
+				Math.cos(v.r)*Math.sinh(v.i));
+		}
+		else
+		{
+			return Math.cos(v);
+		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} square root of the argument
+	 */
+	sqrt: function(v)
+	{
+		if (v instanceof ComplexNumber)
+		{
+			return ComplexNumber.fromPolar(
+				Math.sqrt(v.magnitude()),
+				v.phase() / 2);
+		}
+		else
+		{
+			return Math.sqrt(v);
+		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} tangent of the argument
+	 */
+	tan: function(v)
+	{
+		if (v instanceof ComplexNumber)
+		{
+			return ComplexMath.divide(ComplexMath.sin(v), ComplexMath.cos(v));
+		}
+		else
+		{
+			return Math.tan(v);
+		}
 	}
 };
 
@@ -259,18 +407,14 @@ Y.ComplexMath =
 acosh = ln(x+sqrt(x^2-1))
 asinh = ln(x+sqrt(x^2+1))
 atanh = ln((1+x)/(1-x))/2
-cos(x)	Returns the cosine of x (x is in radians)
 cosh = (e^x + e^-x)/2
 exp(x)	Returns the value of Ex
 log(x)	Returns the natural logarithm (base E) of x
-parallel(x,y) x*y/(x+y)
-pow(x,y)	Returns the value of x to the power of y
-sin(x)	Returns the sine of x (x is in radians)
 sinh = (e^x - e^-x)/2
-sqrt(x)	Returns the square root of x
-tan(x)	Returns the tangent of an angle
 tanh = sinh / cosh
 */
 
+Y.ComplexMath = ComplexMath;
 
-}, '@VERSION@' );
+
+}, '@VERSION@' ,{requires:['gallery-math']});

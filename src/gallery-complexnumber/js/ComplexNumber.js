@@ -16,8 +16,54 @@ function ComplexNumber(real, imag)
 	this.i = imag;
 }
 
+/**
+ * Construct a ComplexNumber from polar coordinates.
+ * 
+ * @param magnitude {number}
+ * @param phase {number}
+ * @return ComplexNumber
+ */
+ComplexNumber.fromPolar = function(magnitude, phase)
+{
+	return new ComplexNumber(
+		magnitude * Math.cos(phase),
+		magnitude * Math.sin(phase));
+};
+
 ComplexNumber.prototype =
 {
+	/**
+	 * @return {number} real component
+	 */
+	real: function()
+	{
+		return this.r;
+	},
+
+	/**
+	 * @return {number} imaginary component
+	 */
+	imag: function()
+	{
+		return this.i;
+	},
+
+	/**
+	 * @return {number} length of the vector in the complex plane
+	 */
+	magnitude: function()
+	{
+		return ComplexMath.abs(this);
+	},
+
+	/**
+	 * @return {number} angle of the vector (in radians) in the complex plane relative to the positive real axis
+	 */
+	phase: function()
+	{
+		return Math.atan2(this.i, this.r);
+	},
+
 	/**
 	 * Equivalent of += operator.
 	 * @param v {number}
@@ -88,22 +134,6 @@ ComplexNumber.prototype =
 			this.r /= v;
 			this.i /= v;
 		}
-	},
-
-	/**
-	 * @return {number} length of the vector in the complex plane
-	 */
-	magnitude: function()
-	{
-		return ComplexMath.abs(this);
-	},
-
-	/**
-	 * @return {number} angle of the vector (in radians) in the complex plane relative to the positive real axis
-	 */
-	phase: function()
-	{
-		return Math.atan2(this.i, this.r);
 	}
 };
 
