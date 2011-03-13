@@ -79,6 +79,35 @@
 	<span class="p">}</span><span class="o">,</span>
 
 	<span class="c">/**</span>
+<span class="c">	 * @return {number} sum of the reciprocals of all the arguments (either passed separately or as an array)</span>
+<span class="c">	 */</span>
+	<span class="nx">addReciprocals</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">arguments</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="nx">s</span> <span class="o">+=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">addReciprocals</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">else</span>
+			<span class="p">{</span>
+				<span class="nx">s</span> <span class="o">+=</span> <span class="mi">1</span><span class="o">/</span><span class="nx">v</span><span class="o">;</span>
+			<span class="p">}</span>
+		<span class="p">});</span>
+
+		<span class="k">return</span> <span class="nx">s</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @return {number} net value of N resistors in parallel (either passed separately or as an array)</span>
+<span class="c">	 */</span>
+	<span class="nx">parallel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="nb">Math</span><span class="p">.</span><span class="nx">addReciprocals</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
 <span class="c">	 * @return {number} product of all the arguments (either passed separately or as an array)</span>
 <span class="c">	 */</span>
 	<span class="nx">multiply</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
@@ -170,16 +199,6 @@
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nx">v</span><span class="p">);</span>
 		<span class="k">return</span> <span class="p">(</span><span class="nx">e</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nx">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
-
-	<span class="c">/**</span>
-<span class="c">	 * @param v1 {number}</span>
-<span class="c">	 * @param v2 {number}</span>
-<span class="c">	 * @return {number} net value of two resistors in parallel</span>
-<span class="c">	 */</span>
-	<span class="nx">parallel</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v1</span><span class="o">,</span> <span class="nx">v2</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">v1</span><span class="o">*</span><span class="nx">v2</span><span class="o">/</span><span class="p">(</span><span class="nx">v1</span><span class="o">+</span><span class="nx">v2</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 </pre></div>
@@ -225,7 +244,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Math.html#method_acosh", "access": "", "host": "Math", "type": "method", "name": "acosh"}, {"url": "Math.html#method_add", "access": "", "host": "Math", "type": "method", "name": "add"}, {"url": "Math.html#method_asinh", "access": "", "host": "Math", "type": "method", "name": "asinh"}, {"url": "Math.html#method_atanh", "access": "", "host": "Math", "type": "method", "name": "atanh"}, {"url": "Math.html#method_cosh", "access": "", "host": "Math", "type": "method", "name": "cosh"}, {"url": "Math.html#method_degreesToRadians", "access": "", "host": "Math", "type": "method", "name": "degreesToRadians"}, {"url": "Math.html#method_multiply", "access": "", "host": "Math", "type": "method", "name": "multiply"}, {"url": "Math.html#method_parallel", "access": "", "host": "Math", "type": "method", "name": "parallel"}, {"url": "Math.html#method_radiansToDegrees", "access": "", "host": "Math", "type": "method", "name": "radiansToDegrees"}, {"url": "Math.html#method_sinh", "access": "", "host": "Math", "type": "method", "name": "sinh"}, {"url": "Math.html#method_tanh", "access": "", "host": "Math", "type": "method", "name": "tanh"}];
+    var ALL_YUI_PROPS = [{"url": "Math.html#method_acosh", "access": "", "host": "Math", "type": "method", "name": "acosh"}, {"url": "Math.html#method_add", "access": "", "host": "Math", "type": "method", "name": "add"}, {"url": "Math.html#method_addReciprocals", "access": "", "host": "Math", "type": "method", "name": "addReciprocals"}, {"url": "Math.html#method_asinh", "access": "", "host": "Math", "type": "method", "name": "asinh"}, {"url": "Math.html#method_atanh", "access": "", "host": "Math", "type": "method", "name": "atanh"}, {"url": "Math.html#method_cosh", "access": "", "host": "Math", "type": "method", "name": "cosh"}, {"url": "Math.html#method_degreesToRadians", "access": "", "host": "Math", "type": "method", "name": "degreesToRadians"}, {"url": "Math.html#method_multiply", "access": "", "host": "Math", "type": "method", "name": "multiply"}, {"url": "Math.html#method_parallel", "access": "", "host": "Math", "type": "method", "name": "parallel"}, {"url": "Math.html#method_radiansToDegrees", "access": "", "host": "Math", "type": "method", "name": "radiansToDegrees"}, {"url": "Math.html#method_sinh", "access": "", "host": "Math", "type": "method", "name": "sinh"}, {"url": "Math.html#method_tanh", "access": "", "host": "Math", "type": "method", "name": "tanh"}];
 </script>
 </body>
 </html>
