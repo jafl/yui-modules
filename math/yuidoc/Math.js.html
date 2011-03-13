@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-math   Math.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-math&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-math.html" title="gallery-math">gallery-math</a>
+                
+                 &gt; Math.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+
+<span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Augments built-in JavaScript Math namespace with additional</span>
+<span class="c"> * mathematical functions.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @module gallery-math</span>
+<span class="c"> * @class Math</span>
+<span class="c"> */</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nb">Math</span><span class="o">,</span>
+<span class="p">{</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {number} sum of all the arguments (either passed separately or as an array)</span>
+<span class="c">	 */</span>
+	<span class="nx">add</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">arguments</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="nx">s</span> <span class="o">+=</span> <span class="nx">v</span><span class="o">;</span>
+		<span class="p">});</span>
+
+		<span class="k">return</span> <span class="nx">s</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @return {number} product of all the arguments (either passed separately or as an array)</span>
+<span class="c">	 */</span>
+	<span class="nx">multiply</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">arguments</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">multiply</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="nx">p</span> <span class="o">*=</span> <span class="nx">v</span><span class="o">;</span>
+		<span class="p">});</span>
+
+		<span class="k">return</span> <span class="nx">p</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param a {number} angle in degrees</span>
+<span class="c">	 * @return {number} angle in radians</span>
+<span class="c">	 */</span>
+	<span class="nx">degreesToRadians</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">a</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">180</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param a {number} angle in radians</span>
+<span class="c">	 * @return {number} angle in degrees</span>
+<span class="c">	 */</span>
+	<span class="nx">radiansToDegrees</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">a</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} inverse hyperbolic cosine</span>
+<span class="c">	 */</span>
+	<span class="nx">acosh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">v</span><span class="o">*</span><span class="nx">v</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} inverse hyperbolic sine</span>
+<span class="c">	 */</span>
+	<span class="nx">asinh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">v</span><span class="o">*</span><span class="nx">v</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} inverse hyperbolic tangent</span>
+<span class="c">	 */</span>
+	<span class="nx">atanh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="nx">v</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">v</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} hyperbolic cosine</span>
+<span class="c">	 */</span>
+	<span class="nx">cosh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">e</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="nx">e</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} hyperbolic sine</span>
+<span class="c">	 */</span>
+	<span class="nx">sinh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">e</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="nx">e</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} hyperbolic sine</span>
+<span class="c">	 */</span>
+	<span class="nx">tanh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nx">v</span><span class="p">);</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">e</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nx">e</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v1 {number}</span>
+<span class="c">	 * @param v2 {number}</span>
+<span class="c">	 * @return {number} net value of two resistors in parallel</span>
+<span class="c">	 */</span>
+	<span class="nx">parallel</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v1</span><span class="o">,</span> <span class="nx">v2</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">v1</span><span class="o">*</span><span class="nx">v2</span><span class="o">/</span><span class="p">(</span><span class="nx">v1</span><span class="o">+</span><span class="nx">v2</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Math.html" title="Math">Math</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="Math.js.html" title="Math.js">Math.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "Math.html#method_acosh", "access": "", "host": "Math", "type": "method", "name": "acosh"}, {"url": "Math.html#method_add", "access": "", "host": "Math", "type": "method", "name": "add"}, {"url": "Math.html#method_asinh", "access": "", "host": "Math", "type": "method", "name": "asinh"}, {"url": "Math.html#method_atanh", "access": "", "host": "Math", "type": "method", "name": "atanh"}, {"url": "Math.html#method_cosh", "access": "", "host": "Math", "type": "method", "name": "cosh"}, {"url": "Math.html#method_degreesToRadians", "access": "", "host": "Math", "type": "method", "name": "degreesToRadians"}, {"url": "Math.html#method_multiply", "access": "", "host": "Math", "type": "method", "name": "multiply"}, {"url": "Math.html#method_parallel", "access": "", "host": "Math", "type": "method", "name": "parallel"}, {"url": "Math.html#method_radiansToDegrees", "access": "", "host": "Math", "type": "method", "name": "radiansToDegrees"}, {"url": "Math.html#method_sinh", "access": "", "host": "Math", "type": "method", "name": "sinh"}, {"url": "Math.html#method_tanh", "access": "", "host": "Math", "type": "method", "name": "tanh"}];
+</script>
+</body>
+</html>
