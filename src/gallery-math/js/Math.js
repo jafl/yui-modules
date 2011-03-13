@@ -20,7 +20,7 @@ Y.mix(Math,
 		{
 			if (Y.Lang.isArray(v))
 			{
-				v = Math.add(v);
+				v = Math.add.apply(this, v);
 			}
 
 			s += v;
@@ -34,12 +34,12 @@ Y.mix(Math,
 	 */
 	multiply: function()
 	{
-		var p = 0;
+		var p = 1;
 		Y.Array.each(arguments, function(v)
 		{
 			if (Y.Lang.isArray(v))
 			{
-				v = Math.multiply(v);
+				v = Math.multiply.apply(this, v);
 			}
 
 			p *= v;
@@ -130,6 +130,6 @@ Y.mix(Math,
 	 */
 	parallel: function(v1, v2)
 	{
-		return v1*v1/(v1+v2);
+		return v1*v2/(v1+v2);
 	}
 });
