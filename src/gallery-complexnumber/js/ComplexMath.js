@@ -8,40 +8,21 @@
  * @class Y.ComplexMath
  */
 
-/**
- * @private
- * @param v1 {number}
- * @param v2 {number}
- * @return {number} v1*v2
- */
-function multiply2(v1, v2)
-{
-	var c1 = v1 instanceof ComplexNumber,
-		c2 = v2 instanceof ComplexNumber;
-	if (c1 && c2)
-	{
-		return new ComplexNumber(v1.r*v2.r - v1.i*v2.i, v1.r*v2.i + v1.i*v2.r);
-	}
-	else if (c1)
-	{
-		return new ComplexNumber(v1.r*v2, v1.i*v2);
-	}
-	else if (c2)
-	{
-		return new ComplexNumber(v1*v2.r, v1*v2.i);
-	}
-	else
-	{
-		return v1*v2;
-	}
-}
-
-ComplexMath =
+var ComplexMath =
 {
 	/**
 	 * Square root of -1.
 	 */
 	I: new ComplexNumber(0,1),
+
+	/**
+	 * @return {boolean} true if the argument is a ComplexNumber
+	 */
+	isComplexNumber: function(v)
+	{
+		return ((v instanceof ComplexNumber) ||
+				(v.hasOwnProperty("r") && v.hasOwnProperty("i")));
+	},
 
 	/**
 	 * @return {number} sum of all the arguments
@@ -51,18 +32,10 @@ ComplexMath =
 		var s = new ComplexNumber(0,0);
 		Y.Array.each(arguments, function(v)
 		{
-			if (v instanceof ComplexNumber)
-			{
-				s.r += v.r;
-				s.i += v.i;
-			}
-			else
-			{
-				s.r += v;
-			}
+			s.add(v);
 		});
 
-		return s;
+		return (s.i === 0 ? s.r : s);
 	},
 
 	/**
@@ -72,8 +45,8 @@ ComplexMath =
 	 */
 	subtract: function(v1, v2)
 	{
-		var c1 = v1 instanceof ComplexNumber,
-			c2 = v2 instanceof ComplexNumber;
+		var c1 = ComplexMath.isComplexNumber(v1),
+			c2 = ComplexMath.isComplexNumber(v2);
 		if (c1 && c2)
 		{
 			return new ComplexNumber(v1.r-v2.r, v1.i-v2.i);
@@ -97,13 +70,13 @@ ComplexMath =
 	 */
 	multiply: function()
 	{
-		var s = 1;
+		var s = new ComplexNumber(1, 0);
 		Y.Array.each(arguments, function(v)
 		{
-			s = multiply2(s, v);
+			s.multiply(v);
 		});
 
-		return s;
+		return (s.i === 0 ? s.r : s);
 	},
 
 	/**
@@ -113,8 +86,8 @@ ComplexMath =
 	 */
 	divide: function(v1, v2)
 	{
-		var c1 = v1 instanceof ComplexNumber,
-			c2 = v2 instanceof ComplexNumber;
+		var c1 = ComplexMath.isComplexNumber(v1),
+			c2 = ComplexMath.isComplexNumber(v2);
 		if (c1 && c2)
 		{
 			var d = v2.r*v2.r + v2.i*v2.i;
@@ -143,7 +116,7 @@ ComplexMath =
 	 */
 	abs: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			return Math.sqrt(v.r*v.r + v.i*v.i);
 		}
@@ -155,11 +128,69 @@ ComplexMath =
 
 	/**
 	 * @param v {number}
+	 * @return {number} inverse hyperbolic cosine of the argument
+	 */
+	acosh: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			var v1 = ComplexMath.multiply(v,v);
+			return ComplexMath.log(
+				ComplexMath.add(v) +
+				ComplexMath.sqrt(new ComplexNumber(v1.r-1, v1.i)));
+		}
+		else
+		{
+			return Math.acosh(v);
+		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} inverse hyperbolic sine of the argument
+	 */
+	asinh: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			var v1 = ComplexMath.multiply(v,v);
+			return ComplexMath.log(
+				ComplexMath.add(v) +
+				ComplexMath.sqrt(new ComplexNumber(v1.r+1, v1.i)));
+		}
+		else
+		{
+			return Math.asinh(v);
+		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} inverse hyperbolic tangent of the argument
+	 */
+	atanh: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			var v1 = ComplexMath.log(
+				ComplexMath.divide(
+					new ComplexNumber(1+v.r,  v.i),
+					new ComplexNumber(1-v.r, -v.i)));
+			return new ComplexMath(v1.r/2, v1.i/2);
+		}
+		else
+		{
+			return Math.atanh(v);
+		}
+	},
+
+	/**
+	 * @param v {number}
 	 * @return {number} cosine of the argument
 	 */
 	cos: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			return new ComplexNumber(
 				 Math.cos(v.r)*Math.cosh(v.i),
@@ -172,13 +203,66 @@ ComplexMath =
 	},
 
 	/**
+	 * @param v {number}
+	 * @return {number} hyperbolic cosine of the argument
+	 */
+	cosh: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			var v1 = ComplexMath.add(
+				ComplexMath.exp(v),
+				ComplexMath.exp(new ComplexNumber(-v.r, -v.i)));
+			return new ComplexNumber(v1.r/2, v1.i/2);
+		}
+		else
+		{
+			return Math.cosh(v);
+		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} e raised to the argument
+	 */
+	exp: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			var v1 = new ComplexNumber(Math.cos(v.i), Math.sin(v.i));
+			v1.multiply(Math.exp(v.r));
+			return v1;
+		}
+		else
+		{
+			return Math.exp(v);
+		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} natural logarithm of the argument
+	 */
+	log: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			return new ComplexNumber(Math.log(v.magnitude()), v.phase());
+		}
+		else
+		{
+			return Math.log(v);
+		}
+	},
+
+	/**
 	 * @param v1 {number}
 	 * @param v2 {number}
 	 * @return {number} net value of two impedances in parallel
 	 */
 	parallel: function(v1, v2)
 	{
-		if (v1 instanceof ComplexNumber || v2 instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v1) || ComplexMath.isComplexNumber(v2))
 		{
 			return ComplexMath.divide(
 				ComplexMath.multiply(v1, v2),
@@ -197,16 +281,8 @@ ComplexMath =
 	 */
 	pow: function(v, e)
 	{
-		if (v instanceof ComplexNumber)
-		{
-			return ComplexNumber.fromPolar(
-				Math.pow(v.magnitude(), e),
-				v.phase() * e);
-		}
-		else
-		{
-			return Math.pow(v,e);
-		}
+		var v1 = ComplexMath.exp(ComplexMath.multiply(ComplexMath.log(v), e));
+		return v1.i === 0 ? v1.r : v1;
 	},
 
 	/**
@@ -215,7 +291,7 @@ ComplexMath =
 	 */
 	sin: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			return new ComplexNumber(
 				Math.sin(v.r)*Math.cosh(v.i),
@@ -229,20 +305,35 @@ ComplexMath =
 
 	/**
 	 * @param v {number}
+	 * @return {number} hyperbolic sine of the argument
+	 */
+	sinh: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			var v1 = ComplexMath.subtract(
+				ComplexMath.exp(v),
+				ComplexMath.exp(new ComplexNumber(-v.r, -v.i)));
+			return new ComplexNumber(v1.r/2, v1.i/2);
+		}
+		else
+		{
+			return Math.sinh(v);
+		}
+	},
+
+	/**
+	 * @param v {number}
 	 * @return {number} square root of the argument
 	 */
 	sqrt: function(v)
 	{
-		if (v instanceof ComplexNumber)
-		{
-			return ComplexNumber.fromPolar(
-				Math.sqrt(v.magnitude()),
-				v.phase() / 2);
-		}
-		else
-		{
-			return Math.sqrt(v);
-		}
+		var c = ComplexMath.isComplexNumber(v);
+		var v1 = ComplexNumber.fromPolar(
+			Math.sqrt(c ? v.magnitude() : Math.abs(v)),
+			(c ? v.phase() : v < 0 ? Math.PI : 0) / 2);
+
+		return v1.i === 0 ? v1.r : v1;
 	},
 
 	/**
@@ -251,7 +342,7 @@ ComplexMath =
 	 */
 	tan: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			return ComplexMath.divide(ComplexMath.sin(v), ComplexMath.cos(v));
 		}
@@ -259,18 +350,26 @@ ComplexMath =
 		{
 			return Math.tan(v);
 		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} hyperbolic tangent of the argument
+	 */
+	tanh: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			var e = ComplexMath.exp(new ComplexNumber(2*v.r, 2*vi));
+			return ComplexMath.divide(
+				new ComplexNumber(e.r-1, e.i),
+				new ComplexNumber(e.r+1, e.i));
+		}
+		else
+		{
+			return Math.tanh(v);
+		}
 	}
 };
-
-/*
-acosh = ln(x+sqrt(x^2-1))
-asinh = ln(x+sqrt(x^2+1))
-atanh = ln((1+x)/(1-x))/2
-cosh = (e^x + e^-x)/2
-exp(x)	Returns the value of Ex
-log(x)	Returns the natural logarithm (base E) of x
-sinh = (e^x - e^-x)/2
-tanh = sinh / cosh
-*/
 
 Y.ComplexMath = ComplexMath;

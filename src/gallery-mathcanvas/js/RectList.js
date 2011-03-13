@@ -17,6 +17,27 @@ function RectList()
 }
 
 /**
+ * @static
+ * @param r {Rect} rectangle
+ * @return width
+ */
+RectList.width = function(r)
+{
+	return r.right - r.left;
+};
+
+/**
+ * @static
+ * @param r {Rect} rectangle
+ * @return height
+ */
+RectList.height = function(r)
+{
+	return r.bottom - r.top;
+};
+
+/**
+ * @static
  * @param r {Rect} rectangle
  * @return horizontal center
  */
@@ -26,6 +47,7 @@ RectList.xcenter = function(r)
 };
 
 /**
+ * @static
  * @param r {Rect} rectangle
  * @return vertical center
  */
@@ -35,6 +57,7 @@ RectList.ycenter = function(r)
 };
 
 /**
+ * @static
  * @param r1 {Rect} rectangle
  * @param r2 {Rect} rectangle
  * @return rectangle convering both input arguments

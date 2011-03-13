@@ -4,6 +4,7 @@
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Sine
  * @constructor
+ * @param {number}
  */
 
 function MathSine(
@@ -16,7 +17,7 @@ Y.extend(MathSine, MathFunctionWithArgs,
 {
 	evaluate: function()
 	{
-		return Math.sin(this.args[0].evaluate());
+		return Y.ComplexMath.sin(this.args[0].evaluate());
 	}
 });
 

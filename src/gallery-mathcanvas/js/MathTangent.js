@@ -4,6 +4,7 @@
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Tangent
  * @constructor
+ * @param {number}
  */
 
 function MathTangent(
@@ -16,7 +17,7 @@ Y.extend(MathTangent, MathFunctionWithArgs,
 {
 	evaluate: function()
 	{
-		return Math.tan(this.args[0].evaluate());
+		return Y.ComplexMath.tan(this.args[0].evaluate());
 	}
 });
 

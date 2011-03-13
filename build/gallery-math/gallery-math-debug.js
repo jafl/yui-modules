@@ -13,13 +13,18 @@ YUI.add('gallery-math', function(Y) {
 Y.mix(Math,
 {
 	/**
-	 * @return {number} sum of all the arguments
+	 * @return {number} sum of all the arguments (either passed separately or as an array)
 	 */
-	sum: function()
+	add: function()
 	{
 		var s = 0;
 		Y.Array.each(arguments, function(v)
 		{
+			if (Y.Lang.isArray(v))
+			{
+				v = Math.add(v);
+			}
+
 			s += v;
 		});
 
@@ -27,17 +32,40 @@ Y.mix(Math,
 	},
 
 	/**
-	 * @return {number} product of all the arguments
+	 * @return {number} product of all the arguments (either passed separately or as an array)
 	 */
-	product: function()
+	multiply: function()
 	{
 		var p = 0;
 		Y.Array.each(arguments, function(v)
 		{
+			if (Y.Lang.isArray(v))
+			{
+				v = Math.multiply(v);
+			}
+
 			p *= v;
 		});
 
 		return p;
+	},
+
+	/**
+	 * @param a {number} angle in degrees
+	 * @return {number} angle in radians
+	 */
+	degreesToRadians: function(a)
+	{
+		return a * Math.PI / 180;
+	},
+
+	/**
+	 * @param a {number} angle in radians
+	 * @return {number} angle in degrees
+	 */
+	radiansToDegrees: function(a)
+	{
+		return a * 180 / Math.PI;
 	},
 
 	/**

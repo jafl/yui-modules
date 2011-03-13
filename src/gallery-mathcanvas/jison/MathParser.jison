@@ -17,14 +17,21 @@
 ")"                   return ')';
 "pi"                  return 'PI';
 "e"                   return 'E';
+"i"                   return 'I';
 
 ","						return ',';
 "max"					return 'MAX';
 "min"					return 'MIN';
+"sqrt"					return 'SQRT';
+"arcsin"				return 'ARCSIN';
+"arccos"				return 'ARCCOS';
+"arctan"				return 'ARCTAN';
 "sin"					return 'SIN';
 "cos"					return 'COS';
 "tan"					return 'TAN';
-"sqrt"					return 'SQRT';
+"sinh"					return 'SINH';
+"cosh"					return 'COSH';
+"tanh"					return 'TANH';
 
 <<EOF>>               return 'EOF';
 
@@ -53,6 +60,8 @@ e
 		{$$ = new yy.MathFunction.E();}
 	| PI
 		{$$ = new yy.MathFunction.Pi();}
+	| I
+		{$$ = new yy.MathFunction.I();}
 
 	| '(' e ')'
 		{$$ = $2;}
@@ -73,6 +82,18 @@ e
 	| SQRT '(' e ')'
 		{$$ = new yy.MathFunction.SquareRoot($3);}
 
+	| MIN '(' arglist ')'
+		{$$ = new yy.MathFunction.Min($3);}
+	| MAX '(' arglist ')'
+		{$$ = new yy.MathFunction.Max($3);}
+
+	| ARCSIN '(' e ')'
+		{$$ = new yy.MathFunction.Arcsine($3);}
+	| ARCCOS '(' e ')'
+		{$$ = new yy.MathFunction.Arccosine($3);}
+	| ARCTAN '(' e ')'
+		{$$ = new yy.MathFunction.Arctangent($3);}
+
 	| SIN '(' e ')'
 		{$$ = new yy.MathFunction.Sine($3);}
 	| COS '(' e ')'
@@ -80,10 +101,12 @@ e
 	| TAN '(' e ')'
 		{$$ = new yy.MathFunction.Tangent($3);}
 
-	| MIN '(' arglist ')'
-		{$$ = new yy.MathFunction.Min($3);}
-	| MAX '(' arglist ')'
-		{$$ = new yy.MathFunction.Max($3);}
+	| SINH '(' e ')'
+		{$$ = new yy.MathFunction.HyperbolicSine($3);}
+	| COSH '(' e ')'
+		{$$ = new yy.MathFunction.HyperbolicCosine($3);}
+	| TANH '(' e ')'
+		{$$ = new yy.MathFunction.HyperbolicTangent($3);}
 	;
 
 arglist

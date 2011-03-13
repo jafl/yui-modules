@@ -4,6 +4,7 @@
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Cosine
  * @constructor
+ * @param {number}
  */
 
 function MathCosine(
@@ -16,7 +17,7 @@ Y.extend(MathCosine, MathFunctionWithArgs,
 {
 	evaluate: function()
 	{
-		return Math.cos(this.args[0].evaluate());
+		return Y.ComplexMath.cos(this.args[0].evaluate());
 	}
 });
 

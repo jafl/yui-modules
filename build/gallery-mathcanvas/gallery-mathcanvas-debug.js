@@ -19,6 +19,27 @@ function RectList()
 }
 
 /**
+ * @static
+ * @param r {Rect} rectangle
+ * @return width
+ */
+RectList.width = function(r)
+{
+	return r.right - r.left;
+};
+
+/**
+ * @static
+ * @param r {Rect} rectangle
+ * @return height
+ */
+RectList.height = function(r)
+{
+	return r.bottom - r.top;
+};
+
+/**
+ * @static
  * @param r {Rect} rectangle
  * @return horizontal center
  */
@@ -28,6 +49,7 @@ RectList.xcenter = function(r)
 };
 
 /**
+ * @static
  * @param r {Rect} rectangle
  * @return vertical center
  */
@@ -37,6 +59,7 @@ RectList.ycenter = function(r)
 };
 
 /**
+ * @static
  * @param r1 {Rect} rectangle
  * @param r2 {Rect} rectangle
  * @return rectangle convering both input arguments
@@ -577,7 +600,7 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 		var arg_index = arg.prepareToRender(context, top_left, font_size, rect_list);
 
 		var arg_info = rect_list.get(arg_index);
-		var arg_h    = arg_info.rect.bottom - arg_info.rect.top;
+		var arg_h    = RectList.height(arg_info.rect);
 
 		var leading  = 1+Math.round(2.0*arg_h/(4.0*Math.sqrt(3.0)));
 		var trailing = 3;
@@ -609,7 +632,7 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 		/* Context2d */		context,
 		/* rect */			rect)
 	{
-		var h = rect.bottom - rect.top;
+		var h = RectList.height(rect);
 		var x = rect.left;
 		var y = rect.top + Math.round(3.0*h/4.0);
 		var w = Math.round((h-3)/(4.0*Math.sqrt(3.0)));
@@ -1167,27 +1190,57 @@ MathCanvas.ATTRS =
 	 * The font size to use, in em's.
 	 * 
 	 * @config fontsize
-	 * @type {Integer}
+	 * @type {number}
 	 */
 	fontsize:
 	{
 		value:     1,
 		validator: Y.Lang.isNumber
+	},
+
+	/**
+	 * The minimum width of the canvas.  If the expression is wider, the
+	 * width will increase to fit.
+	 * 
+	 * @config minwidth
+	 * @type {Integer}
+	 */
+	minwidth:
+	{
+		value:     100,
+		validator: Y.Lang.isNumber
+	},
+
+	/**
+	 * The minimum height of the canvas.  If the expression is taller, the
+	 * height will increase to fit.
+	 * 
+	 * @config minheight
+	 * @type {Integer}
+	 */
+	minheight:
+	{
+		value:     100,
+		validator: Y.Lang.isNumber
 	}
 };
 
 function setSize(
-	/* event */			e,
+	/* event/number */	v,
 	/* width/height */	type)
 {
-	if (e.newVal.toString().search(/px$/))
+	if (v && v.newVal)
 	{
-		this.canvas.setAttribute(type, parseInt(e.newVal, 10));
+		v = v.newVal;
 	}
-	else
+	else if (!v)
 	{
-		e.preventDefault();
+		v = this.get('min'+type);
 	}
+
+	v = Math.max(v, this[ 'render_'+type ]+5);
+	this.set(type, v+'px');
+	this.canvas.setAttribute(type, v);
 }
 
 Y.extend(MathCanvas, Y.Widget,
@@ -1201,26 +1254,22 @@ Y.extend(MathCanvas, Y.Widget,
 	{
 		var container = this.get('contentBox');
 
-		this.canvas = Y.Node.create('<canvas width="100" height="100" tabindex="0"></canvas>');
+		this.on('minwidthChange', setSize, this, 'width');
+		this.on('minheightChange', setSize, this, 'height');
+
+		var w = this.get('minwidth');
+		this.set('width', w+'px');
+
+		var h = this.get('minheight');
+		this.set('height', w+'px');
+
+		this.canvas = Y.Node.create(
+			'<canvas width="' + w + '" height="' + h + '" tabindex="0"></canvas>');
 		container.appendChild(this.canvas);
 
 		this.context = new Y.Canvas.Context2d(this.canvas);
 		Y.mix(this.context, math_rendering);
 		this.context.math_canvas = this;
-
-		var w = this.get('width');
-		if (w)
-		{
-			this.canvas.setAttribute('width', parseInt(w, 10));
-		}
-		this.on('widthChange', setSize, this, 'width');
-
-		var h = this.get('height');
-		if (h)
-		{
-			this.canvas.setAttribute('height', parseInt(h, 10));
-		}
-		this.on('heightChange', setSize, this, 'height');
 
 		this._renderExpression();
 	},
@@ -1252,6 +1301,12 @@ Y.extend(MathCanvas, Y.Widget,
 		f.prepareToRender(this.context, top_left, 100, this.rect_list);
 
 		var bounds = this.rect_list.getBounds();
+
+		this.render_width  = RectList.width(bounds);
+		setSize.call(this, null, 'width');
+
+		this.render_height = RectList.height(bounds);
+		setSize.call(this, null, 'height');
 
 		this.context.save();
 		this.context.translate(
@@ -1364,4 +1419,4 @@ Y.MathCanvas.RectList = RectList;
 Y.MathCanvas.Parser   = MathParser;
 
 
-}, '@VERSION@' ,{requires:['widget','collection','gallery-canvas']});
+}, '@VERSION@' ,{requires:['widget','collection','gallery-complexnumber','gallery-canvas']});

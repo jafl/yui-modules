@@ -19,6 +19,7 @@ function ComplexNumber(real, imag)
 /**
  * Construct a ComplexNumber from polar coordinates.
  * 
+ * @static
  * @param magnitude {number}
  * @param phase {number}
  * @return ComplexNumber
@@ -70,7 +71,7 @@ ComplexNumber.prototype =
 	 */
 	add: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			this.r += v.r;
 			this.i += v.i;
@@ -87,7 +88,7 @@ ComplexNumber.prototype =
 	 */
 	subtract: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			this.r -= v.r;
 			this.i -= v.i;
@@ -104,11 +105,13 @@ ComplexNumber.prototype =
 	 */
 	multiply: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
-			var x  = ComplexMath.multiply(this, v);
-			this.r = x.r;
-			this.i = x.i;
+			var r = this.r*v.r - this.i*v.i;
+			var i = this.r*v.i + this.i*v.r;
+
+			this.r = r;
+			this.i = i;
 		}
 		else
 		{
@@ -123,7 +126,7 @@ ComplexNumber.prototype =
 	 */
 	divide: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			var x  = ComplexMath.divide(this, v);
 			this.r = x.r;
@@ -133,6 +136,22 @@ ComplexNumber.prototype =
 		{
 			this.r /= v;
 			this.i /= v;
+		}
+	},
+
+	toString: function()
+	{
+		if (this.i === 0)
+		{
+			return this.r.toString();
+		}
+		else if (this.r === 0)
+		{
+			return this.i + 'i';
+		}
+		else
+		{
+			return this.r + '+' + this.i + 'i';
 		}
 	}
 };

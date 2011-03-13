@@ -21,6 +21,7 @@ function ComplexNumber(real, imag)
 /**
  * Construct a ComplexNumber from polar coordinates.
  * 
+ * @static
  * @param magnitude {number}
  * @param phase {number}
  * @return ComplexNumber
@@ -72,7 +73,7 @@ ComplexNumber.prototype =
 	 */
 	add: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			this.r += v.r;
 			this.i += v.i;
@@ -89,7 +90,7 @@ ComplexNumber.prototype =
 	 */
 	subtract: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			this.r -= v.r;
 			this.i -= v.i;
@@ -106,11 +107,13 @@ ComplexNumber.prototype =
 	 */
 	multiply: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
-			var x  = ComplexMath.multiply(this, v);
-			this.r = x.r;
-			this.i = x.i;
+			var r = this.r*v.r - this.i*v.i;
+			var i = this.r*v.i + this.i*v.r;
+
+			this.r = r;
+			this.i = i;
 		}
 		else
 		{
@@ -125,7 +128,7 @@ ComplexNumber.prototype =
 	 */
 	divide: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			var x  = ComplexMath.divide(this, v);
 			this.r = x.r;
@@ -135,6 +138,22 @@ ComplexNumber.prototype =
 		{
 			this.r /= v;
 			this.i /= v;
+		}
+	},
+
+	toString: function()
+	{
+		if (this.i === 0)
+		{
+			return this.r.toString();
+		}
+		else if (this.r === 0)
+		{
+			return this.i + 'i';
+		}
+		else
+		{
+			return this.r + '+' + this.i + 'i';
 		}
 	}
 };
@@ -150,7 +169,7 @@ Y.ComplexNumber = ComplexNumber;
  * @class Y.ComplexMath
  */
 
-ComplexMath =
+var ComplexMath =
 {
 	/**
 	 * Square root of -1.
@@ -158,25 +177,26 @@ ComplexMath =
 	I: new ComplexNumber(0,1),
 
 	/**
+	 * @return {boolean} true if the argument is a ComplexNumber
+	 */
+	isComplexNumber: function(v)
+	{
+		return ((v instanceof ComplexNumber) ||
+				(v.hasOwnProperty("r") && v.hasOwnProperty("i")));
+	},
+
+	/**
 	 * @return {number} sum of all the arguments
 	 */
-	sum: function()
+	add: function()
 	{
 		var s = new ComplexNumber(0,0);
 		Y.Array.each(arguments, function(v)
 		{
-			if (v instanceof ComplexNumber)
-			{
-				s.r += v.r;
-				s.i += v.i;
-			}
-			else
-			{
-				s.r += v;
-			}
+			s.add(v);
 		});
 
-		return s;
+		return (s.i === 0 ? s.r : s);
 	},
 
 	/**
@@ -186,8 +206,8 @@ ComplexMath =
 	 */
 	subtract: function(v1, v2)
 	{
-		var c1 = v1 instanceof ComplexNumber,
-			c2 = v2 instanceof ComplexNumber;
+		var c1 = ComplexMath.isComplexNumber(v1),
+			c2 = ComplexMath.isComplexNumber(v2);
 		if (c1 && c2)
 		{
 			return new ComplexNumber(v1.r-v2.r, v1.i-v2.i);
@@ -207,44 +227,17 @@ ComplexMath =
 	},
 
 	/**
-	 * @param v1 {number}
-	 * @param v2 {number}
-	 * @return {number} v1*v2
-	 */
-	multiply: function(v1, v2)
-	{
-		var c1 = v1 instanceof ComplexNumber,
-			c2 = v2 instanceof ComplexNumber;
-		if (c1 && c2)
-		{
-			return new ComplexNumber(v1.r*v2.r - v1.i*v2.i, v1.r*v2.i + v1.i*v2.r);
-		}
-		else if (c1)
-		{
-			return new ComplexNumber(v1.r*v2, v1.i*v2);
-		}
-		else if (c2)
-		{
-			return new ComplexNumber(v1*v2.r, v1*v2.i);
-		}
-		else
-		{
-			return v1*v2;
-		}
-	},
-
-	/**
 	 * @return {number} product of all the arguments
 	 */
-	product: function()
+	multiply: function()
 	{
-		var s = 1;
+		var s = new ComplexNumber(1, 0);
 		Y.Array.each(arguments, function(v)
 		{
-			s = ComplexMath.multiply(s, v);
+			s.multiply(v);
 		});
 
-		return s;
+		return (s.i === 0 ? s.r : s);
 	},
 
 	/**
@@ -254,8 +247,8 @@ ComplexMath =
 	 */
 	divide: function(v1, v2)
 	{
-		var c1 = v1 instanceof ComplexNumber,
-			c2 = v2 instanceof ComplexNumber;
+		var c1 = ComplexMath.isComplexNumber(v1),
+			c2 = ComplexMath.isComplexNumber(v2);
 		if (c1 && c2)
 		{
 			var d = v2.r*v2.r + v2.i*v2.i;
@@ -284,7 +277,7 @@ ComplexMath =
 	 */
 	abs: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			return Math.sqrt(v.r*v.r + v.i*v.i);
 		}
@@ -300,7 +293,7 @@ ComplexMath =
 	 */
 	cos: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			return new ComplexNumber(
 				 Math.cos(v.r)*Math.cosh(v.i),
@@ -319,7 +312,7 @@ ComplexMath =
 	 */
 	parallel: function(v1, v2)
 	{
-		if (v1 instanceof ComplexNumber || v2 instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v1) || ComplexMath.isComplexNumber(v2))
 		{
 			return ComplexMath.divide(
 				ComplexMath.multiply(v1, v2),
@@ -338,7 +331,8 @@ ComplexMath =
 	 */
 	pow: function(v, e)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v) ||
+			ComplexMath.isComplexNumber(e))
 		{
 			return ComplexNumber.fromPolar(
 				Math.pow(v.magnitude(), e),
@@ -356,7 +350,7 @@ ComplexMath =
 	 */
 	sin: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			return new ComplexNumber(
 				Math.sin(v.r)*Math.cosh(v.i),
@@ -374,16 +368,8 @@ ComplexMath =
 	 */
 	sqrt: function(v)
 	{
-		if (v instanceof ComplexNumber)
-		{
-			return ComplexNumber.fromPolar(
-				Math.sqrt(v.magnitude()),
-				v.phase() / 2);
-		}
-		else
-		{
-			return Math.sqrt(v);
-		}
+
+		return v1.i === 0 ? v1.r : v1;
 	},
 
 	/**
@@ -392,7 +378,7 @@ ComplexMath =
 	 */
 	tan: function(v)
 	{
-		if (v instanceof ComplexNumber)
+		if (ComplexMath.isComplexNumber(v))
 		{
 			return ComplexMath.divide(ComplexMath.sin(v), ComplexMath.cos(v));
 		}
