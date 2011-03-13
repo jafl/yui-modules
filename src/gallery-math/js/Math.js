@@ -30,6 +30,35 @@ Y.mix(Math,
 	},
 
 	/**
+	 * @return {number} sum of the reciprocals of all the arguments (either passed separately or as an array)
+	 */
+	addReciprocals: function()
+	{
+		var s = 0;
+		Y.Array.each(arguments, function(v)
+		{
+			if (Y.Lang.isArray(v))
+			{
+				s += Math.addReciprocals.apply(this, v);
+			}
+			else
+			{
+				s += 1/v;
+			}
+		});
+
+		return s;
+	},
+
+	/**
+	 * @return {number} net value of N resistors in parallel (either passed separately or as an array)
+	 */
+	parallel: function()
+	{
+		return 1/Math.addReciprocals.apply(this, arguments);
+	},
+
+	/**
 	 * @return {number} product of all the arguments (either passed separately or as an array)
 	 */
 	multiply: function()
@@ -121,15 +150,5 @@ Y.mix(Math,
 	{
 		var e = Math.exp(2*v);
 		return (e - 1)/(e + 1);
-	},
-
-	/**
-	 * @param v1 {number}
-	 * @param v2 {number}
-	 * @return {number} net value of two resistors in parallel
-	 */
-	parallel: function(v1, v2)
-	{
-		return v1*v2/(v1+v2);
 	}
 });
