@@ -8,14 +8,14 @@ YUI.add('gallery-complexnumber', function(Y) {
  * @module gallery-complexnumber
  * @class Y.ComplexNumber
  * @constructor
- * @param real {number} the real component
- * @param imag {number} the imaginary component
+ * @param real {number} the real component (default: 0)
+ * @param imag {number} the imaginary component (default: 0)
  */
 
 function ComplexNumber(real, imag)
 {
-	this.r = real;
-	this.i = imag;
+	this.r = real || 0;
+	this.i = imag || 0;
 }
 
 /**
@@ -190,6 +190,11 @@ Y.ComplexNumber = ComplexNumber;
 
 var ComplexMath =
 {
+	/**
+	 * Zero.
+	 */
+	ZERO: new ComplexNumber(),
+
 	/**
 	 * Square root of -1.
 	 */

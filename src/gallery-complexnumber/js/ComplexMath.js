@@ -11,6 +11,11 @@
 var ComplexMath =
 {
 	/**
+	 * Zero.
+	 */
+	ZERO: new ComplexNumber(),
+
+	/**
 	 * Square root of -1.
 	 */
 	I: new ComplexNumber(0,1),
