@@ -68,6 +68,7 @@ ComplexNumber.prototype =
 	/**
 	 * Equivalent of += operator.
 	 * @param v {number}
+	 * @chainable
 	 */
 	add: function(v)
 	{
@@ -80,11 +81,14 @@ ComplexNumber.prototype =
 		{
 			this.r += v;
 		}
+
+		return this;
 	},
 
 	/**
 	 * Equivalent of -= operator.
 	 * @param v {number}
+	 * @chainable
 	 */
 	subtract: function(v)
 	{
@@ -97,11 +101,14 @@ ComplexNumber.prototype =
 		{
 			this.r -= v;
 		}
+
+		return this;
 	},
 
 	/**
 	 * Equivalent of *= operator.
 	 * @param v {number}
+	 * @chainable
 	 */
 	multiply: function(v)
 	{
@@ -118,11 +125,14 @@ ComplexNumber.prototype =
 			this.r *= v;
 			this.i *= v;
 		}
+
+		return this;
 	},
 
 	/**
 	 * Equivalent of /= operator.
 	 * @param v {number}
+	 * @chainable
 	 */
 	divide: function(v)
 	{
@@ -137,21 +147,30 @@ ComplexNumber.prototype =
 			this.r /= v;
 			this.i /= v;
 		}
+
+		return this;
 	},
 
 	toString: function()
 	{
+		function i(v)
+		{
+			return  v ===  1 ?  'i' :
+					v === -1 ? '-i' :
+					v + 'i';
+		}
+
 		if (this.i === 0)
 		{
 			return this.r.toString();
 		}
 		else if (this.r === 0)
 		{
-			return this.i + 'i';
+			return i(this.i);
 		}
 		else
 		{
-			return this.r + '+' + this.i + 'i';
+			return this.r + (this.i > 0 ? '+' : '') + i(this.i);
 		}
 	}
 };

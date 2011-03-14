@@ -25,17 +25,22 @@ var ComplexMath =
 	},
 
 	/**
-	 * @return {number} sum of all the arguments
+	 * @return {number} sum of all the arguments (either passed separately or as an array)
 	 */
 	add: function()
 	{
 		var s = new ComplexNumber(0,0);
 		Y.Array.each(arguments, function(v)
 		{
+			if (Y.Lang.isArray(v))
+			{
+				v = ComplexMath.add.apply(this, v);
+			}
+
 			s.add(v);
 		});
 
-		return (s.i === 0 ? s.r : s);
+		return s;
 	},
 
 	/**
@@ -61,22 +66,27 @@ var ComplexMath =
 		}
 		else
 		{
-			return v1-v2;
+			return new ComplexNumber(v1-v2, 0);
 		}
 	},
 
 	/**
-	 * @return {number} product of all the arguments
+	 * @return {number} product of all the arguments (either passed separately or as an array)
 	 */
 	multiply: function()
 	{
 		var s = new ComplexNumber(1, 0);
 		Y.Array.each(arguments, function(v)
 		{
+			if (Y.Lang.isArray(v))
+			{
+				v = ComplexMath.multiply.apply(this, v);
+			}
+
 			s.multiply(v);
 		});
 
-		return (s.i === 0 ? s.r : s);
+		return s;
 	},
 
 	/**
@@ -106,7 +116,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return v1/v2;
+			return new ComplexNumber(v1/v2, 0);
 		}
 	},
 
@@ -122,7 +132,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.abs(v);
+			return new ComplexNumber(Math.abs(v), 0);
 		}
 	},
 
@@ -141,7 +151,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.acosh(v);
+			return new ComplexNumber(Math.acosh(v), 0);
 		}
 	},
 
@@ -160,7 +170,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.asinh(v);
+			return new ComplexNumber(Math.asinh(v), 0);
 		}
 	},
 
@@ -180,7 +190,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.atanh(v);
+			return new ComplexNumber(Math.atanh(v), 0);
 		}
 	},
 
@@ -198,7 +208,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.cos(v);
+			return new ComplexNumber(Math.cos(v), 0);
 		}
 	},
 
@@ -217,7 +227,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.cosh(v);
+			return new ComplexNumber(Math.cosh(v), 0);
 		}
 	},
 
@@ -235,7 +245,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.exp(v);
+			return new ComplexNumber(Math.exp(v), 0);
 		}
 	},
 
@@ -251,7 +261,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.log(v);
+			return new ComplexNumber(Math.log(v), 0);
 		}
 	},
 
@@ -270,7 +280,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.parallel(v1, v2);
+			return new ComplexNumber(Math.parallel(v1, v2), 0);
 		}
 	},
 
@@ -281,8 +291,7 @@ var ComplexMath =
 	 */
 	pow: function(v, e)
 	{
-		var v1 = ComplexMath.exp(ComplexMath.multiply(ComplexMath.log(v), e));
-		return v1.i === 0 ? v1.r : v1;
+		return ComplexMath.exp(ComplexMath.multiply(ComplexMath.log(v), e));
 	},
 
 	/**
@@ -299,7 +308,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.cos(v);
+			return new ComplexNumber(Math.cos(v), 0);
 		}
 	},
 
@@ -318,7 +327,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.sinh(v);
+			return new ComplexNumber(Math.sinh(v), 0);
 		}
 	},
 
@@ -329,11 +338,9 @@ var ComplexMath =
 	sqrt: function(v)
 	{
 		var c = ComplexMath.isComplexNumber(v);
-		var v1 = ComplexNumber.fromPolar(
+		return ComplexNumber.fromPolar(
 			Math.sqrt(c ? v.magnitude() : Math.abs(v)),
 			(c ? v.phase() : v < 0 ? Math.PI : 0) / 2);
-
-		return v1.i === 0 ? v1.r : v1;
 	},
 
 	/**
@@ -348,7 +355,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return Math.tan(v);
+			return new ComplexNumber(Math.tan(v), 0);
 		}
 	},
 
@@ -360,14 +367,14 @@ var ComplexMath =
 	{
 		if (ComplexMath.isComplexNumber(v))
 		{
-			var e = ComplexMath.exp(new ComplexNumber(2*v.r, 2*vi));
+			var e = ComplexMath.exp(new ComplexNumber(2*v.r, 2*v.i));
 			return ComplexMath.divide(
 				new ComplexNumber(e.r-1, e.i),
 				new ComplexNumber(e.r+1, e.i));
 		}
 		else
 		{
-			return Math.tanh(v);
+			return new ComplexNumber(Math.tanh(v), 0);
 		}
 	}
 };
