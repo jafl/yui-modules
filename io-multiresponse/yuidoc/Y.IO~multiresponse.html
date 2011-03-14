@@ -71,7 +71,8 @@ block invoking the callback, similar to JSONP.  Unlike JSONP, however,
 requests can only be made to your own server because the callback will
 reference <code>window.parent</code>.  In order to trigger script
 parsing in all browsers, the first chunk of data that the server writes
-to the connection must be at least 1024 bytes.</p>
+to the connection must be at least 1024 bytes, and it must be part of
+the body, so you will need to explicitly send an empty head.</p>
 <p>Due to the way that the request data is parsed, it is not safe to
 send JSON-encoded data using the standard YUI 3 IO methods.  However, if
 you define <code>json</code> in the configuration passed to

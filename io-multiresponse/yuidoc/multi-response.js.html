@@ -61,7 +61,8 @@
 <span class="cm"> * requests can only be made to your own server because the callback will</span>
 <span class="cm"> * reference &lt;code&gt;window.parent&lt;/code&gt;.  In order to trigger script</span>
 <span class="cm"> * parsing in all browsers, the first chunk of data that the server writes</span>
-<span class="cm"> * to the connection must be at least 1024 bytes.&lt;/p&gt;</span>
+<span class="cm"> * to the connection must be at least 1024 bytes, and it must be part of</span>
+<span class="cm"> * the body, so you will need to explicitly send an empty head.&lt;/p&gt;</span>
 <span class="cm"> * </span>
 <span class="cm"> * &lt;p&gt;Due to the way that the request data is parsed, it is not safe to</span>
 <span class="cm"> * send JSON-encoded data using the standard YUI 3 IO methods.  However, if</span>
@@ -435,7 +436,8 @@
         <span class="p">}</span>
     <span class="p">};</span>
 
-    <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;callback=&#39;</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="s1">&#39;window.parent.YUI.Env.io_multi_response_callback[&#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">callback_arg</span> <span class="o">=</span> <span class="s1">&#39;callback=&#39;</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="s1">&#39;window.parent.YUI.Env.io_multi_response_callback[&#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span><span class="p">);</span>
+    <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">?</span> <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">+</span> <span class="s1">&#39;&amp;&#39;</span> <span class="o">+</span> <span class="nx">callback_arg</span> <span class="o">:</span> <span class="nx">callback_arg</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">form</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">c</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">delete</span> <span class="nx">c</span><span class="p">.</span><span class="nx">form</span><span class="p">;</span>
