@@ -1,0 +1,480 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-complexnumber   ComplexMath.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-complexnumber&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a>
+                
+                 &gt; ComplexMath.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;This collection of functions provides the complex number equivalent</span>
+<span class="c"> * of the built-in JavaScript Math namespace, along with the basic</span>
+<span class="c"> * arithmetic operations (since JavaScript does not support operator</span>
+<span class="c"> * overloading).&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @module gallery-complexnumber</span>
+<span class="c"> * @class Y.ComplexMath</span>
+<span class="c"> */</span>
+
+<span class="kd">var</span> <span class="nx">ComplexMath</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="c">/**</span>
+<span class="c">	 * Square root of -1.</span>
+<span class="c">	 */</span>
+	<span class="nx">I</span><span class="o">:</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="p">)</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @return {boolean} true if the argument is a ComplexNumber</span>
+<span class="c">	 */</span>
+	<span class="nx">isComplexNumber</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="p">((</span><span class="nx">v</span> <span class="k">instanceof</span> <span class="nx">ComplexNumber</span><span class="p">)</span> <span class="o">||</span>
+				<span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">v</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)));</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @return {number} sum of all the arguments (either passed separately or as an array)</span>
+<span class="c">	 */</span>
+	<span class="nx">add</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">arguments</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="nx">v</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="nx">s</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+		<span class="p">});</span>
+
+		<span class="k">return</span> <span class="nx">s</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v1 {number}</span>
+<span class="c">	 * @param v2 {number}</span>
+<span class="c">	 * @return {number} v1-v2</span>
+<span class="c">	 */</span>
+	<span class="nx">subtract</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v1</span><span class="o">,</span> <span class="nx">v2</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">c1</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">)</span><span class="o">,</span>
+			<span class="nx">c2</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v2</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">c1</span> <span class="o">&amp;&amp;</span> <span class="nx">c2</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">-</span><span class="nx">v2</span><span class="p">.</span><span class="nx">r</span><span class="o">,</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="o">-</span><span class="nx">v2</span><span class="p">.</span><span class="nx">i</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">c1</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">-</span><span class="nx">v2</span><span class="o">,</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">c2</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="o">-</span><span class="nx">v2</span><span class="p">.</span><span class="nx">r</span><span class="o">,</span> <span class="o">-</span><span class="nx">v2</span><span class="p">.</span><span class="nx">i</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="o">-</span><span class="nx">v2</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @return {number} product of all the arguments (either passed separately or as an array)</span>
+<span class="c">	 */</span>
+	<span class="nx">multiply</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">arguments</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="nx">v</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">multiply</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="nx">s</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+		<span class="p">});</span>
+
+		<span class="k">return</span> <span class="nx">s</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v1 {number}</span>
+<span class="c">	 * @param v2 {number}</span>
+<span class="c">	 * @return {number} v1/v2</span>
+<span class="c">	 */</span>
+	<span class="nx">divide</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v1</span><span class="o">,</span> <span class="nx">v2</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">c1</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">)</span><span class="o">,</span>
+			<span class="nx">c2</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v2</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">c1</span> <span class="o">&amp;&amp;</span> <span class="nx">c2</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">v2</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">r</span> <span class="o">+</span> <span class="nx">v2</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">i</span><span class="o">;</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span>
+				<span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">r</span> <span class="o">+</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">/</span><span class="nx">d</span><span class="o">,</span>
+				<span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">r</span> <span class="o">-</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">/</span><span class="nx">d</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">c1</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">/</span><span class="nx">v2</span><span class="o">,</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="o">/</span><span class="nx">v2</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">c2</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">v2</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">r</span> <span class="o">+</span> <span class="nx">v2</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">i</span><span class="o">;</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">((</span><span class="nx">v1</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span><span class="o">/</span><span class="nx">d</span><span class="o">,</span> <span class="p">(</span><span class="o">-</span><span class="nx">v1</span><span class="o">*</span><span class="nx">v2</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">/</span><span class="nx">d</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="o">/</span><span class="nx">v2</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} absolute value (magnitude) of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">abs</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span> <span class="o">+</span> <span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} inverse hyperbolic cosine of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">acosh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">v1</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="nx">v</span><span class="o">,</span><span class="nx">v</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">+</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="p">)));</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">acosh</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} inverse hyperbolic sine of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">asinh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">v1</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="nx">v</span><span class="o">,</span><span class="nx">v</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="o">+</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="p">)));</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">asinh</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} inverse hyperbolic tangent of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">atanh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">v1</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">divide</span><span class="p">(</span>
+					<span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="o">,</span>  <span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">,</span>
+					<span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="o">,</span> <span class="o">-</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">)));</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexMath</span><span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">/</span><span class="mi">2</span><span class="o">,</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">atanh</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} cosine of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">cos</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span>
+				 <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">cosh</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">,</span>
+				<span class="o">-</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sinh</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">));</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} hyperbolic cosine of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">cosh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">v1</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="o">-</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="o">,</span> <span class="o">-</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">)));</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">/</span><span class="mi">2</span><span class="o">,</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">cosh</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} e raised to the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">exp</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">v1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">));</span>
+			<span class="nx">v1</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="p">));</span>
+			<span class="k">return</span> <span class="nx">v1</span><span class="o">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} natural logarithm of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">log</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">magnitude</span><span class="p">())</span><span class="o">,</span> <span class="nx">v</span><span class="p">.</span><span class="nx">phase</span><span class="p">());</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v1 {number}</span>
+<span class="c">	 * @param v2 {number}</span>
+<span class="c">	 * @return {number} net value of two impedances in parallel</span>
+<span class="c">	 */</span>
+	<span class="nx">parallel</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v1</span><span class="o">,</span> <span class="nx">v2</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">)</span> <span class="o">||</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v2</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">divide</span><span class="p">(</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="nx">v1</span><span class="o">,</span> <span class="nx">v2</span><span class="p">)</span><span class="o">,</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">v1</span><span class="o">,</span> <span class="nx">v2</span><span class="p">));</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">parallel</span><span class="p">(</span><span class="nx">v1</span><span class="o">,</span> <span class="nx">v2</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number} value</span>
+<span class="c">	 * @param e {number} exponent</span>
+<span class="c">	 * @return {number} value raised to the exponent</span>
+<span class="c">	 */</span>
+	<span class="nx">pow</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="o">,</span> <span class="nx">e</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="nx">e</span><span class="p">));</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} sine of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">sin</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span>
+				<span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">cosh</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">,</span>
+				<span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="p">)</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sinh</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">));</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} hyperbolic sine of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">sinh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">v1</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">subtract</span><span class="p">(</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span>
+				<span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="o">-</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="o">,</span> <span class="o">-</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">)));</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">v1</span><span class="p">.</span><span class="nx">r</span><span class="o">/</span><span class="mi">2</span><span class="o">,</span> <span class="nx">v1</span><span class="p">.</span><span class="nx">i</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sinh</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} square root of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">sqrt</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+		<span class="k">return</span> <span class="nx">ComplexNumber</span><span class="p">.</span><span class="nx">fromPolar</span><span class="p">(</span>
+			<span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">c</span> <span class="o">?</span> <span class="nx">v</span><span class="p">.</span><span class="nx">magnitude</span><span class="p">()</span> <span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span><span class="o">,</span>
+			<span class="p">(</span><span class="nx">c</span> <span class="o">?</span> <span class="nx">v</span><span class="p">.</span><span class="nx">phase</span><span class="p">()</span> <span class="o">:</span> <span class="nx">v</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">:</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} tangent of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">tan</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">divide</span><span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">v</span><span class="p">));</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">tan</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} hyperbolic tangent of the argument</span>
+<span class="c">	 */</span>
+	<span class="nx">tanh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="o">,</span> <span class="mi">2</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">));</span>
+			<span class="k">return</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">divide</span><span class="p">(</span>
+				<span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">r</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">i</span><span class="p">)</span><span class="o">,</span>
+				<span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">r</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">i</span><span class="p">));</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">tanh</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">ComplexMath</span> <span class="o">=</span> <span class="nx">ComplexMath</span><span class="o">;</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Y.ComplexMath.html" title="Y.ComplexMath">Y.ComplexMath</a></li>
+                                <li class=""><a href="Y.ComplexNumber.html" title="Y.ComplexNumber">Y.ComplexNumber</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="ComplexMath.js.html" title="ComplexMath.js">ComplexMath.js</a></li>
+                                <li class=""><a href="ComplexNumber.js.html" title="ComplexNumber.js">ComplexNumber.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "Y.ComplexMath.html#method_abs", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "abs"}, {"url": "Y.ComplexMath.html#method_acosh", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "acosh"}, {"url": "Y.ComplexMath.html#method_add", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "add"}, {"url": "Y.ComplexNumber.html#method_add", "access": "", "host": "Y.ComplexNumber", "type": "method", "name": "add"}, {"url": "Y.ComplexMath.html#method_asinh", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "asinh"}, {"url": "Y.ComplexMath.html#method_atanh", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "atanh"}, {"url": "Y.ComplexMath.html#method_cos", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "cos"}, {"url": "Y.ComplexMath.html#method_cosh", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "cosh"}, {"url": "Y.ComplexMath.html#method_divide", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "divide"}, {"url": "Y.ComplexNumber.html#method_divide", "access": "", "host": "Y.ComplexNumber", "type": "method", "name": "divide"}, {"url": "Y.ComplexMath.html#method_exp", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "exp"}, {"url": "Y.ComplexNumber.html#method_fromPolar", "access": "", "host": "Y.ComplexNumber", "type": "method", "name": "fromPolar"}, {"url": "Y.ComplexMath.html#property_I", "access": "", "host": "Y.ComplexMath", "type": "property", "name": "I"}, {"url": "Y.ComplexNumber.html#method_imag", "access": "", "host": "Y.ComplexNumber", "type": "method", "name": "imag"}, {"url": "Y.ComplexMath.html#method_isComplexNumber", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "isComplexNumber"}, {"url": "Y.ComplexMath.html#method_log", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "log"}, {"url": "Y.ComplexNumber.html#method_magnitude", "access": "", "host": "Y.ComplexNumber", "type": "method", "name": "magnitude"}, {"url": "Y.ComplexMath.html#method_multiply", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "multiply"}, {"url": "Y.ComplexNumber.html#method_multiply", "access": "", "host": "Y.ComplexNumber", "type": "method", "name": "multiply"}, {"url": "Y.ComplexMath.html#method_parallel", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "parallel"}, {"url": "Y.ComplexNumber.html#method_phase", "access": "", "host": "Y.ComplexNumber", "type": "method", "name": "phase"}, {"url": "Y.ComplexMath.html#method_pow", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "pow"}, {"url": "Y.ComplexNumber.html#method_real", "access": "", "host": "Y.ComplexNumber", "type": "method", "name": "real"}, {"url": "Y.ComplexMath.html#method_sin", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "sin"}, {"url": "Y.ComplexMath.html#method_sinh", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "sinh"}, {"url": "Y.ComplexMath.html#method_sqrt", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "sqrt"}, {"url": "Y.ComplexMath.html#method_subtract", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "subtract"}, {"url": "Y.ComplexNumber.html#method_subtract", "access": "", "host": "Y.ComplexNumber", "type": "method", "name": "subtract"}, {"url": "Y.ComplexMath.html#method_tan", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "tan"}, {"url": "Y.ComplexMath.html#method_tanh", "access": "", "host": "Y.ComplexMath", "type": "method", "name": "tanh"}];
+</script>
+</body>
+</html>

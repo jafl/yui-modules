@@ -23,7 +23,7 @@ YUI({
 		{
 			e = 1e-9;
 		}
-		Y.Assert.isTrue(Math.abs(v1-v2) <= e);
+		Y.Assert.isTrue(Math.abs(v1-v2) <= e, 'Values should be within '+e+'\nExpected: '+v1+' (number)\nActual:'+v2+ ' (number)\n-----');
 	};
 
 	Y.Test.Runner.add(new Y.Test.Case(
