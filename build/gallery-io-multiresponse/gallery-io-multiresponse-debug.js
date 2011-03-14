@@ -388,7 +388,8 @@ Y.io.upload = function(o, uri, c) {
         }
     };
 
-    c.data = (c.data || '') + 'callback=' + encodeURIComponent('window.parent.YUI.Env.io_multi_response_callback[' + o.id + ']');
+	var callback_arg = 'callback=' + encodeURIComponent('window.parent.YUI.Env.io_multi_response_callback[' + o.id + ']');
+    c.data = c.data ? c.data + '&' + callback_arg : callback_arg
 
     if (c.form && !c.form.id) {
         delete c.form;
