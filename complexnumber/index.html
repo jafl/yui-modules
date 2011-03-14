@@ -73,8 +73,8 @@ YUI({
 
 		testString: function()
 		{
-			Y.Assert.areEqual('1', new Y.ComplexNumber(1,0).toString());
-			Y.Assert.areEqual('-1', new Y.ComplexNumber(-1,0).toString());
+			Y.Assert.areEqual('1', new Y.ComplexNumber(1).toString());
+			Y.Assert.areEqual('-1', new Y.ComplexNumber(-1).toString());
 			Y.Assert.areEqual('i', new Y.ComplexNumber(0,1).toString());
 			Y.Assert.areEqual('-i', new Y.ComplexNumber(0,-1).toString());
 			Y.Assert.areEqual('2i', new Y.ComplexNumber(0,2).toString());
@@ -94,38 +94,52 @@ YUI({
 		{
 			var v1 = new Y.ComplexNumber(1,1);
 			var v2 = new Y.ComplexNumber(-1,1);
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2), Y.ComplexMath.add(1, 1));
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2,2), Y.ComplexMath.add(v1, v1));
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0,2), Y.ComplexMath.add(v1, v2));
-			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,3), Y.ComplexMath.add(v1, v2, v1));
-			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,3), Y.ComplexMath.add([v1, v2, v1]));
-			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,3), Y.ComplexMath.add([v1, v2], v1));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2,3), Y.ComplexMath.add(v1, v2, v1, 1));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2,3), Y.ComplexMath.add([v1, v2, v1, 1]));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2,3), Y.ComplexMath.add([v1, v2], v1, 1));
 		},
 
 		testSubtract: function()
 		{
 			var v1 = new Y.ComplexNumber(2,1);
 			var v2 = new Y.ComplexNumber(-1,2);
-			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0,0), Y.ComplexMath.subtract(v1, v1));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-1), Y.ComplexMath.subtract(1, 2));
+			Y.Assert.complexWithinEpsilon(Y.ComplexMath.ZERO, Y.ComplexMath.subtract(v1, v1));
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(3,-1), Y.ComplexMath.subtract(v1, v2));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,1), Y.ComplexMath.subtract(v1, 1));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-1,-1), Y.ComplexMath.subtract(1, v1));
 		},
 
 		testMultiply: function()
 		{
 			var v1 = new Y.ComplexNumber(1,1);
 			var v2 = new Y.ComplexNumber(-1,1);
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(6), Y.ComplexMath.multiply(2, 3));
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0,2), Y.ComplexMath.multiply(v1, v1));
-			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-2,0), Y.ComplexMath.multiply(v1, v2));
-			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-4,0), Y.ComplexMath.multiply(v1, v1, v1, v1));
-			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-4,0), Y.ComplexMath.multiply([v1, v1, v1, v1]));
-			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-4,0), Y.ComplexMath.multiply(v1, [v1, v1], v1));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-2), Y.ComplexMath.multiply(v1, v2));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-8), Y.ComplexMath.multiply(v1, v1, v1, v1, 2));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-8), Y.ComplexMath.multiply([v1, v1, v1, v1, 2]));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-8), Y.ComplexMath.multiply(v1, [v1, v1], v1, 2));
 		},
 
 		testDivide: function()
 		{
 			var v1 = new Y.ComplexNumber(1,1);
 			var v2 = new Y.ComplexNumber(-1,1);
-			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,0), Y.ComplexMath.divide(v1, v1));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2), Y.ComplexMath.divide(4, 2));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1), Y.ComplexMath.divide(v1, v1));
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0,1), Y.ComplexMath.divide(v2, v1));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0.5,0.5), Y.ComplexMath.divide(v1, 2));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,-1), Y.ComplexMath.divide(2, v1));
+		},
+
+		testSqrt: function()
+		{
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2), Y.ComplexMath.sqrt(4));
+			Y.Assert.complexWithinEpsilon(Y.ComplexMath.I, Y.ComplexMath.sqrt(-1));
 		}
 	}));
 
