@@ -18,12 +18,22 @@ YUI({
 	logInclude: { TestRunner: true }
 }).use('gallery-complexnumber', 'test', 'console', 'console-filters', 'dd-plugin', function(Y)
 {
+	var logToLog10 = 1/Math.log(10);
+
 	Y.Assert.areWithinEpsilon = function(v1,v2,e)
 	{
 		if (Y.Lang.isUndefined(e))
 		{
 			e = 1e-9;
 		}
+
+		if (v1 !== 0)
+		{
+			var scale = Math.pow(10, Math.floor(Math.log(Math.abs(v1))*logToLog10));
+			v1       /= scale;
+			v2       /= scale;
+		}
+
 		Y.Assert.isTrue(Math.abs(v1-v2) <= e, 'Values should be within '+e+'\nExpected: '+v1+' (number)\nActual:'+v2+ ' (number)\n-----');
 	};
 
@@ -136,10 +146,59 @@ YUI({
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,-1), Y.ComplexMath.divide(2, v1));
 		},
 
+		testAbs: function()
+		{
+			Y.Assert.areWithinEpsilon(5, 5);
+			Y.Assert.areWithinEpsilon(5, Y.ComplexMath.abs(new Y.ComplexNumber(3,4)));
+			Y.Assert.areWithinEpsilon(5, Y.ComplexMath.abs(new Y.ComplexNumber(3,-4)));
+		},
+
 		testSqrt: function()
 		{
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2), Y.ComplexMath.sqrt(4));
 			Y.Assert.complexWithinEpsilon(Y.ComplexMath.I, Y.ComplexMath.sqrt(-1));
+		},
+
+		testExp: function()
+		{
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1), Y.ComplexMath.exp(0));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(Math.exp(2)), Y.ComplexMath.exp(2));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0, 1), Y.ComplexMath.exp(new Y.ComplexNumber(0, Math.PI/2)));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0, Math.E), Y.ComplexMath.exp(new Y.ComplexNumber(1, Math.PI/2)));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1/Math.SQRT2, 1/Math.SQRT2), Y.ComplexMath.exp(new Y.ComplexNumber(0, Math.PI/4)));
+		},
+
+		testLog: function()
+		{
+			Y.Assert.complexWithinEpsilon(Y.ComplexMath.ZERO, Y.ComplexMath.log(Y.ComplexMath.exp(0)));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2), Y.ComplexMath.log(Y.ComplexMath.exp(2)));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0, Math.PI/2), Y.ComplexMath.log(Y.ComplexMath.exp(new Y.ComplexNumber(0, Math.PI/2))));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1, Math.PI/2), Y.ComplexMath.log(Y.ComplexMath.exp(new Y.ComplexNumber(1, Math.PI/2))));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0, Math.PI/4), Y.ComplexMath.log(Y.ComplexMath.exp(new Y.ComplexNumber(0, Math.PI/4))));
+		},
+
+		testParallel: function()
+		{
+		},
+
+		testPow: function()
+		{
+		},
+
+		testTrigonometric: function()
+		{
+			var v = new Y.ComplexNumber(1,2);
+//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.acos(Y.ComplexMath.cos(v)));
+//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.asinh(Y.ComplexMath.sinh(v)));
+//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.atanh(Y.ComplexMath.tanh(v)));
+		},
+
+		testHyperbolic: function()
+		{
+			var v = new Y.ComplexNumber(1,2);
+//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.acosh(Y.ComplexMath.cosh(v)));
+//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.asinh(Y.ComplexMath.sinh(v)));
+//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.atanh(Y.ComplexMath.tanh(v)));
 		}
 	}));
 

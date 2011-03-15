@@ -331,8 +331,8 @@ var ComplexMath =
 		{
 			var v1 = ComplexMath.multiply(v,v);
 			return ComplexMath.log(
-				ComplexMath.add(v) +
-				ComplexMath.sqrt(new ComplexNumber(v1.r-1, v1.i)));
+				ComplexMath.add(v,
+					ComplexMath.sqrt(new ComplexNumber(v1.r-1, v1.i))));
 		}
 		else
 		{
@@ -350,8 +350,8 @@ var ComplexMath =
 		{
 			var v1 = ComplexMath.multiply(v,v);
 			return ComplexMath.log(
-				ComplexMath.add(v) +
-				ComplexMath.sqrt(new ComplexNumber(v1.r+1, v1.i)));
+				ComplexMath.add(v,
+					ComplexMath.sqrt(new ComplexNumber(v1.r+1, v1.i))));
 		}
 		else
 		{
@@ -371,7 +371,7 @@ var ComplexMath =
 				ComplexMath.divide(
 					new ComplexNumber(1+v.r,  v.i),
 					new ComplexNumber(1-v.r, -v.i)));
-			return new ComplexMath(v1.r/2, v1.i/2);
+			return new ComplexNumber(v1.r/2, v1.i/2);
 		}
 		else
 		{
