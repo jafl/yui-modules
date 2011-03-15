@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>YUI 3 Multi-response Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
+	<script src="gallery-io-multiresponse-debug.js"></script>
+
+	<style type="text/css">
+	pre { margin-left: 20px; padding: 5px; background-color: #EEE; }
+	</style>
+</head>
+
+<body>
+
+<h1><a href="http://yuilibrary.com/gallery/show/io-multiresponse">YUI 3 IO Multi-response</a> PHP implementation</h1>
+
+<p><a href="index.html">Back to the example</a></p>
+
+<p>The following PHP class can be used to send the correct responses:</p>
+
+<pre>
+define('MR_MIN_INITIAL_RESPONSE_LENGTH', 1024);
+
+class multi_response
+{
+	private $first_response = true;
+	private $callback_fn;
+
+	function __construct()
+	{
+		$this-&gt;callback_fn = $_REQUEST['callback'];
+	}
+
+	function send(
+		/* string/object */	$data)
+	{
+		if ($this-&gt;first_response)
+		{
+			echo '&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;';
+		}
+
+		if (is_object($data))
+		{
+			$data = json_encode($data);
+		}
+
+		echo '&lt;script type="text/javascript"&gt;';
+		echo $this-&gt;callback_fn,'(',$data,')';
+		echo '&lt;/script&gt;';
+
+		$len = strlen($data);
+		if ($this-&gt;first_response && $len &lt; MR_MIN_INITIAL_RESPONSE_LENGTH)
+		{
+			echo '&lt;!-- ';
+			for ($i=$len+1; $i&lt;=MR_MIN_INITIAL_RESPONSE_LENGTH; $i++)
+			{
+				echo 'x';
+			}
+			echo ' --&gt;';
+		}
+		$this-&gt;first_response = false;
+
+		flush();
+	}
+
+	function finish()
+	{
+		echo '&lt;/body&gt;&lt;/html&gt;';
+	}
+}
+</pre>
+
+<p>Example usage:</p>
+
+<pre>
+$response = new multi_response();
+$response-&gt;send(compute_first_result());
+$response-&gt;send(compute_second_result());
+$response-&gt;send(compute_third_result());
+$response-&gt;finish();
+</pre>
+
+</body>
+</html>
