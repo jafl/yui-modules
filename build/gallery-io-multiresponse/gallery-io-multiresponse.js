@@ -372,16 +372,18 @@ Y.io.upload = function(o, uri, c) {
         }
 
         // reset timeout
-        _clearTimeout(o.id);
-        _startTimeout(o, c);
+        if (c.timeout) {
+            _clearTimeout(o.id);
+            _startTimeout(o, c);
+        }
 
         if (c.on && c.on.response) {
             _tE('response', c).fire(o.id, data);
         }
     };
 
-	var callback_arg = 'callback=' + encodeURIComponent('window.parent.YUI.Env.io_multi_response_callback[' + o.id + ']');
-    c.data = c.data ? c.data + '&' + callback_arg : callback_arg
+    var callback_arg = 'callback=' + encodeURIComponent('window.parent.YUI.Env.io_multi_response_callback[' + o.id + ']');
+    c.data = c.data ? c.data + '&' + callback_arg : callback_arg;
 
     if (c.form && !c.form.id) {
         delete c.form;
