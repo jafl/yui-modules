@@ -396,6 +396,7 @@ Y.Drawing = Drawing;
     _addListeners: function()
     {
         this.after("initializedChange", this._updateHandler);
+        this.after("transformAdded", this._updateHandler);
         this.after("strokeChange", this._updateHandler);
         this.after("fillChange", this._updateHandler);
         this.after("widthChange", this._updateHandler);
@@ -454,29 +455,16 @@ Y.Drawing = Drawing;
             fillAlpha;
         if(fill)
         {
-            if(fill.type === "linear" || fill.type === "radial")
+            if(!fill.color)
             {
-                this.beginGradientFill(fill);
-                //node.appendChild(this._getFill());
-            }
-            else if(fill.type === "bitmap")
-            {
-                this.beginBitmapFill(fill);
-                //node.appendChild(this._getFill());
+                node.setAttribute("fill", "none");
             }
             else
             {
-                if(!fill.color)
-                {
-                    node.setAttribute("fill", "none");
-                }
-                else
-                {
-                    fillAlpha = fill.alpha; 
-                    fill.alpha = Y.Lang.isNumber(fillAlpha) ? fillAlpha : 1;
-                    node.setAttribute("fill", fill.color);
-                    node.setAttribute("fill-opacity", fillAlpha);
-                }
+                fillAlpha = fill.alpha; 
+                fill.alpha = Y.Lang.isNumber(fillAlpha) ? fillAlpha : 1;
+                node.setAttribute("fill", fill.color);
+                node.setAttribute("fill-opacity", fillAlpha);
             }
         }
         else
@@ -509,10 +497,7 @@ Y.Drawing = Drawing;
      */
     _translate: function(x, y)
     {
-        var node = this.get("node"),
-            translate = "translate(" + x + ", " + y + ")",
-            transform = node.getAttribute("transform");
-        this._updateTransform("translate", /translate\(.*\)/, translate);
+        this._addTransform("translate", arguments);
     },
 
     /**
@@ -523,8 +508,7 @@ Y.Drawing = Drawing;
      */
      skewX: function(x)
      {
-        var skewX= "skewX(" + x + ")";
-        this._updateTransform("skewX", /skewX\(.*\)/, skewX);
+        this._addTransform("skewX", arguments);
      },
 
     /**
@@ -535,8 +519,7 @@ Y.Drawing = Drawing;
      */
      skewY: function(y)
      {
-        var skewY = "skewY(" + y + ")";
-        this._updateTransform("skewY", /skewY\(.*\)/, skewY);
+        this._addTransform("skewY", arguments);
      },
 
      /**
@@ -545,13 +528,9 @@ Y.Drawing = Drawing;
       * @method rotate
       * @param
       */
-     rotate: function(deg, translate)
+     rotate: function(deg)
      {
-        var w = this.get("width") * 0.5,
-            h = this.get("height") * 0.5;
-        translate = translate || w + "," + h;
-        var rotate = "rotate(" + deg + "," + translate + ")";
-        this._updateTransform("rotate", /rotate\(.*\)/, rotate);
+        this._addTransform("rotate", arguments);
      },
 
     /**
@@ -562,8 +541,7 @@ Y.Drawing = Drawing;
      */
     scale: function(val)
     {
-        var scale = "scale(" + val + ")";
-        this._updateTransform("scale", /scale\(.*\)/, scale);
+        this._addTransform("scale", arguments);
     },
 
     /**
@@ -573,34 +551,69 @@ Y.Drawing = Drawing;
      */
     matrix: function(a, b, c, d, e, f)
     {
-        var matrix = "matrix(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ")";
-        this._updateTransform("matrix", /matrix\(.*\)/, matrix);
+        this._addTransform("matrix", arguments);
     },
 
     /**
      * @private
      */
-    _updateTransform: function(type, test, val)
+    _addTransform: function(type, args)
+    {
+        if(!this._transformArgs)
+        {
+            this._transformArgs = {};
+        }
+        this._transformArgs[type] = Array.prototype.slice.call(args, 0);
+        this.fire("transformAdded");
+    },
+
+    /**
+     * @private
+     */
+    _updateTransform: function()
     {
         var node = this.get("node"),
-            transform = node.getAttribute("transform");
-        if(transform && transform.length > 0)
+            key,
+            args,
+            val,
+            transform = node.getAttribute("transform"),
+            test;
+        if(this._transformArgs)
         {
-            if(transform.indexOf(type) > -1)
+            if(this._transformArgs.hasOwnProperty("rotate"))
             {
-                transform = transform.replace(test, val);
-            }
-            else
-            {
-                transform += " " + val;
+                args = this._transformArgs.rotate;
+                args[1] = this.get("x") + (this.get("width") * 0.5);
+                args[2] = this.get("y") + (this.get("height") * 0.5);
             }
         }
-        else
+        for(key in this._transformArgs)
         {
-            transform = val;
+            if(key && this._transformArgs.hasOwnProperty(key))
+            {
+                val = key + "(" + this._transformArgs[key].toString() + ")";
+                if(transform && transform.length > 0)
+                {
+                    test = new RegExp(key + '(.*)');
+                    if(transform.indexOf(key) > -1)
+                    {
+                        transform = transform.replace(test, val);
+                    }
+                    else
+                    {
+                        transform += " " + val;
+                    }
+                }
+                else
+                {
+                    transform = val;
+                }
+            }
         }
-        node.setAttribute("transform", transform);
-        this.fire("shapeUpdate");
+        if(transform)
+        {
+            node.setAttribute("transform", transform);
+        }
     },
 
     /**
@@ -620,6 +633,7 @@ Y.Drawing = Drawing;
         node.style.top = this.get("y") + "px";
         this._fillChangeHandler();
         this._strokeChangeHandler();
+        this._updateTransform();
     },
 
     /**
@@ -935,58 +949,69 @@ Y.Path = Y.Base.create("path", Y.Shape, [Y.Drawing], {
      */
     _draw: function()
     {
-        var pathArray = this._pathArray,
+        var pathArray,
             segmentArray,
             pathType,
             len,
             val,
             val2,
             i,
-            path = this.get("path"),
+            path = "",
             node = this.get("node"),
             tx = this.get("translateX"),
             ty = this.get("translateY"),
             left = this._left,
             top = this._top;
-        while(pathArray && pathArray.length > 0)
+        if(this._pathArray)
         {
-            segmentArray = pathArray.shift();
-            len = segmentArray.length;
-            pathType = segmentArray[0];
-            path += " " + pathType + (segmentArray[1] - left);
-            switch(pathType)
+            pathArray = this._pathArray.concat();
+            while(pathArray && pathArray.length > 0)
             {
-                case "L" :
-                case "M" :
-                    for(i = 2; i < len; ++i)
-                    {
-                        val = (i % 2 === 0) ? top : left;
-                        val = segmentArray[i] - val;
-                        path += ", " + val;
-                    }
-                break;
-                case "Q" :
-                case "C" :
-                    for(i = 2; i < len; ++i)
-                    {
-                        val = (i % 2 === 0) ? top : left;
-                        val2 = segmentArray[i];
-                        val2 -= val;
-                        path += " " + val2;
-                    }
-                break;
+                segmentArray = pathArray.shift();
+                len = segmentArray.length;
+                pathType = segmentArray[0];
+                path += " " + pathType + (segmentArray[1] - left);
+                switch(pathType)
+                {
+                    case "L" :
+                    case "M" :
+                    case "Q" :
+                        for(i = 2; i < len; ++i)
+                        {
+                            val = (i % 2 === 0) ? top : left;
+                            val = segmentArray[i] - val;
+                            path += ", " + val;
+                        }
+                    break;
+                    case "C" :
+                        for(i = 2; i < len; ++i)
+                        {
+                            val = (i % 2 === 0) ? top : left;
+                            val2 = segmentArray[i];
+                            val2 -= val;
+                            path += " " + val2;
+                        }
+                    break;
 
+                }
             }
+            if(this._fill)
+            {
+                path += 'z';
+            }
+            if(path)
+            {
+                node.setAttribute("d", path);
+            }
+            //Use transform to handle positioning.
+            this._transformArgs = this._transformArgs || {};
+            this._transformArgs.translate = [left + tx, top + ty];
+            
+            this.set("path", path);
+            this._fillChangeHandler();
+            this._strokeChangeHandler();
+            this._updateTransform();
         }
-        if(this._fill)
-        {
-            path += 'z';
-        }
-        node.setAttribute("d", path);
-        this._translate(left + tx, top + ty);
-        this.set("path", path);
-        this._fillChangeHandler();
-        this._strokeChangeHandler();
     },
    
     /**
@@ -1001,7 +1026,6 @@ Y.Path = Y.Base.create("path", Y.Shape, [Y.Drawing], {
         var node = this.get("node");
         this._translateX = x;
         this._translateY = y;
-        this._translate(x, y);
         this._translate(this._left + x, this._top + y);
     },
     
@@ -1027,6 +1051,7 @@ Y.Path = Y.Base.create("path", Y.Shape, [Y.Drawing], {
         this._right = 0;
         this._top = 0;
         this._bottom = 0;
+        this._pathArray = [];
         this.set("path", "");
     },
 
@@ -1047,10 +1072,10 @@ Y.Path = Y.Base.create("path", Y.Shape, [Y.Drawing], {
         {
             wt = stroke.weight;
         }
-        bounds.left = this._left - wt - tx;
-        bounds.top = this._top - wt - ty;
-        bounds.right = (this._right - this._left) + wt - tx;
-        bounds.bottom = (this._bottom - this._top) + wt - ty;
+        bounds.left = this._left - wt + tx;
+        bounds.top = this._top - wt + ty;
+        bounds.right = (this._right - this._left) + wt + tx;
+        bounds.bottom = (this._bottom - this._top) + wt + ty;
         return bounds;
     }
 }, {
@@ -1126,6 +1151,7 @@ Y.Path = Y.Base.create("path", Y.Shape, [Y.Drawing], {
         node.setAttribute("cy", cy);
         this._fillChangeHandler();
         this._strokeChangeHandler();
+        this._updateTransform();
     }
  }, {
     ATTRS: {
@@ -1238,6 +1264,7 @@ Y.Path = Y.Base.create("path", Y.Shape, [Y.Drawing], {
         node.setAttribute("cy", cy);
         this._fillChangeHandler();
         this._strokeChangeHandler();
+        this._updateTransform();
     }
  }, {
     ATTRS: {
@@ -1569,6 +1596,10 @@ Graphic.prototype = {
             shape,
             shapes = this._graphicsList,
             len = shapes.length;
+        this._left = 0;
+        this._right = 0;
+        this._top = 0;
+        this._bottom = 0;
         for(; i < len; ++i)
         {
             shape = this.getShape(shapes[i].getAttribute("id"));

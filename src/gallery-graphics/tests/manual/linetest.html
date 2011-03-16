@@ -25,52 +25,57 @@ BODY {
 </div>
 <div id="mycanvas" style="backround-color:#9aa;overflow:visible;position:absolute;top:50px;left:100px;border:1px solid"></div>
 <script type="text/javascript">            
-    YUI({filter:"raw",
-            modules:
-            {
-                "gallery-graphics": {
-                    "requires": ["node", "event-custom", "base"],
-                    "plugins": {
-                        "gallery-graphics-canvas": {
-                            "path": "gallery-graphics-canvas/gallery-graphics-canvas.js",
-                            "condition": {
-                                "test": function(Y) {
-                                    var canvas = document.createElement("canvas");
-                                    return (!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") && (canvas && canvas.getContext && canvas.getContext("2d")));
+    YUI({gallery: 'gallery-2011.02.18-23-10',
+            groups: {
+                gallery: {
+                    base: 'http://yui.yahooapis.com/combo?gallery-2011.02.18-23-10/build/',
+                    patterns: {'gallery-': {}},
+                    modules:
+                    {
+                        "gallery-graphics": {
+                            "requires": ["node", "event-custom", "base"],
+                            "plugins": {
+                                "gallery-graphics-canvas": {
+                                    "path": "gallery-graphics-canvas/gallery-graphics-canvas.js",
+                                    "condition": {
+                                        "test": function(Y) {
+                                            var canvas = document.createElement("canvas");
+                                            return (!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") && (canvas && canvas.getContext && canvas.getContext("2d")));
+                                        }, 
+                                        "trigger": "gallery-graphics"
+                                    }
                                 }, 
-                                "trigger": "gallery-graphics"
-                            }
-                        }, 
-                        "gallery-graphics-svg": {
-                            "path": "gallery-graphics-svg/gallery-graphics-svg.js",
-                            "condition": {
-                                "test": function(Y) {
-                                    return (document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
+                                "gallery-graphics-svg": {
+                                    "path": "gallery-graphics-svg/gallery-graphics-svg.js",
+                                    "condition": {
+                                        "test": function(Y) {
+                                            return (document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1"));
+                                        }, 
+                                        "trigger": "gallery-graphics"
+                                    }
                                 }, 
-                                "trigger": "gallery-graphics"
-                            }
-                        }, 
-                        "gallery-graphics-vml": {
-                            "path": "gallery-graphics-vml/gallery-graphics-vml.js",
-                            "condition": {
-                                "test": function(Y) {
-                                var canvas = document.createElement("canvas");
-                                return (!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") && (!canvas || !canvas.getContext || !canvas.getContext("2d")));
-                                }, 
-                                "trigger": "gallery-graphics"
-                            }
+                                "gallery-graphics-vml": {
+                                    "path": "gallery-graphics-vml/gallery-graphics-vml.js",
+                                    "condition": {
+                                        "test": function(Y) {
+                                        var canvas = document.createElement("canvas");
+                                        return (!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") && (!canvas || !canvas.getContext || !canvas.getContext("2d")));
+                                        }, 
+                                        "trigger": "gallery-graphics"
+                                    }
+                                }
+                            } 
                         }
-                    } 
+                    }
                 }
             }
     }).use('gallery-graphics', function (Y) 
     {
-        var myline,
-            mygraphic,
-            myrect,
-            mycircle,
-            myellipse;
-
+    var mygraphic,
+        myline,
+        mycircle,
+        myrect,
+        myellipse;
         function loadGraphics(e)
         {
             mygraphic = new Y.Graphic();
@@ -80,13 +85,15 @@ BODY {
                 color: "#ff0000",
                 alpha: 1,
                 dashstyle: [3, 4]
-            }});
+            }
+            });
             mygraphic.addShape(myline);
+            myline.moveTo(-190, -190);
             
-            myline.moveTo(-190, -190); 
+            myline.lineTo(60, 120);
+            myline.moveTo(0, 200);
             myline.lineTo(60, 120);
             myline.end();
-
             myrect = new Y.Rect({stroke: {
                     color:"#000",
                     weight: 1
@@ -94,11 +101,11 @@ BODY {
                 fill: {
                     color: "#fc0"
                 },
-                width:50,
-                height:40
+                width:40,
+                height:50
             });
-            mygraphic.addShape(myrect);
             
+            mygraphic.addShape(myrect);
             myellipse = new Y.Ellipse({stroke: {
                     color: "#ddd",
                     weight: 2
@@ -120,26 +127,26 @@ BODY {
                 fill: {
                     color:"#00f"
                 },
-                radius: 12
+                radius: 12,
+                x: -5,
+                y: -5
             });
             mygraphic.addShape(mycircle);
-            
         }
 
         function updateElements(e)
         {
+            myrect.rotate(120);
+            mycircle.translate(50, 50);
+            mycircle.set("x", 300);
+            myline.translate(100, 100);
+            myellipse.set("x", 200);
+            myellipse.set("y", 200);
             myline.clear();
             myline.moveTo(-190, -190);
             myline.lineTo.apply(myline, [[0, 0], [10, 20], [10, 150], [40, 300], [50, 100], [60, 180]]);
             myline.end();
-            myline.translate(100, 100);
-
             mycircle.translate(-5, -5);
-            myrect.set("x", 100);
-            myrect.set("y", 100);
-            
-            myellipse.set("x", 200);
-            myellipse.set("y", 200);
 
         }
         Y.on("click", loadGraphics, "#loadgraphics");
