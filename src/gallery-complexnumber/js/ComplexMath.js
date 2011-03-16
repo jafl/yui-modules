@@ -8,6 +8,14 @@
  * @class Y.ComplexMath
  */
 
+function failIfConstant(v)
+{
+	if (v === ComplexMath.ZERO || v === ComplexMath.I)
+	{
+		throw Error('You cannot modify ZERO or I');
+	}
+}
+
 var ComplexMath =
 {
 	/**
@@ -34,7 +42,7 @@ var ComplexMath =
 	 */
 	add: function()
 	{
-		var s = new ComplexNumber(0,0);
+		var s = new ComplexNumber();
 		Y.Array.each(arguments, function(v)
 		{
 			if (Y.Lang.isArray(v))
@@ -46,6 +54,35 @@ var ComplexMath =
 		});
 
 		return s;
+	},
+
+	/**
+	 * @return {number} sum of the reciprocals of all the arguments (either passed separately or as an array)
+	 */
+	addReciprocals: function()
+	{
+		var s = new ComplexNumber();
+		Y.Array.each(arguments, function(v)
+		{
+			if (Y.Lang.isArray(v))
+			{
+				s.add(ComplexMath.addReciprocals.apply(this, v));
+			}
+			else
+			{
+				s.add(ComplexMath.divide(1,v));
+			}
+		});
+
+		return s;
+	},
+
+	/**
+	 * @return {number} net value of N impedances in parallel (either passed separately or as an array)
+	 */
+	parallel: function()
+	{
+		return ComplexMath.divide(1, ComplexMath.addReciprocals.apply(this, arguments));
 	},
 
 	/**
@@ -127,13 +164,29 @@ var ComplexMath =
 
 	/**
 	 * @param v {number}
+	 * @return {number} negative of the argument
+	 */
+	negative: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			return new ComplexNumber(-v.r, -v.i);
+		}
+		else
+		{
+			return new ComplexNumber(-v, 0);
+		}
+	},
+
+	/**
+	 * @param v {number}
 	 * @return {number} absolute value (magnitude) of the argument
 	 */
 	abs: function(v)
 	{
 		if (ComplexMath.isComplexNumber(v))
 		{
-			return Math.sqrt(v.r*v.r + v.i*v.i);
+			return new ComplexNumber(Math.sqrt(v.r*v.r + v.i*v.i), 0);
 		}
 		else
 		{
@@ -149,10 +202,11 @@ var ComplexMath =
 	{
 		if (ComplexMath.isComplexNumber(v))
 		{
-			var v1 = ComplexMath.multiply(v,v);
 			return ComplexMath.log(
 				ComplexMath.add(v,
-					ComplexMath.sqrt(new ComplexNumber(v1.r-1, v1.i))));
+					ComplexMath.multiply(
+						ComplexMath.sqrt(new ComplexNumber(v.r+1, v.i)),
+						ComplexMath.sqrt(new ComplexNumber(v.r-1, v.i)))));
 		}
 		else
 		{
@@ -167,7 +221,7 @@ var ComplexMath =
 	asinh: function(v)
 	{
 		if (ComplexMath.isComplexNumber(v))
-		{.sqrt(
+		{
 			var v1 = ComplexMath.multiply(v,v);
 			return ComplexMath.log(
 				ComplexMath.add(v,
@@ -187,10 +241,9 @@ var ComplexMath =
 	{
 		if (ComplexMath.isComplexNumber(v))
 		{
-			var v1 = ComplexMath.log(
-				ComplexMath.divide(
-					new ComplexNumber(1+v.r,  v.i),
-					new ComplexNumber(1-v.r, -v.i)));
+			var v1 = ComplexMath.subtract(
+				ComplexMath.log(new ComplexNumber(1+v.r,  v.i)),
+				ComplexMath.log(new ComplexNumber(1-v.r, -v.i)));
 			return new ComplexNumber(v1.r/2, v1.i/2);
 		}
 		else
@@ -271,25 +324,6 @@ var ComplexMath =
 	},
 
 	/**
-	 * @param v1 {number}
-	 * @param v2 {number}
-	 * @return {number} net value of two impedances in parallel
-	 */
-	parallel: function(v1, v2)
-	{
-		if (ComplexMath.isComplexNumber(v1) || ComplexMath.isComplexNumber(v2))
-		{
-			return ComplexMath.divide(
-				ComplexMath.multiply(v1, v2),
-				ComplexMath.add(v1, v2));
-		}
-		else
-		{
-			return new ComplexNumber(Math.parallel(v1, v2), 0);
-		}
-	},
-
-	/**
 	 * @param v {number} value
 	 * @param e {number} exponent
 	 * @return {number} value raised to the exponent
@@ -313,7 +347,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return new ComplexNumber(Math.cos(v), 0);
+			return new ComplexNumber(Math.sin(v), 0);
 		}
 	},
 

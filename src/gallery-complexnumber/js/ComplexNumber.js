@@ -72,6 +72,8 @@ ComplexNumber.prototype =
 	 */
 	add: function(v)
 	{
+		failIfConstant(this);
+
 		if (ComplexMath.isComplexNumber(v))
 		{
 			this.r += v.r;
@@ -92,6 +94,8 @@ ComplexNumber.prototype =
 	 */
 	subtract: function(v)
 	{
+		failIfConstant(this);
+
 		if (ComplexMath.isComplexNumber(v))
 		{
 			this.r -= v.r;
@@ -112,6 +116,8 @@ ComplexNumber.prototype =
 	 */
 	multiply: function(v)
 	{
+		failIfConstant(this);
+
 		if (ComplexMath.isComplexNumber(v))
 		{
 			var r = this.r*v.r - this.i*v.i;
@@ -136,6 +142,8 @@ ComplexNumber.prototype =
 	 */
 	divide: function(v)
 	{
+		failIfConstant(this);
+
 		if (ComplexMath.isComplexNumber(v))
 		{
 			var x  = ComplexMath.divide(this, v);
@@ -147,6 +155,20 @@ ComplexNumber.prototype =
 			this.r /= v;
 			this.i /= v;
 		}
+
+		return this;
+	},
+
+	/**
+	 * Equivalent of unary minus operator.
+	 * @chainable
+	 */
+	negate: function()
+	{
+		failIfConstant(this);
+
+		this.r = - this.r;
+		this.i = - this.i;
 
 		return this;
 	},
