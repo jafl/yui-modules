@@ -47,6 +47,17 @@ YUI({
 	{
 		name: 'Complex number',
 
+		_should:
+		{
+			error:
+			{
+				testAddConstant: true,
+				testSubtractConstant: true,
+				testMultiplyConstant: true,
+				testDivideConstant: true
+			}
+		},
+
 		testPolar: function()
 		{
 			var v = new Y.ComplexNumber(1,2);
@@ -79,6 +90,32 @@ YUI({
 			var v = new Y.ComplexNumber(-1,1);
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0,1), v.divide(new Y.ComplexNumber(1,1)));
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0,0.5), v.divide(2));
+		},
+
+		testNegate: function()
+		{
+			var v = new Y.ComplexNumber(-1,1);
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,-1), v.negate());
+		},
+
+		testAddConstant: function()
+		{
+			Y.ComplexMath.I.add(2);
+		},
+
+		testSubtractConstant: function()
+		{
+			Y.ComplexMath.ZERO.add(2);
+		},
+
+		testMultiplyConstant: function()
+		{
+			Y.ComplexMath.I.add(2);
+		},
+
+		testDivideConstant: function()
+		{
+			Y.ComplexMath.ZERO.add(2);
 		},
 
 		testString: function()
@@ -146,17 +183,24 @@ YUI({
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,-1), Y.ComplexMath.divide(2, v1));
 		},
 
+		testNegative: function()
+		{
+			var v = new Y.ComplexNumber(-1,1);
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-1), Y.ComplexMath.negative(1));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,-1), Y.ComplexMath.negative(v));
+		},
+
 		testAbs: function()
 		{
-			Y.Assert.areWithinEpsilon(5, 5);
-			Y.Assert.areWithinEpsilon(5, Y.ComplexMath.abs(new Y.ComplexNumber(3,4)));
-			Y.Assert.areWithinEpsilon(5, Y.ComplexMath.abs(new Y.ComplexNumber(3,-4)));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(5), Y.ComplexMath.abs(new Y.ComplexNumber(3,4)));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(5), Y.ComplexMath.abs(new Y.ComplexNumber(3,-4)));
 		},
 
 		testSqrt: function()
 		{
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2), Y.ComplexMath.sqrt(4));
 			Y.Assert.complexWithinEpsilon(Y.ComplexMath.I, Y.ComplexMath.sqrt(-1));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(Math.cos(Math.PI/6), Math.sin(Math.PI/6)), Y.ComplexMath.sqrt(new Y.ComplexNumber(Math.cos(Math.PI/3), Math.sin(Math.PI/3))));
 		},
 
 		testExp: function()
@@ -179,26 +223,37 @@ YUI({
 
 		testParallel: function()
 		{
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-1/2, 3/2), Y.ComplexMath.parallel(new Y.ComplexNumber(1,2), new Y.ComplexNumber(-2,1)));
 		},
 
 		testPow: function()
 		{
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0.7692389013639721, 0.6389612763136348), Y.ComplexMath.pow(2, Y.ComplexMath.I));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0.2078795763507619), Y.ComplexMath.pow(Y.ComplexMath.I, Y.ComplexMath.I));
 		},
 
 		testTrigonometric: function()
 		{
-			var v = new Y.ComplexNumber(1,2);
-//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.acos(Y.ComplexMath.cos(v)));
-//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.asinh(Y.ComplexMath.sinh(v)));
-//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.atanh(Y.ComplexMath.tanh(v)));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(), Y.ComplexMath.cos(Math.PI/2));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1), Y.ComplexMath.sin(Math.PI/2));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1), Y.ComplexMath.tan(Math.PI/4));
+
+			var v = new Y.ComplexNumber(0,3);
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(Math.cosh(3)), Y.ComplexMath.cos(v));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0,Math.sinh(3)), Y.ComplexMath.sin(v));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0,Math.tanh(3)), Y.ComplexMath.tan(v));
 		},
 
 		testHyperbolic: function()
 		{
+			// branch cuts are tricky
+
 			var v = new Y.ComplexNumber(1,2);
-//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.acosh(Y.ComplexMath.cosh(v)));
-//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.asinh(Y.ComplexMath.sinh(v)));
-//			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.atanh(Y.ComplexMath.tanh(v)));
+			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.acosh(Y.ComplexMath.cosh(v)));
+
+			var v = new Y.ComplexNumber(-0.5,0.5);
+			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.asinh(Y.ComplexMath.sinh(v)));
+			Y.Assert.complexWithinEpsilon(v, Y.ComplexMath.atanh(Y.ComplexMath.tanh(v)));
 		}
 	}));
 
