@@ -1,9 +1,9 @@
 "use strict";
 
 /**********************************************************************
- * <p>Stores instances of JavaScript components.  Allows a constructor to
- * be passed in place of an instance.  This enables lazy construction on
- * demand.</p>
+ * <p>Stores instances of JavaScript components.  Allows a constructor or
+ * factory method to be passed in place of an instance.  This enables lazy
+ * construction on demand.</p>
  * 
  * <p>One use is to create a global repository of JavaScript components
  * attached to DOM id's, e.g., YUI Buttons built on top of HTML
@@ -56,7 +56,7 @@ InstanceManager.prototype =
 	 * Store an object or ctor+args.
 	 * 
 	 * @param id {String} The id of the object.
-	 * @param objOrCtor {Object|Function} The object or the object's constructor.
+	 * @param objOrCtor {Object|Function} The object or the object's constructor or a factory method.
 	 * @param args {Array} The array of arguments to pass to the constructor.
 	 * @return {boolean} false if the id has already been used
 	 */
