@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>InstanceManager Tests</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
+	<script src="gallery-instancemanager-debug.js"></script>
+</head>
+
+<body class="yui3-skin-sam">
+
+<script type="text/javascript">
+YUI({
+//	filter: 'debug',
+	logInclude: { TestRunner: true }
+}).use('gallery-instancemanager', 'test', 'console', 'console-filters', 'dd-plugin', function(Y)
+{
+	function Test(a)
+	{
+		this.a = a;
+	}
+
+	Test.prototype =
+	{
+		get: function()
+		{
+			return this.a;
+		}
+	};
+
+	Y.Test.Runner.add(new Y.Test.Case(
+	{
+		name: 'InstanceManager',
+
+		setUp: function()
+		{
+			this.mgr = new Y.InstanceManager();
+		},
+
+		testPutObject: function()
+		{
+			var obj = new Test(2);
+			this.mgr.put('a', obj)
+			Y.Assert.areSame(obj, this.mgr.get('a'));
+			Y.Assert.areEqual(2, this.mgr.get('a').get());
+		},
+
+		testPutFunction: function()
+		{
+			this.mgr.put('a', Test, 3);
+			Y.Assert.isTrue(this.mgr.get('a') instanceof Test);
+			Y.Assert.areEqual(3, this.mgr.get('a').get());
+		}
+	}));
+
+	new Y.Console(
+	{
+		newestOnTop: false,
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
+	})
+	.render();
+
+	Y.Test.Runner.run();
+});
+</script>
+
+<h1><a href="http://yuilibrary.com/gallery/show/instancemanager">YUI 3 InstanceManager</a> Unit Tests</h1>
+
+<p><a href="yuidoc">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+</body>
+</html>
