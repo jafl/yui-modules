@@ -261,9 +261,39 @@ FormManager.status_failure_class = 'formmgr-status-failure';
  */
 FormManager.row_status_prefix = 'formmgr-has';
 
-var status_pattern     = FormManager.status_success_class+'|'+FormManager.status_failure_class;
-var row_status_pattern = FormManager.row_status_prefix + '([^\\s]+)';
-var row_status_regex   = new RegExp(class_re_prefix + row_status_pattern + class_re_suffix);
+// By using functions for the internal values, we allow the above constants
+// to be changed before they are first used.
+
+var cached_status_pattern;
+var cached_row_status_pattern;
+var cached_row_status_regex;
+
+function statusPattern()
+{
+	if (!cached_status_pattern)
+	{
+		cached_status_pattern = FormManager.status_success_class+'|'+FormManager.status_failure_class;
+	}
+	return cached_status_pattern;
+}
+
+function rowStatusPattern()
+{
+	if (!cached_row_status_pattern)
+	{
+		cached_row_status_pattern = FormManager.row_status_prefix + '([^\\s]+)';
+	}
+	return cached_row_status_pattern;
+}
+
+function rowStatusRegex()
+{
+	if (!cached_row_status_regex)
+	{
+		cached_row_status_regex = new RegExp(class_re_prefix + rowStatusPattern() + class_re_suffix);
+	}
+	return cached_row_status_regex;
+}
 
 /**
  * <p>Map of localizable strings used by pre-validation.</p>
@@ -377,7 +407,7 @@ FormManager.statusTakesPrecendence = function(
 FormManager.getElementStatus = function(
 	/* string/object */	e)
 {
-	var m = Y.one(e).get('className').match(row_status_regex);
+	var m = Y.one(e).get('className').match(rowStatusRegex());
 	return (m && m.length > 1 ? m[1] : false);
 };
 
@@ -396,6 +426,39 @@ function getId(
 	{
 		return e.id;
 	}
+}
+
+function getAncestorByClassName(
+	/* element */	e,
+	/* string */	class_name)
+{
+	e = Y.Node.getDOMNode(Y.one(e));
+	while (e && !Y.DOM.hasClass(e, class_name))
+	{
+		e = e.parentNode;
+		if (!e || !e.tagName)
+		{
+			return null;	// might be hidden, which is outside <fieldset>
+		}
+	}
+	return Y.one(e);
+}
+
+function getAncestorByTagName(
+	/* element */	e,
+	/* string */	tag_name)
+{
+	e        = Y.Node.getDOMNode(Y.one(e));
+	tag_name = tag_name.toLowerCase();
+	while (e && e.tagName.toLowerCase() != tag_name)
+	{
+		e = e.parentNode;
+		if (!e || !e.tagName)
+		{
+			return null;	// might be hidden, which is outside <fieldset>
+		}
+	}
+	return Y.one(e);
 }
 
 /**
@@ -1228,7 +1291,7 @@ FormManager.prototype =
 	getRowStatus: function(
 		/* id/object */	e)
 	{
-		var p = Y.one(e).ancestor('.'+FormManager.row_marker_class);
+		var p = getAncestorByClassName(e, FormManager.row_marker_class);
 		return FormManager.getElementStatus(p);
 	},
 
@@ -1243,7 +1306,7 @@ FormManager.prototype =
 		if (this.status_node)
 		{
 			this.status_node.set('innerHTML', '');
-			this.status_node.replaceClass(status_pattern, FormManager.status_none_class);
+			this.status_node.replaceClass(statusPattern(), FormManager.status_none_class);
 		}
 
 		for (var i=0; i<this.form.elements.length; i++)
@@ -1257,17 +1320,17 @@ FormManager.prototype =
 				continue;
 			}
 
-			var p = Y.one(e).ancestor('.'+FormManager.row_marker_class);
-			if (p && p.hasClass(row_status_pattern))
+			var p = getAncestorByClassName(e, FormManager.row_marker_class);
+			if (p && p.hasClass(rowStatusPattern()))
 			{
 				p.all('.'+FormManager.status_marker_class).set('innerHTML', '');
-				p.removeClass(row_status_pattern);
+				p.removeClass(rowStatusPattern());
 
-				p.all('.'+FormManager.field_marker_class).removeClass(row_status_pattern);
+				p.all('.'+FormManager.field_marker_class).removeClass(rowStatusPattern());
 			}
 		}
 
-		Y.one(this.form).all('fieldset').removeClass(row_status_pattern);
+		Y.one(this.form).all('fieldset').removeClass(rowStatusPattern());
 	},
 
 	/**
@@ -1279,6 +1342,7 @@ FormManager.prototype =
 	 * @param msg {String} The message
 	 * @param type {String} The message type (see Y.FormManager.status_order)
 	 * @param scroll {boolean} (Optional) <code>true</code> if the form row should be scrolled into view
+	 * @return {boolean} true if the message was displayed, false if a higher precedence message was already there
 	 */
 	displayMessage: function(
 		/* id/object */	e,
@@ -1292,13 +1356,13 @@ FormManager.prototype =
 		}
 
 		e     = Y.one(e);
-		var p = e.ancestor('.'+FormManager.row_marker_class);
+		var p = getAncestorByClassName(e, FormManager.row_marker_class);
 		if (p && FormManager.statusTakesPrecendence(FormManager.getElementStatus(p), type))
 		{
 			var f = p.all('.'+FormManager.field_marker_class);
 			if (f)
 			{
-				f.removeClass(row_status_pattern);
+				f.removeClass(rowStatusPattern());
 			}
 
 			if (msg)
@@ -1307,22 +1371,22 @@ FormManager.prototype =
 			}
 
 			var new_class = FormManager.row_status_prefix + type;
-			p.replaceClass(row_status_pattern, new_class);
+			p.replaceClass(rowStatusPattern(), new_class);
 
-			f = e.ancestor('.'+FormManager.field_marker_class, true);
+			f = getAncestorByClassName(e, FormManager.field_marker_class);
 			if (f)
 			{
-				f.replaceClass(row_status_pattern, new_class);
+				f.replaceClass(rowStatusPattern(), new_class);
 			}
 
-			var fieldset = e.ancestor('fieldset');
+			var fieldset = getAncestorByTagName(e, 'fieldset');
 			if (fieldset && FormManager.statusTakesPrecendence(FormManager.getElementStatus(fieldset), type))
 			{
-				fieldset.removeClass(row_status_pattern);
+				fieldset.removeClass(rowStatusPattern());
 				fieldset.addClass(FormManager.row_status_prefix + type);
 			}
 
-			if (!this.has_messages && scroll && e.get('offsetHeight') > 0)
+			if (!this.has_messages && scroll)
 			{
 				p.scrollIntoView();
 				try
@@ -1340,7 +1404,11 @@ FormManager.prototype =
 			{
 				this.has_errors = true;
 			}
+
+			return true;
 		}
+
+		return false;
 	},
 
 	/**
