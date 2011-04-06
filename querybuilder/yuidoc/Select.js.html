@@ -110,7 +110,14 @@
 		<span class="cm">/* array */</span>		<span class="nx">op_list</span><span class="p">,</span>
 		<span class="cm">/* array */</span>		<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+		<span class="k">try</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+		<span class="p">}</span>
+		<span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="c1">// IE will complain if field is invisible, instead of just ignoring it</span>
+		<span class="p">}</span>
 	<span class="p">},</span>
 
 	<span class="nx">destroy</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>

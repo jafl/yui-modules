@@ -55,14 +55,14 @@
 <span class="cm"> * &lt;p&gt;Class which allows user to build a list of query criteria, e.g., for</span>
 <span class="cm"> * searching.  All the conditions are either AND&#39;ed or OR&#39;ed.  For a more</span>
 <span class="cm"> * general query builder, see gallery-exprbuilder.&lt;/p&gt;</span>
-<span class="cm"> * </span>
+<span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;The default package provides two data types:  String (which can also</span>
 <span class="cm"> * be used for numbers) and Select (which provides a menu of options).  The</span>
 <span class="cm"> * plugin API allows defining additional data types, e.g., date range or</span>
 <span class="cm"> * multi-select.  Every plugin must be registered in</span>
 <span class="cm"> * &lt;code&gt;Y.QueryBuilder.plugin_mapping&lt;/code&gt;.  Plugins must implement the</span>
 <span class="cm"> * following functions:&lt;/p&gt;</span>
-<span class="cm"> * </span>
+<span class="cm"> *</span>
 <span class="cm"> * &lt;dl&gt;</span>
 <span class="cm"> * &lt;dt&gt;&lt;code&gt;constructor(qb, config)&lt;/code&gt;&lt;/dt&gt;</span>
 <span class="cm"> * &lt;dd&gt;The arguments passed to the constructor are the QueryBuilder instance</span>
@@ -96,7 +96,7 @@
 <span class="cm"> *		a single inner array.  A date range plugin would return two inner</span>
 <span class="cm"> *		arrays, one for the start date and one for the end date.&lt;/dd&gt;</span>
 <span class="cm"> * &lt;/dl&gt;</span>
-<span class="cm"> * </span>
+<span class="cm"> *</span>
 <span class="cm"> * @module gallery-querybuilder</span>
 <span class="cm"> * @class QueryBuilder</span>
 <span class="cm"> * @constructor</span>
@@ -161,7 +161,7 @@
 <span class="p">{</span>
 	<span class="cm">/**</span>
 <span class="cm">	 * The prompt displayed when a new item is added to the query.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @config chooseVarPrompt</span>
 <span class="cm">	 * @type {String}</span>
 <span class="cm">	 * @default &quot;Choose a variable&quot;</span>
@@ -177,7 +177,7 @@
 	<span class="cm">/**</span>
 <span class="cm">	 * All generated form field names start with this prefix.  This avoids</span>
 <span class="cm">	 * conflicts if you have more than one QueryBuilder on a page.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @config fieldPrefix</span>
 <span class="cm">	 * @type {String}</span>
 <span class="cm">	 * @default &quot;&quot;</span>
@@ -192,7 +192,7 @@
 
 	<span class="cm">/**</span>
 <span class="cm">	 * Configuration passed to plugins when they are constructed.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @config pluginConfig</span>
 <span class="cm">	 * @type {Object}</span>
 <span class="cm">	 * @default {}</span>
@@ -253,7 +253,7 @@
 	<span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
-    <span class="p">}</span>
+	<span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">changeVar</span><span class="p">(</span>
@@ -279,10 +279,10 @@
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">field_prefix</span>                     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldPrefix&#39;</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">var_menu_name_pattern</span>           <span class="o">=</span> <span class="nx">field_prefix</span> <span class="o">+</span> <span class="s1">&#39;query_var_{i}&#39;</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pluginConfig&#39;</span><span class="p">).</span><span class="nx">fieldPrefix</span> <span class="o">=</span> <span class="nx">field_prefix</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">plugin_column_count</span>             <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>	<span class="c1">// expands as needed</span>
+		<span class="kd">var</span> <span class="nx">field_prefix</span>                      <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldPrefix&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">var_menu_name_pattern</span>            <span class="o">=</span> <span class="nx">field_prefix</span> <span class="o">+</span> <span class="s1">&#39;query_var_{i}&#39;</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pluginConfig&#39;</span><span class="p">).</span><span class="nx">field_prefix</span> <span class="o">=</span> <span class="nx">field_prefix</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">plugin_column_count</span>              <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>	<span class="c1">// expands as needed</span>
 
 		<span class="nx">initVarList</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 	<span class="p">},</span>
@@ -315,7 +315,7 @@
 
 	<span class="cm">/**</span>
 <span class="cm">	 * Reset the query.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @param var_list {Array} If specified, the list of available variables is replaced.</span>
 <span class="cm">	 * @param operators {Object} If specified, the operators for all variable types will be replaced.</span>
 <span class="cm">	 */</span>
@@ -349,7 +349,7 @@
 
 	<span class="cm">/**</span>
 <span class="cm">	 * Append a new query condition to the table.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @param name {String} If specified, this variable is selected.</span>
 <span class="cm">	 * @param value {String} If specified, this value is selected.</span>
 <span class="cm">	 * @return {Object} plugin that was created for the row, if any</span>
@@ -473,7 +473,7 @@
 
 	<span class="cm">/**</span>
 <span class="cm">	 * Set the value of the specified row.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @param row_index {int} The index of the row</span>
 <span class="cm">	 * @param value {String} If specified, the value to set</span>
 <span class="cm">	 */</span>
@@ -510,7 +510,7 @@
 		<span class="kd">var</span> <span class="nx">cells</span> <span class="o">=</span> <span class="p">[];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">selected_var</span><span class="p">.</span><span class="nx">type</span> <span class="o">!=</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">row_index</span><span class="p">].</span><span class="nx">plugin</span> <span class="o">=</span> 
+			<span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">row_index</span><span class="p">].</span><span class="nx">plugin</span> <span class="o">=</span>
 				<span class="k">new</span> <span class="nx">QueryBuilder</span><span class="p">.</span><span class="nx">plugin_mapping</span><span class="p">[</span> <span class="nx">selected_var</span><span class="p">.</span><span class="nx">type</span> <span class="p">](</span>
 					<span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pluginConfig&#39;</span><span class="p">));</span>
 			<span class="nx">cells</span> <span class="o">=</span>
@@ -562,7 +562,7 @@
 
 	<span class="cm">/**</span>
 <span class="cm">	 * Removes the specified row.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @param row_index {int} The index of the row</span>
 <span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if successful</span>
 <span class="cm">	 */</span>
@@ -623,7 +623,7 @@
 
 	<span class="cm">/**</span>
 <span class="cm">	 * Returns plugin used for the specified row, if any.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @param row_index {int} The index of the row</span>
 <span class="cm">	 * @return {Object} the plugin for the row, if any</span>
 <span class="cm">	 */</span>
@@ -672,7 +672,7 @@
 
 	<span class="cm">/**</span>
 <span class="cm">	 * Fires the queryChanged event.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @protected</span>
 <span class="cm">	 */</span>
 	<span class="nx">_notifyChanged</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>

@@ -6,11 +6,12 @@
 
 	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
-<!--
+
 	<script src="gallery-querybuilder-debug.js"></script>
 	<script src="gallery-formmgr-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.3.0/build/widget/assets/skins/sam/widget.css&amp;3.3.0/build/widget/assets/skins/sam/widget-stack.css&amp;3.3.0/build/autocomplete/assets/skins/sam/autocomplete.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-querybuilder.css" />
--->
+
 	<style type="text/css">
 	#query
 	{
@@ -28,6 +29,11 @@
 	{
 		margin: 10px 0;
 	}
+
+	.yui3-aclist-aria
+	{
+		display: none;
+	}
 	</style>
 </head>
 <body class="yui3-skin-sam">
@@ -37,15 +43,57 @@ YUI({
 //	base: '../yui3/',
 //	filter: 'debug',
 	gallery: 'gallery-2011.02.16-20-31'
-}).use('gallery-querybuilder', 'gallery-formmgr', function(Y)
+}).use(
+	'gallery-querybuilder', 'gallery-formmgr',
+	'autocomplete', 'autocomplete-filters', 'autocomplete-highlighters',
+function(Y)
 {
+	var url_list =
+	[
+		'autos.yahoo.com',
+		'bing.com',
+		'cnn.com',
+		'delicious.com',
+		'facebook.com',
+		'finance.yahoo.com',
+		'flickr.com',
+		'games.yahoo.com',
+		'google.com',
+		'health.yahoo.net',
+		'mail.yahoo.com',
+		'messenger.yahoo.com',
+		'movies.yahoo.com',
+		'netflix.com',
+		'news.yahoo.com',
+		'omg.yahoo.com',
+		'pulse.yahoo.com',
+		'realestate.yahoo.com',
+		'reuters.com',
+		'search.yahoo.com',
+		'shine.yahoo.com',
+		'shopping.yahoo.com',
+		'sports.yahoo.com',
+		'travel.yahoo.com',
+		'twitter.com',
+		'weather.yahoo.com',
+		'yahoo.com',
+		'yahoo.match.com'
+	];
+
 	var var_list =
 	[
 		{
 			name: 'url',
 			type: 'string',
 			text: 'URL',
-			validation: 'yiv-length:[,3000]'
+			validation: 'yiv-length:[,3000]',
+			autocomplete:
+			{
+				source:             url_list,
+				resultFilters:      'startsWith',
+				resultHighlighter:  'phraseMatch',
+				containerClassName: 'my-custom-class'
+			}
 		},
 		{
 			name: 'impressions',
