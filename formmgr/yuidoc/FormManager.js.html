@@ -53,6 +53,8 @@
 <span class="cm"> * &lt;p&gt;FormManager provides support for initializing a form, pre-validating</span>
 <span class="cm"> * user input, and displaying messages returned by the server.&lt;/p&gt;</span>
 <span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;Also see the documentation for gallery-formmgr-css-validation.&lt;/p&gt;</span>
+<span class="cm"> * </span>
 <span class="cm"> * &lt;p&gt;&lt;strong&gt;Required Markup Structure&lt;/strong&gt;&lt;/p&gt;</span>
 <span class="cm"> * </span>
 <span class="cm"> * &lt;p&gt;Each element (or tighly coupled set of elements) must be contained by</span>
@@ -218,41 +220,23 @@
 <span class="kd">var</span> <span class="nx">class_re_prefix</span> <span class="o">=</span> <span class="s1">&#39;(?:^|\\s)(?:&#39;</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">class_re_suffix</span> <span class="o">=</span> <span class="s1">&#39;)(?:\\s|$)&#39;</span><span class="p">;</span>
 
-<span class="c1">// pre-validation classes</span>
-
-<span class="kd">var</span> <span class="nx">required_class</span>    <span class="o">=</span> <span class="s1">&#39;yiv-required&#39;</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">length_class_re</span>   <span class="o">=</span> <span class="sr">/(?:^|\s+)yiv-length:\[([0-9]+)?,([1-9][0-9]*)?\](?:\s+|$)/</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">integer_class_re</span>  <span class="o">=</span> <span class="sr">/(?:^|\s+)yiv-integer(?::\[([-+]?[0-9]+)?,([-+]?[0-9]+)?\])?(?:\s+|$)/</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">decimal_class_re</span>  <span class="o">=</span> <span class="sr">/(?:^|\s+)yiv-decimal(?::\[([-+]?(?:[0-9]+\.?|[0-9]+\.[0-9]+|\.[0-9]+))?,([-+]?(?:[0-9]+\.?|[0-9]+\.[0-9]+|\.[0-9]+))?\])?(?:\s+|$)/</span><span class="p">;</span>
-
 <span class="cm">/**</span>
-<span class="cm"> * Regular expression used to determine if a value is an integer.</span>
-<span class="cm"> * This can be localized, e.g., allow for thousands separator.</span>
-<span class="cm"> * </span>
-<span class="cm"> * @config Y.FormManager.integer_value_re</span>
-<span class="cm"> * @type {RegExp}</span>
-<span class="cm"> * @static</span>
-<span class="cm"> */</span>
-<span class="nx">FormManager</span><span class="p">.</span><span class="nx">integer_value_re</span> <span class="o">=</span> <span class="sr">/^[-+]?[0-9]+$/</span><span class="p">;</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Regular expression used to determine if a value is a decimal number.</span>
-<span class="cm"> * This can be localized, e.g., use the correct decimal separator.</span>
-<span class="cm"> * </span>
-<span class="cm"> * @config Y.FormManager.decimal_value_re</span>
-<span class="cm"> * @type {RegExp}</span>
-<span class="cm"> * @static</span>
-<span class="cm"> */</span>
-<span class="nx">FormManager</span><span class="p">.</span><span class="nx">decimal_value_re</span> <span class="o">=</span> <span class="sr">/^[-+]?(?:[0-9]+\.?|[0-9]*\.[0-9]+)$/</span><span class="p">;</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * The CSS class which marks each row of the form.  Typically, each element</span>
-<span class="cm"> * (or a very tightly coupled set of elements) is placed in a separate row.</span>
+<span class="cm"> * The CSS class which marks each row of the form.  Typically, each field</span>
+<span class="cm"> * (or a very tightly coupled set of fields) is placed in a separate row.</span>
 <span class="cm"> * </span>
 <span class="cm"> * @property Y.FormManager.row_marker_class</span>
 <span class="cm"> * @type {String}</span>
 <span class="cm"> */</span>
 <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span> <span class="o">=</span> <span class="s1">&#39;formmgr-row&#39;</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * The CSS class which marks each field in a row of the form.  This enables</span>
+<span class="cm"> * messaging when multiple fields are in a single row.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @property Y.FormManager.field_marker_class</span>
+<span class="cm"> * @type {String}</span>
+<span class="cm"> */</span>
+<span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span> <span class="o">=</span> <span class="s1">&#39;formmgr-field&#39;</span><span class="p">;</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * The CSS class which marks the container for the status message within a</span>
@@ -301,53 +285,39 @@
 <span class="cm"> */</span>
 <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_status_prefix</span> <span class="o">=</span> <span class="s1">&#39;formmgr-has&#39;</span><span class="p">;</span>
 
-<span class="kd">var</span> <span class="nx">status_pattern</span>     <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_success_class</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_failure_class</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">row_status_pattern</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_status_prefix</span> <span class="o">+</span> <span class="s1">&#39;([^\\s]+)&#39;</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">row_status_regex</span>   <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">class_re_prefix</span> <span class="o">+</span> <span class="nx">row_status_pattern</span> <span class="o">+</span> <span class="nx">class_re_suffix</span><span class="p">);</span>
+<span class="c1">// By using functions for the internal values, we allow the above constants</span>
+<span class="c1">// to be changed before they are first used.</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * &lt;p&gt;Map of localizable strings used by pre-validation.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;dl&gt;</span>
-<span class="cm"> * &lt;dt&gt;validation_error&lt;/dt&gt;</span>
-<span class="cm"> * &lt;dd&gt;Displayed in &lt;code&gt;status_node&lt;/code&gt; by &lt;code&gt;notifyErrors()&lt;/code&gt; when pre-validation fails.&lt;/dd&gt;</span>
-<span class="cm"> * &lt;dt&gt;required_string&lt;/dt&gt;</span>
-<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-required&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
-<span class="cm"> * &lt;dt&gt;required_menu&lt;/dt&gt;</span>
-<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-required&lt;/code&gt; fails on a select element.&lt;/dd&gt;</span>
-<span class="cm"> * &lt;dt&gt;length_too_short, length_too_long, length_out_of_range&lt;/dt&gt;</span>
-<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-length&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
-<span class="cm"> * &lt;dt&gt;integer, integer_too_small, integer_too_large, integer_out_of_range&lt;/dt&gt;</span>
-<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-integer&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
-<span class="cm"> * &lt;dt&gt;decimal, decimal_too_small, decimal_too_large, decimal_out_of_range&lt;/dt&gt;</span>
-<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-decimal&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
-<span class="cm"> * &lt;/dl&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @config Y.FormManager.Strings</span>
-<span class="cm"> * @type {Object}</span>
-<span class="cm"> * @static</span>
-<span class="cm"> */</span>
-<span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span> <span class="o">=</span>
+<span class="kd">var</span> <span class="nx">cached_status_pattern</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">cached_row_status_pattern</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">cached_row_status_regex</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">statusPattern</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="nx">validation_error</span><span class="o">:</span>     <span class="s1">&#39;Correct errors in the highlighted fields before continuing.&#39;</span><span class="p">,</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">cached_status_pattern</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">cached_status_pattern</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_success_class</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_failure_class</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">cached_status_pattern</span><span class="p">;</span>
+<span class="p">}</span>
 
-	<span class="nx">required_string</span><span class="o">:</span>      <span class="s1">&#39;This field requires a value.&#39;</span><span class="p">,</span>
-	<span class="nx">required_menu</span><span class="o">:</span>        <span class="s1">&#39;This field is required. Choose a value from the pull-down list.&#39;</span><span class="p">,</span>
+<span class="kd">function</span> <span class="nx">rowStatusPattern</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">cached_row_status_pattern</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">cached_row_status_pattern</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_status_prefix</span> <span class="o">+</span> <span class="s1">&#39;([^\\s]+)&#39;</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">cached_row_status_pattern</span><span class="p">;</span>
+<span class="p">}</span>
 
-	<span class="nx">length_too_short</span><span class="o">:</span>     <span class="s1">&#39;Enter text that is at least {min} characters or longer.&#39;</span><span class="p">,</span>
-	<span class="nx">length_too_long</span><span class="o">:</span>      <span class="s1">&#39;Enter text that is up to {max} characters long.&#39;</span><span class="p">,</span>
-	<span class="nx">length_out_of_range</span><span class="o">:</span>  <span class="s1">&#39;Enter text that is {min} to {max} characters long.&#39;</span><span class="p">,</span>
-
-	<span class="nx">integer</span><span class="o">:</span>              <span class="s1">&#39;Enter a whole number (no decimal point).&#39;</span><span class="p">,</span>
-	<span class="nx">integer_too_small</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {min} or higher (no decimal point).&#39;</span><span class="p">,</span>
-	<span class="nx">integer_too_large</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {max} or lower (no decimal point).&#39;</span><span class="p">,</span>
-	<span class="nx">integer_out_of_range</span><span class="o">:</span> <span class="s1">&#39;Enter a number between or including {min} and {max} (no decimal point).&#39;</span><span class="p">,</span>
-
-	<span class="nx">decimal</span><span class="o">:</span>              <span class="s1">&#39;Enter a number.&#39;</span><span class="p">,</span>
-	<span class="nx">decimal_too_small</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {min} or higher.&#39;</span><span class="p">,</span>
-	<span class="nx">decimal_too_large</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {max} or lower.&#39;</span><span class="p">,</span>
-	<span class="nx">decimal_out_of_range</span><span class="o">:</span> <span class="s1">&#39;Enter a number between or including {min} and {max}.&#39;</span>
-<span class="p">};</span>
+<span class="kd">function</span> <span class="nx">rowStatusRegex</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">cached_row_status_regex</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">cached_row_status_regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">class_re_prefix</span> <span class="o">+</span> <span class="nx">rowStatusPattern</span><span class="p">()</span> <span class="o">+</span> <span class="nx">class_re_suffix</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">cached_row_status_regex</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * &lt;p&gt;Names of supported status values, highest precedence first.  Default:</span>
@@ -417,7 +387,7 @@
 <span class="nx">FormManager</span><span class="p">.</span><span class="nx">getElementStatus</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
 	<span class="cm">/* string/object */</span>	<span class="nx">e</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="nx">row_status_regex</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="nx">rowStatusRegex</span><span class="p">());</span>
 	<span class="k">return</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">?</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="kc">false</span><span class="p">);</span>
 <span class="p">};</span>
 
@@ -436,6 +406,39 @@
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="nx">e</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
 	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span>
+	<span class="cm">/* element */</span>	<span class="nx">e</span><span class="p">,</span>
+	<span class="cm">/* string */</span>	<span class="nx">class_name</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">e</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">));</span>
+	<span class="k">while</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">class_name</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span> <span class="o">||</span> <span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>	<span class="c1">// might be hidden, which is outside &lt;fieldset&gt;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getAncestorByTagName</span><span class="p">(</span>
+	<span class="cm">/* element */</span>	<span class="nx">e</span><span class="p">,</span>
+	<span class="cm">/* string */</span>	<span class="nx">tag_name</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">e</span>        <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">));</span>
+	<span class="nx">tag_name</span> <span class="o">=</span> <span class="nx">tag_name</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+	<span class="k">while</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">tag_name</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span> <span class="o">||</span> <span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>	<span class="c1">// might be hidden, which is outside &lt;fieldset&gt;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="cm">/**</span>
@@ -469,188 +472,6 @@
 	<span class="p">}</span>
 
 	<span class="k">return</span> <span class="nx">has_file_inputs</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="kd">function</span> <span class="nx">hasLimit</span><span class="p">(</span>
-	<span class="cm">/* string */</span>	<span class="nx">s</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Validate an input based on its CSS data.</span>
-<span class="cm"> * </span>
-<span class="cm"> * @method Y.FormManager.validateFromCSSData</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param e {DOM Element} The field to validate.</span>
-<span class="cm"> * @return {Object} Status:</span>
-<span class="cm"> *		&lt;dl&gt;</span>
-<span class="cm"> *		&lt;dt&gt;keepGoing&lt;/dt&gt;</span>
-<span class="cm"> *		&lt;dd&gt;{Boolean} &lt;code&gt;true&lt;/code&gt; if further validation should be done.&lt;/dd&gt;</span>
-<span class="cm"> *		&lt;dt&gt;error&lt;/dt&gt;</span>
-<span class="cm"> *		&lt;dd&gt;{String} The error message, if any.&lt;/dd&gt;</span>
-<span class="cm"> *		&lt;/dl&gt;</span>
-<span class="cm"> */</span>
-<span class="nx">FormManager</span><span class="p">.</span><span class="nx">validateFromCSSData</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="cm">/* element */</span>	<span class="nx">e</span><span class="p">,</span>
-	<span class="cm">/* map */</span>		<span class="nx">msg_list</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">required</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">required_class</span><span class="p">);</span>
-	<span class="k">if</span> <span class="p">(</span><span class="nx">required</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">required</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">required</span><span class="p">;</span>
-		<span class="p">}</span>
-		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;select&#39;</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">required_menu</span><span class="p">;</span>
-		<span class="p">}</span>
-		<span class="k">else</span>
-		<span class="p">{</span>
-			<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">required_string</span><span class="p">;</span>
-		<span class="p">}</span>
-		<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
-	<span class="p">}</span>
-	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">required</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span> <span class="p">};</span>
-	<span class="p">}</span>
-
-	<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">className</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">length_class_re</span><span class="p">);</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-				<span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
-			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_length &gt; max_length&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
-			<span class="p">}</span>
-
-			<span class="kd">var</span> <span class="nx">msg</span>     <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-			<span class="kd">var</span> <span class="nx">has_min</span> <span class="o">=</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;0&#39;</span><span class="p">);</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">has_min</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-			<span class="p">{</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">length_out_of_range</span><span class="p">;</span>
-			<span class="p">}</span>
-			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">has_min</span><span class="p">)</span>
-			<span class="p">{</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">length_too_short</span><span class="p">;</span>
-			<span class="p">}</span>
-			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-			<span class="p">{</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">length_too_long</span><span class="p">;</span>
-			<span class="p">}</span>
-
-			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-				<span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
-			<span class="p">{</span>
-				<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">min_length</span><span class="p">)</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">min_length</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">)});</span>
-				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
-			<span class="p">}</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-				<span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
-			<span class="p">{</span>
-				<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">max_length</span><span class="p">)</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">max_length</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">)});</span>
-				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
-
-		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">integer_class_re</span><span class="p">);</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-				<span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
-			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
-			<span class="p">}</span>
-
-			<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span>
-				<span class="p">(</span><span class="o">!</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">integer_value_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="o">||</span>
-				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&lt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span> <span class="o">||</span>
-				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))))</span>
-			<span class="p">{</span>
-				<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-				<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">integer</span><span class="p">)</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">integer</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">integer_out_of_range</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">integer_too_small</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">integer_too_large</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="k">else</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">integer</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">)});</span>
-				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
-
-		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">decimal_class_re</span><span class="p">);</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-				<span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
-			<span class="p">}</span>
-
-			<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span>
-				<span class="p">(</span><span class="o">!</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">decimal_value_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="o">||</span>
-				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&lt;</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">||</span>
-				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&gt;</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))))</span>
-			<span class="p">{</span>
-				<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-				<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">decimal</span><span class="p">)</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">decimal</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-						 <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal_out_of_range</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal_too_small</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal_too_large</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="k">else</span>
-				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">)});</span>
-				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-
-	<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">true</span> <span class="p">};</span>
 <span class="p">};</span>
 
 <span class="kd">function</span> <span class="nx">populateForm1</span><span class="p">()</span>
@@ -1268,7 +1089,7 @@
 	<span class="nx">getRowStatus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* id/object */</span>	<span class="nx">e</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">ancestor</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
 		<span class="k">return</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">getElementStatus</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
 	<span class="p">},</span>
 
@@ -1283,7 +1104,7 @@
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">status_node</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">status_node</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">status_node</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">status_pattern</span><span class="p">,</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_none_class</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">status_node</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">statusPattern</span><span class="p">(),</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_none_class</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
@@ -1297,15 +1118,17 @@
 				<span class="k">continue</span><span class="p">;</span>
 			<span class="p">}</span>
 
-			<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">ancestor</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">p</span> <span class="o">&amp;&amp;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">row_status_pattern</span><span class="p">))</span>
+			<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">p</span> <span class="o">&amp;&amp;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">()))</span>
 			<span class="p">{</span>
 				<span class="nx">p</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_marker_class</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-				<span class="nx">p</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">row_status_pattern</span><span class="p">);</span>
+				<span class="nx">p</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">());</span>
+
+				<span class="nx">p</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">());</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">).</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;fieldset&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">row_status_pattern</span><span class="p">);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">form</span><span class="p">).</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;fieldset&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">());</span>
 	<span class="p">},</span>
 
 	<span class="cm">/**</span>
@@ -1317,6 +1140,7 @@
 <span class="cm">	 * @param msg {String} The message</span>
 <span class="cm">	 * @param type {String} The message type (see Y.FormManager.status_order)</span>
 <span class="cm">	 * @param scroll {boolean} (Optional) &lt;code&gt;true&lt;/code&gt; if the form row should be scrolled into view</span>
+<span class="cm">	 * @return {boolean} true if the message was displayed, false if a higher precedence message was already there</span>
 <span class="cm">	 */</span>
 	<span class="nx">displayMessage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* id/object */</span>	<span class="nx">e</span><span class="p">,</span>
@@ -1330,25 +1154,37 @@
 		<span class="p">}</span>
 
 		<span class="nx">e</span>     <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">ancestor</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">p</span> <span class="o">&amp;&amp;</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">statusTakesPrecendence</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">getElementStatus</span><span class="p">(</span><span class="nx">p</span><span class="p">),</span> <span class="nx">type</span><span class="p">))</span>
 		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">f</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">());</span>
+			<span class="p">}</span>
+
 			<span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="nx">p</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_marker_class</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">msg</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="nx">p</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">row_status_pattern</span><span class="p">);</span>
-			<span class="nx">p</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_status_prefix</span> <span class="o">+</span> <span class="nx">type</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">new_class</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_status_prefix</span> <span class="o">+</span> <span class="nx">type</span><span class="p">;</span>
+			<span class="nx">p</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">(),</span> <span class="nx">new_class</span><span class="p">);</span>
 
-			<span class="kd">var</span> <span class="nx">fieldset</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">ancestor</span><span class="p">(</span><span class="s1">&#39;fieldset&#39;</span><span class="p">);</span>
+			<span class="nx">f</span> <span class="o">=</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">f</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">(),</span> <span class="nx">new_class</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="kd">var</span> <span class="nx">fieldset</span> <span class="o">=</span> <span class="nx">getAncestorByTagName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="s1">&#39;fieldset&#39;</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">fieldset</span> <span class="o">&amp;&amp;</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">statusTakesPrecendence</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">getElementStatus</span><span class="p">(</span><span class="nx">fieldset</span><span class="p">),</span> <span class="nx">type</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">fieldset</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">row_status_pattern</span><span class="p">);</span>
+				<span class="nx">fieldset</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">());</span>
 				<span class="nx">fieldset</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_status_prefix</span> <span class="o">+</span> <span class="nx">type</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">has_messages</span> <span class="o">&amp;&amp;</span> <span class="nx">scroll</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">has_messages</span> <span class="o">&amp;&amp;</span> <span class="nx">scroll</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="nx">p</span><span class="p">.</span><span class="nx">scrollIntoView</span><span class="p">();</span>
 				<span class="k">try</span>
@@ -1366,7 +1202,11 @@
 			<span class="p">{</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">has_errors</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 			<span class="p">}</span>
+
+			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 	<span class="p">},</span>
 
 	<span class="cm">/**</span>
@@ -1419,6 +1259,17 @@
 	<span class="p">}</span>
 <span class="p">};</span>
 
+<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">)</span>	<span class="c1">// static data &amp; functions from gallery-formmgr-css-validation</span>
+<span class="p">{</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">FormManager</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
 <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">;</span>
 </pre></div>
 
@@ -1458,11 +1309,11 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2010 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">
-    var ALL_YUI_PROPS = [{"url": "FormManager.html#method_addErrorMessage", "access": "", "host": "FormManager", "type": "method", "name": "addErrorMessage"}, {"url": "FormManager.html#method_clearForm", "access": "", "host": "FormManager", "type": "method", "name": "clearForm"}, {"url": "FormManager.html#method_clearMessages", "access": "", "host": "FormManager", "type": "method", "name": "clearMessages"}, {"url": "FormManager.html#method_disableForm", "access": "", "host": "FormManager", "type": "method", "name": "disableForm"}, {"url": "FormManager.html#method_displayFormMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayFormMessage"}, {"url": "FormManager.html#method_displayMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayMessage"}, {"url": "FormManager.html#method_enableForm", "access": "", "host": "FormManager", "type": "method", "name": "enableForm"}, {"url": "FormManager.html#method_getForm", "access": "", "host": "FormManager", "type": "method", "name": "getForm"}, {"url": "FormManager.html#method_getRowStatus", "access": "", "host": "FormManager", "type": "method", "name": "getRowStatus"}, {"url": "FormManager.html#method_hasErrors", "access": "", "host": "FormManager", "type": "method", "name": "hasErrors"}, {"url": "FormManager.html#method_hasFileInputs", "access": "", "host": "FormManager", "type": "method", "name": "hasFileInputs"}, {"url": "FormManager.html#method_hasMessages", "access": "", "host": "FormManager", "type": "method", "name": "hasMessages"}, {"url": "FormManager.html#method_initFocus", "access": "", "host": "FormManager", "type": "method", "name": "initFocus"}, {"url": "FormManager.html#method_isChanged", "access": "", "host": "FormManager", "type": "method", "name": "isChanged"}, {"url": "FormManager.html#method_isFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "isFormEnabled"}, {"url": "FormManager.html#method_notifyErrors", "access": "", "host": "FormManager", "type": "method", "name": "notifyErrors"}, {"url": "FormManager.html#method_populateForm", "access": "", "host": "FormManager", "type": "method", "name": "populateForm"}, {"url": "FormManager.html#method_postPopulateForm", "access": "", "host": "FormManager", "type": "method", "name": "postPopulateForm"}, {"url": "FormManager.html#method_postPrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "postPrepareForm"}, {"url": "FormManager.html#method_postValidateForm", "access": "", "host": "FormManager", "type": "method", "name": "postValidateForm"}, {"url": "FormManager.html#method_prepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prepareForm"}, {"url": "FormManager.html#method_prePrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prePrepareForm"}, {"url": "FormManager.html#method_registerButton", "access": "", "host": "FormManager", "type": "method", "name": "registerButton"}, {"url": "FormManager.html#method_saveCurrentValuesAsDefault", "access": "", "host": "FormManager", "type": "method", "name": "saveCurrentValuesAsDefault"}, {"url": "FormManager.html#method_setDefaultValue", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValue"}, {"url": "FormManager.html#method_setDefaultValues", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValues"}, {"url": "FormManager.html#method_setErrorMessages", "access": "", "host": "FormManager", "type": "method", "name": "setErrorMessages"}, {"url": "FormManager.html#method_setFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "setFormEnabled"}, {"url": "FormManager.html#method_setFunction", "access": "", "host": "FormManager", "type": "method", "name": "setFunction"}, {"url": "FormManager.html#method_setRegex", "access": "", "host": "FormManager", "type": "method", "name": "setRegex"}, {"url": "FormManager.html#method_validateForm", "access": "", "host": "FormManager", "type": "method", "name": "validateForm"}, {"url": "FormManager.html#method_Y.FormManager.cleanValues", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.cleanValues"}, {"url": "FormManager.html#config_Y.FormManager.decimal_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.decimal_value_re"}, {"url": "FormManager.html#method_Y.FormManager.getElementStatus", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getElementStatus"}, {"url": "FormManager.html#method_Y.FormManager.getStatusPrecedence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getStatusPrecedence"}, {"url": "FormManager.html#config_Y.FormManager.integer_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.integer_value_re"}, {"url": "FormManager.html#property_Y.FormManager.row_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.row_status_prefix", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_status_prefix"}, {"url": "FormManager.html#property_Y.FormManager.status_failure_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_failure_class"}, {"url": "FormManager.html#property_Y.FormManager.status_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.status_none_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_none_class"}, {"url": "FormManager.html#config_Y.FormManager.status_order", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.status_order"}, {"url": "FormManager.html#property_Y.FormManager.status_success_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_success_class"}, {"url": "FormManager.html#method_Y.FormManager.statusTakesPrecendence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.statusTakesPrecendence"}, {"url": "FormManager.html#config_Y.FormManager.Strings", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.Strings"}, {"url": "FormManager.html#method_Y.FormManager.validateFromCSSData", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.validateFromCSSData"}];
+    var ALL_YUI_PROPS = [{"url": "FormManager.html#method_addErrorMessage", "access": "", "host": "FormManager", "type": "method", "name": "addErrorMessage"}, {"url": "FormManager.html#method_clearForm", "access": "", "host": "FormManager", "type": "method", "name": "clearForm"}, {"url": "FormManager.html#method_clearMessages", "access": "", "host": "FormManager", "type": "method", "name": "clearMessages"}, {"url": "FormManager.html#method_disableForm", "access": "", "host": "FormManager", "type": "method", "name": "disableForm"}, {"url": "FormManager.html#method_displayFormMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayFormMessage"}, {"url": "FormManager.html#method_displayMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayMessage"}, {"url": "FormManager.html#method_enableForm", "access": "", "host": "FormManager", "type": "method", "name": "enableForm"}, {"url": "FormManager.html#method_getForm", "access": "", "host": "FormManager", "type": "method", "name": "getForm"}, {"url": "FormManager.html#method_getRowStatus", "access": "", "host": "FormManager", "type": "method", "name": "getRowStatus"}, {"url": "FormManager.html#method_hasErrors", "access": "", "host": "FormManager", "type": "method", "name": "hasErrors"}, {"url": "FormManager.html#method_hasFileInputs", "access": "", "host": "FormManager", "type": "method", "name": "hasFileInputs"}, {"url": "FormManager.html#method_hasMessages", "access": "", "host": "FormManager", "type": "method", "name": "hasMessages"}, {"url": "FormManager.html#method_initFocus", "access": "", "host": "FormManager", "type": "method", "name": "initFocus"}, {"url": "FormManager.html#method_isChanged", "access": "", "host": "FormManager", "type": "method", "name": "isChanged"}, {"url": "FormManager.html#method_isFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "isFormEnabled"}, {"url": "FormManager.html#method_notifyErrors", "access": "", "host": "FormManager", "type": "method", "name": "notifyErrors"}, {"url": "FormManager.html#method_populateForm", "access": "", "host": "FormManager", "type": "method", "name": "populateForm"}, {"url": "FormManager.html#method_postPopulateForm", "access": "", "host": "FormManager", "type": "method", "name": "postPopulateForm"}, {"url": "FormManager.html#method_postPrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "postPrepareForm"}, {"url": "FormManager.html#method_postValidateForm", "access": "", "host": "FormManager", "type": "method", "name": "postValidateForm"}, {"url": "FormManager.html#method_prepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prepareForm"}, {"url": "FormManager.html#method_prePrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prePrepareForm"}, {"url": "FormManager.html#method_registerButton", "access": "", "host": "FormManager", "type": "method", "name": "registerButton"}, {"url": "FormManager.html#method_saveCurrentValuesAsDefault", "access": "", "host": "FormManager", "type": "method", "name": "saveCurrentValuesAsDefault"}, {"url": "FormManager.html#method_setDefaultValue", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValue"}, {"url": "FormManager.html#method_setDefaultValues", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValues"}, {"url": "FormManager.html#method_setErrorMessages", "access": "", "host": "FormManager", "type": "method", "name": "setErrorMessages"}, {"url": "FormManager.html#method_setFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "setFormEnabled"}, {"url": "FormManager.html#method_setFunction", "access": "", "host": "FormManager", "type": "method", "name": "setFunction"}, {"url": "FormManager.html#method_setRegex", "access": "", "host": "FormManager", "type": "method", "name": "setRegex"}, {"url": "FormManager.html#method_validateForm", "access": "", "host": "FormManager", "type": "method", "name": "validateForm"}, {"url": "FormManager.html#method_Y.FormManager.cleanValues", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.cleanValues"}, {"url": "FormManager.html#property_Y.FormManager.field_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.field_marker_class"}, {"url": "FormManager.html#method_Y.FormManager.getElementStatus", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getElementStatus"}, {"url": "FormManager.html#method_Y.FormManager.getStatusPrecedence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getStatusPrecedence"}, {"url": "FormManager.html#property_Y.FormManager.row_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.row_status_prefix", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_status_prefix"}, {"url": "FormManager.html#property_Y.FormManager.status_failure_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_failure_class"}, {"url": "FormManager.html#property_Y.FormManager.status_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.status_none_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_none_class"}, {"url": "FormManager.html#config_Y.FormManager.status_order", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.status_order"}, {"url": "FormManager.html#property_Y.FormManager.status_success_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_success_class"}, {"url": "FormManager.html#method_Y.FormManager.statusTakesPrecendence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.statusTakesPrecendence"}];
     YAHOO.yuidoc.init();
 </script>
 </body>

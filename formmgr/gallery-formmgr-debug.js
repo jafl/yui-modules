@@ -171,33 +171,6 @@ function FormManager(
 var class_re_prefix = '(?:^|\\s)(?:';
 var class_re_suffix = ')(?:\\s|$)';
 
-// pre-validation classes
-
-var required_class    = 'yiv-required';
-var length_class_re   = /(?:^|\s+)yiv-length:\[([0-9]+)?,([1-9][0-9]*)?\](?:\s+|$)/;
-var integer_class_re  = /(?:^|\s+)yiv-integer(?::\[([-+]?[0-9]+)?,([-+]?[0-9]+)?\])?(?:\s+|$)/;
-var decimal_class_re  = /(?:^|\s+)yiv-decimal(?::\[([-+]?(?:[0-9]+\.?|[0-9]+\.[0-9]+|\.[0-9]+))?,([-+]?(?:[0-9]+\.?|[0-9]+\.[0-9]+|\.[0-9]+))?\])?(?:\s+|$)/;
-
-/**
- * Regular expression used to determine if a value is an integer.
- * This can be localized, e.g., allow for thousands separator.
- * 
- * @config Y.FormManager.integer_value_re
- * @type {RegExp}
- * @static
- */
-FormManager.integer_value_re = /^[-+]?[0-9]+$/;
-
-/**
- * Regular expression used to determine if a value is a decimal number.
- * This can be localized, e.g., use the correct decimal separator.
- * 
- * @config Y.FormManager.decimal_value_re
- * @type {RegExp}
- * @static
- */
-FormManager.decimal_value_re = /^[-+]?(?:[0-9]+\.?|[0-9]*\.[0-9]+)$/;
-
 /**
  * The CSS class which marks each row of the form.  Typically, each field
  * (or a very tightly coupled set of fields) is placed in a separate row.
@@ -296,50 +269,6 @@ function rowStatusRegex()
 	}
 	return cached_row_status_regex;
 }
-
-/**
- * <p>Map of localizable strings used by pre-validation.</p>
- * 
- * <dl>
- * <dt>validation_error</dt>
- * <dd>Displayed in <code>status_node</code> by <code>notifyErrors()</code> when pre-validation fails.</dd>
- * <dt>required_string</dt>
- * <dd>Displayed when <code>yiv-required</code> fails on an input field.</dd>
- * <dt>required_menu</dt>
- * <dd>Displayed when <code>yiv-required</code> fails on a select element.</dd>
- * <dt>length_too_short, length_too_long, length_out_of_range</dt>
- * <dd>Displayed when <code>yiv-length</code> fails on an input field.</dd>
- * <dt>integer, integer_too_small, integer_too_large, integer_out_of_range</dt>
- * <dd>Displayed when <code>yiv-integer</code> fails on an input field.</dd>
- * <dt>decimal, decimal_too_small, decimal_too_large, decimal_out_of_range</dt>
- * <dd>Displayed when <code>yiv-decimal</code> fails on an input field.</dd>
- * </dl>
- * 
- * @config Y.FormManager.Strings
- * @type {Object}
- * @static
- */
-FormManager.Strings =
-{
-	validation_error:     'Correct errors in the highlighted fields before continuing.',
-
-	required_string:      'This field requires a value.',
-	required_menu:        'This field is required. Choose a value from the pull-down list.',
-
-	length_too_short:     'Enter text that is at least {min} characters or longer.',
-	length_too_long:      'Enter text that is up to {max} characters long.',
-	length_out_of_range:  'Enter text that is {min} to {max} characters long.',
-
-	integer:              'Enter a whole number (no decimal point).',
-	integer_too_small:    'Enter a number that is {min} or higher (no decimal point).',
-	integer_too_large:    'Enter a number that is {max} or lower (no decimal point).',
-	integer_out_of_range: 'Enter a number between or including {min} and {max} (no decimal point).',
-
-	decimal:              'Enter a number.',
-	decimal_too_small:    'Enter a number that is {min} or higher.',
-	decimal_too_large:    'Enter a number that is {max} or lower.',
-	decimal_out_of_range: 'Enter a number between or including {min} and {max}.'
-};
 
 /**
  * <p>Names of supported status values, highest precedence first.  Default:
@@ -494,188 +423,6 @@ FormManager.cleanValues = function(
 	}
 
 	return has_file_inputs;
-};
-
-function hasLimit(
-	/* string */	s)
-{
-	return (!Y.Lang.isUndefined(s) && s.length > 0);
-}
-
-/**
- * Validate an input based on its CSS data.
- * 
- * @method Y.FormManager.validateFromCSSData
- * @static
- * @param e {DOM Element} The field to validate.
- * @return {Object} Status:
- *		<dl>
- *		<dt>keepGoing</dt>
- *		<dd>{Boolean} <code>true</code> if further validation should be done.</dd>
- *		<dt>error</dt>
- *		<dd>{String} The error message, if any.</dd>
- *		</dl>
- */
-FormManager.validateFromCSSData = function(
-	/* element */	e,
-	/* map */		msg_list)
-{
-	var required = Y.DOM.hasClass(e, required_class);
-	if (required && e.value === '')
-	{
-		var msg = null;
-		if (msg_list && msg_list.required)
-		{
-			msg = msg_list.required;
-		}
-		else if (e.tagName.toLowerCase() == 'select')
-		{
-			msg = FormManager.Strings.required_menu;
-		}
-		else
-		{
-			msg = FormManager.Strings.required_string;
-		}
-		return { keepGoing: false, error: msg };
-	}
-	else if (!required && e.value === '')
-	{
-		return { keepGoing: false };
-	}
-
-	if (e.className)
-	{
-		var m = e.className.match(length_class_re);
-		if (m && m.length)
-		{
-			if (hasLimit(m[1]) && hasLimit(m[2]) &&
-				parseInt(m[1], 10) > parseInt(m[2], 10))
-			{
-				Y.log(e.name+' has min_length > max_length', 'error', 'FormManager');
-			}
-
-			var msg     = null;
-			var has_min = (hasLimit(m[1]) && m[1] !== '0');
-			if (has_min && hasLimit(m[2]))
-			{
-				msg = FormManager.Strings.length_out_of_range;
-			}
-			else if (has_min)
-			{
-				msg = FormManager.Strings.length_too_short;
-			}
-			else if (hasLimit(m[2]))
-			{
-				msg = FormManager.Strings.length_too_long;
-			}
-
-			if (e.value && hasLimit(m[1]) &&
-				e.value.length < parseInt(m[1], 10))
-			{
-				if (msg_list && msg_list.min_length)
-				{
-					msg = msg_list.min_length;
-				}
-				msg = Y.substitute(msg, {min: parseInt(m[1], 10), max: parseInt(m[2], 10)});
-				return { keepGoing: false, error: msg };
-			}
-			if (e.value && hasLimit(m[2]) &&
-				e.value.length > parseInt(m[2], 10))
-			{
-				if (msg_list && msg_list.max_length)
-				{
-					msg = msg_list.max_length;
-				}
-				msg = Y.substitute(msg, {min: parseInt(m[1], 10), max: parseInt(m[2], 10)});
-				return { keepGoing: false, error: msg };
-			}
-		}
-
-		var m = e.className.match(integer_class_re);
-		if (m && m.length)
-		{
-			if (hasLimit(m[1]) && hasLimit(m[2]) &&
-				parseInt(m[1], 10) > parseInt(m[2], 10))
-			{
-				Y.log(e.name+' has min_value > max_value', 'error', 'FormManager');
-			}
-
-			var value = parseInt(e.value, 10);
-			if (e.value &&
-				(!FormManager.integer_value_re.test(e.value) ||
-				 (hasLimit(m[1]) && value < parseInt(m[1], 10)) ||
-				 (hasLimit(m[2]) && value > parseInt(m[2], 10))))
-			{
-				var msg = null;
-				if (msg_list && msg_list.integer)
-				{
-					msg = msg_list.integer;
-				}
-				else if (hasLimit(m[1]) && hasLimit(m[2]))
-				{
-					msg = FormManager.Strings.integer_out_of_range;
-				}
-				else if (hasLimit(m[1]))
-				{
-					msg = FormManager.Strings.integer_too_small;
-				}
-				else if (hasLimit(m[2]))
-				{
-					msg = FormManager.Strings.integer_too_large;
-				}
-				else
-				{
-					msg = FormManager.Strings.integer;
-				}
-				msg = Y.substitute(msg, {min: parseInt(m[1], 10), max: parseInt(m[2], 10)});
-				return { keepGoing: false, error: msg };
-			}
-		}
-
-		var m = e.className.match(decimal_class_re);
-		if (m && m.length)
-		{
-			if (hasLimit(m[1]) && hasLimit(m[2]) &&
-				parseFloat(m[1]) > parseFloat(m[2]))
-			{
-				Y.log(e.name+' has min_value > max_value', 'error', 'FormManager');
-			}
-
-			var value = parseFloat(e.value);
-			if (e.value &&
-				(!FormManager.decimal_value_re.test(e.value) ||
-				 (hasLimit(m[1]) && value < parseFloat(m[1])) ||
-				 (hasLimit(m[2]) && value > parseFloat(m[2]))))
-			{
-				var msg = null;
-				if (msg_list && msg_list.decimal)
-				{
-					msg = msg_list.decimal;
-				}
-				else if (hasLimit(m[1]) &&
-						 hasLimit(m[2]))
-				{
-					msg = FormManager.Strings.decimal_out_of_range;
-				}
-				else if (hasLimit(m[1]))
-				{
-					msg = FormManager.Strings.decimal_too_small;
-				}
-				else if (hasLimit(m[2]))
-				{
-					msg = FormManager.Strings.decimal_too_large;
-				}
-				else
-				{
-					msg = FormManager.Strings.decimal;
-				}
-				msg = Y.substitute(msg, {min: parseFloat(m[1], 10), max: parseFloat(m[2], 10)});
-				return { keepGoing: false, error: msg };
-			}
-		}
-	}
-
-	return { keepGoing: true };
 };
 
 function populateForm1()
@@ -1463,7 +1210,18 @@ FormManager.prototype =
 	}
 };
 
+if (Y.FormManager)	// static data & functions from gallery-formmgr-css-validation
+{
+	for (var key in Y.FormManager)
+	{
+		if (Y.FormManager.hasOwnProperty(key))
+		{
+			FormManager[key] = Y.FormManager[key];
+		}
+	}
+}
+
 Y.FormManager = FormManager;
 
 
-}, '@VERSION@' ,{requires:['node-base','substitute']});
+}, '@VERSION@' ,{requires:['node-base','gallery-formmgr-css-validation']});

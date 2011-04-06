@@ -61,6 +61,7 @@
                     <div class="summary description" property="yui:description">
                         <p>FormManager provides support for initializing a form, pre-validating
 user input, and displaying messages returned by the server.</p>
+<p>Also see the documentation for gallery-formmgr-css-validation.</p>
 <p><strong>Required Markup Structure</strong></p>
 <p>Each element (or tighly coupled set of elements) must be contained by
 an element that has the CSS class <code>formmgr-row</code>.  Within each
@@ -186,14 +187,30 @@ passed to the constructor will take precedence.</span>
                         <div class="section field details">
                             <h3 id="properties">Properties</h3>
                             <div class="content">
+                                    <div class="" rel="yui:property" resource="#property_Y.FormManager.field_marker_class">
+                                    <h4><a name="property_Y.FormManager.field_marker_class" property="yui:name">Y.FormManager.field_marker_class</a>
+                                        - <code><span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The CSS class which marks each field in a row of the form.  This enables
+messaging when multiple fields are in a single row.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
                                     <div class="" rel="yui:property" resource="#property_Y.FormManager.row_marker_class">
                                     <h4><a name="property_Y.FormManager.row_marker_class" property="yui:name">Y.FormManager.row_marker_class</a>
                                         - <code><span property="yui:type">{String}</span></code>
                                     </h4>
                                     <div class="detail">
                                         <div class="description" property="yui:description">
-                                            The CSS class which marks each row of the form.  Typically, each element
-(or a very tightly coupled set of elements) is placed in a separate row.
+                                            The CSS class which marks each row of the form.  Typically, each field
+(or a very tightly coupled set of fields) is placed in a separate row.
                                         </div>
                                     </div>
      
@@ -519,7 +536,7 @@ row of the form.
                                         
                                         
                                         
-                                        void
+                                        boolean
                                             <strong property="yui:name">displayMessage</strong>
                                            (
                                                 
@@ -578,6 +595,13 @@ precedence is already visible. (see Y.FormManager.status_order)
                                                         </dd>
                                                 </dl>
 
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">true if the message was displayed, false if a higher precedence message was already there</dd>
+                                                </dl>
 
 
              
@@ -1821,68 +1845,6 @@ already called <code>setErrorMessages()</code> or
                                     </div>
                                     <hr />
                                     </div>
-                                    <div class="" rel="yui:method" resource="#method_Y.FormManager.validateFromCSSData">
-                                    <h4>
-                                        <a name="method_Y.FormManager.validateFromCSSData">Y.FormManager.validateFromCSSData</a></h4>
-                                    <div class="detail" >
-                                        <code>
-                                        
-                                         static 
-                                        
-                                        Object} Status:
-<dl>
-<dt>keepGoing</dt>
-<dd>{Boolean} <code>true</code> if further validation should be done.</dd>
-<dt>error</dt>
-<dd>{String
-                                            <strong property="yui:name">Y.FormManager.validateFromCSSData</strong>
-                                           (
-                                                
-                                                        
-                                                         e
-                                                    
-                                                
-                                            )
-                                        </code>
-                                        
-                                        <div class="description" property="yui:description">
-                                            Validate an input based on its CSS data.
-                                        </div>
-
-                                        <div class="description">
-
-                                                <dl rel="yui:parameters">
-                                                    <dt>Parameters:</dt>
-                                                        <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">e</span>
-                                                        &lt;<span property="yui:type">DOM Element</span>&gt;
-                                                        </code>
-                                                        <span property="yui:description">  The field to validate.</span>
-                                                        </dd>
-                                                </dl>
-
-                                                <dl>
-                                                    <dt>Returns:
-                                                    <code property="yui:return">
-                                                            Object} Status:
-<dl>
-<dt>keepGoing</dt>
-<dd>{Boolean} <code>true</code> if further validation should be done.</dd>
-<dt>error</dt>
-<dd>{String
-                                                    </code></dt>
-                                                    <dd property="yui:returnInfo">The error message, if any.</dd>
-</dl></dd>
-                                                </dl>
-
-
-             
-
-                                        </div>
-
-                                    </div>
-                                    <hr />
-                                    </div>
                             </div>
                         </div>
 
@@ -1897,36 +1859,6 @@ already called <code>setErrorMessages()</code> or
                         <div class="section field details">
                             <h3 id="configattributes">Configuration Attributes</h3>
                             <div class="content">
-                                    <div class="" rel="yui:attribute" resource="#config_Y.FormManager.decimal_value_re">
-                                    <h4><a name="config_Y.FormManager.decimal_value_re">Y.FormManager.decimal_value_re</a>
-                                        <code>- static <span property="yui:type">{RegExp}</span></code>
-                                    </h4>
-                                    <div class="detail">
-                                        <div class="description" property="yui:description">
-                                            Regular expression used to determine if a value is a decimal number.
-This can be localized, e.g., use the correct decimal separator.
-                                        </div>
-                                    </div>
- 
-     
-
-                                    <hr />
-                                    </div>        
-                                    <div class="" rel="yui:attribute" resource="#config_Y.FormManager.integer_value_re">
-                                    <h4><a name="config_Y.FormManager.integer_value_re">Y.FormManager.integer_value_re</a>
-                                        <code>- static <span property="yui:type">{RegExp}</span></code>
-                                    </h4>
-                                    <div class="detail">
-                                        <div class="description" property="yui:description">
-                                            Regular expression used to determine if a value is an integer.
-This can be localized, e.g., allow for thousands separator.
-                                        </div>
-                                    </div>
- 
-     
-
-                                    <hr />
-                                    </div>        
                                     <div class="" rel="yui:attribute" resource="#config_Y.FormManager.status_order">
                                     <h4><a name="config_Y.FormManager.status_order">Y.FormManager.status_order</a>
                                         <code>- static <span property="yui:type">{Array}</span></code>
@@ -1937,34 +1869,6 @@ This can be localized, e.g., allow for thousands separator.
 <code>[ 'error', 'warn', 'success', 'info' ]</code></p>
 <p>This is static because it links to CSS rules that define the
 appearance of each status type:  .formmgr-has{status}</p>
-                                        </div>
-                                    </div>
- 
-     
-
-                                    <hr />
-                                    </div>        
-                                    <div class="" rel="yui:attribute" resource="#config_Y.FormManager.Strings">
-                                    <h4><a name="config_Y.FormManager.Strings">Y.FormManager.Strings</a>
-                                        <code>- static <span property="yui:type">{Object}</span></code>
-                                    </h4>
-                                    <div class="detail">
-                                        <div class="description" property="yui:description">
-                                            <p>Map of localizable strings used by pre-validation.</p>
-<dl>
-<dt>validation_error</dt>
-<dd>Displayed in <code>status_node</code> by <code>notifyErrors()</code> when pre-validation fails.</dd>
-<dt>required_string</dt>
-<dd>Displayed when <code>yiv-required</code> fails on an input field.</dd>
-<dt>required_menu</dt>
-<dd>Displayed when <code>yiv-required</code> fails on a select element.</dd>
-<dt>length_too_short, length_too_long, length_out_of_range</dt>
-<dd>Displayed when <code>yiv-length</code> fails on an input field.</dd>
-<dt>integer, integer_too_small, integer_too_large, integer_out_of_range</dt>
-<dd>Displayed when <code>yiv-integer</code> fails on an input field.</dd>
-<dt>decimal, decimal_too_small, decimal_too_large, decimal_out_of_range</dt>
-<dd>Displayed when <code>yiv-decimal</code> fails on an input field.</dd>
-</dl>
                                         </div>
                                     </div>
  
@@ -2007,6 +1911,7 @@ appearance of each status type:  .formmgr-has{status}</p>
                     <div id="propertyList" class="module">
                         <h4>Properties</h4>
                         <ul class="content">        
+                                <li class=""><a href="#property_Y.FormManager.field_marker_class" title="Y.FormManager.field_marker_class">Y.FormManager.field_marker_class</a></li>
                                 <li class=""><a href="#property_Y.FormManager.row_marker_class" title="Y.FormManager.row_marker_class">Y.FormManager.row_marker_class</a></li>
                                 <li class=""><a href="#property_Y.FormManager.row_status_prefix" title="Y.FormManager.row_status_prefix">Y.FormManager.row_status_prefix</a></li>
                                 <li class=""><a href="#property_Y.FormManager.status_failure_class" title="Y.FormManager.status_failure_class">Y.FormManager.status_failure_class</a></li>
@@ -2054,7 +1959,6 @@ appearance of each status type:  .formmgr-has{status}</p>
                                 <li class=""><a href="#method_Y.FormManager.getElementStatus" title="Y.FormManager.getElementStatus">Y.FormManager.getElementStatus</a></li>
                                 <li class=""><a href="#method_Y.FormManager.getStatusPrecedence" title="Y.FormManager.getStatusPrecedence">Y.FormManager.getStatusPrecedence</a></li>
                                 <li class=""><a href="#method_Y.FormManager.statusTakesPrecendence" title="Y.FormManager.statusTakesPrecendence">Y.FormManager.statusTakesPrecendence</a></li>
-                                <li class=""><a href="#method_Y.FormManager.validateFromCSSData" title="Y.FormManager.validateFromCSSData">Y.FormManager.validateFromCSSData</a></li>
                         </ul>
                     </div>
 
@@ -2062,10 +1966,7 @@ appearance of each status type:  .formmgr-has{status}</p>
                     <div id="configList" class="module">
                         <h4>Configuration Attributes</h4>
                         <ul class="content">        
-                                <li class=""><a href="#config_Y.FormManager.decimal_value_re" title="Y.FormManager.decimal_value_re">Y.FormManager.decimal_value_re</a></li>
-                                <li class=""><a href="#config_Y.FormManager.integer_value_re" title="Y.FormManager.integer_value_re">Y.FormManager.integer_value_re</a></li>
                                 <li class=""><a href="#config_Y.FormManager.status_order" title="Y.FormManager.status_order">Y.FormManager.status_order</a></li>
-                                <li class=""><a href="#config_Y.FormManager.Strings" title="Y.FormManager.Strings">Y.FormManager.Strings</a></li>
                         </ul>
                     </div>
 
@@ -2074,11 +1975,11 @@ appearance of each status type:  .formmgr-has{status}</p>
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2010 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">
-    var ALL_YUI_PROPS = [{"url": "FormManager.html#method_addErrorMessage", "access": "", "host": "FormManager", "type": "method", "name": "addErrorMessage"}, {"url": "FormManager.html#method_clearForm", "access": "", "host": "FormManager", "type": "method", "name": "clearForm"}, {"url": "FormManager.html#method_clearMessages", "access": "", "host": "FormManager", "type": "method", "name": "clearMessages"}, {"url": "FormManager.html#method_disableForm", "access": "", "host": "FormManager", "type": "method", "name": "disableForm"}, {"url": "FormManager.html#method_displayFormMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayFormMessage"}, {"url": "FormManager.html#method_displayMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayMessage"}, {"url": "FormManager.html#method_enableForm", "access": "", "host": "FormManager", "type": "method", "name": "enableForm"}, {"url": "FormManager.html#method_getForm", "access": "", "host": "FormManager", "type": "method", "name": "getForm"}, {"url": "FormManager.html#method_getRowStatus", "access": "", "host": "FormManager", "type": "method", "name": "getRowStatus"}, {"url": "FormManager.html#method_hasErrors", "access": "", "host": "FormManager", "type": "method", "name": "hasErrors"}, {"url": "FormManager.html#method_hasFileInputs", "access": "", "host": "FormManager", "type": "method", "name": "hasFileInputs"}, {"url": "FormManager.html#method_hasMessages", "access": "", "host": "FormManager", "type": "method", "name": "hasMessages"}, {"url": "FormManager.html#method_initFocus", "access": "", "host": "FormManager", "type": "method", "name": "initFocus"}, {"url": "FormManager.html#method_isChanged", "access": "", "host": "FormManager", "type": "method", "name": "isChanged"}, {"url": "FormManager.html#method_isFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "isFormEnabled"}, {"url": "FormManager.html#method_notifyErrors", "access": "", "host": "FormManager", "type": "method", "name": "notifyErrors"}, {"url": "FormManager.html#method_populateForm", "access": "", "host": "FormManager", "type": "method", "name": "populateForm"}, {"url": "FormManager.html#method_postPopulateForm", "access": "", "host": "FormManager", "type": "method", "name": "postPopulateForm"}, {"url": "FormManager.html#method_postPrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "postPrepareForm"}, {"url": "FormManager.html#method_postValidateForm", "access": "", "host": "FormManager", "type": "method", "name": "postValidateForm"}, {"url": "FormManager.html#method_prepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prepareForm"}, {"url": "FormManager.html#method_prePrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prePrepareForm"}, {"url": "FormManager.html#method_registerButton", "access": "", "host": "FormManager", "type": "method", "name": "registerButton"}, {"url": "FormManager.html#method_saveCurrentValuesAsDefault", "access": "", "host": "FormManager", "type": "method", "name": "saveCurrentValuesAsDefault"}, {"url": "FormManager.html#method_setDefaultValue", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValue"}, {"url": "FormManager.html#method_setDefaultValues", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValues"}, {"url": "FormManager.html#method_setErrorMessages", "access": "", "host": "FormManager", "type": "method", "name": "setErrorMessages"}, {"url": "FormManager.html#method_setFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "setFormEnabled"}, {"url": "FormManager.html#method_setFunction", "access": "", "host": "FormManager", "type": "method", "name": "setFunction"}, {"url": "FormManager.html#method_setRegex", "access": "", "host": "FormManager", "type": "method", "name": "setRegex"}, {"url": "FormManager.html#method_validateForm", "access": "", "host": "FormManager", "type": "method", "name": "validateForm"}, {"url": "FormManager.html#method_Y.FormManager.cleanValues", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.cleanValues"}, {"url": "FormManager.html#config_Y.FormManager.decimal_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.decimal_value_re"}, {"url": "FormManager.html#method_Y.FormManager.getElementStatus", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getElementStatus"}, {"url": "FormManager.html#method_Y.FormManager.getStatusPrecedence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getStatusPrecedence"}, {"url": "FormManager.html#config_Y.FormManager.integer_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.integer_value_re"}, {"url": "FormManager.html#property_Y.FormManager.row_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.row_status_prefix", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_status_prefix"}, {"url": "FormManager.html#property_Y.FormManager.status_failure_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_failure_class"}, {"url": "FormManager.html#property_Y.FormManager.status_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.status_none_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_none_class"}, {"url": "FormManager.html#config_Y.FormManager.status_order", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.status_order"}, {"url": "FormManager.html#property_Y.FormManager.status_success_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_success_class"}, {"url": "FormManager.html#method_Y.FormManager.statusTakesPrecendence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.statusTakesPrecendence"}, {"url": "FormManager.html#config_Y.FormManager.Strings", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.Strings"}, {"url": "FormManager.html#method_Y.FormManager.validateFromCSSData", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.validateFromCSSData"}];
+    var ALL_YUI_PROPS = [{"url": "FormManager.html#method_addErrorMessage", "access": "", "host": "FormManager", "type": "method", "name": "addErrorMessage"}, {"url": "FormManager.html#method_clearForm", "access": "", "host": "FormManager", "type": "method", "name": "clearForm"}, {"url": "FormManager.html#method_clearMessages", "access": "", "host": "FormManager", "type": "method", "name": "clearMessages"}, {"url": "FormManager.html#method_disableForm", "access": "", "host": "FormManager", "type": "method", "name": "disableForm"}, {"url": "FormManager.html#method_displayFormMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayFormMessage"}, {"url": "FormManager.html#method_displayMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayMessage"}, {"url": "FormManager.html#method_enableForm", "access": "", "host": "FormManager", "type": "method", "name": "enableForm"}, {"url": "FormManager.html#method_getForm", "access": "", "host": "FormManager", "type": "method", "name": "getForm"}, {"url": "FormManager.html#method_getRowStatus", "access": "", "host": "FormManager", "type": "method", "name": "getRowStatus"}, {"url": "FormManager.html#method_hasErrors", "access": "", "host": "FormManager", "type": "method", "name": "hasErrors"}, {"url": "FormManager.html#method_hasFileInputs", "access": "", "host": "FormManager", "type": "method", "name": "hasFileInputs"}, {"url": "FormManager.html#method_hasMessages", "access": "", "host": "FormManager", "type": "method", "name": "hasMessages"}, {"url": "FormManager.html#method_initFocus", "access": "", "host": "FormManager", "type": "method", "name": "initFocus"}, {"url": "FormManager.html#method_isChanged", "access": "", "host": "FormManager", "type": "method", "name": "isChanged"}, {"url": "FormManager.html#method_isFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "isFormEnabled"}, {"url": "FormManager.html#method_notifyErrors", "access": "", "host": "FormManager", "type": "method", "name": "notifyErrors"}, {"url": "FormManager.html#method_populateForm", "access": "", "host": "FormManager", "type": "method", "name": "populateForm"}, {"url": "FormManager.html#method_postPopulateForm", "access": "", "host": "FormManager", "type": "method", "name": "postPopulateForm"}, {"url": "FormManager.html#method_postPrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "postPrepareForm"}, {"url": "FormManager.html#method_postValidateForm", "access": "", "host": "FormManager", "type": "method", "name": "postValidateForm"}, {"url": "FormManager.html#method_prepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prepareForm"}, {"url": "FormManager.html#method_prePrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prePrepareForm"}, {"url": "FormManager.html#method_registerButton", "access": "", "host": "FormManager", "type": "method", "name": "registerButton"}, {"url": "FormManager.html#method_saveCurrentValuesAsDefault", "access": "", "host": "FormManager", "type": "method", "name": "saveCurrentValuesAsDefault"}, {"url": "FormManager.html#method_setDefaultValue", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValue"}, {"url": "FormManager.html#method_setDefaultValues", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValues"}, {"url": "FormManager.html#method_setErrorMessages", "access": "", "host": "FormManager", "type": "method", "name": "setErrorMessages"}, {"url": "FormManager.html#method_setFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "setFormEnabled"}, {"url": "FormManager.html#method_setFunction", "access": "", "host": "FormManager", "type": "method", "name": "setFunction"}, {"url": "FormManager.html#method_setRegex", "access": "", "host": "FormManager", "type": "method", "name": "setRegex"}, {"url": "FormManager.html#method_validateForm", "access": "", "host": "FormManager", "type": "method", "name": "validateForm"}, {"url": "FormManager.html#method_Y.FormManager.cleanValues", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.cleanValues"}, {"url": "FormManager.html#property_Y.FormManager.field_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.field_marker_class"}, {"url": "FormManager.html#method_Y.FormManager.getElementStatus", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getElementStatus"}, {"url": "FormManager.html#method_Y.FormManager.getStatusPrecedence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getStatusPrecedence"}, {"url": "FormManager.html#property_Y.FormManager.row_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.row_status_prefix", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_status_prefix"}, {"url": "FormManager.html#property_Y.FormManager.status_failure_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_failure_class"}, {"url": "FormManager.html#property_Y.FormManager.status_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.status_none_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_none_class"}, {"url": "FormManager.html#config_Y.FormManager.status_order", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.status_order"}, {"url": "FormManager.html#property_Y.FormManager.status_success_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_success_class"}, {"url": "FormManager.html#method_Y.FormManager.statusTakesPrecendence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.statusTakesPrecendence"}];
     YAHOO.yuidoc.init();
 </script>
 </body>
