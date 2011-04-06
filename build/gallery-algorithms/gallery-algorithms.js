@@ -80,13 +80,13 @@ Y.Array.compareForFind = function(f)
 /*
 quick sort history:
 
-  Copyright (c) 2006 John Lindal
-  Copyright (c) 2003 Scandinavian Digital Systems AB
+	Copyright (c) 2006 John Lindal
+	Copyright (c) 2003 Scandinavian Digital Systems AB
 
-  Adapted from http://www.digsys.se
+	Adapted from http://www.digsys.se
 
-  Freeware: The source code and its methods and algorithms may be
-            used as desired without restrictions.
+	Freeware: The source code and its methods and algorithms may be
+			  used as desired without restrictions.
 */
 
 function qsort1(list,i1,i2,compare)
