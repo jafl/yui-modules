@@ -1,0 +1,883 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-quickedit  Y.Plugin.DataTableQuickEdit   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-quickedit&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a>
+                 &gt; Y.Plugin.DataTableQuickEdit 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        
+                        
+                            Class <b property="yui:name">Y.Plugin.DataTableQuickEdit</b>
+                        <span class="extends">
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        <p>The QuickEdit plugin provides a new mode for DataTable where all
+values in the table can be edited simultaneously, controlled by the
+column configuration.  Each editable cell contains an input field.  If
+the user decides to save the changes, then you can extract the changed
+values by calling <code><i>dt</i>.qe.getChanges()</code>.</p>
+<p>For a column to be editable in QuickEdit mode, the column
+configuration must include <code>quickEdit</code>.  The contents of
+this object define the column's behavior in QuickEdit mode.</p>
+<p>To move up or down within a column while in QuickEdit mode, hold down
+the Ctrl key and press the up or down arrow.</p>
+<p>If a column should not be editable, but needs to be formatted
+differently in QuickEdit mode, then you must define qeFormatter in
+the column configuration. This is simply a normal cell formatter
+function that will be used in QuickEdit mode.  The static functions
+<code>readonly*Formatter</code> provide examples.</p>
+<p>The following configuration can be provided as part of
+quickEdit:</p>
+<dl>
+<dt>changed</dt><dd>Optional.  The function to call with the old and new
+value.  Should return true if the values are different.</dd>
+<dt>copyDown</dt><dd>If true, the top cell in the column will have a
+button to copy the value down to the rest of the rows.</dd>
+<dt>formatter</dt><dd>The cell formatter which will render an
+appropriate form field: &lt;input type="text"&gt;, &lt;textarea&gt;,
+or &lt;select&gt;.</dd>
+<dt>validation</dt><dd>Validation configuration for every field in
+the column.</dd>
+</dl>
+<p>The following configuration can be provided as part of
+quickEdit.validation:</p>
+<dl>
+<dt>css</dt><dd>CSS classes encoding basic validation rules:
+<dl>
+<dt><code>yiv-required</code></dt>
+<dd>Value must not be empty.</dd>
+<dt><code>yiv-length:[x,y]</code></dt>
+<dd>String must be at least x characters and at most y characters.
+At least one of x and y must be specified.</dd>
+<dt><code>yiv-integer:[x,y]</code></dt>
+<dd>The integer value must be at least x and at most y.
+x and y are both optional.</dd>
+<dt><code>yiv-decimal:[x,y]</code></dt>
+<dd>The decimal value must be at least x and at most y.  Exponents are
+not allowed.  x and y are both optional.</dd>
+</dl>
+</dd>
+<dt>fn</dt><dd>A function that will be called with the DataTable as its
+scope and the cell's form element as the argument. Return true if the
+value is valid. Otherwise, call this.qe.displayMessage(...) to display
+an error and return false.</dd>
+<dt>msg</dt><dd>A map of types to messages that will be displayed
+when a basic or regex validation rule fails. The valid types are:
+required, min_length, max_length, integer, decimal, and regex.
+There is no default for type regex, so you must specify a message if
+you configure a regex validation.</dd>
+<dt>regex</dt><dd>Regular expression that the value must satisfy in
+order to be considered valid.</dd>
+</dl>
+                    </div>
+
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">Y.Plugin.DataTableQuickEdit</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                config
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">config</span>
+                                                    &lt;<span property="yui:type">Object</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  Object literal to set component configuration.</span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
+                        <div class="section field details">
+                            <h3 id="properties">Properties</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:property" resource="#property_Y.Plugin.QuickEdit.error_display_markup">
+                                    <h4><a name="property_Y.Plugin.QuickEdit.error_display_markup" property="yui:name">Y.Plugin.QuickEdit.error_display_markup</a>
+                                        - <code><span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The markup for the container for the error message inside a cell.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_Y.Plugin.QuickEdit.error_text_class">
+                                    <h4><a name="property_Y.Plugin.QuickEdit.error_text_class" property="yui:name">Y.Plugin.QuickEdit.error_text_class</a>
+                                        - <code><span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The CSS class that marks the container for the error message inside a cell.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="protected" rel="yui:method" resource="#method__getColumnKey">
+                                    <h4>
+                                        <a name="method__getColumnKey">_getColumnKey</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">_getColumnKey</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Return the column key for the specified field.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  form field</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__getElementStatus">
+                                    <h4>
+                                        <a name="method__getElementStatus">_getElementStatus</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">_getElementStatus</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                                        , 
+                                                         r
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Return the status of the field.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  form field</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">r</span>
+                                                        &lt;<span property="yui:type">RegExp</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  regex to match against className</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_cancel">
+                                    <h4>
+                                        <a name="method_cancel">cancel</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">cancel</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Stop QuickEdit mode.  THIS DISCARDS ALL DATA!  If you want to save
+the data, call getChanges() BEFORE calling this function.  If the
+table has paginators, you must show them.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_clearMessages">
+                                    <h4>
+                                        <a name="method_clearMessages">clearMessages</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">clearMessages</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Clear all validation messages in QuickEdit mode.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_displayMessage">
+                                    <h4>
+                                        <a name="method_displayMessage">displayMessage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">displayMessage</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                                        , 
+                                                         msg
+                                                    
+                                                
+                                                        , 
+                                                         type
+                                                    
+                                                
+                                                        , 
+                                                         scroll
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Display a message for a QuickEdit field.  If an existing message with
+a higher precedence is already visible, it will not be replaced.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Element</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  form field</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">msg</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  message to display</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">type</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  message type: error, warn, success, info</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">scroll</span>
+                                                        &lt;<span property="yui:type">boolean</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  If false, does not scroll, even if this is the first message to display.</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getChanges">
+                                    <h4>
+                                        <a name="method_getChanges">getChanges</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        mixed
+                                            <strong property="yui:name">getChanges</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Return the changed values.  For each row, an object is created with
+only the changed values.  The object keys are the column keys.  If
+you need values from particular columns to be included always, even
+if the value did not change, include the key "changesAlwaysInclude"
+in the plugin configuration and pass an array of column keys.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            mixed
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">array of objects if all validations pass, false otherwise</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_start">
+                                    <h4>
+                                        <a name="method_start">start</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">start</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Switch to QuickEdit mode.  Columns that have quickEdit defined will
+be editable.  If the table has paginators, you must hide them.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_validate">
+                                    <h4>
+                                        <a name="method_validate">validate</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">validate</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Validate the QuickEdit data.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">true if all validation checks pass</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.copyDownFormatter">
+                                    <h4>
+                                        <a name="method_Y.Plugin.QuickEdit.copyDownFormatter">Y.Plugin.QuickEdit.copyDownFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">Y.Plugin.QuickEdit.copyDownFormatter</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Called with exactly the same arguments as a normal cell
+formatter, this function inserts a "Copy down" button if the
+cell is in the first row of the DataTable.  Call this at the end
+of your QuickEdit formatter.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.readonlyEmailFormatter">
+                                    <h4>
+                                        <a name="method_Y.Plugin.QuickEdit.readonlyEmailFormatter">Y.Plugin.QuickEdit.readonlyEmailFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">Y.Plugin.QuickEdit.readonlyEmailFormatter</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Called with exactly the same arguments as any other cell
+formatter, this function displays an email address without the
+anchor tag.  Use this as the column's qeFormatter if the column
+should not be editable in QuickEdit mode.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.readonlyLinkFormatter">
+                                    <h4>
+                                        <a name="method_Y.Plugin.QuickEdit.readonlyLinkFormatter">Y.Plugin.QuickEdit.readonlyLinkFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">Y.Plugin.QuickEdit.readonlyLinkFormatter</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Called with exactly the same arguments as any other cell
+formatter, this function displays a link without the anchor tag.
+Use this as the column's qeFormatter if the column should not be
+editable in QuickEdit mode.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.textareaFormatter">
+                                    <h4>
+                                        <a name="method_Y.Plugin.QuickEdit.textareaFormatter">Y.Plugin.QuickEdit.textareaFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">Y.Plugin.QuickEdit.textareaFormatter</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Called with exactly the same arguments as any other cell
+formatter, this function displays a textarea field.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.textFormatter">
+                                    <h4>
+                                        <a name="method_Y.Plugin.QuickEdit.textFormatter">Y.Plugin.QuickEdit.textFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">Y.Plugin.QuickEdit.textFormatter</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Called with exactly the same arguments as any other cell
+formatter, this function displays an input field.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+                        <div class="section method details">
+                            <h3 id="events">Events</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:event" resource="#event_changesAlwaysIncludeChange">
+                                    <h4>
+                                        <a name="event_changesAlwaysIncludeChange">changesAlwaysIncludeChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">changesAlwaysIncludeChange</strong>
+
+                                            (
+                                                
+                                                        
+                                                         event
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the value for the configuration attribute 'changesAlwaysInclude' is changed. You can listen for the event using the <a href="Attribute.html#method_on">on</a> method if you wish to be notified before the attribute's value has changed, or using the <a href="Event.Target.html#method_after">after</a> method if you wish to be notified after the attribute's value has changed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">event</span>
+                                                                &lt;<span property="yui:type">Event.Facade</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">An Event Facade object with      the following attribute specific properties added:	<dl>		<dt>prevVal</dt>		<dd>The value of the attribute, prior to it being set</dd>		<dt>newVal</dt>		<dd>The value the attribute is to be set to</dd>		<dt>attrName</dt>		<dd>The name of the attribute being set</dd>		<dt>subAttrName</dt>		<dd>If setting a property within the attribute's value,           the name of the sub-attribute property being set</dd>	</dl></span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+                        <div class="section field details">
+                            <h3 id="configattributes">Configuration Attributes</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:attribute" resource="#config_changesAlwaysInclude">
+                                    <h4><a name="config_changesAlwaysInclude">changesAlwaysInclude</a>
+                                        <code>- <span property="yui:type">Array</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Record keys to always include in result from getChanges().
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_YAHOO.widget.QuickEditDataTable.status_order">
+                                    <h4><a name="config_YAHOO.widget.QuickEditDataTable.status_order">YAHOO.widget.QuickEditDataTable.status_order</a>
+                                        <code>- static <span property="yui:type">{Array}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            <p>Names of supported status values, highest precedence first.  Default:
+<code>[ 'error', 'warn', 'success', 'info' ]</code></p>
+<p>This is static because it links to CSS rules that define the
+appearance of each status type:  .formmgr-has{status}</p>
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+
+                            </div>
+                        </div>
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Column.html" title="Column">Column</a></li>
+                                <li class="selected"><a href="Y.Plugin.DataTableQuickEdit.html" title="Y.Plugin.DataTableQuickEdit">Y.Plugin.DataTableQuickEdit</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="Column.js.html" title="Column.js">Column.js</a></li>
+                                <li class=""><a href="QuickEdit.js.html" title="QuickEdit.js">QuickEdit.js</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="propertyList" class="module">
+                        <h4>Properties</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#property_Y.Plugin.QuickEdit.error_display_markup" title="Y.Plugin.QuickEdit.error_display_markup">Y.Plugin.QuickEdit.error_display_markup</a></li>
+                                <li class=""><a href="#property_Y.Plugin.QuickEdit.error_text_class" title="Y.Plugin.QuickEdit.error_text_class">Y.Plugin.QuickEdit.error_text_class</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class="protected"><a href="#method__getColumnKey" title="_getColumnKey">_getColumnKey</a></li>
+                                <li class="protected"><a href="#method__getElementStatus" title="_getElementStatus">_getElementStatus</a></li>
+                                <li class=""><a href="#method_cancel" title="cancel">cancel</a></li>
+                                <li class=""><a href="#method_clearMessages" title="clearMessages">clearMessages</a></li>
+                                <li class=""><a href="#method_displayMessage" title="displayMessage">displayMessage</a></li>
+                                <li class=""><a href="#method_getChanges" title="getChanges">getChanges</a></li>
+                                <li class=""><a href="#method_start" title="start">start</a></li>
+                                <li class=""><a href="#method_validate" title="validate">validate</a></li>
+                                <li class=""><a href="#method_Y.Plugin.QuickEdit.copyDownFormatter" title="Y.Plugin.QuickEdit.copyDownFormatter">Y.Plugin.QuickEdit.copyDownFormatter</a></li>
+                                <li class=""><a href="#method_Y.Plugin.QuickEdit.readonlyEmailFormatter" title="Y.Plugin.QuickEdit.readonlyEmailFormatter">Y.Plugin.QuickEdit.readonlyEmailFormatter</a></li>
+                                <li class=""><a href="#method_Y.Plugin.QuickEdit.readonlyLinkFormatter" title="Y.Plugin.QuickEdit.readonlyLinkFormatter">Y.Plugin.QuickEdit.readonlyLinkFormatter</a></li>
+                                <li class=""><a href="#method_Y.Plugin.QuickEdit.textareaFormatter" title="Y.Plugin.QuickEdit.textareaFormatter">Y.Plugin.QuickEdit.textareaFormatter</a></li>
+                                <li class=""><a href="#method_Y.Plugin.QuickEdit.textFormatter" title="Y.Plugin.QuickEdit.textFormatter">Y.Plugin.QuickEdit.textFormatter</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="eventsList" class="module">
+                        <h4>Events</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#event_changesAlwaysIncludeChange" title="changesAlwaysIncludeChange">changesAlwaysIncludeChange</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="configList" class="module">
+                        <h4>Configuration Attributes</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#config_changesAlwaysInclude" title="changesAlwaysInclude">changesAlwaysInclude</a></li>
+                                <li class=""><a href="#config_YAHOO.widget.QuickEditDataTable.status_order" title="YAHOO.widget.QuickEditDataTable.status_order">YAHOO.widget.QuickEditDataTable.status_order</a></li>
+                        </ul>
+                    </div>
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    var ALL_YUI_PROPS = [{"url": "Y.Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Y.Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_YAHOO.widget.QuickEditDataTable.status_order", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "YAHOO.widget.QuickEditDataTable.status_order"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.copyDownFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.copyDownFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyEmailFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyEmailFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyLinkFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyLinkFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textareaFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textareaFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textFormatter"}];
+    YAHOO.yuidoc.init();
+</script>
+</body>
+</html>
