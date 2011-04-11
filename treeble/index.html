@@ -8,12 +8,13 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssbase/base-min.css" />
-<!--
+
 	<script src="gallery-treeble-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.3.0/build/widget/assets/skins/sam/widget.css&3.3.0/build/datatable/assets/skins/sam/datatable.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-treeble.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
--->
+
 	<style type="text/css">
 	body
 	{
@@ -126,7 +127,7 @@ YUI({
 							]}
 					]}
 			]},
-		{title:"Science Fiction",
+		{title:"Science Fiction", _open: true,
 			kiddies:
 			[
 				{year:"1928-1982", title:"Philip K. Dick",
@@ -134,7 +135,7 @@ YUI({
 					[
 						{year:1966, quantity:5, title:"Do Androids Dream of Electric Sheep?"}
 					]},
-				{year:"1907-1988", title:"Robert A. Heinlein",
+				{year:"1907-1988", title:"Robert A. Heinlein", _open: true,
 					kiddies:
 					[
 						{year:1959, quantity:4, title:"Starship Troopers"},
@@ -191,7 +192,7 @@ YUI({
 	{
 		resultFields:
 		[
-			"quantity","year","title",
+			'quantity','year','title', '_open',
 			{key: 'kiddies', parser: 'treebledatasource'}
 		]
 	};
@@ -207,6 +208,7 @@ YUI({
 		generateRequest:        function() { },
 		schemaPluginConfig:     schema_plugin_config,
 		childNodesKey:          'kiddies',
+		nodeOpenKey:            '_open',
 		totalRecordsReturnExpr: '.meta.totalRecords'
 	};
 

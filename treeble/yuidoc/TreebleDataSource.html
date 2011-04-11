@@ -347,6 +347,11 @@ two arguments: state (sort,dir,startIndex,resultCount) and path
 <dd>(semi-optional) The name of the key inside a node which contains
 the data used to construct the DataSource for retrieving the children.
 This config is only required if you provide a custom parser.</dd>
+<dt>nodeOpenKey</dt>
+<dd>(optional) The name of the key inside a node which contains
+the initial open state of the node.  If it is true, the node will
+automatically be opened the first time it is shown.  (After that,
+it will remember the state set by the user.)</dd>
 <dt>startIndexExpr</dt>
 <dd>(optional) OGNL expression telling how to extract the startIndex
 from the received data, e.g., <code>.meta.startIndex</code>.
