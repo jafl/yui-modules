@@ -40,6 +40,9 @@ YUI({
 
 			var node = Y.one('#b3');
 			Y.Assert.areSame(Y.one('#root'), node.ancestor('.root'));
+
+			var node = Y.one('#b3');
+			Y.Assert.areSame(Y.one('#root'), node.getAncestorByClassName('ro+t'));
 		},
 
 		testAncestorByTagName: function()
@@ -74,6 +77,11 @@ YUI({
 			Y.Assert.areSame(Y.one('#b4'), list.item(3));
 
 			list = node.all('.a-child');
+			Y.Assert.areSame(2, list.size());
+			Y.Assert.areSame(Y.one('#a1'), list.item(0));
+			Y.Assert.areSame(Y.one('#a2'), list.item(1));
+
+			list = node.getElementsByClassName('a-.*');
 			Y.Assert.areSame(2, list.size());
 			Y.Assert.areSame(Y.one('#a1'), list.item(0));
 			Y.Assert.areSame(Y.one('#a2'), list.item(1));
