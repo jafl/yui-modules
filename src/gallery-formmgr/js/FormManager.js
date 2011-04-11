@@ -359,39 +359,6 @@ function getId(
 	}
 }
 
-function getAncestorByClassName(
-	/* element */	e,
-	/* string */	class_name)
-{
-	e = Y.Node.getDOMNode(Y.one(e));
-	while (e && !Y.DOM.hasClass(e, class_name))
-	{
-		e = e.parentNode;
-		if (!e || !e.tagName)
-		{
-			return null;	// might be hidden, which is outside <fieldset>
-		}
-	}
-	return Y.one(e);
-}
-
-function getAncestorByTagName(
-	/* element */	e,
-	/* string */	tag_name)
-{
-	e        = Y.Node.getDOMNode(Y.one(e));
-	tag_name = tag_name.toLowerCase();
-	while (e && e.tagName.toLowerCase() != tag_name)
-	{
-		e = e.parentNode;
-		if (!e || !e.tagName)
-		{
-			return null;	// might be hidden, which is outside <fieldset>
-		}
-	}
-	return Y.one(e);
-}
-
 /**
  * Trim leading and trailing whitespace from the specified fields.
  * 
@@ -1040,7 +1007,7 @@ FormManager.prototype =
 	getRowStatus: function(
 		/* id/object */	e)
 	{
-		var p = getAncestorByClassName(e, FormManager.row_marker_class);
+		var p = Y.one(e).getAncestorByClassName(FormManager.row_marker_class, true);
 		return FormManager.getElementStatus(p);
 	},
 
@@ -1069,7 +1036,7 @@ FormManager.prototype =
 				continue;
 			}
 
-			var p = getAncestorByClassName(e, FormManager.row_marker_class);
+			var p = Y.one(e).getAncestorByClassName(FormManager.row_marker_class);
 			if (p && p.hasClass(rowStatusPattern()))
 			{
 				p.all('.'+FormManager.status_marker_class).set('innerHTML', '');
@@ -1105,7 +1072,7 @@ FormManager.prototype =
 		}
 
 		e     = Y.one(e);
-		var p = getAncestorByClassName(e, FormManager.row_marker_class);
+		var p = e.getAncestorByClassName(FormManager.row_marker_class);
 		if (p && FormManager.statusTakesPrecendence(FormManager.getElementStatus(p), type))
 		{
 			var f = p.all('.'+FormManager.field_marker_class);
@@ -1122,13 +1089,13 @@ FormManager.prototype =
 			var new_class = FormManager.row_status_prefix + type;
 			p.replaceClass(rowStatusPattern(), new_class);
 
-			f = getAncestorByClassName(e, FormManager.field_marker_class);
+			f = e.getAncestorByClassName(FormManager.field_marker_class, true);
 			if (f)
 			{
 				f.replaceClass(rowStatusPattern(), new_class);
 			}
 
-			var fieldset = getAncestorByTagName(e, 'fieldset');
+			var fieldset = e.getAncestorByTagName('fieldset');
 			if (fieldset && FormManager.statusTakesPrecendence(FormManager.getElementStatus(fieldset), type))
 			{
 				fieldset.removeClass(rowStatusPattern());

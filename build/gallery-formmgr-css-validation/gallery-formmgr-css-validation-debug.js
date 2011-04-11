@@ -120,9 +120,9 @@ function hasLimit(
  * @return {Object} Status:
  *		<dl>
  *		<dt>keepGoing</dt>
- *		<dd>{Boolean} <code>true</code> if further validation should be done.</dd>
+ *		<dd>(Boolean) <code>true</code> if further validation should be done.</dd>
  *		<dt>error</dt>
- *		<dd>{String} The error message, if any.</dd>
+ *		<dd>(String) The error message, if any.</dd>
  *		</dl>
  */
 Y.FormManager.validateFromCSSData = function(
@@ -130,6 +130,11 @@ Y.FormManager.validateFromCSSData = function(
 	/* map */		msg_list)
 {
 	var Strings = Y.FormManager.Strings;
+
+	if (e instanceof Y.Node)
+	{
+		e = Y.Node.getDOMNode(e);
+	}
 
 	var required = Y.DOM.hasClass(e, required_class);
 	if (required && e.value === '')

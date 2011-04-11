@@ -129,6 +129,11 @@ Y.FormManager.validateFromCSSData = function(
 {
 	var Strings = Y.FormManager.Strings;
 
+	if (e instanceof Y.Node)
+	{
+		e = Y.Node.getDOMNode(e);
+	}
+
 	var required = Y.DOM.hasClass(e, required_class);
 	if (required && e.value === '')
 	{
