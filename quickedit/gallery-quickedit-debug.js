@@ -228,7 +228,7 @@ QuickEdit.error_text_class = 'quickedit-message-text';
 /**
  * The markup for the container for the error message inside a cell.
  *
- * @property Y.Plugin.QuickEdit.error_text_class
+ * @property Y.Plugin.QuickEdit.error_display_markup
  * @type {String}
  */
 QuickEdit.error_display_markup = '<div class="quickedit-message-text"></div>';
@@ -255,7 +255,7 @@ QuickEdit.textFormatter = function(o)
 		yiv: qe.validation ? (qe.validation.css || '') : ''
 	}));
 
-	o.td.get('firstChild').value = (o.value || '');
+	o.td.get('firstChild').value = o.value;
 
 	QuickEdit.copyDownFormatter.apply(this, arguments);
 */
@@ -269,7 +269,7 @@ QuickEdit.textFormatter = function(o)
 	{
 		key: o.column.get('key'),
 		yiv: qe.validation ? (qe.validation.css || '') : '',
-		value: o.value ? o.value.toString().replace('"', '') : ''
+		value: o.value || o.value === 0 ? o.value.toString().replace('"', '') : ''
 	});
 };
 
@@ -295,7 +295,7 @@ QuickEdit.textareaFormatter = function(o)
 		yiv: qe.validation ? (qe.validation.css || '') : ''
 	}));
 
-	o.td.get('firstChild').value = (o.value || '');
+	o.td.get('firstChild').value = o.value;
 
 	QuickEdit.copyDownFormatter.apply(this, arguments);
 */
@@ -309,7 +309,7 @@ QuickEdit.textareaFormatter = function(o)
 	{
 		key: o.column.get('key'),
 		yiv: qe.validation ? (qe.validation.css || '') : '',
-		value: o.value ? o.value.toString().replace('"', '') : ''
+		value: o.value || o.value === 0 ? o.value.toString().replace('"', '') : ''
 	});
 };
 
@@ -324,7 +324,7 @@ QuickEdit.textareaFormatter = function(o)
  */
 QuickEdit.readonlyEmailFormatter = function(o)
 {
-	return (o.value || '');
+	return (o.value || '');		// don't need to check for zero
 };
 
 /**
@@ -338,7 +338,7 @@ QuickEdit.readonlyEmailFormatter = function(o)
  */
 QuickEdit.readonlyLinkFormatter = function(o)
 {
-	return (o.value || '');
+	return (o.value || '');		// don't need to check for zero
 };
 
 function getSiblingTdEl(
@@ -803,6 +803,7 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 	 * 
 	 * @param e {Node} form field
 	 * @return {String}
+	 * @protected
 	 */
 	_getColumnKey: function(
 		/* Node */ e)

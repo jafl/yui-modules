@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Algorithms Unit Tests</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
+	<script src="gallery-algorithms-debug.js"></script>
+</head>
+
+<body class="yui3-skin-sam">
+
+<script type="text/javascript">
+YUI({
+//	filter: 'debug',
+	logInclude: { TestRunner: true }
+}).use('gallery-algorithms', 'test', 'console', 'console-filters', 'dd-plugin', function(Y)
+{
+	var logToLog10 = 1/Math.log(10);
+
+	Y.Assert.arraysAreEqual = function(a1,a2)
+	{
+		Y.Assert.isArray(a1);
+		Y.Assert.isArray(a2);
+		Y.Assert.areEqual(a1.length, a2.length, 'Arrays should be the same length.');
+
+		for (var i=0; i<a1.length; i++)
+		{
+			Y.Assert.areEqual(a1[i], a2[i]);
+		}
+	};
+
+	Y.Assert.arraysAreSame = function(a1,a2)
+	{
+		Y.Assert.isArray(a1);
+		Y.Assert.isArray(a2);
+		Y.Assert.areEqual(a1.length, a2.length, 'Arrays should be the same length.');
+
+		for (var i=0; i<a1.length; i++)
+		{
+			Y.Assert.areSame(a1[i], a2[i]);
+		}
+	};
+
+	Y.Test.Runner.add(new Y.Test.Case(
+	{
+		name: 'Algorithms',
+
+		testSwap: function()
+		{
+			var list = [1,2,3];
+			Y.Array.swap(list, 0, 2)
+			Y.Assert.arraysAreEqual([3,2,1], list);
+		},
+
+		testCompareStringsCaseSensitive: function()
+		{
+			Y.Assert.areSame( 0, Y.Array.compareStringsCaseSensitive("ABC", "ABC"));
+			Y.Assert.areSame(-1, Y.Array.compareStringsCaseSensitive("ABC", "BCA"));
+			Y.Assert.areSame( 1, Y.Array.compareStringsCaseSensitive("BCA", "ABC"));
+
+			Y.Assert.areSame( 0, Y.Array.compareStringsCaseSensitive("abc", "abc"));
+			Y.Assert.areSame(-1, Y.Array.compareStringsCaseSensitive("ABC", "abc"));
+			Y.Assert.areSame( 1, Y.Array.compareStringsCaseSensitive("abc", "BCA"));
+		},
+
+		testCompareStringsCaseInsensitive: function()
+		{
+			Y.Assert.areSame( 0, Y.Array.compareStringsCaseInsensitive("ABC", "ABC"));
+			Y.Assert.areSame( 0, Y.Array.compareStringsCaseInsensitive("ABC", "abc"));
+			Y.Assert.areSame(-1, Y.Array.compareStringsCaseInsensitive("abc", "BCA"));
+			Y.Assert.areSame( 1, Y.Array.compareStringsCaseInsensitive("BCA", "abc"));
+		},
+
+		testQuickSort: function()
+		{
+			var list = ['a'];
+			Y.Array.quickSort(list)
+			Y.Assert.arraysAreEqual(['a'], list);
+
+			list = ['a','b'];
+			Y.Array.quickSort(list)
+			Y.Assert.arraysAreEqual(['a','b'], list);
+
+			list = ['b','a'];
+			Y.Array.quickSort(list)
+			Y.Assert.arraysAreEqual(['a','b'], list);
+
+			list = ['b','c','a'];
+			Y.Array.quickSort(list)
+			Y.Assert.arraysAreEqual(['a','b','c'], list);
+		},
+
+		testBinarySearch: function()
+		{
+			var list = ['a'];
+			Y.Assert.areSame(0, Y.Array.binarySearch(list, 'a'));
+			Y.Assert.areSame(-1, Y.Array.binarySearch(list, 'b'));
+
+			list = ['a','f','k'];
+			Y.Assert.areSame(0, Y.Array.binarySearch(list, 'a'));
+			Y.Assert.areSame(-1, Y.Array.binarySearch(list, 'b'));
+			Y.Assert.areSame(1, Y.Array.binarySearch(list, 'f'));
+			Y.Assert.areSame(2, Y.Array.binarySearch(list, 'k'));
+
+			list = ['a','c','e','f','h','k','m','o','q','s','t','u','x'];
+			Y.Assert.areSame(0, Y.Array.binarySearch(list, 'a'));
+			Y.Assert.areSame(-1, Y.Array.binarySearch(list, 'b'));
+			Y.Assert.areSame(3, Y.Array.binarySearch(list, 'f'));
+			Y.Assert.areSame(5, Y.Array.binarySearch(list, 'k'));
+			Y.Assert.areSame(12, Y.Array.binarySearch(list, 'x'));
+			Y.Assert.areSame(-1, Y.Array.binarySearch(list, 'z'));
+		}
+	}));
+
+	new Y.Console(
+	{
+		newestOnTop: false,
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
+	})
+	.render();
+
+	Y.Test.Runner.run();
+});
+</script>
+
+<h1><a href="http://yuilibrary.com/gallery/show/algorithms">YUI 3 Algorithms</a> Unit Tests</h1>
+
+<p><a href="yuidoc">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+</body>
+</html>
