@@ -62,14 +62,15 @@ checkbox changes state.
 
                             <p>This module contains the following classes:</p>
                             <script>
-                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "At least one checkbox must be selected.  If the last one is turned off,\nthe active, adjacent one is turned on.  The exact algorithm is explained\nin \"Tog on Interface\".  The checkboxes are assumed to be ordered in the\norder they were added.", "guessedname": "AtLeastOneCheckboxGroup", "name": "AtLeastOneCheckboxGroup"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "At most one checkbox can be selected.  If one is turned on, the active\none is turned off.", "guessedname": "AtMostOneCheckboxGroup", "name": "AtMostOneCheckboxGroup"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Base class for enforcing constraints on groups of checkboxes.</p>\n<p>Derived classes must override <code>enforceConstraints()</code>.</p>", "guessedname": "CheckboxGroup", "name": "CheckboxGroup"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "All checkboxes can be selected and a select-all checkbox is available\nto check all. This check-all box is automatically changed if any other\ncheckbox changes state.", "guessedname": "SelectAllCheckboxGroup", "name": "SelectAllCheckboxGroup"}];
+                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "At least one checkbox must be selected.  If the last one is turned off,\nthe active, adjacent one is turned on.  The exact algorithm is explained\nin \"Tog on Interface\".  The checkboxes are assumed to be ordered in the\norder they were added.", "guessedname": "AtLeastOneCheckboxGroup", "name": "AtLeastOneCheckboxGroup"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "At most one checkbox can be selected.  If one is turned on, the active\none is turned off.", "guessedname": "AtMostOneCheckboxGroup", "name": "AtMostOneCheckboxGroup"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Base class for enforcing constraints on groups of checkboxes.</p>\n<p>Derived classes must override <code>enforceConstraints()</code>.</p>", "guessedname": "CheckboxGroup", "name": "CheckboxGroup"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "Enables the given list of nodes if any checkboxes are checked.", "guessedname": "EnableIfAnyCheckboxGroup", "name": "EnableIfAnyCheckboxGroup"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "All checkboxes can be selected and a select-all checkbox is available\nto check all. This check-all box is automatically changed if any other\ncheckbox changes state.", "guessedname": "SelectAllCheckboxGroup", "name": "SelectAllCheckboxGroup"}];
                             </script>
                             <div id="splash_classList">
                                 <ul>
                                     <li><a href="AtLeastOneCheckboxGroup.html" title="AtLeastOneCheckboxGroup" id="class_0">AtLeastOneCheckboxGroup</a></li>
                                     <li><a href="AtMostOneCheckboxGroup.html" title="AtMostOneCheckboxGroup" id="class_1">AtMostOneCheckboxGroup</a></li>
                                     <li><a href="CheckboxGroup.html" title="CheckboxGroup" id="class_2">CheckboxGroup</a></li>
-                                    <li><a href="SelectAllCheckboxGroup.html" title="SelectAllCheckboxGroup" id="class_3">SelectAllCheckboxGroup</a></li>
+                                    <li><a href="EnableIfAnyCheckboxGroup.html" title="EnableIfAnyCheckboxGroup" id="class_3">EnableIfAnyCheckboxGroup</a></li>
+                                    <li><a href="SelectAllCheckboxGroup.html" title="SelectAllCheckboxGroup" id="class_4">SelectAllCheckboxGroup</a></li>
                                 </ul>
                             </div>
                     </div>
@@ -96,6 +97,7 @@ checkbox changes state.
                                 <li class=""><a href="AtLeastOneCheckboxGroup.html" title="AtLeastOneCheckboxGroup">AtLeastOneCheckboxGroup</a></li>
                                 <li class=""><a href="AtMostOneCheckboxGroup.html" title="AtMostOneCheckboxGroup">AtMostOneCheckboxGroup</a></li>
                                 <li class=""><a href="CheckboxGroup.html" title="CheckboxGroup">CheckboxGroup</a></li>
+                                <li class=""><a href="EnableIfAnyCheckboxGroup.html" title="EnableIfAnyCheckboxGroup">EnableIfAnyCheckboxGroup</a></li>
                                 <li class=""><a href="SelectAllCheckboxGroup.html" title="SelectAllCheckboxGroup">SelectAllCheckboxGroup</a></li>
                         </ul>
                     </div>
@@ -106,6 +108,8 @@ checkbox changes state.
                                 <li class=""><a href="AtLeastOneCheckboxGroup.js.html" title="AtLeastOneCheckboxGroup.js">AtLeastOneCheckboxGroup.js</a></li>
                                 <li class=""><a href="AtMostOneCheckboxGroup.js.html" title="AtMostOneCheckboxGroup.js">AtMostOneCheckboxGroup.js</a></li>
                                 <li class=""><a href="CheckboxGroup.js.html" title="CheckboxGroup.js">CheckboxGroup.js</a></li>
+                                <li class=""><a href="EnableIfAnyCheckboxGroup.js.html" title="EnableIfAnyCheckboxGroup.js">EnableIfAnyCheckboxGroup.js</a></li>
+                                <li class=""><a href="NodeList-patch.js.html" title="NodeList-patch.js">NodeList-patch.js</a></li>
                                 <li class=""><a href="SelectAllCheckboxGroup.js.html" title="SelectAllCheckboxGroup.js">SelectAllCheckboxGroup.js</a></li>
                         </ul>
                     </div>
@@ -119,12 +123,12 @@ checkbox changes state.
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">
+
     var ALL_YUI_PROPS = [{"url": "CheckboxGroup.html#method_allChecked", "access": "", "host": "CheckboxGroup", "type": "method", "name": "allChecked"}, {"url": "CheckboxGroup.html#method_allDisabled", "access": "", "host": "CheckboxGroup", "type": "method", "name": "allDisabled"}, {"url": "CheckboxGroup.html#method_allUnchecked", "access": "", "host": "CheckboxGroup", "type": "method", "name": "allUnchecked"}, {"url": "CheckboxGroup.html#method_enforceConstraints", "access": "", "host": "CheckboxGroup", "type": "method", "name": "enforceConstraints"}, {"url": "CheckboxGroup.html#method_getCheckboxList", "access": "", "host": "CheckboxGroup", "type": "method", "name": "getCheckboxList"}, {"url": "CheckboxGroup.html#method_splice", "access": "", "host": "CheckboxGroup", "type": "method", "name": "splice"}];
-    YAHOO.yuidoc.init();
 </script>
 </body>
 </html>

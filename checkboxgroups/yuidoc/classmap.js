@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"AtLeastOneCheckboxGroup": "gallery-checkboxgroups", "AtMostOneCheckboxGroup": "gallery-checkboxgroups", "CheckboxGroup": "gallery-checkboxgroups", "SelectAllCheckboxGroup": "gallery-checkboxgroups"};
+YAHOO.env.classMap = {"AtLeastOneCheckboxGroup": "gallery-checkboxgroups", "AtMostOneCheckboxGroup": "gallery-checkboxgroups", "CheckboxGroup": "gallery-checkboxgroups", "EnableIfAnyCheckboxGroup": "gallery-checkboxgroups", "SelectAllCheckboxGroup": "gallery-checkboxgroups"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;

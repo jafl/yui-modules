@@ -244,12 +244,12 @@
 <span class="cm">	 * </span>
 <span class="cm">	 * @config resetLabel</span>
 <span class="cm">	 * @type {String}</span>
-<span class="cm">	 * @default &quot;Reset&quot;</span>
+<span class="cm">	 * @default &quot;Cancel&quot;</span>
 <span class="cm">	 * @writeonce</span>
 <span class="cm">	 */</span>
 	<span class="nx">resetLabel</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Reset&#39;</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Cancel&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
 	<span class="p">},</span>
@@ -264,7 +264,7 @@
 <span class="cm">	 */</span>
 	<span class="nx">tooManyParensError</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an extra closing parenthesis at &quot;{context}&quot;.&#39;</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an extra closing parenthesis at &quot;{context}...&quot;.&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
 	<span class="p">},</span>
 
@@ -277,7 +277,7 @@
 <span class="cm">	 */</span>
 	<span class="nx">unmatchedSingleQuoteError</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an unmatched single quote.&#39;</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an unmatched single quote at &quot;{context}...&quot;.&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
 	<span class="p">},</span>
 
@@ -290,7 +290,21 @@
 <span class="cm">	 */</span>
 	<span class="nx">unclosedParenError</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an unclosed parenthesis.&#39;</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an unclosed parenthesis at &quot;{context}...&quot;.&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * The error message when the user forgets to select a variable for</span>
+<span class="cm">	 * insertion.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config noVariableSelectedError</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &#39;Please choose a variable.&#39;</span>
+<span class="cm">	 */</span>
+	<span class="nx">noVariableSelectedError</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Please choose a variable.&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
 	<span class="p">}</span>
 <span class="p">};</span>
@@ -367,7 +381,7 @@
 	<span class="k">if</span> <span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">qb</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">qb_form</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="s1">&#39;Please choose a variable.&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">qb_form</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;noVariableSelectedError&#39;</span><span class="p">),</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
 		<span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
 		<span class="k">return</span><span class="p">;</span>
 	<span class="p">}</span>
@@ -438,6 +452,11 @@
 		<span class="nx">setValidation</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">.</span><span class="nx">formMgr</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;formMgrChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span><span class="p">.</span><span class="nx">setFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">),</span> <span class="kc">null</span><span class="p">);</span>
+			<span class="p">}</span>
+
 			<span class="nx">setValidation</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">);</span>
 		<span class="p">});</span>
 	<span class="p">},</span>
@@ -462,10 +481,10 @@
 
 		<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;paren&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">paren</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 
-		<span class="kd">var</span> <span class="nx">ops</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span> <span class="p">];</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">ops</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">op</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span> <span class="p">];</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">op</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">ops</span><span class="p">[</span><span class="nx">i</span><span class="p">])).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">handler</span><span class="p">(</span><span class="nx">ops</span><span class="p">[</span><span class="nx">i</span><span class="p">]),</span> <span class="k">this</span><span class="p">);</span>
+			<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">op</span><span class="p">[</span><span class="nx">i</span><span class="p">])).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">handler</span><span class="p">(</span><span class="nx">op</span><span class="p">[</span><span class="nx">i</span><span class="p">]),</span> <span class="k">this</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">clear</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
@@ -517,11 +536,17 @@
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">s</span>     <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">paren</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">pi</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 		<span class="kd">var</span> <span class="nx">quote</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">qi</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">s</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">quote</span> <span class="o">&amp;&amp;</span> <span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span><span class="p">)</span>
 			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">paren</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">pi</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+				<span class="p">}</span>
 				<span class="nx">paren</span><span class="o">++</span><span class="p">;</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">quote</span> <span class="o">&amp;&amp;</span> <span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">)</span>
@@ -539,18 +564,30 @@
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;\&#39;&#39;</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;\\&#39;</span><span class="p">))</span>
 			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">quote</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">qi</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+				<span class="p">}</span>
 				<span class="nx">quote</span> <span class="o">=</span> <span class="o">!</span> <span class="nx">quote</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="k">if</span> <span class="p">(</span><span class="nx">quote</span><span class="p">)</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">quote</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">paren</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">qi</span> <span class="o">&lt;</span> <span class="nx">pi</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;unmatchedSingleQuoteError&#39;</span><span class="p">),</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;unmatchedSingleQuoteError&#39;</span><span class="p">),</span>
+			<span class="p">{</span>
+				<span class="nx">context</span><span class="o">:</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">qi</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+			<span class="p">});</span>
+			<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
 			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">paren</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;unclosedParenError&#39;</span><span class="p">),</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;unclosedParenError&#39;</span><span class="p">),</span>
+			<span class="p">{</span>
+				<span class="nx">context</span><span class="o">:</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">pi</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+			<span class="p">});</span>
+			<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
 			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="p">}</span>
 
@@ -569,7 +606,7 @@
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span>
 			<span class="s1">&#39;&lt;div class=&quot;{td}&quot;&gt;&#39;</span> <span class="o">+</span>
-				<span class="s1">&#39;&lt;textarea id=&quot;{tid}&quot; name=&quot;{tn}&quot; class=&quot;{ta}&quot;&gt;&lt;/textarea&gt;&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;&lt;textarea id=&quot;{tid}&quot; name=&quot;{tn}&quot; class=&quot;formmgr-field {ta}&quot;&gt;&lt;/textarea&gt;&#39;</span> <span class="o">+</span>
 			<span class="s1">&#39;&lt;/div&gt;&#39;</span> <span class="o">+</span>
 			<span class="s1">&#39;&lt;div class=&quot;{fctl}&quot;&gt;&#39;</span> <span class="o">+</span>
 				<span class="s1">&#39;&lt;button class=&quot;{pc}&quot;&gt;{paren}&lt;/button&gt;&#39;</span> <span class="o">+</span>
@@ -667,12 +704,12 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2010 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">
-    var ALL_YUI_PROPS = [{"url": "ExpressionBuilder.html#config_andLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "andLabel"}, {"url": "ExpressionBuilder.html#method_clear", "access": "", "host": "ExpressionBuilder", "type": "method", "name": "clear"}, {"url": "ExpressionBuilder.html#config_clearLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "clearLabel"}, {"url": "ExpressionBuilder.html#config_combinatorMap", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "combinatorMap"}, {"url": "ExpressionBuilder.html#method__field", "access": "protected", "host": "ExpressionBuilder", "type": "method", "name": "_field"}, {"url": "ExpressionBuilder.html#config_fieldId", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "fieldId"}, {"url": "ExpressionBuilder.html#config_fieldName", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "fieldName"}, {"url": "ExpressionBuilder.html#config_formMgr", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "formMgr"}, {"url": "ExpressionBuilder.html#config_insertLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "insertLabel"}, {"url": "ExpressionBuilder.html#config_notLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "notLabel"}, {"url": "ExpressionBuilder.html#config_orLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "orLabel"}, {"url": "ExpressionBuilder.html#config_parenLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "parenLabel"}, {"url": "ExpressionBuilder.html#method__query", "access": "protected", "host": "ExpressionBuilder", "type": "method", "name": "_query"}, {"url": "ExpressionBuilder.html#config_queryBuilder", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "queryBuilder"}, {"url": "ExpressionBuilder.html#config_resetLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "resetLabel"}, {"url": "ExpressionBuilder.html#config_tooManyParensError", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "tooManyParensError"}, {"url": "ExpressionBuilder.html#config_unclosedParenError", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "unclosedParenError"}, {"url": "ExpressionBuilder.html#config_unmatchedSingleQuoteError", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "unmatchedSingleQuoteError"}, {"url": "ExpressionBuilder.html#method__validateExpression", "access": "protected", "host": "ExpressionBuilder", "type": "method", "name": "_validateExpression"}];
-    YAHOO.yuidoc.init();
+
+    var ALL_YUI_PROPS = [{"url": "ExpressionBuilder.html#config_andLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "andLabel"}, {"url": "ExpressionBuilder.html#method_clear", "access": "", "host": "ExpressionBuilder", "type": "method", "name": "clear"}, {"url": "ExpressionBuilder.html#config_clearLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "clearLabel"}, {"url": "ExpressionBuilder.html#config_combinatorMap", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "combinatorMap"}, {"url": "ExpressionBuilder.html#method__field", "access": "protected", "host": "ExpressionBuilder", "type": "method", "name": "_field"}, {"url": "ExpressionBuilder.html#config_fieldId", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "fieldId"}, {"url": "ExpressionBuilder.html#config_fieldName", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "fieldName"}, {"url": "ExpressionBuilder.html#config_formMgr", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "formMgr"}, {"url": "ExpressionBuilder.html#config_insertLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "insertLabel"}, {"url": "ExpressionBuilder.html#config_notLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "notLabel"}, {"url": "ExpressionBuilder.html#config_noVariableSelectedError", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "noVariableSelectedError"}, {"url": "ExpressionBuilder.html#config_orLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "orLabel"}, {"url": "ExpressionBuilder.html#config_parenLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "parenLabel"}, {"url": "ExpressionBuilder.html#method__query", "access": "protected", "host": "ExpressionBuilder", "type": "method", "name": "_query"}, {"url": "ExpressionBuilder.html#config_queryBuilder", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "queryBuilder"}, {"url": "ExpressionBuilder.html#config_resetLabel", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "resetLabel"}, {"url": "ExpressionBuilder.html#config_tooManyParensError", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "tooManyParensError"}, {"url": "ExpressionBuilder.html#config_unclosedParenError", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "unclosedParenError"}, {"url": "ExpressionBuilder.html#config_unmatchedSingleQuoteError", "access": "", "host": "ExpressionBuilder", "type": "config", "name": "unmatchedSingleQuoteError"}, {"url": "ExpressionBuilder.html#method__validateExpression", "access": "protected", "host": "ExpressionBuilder", "type": "method", "name": "_validateExpression"}];
 </script>
 </body>
 </html>

@@ -428,16 +428,18 @@
         <span class="p">}</span>
 
         <span class="c1">// reset timeout</span>
-        <span class="nx">_clearTimeout</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
-        <span class="nx">_startTimeout</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">timeout</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">_clearTimeout</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+            <span class="nx">_startTimeout</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
+        <span class="p">}</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">on</span> <span class="o">&amp;&amp;</span> <span class="nx">c</span><span class="p">.</span><span class="nx">on</span><span class="p">.</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">_tE</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">).</span><span class="nx">fire</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">};</span>
 
-	<span class="kd">var</span> <span class="nx">callback_arg</span> <span class="o">=</span> <span class="s1">&#39;callback=&#39;</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="s1">&#39;window.parent.YUI.Env.io_multi_response_callback[&#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span><span class="p">);</span>
-    <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">?</span> <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">+</span> <span class="s1">&#39;&amp;&#39;</span> <span class="o">+</span> <span class="nx">callback_arg</span> <span class="o">:</span> <span class="nx">callback_arg</span>
+    <span class="kd">var</span> <span class="nx">callback_arg</span> <span class="o">=</span> <span class="s1">&#39;callback=&#39;</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="s1">&#39;window.parent.YUI.Env.io_multi_response_callback[&#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span><span class="p">);</span>
+    <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">?</span> <span class="nx">c</span><span class="p">.</span><span class="nx">data</span> <span class="o">+</span> <span class="s1">&#39;&amp;&#39;</span> <span class="o">+</span> <span class="nx">callback_arg</span> <span class="o">:</span> <span class="nx">callback_arg</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">form</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">c</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">delete</span> <span class="nx">c</span><span class="p">.</span><span class="nx">form</span><span class="p">;</span>
@@ -513,8 +515,8 @@
 	</div>
 </div>
 <script type="text/javascript">
+
     var ALL_YUI_PROPS = [];
-    YAHOO.yuidoc.init();
 </script>
 </body>
 </html>

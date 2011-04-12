@@ -408,39 +408,6 @@
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span>
-	<span class="cm">/* element */</span>	<span class="nx">e</span><span class="p">,</span>
-	<span class="cm">/* string */</span>	<span class="nx">class_name</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="nx">e</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">));</span>
-	<span class="k">while</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">class_name</span><span class="p">))</span>
-	<span class="p">{</span>
-		<span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
-		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span> <span class="o">||</span> <span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>	<span class="c1">// might be hidden, which is outside &lt;fieldset&gt;</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kd">function</span> <span class="nx">getAncestorByTagName</span><span class="p">(</span>
-	<span class="cm">/* element */</span>	<span class="nx">e</span><span class="p">,</span>
-	<span class="cm">/* string */</span>	<span class="nx">tag_name</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="nx">e</span>        <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">));</span>
-	<span class="nx">tag_name</span> <span class="o">=</span> <span class="nx">tag_name</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
-	<span class="k">while</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">tag_name</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
-		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span> <span class="o">||</span> <span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>	<span class="c1">// might be hidden, which is outside &lt;fieldset&gt;</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-<span class="p">}</span>
-
 <span class="cm">/**</span>
 <span class="cm"> * Trim leading and trailing whitespace from the specified fields.</span>
 <span class="cm"> * </span>
@@ -1089,7 +1056,7 @@
 	<span class="nx">getRowStatus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* id/object */</span>	<span class="nx">e</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 		<span class="k">return</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">getElementStatus</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
 	<span class="p">},</span>
 
@@ -1118,7 +1085,7 @@
 				<span class="k">continue</span><span class="p">;</span>
 			<span class="p">}</span>
 
-			<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">).</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">p</span> <span class="o">&amp;&amp;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">()))</span>
 			<span class="p">{</span>
 				<span class="nx">p</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_marker_class</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
@@ -1154,7 +1121,7 @@
 		<span class="p">}</span>
 
 		<span class="nx">e</span>     <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">p</span> <span class="o">&amp;&amp;</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">statusTakesPrecendence</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">getElementStatus</span><span class="p">(</span><span class="nx">p</span><span class="p">),</span> <span class="nx">type</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">);</span>
@@ -1171,13 +1138,13 @@
 			<span class="kd">var</span> <span class="nx">new_class</span> <span class="o">=</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_status_prefix</span> <span class="o">+</span> <span class="nx">type</span><span class="p">;</span>
 			<span class="nx">p</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">(),</span> <span class="nx">new_class</span><span class="p">);</span>
 
-			<span class="nx">f</span> <span class="o">=</span> <span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">);</span>
+			<span class="nx">f</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="nx">f</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">(),</span> <span class="nx">new_class</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="kd">var</span> <span class="nx">fieldset</span> <span class="o">=</span> <span class="nx">getAncestorByTagName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="s1">&#39;fieldset&#39;</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">fieldset</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">getAncestorByTagName</span><span class="p">(</span><span class="s1">&#39;fieldset&#39;</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">fieldset</span> <span class="o">&amp;&amp;</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">statusTakesPrecendence</span><span class="p">(</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">getElementStatus</span><span class="p">(</span><span class="nx">fieldset</span><span class="p">),</span> <span class="nx">type</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="nx">fieldset</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">rowStatusPattern</span><span class="p">());</span>
@@ -1313,8 +1280,8 @@
 	</div>
 </div>
 <script type="text/javascript">
+
     var ALL_YUI_PROPS = [{"url": "FormManager.html#method_addErrorMessage", "access": "", "host": "FormManager", "type": "method", "name": "addErrorMessage"}, {"url": "FormManager.html#method_clearForm", "access": "", "host": "FormManager", "type": "method", "name": "clearForm"}, {"url": "FormManager.html#method_clearMessages", "access": "", "host": "FormManager", "type": "method", "name": "clearMessages"}, {"url": "FormManager.html#method_disableForm", "access": "", "host": "FormManager", "type": "method", "name": "disableForm"}, {"url": "FormManager.html#method_displayFormMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayFormMessage"}, {"url": "FormManager.html#method_displayMessage", "access": "", "host": "FormManager", "type": "method", "name": "displayMessage"}, {"url": "FormManager.html#method_enableForm", "access": "", "host": "FormManager", "type": "method", "name": "enableForm"}, {"url": "FormManager.html#method_getForm", "access": "", "host": "FormManager", "type": "method", "name": "getForm"}, {"url": "FormManager.html#method_getRowStatus", "access": "", "host": "FormManager", "type": "method", "name": "getRowStatus"}, {"url": "FormManager.html#method_hasErrors", "access": "", "host": "FormManager", "type": "method", "name": "hasErrors"}, {"url": "FormManager.html#method_hasFileInputs", "access": "", "host": "FormManager", "type": "method", "name": "hasFileInputs"}, {"url": "FormManager.html#method_hasMessages", "access": "", "host": "FormManager", "type": "method", "name": "hasMessages"}, {"url": "FormManager.html#method_initFocus", "access": "", "host": "FormManager", "type": "method", "name": "initFocus"}, {"url": "FormManager.html#method_isChanged", "access": "", "host": "FormManager", "type": "method", "name": "isChanged"}, {"url": "FormManager.html#method_isFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "isFormEnabled"}, {"url": "FormManager.html#method_notifyErrors", "access": "", "host": "FormManager", "type": "method", "name": "notifyErrors"}, {"url": "FormManager.html#method_populateForm", "access": "", "host": "FormManager", "type": "method", "name": "populateForm"}, {"url": "FormManager.html#method_postPopulateForm", "access": "", "host": "FormManager", "type": "method", "name": "postPopulateForm"}, {"url": "FormManager.html#method_postPrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "postPrepareForm"}, {"url": "FormManager.html#method_postValidateForm", "access": "", "host": "FormManager", "type": "method", "name": "postValidateForm"}, {"url": "FormManager.html#method_prepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prepareForm"}, {"url": "FormManager.html#method_prePrepareForm", "access": "", "host": "FormManager", "type": "method", "name": "prePrepareForm"}, {"url": "FormManager.html#method_registerButton", "access": "", "host": "FormManager", "type": "method", "name": "registerButton"}, {"url": "FormManager.html#method_saveCurrentValuesAsDefault", "access": "", "host": "FormManager", "type": "method", "name": "saveCurrentValuesAsDefault"}, {"url": "FormManager.html#method_setDefaultValue", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValue"}, {"url": "FormManager.html#method_setDefaultValues", "access": "", "host": "FormManager", "type": "method", "name": "setDefaultValues"}, {"url": "FormManager.html#method_setErrorMessages", "access": "", "host": "FormManager", "type": "method", "name": "setErrorMessages"}, {"url": "FormManager.html#method_setFormEnabled", "access": "", "host": "FormManager", "type": "method", "name": "setFormEnabled"}, {"url": "FormManager.html#method_setFunction", "access": "", "host": "FormManager", "type": "method", "name": "setFunction"}, {"url": "FormManager.html#method_setRegex", "access": "", "host": "FormManager", "type": "method", "name": "setRegex"}, {"url": "FormManager.html#method_validateForm", "access": "", "host": "FormManager", "type": "method", "name": "validateForm"}, {"url": "FormManager.html#method_Y.FormManager.cleanValues", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.cleanValues"}, {"url": "FormManager.html#property_Y.FormManager.field_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.field_marker_class"}, {"url": "FormManager.html#method_Y.FormManager.getElementStatus", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getElementStatus"}, {"url": "FormManager.html#method_Y.FormManager.getStatusPrecedence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.getStatusPrecedence"}, {"url": "FormManager.html#property_Y.FormManager.row_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.row_status_prefix", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.row_status_prefix"}, {"url": "FormManager.html#property_Y.FormManager.status_failure_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_failure_class"}, {"url": "FormManager.html#property_Y.FormManager.status_marker_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_marker_class"}, {"url": "FormManager.html#property_Y.FormManager.status_none_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_none_class"}, {"url": "FormManager.html#config_Y.FormManager.status_order", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.status_order"}, {"url": "FormManager.html#property_Y.FormManager.status_success_class", "access": "", "host": "FormManager", "type": "property", "name": "Y.FormManager.status_success_class"}, {"url": "FormManager.html#method_Y.FormManager.statusTakesPrecendence", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.statusTakesPrecendence"}];
-    YAHOO.yuidoc.init();
 </script>
 </body>
 </html>

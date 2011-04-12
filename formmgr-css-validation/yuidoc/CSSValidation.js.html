@@ -178,6 +178,11 @@
 <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">Strings</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">;</span>
 
+	<span class="k">if</span> <span class="p">(</span><span class="nx">e</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">e</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+	<span class="p">}</span>
+
 	<span class="kd">var</span> <span class="nx">required</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">required_class</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">required</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -377,8 +382,8 @@
 	</div>
 </div>
 <script type="text/javascript">
+
     var ALL_YUI_PROPS = [{"url": "FormManager.html#config_Y.FormManager.decimal_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.decimal_value_re"}, {"url": "FormManager.html#config_Y.FormManager.integer_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.integer_value_re"}, {"url": "FormManager.html#config_Y.FormManager.Strings", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.Strings"}, {"url": "FormManager.html#method_Y.FormManager.validateFromCSSData", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.validateFromCSSData"}];
-    YAHOO.yuidoc.init();
 </script>
 </body>
 </html>

@@ -50,6 +50,7 @@
                         <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
 <span class="kd">var</span> <span class="nx">use_nonzero_empty_div</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">),</span>
+	<span class="nx">browser_can_animate</span> <span class="o">=</span> <span class="o">!</span><span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">),</span>
 	<span class="nx">section_min_size</span> <span class="o">=</span> <span class="p">(</span><span class="nx">use_nonzero_empty_div</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
 
 <span class="cm">/**********************************************************************</span>
@@ -94,8 +95,15 @@
 		<span class="k">return</span><span class="p">;</span>
 	<span class="p">}</span>
 
-	<span class="nx">config</span>          <span class="o">=</span> <span class="nx">config</span> <span class="o">||</span> <span class="p">{};</span>
-	<span class="nx">config</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+	<span class="nx">config</span> <span class="o">=</span> <span class="nx">config</span> <span class="o">||</span> <span class="p">{};</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">tabIndex</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="nx">config</span><span class="p">.</span><span class="nx">tabIndex</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">horizontal</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="nx">config</span><span class="p">.</span><span class="nx">horizontal</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	<span class="p">}</span>
 
 	<span class="nx">Accordion</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
 <span class="p">}</span>
@@ -107,7 +115,7 @@
 
 <span class="kd">function</span> <span class="nx">filterAnimationFlag</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">));</span>
+	<span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="nx">browser_can_animate</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">));</span>
 <span class="p">}</span>
 
 <span class="nx">Accordion</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;accordion&quot;</span><span class="p">;</span>
@@ -374,6 +382,8 @@
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span> <span class="o">=</span> <span class="p">[];</span>
 
+		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;allowAllClosed&#39;</span><span class="p">);</span>	<span class="c1">// force init of this.allow_all_closed</span>
+
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;horizontal&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span> <span class="o">=</span> <span class="s1">&#39;width&#39;</span><span class="p">;</span>
@@ -522,7 +532,7 @@
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">use_nonzero_empty_div</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">t</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="nx">t</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
+			<span class="nx">t</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="nx">t</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">},</span>
 
@@ -565,14 +575,17 @@
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">el</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;replaceSectionContainer&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">display</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">);</span>
+
 			<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">);</span>
 			<span class="nx">p</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
 			<span class="nx">p</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
 
 			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span> <span class="o">=</span> <span class="nx">el</span><span class="p">;</span>
 
-			<span class="nx">el</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">));</span>
+			<span class="nx">el</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;section&#39;</span><span class="p">));</span>
 			<span class="nx">el</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">?</span> <span class="nx">open_class</span> <span class="o">:</span> <span class="nx">closed_class</span><span class="p">);</span>
+			<span class="nx">el</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="nx">display</span><span class="p">);</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">)</span>
 		<span class="p">{</span>
@@ -633,14 +646,14 @@
 
 		<span class="c1">// create title</span>
 
-		<span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">));</span>
+		<span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;div/&gt;&#39;</span><span class="p">);</span>
 		<span class="nx">t</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">));</span>
 		<span class="nx">t</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">closed_class</span><span class="p">);</span>
 
 		<span class="c1">// create content clipping</span>
 
-		<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">));</span>
-		<span class="nx">c</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;content-clip&#39;</span><span class="p">));</span>
+		<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;div/&gt;&#39;</span><span class="p">);</span>
+		<span class="nx">c</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;section-clip&#39;</span><span class="p">));</span>
 		<span class="nx">c</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">slide_style_name</span><span class="p">,</span> <span class="nx">section_min_size</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animateOpenClose&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
@@ -649,9 +662,10 @@
 
 		<span class="c1">// create content</span>
 
-		<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">));</span>
-		<span class="nx">d</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">));</span>
+		<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;div/&gt;&#39;</span><span class="p">);</span>
+		<span class="nx">d</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;section&#39;</span><span class="p">));</span>
 		<span class="nx">d</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">closed_class</span><span class="p">);</span>
+		<span class="nx">d</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
 		<span class="nx">c</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">d</span><span class="p">);</span>
 
 		<span class="c1">// save in our list</span>
@@ -935,11 +949,14 @@
 
 		<span class="kd">function</span> <span class="nx">onCompleteCloseSection</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
 		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span><span class="p">)</span>
 		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">content</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;block&#39;</span><span class="p">);</span>
+
 			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeOpen&#39;</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
 
 			<span class="k">this</span><span class="p">.</span><span class="nx">section_list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">open</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
@@ -1148,12 +1165,12 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2009 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">
+
     var ALL_YUI_PROPS = [{"url": "Accordion.html#config_allowAllClosed", "access": "", "host": "Accordion", "type": "config", "name": "allowAllClosed"}, {"url": "Accordion.html#config_allowMultipleOpen", "access": "", "host": "Accordion", "type": "config", "name": "allowMultipleOpen"}, {"url": "Accordion.html#method_allSectionsClosed", "access": "", "host": "Accordion", "type": "method", "name": "allSectionsClosed"}, {"url": "Accordion.html#method_allSectionsOpen", "access": "", "host": "Accordion", "type": "method", "name": "allSectionsOpen"}, {"url": "Accordion.html#config_animateDuration", "access": "", "host": "Accordion", "type": "config", "name": "animateDuration"}, {"url": "Accordion.html#config_animateEasing", "access": "", "host": "Accordion", "type": "config", "name": "animateEasing"}, {"url": "Accordion.html#config_animateInsertRemove", "access": "", "host": "Accordion", "type": "config", "name": "animateInsertRemove"}, {"url": "Accordion.html#config_animateOpenClose", "access": "", "host": "Accordion", "type": "config", "name": "animateOpenClose"}, {"url": "Accordion.html#config_animateRender", "access": "", "host": "Accordion", "type": "config", "name": "animateRender"}, {"url": "Accordion.html#method_appendSection", "access": "", "host": "Accordion", "type": "method", "name": "appendSection"}, {"url": "Accordion.html#event_beforeClose", "access": "", "host": "Accordion", "type": "event", "name": "beforeClose"}, {"url": "Accordion.html#event_beforeInsert", "access": "", "host": "Accordion", "type": "event", "name": "beforeInsert"}, {"url": "Accordion.html#event_beforeOpen", "access": "", "host": "Accordion", "type": "event", "name": "beforeOpen"}, {"url": "Accordion.html#event_beforeRemove", "access": "", "host": "Accordion", "type": "event", "name": "beforeRemove"}, {"url": "Accordion.html#event_close", "access": "", "host": "Accordion", "type": "event", "name": "close"}, {"url": "Accordion.html#method_closeAllSections", "access": "", "host": "Accordion", "type": "method", "name": "closeAllSections"}, {"url": "Accordion.html#method_closeSection", "access": "", "host": "Accordion", "type": "method", "name": "closeSection"}, {"url": "Accordion.html#method_findSection", "access": "", "host": "Accordion", "type": "method", "name": "findSection"}, {"url": "Accordion.html#method__getClip", "access": "protected", "host": "Accordion", "type": "method", "name": "_getClip"}, {"url": "Accordion.html#method_getSection", "access": "", "host": "Accordion", "type": "method", "name": "getSection"}, {"url": "Accordion.html#method_getSectionCount", "access": "", "host": "Accordion", "type": "method", "name": "getSectionCount"}, {"url": "Accordion.html#method_getTitle", "access": "", "host": "Accordion", "type": "method", "name": "getTitle"}, {"url": "Accordion.html#config_horizontal", "access": "", "host": "Accordion", "type": "config", "name": "horizontal"}, {"url": "Accordion.html#event_insert", "access": "", "host": "Accordion", "type": "event", "name": "insert"}, {"url": "Accordion.html#method_insertSection", "access": "", "host": "Accordion", "type": "method", "name": "insertSection"}, {"url": "Accordion.html#method_isSectionOpen", "access": "", "host": "Accordion", "type": "method", "name": "isSectionOpen"}, {"url": "Accordion.html#event_open", "access": "", "host": "Accordion", "type": "event", "name": "open"}, {"url": "Accordion.html#method_openAllSections", "access": "", "host": "Accordion", "type": "method", "name": "openAllSections"}, {"url": "Accordion.html#method_openSection", "access": "", "host": "Accordion", "type": "method", "name": "openSection"}, {"url": "Accordion.html#method_prependSection", "access": "", "host": "Accordion", "type": "method", "name": "prependSection"}, {"url": "Accordion.html#event_remove", "access": "", "host": "Accordion", "type": "event", "name": "remove"}, {"url": "Accordion.html#method_removeSection", "access": "", "host": "Accordion", "type": "method", "name": "removeSection"}, {"url": "Accordion.html#config_replaceSectionContainer", "access": "", "host": "Accordion", "type": "config", "name": "replaceSectionContainer"}, {"url": "Accordion.html#config_replaceTitleContainer", "access": "", "host": "Accordion", "type": "config", "name": "replaceTitleContainer"}, {"url": "Accordion.html#config_sections", "access": "", "host": "Accordion", "type": "config", "name": "sections"}, {"url": "Accordion.html#method_setSection", "access": "", "host": "Accordion", "type": "method", "name": "setSection"}, {"url": "Accordion.html#method_setTitle", "access": "", "host": "Accordion", "type": "method", "name": "setTitle"}, {"url": "Accordion.html#config_titles", "access": "", "host": "Accordion", "type": "config", "name": "titles"}, {"url": "Accordion.html#method_toggleSection", "access": "", "host": "Accordion", "type": "method", "name": "toggleSection"}];
-    YAHOO.yuidoc.init();
 </script>
 </body>
 </html>

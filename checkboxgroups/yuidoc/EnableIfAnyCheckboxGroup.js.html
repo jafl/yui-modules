@@ -2,7 +2,7 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: gallery-checkboxgroups  SelectAllCheckboxGroup   (YUI Library)</title>
+	<title>API: gallery-checkboxgroups   EnableIfAnyCheckboxGroup.js  (YUI Library)</title>
 
 	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
 	<link rel="stylesheet" type="text/css" href="assets/api.css" />
@@ -19,8 +19,8 @@
         <h3>gallery-checkboxgroups&nbsp; <span class="subtitle">1.0.0</span></h3>
         <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
             &gt; <a href="./module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a>
-                 &gt; SelectAllCheckboxGroup 
                 
+                 &gt; EnableIfAnyCheckboxGroup.js (source view) 
         <form onsubmit="return false">
             <div id="propertysearch">
                 Search: <input autocomplete="off" id="searchinput" />
@@ -43,83 +43,47 @@
                 </fieldset>
             </form>
 
-                    <h2>
-                        
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * Enables the given list of nodes if any checkboxes are checked.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-checkboxgroups</span>
+<span class="cm"> * @class EnableIfAnyCheckboxGroup</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param cb_list {String|Node|NodeList} The list of checkboxes to manage</span>
+<span class="cm"> * @param nodes {String|NodeList} The nodes to enable/disable</span>
+<span class="cm"> */</span>
 
-                        
-                        
-                            Class <b property="yui:name">SelectAllCheckboxGroup</b>
-                        <span class="extends">
-                        </span>
+<span class="kd">function</span> <span class="nx">EnableIfAnyCheckboxGroup</span><span class="p">(</span>
+	<span class="cm">/* string/Node/NodeList */</span>	<span class="nx">cb_list</span><span class="p">,</span>
+	<span class="cm">/* string/NodeList */</span>		<span class="nx">nodes</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">nodes</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">nodes</span><span class="p">)</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">nodes</span><span class="p">)</span> <span class="o">:</span> <span class="nx">nodes</span><span class="p">;</span>
+	<span class="nx">EnableIfAnyCheckboxGroup</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">cb_list</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">enforceConstraints</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
 
-                    </h2>
-                    <!-- class tree goes here -->
-                    
-                
-  
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">EnableIfAnyCheckboxGroup</span><span class="p">,</span> <span class="nx">CheckboxGroup</span><span class="p">,</span>
+<span class="p">{</span>
+	<span class="nx">enforceConstraints</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* NodeList */</span>	<span class="nx">cb_list</span><span class="p">,</span>
+		<span class="cm">/* int */</span>		<span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">disable</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">allUnchecked</span><span class="p">();</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">nodes</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">node</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="nx">disable</span><span class="p">);</span>
+		<span class="p">});</span>
+	<span class="p">}</span>
+<span class="p">});</span>
 
-                    <div class="summary description" property="yui:description">
-                        All checkboxes can be selected and a select-all checkbox is available
-to check all. This check-all box is automatically changed if any other
-checkbox changes state.
-                    </div>
-
-                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
-                        <h3 id="constructor">Constructor</h3>
-                        <div class="content">
-                            <div class="detail">
-                                <strong property="yui:name">SelectAllCheckboxGroup</strong>
-                                <code>
-                                    (
-  
-                                        
-                                                
-                                                select_all_cb
-
-                                                , 
-                                                cb_list
-                                    )
-                                </code>
-                                <div class="description">
-                                        <dl rel="yui:parameters">
-                                            <dt>Parameters:</dt>
-                                                <dd rel="yui:parameter">
-                                                    <code><span property="yui:name">select_all_cb</span>
-                                                    &lt;<span property="yui:type">String|Object</span>&gt;
-                                                    </code>
-                                                    <span property="yui:description">  The checkbox that triggers "select all"</span>
-                                                </dd>
-                                                <dd rel="yui:parameter">
-                                                    <code><span property="yui:name">cb_list</span>
-                                                    &lt;<span property="yui:type">String|Node|NodeList</span>&gt;
-                                                    </code>
-                                                    <span property="yui:description">  The list of checkboxes to manage</span>
-                                                </dd>
-                                        </dl>
-                                    
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div rel="yui:properties" resource="#properties">
+<span class="nx">Y</span><span class="p">.</span><span class="nx">EnableIfAnyCheckboxGroup</span> <span class="o">=</span> <span class="nx">EnableIfAnyCheckboxGroup</span><span class="p">;</span>
+</pre></div>
 
                     </div>
-
-                    <div rel="yui:methods" resource="#methods">
-
-                    </div>
-
-                    <div rel="yui:events" resource="#events">
-
-
-                    </div>
-
-                    <div rel="yui:attributes" resource="#configattributes">
-
-                    </div>
-
 			</div>
 		</div>
 		<div class="yui-b">
@@ -139,7 +103,7 @@ checkbox changes state.
                                 <li class=""><a href="AtMostOneCheckboxGroup.html" title="AtMostOneCheckboxGroup">AtMostOneCheckboxGroup</a></li>
                                 <li class=""><a href="CheckboxGroup.html" title="CheckboxGroup">CheckboxGroup</a></li>
                                 <li class=""><a href="EnableIfAnyCheckboxGroup.html" title="EnableIfAnyCheckboxGroup">EnableIfAnyCheckboxGroup</a></li>
-                                <li class="selected"><a href="SelectAllCheckboxGroup.html" title="SelectAllCheckboxGroup">SelectAllCheckboxGroup</a></li>
+                                <li class=""><a href="SelectAllCheckboxGroup.html" title="SelectAllCheckboxGroup">SelectAllCheckboxGroup</a></li>
                         </ul>
                     </div>
 
@@ -149,7 +113,7 @@ checkbox changes state.
                                 <li class=""><a href="AtLeastOneCheckboxGroup.js.html" title="AtLeastOneCheckboxGroup.js">AtLeastOneCheckboxGroup.js</a></li>
                                 <li class=""><a href="AtMostOneCheckboxGroup.js.html" title="AtMostOneCheckboxGroup.js">AtMostOneCheckboxGroup.js</a></li>
                                 <li class=""><a href="CheckboxGroup.js.html" title="CheckboxGroup.js">CheckboxGroup.js</a></li>
-                                <li class=""><a href="EnableIfAnyCheckboxGroup.js.html" title="EnableIfAnyCheckboxGroup.js">EnableIfAnyCheckboxGroup.js</a></li>
+                                <li class="selected"><a href="EnableIfAnyCheckboxGroup.js.html" title="EnableIfAnyCheckboxGroup.js">EnableIfAnyCheckboxGroup.js</a></li>
                                 <li class=""><a href="NodeList-patch.js.html" title="NodeList-patch.js">NodeList-patch.js</a></li>
                                 <li class=""><a href="SelectAllCheckboxGroup.js.html" title="SelectAllCheckboxGroup.js">SelectAllCheckboxGroup.js</a></li>
                         </ul>
