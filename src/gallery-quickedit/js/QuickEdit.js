@@ -226,7 +226,7 @@ QuickEdit.textFormatter = function(o)
 		yiv: qe.validation ? (qe.validation.css || '') : ''
 	}));
 
-	o.td.get('firstChild').value = (o.value || '');
+	o.td.get('firstChild').value = o.value;
 
 	QuickEdit.copyDownFormatter.apply(this, arguments);
 */
@@ -240,7 +240,7 @@ QuickEdit.textFormatter = function(o)
 	{
 		key: o.column.get('key'),
 		yiv: qe.validation ? (qe.validation.css || '') : '',
-		value: o.value ? o.value.toString().replace('"', '') : ''
+		value: o.value || o.value === 0 ? o.value.toString().replace('"', '') : ''
 	});
 };
 
@@ -266,7 +266,7 @@ QuickEdit.textareaFormatter = function(o)
 		yiv: qe.validation ? (qe.validation.css || '') : ''
 	}));
 
-	o.td.get('firstChild').value = (o.value || '');
+	o.td.get('firstChild').value = o.value;
 
 	QuickEdit.copyDownFormatter.apply(this, arguments);
 */
@@ -280,7 +280,7 @@ QuickEdit.textareaFormatter = function(o)
 	{
 		key: o.column.get('key'),
 		yiv: qe.validation ? (qe.validation.css || '') : '',
-		value: o.value ? o.value.toString().replace('"', '') : ''
+		value: o.value || o.value === 0 ? o.value.toString().replace('"', '') : ''
 	});
 };
 
@@ -295,7 +295,7 @@ QuickEdit.textareaFormatter = function(o)
  */
 QuickEdit.readonlyEmailFormatter = function(o)
 {
-	return (o.value || '');
+	return (o.value || '');		// don't need to check for zero
 };
 
 /**
@@ -309,7 +309,7 @@ QuickEdit.readonlyEmailFormatter = function(o)
  */
 QuickEdit.readonlyLinkFormatter = function(o)
 {
-	return (o.value || '');
+	return (o.value || '');		// don't need to check for zero
 };
 
 function getSiblingTdEl(
