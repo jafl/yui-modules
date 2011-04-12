@@ -790,7 +790,7 @@ function complete(f)
 	}
 	else if (f && f.fn)
 	{
-		f.fn.apply(f.scope || window, f.args);
+		f.fn.apply(f.scope || window, Y.Lang.isUndefined(f.args) ? [] : f.args);
 	}
 }
 
