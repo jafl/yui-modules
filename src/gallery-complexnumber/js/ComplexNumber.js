@@ -54,7 +54,7 @@ ComplexNumber.prototype =
 	 */
 	magnitude: function()
 	{
-		return ComplexMath.abs(this);
+		return Math.sqrt(this.r*this.r + this.i*this.i);
 	},
 
 	/**

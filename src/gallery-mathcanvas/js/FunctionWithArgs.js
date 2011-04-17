@@ -3,7 +3,10 @@
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.FunctionWithArgs
+ * @extends Y.MathFunction
  * @constructor
+ * @param name {String} the name of the function
+ * @param args {Y.MathFunction|Array} the arguments
  */
 
 function MathFunctionWithArgs(
@@ -35,6 +38,15 @@ function MathFunctionWithArgs(
 Y.extend(MathFunctionWithArgs, MathFunction,
 {
 	/**
+	 * @param f {MathFunction}
+	 */
+	appendArg: function(
+		/* MathFunction */	f)
+	{
+		this.args.push(f);
+	},
+
+	/**
 	 * If origArg is an argument, replaces origArg with newArg.
 	 * 
 	 * @param origArg {MathFunction} original argument
@@ -53,10 +65,11 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 
 	/**
 	 * @return list of argument values, from calling evaluate()
+	 * @protected
 	 */
 	evaluateArgs: function()
 	{
-		var v;
+		var v = [];
 		Y.Array.each(this.args, function(arg)
 		{
 			v.push(arg.evaluate());

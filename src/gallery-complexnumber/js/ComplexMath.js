@@ -196,6 +196,22 @@ var ComplexMath =
 
 	/**
 	 * @param v {number}
+	 * @return {number} phase of the argument
+	 */
+	phase: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			return new ComplexNumber(Math.atan2(v.i, v.r), 0);
+		}
+		else
+		{
+			return ComplexMath.ZERO;
+		}
+	},
+
+	/**
+	 * @param v {number}
 	 * @return {number} inverse hyperbolic cosine of the argument
 	 */
 	acosh: function(v)

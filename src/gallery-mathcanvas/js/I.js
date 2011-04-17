@@ -3,6 +3,7 @@
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.I
+ * @extends Y.MathFunction
  * @constructor
  */
 
@@ -11,7 +12,7 @@ function MathI()
 	MathI.superclass.constructor.call(this);
 }
 
-Y.extend(MathE, MathFunction,
+Y.extend(MathI, MathFunction,
 {
 	evaluate: function()
 	{

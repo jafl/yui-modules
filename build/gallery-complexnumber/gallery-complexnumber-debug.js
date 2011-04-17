@@ -56,7 +56,7 @@ ComplexNumber.prototype =
 	 */
 	magnitude: function()
 	{
-		return ComplexMath.abs(this);
+		return Math.sqrt(this.r*this.r + this.i*this.i);
 	},
 
 	/**
@@ -393,6 +393,22 @@ var ComplexMath =
 		else
 		{
 			return new ComplexNumber(Math.abs(v), 0);
+		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @return {number} phase of the argument
+	 */
+	phase: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			return new ComplexNumber(Math.atan2(v.i, v.r), 0);
+		}
+		else
+		{
+			return ComplexMath.ZERO;
 		}
 	},
 

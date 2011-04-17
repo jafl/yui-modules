@@ -1,0 +1,169 @@
+/**********************************************************************
+ * <p>Sum of values.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Sum
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ */
+
+function MathSum()
+{
+	MathMax.superclass.constructor.call(this, "+", new Y.Array(arguments));
+}
+
+Y.extend(MathSum, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.add(this.evaluateArgs());
+	},
+
+	prepareToRender: function(
+		/* Context2d */		context,
+		/* point */			top_left,
+		/* percentage */	font_size,
+		/* array */			rect_list)
+	{
+		var arg_top_left = Y.clone(top_left);
+
+		var total_rect =
+		{
+			top:    top_left.y,
+			left:   top_left.x,
+			bottom: top_left.y + context.getLineHeight(font_size),
+			right:  top_left.x
+		};
+
+		var total_midline = RectList.ycenter(total_rect);
+		var orig_midline  = total_midline;
+
+		var space_width = context.getStringWidth(font_size, ' ');
+		var plus_width  = context.getStringWidth(font_size, '+');
+		var minus_width = context.getStringWidth(font_size, '-');
+
+		Y.Array.each(this.args, function(arg, index)
+		{
+			var f = this;
+			if (arg instanceof MathNegate)
+			{
+				if (index > 0)
+				{
+					arg_top_left.x += space_width;
+				}
+				arg_top_left.x += minus_width + space_width;
+
+				f   = arg;
+				arg = arg.args[0];
+			}
+			else if (index > 0)
+			{
+				arg_top_left.x += plus_width + 2*space_width;
+			}
+
+			var arg_index  = arg.prepareToRender(context, arg_top_left, font_size, rect_list);
+			var arg_info   = rect_list.get(arg_index);
+			arg_top_left.x = arg_info.rect.right;
+
+			if (arg.parenthesizeForRender(f))
+			{
+				var paren_width = context.getParenthesisWidth(arg_info.rect);
+				rect_list.shift(arg_index, paren_width, 0);
+				arg_top_left.x  += 2*paren_width;
+				total_rect.right = arg_info.rect.right + paren_width;
+			}
+
+			total_rect    = RectList.cover(total_rect, arg_info.rect);
+			total_midline = Math.max(total_midline, arg_info.midline);
+		},
+		this);
+
+		if (this.args.length > 1 && total_midline > orig_midline)
+		{
+			Y.Array.each(this.args, function(arg)
+			{
+				if (arg instanceof MathNegate)
+				{
+					arg = arg.args[0];
+				}
+
+				var index = rect_list.findIndex(arg);
+				rect_list.setMidline(index, total_midline);
+				total_rect = RectList.cover(total_rect, rect_list.get(index).rect);
+			});
+		}
+
+		return rect_list.add(total_rect, total_midline, font_size, this);
+	},
+
+	render: function(
+		/* Context2d */		context,
+		/* array */			rect_list)
+	{
+		var info        = rect_list.find(this);
+		var x           = info.rect.left;
+		var space_width = context.getStringWidth(info.font_size, ' ');
+
+		Y.Array.each(this.args, function(arg, index)
+		{
+			var f = this;
+			if (arg instanceof MathNegate)
+			{
+				context.drawString(x, info.midline, info.font_size, '-');
+				f   = arg;
+				arg = arg.args[0];
+			}
+			else if (index > 0)
+			{
+				context.drawString(x, info.midline, info.font_size, '+');
+			}
+
+			arg.render(context, rect_list);
+
+			var arg_info = rect_list.find(arg);
+			x            = arg_info.rect.right;
+
+			if (arg.parenthesizeForRender(f))
+			{
+				context.drawParentheses(arg_info.rect);
+				x += context.getParenthesisWidth(arg_info.rect);
+			}
+
+			x += space_width;
+		},
+		this);
+	},
+
+	toString: function()
+	{
+		var s = '';
+		Y.Array.each(this.args, function(arg, index)
+		{
+			if (arg instanceof MathNegate)
+			{
+				s += '-';
+				arg = arg.args[0];
+			}
+			else if (index > 0)
+			{
+				s += '+';
+			}
+
+			if (arg.parenthesizeForPrint(this))
+			{
+				s += '(';
+				s += arg;
+				s += ')';
+			}
+			else
+			{
+				s += arg;
+			}
+		},
+		this);
+
+		return s;
+	}
+});
+
+MathFunction.Sum = MathSum;

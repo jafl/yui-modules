@@ -114,7 +114,7 @@ RectList.prototype =
 
 	/**
 	 * @param f {MathFunction} search target
-	 * @return index of item for specified MathFunction, or null if not found
+	 * @return data for specified MathFunction, or null if not found
 	 */
 	find: function(
 		/* MathFunction */	f)
@@ -123,6 +123,16 @@ RectList.prototype =
 		{
 			return (r.func === f);
 		});
+	},
+
+	/**
+	 * @param f {MathFunction} search target
+	 * @return index of item for specified MathFunction, or -1 if not found
+	 */
+	findIndex: function(
+		/* MathFunction */	f)
+	{
+		return Y.Array.indexOf(this.list, this.find(f));
 	},
 
 	/**
@@ -244,7 +254,7 @@ MathFunction.prototype =
 	{
 		var info = rect_list.find(this);
 		context.drawString(info.rect.left, info.midline, info.font_size, this.toString());
-	}
+	},
 
 	/**
 	 * Must be implemented by derived classes.
@@ -259,6 +269,45 @@ MathFunction.prototype =
 	 * @method toString
 	 * @return text representation of the function
 	 */
+
+	/**
+	 * @param f {MathFunction}
+	 * @return {boolean} true if f needs to parenthesize us
+	 * @protected
+	 */
+	parenthesizeForPrint: function(
+		/* MathFunction */	f)
+	{
+		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+	},
+
+	/**
+	 * @param f {MathFunction}
+	 * @return {boolean} true if f needs to parenthesize us
+	 * @protected
+	 */
+	parenthesizeForRender: function(
+		/* MathFunction */	f)
+	{
+		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+	}
+};
+
+// jison can't handle nested braces
+
+MathFunction.updateSum = function(
+	/* MathFunction */	f1,
+	/* MathFunction */	f2)
+{
+	if (f1 instanceof MathSum)
+	{
+		f1.appendArg(f2);
+		return f1;
+	}
+	else
+	{
+		return new MathSum(f1, f2);
+	}
 };
 
 Y.MathFunction = MathFunction;
@@ -267,7 +316,9 @@ Y.MathFunction = MathFunction;
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Value
+ * @extends Y.MathFunction
  * @constructor
+ * @param value {number}
  */
 
 function MathValue(
@@ -296,6 +347,7 @@ MathFunction.Value = MathValue;
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Pi
+ * @extends Y.MathFunction
  * @constructor
  */
 
@@ -323,6 +375,7 @@ MathFunction.Pi = MathPi;
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.E
+ * @extends Y.MathFunction
  * @constructor
  */
 
@@ -346,11 +399,42 @@ Y.extend(MathE, MathFunction,
 
 MathFunction.E = MathE;
 /**********************************************************************
+ * <p>i (square root of -1)</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.I
+ * @extends Y.MathFunction
+ * @constructor
+ */
+
+function MathI()
+{
+	MathI.superclass.constructor.call(this);
+}
+
+Y.extend(MathI, MathFunction,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.I;
+	},
+
+	toString: function()
+	{
+		return 'i';
+	}
+});
+
+MathFunction.I = MathI;
+/**********************************************************************
  * <p>Function that takes one or more arguments.</p>
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.FunctionWithArgs
+ * @extends Y.MathFunction
  * @constructor
+ * @param name {String} the name of the function
+ * @param args {Y.MathFunction|Array} the arguments
  */
 
 function MathFunctionWithArgs(
@@ -382,6 +466,15 @@ function MathFunctionWithArgs(
 Y.extend(MathFunctionWithArgs, MathFunction,
 {
 	/**
+	 * @param f {MathFunction}
+	 */
+	appendArg: function(
+		/* MathFunction */	f)
+	{
+		this.args.push(f);
+	},
+
+	/**
 	 * If origArg is an argument, replaces origArg with newArg.
 	 * 
 	 * @param origArg {MathFunction} original argument
@@ -400,10 +493,11 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 
 	/**
 	 * @return list of argument values, from calling evaluate()
+	 * @protected
 	 */
 	evaluateArgs: function()
 	{
-		var v;
+		var v = [];
 		Y.Array.each(this.args, function(arg)
 		{
 			v.push(arg.evaluate());
@@ -526,10 +620,368 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 
 MathFunction.FunctionWithArgs = MathFunctionWithArgs;
 /**********************************************************************
+ * <p>Negate a number.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Negate
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathNegate(
+	/* MathFunction */	f)
+{
+	MathNegate.superclass.constructor.call(this, "-", f);
+}
+
+Y.extend(MathNegate, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.subtract(0, this.args[0].evaluate());
+	},
+
+	prepareToRender: function(
+		/* Context2d */		context,
+		/* point */			top_left,
+		/* percentage */	font_size,
+		/* array */			rect_list)
+	{
+		var minus_width  = context.getStringWidth(font_size, '-');
+		var arg_top_left = Y.clone(top_left);
+
+		var arg = this.args[0];
+//		if (arg instanceof MathQuotient)
+//		{
+//			arg_top_left.x += context.getStringWidth(font_size, ' ');
+//		}
+
+		var total_rect =
+		{
+			top:    top_left.y,
+			left:   top_left.x,
+			bottom: top_left.y + context.getLineHeight(font_size),
+			right:  arg_top_left.x
+		};
+
+		var arg_index = arg.prepareToRender(context, arg_top_left, font_size, rect_list);
+		var arg_info  = rect_list.get(arg_index);
+
+		if (arg.parenthesizeForRender(this))
+		{
+			var paren_width = context.getParenthesisWidth(arg_info.rect);
+			rect_list.shift(arg_index, paren_width, 0);
+			total_rect.right = arg_info.rect.right + paren_width;
+		}
+
+		total_rect = RectList.cover(total_rect, arg_info.rect);
+
+		return rect_list.add(total_rect, arg_info.midline, font_size, this);
+	},
+
+	render: function(
+		/* Context2d */		context,
+		/* array */			rect_list)
+	{
+		var info = rect_list.find(this);
+		context.drawString(info.rect.left, info.midline, info.font_size, '-');
+
+		var arg = this.args[0];
+		arg.render(context, rect_list);
+
+		if (arg.parenthesizeForRender(this))
+		{
+			var arg_info = rect_list.find(arg);
+			context.drawParentheses(arg_info.rect);
+		}
+	},
+
+	toString: function()
+	{
+		var s = '-';
+
+		var arg = this.args[0];
+		if (arg.parenthesizeForPrint(this))
+		{
+			s += '(';
+			s += arg;
+			s += ')';
+		}
+		else
+		{
+			s += arg;
+		}
+
+		return s;
+	}
+});
+
+MathFunction.Negate = MathNegate;
+/**********************************************************************
+ * <p>Sum of values.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Sum
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ */
+
+function MathSum()
+{
+	MathMax.superclass.constructor.call(this, "+", new Y.Array(arguments));
+}
+
+Y.extend(MathSum, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.add(this.evaluateArgs());
+	},
+
+	prepareToRender: function(
+		/* Context2d */		context,
+		/* point */			top_left,
+		/* percentage */	font_size,
+		/* array */			rect_list)
+	{
+		var arg_top_left = Y.clone(top_left);
+
+		var total_rect =
+		{
+			top:    top_left.y,
+			left:   top_left.x,
+			bottom: top_left.y + context.getLineHeight(font_size),
+			right:  top_left.x
+		};
+
+		var total_midline = RectList.ycenter(total_rect);
+		var orig_midline  = total_midline;
+
+		var space_width = context.getStringWidth(font_size, ' ');
+		var plus_width  = context.getStringWidth(font_size, '+');
+		var minus_width = context.getStringWidth(font_size, '-');
+
+		Y.Array.each(this.args, function(arg, index)
+		{
+			var f = this;
+			if (arg instanceof MathNegate)
+			{
+				if (index > 0)
+				{
+					arg_top_left.x += space_width;
+				}
+				arg_top_left.x += minus_width + space_width;
+
+				f   = arg;
+				arg = arg.args[0];
+			}
+			else if (index > 0)
+			{
+				arg_top_left.x += plus_width + 2*space_width;
+			}
+
+			var arg_index  = arg.prepareToRender(context, arg_top_left, font_size, rect_list);
+			var arg_info   = rect_list.get(arg_index);
+			arg_top_left.x = arg_info.rect.right;
+
+			if (arg.parenthesizeForRender(f))
+			{
+				var paren_width = context.getParenthesisWidth(arg_info.rect);
+				rect_list.shift(arg_index, paren_width, 0);
+				arg_top_left.x  += 2*paren_width;
+				total_rect.right = arg_info.rect.right + paren_width;
+			}
+
+			total_rect    = RectList.cover(total_rect, arg_info.rect);
+			total_midline = Math.max(total_midline, arg_info.midline);
+		},
+		this);
+
+		if (this.args.length > 1 && total_midline > orig_midline)
+		{
+			Y.Array.each(this.args, function(arg)
+			{
+				if (arg instanceof MathNegate)
+				{
+					arg = arg.args[0];
+				}
+
+				var index = rect_list.findIndex(arg);
+				rect_list.setMidline(index, total_midline);
+				total_rect = RectList.cover(total_rect, rect_list.get(index).rect);
+			});
+		}
+
+		return rect_list.add(total_rect, total_midline, font_size, this);
+	},
+
+	render: function(
+		/* Context2d */		context,
+		/* array */			rect_list)
+	{
+		var info        = rect_list.find(this);
+		var x           = info.rect.left;
+		var space_width = context.getStringWidth(info.font_size, ' ');
+
+		Y.Array.each(this.args, function(arg, index)
+		{
+			var f = this;
+			if (arg instanceof MathNegate)
+			{
+				context.drawString(x, info.midline, info.font_size, '-');
+				f   = arg;
+				arg = arg.args[0];
+			}
+			else if (index > 0)
+			{
+				context.drawString(x, info.midline, info.font_size, '+');
+			}
+
+			arg.render(context, rect_list);
+
+			var arg_info = rect_list.find(arg);
+			x            = arg_info.rect.right;
+
+			if (arg.parenthesizeForRender(f))
+			{
+				context.drawParentheses(arg_info.rect);
+				x += context.getParenthesisWidth(arg_info.rect);
+			}
+
+			x += space_width;
+		},
+		this);
+	},
+
+	toString: function()
+	{
+		var s = '';
+		Y.Array.each(this.args, function(arg, index)
+		{
+			if (arg instanceof MathNegate)
+			{
+				s += '-';
+				arg = arg.args[0];
+			}
+			else if (index > 0)
+			{
+				s += '+';
+			}
+
+			if (arg.parenthesizeForPrint(this))
+			{
+				s += '(';
+				s += arg;
+				s += ')';
+			}
+			else
+			{
+				s += arg;
+			}
+		},
+		this);
+
+		return s;
+	}
+});
+
+MathFunction.Sum = MathSum;
+/**********************************************************************
+ * <p>Magnitude (absolute value) of a number.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Magnitude
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathMagnitude(
+	/* MathFunction */	f)
+{
+	MathMagnitude.superclass.constructor.call(this, "abs", f);
+}
+
+Y.extend(MathMagnitude, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.abs(this.args[0].evaluate());
+	},
+
+	prepareToRender: function(
+		/* Context2d */		context,
+		/* point */			top_left,
+		/* percentage */	font_size,
+		/* array */			rect_list)
+	{
+		var bar_width = context.getVerticalBarWidth();
+
+		var arg       = this.args[0];
+		var arg_index = arg.prepareToRender(context, top_left, font_size, rect_list);
+		var arg_info  = rect_list.get(arg_index);
+
+		rect_list.shift(arg_index, bar_width, 0);		// make space for leading bar
+
+		var r =
+		{
+			top:    top_left.y,
+			left:   top_left.x,
+			bottom: arg_info.rect.bottom,
+			right:  arg_info.rect.right + bar_width
+		};
+
+		return rect_list.add(r, arg_info.midline, font_size, this);
+	},
+
+	render: function(
+		/* Context2d */		context,
+		/* array */			rect_list)
+	{
+		var info = rect_list.find(this);
+		context.drawVerticalBar(info.rect);
+
+		this.args[0].render(context, rect_list);
+
+		var r  = Y.clone(info.rect);
+		r.left = r.right - context.getVerticalBarWidth();
+		context.drawVerticalBar(r);
+	}
+});
+
+MathFunction.Magnitude = MathMagnitude;
+/**********************************************************************
+ * <p>Phase of a complex number.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Phase
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathPhase(
+	/* MathFunction */	f)
+{
+	MathPhase.superclass.constructor.call(this, "phase", f);
+}
+
+Y.extend(MathPhase, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.phase(this.args[0].evaluate());
+	}
+});
+
+MathFunction.Phase = MathPhase;
+/**********************************************************************
  * <p>Minimum.</p>
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Min
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
  */
 
@@ -552,6 +1004,7 @@ MathFunction.Min = MathMin;
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Max
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
  */
 
@@ -574,7 +1027,9 @@ MathFunction.Max = MathMax;
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.SquareRoot
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
+ * @param f {Y.MathFunction}
  */
 
 function MathSquareRoot(
@@ -587,7 +1042,7 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 {
 	evaluate: function()
 	{
-		return Math.sqrt(this.args[0].evaluate());
+		return Y.ComplexMath.sqrt(this.args[0].evaluate());
 	},
 
 	prepareToRender: function(
@@ -598,9 +1053,8 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 	{
 		var arg       = this.args[0];
 		var arg_index = arg.prepareToRender(context, top_left, font_size, rect_list);
-
-		var arg_info = rect_list.get(arg_index);
-		var arg_h    = RectList.height(arg_info.rect);
+		var arg_info  = rect_list.get(arg_index);
+		var arg_h     = RectList.height(arg_info.rect);
 
 		var leading  = 1+Math.round(2.0*arg_h/(4.0*Math.sqrt(3.0)));
 		var trailing = 3;
@@ -654,11 +1108,38 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 
 MathFunction.SquareRoot = MathSquareRoot;
 /**********************************************************************
+ * <p>Natural logarithm.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.NaturalLog
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathNaturalLog(
+	/* MathFunction */	f)
+{
+	MathNaturalLog.superclass.constructor.call(this, "ln", f);
+}
+
+Y.extend(MathNaturalLog, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.log(this.args[0].evaluate());
+	}
+});
+
+MathFunction.NaturalLog = MathNaturalLog;
+/**********************************************************************
  * <p>Trigonometric sine.</p>
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Sine
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
+ * @param f {Y.MathFunction}
  */
 
 function MathSine(
@@ -671,7 +1152,7 @@ Y.extend(MathSine, MathFunctionWithArgs,
 {
 	evaluate: function()
 	{
-		return Math.sin(this.args[0].evaluate());
+		return Y.ComplexMath.sin(this.args[0].evaluate());
 	}
 });
 
@@ -681,7 +1162,9 @@ MathFunction.Sine = MathSine;
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Cosine
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
+ * @param f {Y.MathFunction}
  */
 
 function MathCosine(
@@ -694,7 +1177,7 @@ Y.extend(MathCosine, MathFunctionWithArgs,
 {
 	evaluate: function()
 	{
-		return Math.cos(this.args[0].evaluate());
+		return Y.ComplexMath.cos(this.args[0].evaluate());
 	}
 });
 
@@ -704,7 +1187,9 @@ MathFunction.Cosine = MathCosine;
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Tangent
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
+ * @param f {Y.MathFunction}
  */
 
 function MathTangent(
@@ -717,18 +1202,270 @@ Y.extend(MathTangent, MathFunctionWithArgs,
 {
 	evaluate: function()
 	{
-		return Math.tan(this.args[0].evaluate());
+		return Y.ComplexMath.tan(this.args[0].evaluate());
 	}
 });
 
 MathFunction.Tangent = MathTangent;
+/**********************************************************************
+ * <p>Inverse trigonometric sine.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Arcsine
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathArcsine(
+	/* MathFunction */	f)
+{
+	MathArcsine.superclass.constructor.call(this, "arcsin", f);
+}
+
+Y.extend(MathArcsine, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Math.asin(this.args[0].evaluate());
+	}
+});
+
+MathFunction.Arcsine = MathArcsine;
+/**********************************************************************
+ * <p>Inverse trigonometric cosine.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Arccosine
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathArccosine(
+	/* MathFunction */	f)
+{
+	MathArccosine.superclass.constructor.call(this, "arccos", f);
+}
+
+Y.extend(MathArccosine, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Math.acos(this.args[0].evaluate());
+	}
+});
+
+MathFunction.Arccosine = MathArccosine;
+/**********************************************************************
+ * <p>Inverse trigonometric cosine.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Arctangent
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathArctangent(
+	/* MathFunction */	f)
+{
+	MathArctangent.superclass.constructor.call(this, "arctan", f);
+}
+
+Y.extend(MathArctangent, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Math.atan(this.args[0].evaluate());
+	}
+});
+
+MathFunction.Arctangent = MathArctangent;
+/**********************************************************************
+ * <p>Inverse trigonometric cosine.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Arctangent2
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param y {Y.MathFunction}
+ * @param x {Y.MathFunction}
+ */
+
+function MathArctangent2(
+	/* MathFunction */	y,
+	/* MathFunction */	x)
+{
+	MathArctangent2.superclass.constructor.call(this, "arctan2", y, x);
+}
+
+Y.extend(MathArctangent2, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Math.atan2(this.args[0].evaluate(), this.args[1].evaluate());
+	}
+});
+
+MathFunction.Arctangent2 = MathArctangent2;
+/**********************************************************************
+ * <p>Hyperbolic cosine.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.HyperbolicCosine
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathHyperbolicCosine(
+	/* MathFunction */	f)
+{
+	MathHyperbolicCosine.superclass.constructor.call(this, "cosh", f);
+}
+
+Y.extend(MathHyperbolicCosine, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.cosh(this.args[0].evaluate());
+	}
+});
+
+MathFunction.HyperbolicCosine = MathHyperbolicCosine;
+/**********************************************************************
+ * <p>Hyperbolic sine.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.HyperbolicSine
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathHyperbolicSine(
+	/* MathFunction */	f)
+{
+	MathHyperbolicSine.superclass.constructor.call(this, "sinh", f);
+}
+
+Y.extend(MathHyperbolicSine, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.sinh(this.args[0].evaluate());
+	}
+});
+
+MathFunction.HyperbolicSine = MathHyperbolicSine;
+/**********************************************************************
+ * <p>Hyperbolic tangent.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.HyperbolicTangent
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathHyperbolicTangent(
+	/* MathFunction */	f)
+{
+	MathHyperbolicTangent.superclass.constructor.call(this, "tanh", f);
+}
+
+Y.extend(MathHyperbolicTangent, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.tanh(this.args[0].evaluate());
+	}
+});
+
+MathFunction.HyperbolicTangent = MathHyperbolicTangent;
+/**********************************************************************
+ * <p>Inverse hyperbolic cosine.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.InverseHyperbolicCosine
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathInverseHyperbolicCosine(
+	/* MathFunction */	f)
+{
+	MathInverseHyperbolicCosine.superclass.constructor.call(this, "arccosh", f);
+}
+
+Y.extend(MathInverseHyperbolicCosine, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.acosh(this.args[0].evaluate());
+	}
+});
+
+MathFunction.InverseHyperbolicCosine = MathInverseHyperbolicCosine;
+/**********************************************************************
+ * <p>Inverse hyperbolic sine.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.InverseHyperbolicSine
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathInverseHyperbolicSine(
+	/* MathFunction */	f)
+{
+	MathInverseHyperbolicSine.superclass.constructor.call(this, "arcsinh", f);
+}
+
+Y.extend(MathInverseHyperbolicSine, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.asinh(this.args[0].evaluate());
+	}
+});
+
+MathFunction.InverseHyperbolicSine = MathInverseHyperbolicSine;
+/**********************************************************************
+ * <p>Inverse hyperbolic tangent.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.InverseHyperbolicTangent
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param f {Y.MathFunction}
+ */
+
+function MathInverseHyperbolicTangent(
+	/* MathFunction */	f)
+{
+	MathInverseHyperbolicTangent.superclass.constructor.call(this, "arctanh", f);
+}
+
+Y.extend(MathInverseHyperbolicTangent, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.atanh(this.args[0].evaluate());
+	}
+});
+
+MathFunction.InverseHyperbolicTangent = MathInverseHyperbolicTangent;
 /* Jison generated parser */
 var MathParser = (function(){
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"expressions":3,"e":4,"EOF":5,"NUMBER":6,"E":7,"PI":8,"(":9,")":10,"+":11,"-":12,"*":13,"/":14,"^":15,"SQRT":16,"SIN":17,"COS":18,"TAN":19,"MIN":20,"arglist":21,"MAX":22,",":23,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",6:"NUMBER",7:"E",8:"PI",9:"(",10:")",11:"+",12:"-",13:"*",14:"/",15:"^",16:"SQRT",17:"SIN",18:"COS",19:"TAN",20:"MIN",22:"MAX",23:","},
-productions_: [0,[3,2],[4,1],[4,1],[4,1],[4,3],[4,3],[4,3],[4,3],[4,3],[4,3],[4,2],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[21,1],[21,3]],
+symbols_: {"error":2,"expressions":3,"e":4,"EOF":5,"NUMBER":6,"E":7,"PI":8,"I":9,"(":10,")":11,"+":12,"-":13,"*":14,"/":15,"^":16,"ABS":17,"PHASE":18,"MIN":19,"arglist":20,"MAX":21,"SQRT":22,"LN":23,"ARCSIN":24,"ARCCOS":25,"ARCTAN":26,"SIN":27,"COS":28,"TAN":29,"SINH":30,"COSH":31,"TANH":32,"ARCSINH":33,"ARCCOSH":34,"ARCTANH":35,",":36,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",6:"NUMBER",7:"E",8:"PI",9:"I",10:"(",11:")",12:"+",13:"-",14:"*",15:"/",16:"^",17:"ABS",18:"PHASE",19:"MIN",21:"MAX",22:"SQRT",23:"LN",24:"ARCSIN",25:"ARCCOS",26:"ARCTAN",27:"SIN",28:"COS",29:"TAN",30:"SINH",31:"COSH",32:"TANH",33:"ARCSINH",34:"ARCCOSH",35:"ARCTANH",36:","},
+productions_: [0,[3,2],[4,1],[4,1],[4,1],[4,1],[4,3],[4,3],[4,3],[4,3],[4,3],[4,3],[4,2],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[20,1],[20,3]],
 performAction: function anonymous(yytext,yyleng,yylineno,yy,yystate,$$,_$) {
 
 var $0 = $$.length - 1;
@@ -741,40 +1478,66 @@ case 3:this.$ = new yy.MathFunction.E();
 break;
 case 4:this.$ = new yy.MathFunction.Pi();
 break;
-case 5:this.$ = $$[$0-1];
+case 5:this.$ = new yy.MathFunction.I();
 break;
-case 6:this.$ = $$[$0-2]+$$[$0];
+case 6:this.$ = $$[$0-1];
 break;
-case 7:this.$ = $$[$0-2]-$$[$0];
+case 7:this.$ = yy.MathFunction.updateSum($$[$0-2], $$[$0]);
 break;
-case 8:this.$ = $$[$0-2]*$$[$0];
+case 8:this.$ = yy.MathFunction.updateSum($$[$0-2], new yy.MathFunction.Negate($$[$0]));
 break;
-case 9:this.$ = $$[$0-2]/$$[$0];
+case 9:this.$ = $$[$0-2]*$$[$0];
 break;
-case 10:this.$ = Math.pow($$[$0-2], $$[$0]);
+case 10:this.$ = $$[$0-2]/$$[$0];
 break;
-case 11:this.$ = -$$[$0];
+case 11:this.$ = Math.pow($$[$0-2], $$[$0]);
 break;
-case 12:this.$ = new yy.MathFunction.SquareRoot($$[$0-1]);
+case 12:this.$ = new yy.MathFunction.Negate($$[$0]);
 break;
-case 13:this.$ = new yy.MathFunction.Sine($$[$0-1]);
+case 13:this.$ = new yy.MathFunction.Magnitude($$[$0-1]);
 break;
-case 14:this.$ = new yy.MathFunction.Cosine($$[$0-1]);
+case 14:this.$ = new yy.MathFunction.Phase($$[$0-1]);
 break;
-case 15:this.$ = new yy.MathFunction.Tangent($$[$0-1]);
+case 15:this.$ = new yy.MathFunction.Min($$[$0-1]);
 break;
-case 16:this.$ = new yy.MathFunction.Min($$[$0-1]);
+case 16:this.$ = new yy.MathFunction.Max($$[$0-1]);
 break;
-case 17:this.$ = new yy.MathFunction.Max($$[$0-1]);
+case 17:this.$ = new yy.MathFunction.SquareRoot($$[$0-1]);
 break;
-case 18:this.$ = [ $$[$0] ];
+case 18:this.$ = new yy.MathFunction.NaturalLog($$[$0-1]);
 break;
-case 19:this.$ = $$[$0-2].concat($$[$0]);
+case 19:this.$ = new yy.MathFunction.Arcsine($$[$0-1]);
+break;
+case 20:this.$ = new yy.MathFunction.Arccosine($$[$0-1]);
+break;
+case 21:this.$ = new yy.MathFunction.Arctangent($$[$0-1]);
+break;
+case 22:this.$ = new yy.MathFunction.Sine($$[$0-1]);
+break;
+case 23:this.$ = new yy.MathFunction.Cosine($$[$0-1]);
+break;
+case 24:this.$ = new yy.MathFunction.Tangent($$[$0-1]);
+break;
+case 25:this.$ = new yy.MathFunction.HyperbolicSine($$[$0-1]);
+break;
+case 26:this.$ = new yy.MathFunction.HyperbolicCosine($$[$0-1]);
+break;
+case 27:this.$ = new yy.MathFunction.HyperbolicTangent($$[$0-1]);
+break;
+case 28:this.$ = new yy.MathFunction.InverseHyperbolicSine($$[$0-1]);
+break;
+case 29:this.$ = new yy.MathFunction.InverseHyperbolicCosine($$[$0-1]);
+break;
+case 30:this.$ = new yy.MathFunction.InverseHyperbolicTangent($$[$0-1]);
+break;
+case 31:this.$ = [ $$[$0] ];
+break;
+case 32:this.$ = $$[$0-2].concat($$[$0]);
 break;
 }
 },
-table: [{3:1,4:2,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{1:[3]},{5:[1,14],11:[1,15],12:[1,16],13:[1,17],14:[1,18],15:[1,19]},{5:[2,2],10:[2,2],11:[2,2],12:[2,2],13:[2,2],14:[2,2],15:[2,2],23:[2,2]},{5:[2,3],10:[2,3],11:[2,3],12:[2,3],13:[2,3],14:[2,3],15:[2,3],23:[2,3]},{5:[2,4],10:[2,4],11:[2,4],12:[2,4],13:[2,4],14:[2,4],15:[2,4],23:[2,4]},{4:20,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{4:21,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{9:[1,22]},{9:[1,23]},{9:[1,24]},{9:[1,25]},{9:[1,26]},{9:[1,27]},{1:[2,1]},{4:28,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{4:29,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{4:30,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{4:31,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{4:32,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{10:[1,33],11:[1,15],12:[1,16],13:[1,17],14:[1,18],15:[1,19]},{5:[2,11],10:[2,11],11:[2,11],12:[2,11],13:[2,11],14:[2,11],15:[2,11],23:[2,11]},{4:34,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{4:35,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{4:36,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{4:37,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{4:39,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],21:38,22:[1,13]},{4:39,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],21:40,22:[1,13]},{5:[2,6],10:[2,6],11:[2,6],12:[2,6],13:[1,17],14:[1,18],15:[1,19],23:[2,6]},{5:[2,7],10:[2,7],11:[2,7],12:[2,7],13:[1,17],14:[1,18],15:[1,19],23:[2,7]},{5:[2,8],10:[2,8],11:[2,8],12:[2,8],13:[2,8],14:[2,8],15:[1,19],23:[2,8]},{5:[2,9],10:[2,9],11:[2,9],12:[2,9],13:[2,9],14:[2,9],15:[1,19],23:[2,9]},{5:[2,10],10:[2,10],11:[2,10],12:[2,10],13:[2,10],14:[2,10],15:[2,10],23:[2,10]},{5:[2,5],10:[2,5],11:[2,5],12:[2,5],13:[2,5],14:[2,5],15:[2,5],23:[2,5]},{10:[1,41],11:[1,15],12:[1,16],13:[1,17],14:[1,18],15:[1,19]},{10:[1,42],11:[1,15],12:[1,16],13:[1,17],14:[1,18],15:[1,19]},{10:[1,43],11:[1,15],12:[1,16],13:[1,17],14:[1,18],15:[1,19]},{10:[1,44],11:[1,15],12:[1,16],13:[1,17],14:[1,18],15:[1,19]},{10:[1,45],23:[1,46]},{10:[2,18],11:[1,15],12:[1,16],13:[1,17],14:[1,18],15:[1,19],23:[2,18]},{10:[1,47],23:[1,46]},{5:[2,12],10:[2,12],11:[2,12],12:[2,12],13:[2,12],14:[2,12],15:[2,12],23:[2,12]},{5:[2,13],10:[2,13],11:[2,13],12:[2,13],13:[2,13],14:[2,13],15:[2,13],23:[2,13]},{5:[2,14],10:[2,14],11:[2,14],12:[2,14],13:[2,14],14:[2,14],15:[2,14],23:[2,14]},{5:[2,15],10:[2,15],11:[2,15],12:[2,15],13:[2,15],14:[2,15],15:[2,15],23:[2,15]},{5:[2,16],10:[2,16],11:[2,16],12:[2,16],13:[2,16],14:[2,16],15:[2,16],23:[2,16]},{4:48,6:[1,3],7:[1,4],8:[1,5],9:[1,6],12:[1,7],16:[1,8],17:[1,9],18:[1,10],19:[1,11],20:[1,12],22:[1,13]},{5:[2,17],10:[2,17],11:[2,17],12:[2,17],13:[2,17],14:[2,17],15:[2,17],23:[2,17]},{10:[2,19],11:[1,15],12:[1,16],13:[1,17],14:[1,18],15:[1,19],23:[2,19]}],
-defaultActions: {14:[2,1]},
+table: [{3:1,4:2,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{1:[3]},{5:[1,27],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{5:[2,2],11:[2,2],12:[2,2],13:[2,2],14:[2,2],15:[2,2],16:[2,2],36:[2,2]},{5:[2,3],11:[2,3],12:[2,3],13:[2,3],14:[2,3],15:[2,3],16:[2,3],36:[2,3]},{5:[2,4],11:[2,4],12:[2,4],13:[2,4],14:[2,4],15:[2,4],16:[2,4],36:[2,4]},{5:[2,5],11:[2,5],12:[2,5],13:[2,5],14:[2,5],15:[2,5],16:[2,5],36:[2,5]},{4:33,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:34,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{10:[1,35]},{10:[1,36]},{10:[1,37]},{10:[1,38]},{10:[1,39]},{10:[1,40]},{10:[1,41]},{10:[1,42]},{10:[1,43]},{10:[1,44]},{10:[1,45]},{10:[1,46]},{10:[1,47]},{10:[1,48]},{10:[1,49]},{10:[1,50]},{10:[1,51]},{10:[1,52]},{1:[2,1]},{4:53,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:54,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:55,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:56,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:57,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{11:[1,58],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{5:[2,12],11:[2,12],12:[2,12],13:[2,12],14:[2,12],15:[2,12],16:[2,12],36:[2,12]},{4:59,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:60,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:62,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],20:61,21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:62,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],20:63,21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:64,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:65,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:66,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:67,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:68,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:69,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:70,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:71,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:72,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:73,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:74,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:75,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:76,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{4:77,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{5:[2,7],11:[2,7],12:[2,7],13:[2,7],14:[1,30],15:[1,31],16:[1,32],36:[2,7]},{5:[2,8],11:[2,8],12:[2,8],13:[2,8],14:[1,30],15:[1,31],16:[1,32],36:[2,8]},{5:[2,9],11:[2,9],12:[2,9],13:[2,9],14:[2,9],15:[2,9],16:[1,32],36:[2,9]},{5:[2,10],11:[2,10],12:[2,10],13:[2,10],14:[2,10],15:[2,10],16:[1,32],36:[2,10]},{5:[2,11],11:[2,11],12:[2,11],13:[2,11],14:[2,11],15:[2,11],16:[2,11],36:[2,11]},{5:[2,6],11:[2,6],12:[2,6],13:[2,6],14:[2,6],15:[2,6],16:[2,6],36:[2,6]},{11:[1,78],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,79],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,80],36:[1,81]},{11:[2,31],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32],36:[2,31]},{11:[1,82],36:[1,81]},{11:[1,83],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,84],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,85],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,86],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,87],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,88],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,89],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,90],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,91],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,92],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,93],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,94],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,95],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{11:[1,96],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32]},{5:[2,13],11:[2,13],12:[2,13],13:[2,13],14:[2,13],15:[2,13],16:[2,13],36:[2,13]},{5:[2,14],11:[2,14],12:[2,14],13:[2,14],14:[2,14],15:[2,14],16:[2,14],36:[2,14]},{5:[2,15],11:[2,15],12:[2,15],13:[2,15],14:[2,15],15:[2,15],16:[2,15],36:[2,15]},{4:97,6:[1,3],7:[1,4],8:[1,5],9:[1,6],10:[1,7],13:[1,8],17:[1,9],18:[1,10],19:[1,11],21:[1,12],22:[1,13],23:[1,14],24:[1,15],25:[1,16],26:[1,17],27:[1,18],28:[1,19],29:[1,20],30:[1,21],31:[1,22],32:[1,23],33:[1,24],34:[1,25],35:[1,26]},{5:[2,16],11:[2,16],12:[2,16],13:[2,16],14:[2,16],15:[2,16],16:[2,16],36:[2,16]},{5:[2,17],11:[2,17],12:[2,17],13:[2,17],14:[2,17],15:[2,17],16:[2,17],36:[2,17]},{5:[2,18],11:[2,18],12:[2,18],13:[2,18],14:[2,18],15:[2,18],16:[2,18],36:[2,18]},{5:[2,19],11:[2,19],12:[2,19],13:[2,19],14:[2,19],15:[2,19],16:[2,19],36:[2,19]},{5:[2,20],11:[2,20],12:[2,20],13:[2,20],14:[2,20],15:[2,20],16:[2,20],36:[2,20]},{5:[2,21],11:[2,21],12:[2,21],13:[2,21],14:[2,21],15:[2,21],16:[2,21],36:[2,21]},{5:[2,22],11:[2,22],12:[2,22],13:[2,22],14:[2,22],15:[2,22],16:[2,22],36:[2,22]},{5:[2,23],11:[2,23],12:[2,23],13:[2,23],14:[2,23],15:[2,23],16:[2,23],36:[2,23]},{5:[2,24],11:[2,24],12:[2,24],13:[2,24],14:[2,24],15:[2,24],16:[2,24],36:[2,24]},{5:[2,25],11:[2,25],12:[2,25],13:[2,25],14:[2,25],15:[2,25],16:[2,25],36:[2,25]},{5:[2,26],11:[2,26],12:[2,26],13:[2,26],14:[2,26],15:[2,26],16:[2,26],36:[2,26]},{5:[2,27],11:[2,27],12:[2,27],13:[2,27],14:[2,27],15:[2,27],16:[2,27],36:[2,27]},{5:[2,28],11:[2,28],12:[2,28],13:[2,28],14:[2,28],15:[2,28],16:[2,28],36:[2,28]},{5:[2,29],11:[2,29],12:[2,29],13:[2,29],14:[2,29],15:[2,29],16:[2,29],36:[2,29]},{5:[2,30],11:[2,30],12:[2,30],13:[2,30],14:[2,30],15:[2,30],16:[2,30],36:[2,30]},{11:[2,32],12:[1,28],13:[1,29],14:[1,30],15:[1,31],16:[1,32],36:[2,32]}],
+defaultActions: {27:[2,1]},
 parseError: function parseError(str, hash) {
     throw new Error(str);
 },
@@ -796,6 +1559,8 @@ parse: function parse(input) {
     this.lexer.setInput(input);
     this.lexer.yy = this.yy;
     this.yy.lexer = this.lexer;
+    if (typeof this.lexer.yylloc == 'undefined')
+        this.lexer.yylloc = {};
     var yyloc = this.lexer.yylloc;
     lstack.push(yyloc);
 
@@ -880,7 +1645,7 @@ parse: function parse(input) {
                 popStack(1);
                 state = stack[stack.length-1];
             }
-            
+
             preErrorSymbol = symbol; // save the lookahead token
             symbol = TERROR;         // insert generic error symbol as new lookahead
             state = stack[stack.length-1];
@@ -928,7 +1693,7 @@ parse: function parse(input) {
                     first_line: lstack[lstack.length-(len||1)].first_line,
                     last_line: lstack[lstack.length-1].last_line,
                     first_column: lstack[lstack.length-(len||1)].first_column,
-                    last_column: lstack[lstack.length-1].last_column,
+                    last_column: lstack[lstack.length-1].last_column
                 };
                 r = this.performAction.call(yyval, yytext, yyleng, yylineno, this.yy, action[1], vstack, lstack);
 
@@ -1034,7 +1799,7 @@ next:function () {
                 this.yylloc = {first_line: this.yylloc.last_line,
                                last_line: this.yylineno+1,
                                first_column: this.yylloc.last_column,
-                               last_column: lines ? lines[lines.length-1].length-1 : this.yylloc.last_column + match.length}
+                               last_column: lines ? lines[lines.length-1].length-1 : this.yylloc.last_column + match[0].length}
                 this.yytext += match[0];
                 this.match += match[0];
                 this.matches = match;
@@ -1075,48 +1840,74 @@ lexer.performAction = function anonymous(yy,yy_,$avoiding_name_collisions,YY_STA
 
 var YYSTATE=YY_START
 switch($avoiding_name_collisions) {
-case 0:/* skip whitespace */
+case 0:return 6;
 break;
-case 1:return 6;
+case 1:return 8;
 break;
-case 2:return 13;
+case 2:return 7;
 break;
-case 3:return 14;
+case 3:return 9;
 break;
-case 4:return 12;
+case 4:return 14;
 break;
-case 5:return 11;
+case 5:return 15;
 break;
-case 6:return 15;
+case 6:return 13;
 break;
-case 7:return 9;
+case 7:return 12;
 break;
-case 8:return 10;
+case 8:return 16;
 break;
-case 9:return 8;
+case 9:return 10;
 break;
-case 10:return 7;
+case 10:return 11;
 break;
-case 11:return 23;
+case 11:return 36;
 break;
-case 12:return 22;
+case 12:return 17;
 break;
-case 13:return 20;
+case 13:return 18;
 break;
-case 14:return 17;
+case 14:return 21;
 break;
-case 15:return 18;
+case 15:return 19;
 break;
-case 16:return 19;
+case 16:return 22;
 break;
-case 17:return 16;
+case 17:return 23;
 break;
-case 18:return 5;
+case 18:return 24;
+break;
+case 19:return 25;
+break;
+case 20:return 26;
+break;
+case 21:return 27;
+break;
+case 22:return 28;
+break;
+case 23:return 29;
+break;
+case 24:return 30;
+break;
+case 25:return 31;
+break;
+case 26:return 32;
+break;
+case 27:return 33;
+break;
+case 28:return 34;
+break;
+case 29:return 35;
+break;
+case 30:/* skip whitespace */
+break;
+case 31:return 5;
 break;
 }
 };
-lexer.rules = [/^\s+/,/^[0-9]+(\.[0-9]+)?\b\b/,/^\*/,/^\//,/^-/,/^\+/,/^\^/,/^\(/,/^\)/,/^pi\b/,/^e\b/,/^,/,/^max\b/,/^min\b/,/^sin\b/,/^cos\b/,/^tan\b/,/^sqrt\b/,/^$/];
-lexer.conditions = {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"inclusive":true}};return lexer;})()
+lexer.rules = [/^[0-9]+(\.[0-9]+)?\b\b/,/^pi\b/,/^e\b/,/^i\b/,/^\*/,/^\//,/^-/,/^\+/,/^\^/,/^\(/,/^\)/,/^,/,/^abs\b/,/^phase\b/,/^max\b/,/^min\b/,/^sqrt\b/,/^ln\b/,/^arcsin\b/,/^arccos\b/,/^arctan\b/,/^sin\b/,/^cos\b/,/^tan\b/,/^sinh\b/,/^cosh\b/,/^tanh\b/,/^arcsinh\b/,/^arccosh\b/,/^arctanh\b/,/^\s+/,/^$/];
+lexer.conditions = {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],"inclusive":true}};return lexer;})()
 parser.lexer = lexer;
 return parser;
 })();
@@ -1145,6 +1936,7 @@ if (typeof module !== 'undefined' && require.main === module) {
  * @module gallery-mathcanvas
  * @class Y.MathCanvas
  * @constructor
+ * @extends Y.Widget
  * @param config {Object} Widget configuration
  */
 
@@ -1409,6 +2201,19 @@ var math_rendering =
 	{
 		var h = r.bottom - r.top;
 		return 2+Math.round(0.5 + (h * (1.0 - Math.cos(paren_angle)))/(2.0 * Math.sin(paren_angle)));
+	},
+
+	drawVerticalBar: function(
+		/* rect */	r)
+	{
+		this.moveTo(r.left+1, r.top);
+		this.lineTo(r.left+1, r.bottom);
+		this.stroke();
+	},
+
+	getVerticalBarWidth: function()
+	{
+		return 3;
 	}
 };
 

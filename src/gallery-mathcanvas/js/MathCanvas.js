@@ -5,6 +5,7 @@
  * @module gallery-mathcanvas
  * @class Y.MathCanvas
  * @constructor
+ * @extends Y.Widget
  * @param config {Object} Widget configuration
  */
 
@@ -269,6 +270,19 @@ var math_rendering =
 	{
 		var h = r.bottom - r.top;
 		return 2+Math.round(0.5 + (h * (1.0 - Math.cos(paren_angle)))/(2.0 * Math.sin(paren_angle)));
+	},
+
+	drawVerticalBar: function(
+		/* rect */	r)
+	{
+		this.moveTo(r.left+1, r.top);
+		this.lineTo(r.left+1, r.bottom);
+		this.stroke();
+	},
+
+	getVerticalBarWidth: function()
+	{
+		return 3;
 	}
 };
 

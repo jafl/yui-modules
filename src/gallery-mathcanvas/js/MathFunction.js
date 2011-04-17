@@ -57,7 +57,7 @@ MathFunction.prototype =
 	{
 		var info = rect_list.find(this);
 		context.drawString(info.rect.left, info.midline, info.font_size, this.toString());
-	}
+	},
 
 	/**
 	 * Must be implemented by derived classes.
@@ -72,6 +72,45 @@ MathFunction.prototype =
 	 * @method toString
 	 * @return text representation of the function
 	 */
+
+	/**
+	 * @param f {MathFunction}
+	 * @return {boolean} true if f needs to parenthesize us
+	 * @protected
+	 */
+	parenthesizeForPrint: function(
+		/* MathFunction */	f)
+	{
+		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+	},
+
+	/**
+	 * @param f {MathFunction}
+	 * @return {boolean} true if f needs to parenthesize us
+	 * @protected
+	 */
+	parenthesizeForRender: function(
+		/* MathFunction */	f)
+	{
+		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+	}
+};
+
+// jison can't handle nested braces
+
+MathFunction.updateSum = function(
+	/* MathFunction */	f1,
+	/* MathFunction */	f2)
+{
+	if (f1 instanceof MathSum)
+	{
+		f1.appendArg(f2);
+		return f1;
+	}
+	else
+	{
+		return new MathSum(f1, f2);
+	}
 };
 
 Y.MathFunction = MathFunction;

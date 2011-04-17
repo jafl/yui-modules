@@ -3,6 +3,7 @@
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.E
+ * @extends Y.MathFunction
  * @constructor
  */
 

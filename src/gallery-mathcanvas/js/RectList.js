@@ -112,7 +112,7 @@ RectList.prototype =
 
 	/**
 	 * @param f {MathFunction} search target
-	 * @return index of item for specified MathFunction, or null if not found
+	 * @return data for specified MathFunction, or null if not found
 	 */
 	find: function(
 		/* MathFunction */	f)
@@ -121,6 +121,16 @@ RectList.prototype =
 		{
 			return (r.func === f);
 		});
+	},
+
+	/**
+	 * @param f {MathFunction} search target
+	 * @return index of item for specified MathFunction, or -1 if not found
+	 */
+	findIndex: function(
+		/* MathFunction */	f)
+	{
+		return Y.Array.indexOf(this.list, this.find(f));
 	},
 
 	/**

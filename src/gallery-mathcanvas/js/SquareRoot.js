@@ -3,8 +3,9 @@
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.SquareRoot
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
- * @param {number}
+ * @param f {Y.MathFunction}
  */
 
 function MathSquareRoot(
@@ -28,9 +29,8 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 	{
 		var arg       = this.args[0];
 		var arg_index = arg.prepareToRender(context, top_left, font_size, rect_list);
-
-		var arg_info = rect_list.get(arg_index);
-		var arg_h    = RectList.height(arg_info.rect);
+		var arg_info  = rect_list.get(arg_index);
+		var arg_h     = RectList.height(arg_info.rect);
 
 		var leading  = 1+Math.round(2.0*arg_h/(4.0*Math.sqrt(3.0)));
 		var trailing = 3;

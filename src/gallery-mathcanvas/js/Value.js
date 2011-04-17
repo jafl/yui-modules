@@ -3,7 +3,9 @@
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Value
+ * @extends Y.MathFunction
  * @constructor
+ * @param value {number}
  */
 
 function MathValue(
