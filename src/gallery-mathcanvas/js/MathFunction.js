@@ -96,7 +96,7 @@ MathFunction.prototype =
 	}
 };
 
-// jison can't handle nested braces
+// jison utility functions
 
 MathFunction.updateSum = function(
 	/* MathFunction */	f1,
@@ -110,6 +110,21 @@ MathFunction.updateSum = function(
 	else
 	{
 		return new MathSum(f1, f2);
+	}
+};
+
+MathFunction.updateProduct = function(
+	/* MathFunction */	f1,
+	/* MathFunction */	f2)
+{
+	if (f1 instanceof MathProduct)
+	{
+		f1.appendArg(f2);
+		return f1;
+	}
+	else
+	{
+		return new MathProduct(f1, f2);
 	}
 };
 

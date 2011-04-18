@@ -6,7 +6,12 @@
 %lex
 
 %%
-[0-9]+("."[0-9]+)?\b	return 'NUMBER';
+"0"[xX][0-9a-fA-F]+						return 'NUMBER';	/* hex */
+[0-9]+[eE][-+]?[0-9]+					return 'NUMBER';	/* integer w/ exponent */
+[0-9]+"."([0-9]+)?([eE][-+]?[0-9]+)?	return 'NUMBER';	/* decimal w/ exponent */
+([0-9]+)?"."[0-9]+([eE][-+]?[0-9]+)?	return 'NUMBER';	/* decimal w/ exponent */
+[1-9][0-9]*								return 'NUMBER';	/* decimal integer */
+"0"										return 'NUMBER';	/* zero */
 
 "pi"	return 'PI';
 "e"		return 'E';
@@ -79,7 +84,7 @@ e
 	| e '-' e
 		{$$ = yy.MathFunction.updateSum($1, new yy.MathFunction.Negate($3));}
 	| e '*' e
-		{$$ = $1*$3;}
+		{$$ = yy.MathFunction.updateProduct($1, $3);}
 	| e '/' e
 		{$$ = $1/$3;}
 	| e '^' e
