@@ -212,6 +212,32 @@ var ComplexMath =
 
 	/**
 	 * @param v {number}
+	 * @return {number} complex conjugate of the argument
+	 */
+	conjugate: function(v)
+	{
+		if (ComplexMath.isComplexNumber(v))
+		{
+			return new ComplexNumber(v.r, -v.i);
+		}
+		else
+		{
+			return new ComplexNumber(v, 0);
+		}
+	},
+
+	/**
+	 * @param v {number}
+	 * @param a {number} angle in radians
+	 * @return {number} phase of the argument
+	 */
+	rotate: function(v,a)
+	{
+		return ComplexMath.multiply(v, ComplexNumber.fromPolar(1, a));
+	},
+
+	/**
+	 * @param v {number}
 	 * @return {number} inverse hyperbolic cosine of the argument
 	 */
 	acosh: function(v)

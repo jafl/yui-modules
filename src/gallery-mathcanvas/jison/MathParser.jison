@@ -26,8 +26,12 @@
 ")"	return ')';
 
 ","			return ',';
+"re"		return 'RE';
+"im"		return 'IM';
 "abs"		return 'ABS';
 "phase"		return 'PHASE';
+"conjugate"	return 'CONJUGATE';
+"rotate"	return 'ROTATE';
 "max"		return 'MAX';
 "min"		return 'MIN';
 "sqrt"		return 'SQRT';
@@ -35,6 +39,7 @@
 "arcsin"	return 'ARCSIN';
 "arccos"	return 'ARCCOS';
 "arctan"	return 'ARCTAN';
+"arctan2"	return 'ARCTAN2';
 "sin"		return 'SIN';
 "cos"		return 'COS';
 "tan"		return 'TAN';
@@ -86,7 +91,7 @@ e
 	| e '*' e
 		{$$ = yy.MathFunction.updateProduct($1, $3);}
 	| e '/' e
-		{$$ = $1/$3;}
+		{$$ = new yy.MathFunction.Quotient($1, $3);}
 	| e '^' e
 		{$$ = Math.pow($1, $3);}
 	| '-' e %prec UMINUS
@@ -96,6 +101,14 @@ e
 		{$$ = new yy.MathFunction.Magnitude($3);}
 	| PHASE '(' e ')'
 		{$$ = new yy.MathFunction.Phase($3);}
+	| CONJUGATE '(' e ')'
+		{$$ = new yy.MathFunction.Conjugate($3);}
+	| ROTATE '(' arglist ')'
+		{$$ = new yy.MathFunction.Rotate($3);}
+	| RE '(' e ')'
+		{$$ = new yy.MathFunction.RealPart($3);}
+	| IM '(' e ')'
+		{$$ = new yy.MathFunction.ImaginaryPart($3);}
 
 	| MIN '(' arglist ')'
 		{$$ = new yy.MathFunction.Min($3);}
@@ -114,6 +127,8 @@ e
 		{$$ = new yy.MathFunction.Arccosine($3);}
 	| ARCTAN '(' e ')'
 		{$$ = new yy.MathFunction.Arctangent($3);}
+	| ARCTAN2 '(' arglist ')'
+		{$$ = new yy.MathFunction.Arctangent2($3);}
 
 	| SIN '(' e ')'
 		{$$ = new yy.MathFunction.Sine($3);}

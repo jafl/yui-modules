@@ -23,7 +23,7 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
-		/* array */			rect_list)
+		/* RectList */		rect_list)
 	{
 		var arg_top_left = Y.clone(top_left);
 
@@ -59,6 +59,9 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 		},
 		this);
 
+		// adjust the argument rectangles so all the midlines are the same
+		// (ourMidline is guaranteed to stay constant)
+
 		if (this.args.length > 1 && total_midline > orig_midline)
 		{
 			Y.Array.each(this.args, function(arg)
@@ -73,8 +76,8 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 	},
 
 	render: function(
-		/* Context2d */		context,
-		/* array */			rect_list)
+		/* Context2d */	context,
+		/* RectList */	rect_list)
 	{
 		var info = rect_list.find(this);
 		var x    = info.rect.left;

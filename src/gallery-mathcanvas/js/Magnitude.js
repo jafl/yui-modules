@@ -25,7 +25,7 @@ Y.extend(MathMagnitude, MathFunctionWithArgs,
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
-		/* array */			rect_list)
+		/* RectList */		rect_list)
 	{
 		var bar_width = context.getVerticalBarWidth();
 
@@ -47,8 +47,8 @@ Y.extend(MathMagnitude, MathFunctionWithArgs,
 	},
 
 	render: function(
-		/* Context2d */		context,
-		/* array */			rect_list)
+		/* Context2d */	context,
+		/* RectList */	rect_list)
 	{
 		var info = rect_list.find(this);
 		context.drawVerticalBar(info.rect);

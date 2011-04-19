@@ -30,7 +30,7 @@ MathFunction.prototype =
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
-		/* array */			rect_list)
+		/* RectList */		rect_list)
 	{
 		var s = this.toString();
 
@@ -52,8 +52,8 @@ MathFunction.prototype =
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(
-		/* Context2d */		context,
-		/* array */			rect_list)
+		/* Context2d */	context,
+		/* RectList */	rect_list)
 	{
 		var info = rect_list.find(this);
 		context.drawString(info.rect.left, info.midline, info.font_size, this.toString());

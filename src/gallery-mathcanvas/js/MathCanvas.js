@@ -283,6 +283,20 @@ var math_rendering =
 	getVerticalBarWidth: function()
 	{
 		return 3;
+	},
+
+	drawHorizontalBar: function(
+		/* rect */	r)
+	{
+		var y = r.top+1;
+		this.moveTo(r.left, y);
+		this.lineTo(r.right-1, y);
+		this.stroke();
+	},
+
+	getHorizontalBarHeight: function()
+	{
+		return 3;
 	}
 };
 

@@ -25,10 +25,9 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
-		/* array */			rect_list)
+		/* RectList */		rect_list)
 	{
-		var arg       = this.args[0];
-		var arg_index = arg.prepareToRender(context, top_left, font_size, rect_list);
+		var arg_index = this.args[0].prepareToRender(context, top_left, font_size, rect_list);
 		var arg_info  = rect_list.get(arg_index);
 		var arg_h     = RectList.height(arg_info.rect);
 
@@ -50,8 +49,8 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 	},
 
 	render: function(
-		/* Context2d */		context,
-		/* array */			rect_list)
+		/* Context2d */	context,
+		/* RectList */	rect_list)
 	{
 		var info = rect_list.find(this);
 		this._drawSquareRoot(context, info.rect);
