@@ -93,7 +93,7 @@ e
 	| e '/' e
 		{$$ = new yy.MathFunction.Quotient($1, $3);}
 	| e '^' e
-		{$$ = Math.pow($1, $3);}
+		{$$ = new yy.MathFunction.Exponential($1, $3);}
 	| '-' e %prec UMINUS
 		{$$ = new yy.MathFunction.Negate($2);}
 

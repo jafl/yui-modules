@@ -78,21 +78,7 @@ Y.extend(MathNegate, MathFunctionWithArgs,
 
 	toString: function()
 	{
-		var s = '-';
-
-		var arg = this.args[0];
-		if (arg.parenthesizeForPrint(this))
-		{
-			s += '(';
-			s += arg;
-			s += ')';
-		}
-		else
-		{
-			s += arg;
-		}
-
-		return s;
+		return '-' + this._printArg(0);
 	}
 });
 

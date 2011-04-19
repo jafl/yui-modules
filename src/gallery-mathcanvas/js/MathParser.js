@@ -29,7 +29,7 @@ case 9:this.$ = yy.MathFunction.updateProduct($$[$0-2], $$[$0]);
 break;
 case 10:this.$ = new yy.MathFunction.Quotient($$[$0-2], $$[$0]);
 break;
-case 11:this.$ = Math.pow($$[$0-2], $$[$0]);
+case 11:this.$ = new yy.MathFunction.Exponential($$[$0-2], $$[$0]);
 break;
 case 12:this.$ = new yy.MathFunction.Negate($$[$0]);
 break;

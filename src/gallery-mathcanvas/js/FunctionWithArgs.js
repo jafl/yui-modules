@@ -187,6 +187,27 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	toString: function()
 	{
 		return this.name + '(' + this.args.join(',') + ')';
+	},
+
+	/**
+	 * Print an argument, with parentheses if necessary.
+	 * 
+	 * @param index {number|MathFunction} argument index or MathFunction
+	 * @return {string} the string representation of the argument
+	 * @protected
+	 */
+	_printArg: function(
+		/* int */	index)
+	{
+		var arg = index instanceof MathFunction ? index : this.args[index];
+		if (arg.parenthesizeForPrint(this))
+		{
+			return '(' + arg + ')';
+		}
+		else
+		{
+			return arg.toString();
+		}
 	}
 });
 

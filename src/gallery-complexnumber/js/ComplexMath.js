@@ -206,7 +206,7 @@ var ComplexMath =
 		}
 		else
 		{
-			return ComplexMath.ZERO;
+			return new ComplexNumber();
 		}
 	},
 
@@ -372,7 +372,23 @@ var ComplexMath =
 	 */
 	pow: function(v, e)
 	{
-		return ComplexMath.exp(ComplexMath.multiply(ComplexMath.log(v), e));
+		var c1 = ComplexMath.isComplexNumber(v);
+		if ((c1 && v.r === 0 && v.i === 0) || (!c1 && v === 0))
+		{
+			var c2 = ComplexMath.isComplexNumber(e);
+			if ((c2 && e.r === 0 && e.i === 0) || (!c2 && e === 0))
+			{
+				return new ComplexNumber(1);	// 0 ^ 0
+			}
+			else
+			{
+				return new ComplexNumber();		// 0 ^ x, x != 0
+			}
+		}
+		else
+		{
+			return ComplexMath.exp(ComplexMath.multiply(ComplexMath.log(v), e));
+		}
 	},
 
 	/**

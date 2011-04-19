@@ -152,16 +152,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 				s += '+';
 			}
 
-			if (arg.parenthesizeForPrint(this))
-			{
-				s += '(';
-				s += arg;
-				s += ')';
-			}
-			else
-			{
-				s += arg;
-			}
+			s += this._printArg(arg);
 		},
 		this);
 

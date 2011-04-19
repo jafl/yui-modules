@@ -221,6 +221,25 @@ var math_rendering =
 			 this.math_canvas.get('fontname'));
 	},
 
+	getSuperSubFontSize: function(
+		/* percentage */	font_size)
+	{
+		var v = font_size * 0.6;
+		return Math.max(v, 40);
+	},
+
+	getSuperscriptHeight: function(
+		/* rect */	r)
+	{
+		return RectList.height(r)/2;
+	},
+
+	getSubscriptDepth: function(
+		/* rect */	r)
+	{
+		return RectList.height(r)/2;
+	},
+
 	drawSquareBrackets: function(
 		/* rect */	r)
 	{

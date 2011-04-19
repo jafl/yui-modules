@@ -645,6 +645,27 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	toString: function()
 	{
 		return this.name + '(' + this.args.join(',') + ')';
+	},
+
+	/**
+	 * Print an argument, with parentheses if necessary.
+	 * 
+	 * @param index {number|MathFunction} argument index or MathFunction
+	 * @return {string} the string representation of the argument
+	 * @protected
+	 */
+	_printArg: function(
+		/* int */	index)
+	{
+		var arg = index instanceof MathFunction ? index : this.args[index];
+		if (arg.parenthesizeForPrint(this))
+		{
+			return '(' + arg + ')';
+		}
+		else
+		{
+			return arg.toString();
+		}
 	}
 });
 
@@ -729,21 +750,7 @@ Y.extend(MathNegate, MathFunctionWithArgs,
 
 	toString: function()
 	{
-		var s = '-';
-
-		var arg = this.args[0];
-		if (arg.parenthesizeForPrint(this))
-		{
-			s += '(';
-			s += arg;
-			s += ')';
-		}
-		else
-		{
-			s += arg;
-		}
-
-		return s;
+		return '-' + this._printArg(0);
 	}
 });
 
@@ -902,16 +909,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 				s += '+';
 			}
 
-			if (arg.parenthesizeForPrint(this))
-			{
-				s += '(';
-				s += arg;
-				s += ')';
-			}
-			else
-			{
-				s += arg;
-			}
+			s += this._printArg(arg);
 		},
 		this);
 
@@ -1037,16 +1035,7 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 				s += '*';
 			}
 
-			if (arg.parenthesizeForPrint(this))
-			{
-				s += '(';
-				s += arg;
-				s += ')';
-			}
-			else
-			{
-				s += arg;
-			}
+			s += this._printArg(index);
 		},
 		this);
 
@@ -1071,20 +1060,6 @@ function MathQuotient(
 	/* MathFunction */	d)
 {
 	MathQuotient.superclass.constructor.call(this, "/", n, d);
-}
-
-function printArg(
-	/* int */	index)
-{
-	var arg = this.args[index];
-	if (arg.parenthesizeForPrint(this))
-	{
-		return '(' + arg + ')';
-	}
-	else
-	{
-		return arg.toString();
-	}
 }
 
 Y.extend(MathQuotient, MathFunctionWithArgs,
@@ -1174,11 +1149,112 @@ Y.extend(MathQuotient, MathFunctionWithArgs,
 
 	toString: function()
 	{
-		return printArg.call(this, 0) + '/' + printArg.call(this, 1);
+		return this._printArg(0) + '/' + this._printArg(1);
 	}
 });
 
 MathFunction.Quotient = MathQuotient;
+/**********************************************************************
+ * <p>Exponential.</p>
+ * 
+ * @module gallery-mathcanvas
+ * @class Y.MathFunction.Exponential
+ * @extends Y.MathFunction.FunctionWithArgs
+ * @constructor
+ * @param b {Y.MathFunction} base
+ * @param e {Y.MathFunction} exponent
+ */
+
+function MathExponential(
+	/* MathFunction */	b,
+	/* MathFunction */	e)
+{
+	MathExponential.superclass.constructor.call(this, "^", b, e);
+}
+
+Y.extend(MathExponential, MathFunctionWithArgs,
+{
+	evaluate: function()
+	{
+		return Y.ComplexMath.pow(this.args[0].evaluate(), this.args[1].evaluate());
+	},
+
+	prepareToRender: function(
+		/* Context2d */		context,
+		/* point */			top_left,
+		/* percentage */	font_size,
+		/* RectList */		rect_list)
+	{
+		var space_width = context.getStringWidth(font_size, ' ');
+
+		var arg_top_left = Y.clone(top_left);
+		arg_top_left.x += space_width;
+
+		// get rectangle for base
+
+		var b_arg_index = this.args[0].prepareToRender(context, arg_top_left, font_size, rect_list);
+		var b_arg_info  = rect_list.get(b_arg_index);
+		arg_top_left.x  = b_arg_info.rect.right;
+
+		if (this.args[0].parenthesizeForRender(this))
+		{
+			var paren_width = context.getParenthesisWidth(b_arg_info.rect);
+			rect_list.shift(b_arg_index, paren_width, 0);
+			arg_top_left.x += 2*paren_width;
+		}
+
+		// get rectangle for exponent
+
+		var e_font_size = context.getSuperSubFontSize(font_size);
+
+		var e_arg_index = this.args[1].prepareToRender(context, arg_top_left, e_font_size, rect_list);
+		var e_arg_info  = rect_list.get(e_arg_index);
+
+		// calculate our rectangle
+
+		var total_rect =
+		{
+			top:    top_left.y,
+			left:   top_left.x,
+			bottom: top_left.y + RectList.height(e_arg_info.rect) + context.getSuperscriptHeight(b_arg_info.rect),
+			right:  e_arg_info.rect.right
+		};
+
+		// shift the base down to the correct position inside ourRect
+
+		if (total_rect.bottom > b_arg_info.rect.bottom)
+		{
+			rect_list.shift(b_arg_index, 0, total_rect.bottom - b_arg_info.rect.bottom);
+		}
+		else
+		{
+			total_rect.bottom = b_arg_info.rect.bottom;
+		}
+
+		return rect_list.add(total_rect, b_arg_info.midline, font_size, this);
+	},
+
+	render: function(
+		/* Context2d */	context,
+		/* RectList */	rect_list)
+	{
+		if (this.args[0].parenthesizeForRender(this))
+		{
+			var info = rect_list.find(this.args[0]);
+			context.drawParentheses(info.rect);
+		}
+
+		this.args[0].render(context, rect_list);
+		this.args[1].render(context, rect_list);
+	},
+
+	toString: function()
+	{
+		return this._printArg(0) + '^' + this._printArg(1);
+	}
+});
+
+MathFunction.Exponential = MathExponential;
 /**********************************************************************
  * <p>Magnitude (absolute value) of a number.</p>
  * 
@@ -1912,7 +1988,7 @@ case 9:this.$ = yy.MathFunction.updateProduct($$[$0-2], $$[$0]);
 break;
 case 10:this.$ = new yy.MathFunction.Quotient($$[$0-2], $$[$0]);
 break;
-case 11:this.$ = Math.pow($$[$0-2], $$[$0]);
+case 11:this.$ = new yy.MathFunction.Exponential($$[$0-2], $$[$0]);
 break;
 case 12:this.$ = new yy.MathFunction.Negate($$[$0]);
 break;
@@ -2602,6 +2678,25 @@ var math_rendering =
 		this.set('font',
 			(this.math_canvas.get('fontsize') * font_size/100.0) + 'em ' +
 			 this.math_canvas.get('fontname'));
+	},
+
+	getSuperSubFontSize: function(
+		/* percentage */	font_size)
+	{
+		var v = font_size * 0.6;
+		return Math.max(v, 40);
+	},
+
+	getSuperscriptHeight: function(
+		/* rect */	r)
+	{
+		return RectList.height(r)/2;
+	},
+
+	getSubscriptDepth: function(
+		/* rect */	r)
+	{
+		return RectList.height(r)/2;
 	},
 
 	drawSquareBrackets: function(

@@ -115,16 +115,7 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 				s += '*';
 			}
 
-			if (arg.parenthesizeForPrint(this))
-			{
-				s += '(';
-				s += arg;
-				s += ')';
-			}
-			else
-			{
-				s += arg;
-			}
+			s += this._printArg(index);
 		},
 		this);
 

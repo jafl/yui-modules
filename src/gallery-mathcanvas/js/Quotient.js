@@ -16,20 +16,6 @@ function MathQuotient(
 	MathQuotient.superclass.constructor.call(this, "/", n, d);
 }
 
-function printArg(
-	/* int */	index)
-{
-	var arg = this.args[index];
-	if (arg.parenthesizeForPrint(this))
-	{
-		return '(' + arg + ')';
-	}
-	else
-	{
-		return arg.toString();
-	}
-}
-
 Y.extend(MathQuotient, MathFunctionWithArgs,
 {
 	evaluate: function()
@@ -117,7 +103,7 @@ Y.extend(MathQuotient, MathFunctionWithArgs,
 
 	toString: function()
 	{
-		return printArg.call(this, 0) + '/' + printArg.call(this, 1);
+		return this._printArg(0) + '/' + this._printArg(1);
 	}
 });
 
