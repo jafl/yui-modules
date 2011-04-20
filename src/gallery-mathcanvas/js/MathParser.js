@@ -2,7 +2,7 @@
 var MathParser = (function(){
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"expressions":3,"e":4,"EOF":5,"NUMBER":6,"E":7,"PI":8,"I":9,"(":10,")":11,"+":12,"-":13,"*":14,"/":15,"^":16,"ABS":17,"PHASE":18,"CONJUGATE":19,"ROTATE":20,"arglist":21,"RE":22,"IM":23,"MIN":24,"MAX":25,"SQRT":26,"LOG":27,"LOG2":28,"LOG10":29,"LN":30,"ARCSIN":31,"ARCCOS":32,"ARCTAN":33,"ARCTAN2":34,"SIN":35,"COS":36,"TAN":37,"SINH":38,"COSH":39,"TANH":40,"ARCSINH":41,"ARCCOSH":42,"ARCTANH":43,",":44,"$accept":0,"$end":1},
+symbols_: {"error":2,"expression":3,"e":4,"EOF":5,"NUMBER":6,"E":7,"PI":8,"I":9,"(":10,")":11,"+":12,"-":13,"*":14,"/":15,"^":16,"ABS":17,"PHASE":18,"CONJUGATE":19,"ROTATE":20,"arglist":21,"RE":22,"IM":23,"MIN":24,"MAX":25,"SQRT":26,"LOG":27,"LOG2":28,"LOG10":29,"LN":30,"ARCSIN":31,"ARCCOS":32,"ARCTAN":33,"ARCTAN2":34,"SIN":35,"COS":36,"TAN":37,"SINH":38,"COSH":39,"TANH":40,"ARCSINH":41,"ARCCOSH":42,"ARCTANH":43,",":44,"$accept":0,"$end":1},
 terminals_: {2:"error",5:"EOF",6:"NUMBER",7:"E",8:"PI",9:"I",10:"(",11:")",12:"+",13:"-",14:"*",15:"/",16:"^",17:"ABS",18:"PHASE",19:"CONJUGATE",20:"ROTATE",22:"RE",23:"IM",24:"MIN",25:"MAX",26:"SQRT",27:"LOG",28:"LOG2",29:"LOG10",30:"LN",31:"ARCSIN",32:"ARCCOS",33:"ARCTAN",34:"ARCTAN2",35:"SIN",36:"COS",37:"TAN",38:"SINH",39:"COSH",40:"TANH",41:"ARCSINH",42:"ARCCOSH",43:"ARCTANH",44:","},
 productions_: [0,[3,2],[4,1],[4,1],[4,1],[4,1],[4,3],[4,3],[4,3],[4,3],[4,3],[4,3],[4,2],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[4,4],[21,1],[21,3]],
 performAction: function anonymous(yytext,yyleng,yylineno,yy,yystate,$$,_$) {
@@ -409,86 +409,88 @@ case 5:return 6;	/* zero */
 break;
 case 6:return 8;
 break;
-case 7:return 7;
+case 7:return 8;
 break;
-case 8:return 9;
+case 8:return 7;
 break;
-case 9:return 14;
+case 9:return 9;
 break;
-case 10:return 15;
+case 10:return 14;
 break;
-case 11:return 13;
+case 11:return 15;
 break;
-case 12:return 12;
+case 12:return 13;
 break;
-case 13:return 16;
+case 13:return 12;
 break;
-case 14:return 10;
+case 14:return 16;
 break;
-case 15:return 11;
+case 15:return 10;
 break;
-case 16:return 44;
+case 16:return 11;
 break;
-case 17:return 22;
+case 17:return 44;
 break;
-case 18:return 23;
+case 18:return 22;
 break;
-case 19:return 17;
+case 19:return 23;
 break;
-case 20:return 18;
+case 20:return 17;
 break;
-case 21:return 19;
+case 21:return 18;
 break;
-case 22:return 20;
+case 22:return 19;
 break;
-case 23:return 25;
+case 23:return 20;
 break;
-case 24:return 24;
+case 24:return 25;
 break;
-case 25:return 26;
+case 25:return 24;
 break;
-case 26:return 27;
+case 26:return 26;
 break;
-case 27:return 28;
+case 27:return 27;
 break;
-case 28:return 29;
+case 28:return 28;
 break;
-case 29:return 30;
+case 29:return 29;
 break;
-case 30:return 31;
+case 30:return 30;
 break;
-case 31:return 32;
+case 31:return 31;
 break;
-case 32:return 33;
+case 32:return 32;
 break;
-case 33:return 34;
+case 33:return 33;
 break;
-case 34:return 35;
+case 34:return 34;
 break;
-case 35:return 36;
+case 35:return 35;
 break;
-case 36:return 37;
+case 36:return 36;
 break;
-case 37:return 38;
+case 37:return 37;
 break;
-case 38:return 39;
+case 38:return 38;
 break;
-case 39:return 40;
+case 39:return 39;
 break;
-case 40:return 41;
+case 40:return 40;
 break;
-case 41:return 42;
+case 41:return 41;
 break;
-case 42:return 43;
+case 42:return 42;
 break;
-case 43:/* skip whitespace */
+case 43:return 43;
 break;
-case 44:return 5;
+case 44:/* skip whitespace */
+break;
+case 45:return 5;
 break;
 }
 };
-lexer.rules = [/^0[xX][0-9a-fA-F]+/,/^[0-9]+[eE][-+]?[0-9]+/,/^[0-9]+\.([0-9]+)?([eE][-+]?[0-9]+)?/,/^([0-9]+)?\.[0-9]+([eE][-+]?[0-9]+)?/,/^[1-9][0-9]*/,/^0\b/,/^pi\b/,/^e\b/,/^i\b/,/^\*/,/^\//,/^-/,/^\+/,/^\^/,/^\(/,/^\)/,/^,/,/^re\b/,/^im\b/,/^abs\b/,/^phase\b/,/^conjugate\b/,/^rotate\b/,/^max\b/,/^min\b/,/^sqrt\b/,/^log\b/,/^log2\b/,/^log10\b/,/^ln\b/,/^arcsin\b/,/^arccos\b/,/^arctan\b/,/^arctan2\b/,/^sin\b/,/^cos\b/,/^tan\b/,/^sinh\b/,/^cosh\b/,/^tanh\b/,/^arcsinh\b/,/^arccosh\b/,/^arctanh\b/,/^\s+/,/^$/];
-lexer.conditions = {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44],"inclusive":true}};return lexer;})()
+lexer.rules = [/^0[xX][0-9a-fA-F]+/,/^[0-9]+[eE][-+]?[0-9]+/,/^[0-9]+\.([0-9]+)?([eE][-+]?[0-9]+)?/,/^([0-9]+)?\.[0-9]+([eE][-+]?[0-9]+)?/,/^[1-9][0-9]*/,/^0\b/,/^pi\b/,/^\u03c0/,/^e\b/,/^i\b/,/^\*/,/^\//,/^-/,/^\+/,/^\^/,/^\(/,/^\)/,/^,/,/^re\b/,/^im\b/,/^abs\b/,/^phase\b/,/^conjugate\b/,/^rotate\b/,/^max\b/,/^min\b/,/^sqrt\b/,/^log\b/,/^log2\b/,/^log10\b/,/^ln\b/,/^arcsin\b/,/^arccos\b/,/^arctan\b/,/^arctan2\b/,/^sin\b/,/^cos\b/,/^tan\b/,/^sinh\b/,/^cosh\b/,/^tanh\b/,/^arcsinh\b/,/^arccosh\b/,/^arctanh\b/,/^\s+/,/^$/];
+lexer.conditions = {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45],"inclusive":true}};return lexer;})()
 parser.lexer = lexer;
 return parser;
 })();

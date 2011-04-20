@@ -13,9 +13,10 @@
 [1-9][0-9]*								return 'NUMBER';	/* decimal integer */
 "0"										return 'NUMBER';	/* zero */
 
-"pi"	return 'PI';
-"e"		return 'E';
-"i"		return 'I';
+"pi"		return 'PI';
+"\u03c0"	return 'PI';
+"e"			return 'E';
+"i"			return 'I';
 
 "*"	return '*';
 "/"	return '/';
@@ -65,11 +66,11 @@
 %left '^'
 %left UMINUS
 
-%start expressions
+%start expression
 
 %% /* language grammar */
 
-expressions
+expression
 	: e EOF
 		{return $1;}
 	;
