@@ -35,6 +35,9 @@
 "max"		return 'MAX';
 "min"		return 'MIN';
 "sqrt"		return 'SQRT';
+"log"		return 'LOG';
+"log2"		return 'LOG2';
+"log10"		return 'LOG10';
 "ln"		return 'LN';
 "arcsin"	return 'ARCSIN';
 "arccos"	return 'ARCCOS';
@@ -118,6 +121,12 @@ e
 	| SQRT '(' e ')'
 		{$$ = new yy.MathFunction.SquareRoot($3);}
 
+	| LOG '(' arglist ')'
+		{$$ = new yy.MathFunction.Logarithm($3);}
+	| LOG2 '(' e ')'
+		{$$ = new yy.MathFunction.Logarithm(new yy.MathFunction.Value(2), $3);}
+	| LOG10 '(' e ')'
+		{$$ = new yy.MathFunction.Logarithm(new yy.MathFunction.Value(10), $3);}
 	| LN '(' e ')'
 		{$$ = new yy.MathFunction.NaturalLog($3);}
 
