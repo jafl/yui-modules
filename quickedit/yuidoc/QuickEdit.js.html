@@ -75,9 +75,6 @@
 <span class="cm"> * &lt;dt&gt;changed&lt;/dt&gt;&lt;dd&gt;Optional.  The function to call with the old and new</span>
 <span class="cm"> * value.  Should return true if the values are different.&lt;/dd&gt;</span>
 <span class="cm"> *</span>
-<span class="cm"> * &lt;dt&gt;copyDown&lt;/dt&gt;&lt;dd&gt;If true, the top cell in the column will have a</span>
-<span class="cm"> * button to copy the value down to the rest of the rows.&lt;/dd&gt;</span>
-<span class="cm"> *</span>
 <span class="cm"> * &lt;dt&gt;formatter&lt;/dt&gt;&lt;dd&gt;The cell formatter which will render an</span>
 <span class="cm"> * appropriate form field: &amp;lt;input type=&quot;text&quot;&amp;gt;, &amp;lt;textarea&amp;gt;,</span>
 <span class="cm"> * or &amp;lt;select&amp;gt;.&lt;/dd&gt;</span>
@@ -134,6 +131,10 @@
 <span class="cm"> */</span>
 
 <span class="cm">/*</span>
+<span class="cm"> *</span>
+<span class="cm"> * &lt;dt&gt;copyDown&lt;/dt&gt;&lt;dd&gt;If true, the top cell in the column will have a</span>
+<span class="cm"> * button to copy the value down to the rest of the rows.&lt;/dd&gt;</span>
+<span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;Custom QuickEdit Formatters&lt;/p&gt;</span>
 <span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;To write a custom cell formatter for QuickEdit mode, you must</span>
@@ -275,7 +276,7 @@
 <span class="cm">		yiv: qe.validation ? (qe.validation.css || &#39;&#39;) : &#39;&#39;</span>
 <span class="cm">	}));</span>
 
-<span class="cm">	o.td.get(&#39;firstChild&#39;).value = (o.value || &#39;&#39;);</span>
+<span class="cm">	o.td.get(&#39;firstChild&#39;).value = o.value;</span>
 
 <span class="cm">	QuickEdit.copyDownFormatter.apply(this, arguments);</span>
 <span class="cm">*/</span>
@@ -289,7 +290,7 @@
 	<span class="p">{</span>
 		<span class="nx">key</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">column</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">),</span>
 		<span class="nx">yiv</span><span class="o">:</span> <span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span> <span class="o">?</span> <span class="p">(</span><span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-		<span class="nx">value</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">?</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span>
+		<span class="nx">value</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span>
 	<span class="p">});</span>
 <span class="p">};</span>
 
@@ -315,7 +316,7 @@
 <span class="cm">		yiv: qe.validation ? (qe.validation.css || &#39;&#39;) : &#39;&#39;</span>
 <span class="cm">	}));</span>
 
-<span class="cm">	o.td.get(&#39;firstChild&#39;).value = (o.value || &#39;&#39;);</span>
+<span class="cm">	o.td.get(&#39;firstChild&#39;).value = o.value;</span>
 
 <span class="cm">	QuickEdit.copyDownFormatter.apply(this, arguments);</span>
 <span class="cm">*/</span>
@@ -329,7 +330,7 @@
 	<span class="p">{</span>
 		<span class="nx">key</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">column</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">),</span>
 		<span class="nx">yiv</span><span class="o">:</span> <span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span> <span class="o">?</span> <span class="p">(</span><span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-		<span class="nx">value</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">?</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span>
+		<span class="nx">value</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span>
 	<span class="p">});</span>
 <span class="p">};</span>
 
@@ -344,7 +345,7 @@
 <span class="cm"> */</span>
 <span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">readonlyEmailFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+	<span class="k">return</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>		<span class="c1">// don&#39;t need to check for zero</span>
 <span class="p">};</span>
 
 <span class="cm">/**</span>
@@ -358,7 +359,7 @@
 <span class="cm"> */</span>
 <span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">readonlyLinkFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+	<span class="k">return</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>		<span class="c1">// don&#39;t need to check for zero</span>
 <span class="p">};</span>
 
 <span class="kd">function</span> <span class="nx">getSiblingTdEl</span><span class="p">(</span>
@@ -435,7 +436,7 @@
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="cm">/**</span>
+<span class="cm">/*</span>
 <span class="cm"> * Called with exactly the same arguments as a normal cell</span>
 <span class="cm"> * formatter, this function inserts a &quot;Copy down&quot; button if the</span>
 <span class="cm"> * cell is in the first row of the DataTable.  Call this at the end</span>
@@ -880,7 +881,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Y.Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Y.Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_YAHOO.widget.QuickEditDataTable.status_order", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "YAHOO.widget.QuickEditDataTable.status_order"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.copyDownFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.copyDownFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyEmailFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyEmailFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyLinkFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyLinkFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textareaFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textareaFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textFormatter"}];
+    var ALL_YUI_PROPS = [{"url": "Y.Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Y.Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_YAHOO.widget.QuickEditDataTable.status_order", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "YAHOO.widget.QuickEditDataTable.status_order"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyEmailFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyEmailFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyLinkFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyLinkFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textareaFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textareaFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textFormatter"}];
 </script>
 </body>
 </html>

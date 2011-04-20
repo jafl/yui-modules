@@ -79,8 +79,6 @@ quickEdit:</p>
 <dl>
 <dt>changed</dt><dd>Optional.  The function to call with the old and new
 value.  Should return true if the values are different.</dd>
-<dt>copyDown</dt><dd>If true, the top cell in the column will have a
-button to copy the value down to the rest of the rows.</dd>
 <dt>formatter</dt><dd>The cell formatter which will render an
 appropriate form field: &lt;input type="text"&gt;, &lt;textarea&gt;,
 or &lt;select&gt;.</dd>
@@ -536,39 +534,6 @@ be editable.  If the table has paginators, you must hide them.
                                     </div>
                                     <hr />
                                     </div>
-                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.copyDownFormatter">
-                                    <h4>
-                                        <a name="method_Y.Plugin.QuickEdit.copyDownFormatter">Y.Plugin.QuickEdit.copyDownFormatter</a></h4>
-                                    <div class="detail" >
-                                        <code>
-                                        
-                                         static 
-                                        
-                                        void
-                                            <strong property="yui:name">Y.Plugin.QuickEdit.copyDownFormatter</strong>
-                                           (
-                                            )
-                                        </code>
-                                        
-                                        <div class="description" property="yui:description">
-                                            Called with exactly the same arguments as a normal cell
-formatter, this function inserts a "Copy down" button if the
-cell is in the first row of the DataTable.  Call this at the end
-of your QuickEdit formatter.
-                                        </div>
-
-                                        <div class="description">
-
-
-
-
-             
-
-                                        </div>
-
-                                    </div>
-                                    <hr />
-                                    </div>
                                     <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.readonlyEmailFormatter">
                                     <h4>
                                         <a name="method_Y.Plugin.QuickEdit.readonlyEmailFormatter">Y.Plugin.QuickEdit.readonlyEmailFormatter</a></h4>
@@ -844,7 +809,6 @@ appearance of each status type:  .formmgr-has{status}</p>
                                 <li class=""><a href="#method_getChanges" title="getChanges">getChanges</a></li>
                                 <li class=""><a href="#method_start" title="start">start</a></li>
                                 <li class=""><a href="#method_validate" title="validate">validate</a></li>
-                                <li class=""><a href="#method_Y.Plugin.QuickEdit.copyDownFormatter" title="Y.Plugin.QuickEdit.copyDownFormatter">Y.Plugin.QuickEdit.copyDownFormatter</a></li>
                                 <li class=""><a href="#method_Y.Plugin.QuickEdit.readonlyEmailFormatter" title="Y.Plugin.QuickEdit.readonlyEmailFormatter">Y.Plugin.QuickEdit.readonlyEmailFormatter</a></li>
                                 <li class=""><a href="#method_Y.Plugin.QuickEdit.readonlyLinkFormatter" title="Y.Plugin.QuickEdit.readonlyLinkFormatter">Y.Plugin.QuickEdit.readonlyLinkFormatter</a></li>
                                 <li class=""><a href="#method_Y.Plugin.QuickEdit.textareaFormatter" title="Y.Plugin.QuickEdit.textareaFormatter">Y.Plugin.QuickEdit.textareaFormatter</a></li>
@@ -877,7 +841,7 @@ appearance of each status type:  .formmgr-has{status}</p>
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Y.Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Y.Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_YAHOO.widget.QuickEditDataTable.status_order", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "YAHOO.widget.QuickEditDataTable.status_order"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.copyDownFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.copyDownFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyEmailFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyEmailFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyLinkFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyLinkFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textareaFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textareaFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textFormatter"}];
+    var ALL_YUI_PROPS = [{"url": "Y.Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Y.Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_YAHOO.widget.QuickEditDataTable.status_order", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "YAHOO.widget.QuickEditDataTable.status_order"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyEmailFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyEmailFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyLinkFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyLinkFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textareaFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textareaFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textFormatter"}];
 </script>
 </body>
 </html>
