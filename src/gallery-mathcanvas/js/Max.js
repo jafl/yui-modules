@@ -3,6 +3,7 @@
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Max
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
  */
 

@@ -5,6 +5,7 @@
  * @module gallery-mathcanvas
  * @class Y.MathCanvas
  * @constructor
+ * @extends Y.Widget
  * @param config {Object} Widget configuration
  */
 
@@ -220,6 +221,25 @@ var math_rendering =
 			 this.math_canvas.get('fontname'));
 	},
 
+	getSuperSubFontSize: function(
+		/* percentage */	font_size)
+	{
+		var v = font_size * 0.6;
+		return Math.max(v, 40);
+	},
+
+	getSuperscriptHeight: function(
+		/* rect */	r)
+	{
+		return RectList.height(r)/2;
+	},
+
+	getSubscriptDepth: function(
+		/* rect */	r)
+	{
+		return RectList.height(r)/2;
+	},
+
 	drawSquareBrackets: function(
 		/* rect */	r)
 	{
@@ -269,6 +289,33 @@ var math_rendering =
 	{
 		var h = r.bottom - r.top;
 		return 2+Math.round(0.5 + (h * (1.0 - Math.cos(paren_angle)))/(2.0 * Math.sin(paren_angle)));
+	},
+
+	drawVerticalBar: function(
+		/* rect */	r)
+	{
+		this.moveTo(r.left+1, r.top);
+		this.lineTo(r.left+1, r.bottom);
+		this.stroke();
+	},
+
+	getVerticalBarWidth: function()
+	{
+		return 3;
+	},
+
+	drawHorizontalBar: function(
+		/* rect */	r)
+	{
+		var y = r.top+1;
+		this.moveTo(r.left, y);
+		this.lineTo(r.right-1, y);
+		this.stroke();
+	},
+
+	getHorizontalBarHeight: function()
+	{
+		return 3;
 	}
 };
 

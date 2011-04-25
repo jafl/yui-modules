@@ -30,7 +30,7 @@ MathFunction.prototype =
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
-		/* array */			rect_list)
+		/* RectList */		rect_list)
 	{
 		var s = this.toString();
 
@@ -52,12 +52,12 @@ MathFunction.prototype =
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(
-		/* Context2d */		context,
-		/* array */			rect_list)
+		/* Context2d */	context,
+		/* RectList */	rect_list)
 	{
 		var info = rect_list.find(this);
 		context.drawString(info.rect.left, info.midline, info.font_size, this.toString());
-	}
+	},
 
 	/**
 	 * Must be implemented by derived classes.
@@ -72,6 +72,60 @@ MathFunction.prototype =
 	 * @method toString
 	 * @return text representation of the function
 	 */
+
+	/**
+	 * @param f {MathFunction}
+	 * @return {boolean} true if f needs to parenthesize us
+	 * @protected
+	 */
+	parenthesizeForPrint: function(
+		/* MathFunction */	f)
+	{
+		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+	},
+
+	/**
+	 * @param f {MathFunction}
+	 * @return {boolean} true if f needs to parenthesize us
+	 * @protected
+	 */
+	parenthesizeForRender: function(
+		/* MathFunction */	f)
+	{
+		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+	}
+};
+
+// jison utility functions
+
+MathFunction.updateSum = function(
+	/* MathFunction */	f1,
+	/* MathFunction */	f2)
+{
+	if (f1 instanceof MathSum)
+	{
+		f1.appendArg(f2);
+		return f1;
+	}
+	else
+	{
+		return new MathSum(f1, f2);
+	}
+};
+
+MathFunction.updateProduct = function(
+	/* MathFunction */	f1,
+	/* MathFunction */	f2)
+{
+	if (f1 instanceof MathProduct)
+	{
+		f1.appendArg(f2);
+		return f1;
+	}
+	else
+	{
+		return new MathProduct(f1, f2);
+	}
 };
 
 Y.MathFunction = MathFunction;

@@ -3,13 +3,14 @@
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.Arctangent2
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
- * @param {number} y
- * @param {number} x
+ * @param y {Y.MathFunction}
+ * @param x {Y.MathFunction}
  */
 
 function MathArctangent2(
-	/* MathFunction */	y)
+	/* MathFunction */	y,
 	/* MathFunction */	x)
 {
 	MathArctangent2.superclass.constructor.call(this, "arctan2", y, x);

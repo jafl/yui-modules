@@ -3,8 +3,9 @@
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.HyperbolicTangent
+ * @extends Y.MathFunction.FunctionWithArgs
  * @constructor
- * @param {number}
+ * @param f {Y.MathFunction}
  */
 
 function MathHyperbolicTangent(

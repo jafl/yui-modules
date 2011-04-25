@@ -3,7 +3,10 @@
  * 
  * @module gallery-mathcanvas
  * @class Y.MathFunction.FunctionWithArgs
+ * @extends Y.MathFunction
  * @constructor
+ * @param name {String} the name of the function
+ * @param args {Y.MathFunction|Array} the arguments
  */
 
 function MathFunctionWithArgs(
@@ -35,6 +38,15 @@ function MathFunctionWithArgs(
 Y.extend(MathFunctionWithArgs, MathFunction,
 {
 	/**
+	 * @param f {MathFunction}
+	 */
+	appendArg: function(
+		/* MathFunction */	f)
+	{
+		this.args.push(f);
+	},
+
+	/**
 	 * If origArg is an argument, replaces origArg with newArg.
 	 * 
 	 * @param origArg {MathFunction} original argument
@@ -53,10 +65,11 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 
 	/**
 	 * @return list of argument values, from calling evaluate()
+	 * @protected
 	 */
 	evaluateArgs: function()
 	{
-		var v;
+		var v = [];
 		Y.Array.each(this.args, function(arg)
 		{
 			v.push(arg.evaluate());
@@ -69,7 +82,7 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
-		/* array */			rect_list)
+		/* RectList */		rect_list)
 	{
 		var r =
 		{
@@ -136,8 +149,8 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	},
 
 	render: function(
-		/* Context2d */		context,
-		/* array */			rect_list)
+		/* Context2d */	context,
+		/* RectList */	rect_list)
 	{
 		var info = rect_list.find(this);
 		context.drawString(info.rect.left, info.midline, info.font_size, this.name);
@@ -174,6 +187,27 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	toString: function()
 	{
 		return this.name + '(' + this.args.join(',') + ')';
+	},
+
+	/**
+	 * Print an argument, with parentheses if necessary.
+	 * 
+	 * @param index {number|MathFunction} argument index or MathFunction
+	 * @return {string} the string representation of the argument
+	 * @protected
+	 */
+	_printArg: function(
+		/* int */	index)
+	{
+		var arg = index instanceof MathFunction ? index : this.args[index];
+		if (arg.parenthesizeForPrint(this))
+		{
+			return '(' + arg + ')';
+		}
+		else
+		{
+			return arg.toString();
+		}
 	}
 });
 
