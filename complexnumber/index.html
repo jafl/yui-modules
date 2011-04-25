@@ -98,6 +98,18 @@ YUI({
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1,-1), v.negate());
 		},
 
+		testConjugate: function()
+		{
+			var v = new Y.ComplexNumber(-1,1);
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-1,-1), v.conjugate());
+		},
+
+		testRotate: function()
+		{
+			var v = new Y.ComplexNumber(-1,1);
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-Math.sqrt(2)), v.rotate(Math.PI/4));
+		},
+
 		testAddConstant: function()
 		{
 			Y.ComplexMath.I.add(2);
@@ -196,6 +208,21 @@ YUI({
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(5), Y.ComplexMath.abs(new Y.ComplexNumber(3,-4)));
 		},
 
+		testPhase: function()
+		{
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(Math.PI/4), Y.ComplexMath.phase(new Y.ComplexNumber(1,1)));
+		},
+
+		testConjugate: function()
+		{
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1, -1), Y.ComplexMath.conjugate(new Y.ComplexNumber(1,1)));
+		},
+
+		testRotate: function()
+		{
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(-1, 1), Y.ComplexMath.rotate(new Y.ComplexNumber(1,1), Math.PI/2));
+		},
+
 		testSqrt: function()
 		{
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(2), Y.ComplexMath.sqrt(4));
@@ -228,6 +255,11 @@ YUI({
 
 		testPow: function()
 		{
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1), Y.ComplexMath.pow(0, 0));
+			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(1), Y.ComplexMath.pow(Y.ComplexMath.ZERO, Y.ComplexMath.ZERO));
+			Y.Assert.complexWithinEpsilon(Y.ComplexMath.ZERO, Y.ComplexMath.pow(0, 2));
+			Y.Assert.complexWithinEpsilon(Y.ComplexMath.ZERO, Y.ComplexMath.pow(Y.ComplexMath.ZERO, 2));
+
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0.7692389013639721, 0.6389612763136348), Y.ComplexMath.pow(2, Y.ComplexMath.I));
 			Y.Assert.complexWithinEpsilon(new Y.ComplexNumber(0.2078795763507619), Y.ComplexMath.pow(Y.ComplexMath.I, Y.ComplexMath.I));
 		},
