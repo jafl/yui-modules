@@ -16,9 +16,10 @@ function MathArccosine(
 
 Y.extend(MathArccosine, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Math.acos(this.args[0].evaluate());
+		return Math.acos(this.args[0].evaluate(var_list));
 	}
 });
 

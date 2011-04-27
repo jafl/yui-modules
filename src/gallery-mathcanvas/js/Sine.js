@@ -16,9 +16,10 @@ function MathSine(
 
 Y.extend(MathSine, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.sin(this.args[0].evaluate());
+		return Y.ComplexMath.sin(this.args[0].evaluate(var_list));
 	}
 });
 

@@ -16,9 +16,10 @@ function MathMagnitude(
 
 Y.extend(MathMagnitude, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.abs(this.args[0].evaluate());
+		return Y.ComplexMath.abs(this.args[0].evaluate(var_list));
 	},
 
 	prepareToRender: function(

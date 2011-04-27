@@ -16,9 +16,10 @@ function MathArctangent(
 
 Y.extend(MathArctangent, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Math.atan(this.args[0].evaluate());
+		return Math.atan(this.args[0].evaluate(var_list));
 	}
 });
 

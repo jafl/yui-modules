@@ -16,9 +16,11 @@ function MathRotate(
 
 Y.extend(MathRotate, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.rotate(this.args[0].evaluate(), this.args[1].evaluate());
+		return Y.ComplexMath.rotate(this.args[0].evaluate(var_list),
+									this.args[1].evaluate(var_list));
 	}
 });
 

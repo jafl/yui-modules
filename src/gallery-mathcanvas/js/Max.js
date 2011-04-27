@@ -14,9 +14,10 @@ function MathMax()
 
 Y.extend(MathMax, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Math.max.apply(null, this.evaluateArgs());
+		return Math.max.apply(null, this.evaluateArgs(var_list));
 	}
 });
 

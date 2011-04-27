@@ -64,15 +64,17 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	},
 
 	/**
+	 * @param var_list {Object} map of variable names to values or MathFunctions
 	 * @return list of argument values, from calling evaluate()
 	 * @protected
 	 */
-	evaluateArgs: function()
+	evaluateArgs: function(
+		/* map */	var_list)
 	{
 		var v = [];
 		Y.Array.each(this.args, function(arg)
 		{
-			v.push(arg.evaluate());
+			v.push(arg.evaluate(var_list));
 		});
 
 		return v;

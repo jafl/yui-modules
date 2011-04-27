@@ -18,11 +18,12 @@ function MathLogarithm(
 
 Y.extend(MathLogarithm, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
 		return Y.ComplexMath.divide(
-			Y.ComplexMath.log(this.args[1].evaluate()),
-			Y.ComplexMath.log(this.args[0].evaluate()));
+			Y.ComplexMath.log(this.args[1].evaluate(var_list)),
+			Y.ComplexMath.log(this.args[0].evaluate(var_list)));
 	},
 
 	prepareToRender: function(

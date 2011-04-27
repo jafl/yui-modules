@@ -14,9 +14,10 @@ function MathProduct()
 
 Y.extend(MathProduct, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.multiply(this.evaluateArgs());
+		return Y.ComplexMath.multiply(this.evaluateArgs(var_list));
 	},
 
 	prepareToRender: function(

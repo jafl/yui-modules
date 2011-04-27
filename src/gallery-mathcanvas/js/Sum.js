@@ -14,9 +14,10 @@ function MathSum()
 
 Y.extend(MathSum, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.add(this.evaluateArgs());
+		return Y.ComplexMath.add(this.evaluateArgs(var_list));
 	},
 
 	prepareToRender: function(

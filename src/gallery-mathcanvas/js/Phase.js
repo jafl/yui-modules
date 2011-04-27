@@ -16,9 +16,10 @@ function MathPhase(
 
 Y.extend(MathPhase, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.phase(this.args[0].evaluate());
+		return Y.ComplexMath.phase(this.args[0].evaluate(var_list));
 	}
 });
 
