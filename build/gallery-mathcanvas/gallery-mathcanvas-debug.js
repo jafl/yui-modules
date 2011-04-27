@@ -396,6 +396,11 @@ Y.extend(MathVariable, MathFunction,
 		/* map */	var_list)
 	{
 		var v = var_list[ this.name ];
+		if (Y.Lang.isUndefined(v))
+		{
+			throw new Error("undefined variable: " + this.name);
+		}
+
 		return (v instanceof MathFunction ? v.evaluate(var_list) : v);
 	},
 
