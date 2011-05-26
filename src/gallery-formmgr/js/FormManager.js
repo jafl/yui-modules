@@ -123,11 +123,6 @@ function FormManager(
 	/* string */	form_name,
 	/* object */	config)		// {status_node, default_value_map}
 {
-	if (arguments.length === 0)	// derived class prototype
-	{
-		return;
-	}
-
 	if (!config)
 	{
 		config = {};
@@ -484,7 +479,7 @@ function populateForm1()
 	}
 }
 
-FormManager.prototype =
+Y.extend(FormManager, Y.Plugin.Host,
 {
 	/* *********************************************************************
 	 * Access functions.
@@ -1175,7 +1170,7 @@ FormManager.prototype =
 			Y.log(msg, 'warn', 'FormManager');
 		}
 	}
-};
+});
 
 if (Y.FormManager)	// static data & functions from gallery-formmgr-css-validation
 {
