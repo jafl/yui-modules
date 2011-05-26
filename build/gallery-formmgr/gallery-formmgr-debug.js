@@ -1188,4 +1188,4 @@ if (Y.FormManager)	// static data & functions from gallery-formmgr-css-validatio
 Y.FormManager = FormManager;
 
 
-}, '@VERSION@' ,{requires:['pluginhost-base','gallery-node-optimizations','gallery-formmgr-css-validation']});
+}, '@VERSION@' ,{optional:['gallery-scrollintoview'], requires:['pluginhost-base','gallery-node-optimizations','gallery-formmgr-css-validation']});
