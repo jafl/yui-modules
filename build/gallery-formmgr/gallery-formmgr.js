@@ -593,6 +593,7 @@ Y.extend(FormManager, Y.Plugin.Host,
 
 		if (!this.validation_msgs[id] || !this.validation_msgs[id].regex)
 		{
+			Y.error(Y.substitute('No error message provided for regex validation of {id}!', {id:id}), null, 'FormManager');
 		}
 	},
 

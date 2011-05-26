@@ -368,6 +368,7 @@ Y.io.upload = function(o, uri, c) {
 
     YUI.Env.io_multi_response_callback[ o.id ] = function(data) {
         if (!data) {
+            Y.error('Callback ' + o.id + ' invoked without data.', null, 'io');
             return;
         }
 
