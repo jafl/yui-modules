@@ -125,10 +125,8 @@ function FormManager(
 	/* string */	form_name,
 	/* object */	config)		// {status_node, default_value_map}
 {
-	if (!config)
-	{
-		config = {};
-	}
+	config = config || {};
+	FormManager.superclass.constructor.call(this, config);
 
 	this.form_name   = form_name;
 	this.status_node = Y.one(config.status_node);
