@@ -528,8 +528,7 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 {
 	initializer: function(config)
 	{
-		this.get('host').qe = this;
-		this.hasMessages    = false;
+		this.hasMessages = false;
 	},
 
 	/**
