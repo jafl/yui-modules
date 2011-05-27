@@ -400,7 +400,10 @@ Y.io.upload = function(o, uri, c) {
     return _send(o, uri, c);
 };
 
-YUI.Env.io_multi_response_callback = [];
+if (!YUI.Env.io_multi_response_callback)
+{
+    YUI.Env.io_multi_response_callback = [];
+}
 
 var orig_io = Y.io;
 
