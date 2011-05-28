@@ -18,9 +18,11 @@ function MathExponential(
 
 Y.extend(MathExponential, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.pow(this.args[0].evaluate(), this.args[1].evaluate());
+		return Y.ComplexMath.pow(this.args[0].evaluate(var_list),
+								 this.args[1].evaluate(var_list));
 	},
 
 	prepareToRender: function(

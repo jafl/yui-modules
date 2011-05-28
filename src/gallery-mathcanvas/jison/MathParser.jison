@@ -54,6 +54,8 @@
 "arccosh"	return 'ARCCOSH';
 "arctanh"	return 'ARCTANH';
 
+[^-*/+^(),\s0-9][^-*/+^(),\s]*	return 'VARIABLE';
+
 \s+		/* skip whitespace */
 <<EOF>>	return 'EOF';
 
@@ -84,6 +86,8 @@ e
 		{$$ = new yy.MathFunction.Pi();}
 	| I
 		{$$ = new yy.MathFunction.I();}
+	| VARIABLE
+		{$$ = new yy.MathFunction.Variable(yytext);}
 
 	| '(' e ')'
 		{$$ = $2;}

@@ -141,7 +141,7 @@ Y.extend(MathCanvas, Y.Widget,
 		this.context = null;
 	},
 
-	/**
+	/*
 	 * Renders the expression.
 	 */
 	_renderExpression: function()
@@ -324,3 +324,18 @@ MathParser.yy.MathFunction = Y.MathFunction;
 Y.MathCanvas          = MathCanvas;
 Y.MathCanvas.RectList = RectList;
 Y.MathCanvas.Parser   = MathParser;
+
+/**********************************************************************
+ * Parser used to convert a string expression into Y.MathFunction
+ * 
+ * @class Y.MathCanvas.Parser
+ */
+
+/**
+ * Parses a string into a Y.MathFunction.
+ * 
+ * @method parse
+ * @static
+ * @param expr {String} expression to parse
+ * @return {Y.MathFunction}
+ */

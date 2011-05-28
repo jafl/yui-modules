@@ -63,6 +63,7 @@ MathFunction.prototype =
 	 * Must be implemented by derived classes.
 	 *
 	 * @method evaluate
+	 * @param var_list {Object} map of variable names to values or MathFunctions
 	 * @return the value of the function
 	 */
 

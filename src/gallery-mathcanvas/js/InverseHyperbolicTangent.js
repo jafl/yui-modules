@@ -16,9 +16,10 @@ function MathInverseHyperbolicTangent(
 
 Y.extend(MathInverseHyperbolicTangent, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.atanh(this.args[0].evaluate());
+		return Y.ComplexMath.atanh(this.args[0].evaluate(var_list));
 	}
 });
 

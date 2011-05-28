@@ -18,9 +18,11 @@ function MathQuotient(
 
 Y.extend(MathQuotient, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.divide(this.args[0].evaluate(), this.args[1].evaluate());
+		return Y.ComplexMath.divide(this.args[0].evaluate(var_list),
+									this.args[1].evaluate(var_list));
 	},
 
 	prepareToRender: function(

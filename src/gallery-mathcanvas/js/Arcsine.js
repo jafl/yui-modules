@@ -16,9 +16,10 @@ function MathArcsine(
 
 Y.extend(MathArcsine, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Math.asin(this.args[0].evaluate());
+		return Math.asin(this.args[0].evaluate(var_list));
 	}
 });
 

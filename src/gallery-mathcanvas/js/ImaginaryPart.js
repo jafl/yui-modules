@@ -16,9 +16,10 @@ function MathImaginaryPart(
 
 Y.extend(MathImaginaryPart, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		var value = this.args[0].evaluate();
+		var value = this.args[0].evaluate(var_list);
 		return Y.ComplexMath.isComplexNumber(value) ? value.imag() : 0;
 	}
 });

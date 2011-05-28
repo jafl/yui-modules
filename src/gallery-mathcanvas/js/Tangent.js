@@ -16,9 +16,10 @@ function MathTangent(
 
 Y.extend(MathTangent, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.tan(this.args[0].evaluate());
+		return Y.ComplexMath.tan(this.args[0].evaluate(var_list));
 	}
 });
 

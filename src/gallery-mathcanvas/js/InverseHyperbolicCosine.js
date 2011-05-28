@@ -16,9 +16,10 @@ function MathInverseHyperbolicCosine(
 
 Y.extend(MathInverseHyperbolicCosine, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.acosh(this.args[0].evaluate());
+		return Y.ComplexMath.acosh(this.args[0].evaluate(var_list));
 	}
 });
 

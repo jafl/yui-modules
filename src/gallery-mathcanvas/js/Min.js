@@ -14,9 +14,10 @@ function MathMin()
 
 Y.extend(MathMin, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Math.min.apply(null, this.evaluateArgs());
+		return Math.min.apply(null, this.evaluateArgs(var_list));
 	}
 });
 

@@ -16,9 +16,10 @@ function MathHyperbolicSine(
 
 Y.extend(MathHyperbolicSine, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.sinh(this.args[0].evaluate());
+		return Y.ComplexMath.sinh(this.args[0].evaluate(var_list));
 	}
 });
 

@@ -16,9 +16,10 @@ function MathConjugate(
 
 Y.extend(MathConjugate, MathFunctionWithArgs,
 {
-	evaluate: function()
+	evaluate: function(
+		/* map */	var_list)
 	{
-		return Y.ComplexMath.conjugate(this.args[0].evaluate());
+		return Y.ComplexMath.conjugate(this.args[0].evaluate(var_list));
 	},
 
 	prepareToRender: function(
