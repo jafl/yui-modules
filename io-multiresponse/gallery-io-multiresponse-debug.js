@@ -376,7 +376,7 @@ Y.io.upload = function(o, uri, c) {
 
     YUI.Env.io_multi_response_callback[ o.id ] = function(data) {
         if (!data) {
-            Y.log('Callback ' + o.id + ' invoked without data.', 'error', 'io');
+            Y.error('Callback ' + o.id + ' invoked without data.', null, 'io');
             return;
         }
 
@@ -402,7 +402,10 @@ Y.io.upload = function(o, uri, c) {
     return _send(o, uri, c);
 };
 
-YUI.Env.io_multi_response_callback = [];
+if (!YUI.Env.io_multi_response_callback)
+{
+    YUI.Env.io_multi_response_callback = [];
+}
 
 var orig_io = Y.io;
 

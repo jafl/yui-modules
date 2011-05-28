@@ -125,15 +125,8 @@ function FormManager(
 	/* string */	form_name,
 	/* object */	config)		// {status_node, default_value_map}
 {
-	if (arguments.length === 0)	// derived class prototype
-	{
-		return;
-	}
-
-	if (!config)
-	{
-		config = {};
-	}
+	config = config || {};
+	FormManager.superclass.constructor.call(this, config);
 
 	this.form_name   = form_name;
 	this.status_node = Y.one(config.status_node);
@@ -486,7 +479,7 @@ function populateForm1()
 	}
 }
 
-FormManager.prototype =
+Y.extend(FormManager, Y.Plugin.Host,
 {
 	/* *********************************************************************
 	 * Access functions.
@@ -598,7 +591,7 @@ FormManager.prototype =
 
 		if (!this.validation_msgs[id] || !this.validation_msgs[id].regex)
 		{
-			Y.log(Y.substitute('No error message provided for regex validation of {id}!', {id:id}), 'error', 'FormManager');
+			Y.error(Y.substitute('No error message provided for regex validation of {id}!', {id:id}), null, 'FormManager');
 		}
 	},
 
@@ -1177,7 +1170,7 @@ FormManager.prototype =
 			Y.log(msg, 'warn', 'FormManager');
 		}
 	}
-};
+});
 
 if (Y.FormManager)	// static data & functions from gallery-formmgr-css-validation
 {
@@ -1193,4 +1186,4 @@ if (Y.FormManager)	// static data & functions from gallery-formmgr-css-validatio
 Y.FormManager = FormManager;
 
 
-}, '@VERSION@' ,{requires:['gallery-node-optimizations','gallery-formmgr-css-validation']});
+}, '@VERSION@' ,{optional:['gallery-scrollintoview'], requires:['pluginhost-base','gallery-node-optimizations','gallery-formmgr-css-validation']});

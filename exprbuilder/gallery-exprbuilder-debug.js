@@ -13,11 +13,6 @@ YUI.add('gallery-exprbuilder', function(Y) {
 
 function ExpressionBuilder(config)
 {
-	if (arguments.length === 0)	// derived class prototype
-	{
-		return;
-	}
-
 	ExpressionBuilder.superclass.constructor.call(this, config);
 }
 
