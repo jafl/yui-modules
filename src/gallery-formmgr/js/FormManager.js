@@ -908,7 +908,9 @@ Y.extend(FormManager, Y.Plugin.Host,
 	 */
 
 	/**
-	 * Register a button that can be disabled.  Buttons contained within
+	 * Register an object that can be disabled.  The object must support
+	 * the set('disabled', ...) API.  (The exception is DOM nodes, since
+	 * they are automatically wrapped in Y.Node.)  Buttons contained within
 	 * the form DOM element are automatically registered.
 	 * 
 	 * @param el {String|Object} The selector for the element or the element itself
@@ -918,7 +920,7 @@ Y.extend(FormManager, Y.Plugin.Host,
 	{
 		var info =
 		{
-			e: Y.one(el)
+			e: Y.Lang.isString(el) || el.tagName ? Y.one(el) : el
 		};
 
 		this.user_button_list.push(info);
