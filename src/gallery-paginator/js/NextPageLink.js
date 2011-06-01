@@ -20,8 +20,8 @@ Paginator.ui.NextPageLink = function (p) {
     p.after('rowsPerPageChange', this.update,this);
     p.after('totalRecordsChange', this.update,this);
 
-	p.after('nextPageLinkClassChange', this.rebuild, this);
-	p.after('nextPageLinkLabelChange', this.rebuild, this);
+    p.after('nextPageLinkClassChange', this.rebuild, this);
+    p.after('nextPageLinkLabelChange', this.rebuild, this);
 };
 
 /**

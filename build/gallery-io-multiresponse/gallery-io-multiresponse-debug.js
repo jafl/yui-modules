@@ -135,18 +135,14 @@ function _setAttrs(f, id, uri, method) {
  * @return {void}
  */
 function _resetAttrs(f, a){
-    var p;
-
-    for (p in a) {
-        if (a.hasOwnProperty(p)) {
-            if (a[p]) {
-                f.setAttribute(p, f[p]);
-            }
-            else {
-                f.removeAttribute(p);
-            }
+    Y.Object.each(a, function(v, p) {
+        if (v) {
+            f.setAttribute(p, v);
         }
-    }
+        else {
+            f.removeAttribute(p);
+        }
+    });
 }
 
 /**

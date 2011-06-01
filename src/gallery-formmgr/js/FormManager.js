@@ -1172,15 +1172,7 @@ Y.extend(FormManager, Y.Plugin.Host,
 	}
 });
 
-if (Y.FormManager)	// static data & functions from gallery-formmgr-css-validation
-{
-	for (var key in Y.FormManager)
-	{
-		if (Y.FormManager.hasOwnProperty(key))
-		{
-			FormManager[key] = Y.FormManager[key];
-		}
-	}
-}
+// static data & functions from gallery-formmgr-css-validation
+Y.aggregate(FormManager, Y.FormManager);
 
 Y.FormManager = FormManager;

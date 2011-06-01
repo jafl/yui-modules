@@ -581,14 +581,10 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 		delete this.saveEdit;
 
 		cols = host.get('columnset').keyHash;
-		for (var key in this.saveFmt)
+		Y.Object.each(this.saveFmt, function(fmt, key)
 		{
-			if (this.saveFmt.hasOwnProperty(key))
-			{
-				var col = cols[key];
-				col.set('formatter', this.saveFmt[key]);
-			}
-		}
+			cols[key].set('formatter', fmt);
+		});
 		delete this.saveFmt;
 
 		var container = host.get('contentBox');

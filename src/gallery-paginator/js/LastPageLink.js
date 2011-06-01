@@ -20,8 +20,8 @@ Paginator.ui.LastPageLink = function (p) {
     p.after('rowsPerPageChange',this.update,this);
     p.after('totalRecordsChange',this.update,this);
 
-	p.after('lastPageLinkClassChange', this.rebuild, this);
-	p.after('lastPageLinkLabelChange', this.rebuild, this);
+    p.after('lastPageLinkClassChange', this.rebuild, this);
+    p.after('lastPageLinkLabelChange', this.rebuild, this);
 };
 
 /**
