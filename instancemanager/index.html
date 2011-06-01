@@ -28,8 +28,18 @@ YUI({
 		get: function()
 		{
 			return this.a;
+		},
+
+		incr: function()
+		{
+			this.a++;
 		}
 	};
+
+	function incr(obj)
+	{
+		obj.value.incr();
+	}
 
 	Y.Test.Runner.add(new Y.Test.Case(
 	{
@@ -53,6 +63,16 @@ YUI({
 			this.mgr.put('a', Test, 3);
 			Y.Assert.isTrue(this.mgr.get('a') instanceof Test);
 			Y.Assert.areEqual(3, this.mgr.get('a').get());
+		},
+
+		testApplyToAll: function()
+		{
+			this.mgr.put('a', new Test(2));
+			this.mgr.put('b', Test, 3);
+			this.mgr.applyToAll('incr');
+			this.mgr.applyToAll(incr);
+			Y.Assert.areEqual(4, this.mgr.get('a').get());
+			Y.Assert.areEqual(5, this.mgr.get('b').get());
 		}
 	}));
 
