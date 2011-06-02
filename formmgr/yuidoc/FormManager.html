@@ -125,6 +125,9 @@ displayed when a pre-validation check fails.</p>
 directly.</p>
 <p>More complex pre-validations can be added by overriding
 <code>postValidateForm()</code>, described below.</p>
+<p>Validation normally strips leading and trailing whitespace from every
+value.  If you have a special case where this should not be done, add
+the CSS class <code>yiv-no-trim</code> to the input field.</p>
 <p>Derived classes may also override the following functions:</p>
 <dl>
 <dt><code>prePrepareForm</code>(arguments passed to prepareForm)</dt>
@@ -1653,7 +1656,8 @@ already called <code>setErrorMessages()</code> or
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Trim leading and trailing whitespace from the specified fields.
+                                            Trim leading and trailing whitespace from the specified fields, except
+when a field has the CSS class yiv-no-trim.
                                         </div>
 
                                         <div class="description">
@@ -1662,7 +1666,7 @@ already called <code>setErrorMessages()</code> or
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">e</span>
-                                                        &lt;<span property="yui:type">Array|NodeList</span>&gt;
+                                                        &lt;<span property="yui:type">Array</span>&gt;
                                                         </code>
                                                         <span property="yui:description">  The fields to clean.</span>
                                                         </dd>
