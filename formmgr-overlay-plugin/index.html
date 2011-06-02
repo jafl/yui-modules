@@ -1,0 +1,234 @@
+<!DOCTYPE html public '-//w3c//dtd html 4.01//en' http://www.w3.org/tr/html4/strict.dtd'>
+<html>
+<head>
+	<title>YUI 3 Form Manager Overlay Plugin Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
+	<script src="gallery-formmgr-overlay-plugin-debug.js"></script>
+	<script src="gallery-formmgr-debug.js"></script>
+	<script src="gallery-formmgr-css-validation-debug.js"></script>
+	<script src="gallery-node-optimizations-debug.js"></script>
+
+	<style type="text/css">
+
+	.yui3-js-enabled .yui3-overlay-loading
+	{
+		visibility: hidden;
+	}
+
+	#my-overlay
+	{
+		border: 1px solid black;
+		background: white;
+	}
+
+	#form-status
+	{
+		border-bottom: 1px solid black;
+		padding-bottom: 1em;
+		margin-bottom: 0;
+	}
+
+	fieldset
+	{
+		border: none;
+		border-bottom: 1px solid black;
+	}
+
+	/* core */
+
+	#form-status.formmgr-status-hidden
+	{
+		display: none;
+	}
+
+	.formmgr-message-text
+	{
+		display: none;
+	}
+
+	fieldset .formmgr-haserror .formmgr-message-text,
+	fieldset .formmgr-haswarn .formmgr-message-text,
+	fieldset .formmgr-hassuccess .formmgr-message-text,
+	fieldset .formmgr-hasinfo .formmgr-message-text
+	{
+		display: block;
+	}
+
+	/* skin */
+
+	#form-status.formmgr-status-failure
+	{
+		font-weight: bold;
+		color: #BE1E2D;
+	}
+
+	.formmgr-message-text
+	{
+		margin: 5px 0 0;
+	}
+
+	fieldset .formmgr-haserror .formmgr-message-text
+	{
+		color: #BE1E2D;
+	}
+
+	fieldset input.formmgr-haserror,
+	fieldset select.formmgr-haserror
+	{
+		background-color: #FFCCCC;
+	}
+
+	fieldset.formmgr-haswarn h2,
+	.formmgr-haswarn .formmgr-message-text
+	{
+		color: #999900;
+	}
+
+	.formmgr-row
+	{
+		margin-bottom: 5px;
+	}
+
+	/* example skin */
+
+	label
+	{
+		display: block;
+	}
+
+	label.checkbox-label
+	{
+		display: inline;
+	}
+
+	.yui3-widget-ft
+	{
+		text-align: center;
+	}
+	</style>
+</head>
+<body class="yui3-skin-sam">
+
+<script type="text/javascript">
+YUI({
+//	base: '../yui3/',
+	filter: 'raw',
+	combine: false
+}).use('gallery-formmgr-overlay-plugin', function(Y)
+{
+	// create overlay
+
+	var d = new Y.Overlay(
+	{
+		srcNode:  '#my-overlay',
+		visible:  false,
+//		width:    '20em',
+		centered: true
+	});
+
+	d.plug(Y.Plugin.OverlayForm);
+	d.render();
+
+	var f = d.form.get('formmgr');
+	f.setStatusNode('#form-status');
+
+	// validations
+
+	f.setErrorMessages('zip',
+	{
+		regex: 'Please enter a valid US ZIP Code.'
+	});
+	f.setRegex('zip', /^[0-9]{5}(?:-[0-9]{4})?$/);
+
+	f.setFunction('pw', function(form)
+	{
+		if (form.pw.value != form.pw2.value)
+		{
+			f.displayMessage(form.pw, 'Your password entries did not match.', 'error');
+			f.displayMessage(form.pw2, '', 'error');
+			return false;
+		}
+
+		return true;
+	});
+
+	// actions
+
+	Y.on('click', d.show, '#show', d);
+	Y.on('click', d.hide, '#hide', d);
+
+	Y.on('click', function()
+	{
+		f.validateForm();
+	},
+	'#validate');
+
+	Y.on('click', function()
+	{
+		f.clearForm();		// values in markup
+	},
+	'#clear');
+
+	// example status display
+
+	var changed_status = Y.one('#changed-status');
+	Y.later(1000, f, function()
+	{
+		if (d.get('visible'))
+		{
+			changed_status.set('innerHTML', this.isChanged() ? 'yes' : 'no');
+		}
+	},
+	null, true);
+});
+</script>
+
+<h1><a href="http://yuilibrary.com/gallery/show/formmgr">YUI 3 Form Manager</a> Overlay Plugin Example</h1>
+
+<p><button id="show">Show the overlay</button></p>
+<p><a href="yuidoc">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<div id="my-overlay" class="yui3-overlay-loading">
+	<div class="yui3-widget-hd">
+		<p id="form-status"></p>
+	</div>
+	<div class="yui3-widget-bd">
+		<form>
+			<fieldset id="info">
+				<div class="formmgr-row">
+					<label for="email">Email (required)</label>
+					<p class="formmgr-message-text"></p>
+					<input type="text" id="email" name="email" class="formmgr-field yiv-required">
+				</div>
+				<div class="formmgr-row">
+					<label for="pw">Password (not required, 6-10 characters)</label>
+					<p class="formmgr-message-text"></p>
+					<input type="password" id="pw" name="pw" class="formmgr-field yiv-length:[6,10]">
+				</div>
+				<div class="formmgr-row">
+					<label for="pw2">Confirm password</label>
+					<p class="formmgr-message-text"></p>
+					<input type="password" id="pw2" name="pw2" class="formmgr-field">
+				</div>
+				<div class="formmgr-row">
+					<label for="zip">United States ZIP Code</label>
+					<p class="formmgr-message-text"></p>
+					<input type="text" id="zip" name="zip" class="formmgr-field yiv-required">
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<div class="yui3-widget-ft">
+		<button id="validate">Validate</button>
+		<button id="clear">Clear</button>
+		<button id="hide">Hide</button>
+		<br>
+		<span class="changed-status">Data is changed: <span id="changed-status"></span></span>
+	</div>
+</div>
+
+</body>
+</html>
