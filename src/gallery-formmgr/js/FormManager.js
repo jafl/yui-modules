@@ -509,6 +509,15 @@ Y.extend(FormManager, Y.Plugin.Host,
 	},
 
 	/**
+	 * @param node {String|Y.Node} the node in which status should be displayed
+	 */
+	setStatusNode: function(
+		/* Node */	node)
+	{
+		this.status_node = Y.one(node);
+	},
+
+	/**
 	 * Set the default values for all form elements.
 	 * 
 	 * @param default_value_map {Object} Mapping of form element names to values.
