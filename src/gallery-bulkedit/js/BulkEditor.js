@@ -848,7 +848,7 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		this._updateRecordStatus(bd, type, status_re, status_prefix, scroll);
 
 		bd = Dom.getAncestorByClassName(e, field_container_class);
-		if (Form.statusTakesPrecendence(this._getElementStatus(bd, status_re), type))
+		if (Form.statusTakesPrecedence(this._getElementStatus(bd, status_re), type))
 		{
 			if (msg)
 			{
@@ -907,7 +907,7 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 			scroll = !this.has_validation_messages;
 		}
 
-		if (Form.statusTakesPrecendence(this._getElementStatus(bd, r), type))
+		if (Form.statusTakesPrecedence(this._getElementStatus(bd, r), type))
 		{
 			if (scroll)
 			{
