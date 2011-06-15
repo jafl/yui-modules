@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"Y.Plugin.OverlayForm": "gallery-formmgr-overlay-plugin"};
+YAHOO.env.classMap = {"Plugin.OverlayForm": "gallery-formmgr-overlay-plugin"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;

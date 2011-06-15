@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"Y.Canvas.Context2d": "gallery-canvas"};
+YAHOO.env.classMap = {"Canvas.Context2d": "gallery-canvas"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;

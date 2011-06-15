@@ -252,6 +252,7 @@ Y.CheckboxGroup = CheckboxGroup;
  * 
  * @module gallery-checkboxgroups
  * @class AtLeastOneCheckboxGroup
+ * @extends CheckboxGroup
  * @constructor
  * @param cb_list {String|Node|NodeList} The list of checkboxes to manage
  */
@@ -339,6 +340,7 @@ Y.AtLeastOneCheckboxGroup = AtLeastOneCheckboxGroup;
  * 
  * @module gallery-checkboxgroups
  * @class AtMostOneCheckboxGroup
+ * @extends CheckboxGroup
  * @constructor
  * @param cb_list {String|Node|NodeList} The list of checkboxes to manage
  */
@@ -379,6 +381,7 @@ Y.AtMostOneCheckboxGroup = AtMostOneCheckboxGroup;
  * 
  * @module gallery-checkboxgroups
  * @class SelectAllCheckboxGroup
+ * @extends CheckboxGroup
  * @constructor
  * @param select_all_cb {String|Object} The checkbox that triggers "select all"
  * @param cb_list {String|Node|NodeList} The list of checkboxes to manage
@@ -429,6 +432,7 @@ Y.SelectAllCheckboxGroup = SelectAllCheckboxGroup;
  * 
  * @module gallery-checkboxgroups
  * @class EnableIfAnyCheckboxGroup
+ * @extends CheckboxGroup
  * @constructor
  * @param cb_list {String|Node|NodeList} The list of checkboxes to manage
  * @param nodes {String|NodeList} The nodes to enable/disable

@@ -837,7 +837,7 @@
 	<span class="p">}</span>
 	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">f</span> <span class="o">&amp;&amp;</span> <span class="nx">f</span><span class="p">.</span><span class="nx">fn</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">f</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">scope</span> <span class="o">||</span> <span class="nb">window</span><span class="p">,</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">);</span>
+		<span class="nx">f</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">scope</span> <span class="o">||</span> <span class="nb">window</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">)</span> <span class="o">?</span> <span class="p">[]</span> <span class="o">:</span> <span class="nx">f</span><span class="p">.</span><span class="nx">args</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
@@ -960,21 +960,19 @@
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">;</span>
-			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">r</span><span class="p">)</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">r</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="o">||</span>
-					<span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;startIndex&#39;</span> <span class="o">||</span> <span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;resultCount&#39;</span><span class="p">)</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;startIndex&#39;</span> <span class="o">||</span> <span class="nx">key</span> <span class="o">==</span> <span class="s1">&#39;resultCount&#39;</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="k">continue</span><span class="p">;</span>
+					<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 				<span class="p">}</span>
 
-				<span class="k">if</span> <span class="p">(</span><span class="nx">r</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">!==</span> <span class="nx">e</span><span class="p">.</span><span class="nx">request</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">!==</span> <span class="nx">e</span><span class="p">.</span><span class="nx">request</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span>
 				<span class="p">{</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">_open</span> <span class="o">=</span> <span class="p">[];</span>
-					<span class="k">break</span><span class="p">;</span>
+					<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 				<span class="p">}</span>
-			<span class="p">}</span>
+			<span class="p">});</span>
 		<span class="p">}</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span> <span class="o">=</span> <span class="nx">e</span><span class="p">;</span>
@@ -995,7 +993,8 @@
 <span class="cm"> * &lt;code&gt;dataType&lt;/code&gt; and &lt;code&gt;liveData&lt;/code&gt;, or it can be &lt;q&gt;free</span>
 <span class="cm"> * form&lt;/q&gt;, e.g., an array of records or an XHR URL.&lt;/p&gt;</span>
 <span class="cm"> *</span>
-<span class="cm"> * @method Y.Parsers.treebledatasource</span>
+<span class="cm"> * @namespace Parsers</span>
+<span class="cm"> * @method treebledatasource</span>
 <span class="cm"> * @param oData {mixed} Data to convert.</span>
 <span class="cm"> * @return {DataSource} The new data source.</span>
 <span class="cm"> * @static</span>
@@ -1098,7 +1097,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "TreebleDataSource.html#method_isOpen", "access": "", "host": "TreebleDataSource", "type": "method", "name": "isOpen"}, {"url": "TreebleDataSource.html#config_paginateChildren", "access": "", "host": "TreebleDataSource", "type": "config", "name": "paginateChildren"}, {"url": "TreebleDataSource.html#config_root", "access": "", "host": "TreebleDataSource", "type": "config", "name": "root"}, {"url": "TreebleDataSource.html#method_toggle", "access": "", "host": "TreebleDataSource", "type": "method", "name": "toggle"}, {"url": "TreebleDataSource.html#config_uniqueIdKey", "access": "", "host": "TreebleDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "TreebleDataSource.html#method_Y.Parsers.treebledatasource", "access": "", "host": "TreebleDataSource", "type": "method", "name": "Y.Parsers.treebledatasource"}, {"url": "Treeble.html#method_Y.Treeble.treeValueFormatter", "access": "", "host": "Treeble", "type": "method", "name": "Y.Treeble.treeValueFormatter"}, {"url": "Treeble.html#method_Y.Treeble.twistdownFormatter", "access": "", "host": "Treeble", "type": "method", "name": "Y.Treeble.twistdownFormatter"}];
+    var ALL_YUI_PROPS = [{"url": "TreebleDataSource.html#method_isOpen", "access": "", "host": "TreebleDataSource", "type": "method", "name": "isOpen"}, {"url": "TreebleDataSource.html#config_paginateChildren", "access": "", "host": "TreebleDataSource", "type": "config", "name": "paginateChildren"}, {"url": "TreebleDataSource.html#config_root", "access": "", "host": "TreebleDataSource", "type": "config", "name": "root"}, {"url": "TreebleDataSource.html#method_toggle", "access": "", "host": "TreebleDataSource", "type": "method", "name": "toggle"}, {"url": "TreebleDataSource.html#method_treebledatasource", "access": "", "host": "TreebleDataSource", "type": "method", "name": "treebledatasource"}, {"url": "Treeble.html#method_treeValueFormatter", "access": "", "host": "Treeble", "type": "method", "name": "treeValueFormatter"}, {"url": "Treeble.html#method_twistdownFormatter", "access": "", "host": "Treeble", "type": "method", "name": "twistdownFormatter"}, {"url": "TreebleDataSource.html#config_uniqueIdKey", "access": "", "host": "TreebleDataSource", "type": "config", "name": "uniqueIdKey"}];
 </script>
 </body>
 </html>

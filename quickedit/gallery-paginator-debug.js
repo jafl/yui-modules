@@ -20,6 +20,7 @@ http://developer.yahoo.net/yui/license.txt
  *
  * @module gallery-paginator
  * @class Paginator
+ * @extends Widget
  * @constructor
  * @param config {Object} Object literal to set instance and ui component
  * configuration.
@@ -1472,8 +1473,8 @@ Paginator.ui.LastPageLink = function (p) {
     p.after('rowsPerPageChange',this.update,this);
     p.after('totalRecordsChange',this.update,this);
 
-	p.after('lastPageLinkClassChange', this.rebuild, this);
-	p.after('lastPageLinkLabelChange', this.rebuild, this);
+    p.after('lastPageLinkClassChange', this.rebuild, this);
+    p.after('lastPageLinkLabelChange', this.rebuild, this);
 };
 
 /**
@@ -1671,8 +1672,8 @@ Paginator.ui.NextPageLink = function (p) {
     p.after('rowsPerPageChange', this.update,this);
     p.after('totalRecordsChange', this.update,this);
 
-	p.after('nextPageLinkClassChange', this.rebuild, this);
-	p.after('nextPageLinkLabelChange', this.rebuild, this);
+    p.after('nextPageLinkClassChange', this.rebuild, this);
+    p.after('nextPageLinkLabelChange', this.rebuild, this);
 };
 
 /**
@@ -2424,7 +2425,7 @@ Paginator.ui.ValidationPageLinks = function(
 {
 	Paginator.ui.ValidationPageLinks.superclass.constructor.call(this, p);
 
-    p.after('pageStatusChange', this.rebuild, this);
+	p.after('pageStatusChange', this.rebuild, this);
 };
 
 var vpl_status_prefix = 'yui3-has';
@@ -2433,7 +2434,7 @@ var vpl_status_prefix = 'yui3-has';
  * Array of status strings for each page.  If the status value for a page
  * is not empty, it is used to build a CSS class for the page:
  * yui3-has&lt;status&gt;
- * 
+ *
  * @attribute pageStatus
  */
 Paginator.ATTRS.pageStatus =
@@ -2442,8 +2443,8 @@ Paginator.ATTRS.pageStatus =
 	validator: Y.Lang.isArray
 };
 
-Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks, 
-{ 
+Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
+{
 	update: function(e)
 	{
 		if (e && e.prevVal === e.newVal)
@@ -2482,7 +2483,7 @@ Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
 			this.container.set('innerHTML', content);
 		}
 	}
-	
+
 });
 
 

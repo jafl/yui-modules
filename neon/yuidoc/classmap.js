@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"Y.Plugin.Neon": "gallery-neon"};
+YAHOO.env.classMap = {"Plugin.Neon": "gallery-neon"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;

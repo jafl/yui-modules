@@ -54,7 +54,7 @@
 <span class="cm"> * both functions and events, and the state of all the objects is kept in</span>
 <span class="cm"> * sync.  The objects must maintain all state via</span>
 <span class="cm"> * Y.Attribute.&lt;p&gt;</span>
-<span class="cm"> * </span>
+<span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;MultiObject is similar to Y.ArrayList, except:&lt;/p&gt;</span>
 <span class="cm"> * &lt;ul&gt;</span>
 <span class="cm"> * &lt;li&gt;All objects must be of the same type, since MultiObject is supposed</span>
@@ -64,15 +64,16 @@
 <span class="cm"> *		in the list, not an array of results.&lt;/li&gt;</span>
 <span class="cm"> * &lt;li&gt;MultiObject propagates all events.&lt;/li&gt;</span>
 <span class="cm"> * &lt;/ul&gt;</span>
-<span class="cm"> * </span>
+<span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;Internally, MultiObject delegates all methods by name, so it supports</span>
 <span class="cm"> * Y.Do.before, Y.Do.after, etc.&lt;/p&gt;</span>
-<span class="cm"> * </span>
+<span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;To avoid shadowing potential function names, we inherit from</span>
 <span class="cm"> * Y.EventTarget and use multi_ as the prefix for our own functions.&lt;/p&gt;</span>
-<span class="cm"> * </span>
+<span class="cm"> *</span>
 <span class="cm"> * @module gallery-multiobject</span>
 <span class="cm"> * @class MultiObject</span>
+<span class="cm"> * @extends EventTarget</span>
 <span class="cm"> * @constructor</span>
 <span class="cm"> * @param items {Array} initial set of items</span>
 <span class="cm"> * @param config {Object} configuration</span>
@@ -114,7 +115,7 @@
 	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">,</span> <span class="nx">installItem</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 
 	<span class="nx">config</span><span class="p">.</span><span class="nx">prefix</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span><span class="p">;</span>
-    <span class="nx">MultiObject</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
+	<span class="nx">MultiObject</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">delegate</span><span class="p">(</span>
@@ -252,7 +253,7 @@
 	<span class="cm">/**</span>
 <span class="cm">	 * Return an array of all the individual results from calling the</span>
 <span class="cm">	 * specified function.  This is only useful if return_all_results=false.</span>
-<span class="cm">	 * </span>
+<span class="cm">	 *</span>
 <span class="cm">	 * @param f {String} name of the function to invoke</span>
 <span class="cm">	 * @param arg* {mixed} 0..n arguments to pass to the function</span>
 <span class="cm">	 * @return {Array} results from delegating the named function</span>

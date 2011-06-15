@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"Y.IO~multiresponse": "io"};
+YAHOO.env.classMap = {"io~multiresponse": "io"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;

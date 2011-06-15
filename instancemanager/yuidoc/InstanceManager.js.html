@@ -181,37 +181,34 @@
 			<span class="nx">isFunction</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">behavior</span><span class="p">),</span>
 			<span class="nx">isObject</span>   <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">(</span><span class="nx">behavior</span><span class="p">);</span>
 
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">map</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">map</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">map</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">name</span><span class="p">))</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span> <span class="o">&amp;&amp;</span> <span class="nx">skip_unconstructed</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">map</span><span class="p">[</span> <span class="nx">name</span> <span class="p">];</span>
-				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span> <span class="o">&amp;&amp;</span> <span class="nx">skip_unconstructed</span><span class="p">)</span>
-				<span class="p">{</span>
-					<span class="k">continue</span><span class="p">;</span>
-				<span class="p">}</span>
-				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">)</span>
-				<span class="p">{</span>
-					<span class="nx">item</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
-				<span class="p">}</span>
-
-				<span class="k">if</span> <span class="p">(</span><span class="nx">isFunction</span> <span class="o">||</span> <span class="nx">isObject</span><span class="p">)</span>
-				<span class="p">{</span>
-					<span class="c1">// apply the function and pass the map item as an argument</span>
-
-					<span class="kd">var</span> <span class="nx">fn</span>    <span class="o">=</span> <span class="nx">isFunction</span> <span class="o">?</span> <span class="nx">behavior</span> <span class="o">:</span> <span class="nx">behavior</span><span class="p">.</span><span class="nx">fn</span><span class="p">,</span>
-						<span class="nx">scope</span> <span class="o">=</span> <span class="nx">isFunction</span> <span class="o">?</span> <span class="nb">window</span> <span class="o">:</span> <span class="nx">behavior</span><span class="p">.</span><span class="nx">scope</span><span class="p">;</span>
-
-					<span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="p">[</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span><span class="nx">item</span> <span class="p">}</span> <span class="p">].</span><span class="nx">concat</span><span class="p">(</span> <span class="nx">args</span> <span class="p">)</span> <span class="p">);</span>
-				<span class="p">}</span>
-				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">item</span><span class="p">[</span> <span class="nx">behavior</span> <span class="p">]))</span>
-				<span class="p">{</span>
-					<span class="c1">// the string is the name of a method</span>
-
-					<span class="nx">item</span><span class="p">[</span> <span class="nx">behavior</span> <span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
-				<span class="p">}</span>
+				<span class="k">return</span><span class="p">;</span>
 			<span class="p">}</span>
-		<span class="p">}</span>
+			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">item</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="nx">isFunction</span> <span class="o">||</span> <span class="nx">isObject</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="c1">// apply the function and pass the map item as an argument</span>
+
+				<span class="kd">var</span> <span class="nx">fn</span>    <span class="o">=</span> <span class="nx">isFunction</span> <span class="o">?</span> <span class="nx">behavior</span> <span class="o">:</span> <span class="nx">behavior</span><span class="p">.</span><span class="nx">fn</span><span class="p">,</span>
+					<span class="nx">scope</span> <span class="o">=</span> <span class="nx">isFunction</span> <span class="o">?</span> <span class="nb">window</span> <span class="o">:</span> <span class="nx">behavior</span><span class="p">.</span><span class="nx">scope</span><span class="p">;</span>
+
+				<span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="p">[</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span><span class="nx">item</span> <span class="p">}</span> <span class="p">].</span><span class="nx">concat</span><span class="p">(</span> <span class="nx">args</span> <span class="p">)</span> <span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">item</span><span class="p">[</span> <span class="nx">behavior</span> <span class="p">]))</span>
+			<span class="p">{</span>
+				<span class="c1">// the string is the name of a method</span>
+
+				<span class="nx">item</span><span class="p">[</span> <span class="nx">behavior</span> <span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 

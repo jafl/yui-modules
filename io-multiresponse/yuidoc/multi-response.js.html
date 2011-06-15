@@ -49,6 +49,14 @@
                         </style>
                         <div class="highlight"><pre><span class="cm">/**</span>
 <span class="cm"> * &lt;p&gt;Extends the IO base class to enable multiple responses using an</span>
+<span class="cm"> * iframe as the transport medium.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module io</span>
+<span class="cm"> * @submodule io-multiresponse</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * &lt;p&gt;Extends the IO base class to enable multiple responses using an</span>
 <span class="cm"> * iframe as the transport medium.  Each response fires the response event.</span>
 <span class="cm"> * The only events that are fired are the start and end events.&lt;/p&gt;</span>
 <span class="cm"> * </span>
@@ -75,8 +83,7 @@
 <span class="cm"> * &lt;code&gt;debug:true&lt;/code&gt; in the configuration passed to</span>
 <span class="cm"> * &lt;code&gt;Y.io()&lt;/code&gt;.&lt;/p&gt;</span>
 <span class="cm"> * </span>
-<span class="cm"> * @module io</span>
-<span class="cm"> * @class Y.IO~multiresponse</span>
+<span class="cm"> * @class io~multiresponse</span>
 <span class="cm"> */</span>
 
 <span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">win</span><span class="p">,</span>
@@ -182,18 +189,14 @@
 <span class="cm"> * @return {void}</span>
 <span class="cm"> */</span>
 <span class="kd">function</span> <span class="nx">_resetAttrs</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">a</span><span class="p">){</span>
-    <span class="kd">var</span> <span class="nx">p</span><span class="p">;</span>
-
-    <span class="k">for</span> <span class="p">(</span><span class="nx">p</span> <span class="k">in</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">p</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">[</span><span class="nx">p</span><span class="p">])</span> <span class="p">{</span>
-                <span class="nx">f</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">f</span><span class="p">[</span><span class="nx">p</span><span class="p">]);</span>
-            <span class="p">}</span>
-            <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">f</span><span class="p">.</span><span class="nx">removeAttribute</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
-            <span class="p">}</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">f</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">v</span><span class="p">);</span>
         <span class="p">}</span>
-    <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">f</span><span class="p">.</span><span class="nx">removeAttribute</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
 <span class="p">}</span>
 
 <span class="cm">/**</span>
@@ -423,7 +426,7 @@
 
     <span class="nx">YUI</span><span class="p">.</span><span class="nx">Env</span><span class="p">.</span><span class="nx">io_multi_response_callback</span><span class="p">[</span> <span class="nx">o</span><span class="p">.</span><span class="nx">id</span> <span class="p">]</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Callback &#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39; invoked without data.&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;io&#39;</span><span class="p">);</span>
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Callback &#39;</span> <span class="o">+</span> <span class="nx">o</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39; invoked without data.&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s1">&#39;io&#39;</span><span class="p">);</span>
             <span class="k">return</span><span class="p">;</span>
         <span class="p">}</span>
 
@@ -449,7 +452,10 @@
     <span class="k">return</span> <span class="nx">_send</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">uri</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="nx">YUI</span><span class="p">.</span><span class="nx">Env</span><span class="p">.</span><span class="nx">io_multi_response_callback</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">YUI</span><span class="p">.</span><span class="nx">Env</span><span class="p">.</span><span class="nx">io_multi_response_callback</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nx">YUI</span><span class="p">.</span><span class="nx">Env</span><span class="p">.</span><span class="nx">io_multi_response_callback</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="p">}</span>
 
 <span class="kd">var</span> <span class="nx">orig_io</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">io</span><span class="p">;</span>
 
@@ -491,7 +497,7 @@
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
-                                <li class=""><a href="Y.IO~multiresponse.html" title="Y.IO~multiresponse">Y.IO~multiresponse</a></li>
+                                <li class=""><a href="io~multiresponse.html" title="io~multiresponse">io~multiresponse</a></li>
                         </ul>
                     </div>
 

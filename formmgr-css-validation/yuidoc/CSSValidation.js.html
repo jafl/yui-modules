@@ -161,7 +161,7 @@
 <span class="cm">/**</span>
 <span class="cm"> * Validate an input based on its CSS data.</span>
 <span class="cm"> * </span>
-<span class="cm"> * @method Y.FormManager.validateFromCSSData</span>
+<span class="cm"> * @method validateFromCSSData</span>
 <span class="cm"> * @static</span>
 <span class="cm"> * @param e {DOM Element} The field to validate.</span>
 <span class="cm"> * @return {Object} Status:</span>
@@ -214,7 +214,7 @@
 			<span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
 				<span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_length &gt; max_length&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_length &gt; max_length&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
 			<span class="p">}</span>
 
 			<span class="kd">var</span> <span class="nx">msg</span>     <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
@@ -260,7 +260,7 @@
 			<span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
 				<span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
 			<span class="p">}</span>
 
 			<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
@@ -301,7 +301,7 @@
 			<span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
 				<span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
 			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
 			<span class="p">}</span>
 
 			<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
@@ -383,7 +383,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "FormManager.html#config_Y.FormManager.decimal_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.decimal_value_re"}, {"url": "FormManager.html#config_Y.FormManager.integer_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.integer_value_re"}, {"url": "FormManager.html#config_Y.FormManager.Strings", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.Strings"}, {"url": "FormManager.html#method_Y.FormManager.validateFromCSSData", "access": "", "host": "FormManager", "type": "method", "name": "Y.FormManager.validateFromCSSData"}];
+    var ALL_YUI_PROPS = [{"url": "FormManager.html#method_validateFromCSSData", "access": "", "host": "FormManager", "type": "method", "name": "validateFromCSSData"}, {"url": "FormManager.html#config_Y.FormManager.decimal_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.decimal_value_re"}, {"url": "FormManager.html#config_Y.FormManager.integer_value_re", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.integer_value_re"}, {"url": "FormManager.html#config_Y.FormManager.Strings", "access": "", "host": "FormManager", "type": "config", "name": "Y.FormManager.Strings"}];
 </script>
 </body>
 </html>

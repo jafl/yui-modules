@@ -2,7 +2,7 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: gallery-quickedit  Y.Plugin.DataTableQuickEdit   (YUI Library)</title>
+	<title>API: gallery-quickedit  Plugin.DataTableQuickEdit   (YUI Library)</title>
 
 	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
 	<link rel="stylesheet" type="text/css" href="assets/api.css" />
@@ -19,7 +19,7 @@
         <h3>gallery-quickedit&nbsp; <span class="subtitle">1.0.0</span></h3>
         <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
             &gt; <a href="./module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a>
-                 &gt; Y.Plugin.DataTableQuickEdit 
+                 &gt; Plugin.DataTableQuickEdit 
                 
         <form onsubmit="return false">
             <div id="propertysearch">
@@ -48,8 +48,9 @@
 
                         
                         
-                            Class <b property="yui:name">Y.Plugin.DataTableQuickEdit</b>
+                            Class <b property="yui:name">Plugin.DataTableQuickEdit</b>
                         <span class="extends">
+                           - extends <a href="Plugin.Base.html" title="Plugin.Base">Plugin.Base</a>
                         </span>
 
                     </h2>
@@ -121,7 +122,7 @@ order to be considered valid.</dd>
                         <h3 id="constructor">Constructor</h3>
                         <div class="content">
                             <div class="detail">
-                                <strong property="yui:name">Y.Plugin.DataTableQuickEdit</strong>
+                                <strong property="yui:name">Plugin.DataTableQuickEdit</strong>
                                 <code>
                                     (
   
@@ -466,6 +467,72 @@ in the plugin configuration and pass an array of column keys.
                                     </div>
                                     <hr />
                                     </div>
+                                    <div class="" rel="yui:method" resource="#method_readonlyEmailFormatter">
+                                    <h4>
+                                        <a name="method_readonlyEmailFormatter">readonlyEmailFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">readonlyEmailFormatter</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Called with exactly the same arguments as any other cell
+formatter, this function displays an email address without the
+anchor tag.  Use this as the column's qeFormatter if the column
+should not be editable in QuickEdit mode.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_readonlyLinkFormatter">
+                                    <h4>
+                                        <a name="method_readonlyLinkFormatter">readonlyLinkFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">readonlyLinkFormatter</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Called with exactly the same arguments as any other cell
+formatter, this function displays a link without the anchor tag.
+Use this as the column's qeFormatter if the column should not be
+editable in QuickEdit mode.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
                                     <div class="" rel="yui:method" resource="#method_start">
                                     <h4>
                                         <a name="method_start">start</a></h4>
@@ -483,6 +550,68 @@ in the plugin configuration and pass an array of column keys.
                                         <div class="description" property="yui:description">
                                             Switch to QuickEdit mode.  Columns that have quickEdit defined will
 be editable.  If the table has paginators, you must hide them.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_textareaFormatter">
+                                    <h4>
+                                        <a name="method_textareaFormatter">textareaFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">textareaFormatter</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Called with exactly the same arguments as any other cell
+formatter, this function displays a textarea field.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_textFormatter">
+                                    <h4>
+                                        <a name="method_textFormatter">textFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">textFormatter</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Called with exactly the same arguments as any other cell
+formatter, this function displays an input field.
                                         </div>
 
                                         <div class="description">
@@ -525,134 +654,6 @@ be editable.  If the table has paginators, you must hide them.
                                                     </code></dt>
                                                     <dd property="yui:returnInfo">true if all validation checks pass</dd>
                                                 </dl>
-
-
-             
-
-                                        </div>
-
-                                    </div>
-                                    <hr />
-                                    </div>
-                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.readonlyEmailFormatter">
-                                    <h4>
-                                        <a name="method_Y.Plugin.QuickEdit.readonlyEmailFormatter">Y.Plugin.QuickEdit.readonlyEmailFormatter</a></h4>
-                                    <div class="detail" >
-                                        <code>
-                                        
-                                         static 
-                                        
-                                        void
-                                            <strong property="yui:name">Y.Plugin.QuickEdit.readonlyEmailFormatter</strong>
-                                           (
-                                            )
-                                        </code>
-                                        
-                                        <div class="description" property="yui:description">
-                                            Called with exactly the same arguments as any other cell
-formatter, this function displays an email address without the
-anchor tag.  Use this as the column's qeFormatter if the column
-should not be editable in QuickEdit mode.
-                                        </div>
-
-                                        <div class="description">
-
-
-
-
-             
-
-                                        </div>
-
-                                    </div>
-                                    <hr />
-                                    </div>
-                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.readonlyLinkFormatter">
-                                    <h4>
-                                        <a name="method_Y.Plugin.QuickEdit.readonlyLinkFormatter">Y.Plugin.QuickEdit.readonlyLinkFormatter</a></h4>
-                                    <div class="detail" >
-                                        <code>
-                                        
-                                         static 
-                                        
-                                        void
-                                            <strong property="yui:name">Y.Plugin.QuickEdit.readonlyLinkFormatter</strong>
-                                           (
-                                            )
-                                        </code>
-                                        
-                                        <div class="description" property="yui:description">
-                                            Called with exactly the same arguments as any other cell
-formatter, this function displays a link without the anchor tag.
-Use this as the column's qeFormatter if the column should not be
-editable in QuickEdit mode.
-                                        </div>
-
-                                        <div class="description">
-
-
-
-
-             
-
-                                        </div>
-
-                                    </div>
-                                    <hr />
-                                    </div>
-                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.textareaFormatter">
-                                    <h4>
-                                        <a name="method_Y.Plugin.QuickEdit.textareaFormatter">Y.Plugin.QuickEdit.textareaFormatter</a></h4>
-                                    <div class="detail" >
-                                        <code>
-                                        
-                                         static 
-                                        
-                                        void
-                                            <strong property="yui:name">Y.Plugin.QuickEdit.textareaFormatter</strong>
-                                           (
-                                            )
-                                        </code>
-                                        
-                                        <div class="description" property="yui:description">
-                                            Called with exactly the same arguments as any other cell
-formatter, this function displays a textarea field.
-                                        </div>
-
-                                        <div class="description">
-
-
-
-
-             
-
-                                        </div>
-
-                                    </div>
-                                    <hr />
-                                    </div>
-                                    <div class="" rel="yui:method" resource="#method_Y.Plugin.QuickEdit.textFormatter">
-                                    <h4>
-                                        <a name="method_Y.Plugin.QuickEdit.textFormatter">Y.Plugin.QuickEdit.textFormatter</a></h4>
-                                    <div class="detail" >
-                                        <code>
-                                        
-                                         static 
-                                        
-                                        void
-                                            <strong property="yui:name">Y.Plugin.QuickEdit.textFormatter</strong>
-                                           (
-                                            )
-                                        </code>
-                                        
-                                        <div class="description" property="yui:description">
-                                            Called with exactly the same arguments as any other cell
-formatter, this function displays an input field.
-                                        </div>
-
-                                        <div class="description">
-
-
 
 
              
@@ -778,7 +779,7 @@ appearance of each status type:  .formmgr-has{status}</p>
                         <h4>Classes</h4>
                         <ul class="content">
                                 <li class=""><a href="Column.html" title="Column">Column</a></li>
-                                <li class="selected"><a href="Y.Plugin.DataTableQuickEdit.html" title="Y.Plugin.DataTableQuickEdit">Y.Plugin.DataTableQuickEdit</a></li>
+                                <li class="selected"><a href="Plugin.DataTableQuickEdit.html" title="Plugin.DataTableQuickEdit">Plugin.DataTableQuickEdit</a></li>
                         </ul>
                     </div>
 
@@ -807,12 +808,12 @@ appearance of each status type:  .formmgr-has{status}</p>
                                 <li class=""><a href="#method_clearMessages" title="clearMessages">clearMessages</a></li>
                                 <li class=""><a href="#method_displayMessage" title="displayMessage">displayMessage</a></li>
                                 <li class=""><a href="#method_getChanges" title="getChanges">getChanges</a></li>
+                                <li class=""><a href="#method_readonlyEmailFormatter" title="readonlyEmailFormatter">readonlyEmailFormatter</a></li>
+                                <li class=""><a href="#method_readonlyLinkFormatter" title="readonlyLinkFormatter">readonlyLinkFormatter</a></li>
                                 <li class=""><a href="#method_start" title="start">start</a></li>
+                                <li class=""><a href="#method_textareaFormatter" title="textareaFormatter">textareaFormatter</a></li>
+                                <li class=""><a href="#method_textFormatter" title="textFormatter">textFormatter</a></li>
                                 <li class=""><a href="#method_validate" title="validate">validate</a></li>
-                                <li class=""><a href="#method_Y.Plugin.QuickEdit.readonlyEmailFormatter" title="Y.Plugin.QuickEdit.readonlyEmailFormatter">Y.Plugin.QuickEdit.readonlyEmailFormatter</a></li>
-                                <li class=""><a href="#method_Y.Plugin.QuickEdit.readonlyLinkFormatter" title="Y.Plugin.QuickEdit.readonlyLinkFormatter">Y.Plugin.QuickEdit.readonlyLinkFormatter</a></li>
-                                <li class=""><a href="#method_Y.Plugin.QuickEdit.textareaFormatter" title="Y.Plugin.QuickEdit.textareaFormatter">Y.Plugin.QuickEdit.textareaFormatter</a></li>
-                                <li class=""><a href="#method_Y.Plugin.QuickEdit.textFormatter" title="Y.Plugin.QuickEdit.textFormatter">Y.Plugin.QuickEdit.textFormatter</a></li>
                         </ul>
                     </div>
 
@@ -841,7 +842,7 @@ appearance of each status type:  .formmgr-has{status}</p>
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Y.Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Y.Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Y.Plugin.DataTableQuickEdit.html#config_YAHOO.widget.QuickEditDataTable.status_order", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "config", "name": "YAHOO.widget.QuickEditDataTable.status_order"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Y.Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyEmailFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyEmailFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.readonlyLinkFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.readonlyLinkFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textareaFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textareaFormatter"}, {"url": "Y.Plugin.DataTableQuickEdit.html#method_Y.Plugin.QuickEdit.textFormatter", "access": "", "host": "Y.Plugin.DataTableQuickEdit", "type": "method", "name": "Y.Plugin.QuickEdit.textFormatter"}];
+    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyEmailFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyEmailFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyLinkFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyLinkFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Plugin.DataTableQuickEdit.html#method_textareaFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textareaFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_textFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Plugin.DataTableQuickEdit.html#config_YAHOO.widget.QuickEditDataTable.status_order", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "YAHOO.widget.QuickEditDataTable.status_order"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}];
 </script>
 </body>
 </html>

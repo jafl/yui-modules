@@ -51,28 +51,7 @@
                     </h3>
                     <div class="description summary">
                         <p>Extends the IO base class to enable multiple responses using an
-iframe as the transport medium.  Each response fires the response event.
-The only events that are fired are the start and end events.</p>
-<p>All the YUI 3 IO features are supported, so the request can be sent
-as either GET (for simple query args) or POST (for anything, even file
-uploads).  The module uses an iframe to send the request and includes a
-callback parameter.  (So you cannot include a parameter named
-<q>callback</q>.)  For each response, the server must send a script
-block invoking the callback, similar to JSONP.  Unlike JSONP, however,
-requests can only be made to your own server because the callback will
-reference <code>window.parent</code>.  In order to trigger script
-parsing in all browsers, the first chunk of data that the server writes
-to the connection must be at least 1024 bytes, and it must be part of
-the body, so you will need to explicitly send an empty head.</p>
-<p>Due to the way that the request data is parsed, it is not safe to
-send JSON-encoded data using the standard YUI 3 IO methods.  However, if
-you define <code>json</code> in the configuration passed to
-<code>Y.io()</code>, then the data will be passed to the server under
-the <code>json</code> parameter.  (If you pass an object, it will be
-serialized with <code>Y.JSON.stringify()</code>.)
-<p>To keep the iframe after it has finished loading, set
-<code>debug:true</code> in the configuration passed to
-<code>Y.io()</code>.</p>
+iframe as the transport medium.</p>
                     </div>
 
 
@@ -82,15 +61,23 @@ serialized with <code>Y.JSON.stringify()</code>.)
 
                             <p>This module contains the following classes:</p>
                             <script>
-                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Extends the IO base class to enable multiple responses using an\niframe as the transport medium.  Each response fires the response event.\nThe only events that are fired are the start and end events.</p>\n<p>All the YUI 3 IO features are supported, so the request can be sent\nas either GET (for simple query args) or POST (for anything, even file\nuploads).  The module uses an iframe to send the request and includes a\ncallback parameter.  (So you cannot include a parameter named\n<q>callback</q>.)  For each response, the server must send a script\nblock invoking the callback, similar to JSONP.  Unlike JSONP, however,\nrequests can only be made to your own server because the callback will\nreference <code>window.parent</code>.  In order to trigger script\nparsing in all browsers, the first chunk of data that the server writes\nto the connection must be at least 1024 bytes, and it must be part of\nthe body, so you will need to explicitly send an empty head.</p>\n<p>Due to the way that the request data is parsed, it is not safe to\nsend JSON-encoded data using the standard YUI 3 IO methods.  However, if\nyou define <code>json</code> in the configuration passed to\n<code>Y.io()</code>, then the data will be passed to the server under\nthe <code>json</code> parameter.  (If you pass an object, it will be\nserialized with <code>Y.JSON.stringify()</code>.)\n<p>To keep the iframe after it has finished loading, set\n<code>debug:true</code> in the configuration passed to\n<code>Y.io()</code>.</p>", "guessedname": "Y.IO~multiresponse", "name": "Y.IO~multiresponse"}];
+                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Extends the IO base class to enable multiple responses using an\niframe as the transport medium.  Each response fires the response event.\nThe only events that are fired are the start and end events.</p>\n<p>All the YUI 3 IO features are supported, so the request can be sent\nas either GET (for simple query args) or POST (for anything, even file\nuploads).  The module uses an iframe to send the request and includes a\ncallback parameter.  (So you cannot include a parameter named\n<q>callback</q>.)  For each response, the server must send a script\nblock invoking the callback, similar to JSONP.  Unlike JSONP, however,\nrequests can only be made to your own server because the callback will\nreference <code>window.parent</code>.  In order to trigger script\nparsing in all browsers, the first chunk of data that the server writes\nto the connection must be at least 1024 bytes, and it must be part of\nthe body, so you will need to explicitly send an empty head.</p>\n<p>Due to the way that the request data is parsed, it is not safe to\nsend JSON-encoded data using the standard YUI 3 IO methods.  However, if\nyou define <code>json</code> in the configuration passed to\n<code>Y.io()</code>, then the data will be passed to the server under\nthe <code>json</code> parameter.  (If you pass an object, it will be\nserialized with <code>Y.JSON.stringify()</code>.)\n<p>To keep the iframe after it has finished loading, set\n<code>debug:true</code> in the configuration passed to\n<code>Y.io()</code>.</p>", "guessedname": "io~multiresponse", "name": "io~multiresponse"}];
                             </script>
                             <div id="splash_classList">
                                 <ul>
-                                    <li><a href="Y.IO~multiresponse.html" title="Y.IO~multiresponse" id="class_0">Y.IO~multiresponse</a></li>
+                                    <li><a href="io~multiresponse.html" title="io~multiresponse" id="class_0">io~multiresponse</a></li>
                                 </ul>
                             </div>
                     </div>
                     <div class="yui-u">
+                                    <div class="submodules">
+                                        <h4>Submodules:</h4> 
+                                        <dl>
+                                            <dt><code>io-multiresponse</code></dt>
+                                            <dd><p>Extends the IO base class to enable multiple responses using an
+iframe as the transport medium.</p></dd>
+                                        </dl>
+                                    </div>
 
                         </div>
                 </div>
@@ -110,7 +97,7 @@ serialized with <code>Y.JSON.stringify()</code>.)
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
-                                <li class=""><a href="Y.IO~multiresponse.html" title="Y.IO~multiresponse">Y.IO~multiresponse</a></li>
+                                <li class=""><a href="io~multiresponse.html" title="io~multiresponse">io~multiresponse</a></li>
                         </ul>
                     </div>
 

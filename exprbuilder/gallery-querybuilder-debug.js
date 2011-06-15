@@ -52,6 +52,7 @@ var has_bubble_problem = (0 < Y.UA.ie && Y.UA.ie < 9);
  *
  * @module gallery-querybuilder
  * @class QueryBuilder
+ * @extends Widget
  * @constructor
  * @param var_list {Array} List of variables that be included in the query.
  *		Each item in the list is an object containing:

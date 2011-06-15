@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"Y.Node": "gallery-node-optimizations"};
+YAHOO.env.classMap = {"Node": "node"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;

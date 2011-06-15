@@ -7,7 +7,7 @@ YUI.add('gallery-multiobject', function(Y) {
  * both functions and events, and the state of all the objects is kept in
  * sync.  The objects must maintain all state via
  * Y.Attribute.<p>
- * 
+ *
  * <p>MultiObject is similar to Y.ArrayList, except:</p>
  * <ul>
  * <li>All objects must be of the same type, since MultiObject is supposed
@@ -17,15 +17,16 @@ YUI.add('gallery-multiobject', function(Y) {
  *		in the list, not an array of results.</li>
  * <li>MultiObject propagates all events.</li>
  * </ul>
- * 
+ *
  * <p>Internally, MultiObject delegates all methods by name, so it supports
  * Y.Do.before, Y.Do.after, etc.</p>
- * 
+ *
  * <p>To avoid shadowing potential function names, we inherit from
  * Y.EventTarget and use multi_ as the prefix for our own functions.</p>
- * 
+ *
  * @module gallery-multiobject
  * @class MultiObject
+ * @extends EventTarget
  * @constructor
  * @param items {Array} initial set of items
  * @param config {Object} configuration
@@ -67,7 +68,7 @@ function MultiObject(
 	Y.Array.each(this.items, installItem, this);
 
 	config.prefix = this.items[0].name;
-    MultiObject.superclass.constructor.call(this, config);
+	MultiObject.superclass.constructor.call(this, config);
 }
 
 function delegate(
@@ -205,7 +206,7 @@ Y.extend(MultiObject, Y.EventTarget,
 	/**
 	 * Return an array of all the individual results from calling the
 	 * specified function.  This is only useful if return_all_results=false.
-	 * 
+	 *
 	 * @param f {String} name of the function to invoke
 	 * @param arg* {mixed} 0..n arguments to pass to the function
 	 * @return {Array} results from delegating the named function

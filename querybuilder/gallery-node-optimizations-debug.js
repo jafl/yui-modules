@@ -5,8 +5,9 @@ YUI.add('gallery-node-optimizations', function(Y) {
 /**
  * Optimizations for searching DOM tree.
  *
- * @module gallery-node-optimizations
- * @class Y.Node
+ * @module node
+ * @submodule gallery-node-optimizations
+ * @class Node
  */
 
 var class_name_re = /^\.([-_a-z0-9]+)$/i;

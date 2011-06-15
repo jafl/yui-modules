@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"Y.ComplexMath": "gallery-complexnumber", "Y.ComplexNumber": "gallery-complexnumber"};
+YAHOO.env.classMap = {"ComplexNumber": "gallery-complexnumber", "ComplexMath": "gallery-complexnumber"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;
