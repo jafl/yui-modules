@@ -17,6 +17,12 @@ YUI({
 function(Y)
 {
 	var canvas = Y.Node.create('<canvas width="110" height="110"></canvas>');
+	if (!canvas)
+	{
+		Y.one('#container').set('innerHTML', 'This browser does not support canvas.');
+		return;
+	}
+
 	Y.one('#container').appendChild(canvas);
 
 	var context = new Y.Canvas.Context2d(canvas);
