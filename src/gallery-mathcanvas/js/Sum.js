@@ -2,8 +2,9 @@
  * <p>Sum of values.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Sum
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Sum
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
  */
 

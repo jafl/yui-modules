@@ -5,7 +5,9 @@
  * sign.</p>
  * 
  * @module gallery-neon
- * @class Y.Plugin.Neon
+ * @namespace Plugin
+ * @class Neon
+ * @extends Plugin.Base
  * @constructor
  * @param config {Object} configuration
  */

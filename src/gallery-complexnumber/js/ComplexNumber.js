@@ -4,7 +4,7 @@
  * <p>Class for representing a complex number.</p>
  * 
  * @module gallery-complexnumber
- * @class Y.ComplexNumber
+ * @class ComplexNumber
  * @constructor
  * @param real {number} the real component (default: 0)
  * @param imag {number} the imaginary component (default: 0)

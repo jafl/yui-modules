@@ -2,8 +2,9 @@
  * <p>Variable value</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Variable
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class Variable
+ * @extends MathFunction
  * @constructor
  * @param name {String}
  */

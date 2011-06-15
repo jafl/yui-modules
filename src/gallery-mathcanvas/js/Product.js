@@ -2,8 +2,9 @@
  * <p>Product of values.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Product
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Product
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
  */
 

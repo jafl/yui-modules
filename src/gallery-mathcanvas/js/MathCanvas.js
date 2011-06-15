@@ -3,9 +3,10 @@
  * paper.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathCanvas
+ * @namespace
+ * @class MathCanvas
+ * @extends Widget
  * @constructor
- * @extends Y.Widget
  * @param config {Object} Widget configuration
  */
 
@@ -328,7 +329,8 @@ Y.MathCanvas.Parser   = MathParser;
 /**********************************************************************
  * Parser used to convert a string expression into Y.MathFunction
  * 
- * @class Y.MathCanvas.Parser
+ * @namespace MathCanvas
+ * @class Parser
  */
 
 /**
@@ -337,5 +339,5 @@ Y.MathCanvas.Parser   = MathParser;
  * @method parse
  * @static
  * @param expr {String} expression to parse
- * @return {Y.MathFunction}
+ * @return {MathFunction}
  */

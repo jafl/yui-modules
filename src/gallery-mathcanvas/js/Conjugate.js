@@ -2,10 +2,11 @@
  * <p>Conjugate of a complex number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Conjugate
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Conjugate
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathConjugate(

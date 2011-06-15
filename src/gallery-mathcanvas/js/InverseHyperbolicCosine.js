@@ -2,10 +2,11 @@
  * <p>Inverse hyperbolic cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.InverseHyperbolicCosine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class InverseHyperbolicCosine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathInverseHyperbolicCosine(

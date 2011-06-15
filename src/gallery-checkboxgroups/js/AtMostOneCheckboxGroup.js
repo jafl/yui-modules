@@ -4,6 +4,7 @@
  * 
  * @module gallery-checkboxgroups
  * @class AtMostOneCheckboxGroup
+ * @extends CheckboxGroup
  * @constructor
  * @param cb_list {String|Node|NodeList} The list of checkboxes to manage
  */

@@ -2,8 +2,9 @@
  * <p>e</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.E
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class E
+ * @extends MathFunction
  * @constructor
  */
 

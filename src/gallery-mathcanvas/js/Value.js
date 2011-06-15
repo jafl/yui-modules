@@ -2,8 +2,9 @@
  * <p>Constant value</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Value
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class Value
+ * @extends MathFunction
  * @constructor
  * @param value {number}
  */

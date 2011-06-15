@@ -946,7 +946,8 @@ Y.TreebleDataSource = TreebleDataSource;
  * <code>dataType</code> and <code>liveData</code>, or it can be <q>free
  * form</q>, e.g., an array of records or an XHR URL.</p>
  *
- * @method Y.Parsers.treebledatasource
+ * @namespace Parsers
+ * @method treebledatasource
  * @param oData {mixed} Data to convert.
  * @return {DataSource} The new data source.
  * @static
@@ -1006,13 +1007,14 @@ Y.namespace("Parsers").treebledatasource = function(oData)
 };
 /**********************************************************************
  * @module gallery-treeble
+ * @namespace
  * @class Treeble
  */
 
 /**
  * <p>Formatter for open/close twistdown.</p>
  *
- * @method Y.Treeble.twistdownFormatter
+ * @method twistdownFormatter
  * @param sendRequest {Function} Function that reloads DataTable
  * @static
  */
@@ -1053,7 +1055,7 @@ Y.namespace("Treeble").buildTwistdownFormatter = function(sendRequest)
 /**
  * <p>Default formatter for indented column.</p>
  *
- * @method Y.Treeble.treeValueFormatter
+ * @method treeValueFormatter
  * @static
  */
 Y.namespace("Treeble").treeValueFormatter = function(o)

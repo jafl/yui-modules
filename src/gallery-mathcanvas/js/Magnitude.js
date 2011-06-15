@@ -2,10 +2,11 @@
  * <p>Magnitude (absolute value) of a number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Magnitude
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Magnitude
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathMagnitude(

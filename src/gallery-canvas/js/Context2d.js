@@ -14,7 +14,8 @@ function mirror(r, s, name)
  * Y.Node, use get() and set() to modify attributes.</p>
  * 
  * @module gallery-canvas
- * @class Y.Canvas.Context2d
+ * @namespace Canvas
+ * @class Context2d
  * @constructor
  * @param node {Y.Node} the canvas element
  * @param config {Object} configuration

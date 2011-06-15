@@ -2,10 +2,11 @@
  * <p>Square root.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.SquareRoot
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class SquareRoot
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathSquareRoot(

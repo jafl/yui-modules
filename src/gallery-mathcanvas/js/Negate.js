@@ -2,10 +2,11 @@
  * <p>Negate a number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Negate
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Negate
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathNegate(

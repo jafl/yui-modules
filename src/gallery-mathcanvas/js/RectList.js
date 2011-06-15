@@ -7,7 +7,8 @@
  * font_size(%), func.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathCanvas.RectList
+ * @namespace MathCanvas
+ * @class RectList
  * @constructor
  */
 

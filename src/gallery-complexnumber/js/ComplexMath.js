@@ -5,7 +5,7 @@
  * overloading).</p>
  * 
  * @module gallery-complexnumber
- * @class Y.ComplexMath
+ * @class ComplexMath
  */
 
 function failIfConstant(v)

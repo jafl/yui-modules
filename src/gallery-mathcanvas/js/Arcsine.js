@@ -2,10 +2,11 @@
  * <p>Inverse trigonometric sine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Arcsine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Arcsine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathArcsine(

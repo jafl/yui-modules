@@ -2,10 +2,11 @@
  * <p>Phase of a complex number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Phase
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Phase
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathPhase(

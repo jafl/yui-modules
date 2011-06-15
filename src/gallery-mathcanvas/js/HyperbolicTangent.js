@@ -2,10 +2,11 @@
  * <p>Hyperbolic tangent.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.HyperbolicTangent
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class HyperbolicTangent
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathHyperbolicTangent(

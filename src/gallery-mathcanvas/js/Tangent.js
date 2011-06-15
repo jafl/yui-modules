@@ -2,10 +2,11 @@
  * <p>Trigonometric tangent.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Tangent
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Tangent
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathTangent(

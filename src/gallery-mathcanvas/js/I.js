@@ -2,8 +2,9 @@
  * <p>i (square root of -1)</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.I
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class I
+ * @extends MathFunction
  * @constructor
  */
 

@@ -2,10 +2,11 @@
  * <p>Hyperbolic sine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.HyperbolicSine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class HyperbolicSine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathHyperbolicSine(

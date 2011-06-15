@@ -2,11 +2,12 @@
  * <p>Exponential.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Exponential
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Exponential
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param b {Y.MathFunction} base
- * @param e {Y.MathFunction} exponent
+ * @param b {MathFunction} base
+ * @param e {MathFunction} exponent
  */
 
 function MathExponential(

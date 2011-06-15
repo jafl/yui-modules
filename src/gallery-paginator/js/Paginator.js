@@ -18,6 +18,7 @@ http://developer.yahoo.net/yui/license.txt
  *
  * @module gallery-paginator
  * @class Paginator
+ * @extends Widget
  * @constructor
  * @param config {Object} Object literal to set instance and ui component
  * configuration.

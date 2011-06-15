@@ -2,10 +2,11 @@
  * <p>Trigonometric cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Cosine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Cosine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathCosine(

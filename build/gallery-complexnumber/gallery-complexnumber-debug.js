@@ -6,7 +6,7 @@ YUI.add('gallery-complexnumber', function(Y) {
  * <p>Class for representing a complex number.</p>
  * 
  * @module gallery-complexnumber
- * @class Y.ComplexNumber
+ * @class ComplexNumber
  * @constructor
  * @param real {number} the real component (default: 0)
  * @param imag {number} the imaginary component (default: 0)
@@ -235,7 +235,7 @@ Y.ComplexNumber = ComplexNumber;
  * overloading).</p>
  * 
  * @module gallery-complexnumber
- * @class Y.ComplexMath
+ * @class ComplexMath
  */
 
 function failIfConstant(v)

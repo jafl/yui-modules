@@ -944,7 +944,8 @@ Y.TreebleDataSource = TreebleDataSource;
  * <code>dataType</code> and <code>liveData</code>, or it can be <q>free
  * form</q>, e.g., an array of records or an XHR URL.</p>
  *
- * @method Y.Parsers.treebledatasource
+ * @namespace Parsers
+ * @method treebledatasource
  * @param oData {mixed} Data to convert.
  * @return {DataSource} The new data source.
  * @static

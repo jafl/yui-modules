@@ -2,10 +2,11 @@
  * <p>Hyperbolic cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.HyperbolicCosine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class HyperbolicCosine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathHyperbolicCosine(

@@ -2,8 +2,9 @@
  * <p>Pi</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Pi
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class Pi
+ * @extends MathFunction
  * @constructor
  */
 

@@ -2,10 +2,11 @@
  * <p>Trigonometric sine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Sine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Sine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathSine(

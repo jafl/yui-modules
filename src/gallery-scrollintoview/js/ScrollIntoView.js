@@ -7,6 +7,10 @@
  * Otherwise, this algorithm will skip over them with unpredictable
  * results.</p>
  * 
+ * @module node
+ * @submodule gallery-scrollintoview
+ * @class Node
+ * @method scrollIntoView
  * @chainable
  */
 

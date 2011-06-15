@@ -2,6 +2,14 @@ YUI.add('gallery-io-multiresponse', function(Y) {
 
 /**
  * <p>Extends the IO base class to enable multiple responses using an
+ * iframe as the transport medium.</p>
+ * 
+ * @module io
+ * @submodule io-multiresponse
+ */
+
+/**
+ * <p>Extends the IO base class to enable multiple responses using an
  * iframe as the transport medium.  Each response fires the response event.
  * The only events that are fired are the start and end events.</p>
  * 
@@ -28,8 +36,7 @@ YUI.add('gallery-io-multiresponse', function(Y) {
  * <code>debug:true</code> in the configuration passed to
  * <code>Y.io()</code>.</p>
  * 
- * @module io
- * @class Y.IO~multiresponse
+ * @class io~multiresponse
  */
 
 var w = Y.config.win,

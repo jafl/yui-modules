@@ -6,7 +6,8 @@
  * prepareToRender() and render().</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction
+ * @namespace
+ * @class MathFunction
  * @constructor
  */
 

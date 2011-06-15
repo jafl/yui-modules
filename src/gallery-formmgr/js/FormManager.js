@@ -289,7 +289,7 @@ FormManager.status_order =
 /**
  * Get the precedence of the given status name.
  * 
- * @method Y.FormManager.getStatusPrecedence
+ * @method getStatusPrecedence
  * @static
  * @param status {String} The name of the status value.
  * @return {int} The position in the <code>status_order</code> array.
@@ -311,7 +311,7 @@ FormManager.getStatusPrecedence = function(
 /**
  * Compare two status values.
  * 
- * @method Y.FormManager.statusTakesPrecedence
+ * @method statusTakesPrecedence
  * @static
  * @param orig_status {String} The name of the original status value.
  * @param new_status {String} The name of the new status value.
@@ -327,7 +327,7 @@ FormManager.statusTakesPrecedence = function(
 /**
  * Get the status of the given fieldset or form row.
  * 
- * @method Y.FormManager.getElementStatus
+ * @method getElementStatus
  * @static
  * @param e {String|Object} The descriptor or DOM element.
  * @return {mixed} The status (String) or <code>false</code>.
@@ -360,7 +360,7 @@ function getId(
  * Trim leading and trailing whitespace from the specified fields, except
  * when a field has the CSS class yiv-no-trim.
  * 
- * @method Y.FormManager.cleanValues
+ * @method cleanValues
  * @static
  * @param e {Array} The fields to clean.
  * @return {boolean} <code>true</code> if there are any file inputs.

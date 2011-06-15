@@ -2,10 +2,11 @@
  * <p>Rotate a complex number around the origin.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Rotate
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Rotate
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathRotate(

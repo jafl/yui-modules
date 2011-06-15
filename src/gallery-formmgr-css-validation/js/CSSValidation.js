@@ -112,7 +112,7 @@ function hasLimit(
 /**
  * Validate an input based on its CSS data.
  * 
- * @method Y.FormManager.validateFromCSSData
+ * @method validateFromCSSData
  * @static
  * @param e {DOM Element} The field to validate.
  * @return {Object} Status:

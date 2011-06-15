@@ -2,11 +2,12 @@
  * <p>Function that takes one or more arguments.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.FunctionWithArgs
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class FunctionWithArgs
+ * @extends MathFunction
  * @constructor
  * @param name {String} the name of the function
- * @param args {Y.MathFunction|Array} the arguments
+ * @param args {MathFunction|Array} the arguments
  */
 
 function MathFunctionWithArgs(

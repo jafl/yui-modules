@@ -2,10 +2,11 @@
  * <p>Real part of a complex number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.RealPart
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class RealPart
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathRealPart(

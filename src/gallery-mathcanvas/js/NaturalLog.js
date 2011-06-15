@@ -2,10 +2,11 @@
  * <p>Natural logarithm.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.NaturalLog
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class NaturalLog
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathNaturalLog(

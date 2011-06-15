@@ -2,10 +2,11 @@
  * <p>Inverse trigonometric cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Arctangent
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Arctangent
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathArctangent(

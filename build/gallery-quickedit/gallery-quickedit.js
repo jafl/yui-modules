@@ -105,7 +105,9 @@ Y.Column.ATTRS.qeFormatter =
  * </dl>
  *
  * @module gallery-quickedit
- * @class Y.Plugin.DataTableQuickEdit
+ * @namespace Plugin
+ * @class DataTableQuickEdit
+ * @extends Plugin.Base
  * @constructor
  * @param config {Object} Object literal to set component configuration.
  */
@@ -238,7 +240,7 @@ QuickEdit.error_display_markup = '<div class="quickedit-message-text"></div>';
  * Called with exactly the same arguments as any other cell
  * formatter, this function displays an input field.
  *
- * @method Y.Plugin.QuickEdit.textFormatter
+ * @method textFormatter
  * @static
  */
 QuickEdit.textFormatter = function(o)
@@ -278,7 +280,7 @@ QuickEdit.textFormatter = function(o)
  * Called with exactly the same arguments as any other cell
  * formatter, this function displays a textarea field.
  *
- * @method Y.Plugin.QuickEdit.textareaFormatter
+ * @method textareaFormatter
  * @static
  */
 QuickEdit.textareaFormatter = function(o)
@@ -320,7 +322,7 @@ QuickEdit.textareaFormatter = function(o)
  * anchor tag.  Use this as the column's qeFormatter if the column
  * should not be editable in QuickEdit mode.
  *
- * @method Y.Plugin.QuickEdit.readonlyEmailFormatter
+ * @method readonlyEmailFormatter
  * @static
  */
 QuickEdit.readonlyEmailFormatter = function(o)
@@ -334,7 +336,7 @@ QuickEdit.readonlyEmailFormatter = function(o)
  * Use this as the column's qeFormatter if the column should not be
  * editable in QuickEdit mode.
  *
- * @method Y.Plugin.QuickEdit.readonlyLinkFormatter
+ * @method readonlyLinkFormatter
  * @static
  */
 QuickEdit.readonlyLinkFormatter = function(o)
@@ -422,7 +424,7 @@ function copyDown(
  * cell is in the first row of the DataTable.  Call this at the end
  * of your QuickEdit formatter.
  *
- * @method Y.Plugin.QuickEdit.copyDownFormatter
+ * @method copyDownFormatter
  * @static
  */
 QuickEdit.copyDownFormatter = function(o)

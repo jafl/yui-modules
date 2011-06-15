@@ -2,10 +2,11 @@
  * <p>Imaginary part of a complex number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.ImaginaryPart
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class ImaginaryPart
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathImaginaryPart(

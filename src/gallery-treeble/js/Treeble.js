@@ -1,12 +1,13 @@
 /**********************************************************************
  * @module gallery-treeble
+ * @namespace
  * @class Treeble
  */
 
 /**
  * <p>Formatter for open/close twistdown.</p>
  *
- * @method Y.Treeble.twistdownFormatter
+ * @method twistdownFormatter
  * @param sendRequest {Function} Function that reloads DataTable
  * @static
  */
@@ -47,7 +48,7 @@ Y.namespace("Treeble").buildTwistdownFormatter = function(sendRequest)
 /**
  * <p>Default formatter for indented column.</p>
  *
- * @method Y.Treeble.treeValueFormatter
+ * @method treeValueFormatter
  * @static
  */
 Y.namespace("Treeble").treeValueFormatter = function(o)

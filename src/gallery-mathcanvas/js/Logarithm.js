@@ -2,11 +2,12 @@
  * <p>Logarithm.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Logarithm
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Logarithm
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param b {Y.MathFunction} base
- * @param v {Y.MathFunction} value
+ * @param b {MathFunction} base
+ * @param v {MathFunction} value
  */
 
 function MathLogarithm(

@@ -2,8 +2,9 @@
  * <p>Minimum.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Min
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Min
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
  */
 

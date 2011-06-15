@@ -1,5 +1,13 @@
 "use strict";
 
+/**********************************************************************
+ * <p>Functions for measuring the size of a node.</p>
+ * 
+ * @module node
+ * @submodule gallery-dimensions
+ * @class Node
+ */
+
 var em_div = null,
 
 	the_horiz_styles =
@@ -26,9 +34,10 @@ var em_div = null,
  * <p>Returns the size of one em in pixels.</p>
  * 
  * @method emToPx
+ * @static
  */
 
-Y.emToPx = function(
+Y.Node.emToPx = function(
 	/* float */	em_count)
 {
 	if (!em_div)
@@ -101,7 +110,7 @@ Y.Node.prototype.parseDimensionStyle = function(
 	var v = parseFloat(s, 10);
 	if (/em$/.test(s))
 	{
-		v *= Y.emToPx(1);
+		v *= Y.Node.emToPx(1);
 	}
 
 	return Math.round(v);

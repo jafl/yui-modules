@@ -2,11 +2,12 @@
  * <p>Quotient of values.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Quotient
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Quotient
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param n {Y.MathFunction} numerator
- * @param d {Y.MathFunction} denominator
+ * @param n {MathFunction} numerator
+ * @param d {MathFunction} denominator
  */
 
 function MathQuotient(

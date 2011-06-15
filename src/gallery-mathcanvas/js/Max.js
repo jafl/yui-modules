@@ -2,8 +2,9 @@
  * <p>Maximum.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Max
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Max
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
  */
 
