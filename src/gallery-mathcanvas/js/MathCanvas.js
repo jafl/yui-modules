@@ -39,10 +39,10 @@ MathCanvas.ATTRS =
 	/**
 	 * The font name to use.
 	 * 
-	 * @config fontname
+	 * @config fontName
 	 * @type {String}
 	 */
-	fontname:
+	fontName:
 	{
 		value:     'sans-serif',
 		validator: Y.Lang.isString
@@ -51,10 +51,10 @@ MathCanvas.ATTRS =
 	/**
 	 * The font size to use, in em's.
 	 * 
-	 * @config fontsize
+	 * @config fontSize
 	 * @type {number}
 	 */
-	fontsize:
+	fontSize:
 	{
 		value:     1,
 		validator: Y.Lang.isNumber
@@ -64,10 +64,10 @@ MathCanvas.ATTRS =
 	 * The minimum width of the canvas.  If the expression is wider, the
 	 * width will increase to fit.
 	 * 
-	 * @config minwidth
+	 * @config minWidth
 	 * @type {Integer}
 	 */
-	minwidth:
+	minWidth:
 	{
 		value:     100,
 		validator: Y.Lang.isNumber
@@ -77,10 +77,10 @@ MathCanvas.ATTRS =
 	 * The minimum height of the canvas.  If the expression is taller, the
 	 * height will increase to fit.
 	 * 
-	 * @config minheight
+	 * @config minHeight
 	 * @type {Integer}
 	 */
-	minheight:
+	minHeight:
 	{
 		value:     100,
 		validator: Y.Lang.isNumber
@@ -88,19 +88,10 @@ MathCanvas.ATTRS =
 };
 
 function setSize(
-	/* event/number */	v,
 	/* width/height */	type)
 {
-	if (v && v.newVal)
-	{
-		v = v.newVal;
-	}
-	else if (!v)
-	{
-		v = this.get('min'+type);
-	}
-
-	v = Math.max(v, this[ 'render_'+type ]+5);
+	var c = type.charAt(0).toUpperCase() + type.substr(1);
+	var v = Math.max(this.get('min'+c), this[ 'render_'+type ]+5);
 	this.set(type, v+'px');
 	this.canvas.setAttribute(type, v);
 }
@@ -110,19 +101,20 @@ Y.extend(MathCanvas, Y.Widget,
 	initializer: function(config)
 	{
 		this.after('funcChange', this._renderExpression);
+		this.after('fontNameChange', this._renderExpression);
+		this.after('fontSizeChange', this._renderExpression);
+		this.after('minWidthChange', this._renderExpression);
+		this.after('minHeightChange', this._renderExpression);
 	},
 
 	renderUI: function()
 	{
 		var container = this.get('contentBox');
 
-		this.on('minwidthChange', setSize, this, 'width');
-		this.on('minheightChange', setSize, this, 'height');
-
-		var w = this.get('minwidth');
+		var w = this.get('minWidth');
 		this.set('width', w+'px');
 
-		var h = this.get('minheight');
+		var h = this.get('minHeight');
 		this.set('height', w+'px');
 
 		this.canvas = Y.Node.create(
@@ -165,10 +157,10 @@ Y.extend(MathCanvas, Y.Widget,
 		var bounds = this.rect_list.getBounds();
 
 		this.render_width  = RectList.width(bounds);
-		setSize.call(this, null, 'width');
+		setSize.call(this, 'width');
 
 		this.render_height = RectList.height(bounds);
-		setSize.call(this, null, 'height');
+		setSize.call(this, 'height');
 
 		this.context.save();
 		this.context.translate(
@@ -200,7 +192,7 @@ var math_rendering =
 	getLineHeight: function(
 		/* percentage */	font_size)
 	{
-		return (13 * this.math_canvas.get('fontsize') * font_size/100.0);
+		return (13 * this.math_canvas.get('fontSize') * font_size/100.0);
 	},
 
 	getStringWidth: function(
@@ -218,8 +210,8 @@ var math_rendering =
 		/* percentage */	font_size)
 	{
 		this.set('font',
-			(this.math_canvas.get('fontsize') * font_size/100.0) + 'em ' +
-			 this.math_canvas.get('fontname'));
+			(this.math_canvas.get('fontSize') * font_size/100.0) + 'em ' +
+			 this.math_canvas.get('fontName'));
 	},
 
 	getSuperSubFontSize: function(
