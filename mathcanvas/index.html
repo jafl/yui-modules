@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>MathCanvas Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
+	<script src="gallery-canvas-debug.js"></script>
+	<script src="gallery-math-debug.js"></script>
+	<script src="gallery-complexnumber-debug.js"></script>
+	<script src="gallery-mathcanvas-debug.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssbase/base-min.css">
+<!--
+	<script src="yui.js"></script>
+	<link rel="stylesheet" type="text/css" href="yui.css">
+-->
+	<style type="text/css">
+	#canvas { border: 1px solid black; }
+	#expr { width: 25em; }
+	.yui3-mathcanvas input { width: 6em; }
+	</style>
+</head>
+
+<body>
+
+<script type="text/javascript">
+YUI({
+//	filter: 'debug',
+}).use('gallery-mathcanvas', function(Y)
+{
+//	Y.on('domready', function() {
+
+	var canvas = new Y.MathCanvas(
+	{
+		minWidth:  300,
+		minHeight: 100,
+		fontSize:  2
+	});
+	canvas.render('#canvas');
+
+	var expr_input = Y.one('#expr');
+	Y.on('click', function()
+	{
+		try
+		{
+			canvas.set('func', expr_input.get('value'));
+
+			Y.one('#value').set('innerHTML', canvas.get('func').evaluate(
+			{
+				x:  1,
+				y:  2,
+				z:  Y.MathCanvas.Parser.parse('x+y'),
+				w1: Y.ComplexMath.I,
+				w2: new Y.ComplexNumber(0,-1)
+			}));
+
+			Y.one('#expr2').set('innerHTML', canvas.get('func').toString());
+		}
+		catch (e)
+		{
+			alert(e);
+		}
+	},
+	'#render');
+
+	Y.on('click', function()
+	{
+		var size = canvas.get('fontSize');
+		if (size > 1)
+		{
+			size--;
+			canvas.set('fontSize', size);
+		}
+	},
+	'#font-down');
+
+	Y.on('click', function()
+	{
+		canvas.set('fontSize', canvas.get('fontSize') + 1);
+	},
+	'#font-up');
+
+//	});
+});
+</script>
+
+<h1><a href="http://yuilibrary.com/gallery/show/mathcanvas">YUI 3 MathCanvas</a> Example</h1>
+
+<div id="controls">
+	<input type="text" id="expr" value="max(sin(sqrt(5)),sqrt(abs(cos(pi))),e)"></input>
+	<button id="render">Display</button>
+	<button id="font-down">Smaller</button>
+	<button id="font-up">Larger</button>
+</div>
+
+<div id="canvas"></div>
+<p>Value: <span id="value">0</span></p>
+<p>Expr: <span id="expr2">0</span></p>
+
+<p><a href="yuidoc">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+</body>
+</html>
+
+<!--
+uif:
+	render as part of canvas, not input field
+	no paste event, only click and keyup
+
+sqrt(2)^(2^((2/3)^(2^2))) or 2^log(3/2,27) or log(3/2,27) - 2/3 looks wrong
+2^2^2 - too much space between opening paren and base
+log2(2) - base too close to open paren
+
+|| (nary parallel)
+variable should draw all but first char as subscript
+smarter parenthesizing
+-->
