@@ -14,22 +14,22 @@ var em_div = null,
 
 	the_horiz_styles =
 	[
-		'margin-left',
-		'border-left-width',
-		'padding-left',
-		'padding-right',
-		'border-right-width',
-		'margin-right'
+		'marginLeft',
+		'borderLeftWidth',
+		'paddingLeft',
+		'paddingRight',
+		'borderRightWidth',
+		'marginRight'
 	],
 
 	the_vert_styles =
 	[
-		'margin-top',
-		'border-top-width',
-		'padding-top',
-		'padding-bottom',
-		'border-bottom-width',
-		'margin-bottom'
+		'marginTop',
+		'borderTopWidth',
+		'paddingTop',
+		'paddingBottom',
+		'borderBottomWidth',
+		'marginBottom'
 	];
 
 /**********************************************************************
@@ -103,7 +103,7 @@ Y.Node.prototype.vertMarginBorderPadding = function()
 Y.Node.prototype.parseDimensionStyle = function(
 	/* string */	style)
 {
-	var s = this.getStyle(style);
+	var s = this.getComputedStyle(style);
 	if (!s || !/^[0-9]/.test(s))	// ignore values like "medium"
 	{
 		return 0;
