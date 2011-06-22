@@ -113,11 +113,12 @@ QueryBuilder.Select.prototype =
 	{
 		// This must use a select tag!
 
-		var markup = '<select name="{n}" class="formmgr-field {c}" />';
+		var markup = '<select name="{n}" class="{f} {c}" />';
 
 		return Y.Lang.substitute(markup,
 		{
 			n: menu_name,
+			f: Y.FormManager.field_marker_class,
 			c: this.qb.getClassName('field')
 		});
 	}

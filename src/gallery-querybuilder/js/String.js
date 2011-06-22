@@ -156,11 +156,12 @@ QueryBuilder.String.prototype =
 	{
 		// This must use a select tag!
 
-		var markup = '<select name="{n}" class="formmgr-field {c}" />';
+		var markup = '<select name="{n}" class="{f} {c}" />';
 
 		return Y.Lang.substitute(markup,
 		{
 			n: menu_name,
+			f: Y.FormManager.field_marker_class,
 			c: this.qb.getClassName('field')
 		});
 	},
@@ -171,11 +172,12 @@ QueryBuilder.String.prototype =
 	{
 		// This must use an input tag!
 
-		var markup = '<input type="text" name="{n}" class="yiv-required formmgr-field {c}"/>';
+		var markup = '<input type="text" name="{n}" class="yiv-required {f} {c}"/>';
 
 		return Y.Lang.substitute(markup,
 		{
 			n: input_name,
+			f: Y.FormManager.field_marker_class,
 			c: validation_class + ' ' + this.qb.getClassName('field')
 		});
 	}
