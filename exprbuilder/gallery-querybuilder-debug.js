@@ -83,6 +83,7 @@ function QueryBuilder(
 		Y.FormManager =
 		{
 			row_marker_class:    '',
+			field_marker_class:  '',
 			status_marker_class: '',
 			required_class:      ''
 		};
@@ -457,8 +458,14 @@ Y.extend(QueryBuilder, Y.Widget,
 		var selected_var = this.var_list[ var_menu.get('selectedIndex') ];
 
 		var cells = [];
-		if (selected_var.type != 'none')
+		if (selected_var.type == 'none')
 		{
+			query_row.addClass(this.getClassName('empty'));
+		}
+		else
+		{
+			query_row.removeClass(this.getClassName('empty'));
+
 			this.row_list[row_index].plugin =
 				new QueryBuilder.plugin_mapping[ selected_var.type ](
 					this, this.get('pluginConfig'));
@@ -657,11 +664,12 @@ Y.extend(QueryBuilder, Y.Widget,
 	{
 		// This must use a select tag!
 
-		var markup = '<select name="{n}" class="formmgr-field {c}" />';
+		var markup = '<select name="{n}" class="{f} {c}" />';
 
 		return Y.Lang.substitute(markup,
 		{
 			n: menu_name,
+			f: Y.FormManager.field_marker_class,
 			c: this.getClassName('field')
 		});
 	},
@@ -848,11 +856,12 @@ QueryBuilder.String.prototype =
 	{
 		// This must use a select tag!
 
-		var markup = '<select name="{n}" class="formmgr-field {c}" />';
+		var markup = '<select name="{n}" class="{f} {c}" />';
 
 		return Y.Lang.substitute(markup,
 		{
 			n: menu_name,
+			f: Y.FormManager.field_marker_class,
 			c: this.qb.getClassName('field')
 		});
 	},
@@ -863,11 +872,12 @@ QueryBuilder.String.prototype =
 	{
 		// This must use an input tag!
 
-		var markup = '<input type="text" name="{n}" class="yiv-required formmgr-field {c}"/>';
+		var markup = '<input type="text" name="{n}" class="yiv-required {f} {c}"/>';
 
 		return Y.Lang.substitute(markup,
 		{
 			n: input_name,
+			f: Y.FormManager.field_marker_class,
 			c: validation_class + ' ' + this.qb.getClassName('field')
 		});
 	}
@@ -987,11 +997,12 @@ QueryBuilder.Select.prototype =
 	{
 		// This must use a select tag!
 
-		var markup = '<select name="{n}" class="formmgr-field {c}" />';
+		var markup = '<select name="{n}" class="{f} {c}" />';
 
 		return Y.Lang.substitute(markup,
 		{
 			n: menu_name,
+			f: Y.FormManager.field_marker_class,
 			c: this.qb.getClassName('field')
 		});
 	}
