@@ -256,12 +256,12 @@ Accordion.HTML_PARSER =
 {
 	titles: function(content_box)
 	{
-		return content_box.all('li div:nth-child(1)');
+		return content_box.all('li > div:nth-child(1)');
 	},
 
 	sections: function(content_box)
 	{
-		return content_box.all('li div:nth-child(2)');
+		return content_box.all('li > div:nth-child(2)');
 	}
 };
 
@@ -415,6 +415,8 @@ Y.extend(Accordion, Y.Widget,
 		{
 			Y.log('ignoring titles & sections', 'info', 'Accordion');
 		}
+
+		this.get('contentBox').all('> li').remove();
 	},
 
 	/**
@@ -465,8 +467,16 @@ Y.extend(Accordion, Y.Widget,
 		if (el && this.get('replaceTitleContainer'))
 		{
 			var p = t.get('parentNode');
+			var n = t.get('nextSibling');
 			p.removeChild(t);
-			p.appendChild(el);
+			if (n)
+			{
+				p.insertBefore(el, n);
+			}
+			else
+			{
+				p.appendChild(el);
+			}
 
 			this.section_list[index].title = el;
 
@@ -526,8 +536,16 @@ Y.extend(Accordion, Y.Widget,
 			var display = d.getStyle('display');
 
 			var p = d.get('parentNode');
+			var n = d.get('nextSibling');
 			p.removeChild(d);
-			p.appendChild(el);
+			if (n)
+			{
+				p.insertBefore(el, n);
+			}
+			else
+			{
+				p.appendChild(el);
+			}
 
 			this.section_list[index].content = el;
 
@@ -770,7 +788,7 @@ Y.extend(Accordion, Y.Widget,
 
 	/**
 	 * @param {String|Node} any element inside the section or title
-	 * @return {int|null} the index of the containing section or <code>false</code> if not found
+	 * @return {int|null} the index of the containing section, or -1 if not found
 	 */
 	findSection: function(
 		/* string|element */	el)
@@ -789,7 +807,7 @@ Y.extend(Accordion, Y.Widget,
 			}
 		}
 
-		return false;
+		return -1;
 	},
 
 	/**
