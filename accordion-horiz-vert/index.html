@@ -77,7 +77,7 @@ function(Y)
 	{
 		var t = e.target;
 		var i = a.findSection(e.target);
-		if (i !== false)
+		if (i >= 0)
 		{
 			a.toggleSection(i);
 		}
@@ -248,7 +248,7 @@ function(Y)
 		Y.on('click', function(type, a, el)
 		{
 			var i = a.findSection(el);
-			if (i !== false)
+			if (i >= 0)
 			{
 				a.removeSection(i);
 			}
