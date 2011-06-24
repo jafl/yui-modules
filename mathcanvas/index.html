@@ -40,7 +40,16 @@ YUI({
 		minHeight: 100,
 		fontSize:  2
 	});
-	canvas.render('#canvas');
+
+	try
+	{
+		canvas.render('#canvas');
+	}
+	catch (e)
+	{
+		alert(e);
+		return;
+	}
 
 	var expr_input = Y.one('#expr');
 	Y.on('click', function()
@@ -106,17 +115,3 @@ YUI({
 
 </body>
 </html>
-
-<!--
-uif:
-	render as part of canvas, not input field
-	no paste event, only click and keyup
-
-sqrt(2)^(2^((2/3)^(2^2))) or 2^log(3/2,27) or log(3/2,27) - 2/3 looks wrong
-2^2^2 - too much space between opening paren and base
-log2(2) - base too close to open paren
-
-|| (nary parallel)
-variable should draw all but first char as subscript
-smarter parenthesizing
--->
