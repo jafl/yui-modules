@@ -88,9 +88,9 @@
 
 <script type="text/javascript">
 YUI({
-	filter: 'debug',
+//	filter: 'debug',
 //	combine: false,
-	gallery: 'gallery-2011.04.13-22-38'
+	gallery: 'gallery-2011.06.15-19-18'
 }).use(
 	'gallery-accordion-horiz-vert',
 	'anim-base',
@@ -114,7 +114,7 @@ function(Y)
 	{
 		var t = e.target;
 		var i = a.findSection(e.target);
-		if (i !== false)
+		if (i >= 0)
 		{
 			a.toggleSection(i);
 		}
@@ -223,6 +223,7 @@ function(Y)
 			{
 				descendants: '.yui3-accordion-title a',
 				keys:        keys,
+				circular:    false,
 				focusClass:
 				{
 					className: a.getClassName('title', 'focused'),
@@ -286,7 +287,7 @@ function(Y)
 		Y.on('click', function(type, a, el)
 		{
 			var i = a.findSection(el);
-			if (i !== false)
+			if (i >= 0)
 			{
 				a.removeSection(i);
 			}
@@ -390,7 +391,7 @@ function(Y)
 	<p>Notes</p>
 	<ul>
 		<li><a href="/yui3-gallery/">Back to project list</a></li>
-		<li><a href="yuidoc">Click here</a> to see documentation.</li>
+		<li><a href="../yuidoc/module_gallery-accordion-horiz-vert.html">Click here</a> to see documentation.</li>
 		<li><a href="index.html">Click here</a> to see fixed width examples.</li>
 		<li>For the horizontal accordion:
 			<ul>

@@ -8,6 +8,11 @@
 	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
 	<script src="gallery-math-debug.js"></script>
 	<script src="gallery-complexnumber-debug.js"></script>
+	<script src="gallery-test-extras-debug.js"></script>
+	<script src="gallery-console-test-debug.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.3.0/build/test/assets/skins/sam/test.css&3.3.0/build/widget/assets/skins/sam/widget.css&3.3.0/build/console/assets/skins/sam/console.css&3.3.0/build/console/assets/skins/sam/console-filters.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-console-test.css" />
 </head>
 
 <body class="yui3-skin-sam">
@@ -17,33 +22,8 @@ YUI({
 	filter: 'debug',
 //	combine: false,
 	logInclude: { TestRunner: true }
-}).use('gallery-complexnumber', 'test', 'console', 'console-filters', 'dd-plugin', function(Y)
+}).use('gallery-complexnumber', 'gallery-test-extras', 'console', 'console-filters', 'gallery-console-test', 'dd-plugin', function(Y)
 {
-	var logToLog10 = 1/Math.log(10);
-
-	Y.Assert.areWithinEpsilon = function(v1,v2,e)
-	{
-		if (Y.Lang.isUndefined(e))
-		{
-			e = 1e-9;
-		}
-
-		if (v1 !== 0)
-		{
-			var scale = Math.pow(10, Math.floor(Math.log(Math.abs(v1))*logToLog10));
-			v1       /= scale;
-			v2       /= scale;
-		}
-
-		Y.Assert.isTrue(Math.abs(v1-v2) <= e, 'Values should be within '+e+'\nExpected: '+v1+' (number)\nActual:'+v2+ ' (number)\n-----');
-	};
-
-	Y.Assert.complexWithinEpsilon = function(v1,v2,e)
-	{
-		Y.Assert.areWithinEpsilon(v1.r, v2.r, e);
-		Y.Assert.areWithinEpsilon(v1.i, v2.i, e);
-	};
-
 	Y.Test.Runner.add(new Y.Test.Case(
 	{
 		name: 'Complex number',
@@ -293,7 +273,7 @@ YUI({
 	new Y.Console(
 	{
 		newestOnTop: false,
-		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters, Y.Plugin.ConsoleTest ]
 	})
 	.render();
 
@@ -303,7 +283,7 @@ YUI({
 
 <h1><a href="http://yuilibrary.com/gallery/show/complexnumber">YUI 3 Complex Number</a> Unit Tests</h1>
 
-<p><a href="yuidoc">Show me the documentation</a></p>
+<p><a href="../yuidoc/module_gallery-complexnumber.html">Show me the documentation</a></p>
 <p><a href="/yui3-gallery/">Back to project list</a></p>
 
 </body>

@@ -1,0 +1,2046 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-paginator  Paginator   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-paginator&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a>
+                 &gt; Paginator 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        
+                        
+                            Class <b property="yui:name">Paginator</b>
+                        <span class="extends">
+                           - extends <a href="Widget.html" title="Widget">Widget</a>
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        The Paginator widget provides a set of controls to navigate through paged
+data.
+To instantiate a Paginator, pass a configuration object to the contructor.
+The configuration object should contain the following properties:
+<ul>
+<li>rowsPerPage : <em>n</em> (int)</li>
+<li>totalRecords : <em>n</em> (int or Paginator.VALUE_UNLIMITED)</li>
+</ul>
+                    </div>
+
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">Paginator</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                config
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">config</span>
+                                                    &lt;<span property="yui:type">Object</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  Object literal to set instance and ui component
+configuration.</span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
+                        <div class="section field details">
+                            <h3 id="properties">Properties</h3>
+                            <div class="content">
+                                    <div class="protected" rel="yui:property" resource="#property__batch">
+                                    <h4><a name="property__batch" property="yui:name">_batch</a>
+                                        - <code>protected <span property="yui:type">boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Flag used to indicate multiple attributes are being updated via setState
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:property" resource="#property__pageChanged">
+                                    <h4><a name="property__pageChanged" property="yui:name">_pageChanged</a>
+                                        - <code>protected <span property="yui:type">boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Used by setState to indicate when a page change has occurred
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:property" resource="#property__state">
+                                    <h4><a name="property__state" property="yui:name">_state</a>
+                                        - <code>protected <span property="yui:type">Object</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Temporary state cache used by setState to keep track of the previous
+state for eventual pageChange event firing
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_Paginator.TEMPLATE_DEFAULT">
+                                    <h4><a name="property_Paginator.TEMPLATE_DEFAULT" property="yui:name">Paginator.TEMPLATE_DEFAULT</a>
+                                        - <code>static <span property="yui:type">string</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Default template used by Paginator instances.  Update this if you want
+all new Paginators to use a different default template.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_Paginator.TEMPLATE_ROWS_PER_PAGE">
+                                    <h4><a name="property_Paginator.TEMPLATE_ROWS_PER_PAGE" property="yui:name">Paginator.TEMPLATE_ROWS_PER_PAGE</a>
+                                        - <code>static <span property="yui:type">string</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Common alternate pagination format, including page links, links for
+previous, next, first and last pages as well as a rows-per-page
+dropdown.  Offered as a convenience.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_Paginator.ui">
+                                    <h4><a name="property_Paginator.ui" property="yui:name">Paginator.ui</a>
+                                        - <code>static <span property="yui:type">object</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Storage object for UI Components
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:property" resource="#property_Paginator.VALUE_UNLIMITED">
+                                    <h4><a name="property_Paginator.VALUE_UNLIMITED" property="yui:name">Paginator.VALUE_UNLIMITED</a>
+                                        - <code>static final <span property="yui:type">number</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Used to identify unset, optional configurations, or used explicitly in
+the case of totalRecords to indicate unlimited pagination.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="protected" rel="yui:method" resource="#method__firePageChange">
+                                    <h4>
+                                        <a name="method__firePageChange">_firePageChange</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_firePageChange</strong>
+                                           (
+                                                
+                                                        
+                                                         state
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires a pageChange event in the form of a standard attribute change
+event with additional properties prevState and newState.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">state</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the result of getState(oldState)</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__handleStateChange">
+                                    <h4>
+                                        <a name="method__handleStateChange">_handleStateChange</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_handleStateChange</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires the pageChange event when the state attributes have changed in
+such a way as to locate the current recordOffset on a new page.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Event</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the attribute change event</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__renderTemplate">
+                                    <h4>
+                                        <a name="method__renderTemplate">_renderTemplate</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_renderTemplate</strong>
+                                           (
+                                                
+                                                        
+                                                         container
+                                                    
+                                                
+                                                        , 
+                                                         template
+                                                    
+                                                
+                                                        , 
+                                                         id_base
+                                                    
+                                                
+                                                        , 
+                                                         hide
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Creates the individual ui components and renders them into a container.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">container</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  where to add the ui components</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">template</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the template to use as a guide for rendering</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">id_base</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  id base for the container's ui components</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">hide</span>
+                                                        &lt;<span property="yui:type">Boolean</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  leave the container hidden after assembly</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__selfSubscribe">
+                                    <h4>
+                                        <a name="method__selfSubscribe">_selfSubscribe</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_selfSubscribe</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Subscribes to instance attribute change events to automate certain
+behaviors.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__syncRecordOffset">
+                                    <h4>
+                                        <a name="method__syncRecordOffset">_syncRecordOffset</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_syncRecordOffset</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Sets recordOffset to the starting index of the previous page when
+totalRecords is reduced below the current recordOffset.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">Event</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  totalRecordsChange event</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getCurrentPage">
+                                    <h4>
+                                        <a name="method_getCurrentPage">getCurrentPage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        number
+                                            <strong property="yui:name">getCurrentPage</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Get the page number corresponding to the current record offset.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getNextPage">
+                                    <h4>
+                                        <a name="method_getNextPage">getNextPage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        number
+                                            <strong property="yui:name">getNextPage</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Get the page number of the next page, or null if the current page is the
+last page.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getPageRecords">
+                                    <h4>
+                                        <a name="method_getPageRecords">getPageRecords</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Array
+                                            <strong property="yui:name">getPageRecords</strong>
+                                           (
+                                                
+                                                        
+                                                         page
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Get the start and end record indexes of the specified page.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">page</span>
+                                                        &lt;<span property="yui:type">number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  (optional) The page (current page if not specified)</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Array
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">[start_index, end_index]</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getPreviousPage">
+                                    <h4>
+                                        <a name="method_getPreviousPage">getPreviousPage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        number
+                                            <strong property="yui:name">getPreviousPage</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Get the page number of the previous page, or null if the current page
+is the first page.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getRowsPerPage">
+                                    <h4>
+                                        <a name="method_getRowsPerPage">getRowsPerPage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        number
+                                            <strong property="yui:name">getRowsPerPage</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Get the number of rows per page.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            number
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the current setting of the rowsPerPage attribute</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getStartIndex">
+                                    <h4>
+                                        <a name="method_getStartIndex">getStartIndex</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        number
+                                            <strong property="yui:name">getStartIndex</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Get the index of the first record on the current page
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            number
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the index of the first record on the current page</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getState">
+                                    <h4>
+                                        <a name="method_getState">getState</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        object
+                                            <strong property="yui:name">getState</strong>
+                                           (
+                                                
+                                                        
+                                                         changes
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Get an object literal describing the current state of the paginator.  If
+an object literal of proposed values is passed, the proposed state will
+be returned as an object literal with the following keys:
+<ul>
+<li>paginator - instance of the Paginator</li>
+<li>page - number</li>
+<li>totalRecords - number</li>
+<li>recordOffset - number</li>
+<li>rowsPerPage - number</li>
+<li>records - [ start_index, end_index ]</li>
+<li>before - (OPTIONAL) { state object literal for current state }</li>
+</ul>
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">changes</span>
+                                                        &lt;<span property="yui:type">object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  OPTIONAL object literal with proposed values
+Supported change keys include:
+<ul>
+<li>rowsPerPage</li>
+<li>totalRecords</li>
+<li>recordOffset OR</li>
+<li>page</li>
+</ul></span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getTotalPages">
+                                    <h4>
+                                        <a name="method_getTotalPages">getTotalPages</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        number
+                                            <strong property="yui:name">getTotalPages</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Get the total number of pages in the data set according to the current
+rowsPerPage and totalRecords values.  If totalRecords is not set, or
+set to Y.Paginator.VALUE_UNLIMITED, returns Y.Paginator.VALUE_UNLIMITED.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getTotalRecords">
+                                    <h4>
+                                        <a name="method_getTotalRecords">getTotalRecords</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        number
+                                            <strong property="yui:name">getTotalRecords</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Get the total number of records.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            number
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the current setting of totalRecords attribute</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_hasNextPage">
+                                    <h4>
+                                        <a name="method_hasNextPage">hasNextPage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">hasNextPage</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Are there records on the next page?
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_hasPage">
+                                    <h4>
+                                        <a name="method_hasPage">hasPage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">hasPage</strong>
+                                           (
+                                                
+                                                        
+                                                         page
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Does the requested page have any records?
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">page</span>
+                                                        &lt;<span property="yui:type">number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the page in question</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_hasPreviousPage">
+                                    <h4>
+                                        <a name="method_hasPreviousPage">hasPreviousPage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">hasPreviousPage</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Is there a page before the current page?
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_Paginator.isNumeric">
+                                    <h4>
+                                        <a name="method_Paginator.isNumeric">Paginator.isNumeric</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">Paginator.isNumeric</strong>
+                                           (
+                                                
+                                                        
+                                                         v
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Similar to Y.Lang.isNumber, but allows numeric strings.  This is
+is used for attribute validation in conjunction with getters that return
+numbers.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">v</span>
+                                                        &lt;<span property="yui:type">Number|String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  value to be checked for number or numeric string</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_Paginator.toNumber">
+                                    <h4>
+                                        <a name="method_Paginator.toNumber">Paginator.toNumber</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        
+                                            <strong property="yui:name">Paginator.toNumber</strong>
+                                           (
+                                                
+                                                        
+                                                         n
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Return a number or null from input
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">n</span>
+                                                        &lt;<span property="yui:type">Number|String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  a number or numeric string</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">Number</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_renderUIComponent">
+                                    <h4>
+                                        <a name="method_renderUIComponent">renderUIComponent</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">renderUIComponent</strong>
+                                           (
+                                                
+                                                        
+                                                         marker
+                                                    
+                                                
+                                                        , 
+                                                         id_base
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Replaces a marker node with a rendered UI component, determined by the
+yui-paginator-ui-(UI component class name) in the marker's className. e.g.
+yui-paginator-ui-PageLinks => new Y.Paginator.ui.PageLinks(this)
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">marker</span>
+                                                        &lt;<span property="yui:type">HTMLElement</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the marker node to replace</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">id_base</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  string base the component's generated id</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setPage">
+                                    <h4>
+                                        <a name="method_setPage">setPage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setPage</strong>
+                                           (
+                                                
+                                                        
+                                                         newPage
+                                                    
+                                                
+                                                        , 
+                                                         silent
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Set the current page to the provided page number if possible.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">newPage</span>
+                                                        &lt;<span property="yui:type">number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the new page number</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">silent</span>
+                                                        &lt;<span property="yui:type">boolean</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  whether to forcibly avoid firing the changeRequest event</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setRowsPerPage">
+                                    <h4>
+                                        <a name="method_setRowsPerPage">setRowsPerPage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setRowsPerPage</strong>
+                                           (
+                                                
+                                                        
+                                                         rpp
+                                                    
+                                                
+                                                        , 
+                                                         silent
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Set the number of rows per page.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">rpp</span>
+                                                        &lt;<span property="yui:type">number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the new number of rows per page</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">silent</span>
+                                                        &lt;<span property="yui:type">boolean</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  whether to forcibly avoid firing the changeRequest event</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setStartIndex">
+                                    <h4>
+                                        <a name="method_setStartIndex">setStartIndex</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setStartIndex</strong>
+                                           (
+                                                
+                                                        
+                                                         offset
+                                                    
+                                                
+                                                        , 
+                                                         silent
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Move the record offset to a new starting index.  This will likely cause
+the calculated current page to change.  You should probably use setPage.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">offset</span>
+                                                        &lt;<span property="yui:type">number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the new record offset</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">silent</span>
+                                                        &lt;<span property="yui:type">boolean</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  whether to forcibly avoid firing the changeRequest event</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setState">
+                                    <h4>
+                                        <a name="method_setState">setState</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setState</strong>
+                                           (
+                                                
+                                                        
+                                                         state
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Convenience method to facilitate setting state attributes rowsPerPage,
+totalRecords, recordOffset in batch.  Also supports calculating
+recordOffset from state.page if state.recordOffset is not provided.
+Fires only a single pageChange event, if appropriate.
+This will not fire a changeRequest event.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">state</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  Object literal of attribute:value pairs to set</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_setTotalRecords">
+                                    <h4>
+                                        <a name="method_setTotalRecords">setTotalRecords</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">setTotalRecords</strong>
+                                           (
+                                                
+                                                        
+                                                         total
+                                                    
+                                                
+                                                        , 
+                                                         silent
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Set the total number of records.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">total</span>
+                                                        &lt;<span property="yui:type">number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the new total number of records</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">silent</span>
+                                                        &lt;<span property="yui:type">boolean</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  whether to forcibly avoid firing the changeRequest event</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_updateVisibility">
+                                    <h4>
+                                        <a name="method_updateVisibility">updateVisibility</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">updateVisibility</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Hides the widget if there is only one page of data and attribute
+alwaysVisible is false.  Conversely, it displays the widget if either
+there is more than one page worth of data or alwaysVisible is turned on.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+                        <div class="section method details">
+                            <h3 id="events">Events</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:event" resource="#event_alwaysVisibleChange">
+                                    <h4>
+                                        <a name="event_alwaysVisibleChange">alwaysVisibleChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">alwaysVisibleChange</strong>
+
+                                            (
+                                                
+                                                        
+                                                         event
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the value for the configuration attribute 'alwaysVisible' is changed. You can listen for the event using the <a href="Attribute.html#method_on">on</a> method if you wish to be notified before the attribute's value has changed, or using the <a href="Event.Target.html#method_after">after</a> method if you wish to be notified after the attribute's value has changed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">event</span>
+                                                                &lt;<span property="yui:type">Event.Facade</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">An Event Facade object with      the following attribute specific properties added:	<dl>		<dt>prevVal</dt>		<dd>The value of the attribute, prior to it being set</dd>		<dt>newVal</dt>		<dd>The value the attribute is to be set to</dd>		<dt>attrName</dt>		<dd>The name of the attribute being set</dd>		<dt>subAttrName</dt>		<dd>If setting a property within the attribute's value,           the name of the sub-attribute property being set</dd>	</dl></span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_changeRequest">
+                                    <h4>
+                                        <a name="event_changeRequest">changeRequest</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">changeRequest</strong>
+
+                                            (
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Event fired when a change in pagination values is requested,
+either by interacting with the various ui components or via the
+setStartIndex(n) etc APIs.
+Subscribers will receive the proposed state as the first parameter.
+The proposed state object will contain the following keys:
+<ul>
+<li>paginator - the Paginator instance</li>
+<li>page</li>
+<li>totalRecords</li>
+<li>recordOffset - index of the first record on the new page</li>
+<li>rowsPerPage</li>
+<li>records - array containing [start index, end index] for the records on the new page</li>
+<li>before - object literal with all these keys for the current state</li>
+</ul>
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_idChange">
+                                    <h4>
+                                        <a name="event_idChange">idChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">idChange</strong>
+
+                                            (
+                                                
+                                                        
+                                                         event
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the value for the configuration attribute 'id' is changed. You can listen for the event using the <a href="Attribute.html#method_on">on</a> method if you wish to be notified before the attribute's value has changed, or using the <a href="Event.Target.html#method_after">after</a> method if you wish to be notified after the attribute's value has changed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">event</span>
+                                                                &lt;<span property="yui:type">Event.Facade</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">An Event Facade object with      the following attribute specific properties added:	<dl>		<dt>prevVal</dt>		<dd>The value of the attribute, prior to it being set</dd>		<dt>newVal</dt>		<dd>The value the attribute is to be set to</dd>		<dt>attrName</dt>		<dd>The name of the attribute being set</dd>		<dt>subAttrName</dt>		<dd>If setting a property within the attribute's value,           the name of the sub-attribute property being set</dd>	</dl></span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_initialPageChange">
+                                    <h4>
+                                        <a name="event_initialPageChange">initialPageChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">initialPageChange</strong>
+
+                                            (
+                                                
+                                                        
+                                                         event
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the value for the configuration attribute 'initialPage' is changed. You can listen for the event using the <a href="Attribute.html#method_on">on</a> method if you wish to be notified before the attribute's value has changed, or using the <a href="Event.Target.html#method_after">after</a> method if you wish to be notified after the attribute's value has changed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">event</span>
+                                                                &lt;<span property="yui:type">Event.Facade</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">An Event Facade object with      the following attribute specific properties added:	<dl>		<dt>prevVal</dt>		<dd>The value of the attribute, prior to it being set</dd>		<dt>newVal</dt>		<dd>The value the attribute is to be set to</dd>		<dt>attrName</dt>		<dd>The name of the attribute being set</dd>		<dt>subAttrName</dt>		<dd>If setting a property within the attribute's value,           the name of the sub-attribute property being set</dd>	</dl></span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_pageChange">
+                                    <h4>
+                                        <a name="event_pageChange">pageChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">pageChange</strong>
+
+                                            (
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Event fired when attribute changes have resulted in the calculated
+current page changing.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_recordOffsetChange">
+                                    <h4>
+                                        <a name="event_recordOffsetChange">recordOffsetChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">recordOffsetChange</strong>
+
+                                            (
+                                                
+                                                        
+                                                         event
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the value for the configuration attribute 'recordOffset' is changed. You can listen for the event using the <a href="Attribute.html#method_on">on</a> method if you wish to be notified before the attribute's value has changed, or using the <a href="Event.Target.html#method_after">after</a> method if you wish to be notified after the attribute's value has changed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">event</span>
+                                                                &lt;<span property="yui:type">Event.Facade</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">An Event Facade object with      the following attribute specific properties added:	<dl>		<dt>prevVal</dt>		<dd>The value of the attribute, prior to it being set</dd>		<dt>newVal</dt>		<dd>The value the attribute is to be set to</dd>		<dt>attrName</dt>		<dd>The name of the attribute being set</dd>		<dt>subAttrName</dt>		<dd>If setting a property within the attribute's value,           the name of the sub-attribute property being set</dd>	</dl></span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_rowsPerPageChange">
+                                    <h4>
+                                        <a name="event_rowsPerPageChange">rowsPerPageChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">rowsPerPageChange</strong>
+
+                                            (
+                                                
+                                                        
+                                                         event
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the value for the configuration attribute 'rowsPerPage' is changed. You can listen for the event using the <a href="Attribute.html#method_on">on</a> method if you wish to be notified before the attribute's value has changed, or using the <a href="Event.Target.html#method_after">after</a> method if you wish to be notified after the attribute's value has changed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">event</span>
+                                                                &lt;<span property="yui:type">Event.Facade</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">An Event Facade object with      the following attribute specific properties added:	<dl>		<dt>prevVal</dt>		<dd>The value of the attribute, prior to it being set</dd>		<dt>newVal</dt>		<dd>The value the attribute is to be set to</dd>		<dt>attrName</dt>		<dd>The name of the attribute being set</dd>		<dt>subAttrName</dt>		<dd>If setting a property within the attribute's value,           the name of the sub-attribute property being set</dd>	</dl></span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_templateChange">
+                                    <h4>
+                                        <a name="event_templateChange">templateChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">templateChange</strong>
+
+                                            (
+                                                
+                                                        
+                                                         event
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the value for the configuration attribute 'template' is changed. You can listen for the event using the <a href="Attribute.html#method_on">on</a> method if you wish to be notified before the attribute's value has changed, or using the <a href="Event.Target.html#method_after">after</a> method if you wish to be notified after the attribute's value has changed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">event</span>
+                                                                &lt;<span property="yui:type">Event.Facade</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">An Event Facade object with      the following attribute specific properties added:	<dl>		<dt>prevVal</dt>		<dd>The value of the attribute, prior to it being set</dd>		<dt>newVal</dt>		<dd>The value the attribute is to be set to</dd>		<dt>attrName</dt>		<dd>The name of the attribute being set</dd>		<dt>subAttrName</dt>		<dd>If setting a property within the attribute's value,           the name of the sub-attribute property being set</dd>	</dl></span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:event" resource="#event_totalRecordsChange">
+                                    <h4>
+                                        <a name="event_totalRecordsChange">totalRecordsChange</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">totalRecordsChange</strong>
+
+                                            (
+                                                
+                                                        
+                                                         event
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the value for the configuration attribute 'totalRecords' is changed. You can listen for the event using the <a href="Attribute.html#method_on">on</a> method if you wish to be notified before the attribute's value has changed, or using the <a href="Event.Target.html#method_after">after</a> method if you wish to be notified after the attribute's value has changed.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">event</span>
+                                                                &lt;<span property="yui:type">Event.Facade</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">An Event Facade object with      the following attribute specific properties added:	<dl>		<dt>prevVal</dt>		<dd>The value of the attribute, prior to it being set</dd>		<dt>newVal</dt>		<dd>The value the attribute is to be set to</dd>		<dt>attrName</dt>		<dd>The name of the attribute being set</dd>		<dt>subAttrName</dt>		<dd>If setting a property within the attribute's value,           the name of the sub-attribute property being set</dd>	</dl></span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+                        <div class="section field details">
+                            <h3 id="configattributes">Configuration Attributes</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:attribute" resource="#config_alwaysVisible">
+                                    <h4><a name="config_alwaysVisible">alwaysVisible</a>
+                                        <code>- <span property="yui:type">boolean</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Display pagination controls even when there is only one page.  Set
+to false to forgo rendering and/or hide the containers when there
+is only one page of data.  Note if you are using the rowsPerPage
+dropdown ui component, visibility will be maintained as long as the
+number of records exceeds the smallest page size.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: true
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_id">
+                                    <h4><a name="config_id">id</a>
+                                        <code>- readonly <span property="yui:type">integer</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Unique id assigned to this instance
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_initialPage">
+                                    <h4><a name="config_initialPage">initialPage</a>
+                                        <code>- <span property="yui:type">integer</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Page to display on initial paint
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: 1
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_recordOffset">
+                                    <h4><a name="config_recordOffset">recordOffset</a>
+                                        <code>- <span property="yui:type">integer</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Zero based index of the record considered first on the current page.
+For page based interactions, don't modify this attribute directly;
+use setPage(n).
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: 0
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_rowsPerPage">
+                                    <h4><a name="config_rowsPerPage">rowsPerPage</a>
+                                        <code>- <span property="yui:type">integer</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            REQUIRED. Number of records constituting a &quot;page&quot;
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_template">
+                                    <h4><a name="config_template">template</a>
+                                        <code>- <span property="yui:type">string</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Template used to render controls.  The string will be used as
+innerHTML on all specified container nodes.  Bracketed keys
+(e.g. {pageLinks}) in the string will be replaced with an instance
+of the so named ui component.
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_totalRecords">
+                                    <h4><a name="config_totalRecords">totalRecords</a>
+                                        <code>- <span property="yui:type">integer</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Total number of records to paginate through
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: 0
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+
+                            </div>
+                        </div>
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class="selected"><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="Paginator.html" title="Paginator">Paginator</a></li>
+                                <li class=""><a href="Paginator.ui.CurrentPageInput.html" title="Paginator.ui.CurrentPageInput">Paginator.ui.CurrentPageInput</a></li>
+                                <li class=""><a href="Paginator.ui.CurrentPageReport.html" title="Paginator.ui.CurrentPageReport">Paginator.ui.CurrentPageReport</a></li>
+                                <li class=""><a href="Paginator.ui.FirstPageLink.html" title="Paginator.ui.FirstPageLink">Paginator.ui.FirstPageLink</a></li>
+                                <li class=""><a href="Paginator.ui.ItemRangeDropdown.html" title="Paginator.ui.ItemRangeDropdown">Paginator.ui.ItemRangeDropdown</a></li>
+                                <li class=""><a href="Paginator.ui.LastPageLink.html" title="Paginator.ui.LastPageLink">Paginator.ui.LastPageLink</a></li>
+                                <li class=""><a href="Paginator.ui.NextPageLink.html" title="Paginator.ui.NextPageLink">Paginator.ui.NextPageLink</a></li>
+                                <li class=""><a href="Paginator.ui.PageLinks.html" title="Paginator.ui.PageLinks">Paginator.ui.PageLinks</a></li>
+                                <li class=""><a href="Paginator.ui.PreviousPageLink.html" title="Paginator.ui.PreviousPageLink">Paginator.ui.PreviousPageLink</a></li>
+                                <li class=""><a href="Paginator.ui.RowsPerPageDropdown.html" title="Paginator.ui.RowsPerPageDropdown">Paginator.ui.RowsPerPageDropdown</a></li>
+                                <li class=""><a href="Paginator.ui.ValidationPageLinks.html" title="Paginator.ui.ValidationPageLinks">Paginator.ui.ValidationPageLinks</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="CurrentPageInput.js.html" title="CurrentPageInput.js">CurrentPageInput.js</a></li>
+                                <li class=""><a href="CurrentPageReport.js.html" title="CurrentPageReport.js">CurrentPageReport.js</a></li>
+                                <li class=""><a href="FirstPageLink.js.html" title="FirstPageLink.js">FirstPageLink.js</a></li>
+                                <li class=""><a href="ItemRangeDropdown.js.html" title="ItemRangeDropdown.js">ItemRangeDropdown.js</a></li>
+                                <li class=""><a href="LastPageLink.js.html" title="LastPageLink.js">LastPageLink.js</a></li>
+                                <li class=""><a href="NextPageLink.js.html" title="NextPageLink.js">NextPageLink.js</a></li>
+                                <li class=""><a href="PageLinks.js.html" title="PageLinks.js">PageLinks.js</a></li>
+                                <li class=""><a href="Paginator.js.html" title="Paginator.js">Paginator.js</a></li>
+                                <li class=""><a href="PreviousPageLink.js.html" title="PreviousPageLink.js">PreviousPageLink.js</a></li>
+                                <li class=""><a href="RowsPerPageDropdown.js.html" title="RowsPerPageDropdown.js">RowsPerPageDropdown.js</a></li>
+                                <li class=""><a href="ValidationPageLinks.js.html" title="ValidationPageLinks.js">ValidationPageLinks.js</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="propertyList" class="module">
+                        <h4>Properties</h4>
+                        <ul class="content">        
+                                <li class="protected"><a href="#property__batch" title="_batch">_batch</a></li>
+                                <li class="protected"><a href="#property__pageChanged" title="_pageChanged">_pageChanged</a></li>
+                                <li class="protected"><a href="#property__state" title="_state">_state</a></li>
+                                <li class=""><a href="#property_Paginator.TEMPLATE_DEFAULT" title="Paginator.TEMPLATE_DEFAULT">Paginator.TEMPLATE_DEFAULT</a></li>
+                                <li class=""><a href="#property_Paginator.TEMPLATE_ROWS_PER_PAGE" title="Paginator.TEMPLATE_ROWS_PER_PAGE">Paginator.TEMPLATE_ROWS_PER_PAGE</a></li>
+                                <li class=""><a href="#property_Paginator.ui" title="Paginator.ui">Paginator.ui</a></li>
+                                <li class=""><a href="#property_Paginator.VALUE_UNLIMITED" title="Paginator.VALUE_UNLIMITED">Paginator.VALUE_UNLIMITED</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class="protected"><a href="#method__firePageChange" title="_firePageChange">_firePageChange</a></li>
+                                <li class="protected"><a href="#method__handleStateChange" title="_handleStateChange">_handleStateChange</a></li>
+                                <li class="protected"><a href="#method__renderTemplate" title="_renderTemplate">_renderTemplate</a></li>
+                                <li class="protected"><a href="#method__selfSubscribe" title="_selfSubscribe">_selfSubscribe</a></li>
+                                <li class="protected"><a href="#method__syncRecordOffset" title="_syncRecordOffset">_syncRecordOffset</a></li>
+                                <li class=""><a href="#method_getCurrentPage" title="getCurrentPage">getCurrentPage</a></li>
+                                <li class=""><a href="#method_getNextPage" title="getNextPage">getNextPage</a></li>
+                                <li class=""><a href="#method_getPageRecords" title="getPageRecords">getPageRecords</a></li>
+                                <li class=""><a href="#method_getPreviousPage" title="getPreviousPage">getPreviousPage</a></li>
+                                <li class=""><a href="#method_getRowsPerPage" title="getRowsPerPage">getRowsPerPage</a></li>
+                                <li class=""><a href="#method_getStartIndex" title="getStartIndex">getStartIndex</a></li>
+                                <li class=""><a href="#method_getState" title="getState">getState</a></li>
+                                <li class=""><a href="#method_getTotalPages" title="getTotalPages">getTotalPages</a></li>
+                                <li class=""><a href="#method_getTotalRecords" title="getTotalRecords">getTotalRecords</a></li>
+                                <li class=""><a href="#method_hasNextPage" title="hasNextPage">hasNextPage</a></li>
+                                <li class=""><a href="#method_hasPage" title="hasPage">hasPage</a></li>
+                                <li class=""><a href="#method_hasPreviousPage" title="hasPreviousPage">hasPreviousPage</a></li>
+                                <li class=""><a href="#method_Paginator.isNumeric" title="Paginator.isNumeric">Paginator.isNumeric</a></li>
+                                <li class=""><a href="#method_Paginator.toNumber" title="Paginator.toNumber">Paginator.toNumber</a></li>
+                                <li class=""><a href="#method_renderUIComponent" title="renderUIComponent">renderUIComponent</a></li>
+                                <li class=""><a href="#method_setPage" title="setPage">setPage</a></li>
+                                <li class=""><a href="#method_setRowsPerPage" title="setRowsPerPage">setRowsPerPage</a></li>
+                                <li class=""><a href="#method_setStartIndex" title="setStartIndex">setStartIndex</a></li>
+                                <li class=""><a href="#method_setState" title="setState">setState</a></li>
+                                <li class=""><a href="#method_setTotalRecords" title="setTotalRecords">setTotalRecords</a></li>
+                                <li class=""><a href="#method_updateVisibility" title="updateVisibility">updateVisibility</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="eventsList" class="module">
+                        <h4>Events</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#event_alwaysVisibleChange" title="alwaysVisibleChange">alwaysVisibleChange</a></li>
+                                <li class=""><a href="#event_changeRequest" title="changeRequest">changeRequest</a></li>
+                                <li class=""><a href="#event_idChange" title="idChange">idChange</a></li>
+                                <li class=""><a href="#event_initialPageChange" title="initialPageChange">initialPageChange</a></li>
+                                <li class=""><a href="#event_pageChange" title="pageChange">pageChange</a></li>
+                                <li class=""><a href="#event_recordOffsetChange" title="recordOffsetChange">recordOffsetChange</a></li>
+                                <li class=""><a href="#event_rowsPerPageChange" title="rowsPerPageChange">rowsPerPageChange</a></li>
+                                <li class=""><a href="#event_templateChange" title="templateChange">templateChange</a></li>
+                                <li class=""><a href="#event_totalRecordsChange" title="totalRecordsChange">totalRecordsChange</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="configList" class="module">
+                        <h4>Configuration Attributes</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#config_alwaysVisible" title="alwaysVisible">alwaysVisible</a></li>
+                                <li class=""><a href="#config_id" title="id">id</a></li>
+                                <li class=""><a href="#config_initialPage" title="initialPage">initialPage</a></li>
+                                <li class=""><a href="#config_recordOffset" title="recordOffset">recordOffset</a></li>
+                                <li class=""><a href="#config_rowsPerPage" title="rowsPerPage">rowsPerPage</a></li>
+                                <li class=""><a href="#config_template" title="template">template</a></li>
+                                <li class=""><a href="#config_totalRecords" title="totalRecords">totalRecords</a></li>
+                        </ul>
+                    </div>
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "Paginator.html#config_alwaysVisible", "access": "", "host": "Paginator", "type": "config", "name": "alwaysVisible"}, {"url": "Paginator.html#event_alwaysVisibleChange", "access": "", "host": "Paginator", "type": "event", "name": "alwaysVisibleChange"}, {"url": "Paginator.html#property__batch", "access": "protected", "host": "Paginator", "type": "property", "name": "_batch"}, {"url": "Paginator.ui.PageLinks.html#method_calculateRange", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "calculateRange"}, {"url": "Paginator.html#event_changeRequest", "access": "", "host": "Paginator", "type": "event", "name": "changeRequest"}, {"url": "Paginator.ui.PageLinks.html#config_currentPageClass", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "currentPageClass"}, {"url": "Paginator.ui.PageLinks.html#event_currentPageClassChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "currentPageClassChange"}, {"url": "Paginator.html#method__firePageChange", "access": "protected", "host": "Paginator", "type": "method", "name": "_firePageChange"}, {"url": "Paginator.ui.FirstPageLink.html#config_firstPageLinkClass", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "config", "name": "firstPageLinkClass"}, {"url": "Paginator.ui.FirstPageLink.html#event_firstPageLinkClassChange", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "event", "name": "firstPageLinkClassChange"}, {"url": "Paginator.ui.FirstPageLink.html#config_firstPageLinkLabel", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "config", "name": "firstPageLinkLabel"}, {"url": "Paginator.ui.FirstPageLink.html#event_firstPageLinkLabelChange", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "event", "name": "firstPageLinkLabelChange"}, {"url": "Paginator.html#method_getCurrentPage", "access": "", "host": "Paginator", "type": "method", "name": "getCurrentPage"}, {"url": "Paginator.html#method_getNextPage", "access": "", "host": "Paginator", "type": "method", "name": "getNextPage"}, {"url": "Paginator.html#method_getPageRecords", "access": "", "host": "Paginator", "type": "method", "name": "getPageRecords"}, {"url": "Paginator.html#method_getPreviousPage", "access": "", "host": "Paginator", "type": "method", "name": "getPreviousPage"}, {"url": "Paginator.html#method_getRowsPerPage", "access": "", "host": "Paginator", "type": "method", "name": "getRowsPerPage"}, {"url": "Paginator.html#method_getStartIndex", "access": "", "host": "Paginator", "type": "method", "name": "getStartIndex"}, {"url": "Paginator.html#method_getState", "access": "", "host": "Paginator", "type": "method", "name": "getState"}, {"url": "Paginator.html#method_getTotalPages", "access": "", "host": "Paginator", "type": "method", "name": "getTotalPages"}, {"url": "Paginator.html#method_getTotalRecords", "access": "", "host": "Paginator", "type": "method", "name": "getTotalRecords"}, {"url": "Paginator.html#method__handleStateChange", "access": "protected", "host": "Paginator", "type": "method", "name": "_handleStateChange"}, {"url": "Paginator.html#method_hasNextPage", "access": "", "host": "Paginator", "type": "method", "name": "hasNextPage"}, {"url": "Paginator.html#method_hasPage", "access": "", "host": "Paginator", "type": "method", "name": "hasPage"}, {"url": "Paginator.html#method_hasPreviousPage", "access": "", "host": "Paginator", "type": "method", "name": "hasPreviousPage"}, {"url": "Paginator.html#config_id", "access": "", "host": "Paginator", "type": "config", "name": "id"}, {"url": "Paginator.html#event_idChange", "access": "", "host": "Paginator", "type": "event", "name": "idChange"}, {"url": "Paginator.html#config_initialPage", "access": "", "host": "Paginator", "type": "config", "name": "initialPage"}, {"url": "Paginator.html#event_initialPageChange", "access": "", "host": "Paginator", "type": "event", "name": "initialPageChange"}, {"url": "Paginator.ui.ItemRangeDropdown.html#config_itemRangeDropdownClass", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "config", "name": "itemRangeDropdownClass"}, {"url": "Paginator.ui.ItemRangeDropdown.html#event_itemRangeDropdownClassChange", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "event", "name": "itemRangeDropdownClassChange"}, {"url": "Paginator.ui.ItemRangeDropdown.html#config_itemRangeDropdownTemplate", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "config", "name": "itemRangeDropdownTemplate"}, {"url": "Paginator.ui.ItemRangeDropdown.html#event_itemRangeDropdownTemplateChange", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "event", "name": "itemRangeDropdownTemplateChange"}, {"url": "Paginator.ui.LastPageLink.html#config_lastPageLinkClass", "access": "", "host": "Paginator.ui.LastPageLink", "type": "config", "name": "lastPageLinkClass"}, {"url": "Paginator.ui.LastPageLink.html#event_lastPageLinkClassChange", "access": "", "host": "Paginator.ui.LastPageLink", "type": "event", "name": "lastPageLinkClassChange"}, {"url": "Paginator.ui.LastPageLink.html#config_lastPageLinkLabel", "access": "", "host": "Paginator.ui.LastPageLink", "type": "config", "name": "lastPageLinkLabel"}, {"url": "Paginator.ui.LastPageLink.html#event_lastPageLinkLabelChange", "access": "", "host": "Paginator.ui.LastPageLink", "type": "event", "name": "lastPageLinkLabelChange"}, {"url": "Paginator.ui.NextPageLink.html#config_nextPageLinkClass", "access": "", "host": "Paginator.ui.NextPageLink", "type": "config", "name": "nextPageLinkClass"}, {"url": "Paginator.ui.NextPageLink.html#event_nextPageLinkClassChange", "access": "", "host": "Paginator.ui.NextPageLink", "type": "event", "name": "nextPageLinkClassChange"}, {"url": "Paginator.ui.NextPageLink.html#config_nextPageLinkLabel", "access": "", "host": "Paginator.ui.NextPageLink", "type": "config", "name": "nextPageLinkLabel"}, {"url": "Paginator.ui.NextPageLink.html#event_nextPageLinkLabelChange", "access": "", "host": "Paginator.ui.NextPageLink", "type": "event", "name": "nextPageLinkLabelChange"}, {"url": "Paginator.ui.FirstPageLink.html#method_onClick", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "method", "name": "onClick"}, {"url": "Paginator.ui.LastPageLink.html#method_onClick", "access": "", "host": "Paginator.ui.LastPageLink", "type": "method", "name": "onClick"}, {"url": "Paginator.ui.NextPageLink.html#method_onClick", "access": "", "host": "Paginator.ui.NextPageLink", "type": "method", "name": "onClick"}, {"url": "Paginator.ui.PageLinks.html#method_onClick", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "onClick"}, {"url": "Paginator.html#event_pageChange", "access": "", "host": "Paginator", "type": "event", "name": "pageChange"}, {"url": "Paginator.html#property__pageChanged", "access": "protected", "host": "Paginator", "type": "property", "name": "_pageChanged"}, {"url": "Paginator.ui.CurrentPageInput.html#config_pageInputClass", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "config", "name": "pageInputClass"}, {"url": "Paginator.ui.CurrentPageInput.html#event_pageInputClassChange", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "event", "name": "pageInputClassChange"}, {"url": "Paginator.ui.CurrentPageInput.html#config_pageInputTemplate", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "config", "name": "pageInputTemplate"}, {"url": "Paginator.ui.CurrentPageInput.html#event_pageInputTemplateChange", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "event", "name": "pageInputTemplateChange"}, {"url": "Paginator.ui.PageLinks.html#config_pageLabelBuilder", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "pageLabelBuilder"}, {"url": "Paginator.ui.PageLinks.html#event_pageLabelBuilderChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "pageLabelBuilderChange"}, {"url": "Paginator.ui.PageLinks.html#config_pageLinkClass", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "pageLinkClass"}, {"url": "Paginator.ui.PageLinks.html#event_pageLinkClassChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "pageLinkClassChange"}, {"url": "Paginator.ui.PageLinks.html#config_pageLinks", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "pageLinks"}, {"url": "Paginator.ui.PageLinks.html#event_pageLinksChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "pageLinksChange"}, {"url": "Paginator.ui.PageLinks.html#config_pageLinksContainerClass", "access": "", "host": "Paginator.ui.PageLinks", "type": "config", "name": "pageLinksContainerClass"}, {"url": "Paginator.ui.PageLinks.html#event_pageLinksContainerClassChange", "access": "", "host": "Paginator.ui.PageLinks", "type": "event", "name": "pageLinksContainerClassChange"}, {"url": "Paginator.ui.CurrentPageReport.html#config_pageReportClass", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "config", "name": "pageReportClass"}, {"url": "Paginator.ui.CurrentPageReport.html#event_pageReportClassChange", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "event", "name": "pageReportClassChange"}, {"url": "Paginator.ui.CurrentPageReport.html#config_pageReportTemplate", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "config", "name": "pageReportTemplate"}, {"url": "Paginator.ui.CurrentPageReport.html#event_pageReportTemplateChange", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "event", "name": "pageReportTemplateChange"}, {"url": "Paginator.ui.CurrentPageReport.html#config_pageReportValueGenarator", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "config", "name": "pageReportValueGenarator"}, {"url": "Paginator.ui.CurrentPageReport.html#event_pageReportValueGenaratorChange", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "event", "name": "pageReportValueGenaratorChange"}, {"url": "Paginator.html#method_Paginator.isNumeric", "access": "", "host": "Paginator", "type": "method", "name": "Paginator.isNumeric"}, {"url": "Paginator.html#property_Paginator.TEMPLATE_DEFAULT", "access": "", "host": "Paginator", "type": "property", "name": "Paginator.TEMPLATE_DEFAULT"}, {"url": "Paginator.html#property_Paginator.TEMPLATE_ROWS_PER_PAGE", "access": "", "host": "Paginator", "type": "property", "name": "Paginator.TEMPLATE_ROWS_PER_PAGE"}, {"url": "Paginator.html#method_Paginator.toNumber", "access": "", "host": "Paginator", "type": "method", "name": "Paginator.toNumber"}, {"url": "Paginator.html#property_Paginator.ui", "access": "", "host": "Paginator", "type": "property", "name": "Paginator.ui"}, {"url": "Paginator.html#property_Paginator.VALUE_UNLIMITED", "access": "", "host": "Paginator", "type": "property", "name": "Paginator.VALUE_UNLIMITED"}, {"url": "Paginator.ui.FirstPageLink.html#method_rebuild", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "method", "name": "rebuild"}, {"url": "Paginator.ui.LastPageLink.html#method_rebuild", "access": "", "host": "Paginator.ui.LastPageLink", "type": "method", "name": "rebuild"}, {"url": "Paginator.ui.NextPageLink.html#method_rebuild", "access": "", "host": "Paginator.ui.NextPageLink", "type": "method", "name": "rebuild"}, {"url": "Paginator.ui.PageLinks.html#method_rebuild", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "rebuild"}, {"url": "Paginator.html#config_recordOffset", "access": "", "host": "Paginator", "type": "config", "name": "recordOffset"}, {"url": "Paginator.html#event_recordOffsetChange", "access": "", "host": "Paginator", "type": "event", "name": "recordOffsetChange"}, {"url": "Paginator.ui.CurrentPageInput.html#method_render", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "method", "name": "render"}, {"url": "Paginator.ui.CurrentPageReport.html#method_render", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "method", "name": "render"}, {"url": "Paginator.ui.FirstPageLink.html#method_render", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "method", "name": "render"}, {"url": "Paginator.ui.ItemRangeDropdown.html#method_render", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "method", "name": "render"}, {"url": "Paginator.ui.LastPageLink.html#method_render", "access": "", "host": "Paginator.ui.LastPageLink", "type": "method", "name": "render"}, {"url": "Paginator.ui.NextPageLink.html#method_render", "access": "", "host": "Paginator.ui.NextPageLink", "type": "method", "name": "render"}, {"url": "Paginator.ui.PageLinks.html#method_render", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "render"}, {"url": "Paginator.html#method__renderTemplate", "access": "protected", "host": "Paginator", "type": "method", "name": "_renderTemplate"}, {"url": "Paginator.html#method_renderUIComponent", "access": "", "host": "Paginator", "type": "method", "name": "renderUIComponent"}, {"url": "Paginator.html#config_rowsPerPage", "access": "", "host": "Paginator", "type": "config", "name": "rowsPerPage"}, {"url": "Paginator.html#event_rowsPerPageChange", "access": "", "host": "Paginator", "type": "event", "name": "rowsPerPageChange"}, {"url": "Paginator.html#method__selfSubscribe", "access": "protected", "host": "Paginator", "type": "method", "name": "_selfSubscribe"}, {"url": "Paginator.html#method_setPage", "access": "", "host": "Paginator", "type": "method", "name": "setPage"}, {"url": "Paginator.html#method_setRowsPerPage", "access": "", "host": "Paginator", "type": "method", "name": "setRowsPerPage"}, {"url": "Paginator.html#method_setStartIndex", "access": "", "host": "Paginator", "type": "method", "name": "setStartIndex"}, {"url": "Paginator.html#method_setState", "access": "", "host": "Paginator", "type": "method", "name": "setState"}, {"url": "Paginator.html#method_setTotalRecords", "access": "", "host": "Paginator", "type": "method", "name": "setTotalRecords"}, {"url": "Paginator.ui.CurrentPageReport.html#method_sprintf", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "method", "name": "sprintf"}, {"url": "Paginator.html#property__state", "access": "protected", "host": "Paginator", "type": "property", "name": "_state"}, {"url": "Paginator.html#method__syncRecordOffset", "access": "protected", "host": "Paginator", "type": "method", "name": "_syncRecordOffset"}, {"url": "Paginator.html#config_template", "access": "", "host": "Paginator", "type": "config", "name": "template"}, {"url": "Paginator.html#event_templateChange", "access": "", "host": "Paginator", "type": "event", "name": "templateChange"}, {"url": "Paginator.html#config_totalRecords", "access": "", "host": "Paginator", "type": "config", "name": "totalRecords"}, {"url": "Paginator.html#event_totalRecordsChange", "access": "", "host": "Paginator", "type": "event", "name": "totalRecordsChange"}, {"url": "Paginator.ui.CurrentPageInput.html#method_update", "access": "", "host": "Paginator.ui.CurrentPageInput", "type": "method", "name": "update"}, {"url": "Paginator.ui.CurrentPageReport.html#method_update", "access": "", "host": "Paginator.ui.CurrentPageReport", "type": "method", "name": "update"}, {"url": "Paginator.ui.FirstPageLink.html#method_update", "access": "", "host": "Paginator.ui.FirstPageLink", "type": "method", "name": "update"}, {"url": "Paginator.ui.ItemRangeDropdown.html#method_update", "access": "", "host": "Paginator.ui.ItemRangeDropdown", "type": "method", "name": "update"}, {"url": "Paginator.ui.LastPageLink.html#method_update", "access": "", "host": "Paginator.ui.LastPageLink", "type": "method", "name": "update"}, {"url": "Paginator.ui.NextPageLink.html#method_update", "access": "", "host": "Paginator.ui.NextPageLink", "type": "method", "name": "update"}, {"url": "Paginator.ui.PageLinks.html#method_update", "access": "", "host": "Paginator.ui.PageLinks", "type": "method", "name": "update"}, {"url": "Paginator.html#method_updateVisibility", "access": "", "host": "Paginator", "type": "method", "name": "updateVisibility"}];
+</script>
+</body>
+</html>
