@@ -51,7 +51,7 @@ var Y_NodeList = Y.NodeList,
         'splice',
         /** Adds the given Node(s) to the beginning of the NodeList. 
           * @for NodeList
-          * @method push
+          * @method unshift
           * @param {Node | DOMNode} nodeN One or more nodes to add to the NodeList. 
           */
         'unshift'

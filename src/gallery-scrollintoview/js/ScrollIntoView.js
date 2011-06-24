@@ -1,15 +1,20 @@
 "use strict";
 
 /**********************************************************************
+* <p>Only scrolls the browser if the object is not currently visible.</p>
+ * 
+ * @module node
+  * @submodule gallery-scrollintoview
+ */
+
+/**********************************************************************
  * <p>Only scrolls the browser if the object is not currently visible.</p>
  * 
  * <p>This requires that all scrollable elements have position:relative.
  * Otherwise, this algorithm will skip over them with unpredictable
  * results.</p>
  * 
- * @module node
- * @submodule gallery-scrollintoview
- * @class Node
+ * @class Node~scrollIntoView
  * @method scrollIntoView
  * @chainable
  */

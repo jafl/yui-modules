@@ -1,10 +1,5 @@
 #!/bin/sh
 
-if [[ $# < 1 ]]; then
-	echo 'missing gallery item name';
-	exit 1;
-fi
-
 # The location of your yuidoc install
 yuidoc_home=~/open-source/yui3/yuidoc
 
@@ -12,14 +7,14 @@ yuidoc_home=~/open-source/yui3/yuidoc
 # there are duplicate file names in these directories.  You can specify multiple
 # source trees:
 #     parser_in="%HOME/www/yui/src %HOME/www/event/src"
-parser_in=~/open-source/yui3/yui3-gallery/src/gallery-$1
+parser_in_prefix=~/open-source/yui3/yui3-gallery/src/gallery
 
 # The location to output the parser data.  This output is a file containing a 
 # json string, and copies of the parsed files.
 parser_out=~/open-source/yui3/yui3-gallery/doc/parser
 
 # The directory to put the html file outputted by the generator
-generator_out=~/open-source/yui3/yui3-gallery/doc/gallery-$1
+generator_out=~/open-source/jafl.github-yui3/yuidoc
 
 # The location of the template files.  Any subdirectories here will be copied
 # verbatim to the destination directory.
@@ -35,6 +30,16 @@ yuiversion=3
 ##############################################################################
 # add -s to the end of the line to show items marked private
 
-rm -rf $parser_in/build_tmp $parser_out $generator_out
+rm -rf $parser_out $generator_out
+
+parser_in=""
+for f in ~/open-source/jafl.github-yui3/*; do
+	d=${f##*/}
+	if [[ ! -d $f || "$d" == "yuidoc" || "$d" == "bulkedit" ]]; then continue; fi
+
+	d1=${parser_in_prefix}-$d
+	parser_in="$parser_in $d1"
+	rm -rf $d1/build_tmp
+done
 
 $yuidoc_home/bin/yuidoc.py $parser_in -p $parser_out -o $generator_out -t $template -v $version -Y $yuiversion

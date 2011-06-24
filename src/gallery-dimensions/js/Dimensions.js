@@ -5,7 +5,7 @@
  * 
  * @module node
  * @submodule gallery-dimensions
- * @class Node
+ * @class Node~dimensions
  */
 
 var em_div = null,

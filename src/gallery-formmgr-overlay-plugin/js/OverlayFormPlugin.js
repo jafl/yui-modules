@@ -10,6 +10,7 @@
  * @module gallery-formmgr-overlay-plugin
  * @namespace Plugin
  * @class OverlayForm
+ * @extends Plugin.Base
  */
 function OverlayFormPlugin()
 {
