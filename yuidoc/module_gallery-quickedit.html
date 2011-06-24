@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-quickedit   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-quickedit&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a>
+                
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                   
+                    <h3>Module: gallery-quickedit
+                    
+
+
+                    </h3>
+                    <div class="description summary">
+                        <p>The QuickEdit plugin provides a new mode for DataTable where all
+values in the table can be edited simultaneously, controlled by the
+column configuration.  Each editable cell contains an input field.  If
+the user decides to save the changes, then you can extract the changed
+values by calling <code><i>dt</i>.qe.getChanges()</code>.</p>
+<p>For a column to be editable in QuickEdit mode, the column
+configuration must include <code>quickEdit</code>.  The contents of
+this object define the column's behavior in QuickEdit mode.</p>
+<p>To move up or down within a column while in QuickEdit mode, hold down
+the Ctrl key and press the up or down arrow.</p>
+<p>If a column should not be editable, but needs to be formatted
+differently in QuickEdit mode, then you must define qeFormatter in
+the column configuration. This is simply a normal cell formatter
+function that will be used in QuickEdit mode.  The static functions
+<code>readonly*Formatter</code> provide examples.</p>
+<p>The following configuration can be provided as part of
+quickEdit:</p>
+<dl>
+<dt>changed</dt><dd>Optional.  The function to call with the old and new
+value.  Should return true if the values are different.</dd>
+<dt>formatter</dt><dd>The cell formatter which will render an
+appropriate form field: &lt;input type="text"&gt;, &lt;textarea&gt;,
+or &lt;select&gt;.</dd>
+<dt>validation</dt><dd>Validation configuration for every field in
+the column.</dd>
+</dl>
+<p>The following configuration can be provided as part of
+quickEdit.validation:</p>
+<dl>
+<dt>css</dt><dd>CSS classes encoding basic validation rules:
+<dl>
+<dt><code>yiv-required</code></dt>
+<dd>Value must not be empty.</dd>
+<dt><code>yiv-length:[x,y]</code></dt>
+<dd>String must be at least x characters and at most y characters.
+At least one of x and y must be specified.</dd>
+<dt><code>yiv-integer:[x,y]</code></dt>
+<dd>The integer value must be at least x and at most y.
+x and y are both optional.</dd>
+<dt><code>yiv-decimal:[x,y]</code></dt>
+<dd>The decimal value must be at least x and at most y.  Exponents are
+not allowed.  x and y are both optional.</dd>
+</dl>
+</dd>
+<dt>fn</dt><dd>A function that will be called with the DataTable as its
+scope and the cell's form element as the argument. Return true if the
+value is valid. Otherwise, call this.qe.displayMessage(...) to display
+an error and return false.</dd>
+<dt>msg</dt><dd>A map of types to messages that will be displayed
+when a basic or regex validation rule fails. The valid types are:
+required, min_length, max_length, integer, decimal, and regex.
+There is no default for type regex, so you must specify a message if
+you configure a regex validation.</dd>
+<dt>regex</dt><dd>Regular expression that the value must satisfy in
+order to be considered valid.</dd>
+</dl>
+                    </div>
+
+
+
+                <div class="yui-gc">
+                    <div class="yui-u first">
+
+                            <p>This module contains the following classes:</p>
+                            <script>
+                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "Extensions to the Column class to support QuickEdit.", "guessedname": "Column", "name": "Column"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>The QuickEdit plugin provides a new mode for DataTable where all\nvalues in the table can be edited simultaneously, controlled by the\ncolumn configuration.  Each editable cell contains an input field.  If\nthe user decides to save the changes, then you can extract the changed\nvalues by calling <code><i>dt</i>.qe.getChanges()</code>.</p>\n<p>For a column to be editable in QuickEdit mode, the column\nconfiguration must include <code>quickEdit</code>.  The contents of\nthis object define the column's behavior in QuickEdit mode.</p>\n<p>To move up or down within a column while in QuickEdit mode, hold down\nthe Ctrl key and press the up or down arrow.</p>\n<p>If a column should not be editable, but needs to be formatted\ndifferently in QuickEdit mode, then you must define qeFormatter in\nthe column configuration. This is simply a normal cell formatter\nfunction that will be used in QuickEdit mode.  The static functions\n<code>readonly*Formatter</code> provide examples.</p>\n<p>The following configuration can be provided as part of\nquickEdit:</p>\n<dl>\n<dt>changed</dt><dd>Optional.  The function to call with the old and new\nvalue.  Should return true if the values are different.</dd>\n<dt>formatter</dt><dd>The cell formatter which will render an\nappropriate form field: &lt;input type=\"text\"&gt;, &lt;textarea&gt;,\nor &lt;select&gt;.</dd>\n<dt>validation</dt><dd>Validation configuration for every field in\nthe column.</dd>\n</dl>\n<p>The following configuration can be provided as part of\nquickEdit.validation:</p>\n<dl>\n<dt>css</dt><dd>CSS classes encoding basic validation rules:\n<dl>\n<dt><code>yiv-required</code></dt>\n<dd>Value must not be empty.</dd>\n<dt><code>yiv-length:[x,y]</code></dt>\n<dd>String must be at least x characters and at most y characters.\nAt least one of x and y must be specified.</dd>\n<dt><code>yiv-integer:[x,y]</code></dt>\n<dd>The integer value must be at least x and at most y.\nx and y are both optional.</dd>\n<dt><code>yiv-decimal:[x,y]</code></dt>\n<dd>The decimal value must be at least x and at most y.  Exponents are\nnot allowed.  x and y are both optional.</dd>\n</dl>\n</dd>\n<dt>fn</dt><dd>A function that will be called with the DataTable as its\nscope and the cell's form element as the argument. Return true if the\nvalue is valid. Otherwise, call this.qe.displayMessage(...) to display\nan error and return false.</dd>\n<dt>msg</dt><dd>A map of types to messages that will be displayed\nwhen a basic or regex validation rule fails. The valid types are:\nrequired, min_length, max_length, integer, decimal, and regex.\nThere is no default for type regex, so you must specify a message if\nyou configure a regex validation.</dd>\n<dt>regex</dt><dd>Regular expression that the value must satisfy in\norder to be considered valid.</dd>\n</dl>", "guessedname": "Plugin.DataTableQuickEdit", "name": "Plugin.DataTableQuickEdit"}];
+                            </script>
+                            <div id="splash_classList">
+                                <ul>
+                                    <li><a href="Column.html" title="Column" id="class_0">Column</a></li>
+                                    <li><a href="Plugin.DataTableQuickEdit.html" title="Plugin.DataTableQuickEdit" id="class_1">Plugin.DataTableQuickEdit</a></li>
+                                </ul>
+                            </div>
+                    </div>
+                    <div class="yui-u">
+
+                        </div>
+                </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class="selected"><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Column.html" title="Column">Column</a></li>
+                                <li class=""><a href="Plugin.DataTableQuickEdit.html" title="Plugin.DataTableQuickEdit">Plugin.DataTableQuickEdit</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="Column.js.html" title="Column.js">Column.js</a></li>
+                                <li class=""><a href="QuickEdit.js.html" title="QuickEdit.js">QuickEdit.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyEmailFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyEmailFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyLinkFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyLinkFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Plugin.DataTableQuickEdit.html#method_textareaFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textareaFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_textFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Plugin.DataTableQuickEdit.html#config_YAHOO.widget.QuickEditDataTable.status_order", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "YAHOO.widget.QuickEditDataTable.status_order"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}];
+</script>
+</body>
+</html>

@@ -1,0 +1,912 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-querybuilder  QueryBuilder   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-querybuilder&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a>
+                 &gt; QueryBuilder 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        
+                        
+                            Class <b property="yui:name">QueryBuilder</b>
+                        <span class="extends">
+                           - extends <a href="Widget.html" title="Widget">Widget</a>
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        <p>Class which allows user to build a list of query criteria, e.g., for
+searching.  All the conditions are either AND'ed or OR'ed.  For a more
+general query builder, see gallery-exprbuilder.</p>
+<p>The default package provides two data types:  String (which can also
+be used for numbers) and Select (which provides a menu of options).  The
+plugin API allows defining additional data types, e.g., date range or
+multi-select.  Every plugin must be registered in
+<code>Y.QueryBuilder.plugin_mapping</code>.  Plugins must implement the
+following functions:</p>
+<dl>
+<dt><code>constructor(qb, config)</code></dt>
+<dd>The arguments passed to the constructor are the QueryBuilder instance
+and the <code>pluginConfig</code> set on the QueryBuilder instance.
+At the minimum, this function should initalize form field name patterns
+using <code>config.field_prefix</code>.</dd>
+<dt><code>create(query_index, var_config, op_list, value)</code><dt>
+<dd>This function must create the additional cells for the query row and
+populate these cells appropriately.  (The QueryBuilder widget will
+insert the cells into the table.)  <code>var_config</code> is the
+item from the QueryBuilder's <code>var_list</code> that the user
+selected.  <code>op_list</code> is the item from the QueryBuilder's
+<code>operators</code> which matches the variable selected by the
+user.  <code>value</code> is optional.  If specified, it is the
+initial value(s) to be displayed by the plugin.</dd>
+<dt><code>postCreate(query_index, var_config, op_list, value)</code></dt>
+<dd>Optional.  If it exists, it will be called after the cells returned by
+<code>create()</code> have been inserted into the table.  The arguments
+are the same as <code>create()</code>.</dd>
+<dt><code>destroy()</code></dt>
+<dd>Destroy the plugin.  (The QueryBuilder widget will remove the cells
+and purge all events.)</dd>
+<dt><code>updateName(new_index)</code></dt>
+<dd>Update the names of the form fields managed by the plugin.</dd>
+<dt><code>set(query_index, data)</code></dt>
+<dd>Set the displayed value(s) by extracting values from data (a map)
+based on the current names of the plugin's form fields.</dd>
+<dt><code>toDatabaseQuery()</code></dt>
+<dd>Return an array of arrays.  Each inner array contains an operation
+and a value.  The default String and Select plugins each return
+a single inner array.  A date range plugin would return two inner
+arrays, one for the start date and one for the end date.</dd>
+</dl>
+                    </div>
+
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">QueryBuilder</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                var_list
+
+                                                , 
+                                                operators
+
+                                                , 
+                                                config
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">var_list</span>
+                                                    &lt;<span property="yui:type">Array</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  List of variables that be included in the query.
+Each item in the list is an object containing:
+<dl>
+<dt>name</dt>
+<dd>The name of the variable.  Set as the <code>value</code> for the select option.</dd>
+<dt>type</dt>
+<dd>The variable type.  Used to determine which plugin to instantiate.
+Must match a key in <code>Y.QueryBuilder.plugin_mapping</code>.
+(You can add new plugins to this global mapping.)</dd>
+<dt>text</dt>
+<dd>The text displayed when the variable is selected.</dd>
+<dt>plugin-specific configuration</dt>
+<dd>Plugins may defines additional configuration.</dd>
+</dl></span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">operators</span>
+                                                    &lt;<span property="yui:type">Object</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  Map of variable types to list of operators.
+Each operator is an object defining <code>value</code> and <code>text</code>.</span>
+                                                </dd>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">config</span>
+                                                    &lt;<span property="yui:type">Object</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description">  Widget configuration</span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="protected" rel="yui:method" resource="#method__createContainer">
+                                    <h4>
+                                        <a name="method__createContainer">_createContainer</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        DOM element
+                                            <strong property="yui:name">_createContainer</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            DOM element
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">container for one piece of a query row</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__notifyChanged">
+                                    <h4>
+                                        <a name="method__notifyChanged">_notifyChanged</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_notifyChanged</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires the queryChanged event.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__rowControls">
+                                    <h4>
+                                        <a name="method__rowControls">_rowControls</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">_rowControls</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            String
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">markup for the row controls (insert and remove)</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__variablesMenu">
+                                    <h4>
+                                        <a name="method__variablesMenu">_variablesMenu</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">_variablesMenu</strong>
+                                           (
+                                                
+                                                        
+                                                         menu_name
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">menu_name</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  name for the select form element</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            String
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">markup for the query variable menu</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_appendNew">
+                                    <h4>
+                                        <a name="method_appendNew">appendNew</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Object
+                                            <strong property="yui:name">appendNew</strong>
+                                           (
+                                                
+                                                        
+                                                         name
+                                                    
+                                                
+                                                        , 
+                                                         value
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Append a new query condition to the table.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">name</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  If specified, this variable is selected.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">value</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  If specified, this value is selected.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">plugin that was created for the row, if any</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getPlugin">
+                                    <h4>
+                                        <a name="method_getPlugin">getPlugin</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Object
+                                            <strong property="yui:name">getPlugin</strong>
+                                           (
+                                                
+                                                        
+                                                         row_index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Returns plugin used for the specified row, if any.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">row_index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The index of the row</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the plugin for the row, if any</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_remove">
+                                    <h4>
+                                        <a name="method_remove">remove</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">remove</strong>
+                                           (
+                                                
+                                                        
+                                                         row_index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Removes the specified row.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">row_index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The index of the row</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"><code>true</code> if successful</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_reset">
+                                    <h4>
+                                        <a name="method_reset">reset</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">reset</strong>
+                                           (
+                                                
+                                                        
+                                                         var_list
+                                                    
+                                                
+                                                        , 
+                                                         operators
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Reset the query.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">var_list</span>
+                                                        &lt;<span property="yui:type">Array</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  If specified, the list of available variables is replaced.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">operators</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  If specified, the operators for all variable types will be replaced.</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_toDatabaseQuery">
+                                    <h4>
+                                        <a name="method_toDatabaseQuery">toDatabaseQuery</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Array
+                                            <strong property="yui:name">toDatabaseQuery</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Array
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">list of [var, op, value] tuples suitable for a database query</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_update">
+                                    <h4>
+                                        <a name="method_update">update</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">update</strong>
+                                           (
+                                                
+                                                        
+                                                         row_index
+                                                    
+                                                
+                                                        , 
+                                                         value
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Set the value of the specified row.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">row_index</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The index of the row</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">value</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  If specified, the value to set</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_variableName">
+                                    <h4>
+                                        <a name="method_variableName">variableName</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">variableName</strong>
+                                           (
+                                                
+                                                        
+                                                         i
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">i</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  query row index</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            String
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">name for the select form element listing the available query variables</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+                        <div class="section method details">
+                            <h3 id="events">Events</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:event" resource="#event_queryChanged">
+                                    <h4>
+                                        <a name="event_queryChanged">queryChanged</a></h4>
+                                    <div class="detail">
+                                        <code>
+                                        
+                                        
+                                        
+                                            <strong property="yui:name">queryChanged</strong>
+
+                                            (
+                                                
+                                                        
+                                                         info
+                                                    
+                                                
+                                            )
+
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Fires when the query is modified.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                            <code><span property="yui:name">info</span>
+                                                                &lt;<span property="yui:type">Object</span>&gt;
+                                                            </code>
+                                                            <span property="yui:description">  <code>remove</code> is <code>true</code> if a row was removed</span>
+                                                        </dd>
+                                                        
+                                                </dl>
+
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+                        <div class="section field details">
+                            <h3 id="configattributes">Configuration Attributes</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:attribute" resource="#config_chooseVarPrompt">
+                                    <h4><a name="config_chooseVarPrompt">chooseVarPrompt</a>
+                                        <code>- writeonce <span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The prompt displayed when a new item is added to the query.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: "Choose a variable"
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_fieldPrefix">
+                                    <h4><a name="config_fieldPrefix">fieldPrefix</a>
+                                        <code>- writeonce <span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            All generated form field names start with this prefix.  This avoids
+conflicts if you have more than one QueryBuilder on a page.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: ""
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_pluginConfig">
+                                    <h4><a name="config_pluginConfig">pluginConfig</a>
+                                        <code>- writeonce <span property="yui:type">{Object}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            Configuration passed to plugins when they are constructed.
+                                        </div>
+                                    </div>
+ 
+     
+                                    <div class="default">
+                                        Default Value: {}
+                                    </div>        
+
+                                    <hr />
+                                    </div>        
+
+                            </div>
+                        </div>
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class="selected"><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="QueryBuilder.html" title="QueryBuilder">QueryBuilder</a></li>
+                                <li class=""><a href="QueryBuilder.Select.html" title="QueryBuilder.Select">QueryBuilder.Select</a></li>
+                                <li class=""><a href="QueryBuilder.String.html" title="QueryBuilder.String">QueryBuilder.String</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="QueryBuilder.js.html" title="QueryBuilder.js">QueryBuilder.js</a></li>
+                                <li class=""><a href="Select.js.html" title="Select.js">Select.js</a></li>
+                                <li class=""><a href="String.js.html" title="String.js">String.js</a></li>
+                                <li class=""><a href="Types.js.html" title="Types.js">Types.js</a></li>
+                        </ul>
+                    </div>
+
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class="protected"><a href="#method__createContainer" title="_createContainer">_createContainer</a></li>
+                                <li class="protected"><a href="#method__notifyChanged" title="_notifyChanged">_notifyChanged</a></li>
+                                <li class="protected"><a href="#method__rowControls" title="_rowControls">_rowControls</a></li>
+                                <li class="protected"><a href="#method__variablesMenu" title="_variablesMenu">_variablesMenu</a></li>
+                                <li class=""><a href="#method_appendNew" title="appendNew">appendNew</a></li>
+                                <li class=""><a href="#method_getPlugin" title="getPlugin">getPlugin</a></li>
+                                <li class=""><a href="#method_remove" title="remove">remove</a></li>
+                                <li class=""><a href="#method_reset" title="reset">reset</a></li>
+                                <li class=""><a href="#method_toDatabaseQuery" title="toDatabaseQuery">toDatabaseQuery</a></li>
+                                <li class=""><a href="#method_update" title="update">update</a></li>
+                                <li class=""><a href="#method_variableName" title="variableName">variableName</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="eventsList" class="module">
+                        <h4>Events</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#event_queryChanged" title="queryChanged">queryChanged</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="configList" class="module">
+                        <h4>Configuration Attributes</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#config_chooseVarPrompt" title="chooseVarPrompt">chooseVarPrompt</a></li>
+                                <li class=""><a href="#config_fieldPrefix" title="fieldPrefix">fieldPrefix</a></li>
+                                <li class=""><a href="#config_pluginConfig" title="pluginConfig">pluginConfig</a></li>
+                        </ul>
+                    </div>
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "QueryBuilder.html#method_appendNew", "access": "", "host": "QueryBuilder", "type": "method", "name": "appendNew"}, {"url": "QueryBuilder.html#config_chooseVarPrompt", "access": "", "host": "QueryBuilder", "type": "config", "name": "chooseVarPrompt"}, {"url": "QueryBuilder.html#method__createContainer", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_createContainer"}, {"url": "QueryBuilder.html#config_fieldPrefix", "access": "", "host": "QueryBuilder", "type": "config", "name": "fieldPrefix"}, {"url": "QueryBuilder.html#method_getPlugin", "access": "", "host": "QueryBuilder", "type": "method", "name": "getPlugin"}, {"url": "QueryBuilder.html#method__notifyChanged", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_notifyChanged"}, {"url": "QueryBuilder.html#config_pluginConfig", "access": "", "host": "QueryBuilder", "type": "config", "name": "pluginConfig"}, {"url": "QueryBuilder.html#event_queryChanged", "access": "", "host": "QueryBuilder", "type": "event", "name": "queryChanged"}, {"url": "QueryBuilder.html#method_remove", "access": "", "host": "QueryBuilder", "type": "method", "name": "remove"}, {"url": "QueryBuilder.html#method_reset", "access": "", "host": "QueryBuilder", "type": "method", "name": "reset"}, {"url": "QueryBuilder.html#method__rowControls", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_rowControls"}, {"url": "QueryBuilder.html#method_toDatabaseQuery", "access": "", "host": "QueryBuilder", "type": "method", "name": "toDatabaseQuery"}, {"url": "QueryBuilder.html#method_update", "access": "", "host": "QueryBuilder", "type": "method", "name": "update"}, {"url": "QueryBuilder.html#method_variableName", "access": "", "host": "QueryBuilder", "type": "method", "name": "variableName"}, {"url": "QueryBuilder.html#method__variablesMenu", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_variablesMenu"}];
+</script>
+</body>
+</html>

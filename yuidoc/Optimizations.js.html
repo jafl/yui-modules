@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: node   Optimizations.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>node&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_node.html" title="node">node</a>
+                
+                 &gt; Optimizations.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Optimizations for searching DOM tree.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module node</span>
+<span class="cm"> * @submodule gallery-node-optimizations</span>
+<span class="cm"> * @class Node~optimizations</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">class_name_re</span> <span class="o">=</span> <span class="sr">/^\.([-_a-z0-9]+)$/i</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">tag_name_re</span>   <span class="o">=</span> <span class="sr">/^[a-z]+$/i</span><span class="p">;</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Patch to speed up search for a single class name or single tag name.</span>
+<span class="cm"> * To use a regular expression, call getAncestorByClassName().&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method ancestor</span>
+<span class="cm"> * @param fn {String|Function} selector string or boolean method for testing elements</span>
+<span class="cm"> * @param test_self {Boolean} pass true to include the element itself in the scan</span>
+<span class="cm"> * @return {Node}</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">orig_ancestor</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">ancestor</span><span class="p">;</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">ancestor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
+	<span class="cm">/* string */</span>	<span class="nx">fn</span><span class="p">,</span>
+	<span class="cm">/* bool */</span>		<span class="nx">test_self</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">fn</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">class_name_re</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">fn</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;ancestor() calling getAncestorByClassName() with &#39;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
+			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">test_self</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">tag_name_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">fn</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;ancestor() calling getAncestorByTagName() with &#39;</span> <span class="o">+</span> <span class="nx">fn</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
+			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getAncestorByTagName</span><span class="p">(</span><span class="nx">fn</span><span class="p">,</span> <span class="nx">test_self</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">orig_ancestor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Searches for an ancestor by class name.  This is significantly faster</span>
+<span class="cm"> * than using Y.node.ancestor(&#39;.classname&#39;), and it accepts a regular</span>
+<span class="cm"> * expression.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method getAncestorByClassName</span>
+<span class="cm"> * @param class_name {String|Regexp} class to search for</span>
+<span class="cm"> * @param test_self {Boolean} pass true to include the element itself in the scan</span>
+<span class="cm"> * @return {Node}</span>
+<span class="cm"> */</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getAncestorByClassName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
+	<span class="cm">/* string */</span>	<span class="nx">class_name</span><span class="p">,</span>
+	<span class="cm">/* bool */</span>		<span class="nx">test_self</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_node</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">test_self</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">while</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">class_name</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span> <span class="o">||</span> <span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>	<span class="c1">// might be hidden, which is outside &lt;fieldset&gt;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Searches for an ancestor by tag name.  This is significantly faster</span>
+<span class="cm"> * than using Y.node.ancestor(&#39;tagname&#39;).&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method getAncestorByTagName</span>
+<span class="cm"> * @param tag_name {String} tag name to search for</span>
+<span class="cm"> * @param test_self {Boolean} pass true to include the element itself in the scan</span>
+<span class="cm"> * @return {Node}</span>
+<span class="cm"> */</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getAncestorByTagName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
+	<span class="cm">/* string */</span>	<span class="nx">tag_name</span><span class="p">,</span>
+	<span class="cm">/* bool */</span>		<span class="nx">test_self</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_node</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">test_self</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="nx">tag_name</span> <span class="o">=</span> <span class="nx">tag_name</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+	<span class="k">while</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">tag_name</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">e</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span> <span class="o">||</span> <span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>	<span class="c1">// might be hidden, which is outside &lt;fieldset&gt;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Patch to speed up search for a single class name or single tag name.</span>
+<span class="cm"> * To use a regular expression, call getElementsByClassName().&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method all</span>
+<span class="cm"> * @param fn {String|Function} selector string or boolean method for testing elements</span>
+<span class="cm"> * @param test_self {Boolean} pass true to include the element itself in the scan</span>
+<span class="cm"> * @return {Node}</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">orig_all</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">all</span><span class="p">;</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">all</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
+	<span class="cm">/* string */</span> <span class="nx">selector</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">class_name_re</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;all() calling getElementsByClassName() with &#39;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
+			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">tag_name_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;all() calling getElementsByTagName() with &#39;</span> <span class="o">+</span> <span class="nx">selector</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
+			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">orig_all</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Searches for descendants by class name.  Unlike Y.all(), this</span>
+<span class="cm"> * function accepts a regular expression.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method getElementsByClassName</span>
+<span class="cm"> * @param class_name {String|Regexp} class to search for</span>
+<span class="cm"> * @param tag_name {String} optional tag name to filter by</span>
+<span class="cm"> * @return {NodeList}</span>
+<span class="cm"> */</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getElementsByClassName</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
+	<span class="cm">/* string */</span>	<span class="nx">class_name</span><span class="p">,</span>
+	<span class="cm">/* string */</span>	<span class="nx">tag_name</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">descendants</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="nx">tag_name</span> <span class="o">||</span> <span class="s1">&#39;*&#39;</span><span class="p">);</span>
+
+	<span class="kd">var</span> <span class="nx">list</span>  <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">descendants</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">descendants</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">e</span><span class="p">),</span> <span class="nx">class_name</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">list</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>	<span class="c1">// can&#39;t construct empty list</span>
+			<span class="p">}</span>
+			<span class="k">else</span>
+			<span class="p">{</span>
+				<span class="nx">list</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">list</span><span class="p">)</span>	<span class="c1">// can&#39;t construct empty list</span>
+	<span class="p">{</span>
+		<span class="nx">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="s1">&#39;#surely-this-cannot-possibly-exist-on-your-page&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">list</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class="selected"><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Node~dimensions.html" title="Node~dimensions">Node~dimensions</a></li>
+                                <li class=""><a href="Node~optimizations.html" title="Node~optimizations">Node~optimizations</a></li>
+                                <li class=""><a href="Node~scrollIntoView.html" title="Node~scrollIntoView">Node~scrollIntoView</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="Dimensions.js.html" title="Dimensions.js">Dimensions.js</a></li>
+                                <li class="selected"><a href="Optimizations.js.html" title="Optimizations.js">Optimizations.js</a></li>
+                                <li class=""><a href="ScrollIntoView.js.html" title="ScrollIntoView.js">ScrollIntoView.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "Node~optimizations.html#method_all", "access": "", "host": "Node~optimizations", "type": "method", "name": "all"}, {"url": "Node~optimizations.html#method_ancestor", "access": "", "host": "Node~optimizations", "type": "method", "name": "ancestor"}, {"url": "Node~dimensions.html#method_emToPx", "access": "", "host": "Node~dimensions", "type": "method", "name": "emToPx"}, {"url": "Node~optimizations.html#method_getAncestorByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByClassName"}, {"url": "Node~optimizations.html#method_getAncestorByTagName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByTagName"}, {"url": "Node~optimizations.html#method_getElementsByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getElementsByClassName"}, {"url": "Node~dimensions.html#method_horizMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "horizMarginBorderPadding"}, {"url": "Node~dimensions.html#method_parseDimensionStyle", "access": "", "host": "Node~dimensions", "type": "method", "name": "parseDimensionStyle"}, {"url": "Node~dimensions.html#method_vertMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "vertMarginBorderPadding"}];
+</script>
+</body>
+</html>
