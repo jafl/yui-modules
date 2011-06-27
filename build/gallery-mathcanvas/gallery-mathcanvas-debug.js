@@ -9,7 +9,8 @@ YUI.add('gallery-mathcanvas', function(Y) {
  * font_size(%), func.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathCanvas.RectList
+ * @namespace MathCanvas
+ * @class RectList
  * @constructor
  */
 
@@ -203,7 +204,8 @@ RectList.prototype =
  * prepareToRender() and render().</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction
+ * @namespace
+ * @class MathFunction
  * @constructor
  */
 
@@ -331,8 +333,9 @@ Y.MathFunction = MathFunction;
  * <p>Constant value</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Value
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class Value
+ * @extends MathFunction
  * @constructor
  * @param value {number}
  */
@@ -377,8 +380,9 @@ MathFunction.Value = MathValue;
  * <p>Variable value</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Variable
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class Variable
+ * @extends MathFunction
  * @constructor
  * @param name {String}
  */
@@ -415,8 +419,9 @@ MathFunction.Variable = MathVariable;
  * <p>Pi</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Pi
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class Pi
+ * @extends MathFunction
  * @constructor
  */
 
@@ -443,8 +448,9 @@ MathFunction.Pi = MathPi;
  * <p>e</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.E
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class E
+ * @extends MathFunction
  * @constructor
  */
 
@@ -471,8 +477,9 @@ MathFunction.E = MathE;
  * <p>i (square root of -1)</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.I
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class I
+ * @extends MathFunction
  * @constructor
  */
 
@@ -499,11 +506,12 @@ MathFunction.I = MathI;
  * <p>Function that takes one or more arguments.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.FunctionWithArgs
- * @extends Y.MathFunction
+ * @namespace MathFunction
+ * @class FunctionWithArgs
+ * @extends MathFunction
  * @constructor
  * @param name {String} the name of the function
- * @param args {Y.MathFunction|Array} the arguments
+ * @param args {MathFunction|Array} the arguments
  */
 
 function MathFunctionWithArgs(
@@ -715,10 +723,11 @@ MathFunction.FunctionWithArgs = MathFunctionWithArgs;
  * <p>Negate a number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Negate
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Negate
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathNegate(
@@ -801,8 +810,9 @@ MathFunction.Negate = MathNegate;
  * <p>Sum of values.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Sum
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Sum
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
  */
 
@@ -965,8 +975,9 @@ MathFunction.Sum = MathSum;
  * <p>Product of values.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Product
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Product
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
  */
 
@@ -1092,11 +1103,12 @@ MathFunction.Product = MathProduct;
  * <p>Quotient of values.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Quotient
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Quotient
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param n {Y.MathFunction} numerator
- * @param d {Y.MathFunction} denominator
+ * @param n {MathFunction} numerator
+ * @param d {MathFunction} denominator
  */
 
 function MathQuotient(
@@ -1204,10 +1216,11 @@ MathFunction.Quotient = MathQuotient;
  * <p>Magnitude (absolute value) of a number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Magnitude
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Magnitude
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathMagnitude(
@@ -1269,10 +1282,11 @@ MathFunction.Magnitude = MathMagnitude;
  * <p>Phase of a complex number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Phase
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Phase
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathPhase(
@@ -1295,10 +1309,11 @@ MathFunction.Phase = MathPhase;
  * <p>Conjugate of a complex number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Conjugate
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Conjugate
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathConjugate(
@@ -1350,10 +1365,11 @@ MathFunction.Conjugate = MathConjugate;
  * <p>Rotate a complex number around the origin.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Rotate
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Rotate
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathRotate(
@@ -1377,10 +1393,11 @@ MathFunction.Rotate = MathRotate;
  * <p>Real part of a complex number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.RealPart
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class RealPart
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathRealPart(
@@ -1404,10 +1421,11 @@ MathFunction.RealPart = MathRealPart;
  * <p>Imaginary part of a complex number.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.ImaginaryPart
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class ImaginaryPart
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathImaginaryPart(
@@ -1431,8 +1449,9 @@ MathFunction.ImaginaryPart = MathImaginaryPart;
  * <p>Minimum.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Min
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Min
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
  */
 
@@ -1455,8 +1474,9 @@ MathFunction.Min = MathMin;
  * <p>Maximum.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Max
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Max
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
  */
 
@@ -1479,10 +1499,11 @@ MathFunction.Max = MathMax;
  * <p>Square root.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.SquareRoot
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class SquareRoot
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathSquareRoot(
@@ -1564,11 +1585,12 @@ MathFunction.SquareRoot = MathSquareRoot;
  * <p>Exponential.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Exponential
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Exponential
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param b {Y.MathFunction} base
- * @param e {Y.MathFunction} exponent
+ * @param b {MathFunction} base
+ * @param e {MathFunction} exponent
  */
 
 function MathExponential(
@@ -1667,11 +1689,12 @@ MathFunction.Exponential = MathExponential;
  * <p>Logarithm.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Logarithm
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Logarithm
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param b {Y.MathFunction} base
- * @param v {Y.MathFunction} value
+ * @param b {MathFunction} base
+ * @param v {MathFunction} value
  */
 
 function MathLogarithm(
@@ -1762,10 +1785,11 @@ MathFunction.Logarithm = MathLogarithm;
  * <p>Natural logarithm.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.NaturalLog
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class NaturalLog
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathNaturalLog(
@@ -1788,10 +1812,11 @@ MathFunction.NaturalLog = MathNaturalLog;
  * <p>Trigonometric sine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Sine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Sine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathSine(
@@ -1814,10 +1839,11 @@ MathFunction.Sine = MathSine;
  * <p>Trigonometric cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Cosine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Cosine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathCosine(
@@ -1840,10 +1866,11 @@ MathFunction.Cosine = MathCosine;
  * <p>Trigonometric tangent.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Tangent
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Tangent
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathTangent(
@@ -1866,10 +1893,11 @@ MathFunction.Tangent = MathTangent;
  * <p>Inverse trigonometric sine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Arcsine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Arcsine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathArcsine(
@@ -1892,10 +1920,11 @@ MathFunction.Arcsine = MathArcsine;
  * <p>Inverse trigonometric cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Arccosine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Arccosine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathArccosine(
@@ -1918,10 +1947,11 @@ MathFunction.Arccosine = MathArccosine;
  * <p>Inverse trigonometric cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Arctangent
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Arctangent
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathArctangent(
@@ -1944,11 +1974,12 @@ MathFunction.Arctangent = MathArctangent;
  * <p>Inverse trigonometric cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.Arctangent2
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class Arctangent2
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param y {Y.MathFunction}
- * @param x {Y.MathFunction}
+ * @param y {MathFunction}
+ * @param x {MathFunction}
  */
 
 function MathArctangent2(
@@ -1973,10 +2004,11 @@ MathFunction.Arctangent2 = MathArctangent2;
  * <p>Hyperbolic cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.HyperbolicCosine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class HyperbolicCosine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathHyperbolicCosine(
@@ -1999,10 +2031,11 @@ MathFunction.HyperbolicCosine = MathHyperbolicCosine;
  * <p>Hyperbolic sine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.HyperbolicSine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class HyperbolicSine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathHyperbolicSine(
@@ -2025,10 +2058,11 @@ MathFunction.HyperbolicSine = MathHyperbolicSine;
  * <p>Hyperbolic tangent.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.HyperbolicTangent
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class HyperbolicTangent
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathHyperbolicTangent(
@@ -2051,10 +2085,11 @@ MathFunction.HyperbolicTangent = MathHyperbolicTangent;
  * <p>Inverse hyperbolic cosine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.InverseHyperbolicCosine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class InverseHyperbolicCosine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathInverseHyperbolicCosine(
@@ -2077,10 +2112,11 @@ MathFunction.InverseHyperbolicCosine = MathInverseHyperbolicCosine;
  * <p>Inverse hyperbolic sine.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.InverseHyperbolicSine
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class InverseHyperbolicSine
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathInverseHyperbolicSine(
@@ -2103,10 +2139,11 @@ MathFunction.InverseHyperbolicSine = MathInverseHyperbolicSine;
  * <p>Inverse hyperbolic tangent.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathFunction.InverseHyperbolicTangent
- * @extends Y.MathFunction.FunctionWithArgs
+ * @namespace MathFunction
+ * @class InverseHyperbolicTangent
+ * @extends MathFunction.FunctionWithArgs
  * @constructor
- * @param f {Y.MathFunction}
+ * @param f {MathFunction}
  */
 
 function MathInverseHyperbolicTangent(
@@ -2648,9 +2685,10 @@ if (typeof module !== 'undefined' && require.main === module) {
  * paper.</p>
  * 
  * @module gallery-mathcanvas
- * @class Y.MathCanvas
+ * @namespace
+ * @class MathCanvas
+ * @extends Widget
  * @constructor
- * @extends Y.Widget
  * @param config {Object} Widget configuration
  */
 
@@ -2732,7 +2770,7 @@ MathCanvas.ATTRS =
 };
 
 function setSize(
-	/* string */ type)
+	/* width/height */	type)
 {
 	var c = type.charAt(0).toUpperCase() + type.substr(1);
 	var v = Math.max(this.get('min'+c), this[ 'render_'+type ]+5);
@@ -2763,6 +2801,11 @@ Y.extend(MathCanvas, Y.Widget,
 
 		this.canvas = Y.Node.create(
 			'<canvas width="' + w + '" height="' + h + '" tabindex="0"></canvas>');
+		if (!this.canvas)
+		{
+			throw Error("This browser does not support canvas rendering.");
+		}
+
 		container.appendChild(this.canvas);
 
 		this.context = new Y.Canvas.Context2d(this.canvas);
@@ -2770,6 +2813,16 @@ Y.extend(MathCanvas, Y.Widget,
 		this.context.math_canvas = this;
 
 		this._renderExpression();
+	},
+
+	bindUI: function()
+	{
+		this.canvas.on('click', function(e)
+		{
+			var xy = this.canvas.getXY();
+			console.log(Math.round(e.pageX - xy[0]) + ', ' + Math.round(e.pageY - xy[1]));
+		},
+		this);
 	},
 
 	destructor: function()
@@ -2965,7 +3018,8 @@ Y.MathCanvas.Parser   = MathParser;
 /**********************************************************************
  * Parser used to convert a string expression into Y.MathFunction
  * 
- * @class Y.MathCanvas.Parser
+ * @namespace MathCanvas
+ * @class Parser
  */
 
 /**
@@ -2974,8 +3028,8 @@ Y.MathCanvas.Parser   = MathParser;
  * @method parse
  * @static
  * @param expr {String} expression to parse
- * @return {Y.MathFunction}
+ * @return {MathFunction}
  */
 
 
-}, '@VERSION@' ,{requires:['widget','collection','gallery-complexnumber','gallery-canvas']});
+}, '@VERSION@' ,{requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas']});

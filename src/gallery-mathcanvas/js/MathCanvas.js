@@ -119,6 +119,11 @@ Y.extend(MathCanvas, Y.Widget,
 
 		this.canvas = Y.Node.create(
 			'<canvas width="' + w + '" height="' + h + '" tabindex="0"></canvas>');
+		if (!this.canvas)
+		{
+			throw Error("This browser does not support canvas rendering.");
+		}
+
 		container.appendChild(this.canvas);
 
 		this.context = new Y.Canvas.Context2d(this.canvas);
@@ -126,6 +131,16 @@ Y.extend(MathCanvas, Y.Widget,
 		this.context.math_canvas = this;
 
 		this._renderExpression();
+	},
+
+	bindUI: function()
+	{
+		this.canvas.on('click', function(e)
+		{
+			var xy = this.canvas.getXY();
+			console.log(Math.round(e.pageX - xy[0]) + ', ' + Math.round(e.pageY - xy[1]));
+		},
+		this);
 	},
 
 	destructor: function()

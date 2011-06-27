@@ -318,18 +318,18 @@ function clear(e)
 
 function insertQB(e)
 {
-	if (!this.qb_form.validateForm())
+	var qb = this.get('queryBuilder');
+	if (!qb.validateFields())
 	{
 		e.halt();
 		return;
 	}
 
-	var qb    = this.get('queryBuilder');
 	var query = qb.toDatabaseQuery();
 	if (query.length === 0)
 	{
 		var el = qb.get('contentBox').one('select');
-		this.qb_form.displayMessage(el, this.get('noVariableSelectedError'), 'error');
+		qb.displayFieldMessage(el, this.get('noVariableSelectedError'), 'error');
 		e.halt();
 		return;
 	}
@@ -374,9 +374,12 @@ function insertQB(e)
 
 function resetQB(e)
 {
-	this.qb_form.clearMessages();
 	this.get('queryBuilder').reset();
-	e.halt();
+
+	if (e)
+	{
+		e.halt();
+	}
 }
 
 function setValidation(f)
@@ -384,6 +387,14 @@ function setValidation(f)
 	if (f)
 	{
 		var self = this;
+
+		var orig_validateForm = f.validateForm;
+		f.validateForm = function()
+		{
+			resetQB.call(self);
+			orig_validateForm.apply(this, arguments);
+		}
+
 		f.setFunction(this.get('fieldId'), function(form, e)
 		{
 			return self._validateExpression(form, e, this);
@@ -411,8 +422,6 @@ Y.extend(ExpressionBuilder, Y.Widget,
 
 	renderUI: function()
 	{
-		var qb_form_name = Y.guid();
-
 		var container = this.get('contentBox');
 		container.set('innerHTML', this._field());
 
@@ -442,15 +451,12 @@ Y.extend(ExpressionBuilder, Y.Widget,
 		var qb = this.get('queryBuilder');
 		if (qb)
 		{
-			container.appendChild(Y.Node.create(this._query(qb_form_name)));
+			container.appendChild(Y.Node.create(this._query()));
 
 			qb.render(container.one('.'+this.getClassName('querybuilder')));
 
 			container.one('.'+this.getClassName('insert')).on('click', insertQB, this);
 			container.one('.'+this.getClassName('reset')).on('click', resetQB, this);
-
-			this.qb_form = new Y.FormManager(qb_form_name);
-			this.qb_form.prepareForm();
 		}
 	},
 
@@ -489,7 +495,8 @@ Y.extend(ExpressionBuilder, Y.Widget,
 		var qi    = -1;
 		for (var i=0; i<s.length; i++)
 		{
-			if (!quote && s[i] == '(')
+			var c = s.charAt(i);
+			if (!quote && c == '(')
 			{
 				if (paren === 0)
 				{
@@ -497,7 +504,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 				}
 				paren++;
 			}
-			else if (!quote && s[i] == ')')
+			else if (!quote && c == ')')
 			{
 				paren--;
 				if (paren < 0)
@@ -510,7 +517,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 					return false;
 				}
 			}
-			else if (s[i] == '\'' && (i === 0 || s[i-1] != '\\'))
+			else if (c == '\'' && (i === 0 || s.charAt(i-1) != '\\'))
 			{
 				if (!quote)
 				{
@@ -586,23 +593,19 @@ Y.extend(ExpressionBuilder, Y.Widget,
 
 	/**
 	 * @protected
-	 * @return {String} markup for the QueryBuilder form
+	 * @return {String} markup for the QueryBuilder
 	 */
-	_query: function(
-		/* string */	qb_form_name)
+	_query: function()
 	{
 		var markup =
-			'<form name="{qbf}">' +
-				'<div class="{qb}"></div>' +
-				'<div class="{qbctl} formmgr-row">' +
-					'<button class="{ic}">{insert}</button>' +
-					'<button class="{rc}">{reset}</button>' +
-				'</div>' +
-			'</form>';
+			'<div class="{qb}"></div>' +
+			'<div class="{qbctl} formmgr-row">' +
+				'<button class="{ic}">{insert}</button>' +
+				'<button class="{rc}">{reset}</button>' +
+			'</div>';
 
 		return Y.Lang.substitute(markup,
 		{
-			qbf:	qb_form_name,
 			qb:     this.getClassName('querybuilder'),
 			qbctl:  this.getClassName('querybuilder-controls'),
 			ic:     this.getClassName('insert'),
@@ -616,4 +619,4 @@ Y.extend(ExpressionBuilder, Y.Widget,
 Y.ExpressionBuilder = ExpressionBuilder;
 
 
-}, '@VERSION@' ,{requires:['gallery-querybuilder','gallery-formmgr'], skinnable:true});
+}, '@VERSION@' ,{skinnable:true, requires:['gallery-querybuilder','gallery-formmgr']});
