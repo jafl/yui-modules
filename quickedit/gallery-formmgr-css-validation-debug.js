@@ -116,7 +116,8 @@ function hasLimit(
  * 
  * @method validateFromCSSData
  * @static
- * @param e {DOM Element} The field to validate.
+ * @param e {Element|Node} The field to validate.
+ * @param msg_list {Map} (Optional) Map of message types to custom messages.
  * @return {Object} Status:
  *		<dl>
  *		<dt>keepGoing</dt>

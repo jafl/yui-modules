@@ -6,14 +6,14 @@
 
 	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
-<!--
+
 	<script src="gallery-querybuilder-debug.js"></script>
 	<script src="gallery-formmgr-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
 	<script src="gallery-node-optimizations-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.3.0/build/widget/assets/skins/sam/widget.css&3.3.0/build/widget/assets/skins/sam/widget-stack.css&3.3.0/build/autocomplete/assets/skins/sam/autocomplete.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-querybuilder.css" />
--->
+
 	<style type="text/css">
 	#query
 	{
@@ -47,7 +47,7 @@ YUI({
 //	combine: false,
 	gallery: 'gallery-2011.06.15-19-18'
 }).use(
-	'gallery-querybuilder', 'gallery-formmgr',
+	'gallery-querybuilder',
 	'autocomplete', 'autocomplete-filters', 'autocomplete-highlighters',
 function(Y)
 {
@@ -162,10 +162,10 @@ function(Y)
 	var query = new Y.QueryBuilder(var_list, ops);
 	query.render('#query');
 
-	var form = new Y.FormManager('query_form');
-	form.prepareForm();
+	// You could use Y.FormManager.validateForm() instead,
+	// if this is part of a larger form.
 
-	Y.on('click', form.validateForm, '#validate', form);
+	Y.on('click', query.validateFields, '#validate', query);
 });
 </script>
 

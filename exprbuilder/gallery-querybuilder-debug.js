@@ -48,6 +48,12 @@ var has_bubble_problem = (0 < Y.UA.ie && Y.UA.ie < 9);
  *		and a value.  The default String and Select plugins each return
  *		a single inner array.  A date range plugin would return two inner
  *		arrays, one for the start date and one for the end date.</dd>
+ * <dt><code>validate()</code></dt>
+ * <dd>Optional.  If additional validations are required beyond the basic
+ *		validations encoded in CSS, this function should check them.  If
+ *		the input is not valid, call <code>displayFieldMessage()</code>
+ *		on the QueryBuilder object and return false.  Otherwise, return
+ *		true.</dd>
  * </dl>
  *
  * @module gallery-querybuilder
@@ -294,6 +300,7 @@ Y.extend(QueryBuilder, Y.Widget,
 			this.op_list.none = [];
 		}
 
+		this.has_messages = false;
 		this.appendNew();
 	},
 
@@ -561,20 +568,92 @@ Y.extend(QueryBuilder, Y.Widget,
 
 		// renumber remaining rows
 
-		for (var i=0; i<this.row_list.length; i++)
+		Y.Array.each(this.row_list, function(row, i)
 		{
-			var var_menu = this.row_list[i].var_menu;
+			var var_menu = row.var_menu;
 			var_menu.setAttribute('name', this.variableName(i));
 
 			var selected_var = this.var_list[ var_menu.get('selectedIndex') ];
 			if (selected_var.type != 'none')
 			{
-				this.row_list[i].plugin.updateName(i);
+				row.plugin.updateName(i);
 			}
-		}
+		},
+		this);
 
 		this.fire('queryChanged', {remove: true});
 		return true;
+	},
+
+	/**
+	 * Validate the fields in each row.
+	 * 
+	 * @return {Boolean} <code>true</code> if all values are valid
+	 */
+	validateFields: function()
+	{
+		this.clearFieldMessages();
+
+		var status = true;
+		Y.Array.each(this.row_list, function(row, i)
+		{
+			row.row.all('input').some(function(n)
+			{
+				var info = Y.FormManager.validateFromCSSData(n);
+
+				if (info.keepGoing && row.plugin && Y.Lang.isFunction(row.plugin.validate))
+				{
+					info = row.plugin.validate();
+				}
+
+				if (info.error)
+				{
+					this.displayFieldMessage(n, info.error, 'error');
+					status = false;
+					return true;
+				}
+			},
+			this);
+		},
+		this);
+
+		return status;
+	},
+
+	clearFieldMessages: function()
+	{
+		this.has_messages = false;
+
+		this.get('contentBox').all('input').each(function(n)
+		{
+			Y.FormManager.clearMessage(n);
+		});
+	},
+
+	/**
+	 * Display a message for the specified field.
+	 * 
+	 * @param e {String|Object} The selector for the element or the element itself
+	 * @param msg {String} The message
+	 * @param type {String} The message type (see Y.FormManager.status_order)
+	 * @param scroll {boolean} (Optional) <code>true</code> if the form row should be scrolled into view
+	 * @return {boolean} true if the message was displayed, false if a higher precedence message was already there
+	 */
+	displayFieldMessage: function(
+		/* id/object */	e,
+		/* string */	msg,
+		/* string */	type,
+		/* boolean */	scroll)
+	{
+		if (Y.FormManager.displayMessage(e, msg, type, this.has_messages, scroll))
+		{
+			this.has_messages = true;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	},
 
 	/**
@@ -1018,4 +1097,4 @@ QueryBuilder.plugin_mapping =
 };
 
 
-}, '@VERSION@' ,{requires:['widget','substitute'], optional:['gallery-formmgr','gallery-scrollintoview','autocomplete'], skinnable:true});
+}, '@VERSION@' ,{skinnable:true, optional:['gallery-scrollintoview','autocomplete'], requires:['widget','substitute','gallery-formmgr']});
