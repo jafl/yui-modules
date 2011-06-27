@@ -9,12 +9,9 @@ YUI.add('gallery-console-test', function(Y) {
  * @namespace Plugin
  * @class ConsoleTest
  * @extends Plugin.Base
- * @constructor
- * @param config {Object} configuration
  */
 
-function ConsoleTest(
-	/* object */ config)
+function ConsoleTest(config)
 {
 	ConsoleTest.superclass.constructor.call(this, config);
 }
@@ -121,4 +118,4 @@ Y.namespace("Plugin");
 Y.Plugin.ConsoleTest = ConsoleTest;
 
 
-}, '@VERSION@' ,{requires:['console','plugin'], skinnable:true});
+}, '@VERSION@' ,{requires:['console','plugin','test'], skinnable:true});
