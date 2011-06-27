@@ -95,6 +95,12 @@
 <span class="cm"> *		and a value.  The default String and Select plugins each return</span>
 <span class="cm"> *		a single inner array.  A date range plugin would return two inner</span>
 <span class="cm"> *		arrays, one for the start date and one for the end date.&lt;/dd&gt;</span>
+<span class="cm"> * &lt;dt&gt;&lt;code&gt;validate()&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm"> * &lt;dd&gt;Optional.  If additional validations are required beyond the basic</span>
+<span class="cm"> *		validations encoded in CSS, this function should check them.  If</span>
+<span class="cm"> *		the input is not valid, call &lt;code&gt;displayFieldMessage()&lt;/code&gt;</span>
+<span class="cm"> *		on the QueryBuilder object and return false.  Otherwise, return</span>
+<span class="cm"> *		true.&lt;/dd&gt;</span>
 <span class="cm"> * &lt;/dl&gt;</span>
 <span class="cm"> *</span>
 <span class="cm"> * @module gallery-querybuilder</span>
@@ -341,6 +347,7 @@
 			<span class="k">this</span><span class="p">.</span><span class="nx">op_list</span><span class="p">.</span><span class="nx">none</span> <span class="o">=</span> <span class="p">[];</span>
 		<span class="p">}</span>
 
+		<span class="k">this</span><span class="p">.</span><span class="nx">has_messages</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">appendNew</span><span class="p">();</span>
 	<span class="p">},</span>
 
@@ -608,20 +615,92 @@
 
 		<span class="c1">// renumber remaining rows</span>
 
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">row</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">var_menu</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">var_menu</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">var_menu</span> <span class="o">=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">var_menu</span><span class="p">;</span>
 			<span class="nx">var_menu</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">variableName</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
 
 			<span class="kd">var</span> <span class="nx">selected_var</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">var_list</span><span class="p">[</span> <span class="nx">var_menu</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;selectedIndex&#39;</span><span class="p">)</span> <span class="p">];</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">selected_var</span><span class="p">.</span><span class="nx">type</span> <span class="o">!=</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">updateName</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+				<span class="nx">row</span><span class="p">.</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">updateName</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
 			<span class="p">}</span>
-		<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;queryChanged&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">remove</span><span class="o">:</span> <span class="kc">true</span><span class="p">});</span>
 		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Validate the fields in each row.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {Boolean} &lt;code&gt;true&lt;/code&gt; if all values are valid</span>
+<span class="cm">	 */</span>
+	<span class="nx">validateFields</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">clearFieldMessages</span><span class="p">();</span>
+
+		<span class="kd">var</span> <span class="nx">status</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">row_list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">row</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">row</span><span class="p">.</span><span class="nx">row</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">).</span><span class="nx">some</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">validateFromCSSData</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">keepGoing</span> <span class="o">&amp;&amp;</span> <span class="nx">row</span><span class="p">.</span><span class="nx">plugin</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">row</span><span class="p">.</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">validate</span><span class="p">))</span>
+				<span class="p">{</span>
+					<span class="nx">info</span> <span class="o">=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">validate</span><span class="p">();</span>
+				<span class="p">}</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">displayFieldMessage</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">error</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
+					<span class="nx">status</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+					<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			<span class="k">this</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
+
+		<span class="k">return</span> <span class="nx">status</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="nx">clearFieldMessages</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">has_messages</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">clearMessage</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
+		<span class="p">});</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Display a message for the specified field.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param e {String|Object} The selector for the element or the element itself</span>
+<span class="cm">	 * @param msg {String} The message</span>
+<span class="cm">	 * @param type {String} The message type (see Y.FormManager.status_order)</span>
+<span class="cm">	 * @param scroll {boolean} (Optional) &lt;code&gt;true&lt;/code&gt; if the form row should be scrolled into view</span>
+<span class="cm">	 * @return {boolean} true if the message was displayed, false if a higher precedence message was already there</span>
+<span class="cm">	 */</span>
+	<span class="nx">displayFieldMessage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* id/object */</span>	<span class="nx">e</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">msg</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">type</span><span class="p">,</span>
+		<span class="cm">/* boolean */</span>	<span class="nx">scroll</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">has_messages</span><span class="p">,</span> <span class="nx">scroll</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">has_messages</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="p">}</span>
 	<span class="p">},</span>
 
 	<span class="cm">/**</span>
@@ -815,7 +894,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "QueryBuilder.html#method_appendNew", "access": "", "host": "QueryBuilder", "type": "method", "name": "appendNew"}, {"url": "QueryBuilder.html#config_chooseVarPrompt", "access": "", "host": "QueryBuilder", "type": "config", "name": "chooseVarPrompt"}, {"url": "QueryBuilder.html#method__createContainer", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_createContainer"}, {"url": "QueryBuilder.html#config_fieldPrefix", "access": "", "host": "QueryBuilder", "type": "config", "name": "fieldPrefix"}, {"url": "QueryBuilder.html#method_getPlugin", "access": "", "host": "QueryBuilder", "type": "method", "name": "getPlugin"}, {"url": "QueryBuilder.html#method__notifyChanged", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_notifyChanged"}, {"url": "QueryBuilder.String.html#method_operationName", "access": "", "host": "QueryBuilder.String", "type": "method", "name": "operationName"}, {"url": "QueryBuilder.html#config_pluginConfig", "access": "", "host": "QueryBuilder", "type": "config", "name": "pluginConfig"}, {"url": "QueryBuilder.html#event_queryChanged", "access": "", "host": "QueryBuilder", "type": "event", "name": "queryChanged"}, {"url": "QueryBuilder.html#method_remove", "access": "", "host": "QueryBuilder", "type": "method", "name": "remove"}, {"url": "QueryBuilder.html#method_reset", "access": "", "host": "QueryBuilder", "type": "method", "name": "reset"}, {"url": "QueryBuilder.html#method__rowControls", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_rowControls"}, {"url": "QueryBuilder.html#method_toDatabaseQuery", "access": "", "host": "QueryBuilder", "type": "method", "name": "toDatabaseQuery"}, {"url": "QueryBuilder.html#method_update", "access": "", "host": "QueryBuilder", "type": "method", "name": "update"}, {"url": "QueryBuilder.Select.html#method_valueName", "access": "", "host": "QueryBuilder.Select", "type": "method", "name": "valueName"}, {"url": "QueryBuilder.html#method_variableName", "access": "", "host": "QueryBuilder", "type": "method", "name": "variableName"}, {"url": "QueryBuilder.html#method__variablesMenu", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_variablesMenu"}];
+    var ALL_YUI_PROPS = [{"url": "QueryBuilder.html#method_appendNew", "access": "", "host": "QueryBuilder", "type": "method", "name": "appendNew"}, {"url": "QueryBuilder.html#config_chooseVarPrompt", "access": "", "host": "QueryBuilder", "type": "config", "name": "chooseVarPrompt"}, {"url": "QueryBuilder.html#method__createContainer", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_createContainer"}, {"url": "QueryBuilder.html#method_displayFieldMessage", "access": "", "host": "QueryBuilder", "type": "method", "name": "displayFieldMessage"}, {"url": "QueryBuilder.html#config_fieldPrefix", "access": "", "host": "QueryBuilder", "type": "config", "name": "fieldPrefix"}, {"url": "QueryBuilder.html#method_getPlugin", "access": "", "host": "QueryBuilder", "type": "method", "name": "getPlugin"}, {"url": "QueryBuilder.html#method__notifyChanged", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_notifyChanged"}, {"url": "QueryBuilder.String.html#method_operationName", "access": "", "host": "QueryBuilder.String", "type": "method", "name": "operationName"}, {"url": "QueryBuilder.html#config_pluginConfig", "access": "", "host": "QueryBuilder", "type": "config", "name": "pluginConfig"}, {"url": "QueryBuilder.html#event_queryChanged", "access": "", "host": "QueryBuilder", "type": "event", "name": "queryChanged"}, {"url": "QueryBuilder.html#method_remove", "access": "", "host": "QueryBuilder", "type": "method", "name": "remove"}, {"url": "QueryBuilder.html#method_reset", "access": "", "host": "QueryBuilder", "type": "method", "name": "reset"}, {"url": "QueryBuilder.html#method__rowControls", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_rowControls"}, {"url": "QueryBuilder.html#method_toDatabaseQuery", "access": "", "host": "QueryBuilder", "type": "method", "name": "toDatabaseQuery"}, {"url": "QueryBuilder.html#method_update", "access": "", "host": "QueryBuilder", "type": "method", "name": "update"}, {"url": "QueryBuilder.html#method_validateFields", "access": "", "host": "QueryBuilder", "type": "method", "name": "validateFields"}, {"url": "QueryBuilder.Select.html#method_valueName", "access": "", "host": "QueryBuilder.Select", "type": "method", "name": "valueName"}, {"url": "QueryBuilder.html#method_variableName", "access": "", "host": "QueryBuilder", "type": "method", "name": "variableName"}, {"url": "QueryBuilder.html#method__variablesMenu", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_variablesMenu"}];
 </script>
 </body>
 </html>

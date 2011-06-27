@@ -101,6 +101,12 @@ based on the current names of the plugin's form fields.</dd>
 and a value.  The default String and Select plugins each return
 a single inner array.  A date range plugin would return two inner
 arrays, one for the start date and one for the end date.</dd>
+<dt><code>validate()</code></dt>
+<dd>Optional.  If additional validations are required beyond the basic
+validations encoded in CSS, this function should check them.  If
+the input is not valid, call <code>displayFieldMessage()</code>
+on the QueryBuilder object and return false.  Otherwise, return
+true.</dd>
 </dl>
                     </div>
 
@@ -390,6 +396,87 @@ Each operator is an object defining <code>value</code> and <code>text</code>.</s
                                     </div>
                                     <hr />
                                     </div>
+                                    <div class="" rel="yui:method" resource="#method_displayFieldMessage">
+                                    <h4>
+                                        <a name="method_displayFieldMessage">displayFieldMessage</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">displayFieldMessage</strong>
+                                           (
+                                                
+                                                        
+                                                         e
+                                                    
+                                                
+                                                        , 
+                                                         msg
+                                                    
+                                                
+                                                        , 
+                                                         type
+                                                    
+                                                
+                                                        , 
+                                                         scroll
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Display a message for the specified field.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">e</span>
+                                                        &lt;<span property="yui:type">String|Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The selector for the element or the element itself</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">msg</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The message</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">type</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  The message type (see Y.FormManager.status_order)</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">scroll</span>
+                                                        &lt;<span property="yui:type">boolean</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  (Optional) <code>true</code> if the form row should be scrolled into view</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">true if the message was displayed, false if a higher precedence message was already there</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
                                     <div class="" rel="yui:method" resource="#method_getPlugin">
                                     <h4>
                                         <a name="method_getPlugin">getPlugin</a></h4>
@@ -637,6 +724,43 @@ Each operator is an object defining <code>value</code> and <code>text</code>.</s
                                     </div>
                                     <hr />
                                     </div>
+                                    <div class="" rel="yui:method" resource="#method_validateFields">
+                                    <h4>
+                                        <a name="method_validateFields">validateFields</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Boolean
+                                            <strong property="yui:name">validateFields</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Validate the fields in each row.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"><code>true</code> if all values are valid</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
                                     <div class="" rel="yui:method" resource="#method_variableName">
                                     <h4>
                                         <a name="method_variableName">variableName</a></h4>
@@ -871,11 +995,13 @@ conflicts if you have more than one QueryBuilder on a page.
                                 <li class="protected"><a href="#method__rowControls" title="_rowControls">_rowControls</a></li>
                                 <li class="protected"><a href="#method__variablesMenu" title="_variablesMenu">_variablesMenu</a></li>
                                 <li class=""><a href="#method_appendNew" title="appendNew">appendNew</a></li>
+                                <li class=""><a href="#method_displayFieldMessage" title="displayFieldMessage">displayFieldMessage</a></li>
                                 <li class=""><a href="#method_getPlugin" title="getPlugin">getPlugin</a></li>
                                 <li class=""><a href="#method_remove" title="remove">remove</a></li>
                                 <li class=""><a href="#method_reset" title="reset">reset</a></li>
                                 <li class=""><a href="#method_toDatabaseQuery" title="toDatabaseQuery">toDatabaseQuery</a></li>
                                 <li class=""><a href="#method_update" title="update">update</a></li>
+                                <li class=""><a href="#method_validateFields" title="validateFields">validateFields</a></li>
                                 <li class=""><a href="#method_variableName" title="variableName">variableName</a></li>
                         </ul>
                     </div>
@@ -906,7 +1032,7 @@ conflicts if you have more than one QueryBuilder on a page.
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "QueryBuilder.html#method_appendNew", "access": "", "host": "QueryBuilder", "type": "method", "name": "appendNew"}, {"url": "QueryBuilder.html#config_chooseVarPrompt", "access": "", "host": "QueryBuilder", "type": "config", "name": "chooseVarPrompt"}, {"url": "QueryBuilder.html#method__createContainer", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_createContainer"}, {"url": "QueryBuilder.html#config_fieldPrefix", "access": "", "host": "QueryBuilder", "type": "config", "name": "fieldPrefix"}, {"url": "QueryBuilder.html#method_getPlugin", "access": "", "host": "QueryBuilder", "type": "method", "name": "getPlugin"}, {"url": "QueryBuilder.html#method__notifyChanged", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_notifyChanged"}, {"url": "QueryBuilder.html#config_pluginConfig", "access": "", "host": "QueryBuilder", "type": "config", "name": "pluginConfig"}, {"url": "QueryBuilder.html#event_queryChanged", "access": "", "host": "QueryBuilder", "type": "event", "name": "queryChanged"}, {"url": "QueryBuilder.html#method_remove", "access": "", "host": "QueryBuilder", "type": "method", "name": "remove"}, {"url": "QueryBuilder.html#method_reset", "access": "", "host": "QueryBuilder", "type": "method", "name": "reset"}, {"url": "QueryBuilder.html#method__rowControls", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_rowControls"}, {"url": "QueryBuilder.html#method_toDatabaseQuery", "access": "", "host": "QueryBuilder", "type": "method", "name": "toDatabaseQuery"}, {"url": "QueryBuilder.html#method_update", "access": "", "host": "QueryBuilder", "type": "method", "name": "update"}, {"url": "QueryBuilder.html#method_variableName", "access": "", "host": "QueryBuilder", "type": "method", "name": "variableName"}, {"url": "QueryBuilder.html#method__variablesMenu", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_variablesMenu"}];
+    var ALL_YUI_PROPS = [{"url": "QueryBuilder.html#method_appendNew", "access": "", "host": "QueryBuilder", "type": "method", "name": "appendNew"}, {"url": "QueryBuilder.html#config_chooseVarPrompt", "access": "", "host": "QueryBuilder", "type": "config", "name": "chooseVarPrompt"}, {"url": "QueryBuilder.html#method__createContainer", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_createContainer"}, {"url": "QueryBuilder.html#method_displayFieldMessage", "access": "", "host": "QueryBuilder", "type": "method", "name": "displayFieldMessage"}, {"url": "QueryBuilder.html#config_fieldPrefix", "access": "", "host": "QueryBuilder", "type": "config", "name": "fieldPrefix"}, {"url": "QueryBuilder.html#method_getPlugin", "access": "", "host": "QueryBuilder", "type": "method", "name": "getPlugin"}, {"url": "QueryBuilder.html#method__notifyChanged", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_notifyChanged"}, {"url": "QueryBuilder.html#config_pluginConfig", "access": "", "host": "QueryBuilder", "type": "config", "name": "pluginConfig"}, {"url": "QueryBuilder.html#event_queryChanged", "access": "", "host": "QueryBuilder", "type": "event", "name": "queryChanged"}, {"url": "QueryBuilder.html#method_remove", "access": "", "host": "QueryBuilder", "type": "method", "name": "remove"}, {"url": "QueryBuilder.html#method_reset", "access": "", "host": "QueryBuilder", "type": "method", "name": "reset"}, {"url": "QueryBuilder.html#method__rowControls", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_rowControls"}, {"url": "QueryBuilder.html#method_toDatabaseQuery", "access": "", "host": "QueryBuilder", "type": "method", "name": "toDatabaseQuery"}, {"url": "QueryBuilder.html#method_update", "access": "", "host": "QueryBuilder", "type": "method", "name": "update"}, {"url": "QueryBuilder.html#method_validateFields", "access": "", "host": "QueryBuilder", "type": "method", "name": "validateFields"}, {"url": "QueryBuilder.html#method_variableName", "access": "", "host": "QueryBuilder", "type": "method", "name": "variableName"}, {"url": "QueryBuilder.html#method__variablesMenu", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_variablesMenu"}];
 </script>
 </body>
 </html>

@@ -168,6 +168,11 @@
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
 			<span class="s1">&#39;&lt;canvas width=&quot;&#39;</span> <span class="o">+</span> <span class="nx">w</span> <span class="o">+</span> <span class="s1">&#39;&quot; height=&quot;&#39;</span> <span class="o">+</span> <span class="nx">h</span> <span class="o">+</span> <span class="s1">&#39;&quot; tabindex=&quot;0&quot;&gt;&lt;/canvas&gt;&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;This browser does not support canvas rendering.&quot;</span><span class="p">);</span>
+		<span class="p">}</span>
+
 		<span class="nx">container</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">Context2d</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">);</span>
@@ -175,6 +180,16 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">math_canvas</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">();</span>
+	<span class="p">},</span>
+
+	<span class="nx">bindUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">xy</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getXY</span><span class="p">();</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">-</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">-</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
 	<span class="p">},</span>
 
 	<span class="nx">destructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
