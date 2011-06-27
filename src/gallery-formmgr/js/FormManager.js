@@ -487,7 +487,7 @@ function populateForm1()
  * 
  * <p>Clear the message for the given field.</p>
  * 
- * @method clearMessage
+ * @method Y.FormManager.clearMessage
  * @static
  * @param e {Element|Node} the field
  */
@@ -510,7 +510,7 @@ FormManager.clearMessage = function(e)
  * The message will only be displayed if no message with a higher
  * precedence is already visible. (see Y.FormManager.status_order)</p>
  * 
- * @method displayMessage
+ * @method Y.FormManager.displayMessage
  * @static
  * @param e {String|Object} The selector for the element or the element itself
  * @param msg {String} The message
