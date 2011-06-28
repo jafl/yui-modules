@@ -773,7 +773,7 @@
 	<span class="nx">variableName</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
 		<span class="cm">/* int */</span>	<span class="nx">i</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">var_menu_name_pattern</span><span class="p">,</span> <span class="p">{</span><span class="nx">i</span><span class="o">:</span><span class="nx">i</span><span class="p">});</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">var_menu_name_pattern</span><span class="p">,</span> <span class="p">{</span><span class="nx">i</span><span class="o">:</span><span class="nx">i</span><span class="p">});</span>
 	<span class="p">},</span>
 
 	<span class="c1">//</span>
@@ -792,7 +792,7 @@
 
 		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;select name=&quot;{n}&quot; class=&quot;{f} {c}&quot; /&gt;&#39;</span><span class="p">;</span>
 
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
 		<span class="p">{</span>
 			<span class="nx">n</span><span class="o">:</span> <span class="nx">menu_name</span><span class="p">,</span>
 			<span class="nx">f</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">,</span>
@@ -812,7 +812,7 @@
 
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_controls_markup</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_controls_markup</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_controls_markup</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
 			<span class="p">{</span>
 				<span class="nx">ci</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;insert&#39;</span><span class="p">),</span>
 				<span class="nx">cr</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;remove&#39;</span><span class="p">)</span>
@@ -824,6 +824,23 @@
 <span class="p">});</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">QueryBuilder</span> <span class="o">=</span> <span class="nx">QueryBuilder</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * &lt;p&gt;Environment information.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;dl&gt;</span>
+<span class="cm"> * &lt;dt&gt;has_bubble_problem&lt;/dt&gt;</span>
+<span class="cm"> * &lt;dd&gt;True if change events from select elements do not bubble.&lt;/dd&gt;</span>
+<span class="cm"> * &lt;/dl&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @property Y.QueryBuilder.Env</span>
+<span class="cm"> * @type {Object}</span>
+<span class="cm"> * @static</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">QueryBuilder</span><span class="p">.</span><span class="nx">Env</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="nx">has_bubble_problem</span><span class="o">:</span> <span class="nx">has_bubble_problem</span>
+<span class="p">};</span>
 </pre></div>
 
                     </div>
@@ -894,7 +911,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "QueryBuilder.html#method_appendNew", "access": "", "host": "QueryBuilder", "type": "method", "name": "appendNew"}, {"url": "QueryBuilder.html#config_chooseVarPrompt", "access": "", "host": "QueryBuilder", "type": "config", "name": "chooseVarPrompt"}, {"url": "QueryBuilder.html#method__createContainer", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_createContainer"}, {"url": "QueryBuilder.html#method_displayFieldMessage", "access": "", "host": "QueryBuilder", "type": "method", "name": "displayFieldMessage"}, {"url": "QueryBuilder.html#config_fieldPrefix", "access": "", "host": "QueryBuilder", "type": "config", "name": "fieldPrefix"}, {"url": "QueryBuilder.html#method_getPlugin", "access": "", "host": "QueryBuilder", "type": "method", "name": "getPlugin"}, {"url": "QueryBuilder.html#method__notifyChanged", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_notifyChanged"}, {"url": "QueryBuilder.String.html#method_operationName", "access": "", "host": "QueryBuilder.String", "type": "method", "name": "operationName"}, {"url": "QueryBuilder.html#config_pluginConfig", "access": "", "host": "QueryBuilder", "type": "config", "name": "pluginConfig"}, {"url": "QueryBuilder.html#event_queryChanged", "access": "", "host": "QueryBuilder", "type": "event", "name": "queryChanged"}, {"url": "QueryBuilder.html#method_remove", "access": "", "host": "QueryBuilder", "type": "method", "name": "remove"}, {"url": "QueryBuilder.html#method_reset", "access": "", "host": "QueryBuilder", "type": "method", "name": "reset"}, {"url": "QueryBuilder.html#method__rowControls", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_rowControls"}, {"url": "QueryBuilder.html#method_toDatabaseQuery", "access": "", "host": "QueryBuilder", "type": "method", "name": "toDatabaseQuery"}, {"url": "QueryBuilder.html#method_update", "access": "", "host": "QueryBuilder", "type": "method", "name": "update"}, {"url": "QueryBuilder.html#method_validateFields", "access": "", "host": "QueryBuilder", "type": "method", "name": "validateFields"}, {"url": "QueryBuilder.Select.html#method_valueName", "access": "", "host": "QueryBuilder.Select", "type": "method", "name": "valueName"}, {"url": "QueryBuilder.html#method_variableName", "access": "", "host": "QueryBuilder", "type": "method", "name": "variableName"}, {"url": "QueryBuilder.html#method__variablesMenu", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_variablesMenu"}];
+    var ALL_YUI_PROPS = [{"url": "QueryBuilder.html#method_appendNew", "access": "", "host": "QueryBuilder", "type": "method", "name": "appendNew"}, {"url": "QueryBuilder.html#config_chooseVarPrompt", "access": "", "host": "QueryBuilder", "type": "config", "name": "chooseVarPrompt"}, {"url": "QueryBuilder.html#method__createContainer", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_createContainer"}, {"url": "QueryBuilder.html#method_displayFieldMessage", "access": "", "host": "QueryBuilder", "type": "method", "name": "displayFieldMessage"}, {"url": "QueryBuilder.html#config_fieldPrefix", "access": "", "host": "QueryBuilder", "type": "config", "name": "fieldPrefix"}, {"url": "QueryBuilder.html#method_getPlugin", "access": "", "host": "QueryBuilder", "type": "method", "name": "getPlugin"}, {"url": "QueryBuilder.html#method__notifyChanged", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_notifyChanged"}, {"url": "QueryBuilder.html#config_pluginConfig", "access": "", "host": "QueryBuilder", "type": "config", "name": "pluginConfig"}, {"url": "QueryBuilder.html#event_queryChanged", "access": "", "host": "QueryBuilder", "type": "event", "name": "queryChanged"}, {"url": "QueryBuilder.html#method_remove", "access": "", "host": "QueryBuilder", "type": "method", "name": "remove"}, {"url": "QueryBuilder.html#method_reset", "access": "", "host": "QueryBuilder", "type": "method", "name": "reset"}, {"url": "QueryBuilder.html#method__rowControls", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_rowControls"}, {"url": "QueryBuilder.html#method_toDatabaseQuery", "access": "", "host": "QueryBuilder", "type": "method", "name": "toDatabaseQuery"}, {"url": "QueryBuilder.html#method_update", "access": "", "host": "QueryBuilder", "type": "method", "name": "update"}, {"url": "QueryBuilder.html#method_validateFields", "access": "", "host": "QueryBuilder", "type": "method", "name": "validateFields"}, {"url": "QueryBuilder.html#method_variableName", "access": "", "host": "QueryBuilder", "type": "method", "name": "variableName"}, {"url": "QueryBuilder.html#method__variablesMenu", "access": "protected", "host": "QueryBuilder", "type": "method", "name": "_variablesMenu"}, {"url": "QueryBuilder.html#property_Y.QueryBuilder.Env", "access": "", "host": "QueryBuilder", "type": "property", "name": "Y.QueryBuilder.Env"}, {"url": "QueryBuilder.html#property_Y.QueryBuilder.plugin_mapping", "access": "", "host": "QueryBuilder", "type": "property", "name": "Y.QueryBuilder.plugin_mapping"}];
 </script>
 </body>
 </html>
