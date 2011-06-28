@@ -787,7 +787,7 @@ Y.extend(Accordion, Y.Widget,
 
 	/**
 	 * @param {String|Node} any element inside the section or title
-	 * @return {int|null} the index of the containing section, or -1 if not found
+	 * @return {int} the index of the containing section, or -1 if not found
 	 */
 	findSection: function(
 		/* string|element */	el)
