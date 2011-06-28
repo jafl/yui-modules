@@ -440,7 +440,7 @@
 		<span class="p">{</span>
 			<span class="nx">resetQB</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>
 			<span class="nx">orig_validateForm</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
-		<span class="p">}</span>
+		<span class="p">};</span>
 
 		<span class="nx">f</span><span class="p">.</span><span class="nx">setFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">form</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
@@ -608,7 +608,7 @@
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span>
 			<span class="s1">&#39;&lt;div class=&quot;{td}&quot;&gt;&#39;</span> <span class="o">+</span>
-				<span class="s1">&#39;&lt;textarea id=&quot;{tid}&quot; name=&quot;{tn}&quot; class=&quot;formmgr-field {ta}&quot;&gt;&lt;/textarea&gt;&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;&lt;textarea id=&quot;{tid}&quot; name=&quot;{tn}&quot; class=&quot;{ff} {ta}&quot;&gt;&lt;/textarea&gt;&#39;</span> <span class="o">+</span>
 			<span class="s1">&#39;&lt;/div&gt;&#39;</span> <span class="o">+</span>
 			<span class="s1">&#39;&lt;div class=&quot;{fctl}&quot;&gt;&#39;</span> <span class="o">+</span>
 				<span class="s1">&#39;&lt;button class=&quot;{pc}&quot;&gt;{paren}&lt;/button&gt;&#39;</span> <span class="o">+</span>
@@ -621,6 +621,7 @@
 		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
 		<span class="p">{</span>
 			<span class="nx">td</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;field-container&#39;</span><span class="p">),</span>
+			<span class="nx">ff</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">,</span>
 			<span class="nx">ta</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">),</span>
 			<span class="nx">tid</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">),</span>
 			<span class="nx">tn</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldName&#39;</span><span class="p">),</span>
@@ -646,7 +647,7 @@
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span>
 			<span class="s1">&#39;&lt;div class=&quot;{qb}&quot;&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
-			<span class="s1">&#39;&lt;div class=&quot;{qbctl} formmgr-row&quot;&gt;&#39;</span> <span class="o">+</span>
+			<span class="s1">&#39;&lt;div class=&quot;{qbctl} {fr}&quot;&gt;&#39;</span> <span class="o">+</span>
 				<span class="s1">&#39;&lt;button class=&quot;{ic}&quot;&gt;{insert}&lt;/button&gt;&#39;</span> <span class="o">+</span>
 				<span class="s1">&#39;&lt;button class=&quot;{rc}&quot;&gt;{reset}&lt;/button&gt;&#39;</span> <span class="o">+</span>
 			<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span>
@@ -655,6 +656,7 @@
 		<span class="p">{</span>
 			<span class="nx">qb</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;querybuilder&#39;</span><span class="p">),</span>
 			<span class="nx">qbctl</span><span class="o">:</span>  <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;querybuilder-controls&#39;</span><span class="p">),</span>
+			<span class="nx">fr</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">,</span>
 			<span class="nx">ic</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;insert&#39;</span><span class="p">),</span>
 			<span class="nx">rc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;reset&#39;</span><span class="p">),</span>
 			<span class="nx">insert</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;insertLabel&#39;</span><span class="p">),</span>

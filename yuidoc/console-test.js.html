@@ -68,17 +68,15 @@
 
 <span class="kd">function</span> <span class="nx">updateMenu</span><span class="p">(</span><span class="nx">menu</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">opts</span> <span class="o">=</span> <span class="s1">&#39;&lt;option value=&quot;-1&quot;&gt;All tests&lt;/option&gt;&#39;</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">options</span>    <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">menu</span><span class="p">);</span>
+	<span class="nx">options</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+	<span class="nx">options</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Option</span><span class="p">(</span><span class="s1">&#39;All tests&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
 	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">masterSuite</span><span class="p">.</span><span class="nx">items</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">opts</span> <span class="o">+=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="s1">&#39;&lt;option value=&quot;{i}&quot;&gt;{t}&lt;/option&gt;&#39;</span><span class="p">,</span>
-		<span class="p">{</span>
-			<span class="nx">i</span><span class="o">:</span> <span class="nx">i</span><span class="p">,</span>
-			<span class="nx">t</span><span class="o">:</span> <span class="nx">t</span><span class="p">.</span><span class="nx">name</span>
-		<span class="p">});</span>
+		<span class="nx">options</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Option</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
 	<span class="p">});</span>
-
-	<span class="nx">menu</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">opts</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">ConsoleTest</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span>
