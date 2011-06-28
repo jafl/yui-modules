@@ -793,7 +793,6 @@ Y.QueryBuilder = QueryBuilder;
  * 
  * @module gallery-querybuilder
  * @class QueryBuilder.String
- * @constructor
  */
 
 QueryBuilder.String = function(
@@ -971,7 +970,6 @@ QueryBuilder.String.prototype =
  * 
  * @module gallery-querybuilder
  * @class QueryBuilder.Select
- * @constructor
  */
 
 QueryBuilder.Select = function(
@@ -1097,4 +1095,4 @@ QueryBuilder.plugin_mapping =
 };
 
 
-}, '@VERSION@' ,{skinnable:true, optional:['gallery-scrollintoview','autocomplete'], requires:['widget','substitute','gallery-formmgr']});
+}, '@VERSION@' ,{requires:['widget','substitute','gallery-formmgr'], optional:['gallery-scrollintoview','autocomplete'], skinnable:true});
