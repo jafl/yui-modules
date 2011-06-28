@@ -391,7 +391,7 @@ function setValidation(f)
 		{
 			resetQB.call(self);
 			orig_validateForm.apply(this, arguments);
-		}
+		};
 
 		f.setFunction(this.get('fieldId'), function(form, e)
 		{
@@ -559,7 +559,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 	{
 		var markup =
 			'<div class="{td}">' +
-				'<textarea id="{tid}" name="{tn}" class="formmgr-field {ta}"></textarea>' +
+				'<textarea id="{tid}" name="{tn}" class="{ff} {ta}"></textarea>' +
 			'</div>' +
 			'<div class="{fctl}">' +
 				'<button class="{pc}">{paren}</button>' +
@@ -572,6 +572,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 		return Y.Lang.substitute(markup,
 		{
 			td:     this.getClassName('field-container'),
+			ff:     Y.FormManager.field_marker_class,
 			ta:     this.getClassName('field'),
 			tid:    this.get('fieldId'),
 			tn:     this.get('fieldName'),
@@ -597,7 +598,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 	{
 		var markup =
 			'<div class="{qb}"></div>' +
-			'<div class="{qbctl} formmgr-row">' +
+			'<div class="{qbctl} {fr}">' +
 				'<button class="{ic}">{insert}</button>' +
 				'<button class="{rc}">{reset}</button>' +
 			'</div>';
@@ -606,6 +607,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 		{
 			qb:     this.getClassName('querybuilder'),
 			qbctl:  this.getClassName('querybuilder-controls'),
+			fr:     Y.FormManager.row_marker_class,
 			ic:     this.getClassName('insert'),
 			rc:     this.getClassName('reset'),
 			insert: this.get('insertLabel'),
