@@ -8,7 +8,6 @@
  * 
  * @module gallery-querybuilder
  * @class QueryBuilder.Select
- * @constructor
  */
 
 QueryBuilder.Select = function(

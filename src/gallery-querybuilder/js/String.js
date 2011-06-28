@@ -14,7 +14,6 @@
  * 
  * @module gallery-querybuilder
  * @class QueryBuilder.String
- * @constructor
  */
 
 QueryBuilder.String = function(
