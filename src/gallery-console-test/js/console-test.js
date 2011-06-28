@@ -19,17 +19,15 @@ ConsoleTest.NS   = "test";
 
 function updateMenu(menu)
 {
-	var opts = '<option value="-1">All tests</option>';
+	var options    = Y.Node.getDOMNode(menu);
+	options.length = 0;
+
+	options[0] = new Option('All tests', -1);
+
 	Y.Array.each(Y.Test.Runner.masterSuite.items, function(t, i)
 	{
-		opts += Y.Lang.sub('<option value="{i}">{t}</option>',
-		{
-			i: i,
-			t: t.name
-		});
+		options[i+1] = new Option(t.name, i);
 	});
-
-	menu.set('innerHTML', opts);
 }
 
 Y.extend(ConsoleTest, Y.Plugin.Base,
