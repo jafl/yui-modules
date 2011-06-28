@@ -595,14 +595,10 @@ Y.extend(QueryBuilder, Y.Widget,
 		var status = true;
 		Y.Array.each(this.row_list, function(row, i)
 		{
+			var info;
 			row.row.all('input').some(function(n)
 			{
-				var info = Y.FormManager.validateFromCSSData(n);
-
-				if (info.keepGoing && row.plugin && Y.Lang.isFunction(row.plugin.validate))
-				{
-					info = row.plugin.validate();
-				}
+				info = Y.FormManager.validateFromCSSData(n);
 
 				if (info.error)
 				{
@@ -612,6 +608,11 @@ Y.extend(QueryBuilder, Y.Widget,
 				}
 			},
 			this);
+
+			if ((!info || info.keepGoing) && row.plugin && Y.Lang.isFunction(row.plugin.validate))
+			{
+				status = row.plugin.validate() && status;	// status last to guarantee call to validate()
+			}
 		},
 		this);
 
@@ -623,6 +624,11 @@ Y.extend(QueryBuilder, Y.Widget,
 		this.has_messages = false;
 
 		this.get('contentBox').all('input').each(function(n)
+		{
+			Y.FormManager.clearMessage(n);
+		});
+
+		this.get('contentBox').all('select').each(function(n)
 		{
 			Y.FormManager.clearMessage(n);
 		});
