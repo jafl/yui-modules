@@ -1,3 +1,8 @@
+/**
+ * @module gallery-querybuilder
+ * @namespace QueryBuilder
+ */
+
 /**********************************************************************
  * <p>Plugin for choosing from a list of values.  In the
  * <code>var_list</code> configuration, specify <code>value_list</code> as
@@ -6,8 +11,7 @@
  * 
  * <p>There must be exactly one operator specified for this plugin.</p>
  * 
- * @module gallery-querybuilder
- * @class QueryBuilder.Select
+ * @class Select
  */
 
 QueryBuilder.Select = function(
@@ -55,7 +59,7 @@ QueryBuilder.Select.prototype =
 	},
 
 	postCreate: function(
-		/* int */		filter_index,
+		/* int */		query_index,
 		/* object */	var_config,
 		/* array */		op_list,
 		/* array */		value)
@@ -93,7 +97,7 @@ QueryBuilder.Select.prototype =
 		return [ [ this.db_query_equals, this.value_menu.get('value') ] ];
 	},
 
-	/**********************************************************************
+	/* *********************************************************************
 	 * Form element names.
 	 */
 

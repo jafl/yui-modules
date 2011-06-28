@@ -775,3 +775,20 @@ Y.extend(QueryBuilder, Y.Widget,
 });
 
 Y.QueryBuilder = QueryBuilder;
+
+/**
+ * <p>Environment information.</p>
+ * 
+ * <dl>
+ * <dt>has_bubble_problem</dt>
+ * <dd>True if change events from select elements do not bubble.</dd>
+ * </dl>
+ * 
+ * @property Y.QueryBuilder.Env
+ * @type {Object}
+ * @static
+ */
+Y.QueryBuilder.Env =
+{
+	has_bubble_problem: has_bubble_problem
+};

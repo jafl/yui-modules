@@ -43,7 +43,7 @@ var decimal_class_re  = /(?:^|\s+)yiv-decimal(?::\[([-+]?(?:[0-9]+\.?|[0-9]+\.[0
  * Regular expression used to determine if a value is an integer.
  * This can be localized, e.g., allow for thousands separator.
  * 
- * @config Y.FormManager.integer_value_re
+ * @property Y.FormManager.integer_value_re
  * @type {RegExp}
  * @static
  */
@@ -53,7 +53,7 @@ Y.FormManager.integer_value_re = /^[-+]?[0-9]+$/;
  * Regular expression used to determine if a value is a decimal number.
  * This can be localized, e.g., use the correct decimal separator.
  * 
- * @config Y.FormManager.decimal_value_re
+ * @property Y.FormManager.decimal_value_re
  * @type {RegExp}
  * @static
  */
@@ -77,7 +77,7 @@ Y.FormManager.decimal_value_re = /^[-+]?(?:[0-9]+\.?|[0-9]*\.[0-9]+)$/;
  * <dd>Displayed when <code>yiv-decimal</code> fails on an input field.</dd>
  * </dl>
  * 
- * @config Y.FormManager.Strings
+ * @property Y.FormManager.Strings
  * @type {Object}
  * @static
  */
