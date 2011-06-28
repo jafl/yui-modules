@@ -137,13 +137,13 @@ QueryBuilder.String.prototype =
 	operationName: function(
 		/* int */	i)
 	{
-		return Y.Lang.substitute(this.op_menu_name_pattern, {i:i});
+		return Y.Lang.sub(this.op_menu_name_pattern, {i:i});
 	},
 
 	valueName: function(
 		/* int */	i)
 	{
-		return Y.Lang.substitute(this.val_input_name_pattern, {i:i});
+		return Y.Lang.sub(this.val_input_name_pattern, {i:i});
 	},
 
 	//
@@ -157,7 +157,7 @@ QueryBuilder.String.prototype =
 
 		var markup = '<select name="{n}" class="{f} {c}" />';
 
-		return Y.Lang.substitute(markup,
+		return Y.Lang.sub(markup,
 		{
 			n: menu_name,
 			f: Y.FormManager.field_marker_class,
@@ -173,7 +173,7 @@ QueryBuilder.String.prototype =
 
 		var markup = '<input type="text" name="{n}" class="yiv-required {f} {c}"/>';
 
-		return Y.Lang.substitute(markup,
+		return Y.Lang.sub(markup,
 		{
 			n: input_name,
 			f: Y.FormManager.field_marker_class,

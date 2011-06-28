@@ -724,7 +724,7 @@ Y.extend(QueryBuilder, Y.Widget,
 	variableName: function(
 		/* int */	i)
 	{
-		return Y.Lang.substitute(this.var_menu_name_pattern, {i:i});
+		return Y.Lang.sub(this.var_menu_name_pattern, {i:i});
 	},
 
 	//
@@ -743,7 +743,7 @@ Y.extend(QueryBuilder, Y.Widget,
 
 		var markup = '<select name="{n}" class="{f} {c}" />';
 
-		return Y.Lang.substitute(markup,
+		return Y.Lang.sub(markup,
 		{
 			n: menu_name,
 			f: Y.FormManager.field_marker_class,
@@ -763,7 +763,7 @@ Y.extend(QueryBuilder, Y.Widget,
 
 		if (!this._controls_markup)
 		{
-			this._controls_markup = Y.Lang.substitute(markup,
+			this._controls_markup = Y.Lang.sub(markup,
 			{
 				ci: this.getClassName('insert'),
 				cr: this.getClassName('remove')

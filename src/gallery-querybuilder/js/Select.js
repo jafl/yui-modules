@@ -100,7 +100,7 @@ QueryBuilder.Select.prototype =
 	valueName: function(
 		/* int */	i)
 	{
-		return Y.Lang.substitute(this.val_input_name_pattern, {i:i});
+		return Y.Lang.sub(this.val_input_name_pattern, {i:i});
 	},
 
 	//
@@ -114,7 +114,7 @@ QueryBuilder.Select.prototype =
 
 		var markup = '<select name="{n}" class="{f} {c}" />';
 
-		return Y.Lang.substitute(markup,
+		return Y.Lang.sub(markup,
 		{
 			n: menu_name,
 			f: Y.FormManager.field_marker_class,
