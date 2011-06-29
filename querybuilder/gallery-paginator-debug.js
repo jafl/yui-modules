@@ -8,9 +8,13 @@ http://developer.yahoo.net/yui/license.txt
 */
 
 /**
- * The Paginator widget provides a set of controls to navigate through paged
- * data.
- *
+ * The Paginator widget provides a set of controls to navigate through
+ * paged data.
+ * 
+ * @module gallery-paginator
+ */
+
+/**
  * To instantiate a Paginator, pass a configuration object to the contructor.
  * The configuration object should contain the following properties:
  * <ul>
@@ -18,7 +22,6 @@ http://developer.yahoo.net/yui/license.txt
  *   <li>totalRecords : <em>n</em> (int or Paginator.VALUE_UNLIMITED)</li>
  * </ul>
  *
- * @module gallery-paginator
  * @class Paginator
  * @extends Widget
  * @constructor
@@ -866,7 +869,6 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * Generates an input field for setting the current page.
  *
- * @module gallery-paginator
  * @class Paginator.ui.CurrentPageInput
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
@@ -991,7 +993,6 @@ http://developer.yahoo.net/yui/license.txt
  * ui Component to generate the textual report of current pagination status.
  * E.g. "Now viewing page 1 of 13".
  *
- * @module gallery-paginator
  * @class Paginator.ui.CurrentPageReport
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
@@ -1148,7 +1149,6 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * ui Component to generate the link to jump to the first page.
  *
- * @module gallery-paginator
  * @class Paginator.ui.FirstPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
@@ -1315,7 +1315,6 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * ui Component to display a menu for selecting the range of items to display.
  *
- * @module gallery-paginator
  * @class Paginator.ui.ItemRangeDropdown
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
@@ -1460,7 +1459,6 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * ui Component to generate the link to jump to the last page.
  *
- * @module gallery-paginator
  * @class Paginator.ui.LastPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
@@ -1659,7 +1657,6 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * ui Component to generate the link to jump to the next page.
  *
- * @module gallery-paginator
  * @class Paginator.ui.NextPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
@@ -1829,7 +1826,6 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * ui Component to generate the page links
  *
- * @module gallery-paginator
  * @class Paginator.ui.PageLinks
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
@@ -2078,7 +2074,6 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * ui Component to generate the link to jump to the previous page.
  *
- * @module gallery-paginator
  * @class Paginator.ui.PreviousPageLink
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
@@ -2223,7 +2218,6 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * ui Component to generate the rows-per-page dropdown
  *
- * @module gallery-paginator
  * @class Paginator.ui.RowsPerPageDropdown
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to
@@ -2414,7 +2408,6 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
 /**********************************************************************
  * Adds per-page error notification to Paginator.ui.PageLinks.
  *
- * @module gallery-paginator
  * @class Paginator.ui.ValidationPageLinks
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to

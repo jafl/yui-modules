@@ -50,54 +50,9 @@
 
                     </h3>
                     <div class="description summary">
-                        <p>Class which allows user to build a list of query criteria, e.g., for
+                        Widget which allows user to build a list of query criteria, e.g., for
 searching.  All the conditions are either AND'ed or OR'ed.  For a more
-general query builder, see gallery-exprbuilder.</p>
-<p>The default package provides two data types:  String (which can also
-be used for numbers) and Select (which provides a menu of options).  The
-plugin API allows defining additional data types, e.g., date range or
-multi-select.  Every plugin must be registered in
-<code>Y.QueryBuilder.plugin_mapping</code>.  Plugins must implement the
-following functions:</p>
-<dl>
-<dt><code>constructor(qb, config)</code></dt>
-<dd>The arguments passed to the constructor are the QueryBuilder instance
-and the <code>pluginConfig</code> set on the QueryBuilder instance.
-At the minimum, this function should initalize form field name patterns
-using <code>config.field_prefix</code>.</dd>
-<dt><code>create(query_index, var_config, op_list, value)</code><dt>
-<dd>This function must create the additional cells for the query row and
-populate these cells appropriately.  (The QueryBuilder widget will
-insert the cells into the table.)  <code>var_config</code> is the
-item from the QueryBuilder's <code>var_list</code> that the user
-selected.  <code>op_list</code> is the item from the QueryBuilder's
-<code>operators</code> which matches the variable selected by the
-user.  <code>value</code> is optional.  If specified, it is the
-initial value(s) to be displayed by the plugin.</dd>
-<dt><code>postCreate(query_index, var_config, op_list, value)</code></dt>
-<dd>Optional.  If it exists, it will be called after the cells returned by
-<code>create()</code> have been inserted into the table.  The arguments
-are the same as <code>create()</code>.</dd>
-<dt><code>destroy()</code></dt>
-<dd>Destroy the plugin.  (The QueryBuilder widget will remove the cells
-and purge all events.)</dd>
-<dt><code>updateName(new_index)</code></dt>
-<dd>Update the names of the form fields managed by the plugin.</dd>
-<dt><code>set(query_index, data)</code></dt>
-<dd>Set the displayed value(s) by extracting values from data (a map)
-based on the current names of the plugin's form fields.</dd>
-<dt><code>toDatabaseQuery()</code></dt>
-<dd>Return an array of arrays.  Each inner array contains an operation
-and a value.  The default String and Select plugins each return
-a single inner array.  A date range plugin would return two inner
-arrays, one for the start date and one for the end date.</dd>
-<dt><code>validate()</code></dt>
-<dd>Optional.  If additional validations are required beyond the basic
-validations encoded in CSS, this function should check them.  If
-the input is not valid, call <code>displayFieldMessage()</code>
-on the QueryBuilder object and return false.  Otherwise, return
-true.</dd>
-</dl>
+general query builder, see gallery-exprbuilder.
                     </div>
 
 
@@ -107,7 +62,7 @@ true.</dd>
 
                             <p>This module contains the following classes:</p>
                             <script>
-                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Class which allows user to build a list of query criteria, e.g., for\nsearching.  All the conditions are either AND'ed or OR'ed.  For a more\ngeneral query builder, see gallery-exprbuilder.</p>\n<p>The default package provides two data types:  String (which can also\nbe used for numbers) and Select (which provides a menu of options).  The\nplugin API allows defining additional data types, e.g., date range or\nmulti-select.  Every plugin must be registered in\n<code>Y.QueryBuilder.plugin_mapping</code>.  Plugins must implement the\nfollowing functions:</p>\n<dl>\n<dt><code>constructor(qb, config)</code></dt>\n<dd>The arguments passed to the constructor are the QueryBuilder instance\nand the <code>pluginConfig</code> set on the QueryBuilder instance.\nAt the minimum, this function should initalize form field name patterns\nusing <code>config.field_prefix</code>.</dd>\n<dt><code>create(query_index, var_config, op_list, value)</code><dt>\n<dd>This function must create the additional cells for the query row and\npopulate these cells appropriately.  (The QueryBuilder widget will\ninsert the cells into the table.)  <code>var_config</code> is the\nitem from the QueryBuilder's <code>var_list</code> that the user\nselected.  <code>op_list</code> is the item from the QueryBuilder's\n<code>operators</code> which matches the variable selected by the\nuser.  <code>value</code> is optional.  If specified, it is the\ninitial value(s) to be displayed by the plugin.</dd>\n<dt><code>postCreate(query_index, var_config, op_list, value)</code></dt>\n<dd>Optional.  If it exists, it will be called after the cells returned by\n<code>create()</code> have been inserted into the table.  The arguments\nare the same as <code>create()</code>.</dd>\n<dt><code>destroy()</code></dt>\n<dd>Destroy the plugin.  (The QueryBuilder widget will remove the cells\nand purge all events.)</dd>\n<dt><code>updateName(new_index)</code></dt>\n<dd>Update the names of the form fields managed by the plugin.</dd>\n<dt><code>set(query_index, data)</code></dt>\n<dd>Set the displayed value(s) by extracting values from data (a map)\nbased on the current names of the plugin's form fields.</dd>\n<dt><code>toDatabaseQuery()</code></dt>\n<dd>Return an array of arrays.  Each inner array contains an operation\nand a value.  The default String and Select plugins each return\na single inner array.  A date range plugin would return two inner\narrays, one for the start date and one for the end date.</dd>\n<dt><code>validate()</code></dt>\n<dd>Optional.  If additional validations are required beyond the basic\nvalidations encoded in CSS, this function should check them.  If\nthe input is not valid, call <code>displayFieldMessage()</code>\non the QueryBuilder object and return false.  Otherwise, return\ntrue.</dd>\n</dl>", "guessedname": "QueryBuilder", "name": "QueryBuilder"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Plugin for choosing from a list of values.  In the\n<code>var_list</code> configuration, specify <code>value_list</code> as\na list of objects, each defining <code>value</code> and\n<code>text</code>.</p>\n<p>There must be exactly one operator specified for this plugin.</p>", "guessedname": "QueryBuilder.Select", "name": "QueryBuilder.Select"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Plugin for accepting a string or number.  All the operators specified\nfor this plugin are displayed on a menu.</p>\n<p>In the <code>var_list</code> configuration, specify\n<code>validation</code> to provide CSS classes that will be interpreted\nby <code>Y.FormManager</code>.</p>\n<p>To enable autocomplete, define <code>autocomplete</code> in the\n<code>var_list</code> configuration.  The object will be used as the\nconfiguration for <code>Y.Plugin.AutoComplete</code>.  If you specify\n<code>autocomplete.containerClassName</code>, this CSS class will be\nadded to the container generated by the autocomplete plugin.</p>", "guessedname": "QueryBuilder.String", "name": "QueryBuilder.String"}];
+                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>The default package provides two data types:  String (which can also\nbe used for numbers) and Select (which provides a menu of options).  The\nplugin API allows defining additional data types, e.g., date range or\nmulti-select.  Every plugin must be registered in\n<code>Y.QueryBuilder.plugin_mapping</code>.  Plugins must implement the\nfollowing functions:</p>\n<dl>\n<dt><code>constructor(qb, config)</code></dt>\n<dd>The arguments passed to the constructor are the QueryBuilder instance\nand the <code>pluginConfig</code> set on the QueryBuilder instance.\nAt the minimum, this function should initalize form field name patterns\nusing <code>config.field_prefix</code>.</dd>\n<dt><code>create(query_index, var_config, op_list, value)</code><dt>\n<dd>This function must create the additional cells for the query row and\npopulate these cells appropriately.  (The QueryBuilder widget will\ninsert the cells into the table.)  <code>var_config</code> is the\nitem from the QueryBuilder's <code>var_list</code> that the user\nselected.  <code>op_list</code> is the item from the QueryBuilder's\n<code>operators</code> which matches the variable selected by the\nuser.  <code>value</code> is optional.  If specified, it is the\ninitial value(s) to be displayed by the plugin.</dd>\n<dt><code>postCreate(query_index, var_config, op_list, value)</code></dt>\n<dd>Optional.  If it exists, it will be called after the cells returned by\n<code>create()</code> have been inserted into the table.  The arguments\nare the same as <code>create()</code>.</dd>\n<dt><code>destroy()</code></dt>\n<dd>Destroy the plugin.  (The QueryBuilder widget will remove the cells\nand purge all events.)</dd>\n<dt><code>updateName(new_index)</code></dt>\n<dd>Update the names of the form fields managed by the plugin.</dd>\n<dt><code>set(query_index, data)</code></dt>\n<dd>Set the displayed value(s) by extracting values from data (a map)\nbased on the current names of the plugin's form fields.</dd>\n<dt><code>toDatabaseQuery()</code></dt>\n<dd>Return an array of arrays.  Each inner array contains an operation\nand a value.  The default String and Select plugins each return\na single inner array.  A date range plugin would return two inner\narrays, one for the start date and one for the end date.</dd>\n<dt><code>validate()</code></dt>\n<dd>Optional.  If additional validations are required beyond the basic\nvalidations encoded in CSS, this function should check them.  If\nthe input is not valid, call <code>displayFieldMessage()</code>\non the QueryBuilder object and return false.  Otherwise, return\ntrue.</dd>\n</dl>", "guessedname": "QueryBuilder", "name": "QueryBuilder"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Plugin for choosing from a list of values.  In the\n<code>var_list</code> configuration, specify <code>value_list</code> as\na list of objects, each defining <code>value</code> and\n<code>text</code>.</p>\n<p>There must be exactly one operator specified for this plugin.</p>", "guessedname": "QueryBuilder.Select", "name": "QueryBuilder.Select"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Plugin for accepting a string or number.  All the operators specified\nfor this plugin are displayed on a menu.</p>\n<p>In the <code>var_list</code> configuration, specify\n<code>validation</code> to provide CSS classes that will be interpreted\nby <code>Y.FormManager</code>.</p>\n<p>To enable autocomplete, define <code>autocomplete</code> in the\n<code>var_list</code> configuration.  The object will be used as the\nconfiguration for <code>Y.Plugin.AutoComplete</code>.  If you specify\n<code>autocomplete.containerClassName</code>, this CSS class will be\nadded to the container generated by the autocomplete plugin.</p>", "guessedname": "QueryBuilder.String", "name": "QueryBuilder.String"}];
                             </script>
                             <div id="splash_classList">
                                 <ul>

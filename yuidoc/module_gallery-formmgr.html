@@ -53,84 +53,6 @@
                         <p>FormManager provides support for initializing a form, pre-validating
 user input, and displaying messages returned by the server.</p>
 <p>Also see the documentation for gallery-formmgr-css-validation.</p>
-<p><strong>Required Markup Structure</strong></p>
-<p>Each element (or tighly coupled set of elements) must be contained by
-an element that has the CSS class <code>formmgr-row</code>.  Within each
-row, validation messages are displayed inside the container with CSS
-class <code>formmgr-message-text</code>.
-<p>When a message is displayed inside a row, the CSS class
-<code>formmgr-has{type}</code> is placed on the row container and the
-containing fieldset (if any), where <code>{type}</code> is the message
-type passed to <code>displayMessage()</code>.</p>
-<p><strong>Initializing the Form</strong></p>
-<p>Default values can be either encoded in the markup or passed to the
-FormManager constructor via <code>config.default_value_map</code>.  (The
-former method is obviously better for progressive enhancement.)  The
-values passed to the constructor override the values encoded in the
-markup.</p>
-<p><code>prepareForm()</code> must be called before the form is
-displayed.  To initialize focus to the first element in a form, call
-<code>initFocus()</code>.  If the form is in an overlay, you can delay
-these calls until just before showing the overlay.</p>
-<p>The default values passed to the constructor are inserted by
-<code>populateForm()</code>.  (This is automatically called by
-<code>prepareForm()</code>.)</p>
-<p><strong>Displaying Messages</strong></p>
-<p>To display a message for a single form row, call
-<code>displayMessage()</code>.  To display a message for the form in
-general, call <code>displayFormMessage()</code>.  These functions can be
-used for initializing the error display when the page loads, for
-displaying the results of pre-validation, and for displaying the results
-of submitting a form via XHR.</p>
-<p><strong>Specifying Validations</strong></p>
-<p>The following classes can be applied to a form element for
-pre-validation:</p>
-<dl>
-<dt><code>yiv-required</code></dt>
-<dd>Value must not be empty.</dd>
-<dt><code>yiv-length:[x,y]</code></dt>
-<dd>String must be at least x characters and at most y characters.
-At least one of x and y must be specified.</dd>
-<dt><code>yiv-integer:[x,y]</code></dt>
-<dd>The integer value must be at least x and at most y.
-x and y are both optional.</dd>
-<dt><code>yiv-decimal:[x,y]</code></dt>
-<dd>The decimal value must be at least x and at most y.  Exponents are
-not allowed.  x and y are both optional.</dd>
-</dl>
-<p>If we ever need to allow exponents, we can use yiv-float.</p>
-<p>The following functions allow additional pre-validation to be
-attached to individual form elements:</p>
-<dl>
-<dt><code>setRegex()</code></dt>
-<dd>Sets the regular expression that must match in order for the value
-to be acceptable.</dd>
-<dt><code>setFunction()</code></dt>
-<dd>Sets the function that must return true in order for the value to
-be acceptable.  The function is called in the scope of the Form
-object with the arguments:  the form and the element.</dd>
-</dl>
-<p><code>setErrorMessages()</code> specifies the error message to be
-displayed when a pre-validation check fails.</p>
-<p>Functions are expected to call <code>displayMessage()</code>
-directly.</p>
-<p>More complex pre-validations can be added by overriding
-<code>postValidateForm()</code>, described below.</p>
-<p>Validation normally strips leading and trailing whitespace from every
-value.  If you have a special case where this should not be done, add
-the CSS class <code>yiv-no-trim</code> to the input field.</p>
-<p>Derived classes may also override the following functions:</p>
-<dl>
-<dt><code>prePrepareForm</code>(arguments passed to prepareForm)</dt>
-<dd>Called before filling in default values for the form elements.
-Return false to cancel dialog.</dd>
-<dt><code>postPrepareForm</code>(arguments passed to prepareForm)</dt>
-<dd>Called after filling in default values for the form elements.</dd>
-<dt><code>postValidateForm</code>(form)</dt>
-<dd>Called after performing the basic pre-validations.  Returns
-true if the form contents are acceptable.  Reports error if there
-is a problem.</dd>
-</dl>
                     </div>
 
 
@@ -140,7 +62,7 @@ is a problem.</dd>
 
                             <p>This module contains the following classes:</p>
                             <script>
-                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>FormManager provides support for initializing a form, pre-validating\nuser input, and displaying messages returned by the server.</p>\n<p>Also see the documentation for gallery-formmgr-css-validation.</p>\n<p><strong>Required Markup Structure</strong></p>\n<p>Each element (or tighly coupled set of elements) must be contained by\nan element that has the CSS class <code>formmgr-row</code>.  Within each\nrow, validation messages are displayed inside the container with CSS\nclass <code>formmgr-message-text</code>.\n<p>When a message is displayed inside a row, the CSS class\n<code>formmgr-has{type}</code> is placed on the row container and the\ncontaining fieldset (if any), where <code>{type}</code> is the message\ntype passed to <code>displayMessage()</code>.</p>\n<p><strong>Initializing the Form</strong></p>\n<p>Default values can be either encoded in the markup or passed to the\nFormManager constructor via <code>config.default_value_map</code>.  (The\nformer method is obviously better for progressive enhancement.)  The\nvalues passed to the constructor override the values encoded in the\nmarkup.</p>\n<p><code>prepareForm()</code> must be called before the form is\ndisplayed.  To initialize focus to the first element in a form, call\n<code>initFocus()</code>.  If the form is in an overlay, you can delay\nthese calls until just before showing the overlay.</p>\n<p>The default values passed to the constructor are inserted by\n<code>populateForm()</code>.  (This is automatically called by\n<code>prepareForm()</code>.)</p>\n<p><strong>Displaying Messages</strong></p>\n<p>To display a message for a single form row, call\n<code>displayMessage()</code>.  To display a message for the form in\ngeneral, call <code>displayFormMessage()</code>.  These functions can be\nused for initializing the error display when the page loads, for\ndisplaying the results of pre-validation, and for displaying the results\nof submitting a form via XHR.</p>\n<p><strong>Specifying Validations</strong></p>\n<p>The following classes can be applied to a form element for\npre-validation:</p>\n<dl>\n<dt><code>yiv-required</code></dt>\n<dd>Value must not be empty.</dd>\n<dt><code>yiv-length:[x,y]</code></dt>\n<dd>String must be at least x characters and at most y characters.\nAt least one of x and y must be specified.</dd>\n<dt><code>yiv-integer:[x,y]</code></dt>\n<dd>The integer value must be at least x and at most y.\nx and y are both optional.</dd>\n<dt><code>yiv-decimal:[x,y]</code></dt>\n<dd>The decimal value must be at least x and at most y.  Exponents are\nnot allowed.  x and y are both optional.</dd>\n</dl>\n<p>If we ever need to allow exponents, we can use yiv-float.</p>\n<p>The following functions allow additional pre-validation to be\nattached to individual form elements:</p>\n<dl>\n<dt><code>setRegex()</code></dt>\n<dd>Sets the regular expression that must match in order for the value\nto be acceptable.</dd>\n<dt><code>setFunction()</code></dt>\n<dd>Sets the function that must return true in order for the value to\nbe acceptable.  The function is called in the scope of the Form\nobject with the arguments:  the form and the element.</dd>\n</dl>\n<p><code>setErrorMessages()</code> specifies the error message to be\ndisplayed when a pre-validation check fails.</p>\n<p>Functions are expected to call <code>displayMessage()</code>\ndirectly.</p>\n<p>More complex pre-validations can be added by overriding\n<code>postValidateForm()</code>, described below.</p>\n<p>Validation normally strips leading and trailing whitespace from every\nvalue.  If you have a special case where this should not be done, add\nthe CSS class <code>yiv-no-trim</code> to the input field.</p>\n<p>Derived classes may also override the following functions:</p>\n<dl>\n<dt><code>prePrepareForm</code>(arguments passed to prepareForm)</dt>\n<dd>Called before filling in default values for the form elements.\nReturn false to cancel dialog.</dd>\n<dt><code>postPrepareForm</code>(arguments passed to prepareForm)</dt>\n<dd>Called after filling in default values for the form elements.</dd>\n<dt><code>postValidateForm</code>(form)</dt>\n<dd>Called after performing the basic pre-validations.  Returns\ntrue if the form contents are acceptable.  Reports error if there\nis a problem.</dd>\n</dl>", "guessedname": "FormManager", "name": "FormManager"}];
+                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p><strong>Required Markup Structure</strong></p>\n<p>Each element (or tighly coupled set of elements) must be contained by\nan element that has the CSS class <code>formmgr-row</code>.  Within each\nrow, validation messages are displayed inside the container with CSS\nclass <code>formmgr-message-text</code>.\n<p>When a message is displayed inside a row, the CSS class\n<code>formmgr-has{type}</code> is placed on the row container and the\ncontaining fieldset (if any), where <code>{type}</code> is the message\ntype passed to <code>displayMessage()</code>.</p>\n<p><strong>Initializing the Form</strong></p>\n<p>Default values can be either encoded in the markup or passed to the\nFormManager constructor via <code>config.default_value_map</code>.  (The\nformer method is obviously better for progressive enhancement.)  The\nvalues passed to the constructor override the values encoded in the\nmarkup.</p>\n<p><code>prepareForm()</code> must be called before the form is\ndisplayed.  To initialize focus to the first element in a form, call\n<code>initFocus()</code>.  If the form is in an overlay, you can delay\nthese calls until just before showing the overlay.</p>\n<p>The default values passed to the constructor are inserted by\n<code>populateForm()</code>.  (This is automatically called by\n<code>prepareForm()</code>.)</p>\n<p><strong>Displaying Messages</strong></p>\n<p>To display a message for a single form row, call\n<code>displayMessage()</code>.  To display a message for the form in\ngeneral, call <code>displayFormMessage()</code>.  These functions can be\nused for initializing the error display when the page loads, for\ndisplaying the results of pre-validation, and for displaying the results\nof submitting a form via XHR.</p>\n<p><strong>Specifying Validations</strong></p>\n<p>The following classes can be applied to a form element for\npre-validation:</p>\n<dl>\n<dt><code>yiv-required</code></dt>\n<dd>Value must not be empty.</dd>\n<dt><code>yiv-length:[x,y]</code></dt>\n<dd>String must be at least x characters and at most y characters.\nAt least one of x and y must be specified.</dd>\n<dt><code>yiv-integer:[x,y]</code></dt>\n<dd>The integer value must be at least x and at most y.\nx and y are both optional.</dd>\n<dt><code>yiv-decimal:[x,y]</code></dt>\n<dd>The decimal value must be at least x and at most y.  Exponents are\nnot allowed.  x and y are both optional.</dd>\n</dl>\n<p>If we ever need to allow exponents, we can use yiv-float.</p>\n<p>The following functions allow additional pre-validation to be\nattached to individual form elements:</p>\n<dl>\n<dt><code>setRegex()</code></dt>\n<dd>Sets the regular expression that must match in order for the value\nto be acceptable.</dd>\n<dt><code>setFunction()</code></dt>\n<dd>Sets the function that must return true in order for the value to\nbe acceptable.  The function is called in the scope of the Form\nobject with the arguments:  the form and the element.</dd>\n</dl>\n<p><code>setErrorMessages()</code> specifies the error message to be\ndisplayed when a pre-validation check fails.</p>\n<p>Functions are expected to call <code>displayMessage()</code>\ndirectly.</p>\n<p>More complex pre-validations can be added by overriding\n<code>postValidateForm()</code>, described below.</p>\n<p>Validation normally strips leading and trailing whitespace from every\nvalue.  If you have a special case where this should not be done, add\nthe CSS class <code>yiv-no-trim</code> to the input field.</p>\n<p>Derived classes may also override the following functions:</p>\n<dl>\n<dt><code>prePrepareForm</code>(arguments passed to prepareForm)</dt>\n<dd>Called before filling in default values for the form elements.\nReturn false to cancel dialog.</dd>\n<dt><code>postPrepareForm</code>(arguments passed to prepareForm)</dt>\n<dd>Called after filling in default values for the form elements.</dd>\n<dt><code>postValidateForm</code>(form)</dt>\n<dd>Called after performing the basic pre-validations.  Returns\ntrue if the form contents are acceptable.  Reports error if there\nis a problem.</dd>\n</dl>", "guessedname": "FormManager", "name": "FormManager"}];
                             </script>
                             <div id="splash_classList">
                                 <ul>
