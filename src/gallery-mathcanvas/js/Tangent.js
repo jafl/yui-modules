@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Trigonometric tangent.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Tangent
  * @extends MathFunction.FunctionWithArgs

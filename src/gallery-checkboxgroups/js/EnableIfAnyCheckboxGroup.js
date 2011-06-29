@@ -1,7 +1,6 @@
 /**********************************************************************
  * Enables the given list of nodes if any checkboxes are checked.
  * 
- * @module gallery-checkboxgroups
  * @class EnableIfAnyCheckboxGroup
  * @extends CheckboxGroup
  * @constructor

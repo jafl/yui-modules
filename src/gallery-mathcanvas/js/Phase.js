@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Phase of a complex number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Phase
  * @extends MathFunction.FunctionWithArgs

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Minimum.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Min
  * @extends MathFunction.FunctionWithArgs

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Trigonometric sine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Sine
  * @extends MathFunction.FunctionWithArgs

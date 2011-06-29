@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Inverse hyperbolic tangent.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class InverseHyperbolicTangent
  * @extends MathFunction.FunctionWithArgs

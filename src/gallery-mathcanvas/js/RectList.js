@@ -6,7 +6,6 @@
  * <p>Each item contains rect (top,left,bottom,right), midline,
  * font_size(%), func.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathCanvas
  * @class RectList
  * @constructor

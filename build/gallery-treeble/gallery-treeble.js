@@ -2,6 +2,10 @@ YUI.add('gallery-treeble', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-treeble
+ */
+
 /**********************************************************************
  * <p>Hierarchical data source.</p>
  *
@@ -13,7 +17,6 @@ YUI.add('gallery-treeble', function(Y) {
  * <p>The tree must be immutable.  The total number of items available from
  * each DataSource must remain constant.</p>
  * 
- * @module gallery-treeble
  * @class TreebleDataSource
  * @extends DataSource.Local
  * @constructor
@@ -1006,7 +1009,14 @@ Y.namespace("Parsers").treebledatasource = function(oData)
 	return ds;
 };
 /**********************************************************************
+ * Treeble displays a tree of data in a table.
+ *
  * @module gallery-treeble
+ */
+
+/**
+ * Utility functions for displaying tree data in a table.
+ *
  * @namespace
  * @class Treeble
  */

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Natural logarithm.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class NaturalLog
  * @extends MathFunction.FunctionWithArgs

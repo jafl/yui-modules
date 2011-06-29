@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Trigonometric cosine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Cosine
  * @extends MathFunction.FunctionWithArgs

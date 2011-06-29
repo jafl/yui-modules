@@ -1,9 +1,8 @@
 "use strict";
 
 /**********************************************************************
- * <p>Class for representing a complex number.</p>
+ * Class for representing a complex number.
  * 
- * @module gallery-complexnumber
  * @class ComplexNumber
  * @constructor
  * @param real {number} the real component (default: 0)

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Exponential.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Exponential
  * @extends MathFunction.FunctionWithArgs

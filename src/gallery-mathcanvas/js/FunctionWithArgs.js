@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Function that takes one or more arguments.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class FunctionWithArgs
  * @extends MathFunction

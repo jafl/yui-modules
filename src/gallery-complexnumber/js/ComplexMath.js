@@ -1,10 +1,14 @@
 /**********************************************************************
- * <p>This collection of functions provides the complex number equivalent
- * of the built-in JavaScript Math namespace, along with the basic
- * arithmetic operations (since JavaScript does not support operator
- * overloading).</p>
- * 
+ * Support for complex numbers.
+ *
  * @module gallery-complexnumber
+ */
+
+/**
+ * This collection of functions provides the complex number equivalent of
+ * the built-in JavaScript Math namespace, along with the basic arithmetic
+ * operations (since JavaScript does not support operator overloading).
+ * 
  * @class ComplexMath
  */
 

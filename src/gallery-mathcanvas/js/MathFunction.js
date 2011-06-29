@@ -5,7 +5,6 @@
  * the default rendering which displays the output from toString(), implement
  * prepareToRender() and render().</p>
  * 
- * @module gallery-mathcanvas
  * @namespace
  * @class MathFunction
  * @constructor

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Pi</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Pi
  * @extends MathFunction

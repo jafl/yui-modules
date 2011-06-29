@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Inverse hyperbolic sine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class InverseHyperbolicSine
  * @extends MathFunction.FunctionWithArgs

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Square root.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class SquareRoot
  * @extends MathFunction.FunctionWithArgs

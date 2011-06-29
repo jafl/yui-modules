@@ -3,7 +3,7 @@ YUI.add('gallery-exprbuilder', function(Y) {
 "use strict";
 
 /**********************************************************************
- * <p>Class which helps user to build a query expression.</p>
+ * Widget which helps user to build a query expression.
  * 
  * @module gallery-exprbuilder
  * @class ExpressionBuilder

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Negate a number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Negate
  * @extends MathFunction.FunctionWithArgs

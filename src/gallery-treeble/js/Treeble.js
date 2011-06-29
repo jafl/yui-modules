@@ -1,5 +1,12 @@
 /**********************************************************************
+ * Treeble displays a tree of data in a table.
+ *
  * @module gallery-treeble
+ */
+
+/**
+ * Utility functions for displaying tree data in a table.
+ *
  * @namespace
  * @class Treeble
  */

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Real part of a complex number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class RealPart
  * @extends MathFunction.FunctionWithArgs

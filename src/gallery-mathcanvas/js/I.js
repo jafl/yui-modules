@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>i (square root of -1)</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class I
  * @extends MathFunction

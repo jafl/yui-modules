@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Rotate a complex number around the origin.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Rotate
  * @extends MathFunction.FunctionWithArgs

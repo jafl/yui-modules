@@ -4,7 +4,6 @@
  * in "Tog on Interface".  The checkboxes are assumed to be ordered in the
  * order they were added.
  * 
- * @module gallery-checkboxgroups
  * @class AtLeastOneCheckboxGroup
  * @extends CheckboxGroup
  * @constructor

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Constant value</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Value
  * @extends MathFunction

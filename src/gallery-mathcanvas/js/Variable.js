@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Variable value</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Variable
  * @extends MathFunction

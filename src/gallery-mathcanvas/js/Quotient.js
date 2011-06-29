@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Quotient of values.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Quotient
  * @extends MathFunction.FunctionWithArgs

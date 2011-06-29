@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Product of values.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Product
  * @extends MathFunction.FunctionWithArgs

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>e</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class E
  * @extends MathFunction

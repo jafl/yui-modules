@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Logarithm.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Logarithm
  * @extends MathFunction.FunctionWithArgs

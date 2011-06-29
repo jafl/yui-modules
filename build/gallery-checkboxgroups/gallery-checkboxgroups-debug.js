@@ -53,7 +53,7 @@ var Y_NodeList = Y.NodeList,
         'splice',
         /** Adds the given Node(s) to the beginning of the NodeList. 
           * @for NodeList
-          * @method push
+          * @method unshift
           * @param {Node | DOMNode} nodeN One or more nodes to add to the NodeList. 
           */
         'unshift'
@@ -76,11 +76,16 @@ Y.Array.each(ArrayMethods, function(name) {
 "use strict";
 
 /**********************************************************************
+ * Various behaviors that can be attached to a group of checkboxes.
+ *
+ * @module gallery-checkboxgroups
+ */
+
+/**
  * <p>Base class for enforcing constraints on groups of checkboxes.</p>
  *
  * <p>Derived classes must override <code>enforceConstraints()</code>.</p>
  * 
- * @module gallery-checkboxgroups
  * @class CheckboxGroup
  * @constructor
  * @param cb_list {String|Node|NodeList} The list of checkboxes to manage
@@ -250,7 +255,6 @@ Y.CheckboxGroup = CheckboxGroup;
  * in "Tog on Interface".  The checkboxes are assumed to be ordered in the
  * order they were added.
  * 
- * @module gallery-checkboxgroups
  * @class AtLeastOneCheckboxGroup
  * @extends CheckboxGroup
  * @constructor
@@ -338,7 +342,6 @@ Y.AtLeastOneCheckboxGroup = AtLeastOneCheckboxGroup;
  * At most one checkbox can be selected.  If one is turned on, the active
  * one is turned off.
  * 
- * @module gallery-checkboxgroups
  * @class AtMostOneCheckboxGroup
  * @extends CheckboxGroup
  * @constructor
@@ -379,7 +382,6 @@ Y.AtMostOneCheckboxGroup = AtMostOneCheckboxGroup;
  * to check all. This check-all box is automatically changed if any other
  * checkbox changes state.
  * 
- * @module gallery-checkboxgroups
  * @class SelectAllCheckboxGroup
  * @extends CheckboxGroup
  * @constructor
@@ -430,7 +432,6 @@ Y.SelectAllCheckboxGroup = SelectAllCheckboxGroup;
 /**********************************************************************
  * Enables the given list of nodes if any checkboxes are checked.
  * 
- * @module gallery-checkboxgroups
  * @class EnableIfAnyCheckboxGroup
  * @extends CheckboxGroup
  * @constructor

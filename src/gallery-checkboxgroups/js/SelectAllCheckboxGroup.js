@@ -3,7 +3,6 @@
  * to check all. This check-all box is automatically changed if any other
  * checkbox changes state.
  * 
- * @module gallery-checkboxgroups
  * @class SelectAllCheckboxGroup
  * @extends CheckboxGroup
  * @constructor

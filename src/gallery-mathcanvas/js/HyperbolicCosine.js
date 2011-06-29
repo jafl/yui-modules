@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Hyperbolic cosine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class HyperbolicCosine
  * @extends MathFunction.FunctionWithArgs

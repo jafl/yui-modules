@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Imaginary part of a complex number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class ImaginaryPart
  * @extends MathFunction.FunctionWithArgs

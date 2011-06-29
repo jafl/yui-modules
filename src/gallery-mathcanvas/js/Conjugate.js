@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Conjugate of a complex number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Conjugate
  * @extends MathFunction.FunctionWithArgs

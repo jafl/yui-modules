@@ -1,7 +1,6 @@
 /**********************************************************************
  * Adds per-page error notification to Paginator.ui.PageLinks.
  *
- * @module gallery-paginator
  * @class Paginator.ui.ValidationPageLinks
  * @constructor
  * @param p {Pagintor} Paginator instance to attach to

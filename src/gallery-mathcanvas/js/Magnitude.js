@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Magnitude (absolute value) of a number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Magnitude
  * @extends MathFunction.FunctionWithArgs

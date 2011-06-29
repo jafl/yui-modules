@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Maximum.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Max
  * @extends MathFunction.FunctionWithArgs

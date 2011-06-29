@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Sum of values.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Sum
  * @extends MathFunction.FunctionWithArgs

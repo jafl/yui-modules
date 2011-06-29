@@ -6,9 +6,13 @@ http://developer.yahoo.net/yui/license.txt
 */
 
 /**
- * The Paginator widget provides a set of controls to navigate through paged
- * data.
- *
+ * The Paginator widget provides a set of controls to navigate through
+ * paged data.
+ * 
+ * @module gallery-paginator
+ */
+
+/**
  * To instantiate a Paginator, pass a configuration object to the contructor.
  * The configuration object should contain the following properties:
  * <ul>
@@ -16,7 +20,6 @@ http://developer.yahoo.net/yui/license.txt
  *   <li>totalRecords : <em>n</em> (int or Paginator.VALUE_UNLIMITED)</li>
  * </ul>
  *
- * @module gallery-paginator
  * @class Paginator
  * @extends Widget
  * @constructor

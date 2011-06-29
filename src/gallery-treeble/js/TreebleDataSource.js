@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * @module gallery-treeble
+ */
+
 /**********************************************************************
  * <p>Hierarchical data source.</p>
  *
@@ -11,7 +15,6 @@
  * <p>The tree must be immutable.  The total number of items available from
  * each DataSource must remain constant.</p>
  * 
- * @module gallery-treeble
  * @class TreebleDataSource
  * @extends DataSource.Local
  * @constructor

@@ -1,7 +1,6 @@
 /**********************************************************************
  * <p>Inverse trigonometric sine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Arcsine
  * @extends MathFunction.FunctionWithArgs
