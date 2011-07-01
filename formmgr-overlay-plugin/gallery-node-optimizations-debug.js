@@ -7,7 +7,7 @@ YUI.add('gallery-node-optimizations', function(Y) {
  *
  * @module node
  * @submodule gallery-node-optimizations
- * @class Node
+ * @class Node~optimizations
  */
 
 var class_name_re = /^\.([-_a-z0-9]+)$/i;

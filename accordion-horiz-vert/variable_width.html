@@ -5,10 +5,11 @@
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
 	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
-<!--
+
 	<script src="gallery-accordion-horiz-vert-debug.js"></script>
+	<script src="gallery-dimensions-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-accordion-horiz-vert-core.css" />
--->
+
 	<style type="text/css">
 
 	/* example skin */
@@ -90,20 +91,13 @@
 YUI({
 //	filter: 'debug',
 //	combine: false,
-	gallery: 'gallery-2011.06.15-19-18'
+	gallery: 'gallery-2011.06.29-23-18'
 }).use(
 	'gallery-accordion-horiz-vert',
 	'anim-base',
 	'node-focusmanager',
-	'console', 'console-filters', 'dd-plugin',
 function(Y)
 {
-	new Y.Console(
-	{
-		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
-	})
-	.render().collapse();
-
 	if (!Y.Anim)
 	{
 		Y.one('#animate-insert').set('disabled', true);
@@ -118,6 +112,31 @@ function(Y)
 		{
 			a.toggleSection(i);
 		}
+	}
+
+	function updateFocusMgr()
+	{
+		var a    = this;
+		var keys = a.get('horizontal') ?
+			{ next: "down:39", previous: "down:37" } :
+			{ next: "down:40", previous: "down:38" };
+
+		var node = a.get('contentBox');
+		node.unplug(Y.Plugin.NodeFocusManager);
+		node.plug(Y.Plugin.NodeFocusManager,
+		{
+			descendants: '.yui3-accordion-title a',
+			keys:        keys,
+			circular:    false,
+			focusClass:
+			{
+				className: a.getClassName('title', 'focused'),
+				fn: function (node)
+				{
+					return node.get('parentNode');
+				}
+			}
+		});
 	}
 
 	// create accordions
@@ -214,25 +233,13 @@ function(Y)
 
 		Y.each(accordions, function(a)
 		{
-			var keys = a.get('horizontal') ?
-				{ next: "down:39", previous: "down:37" } :
-				{ next: "down:40", previous: "down:38" };
+			updateFocusMgr.call(a);
 
-			var node = a.get('contentBox');
-			node.plug(Y.Plugin.NodeFocusManager,
+			a.on('insert', function()
 			{
-				descendants: '.yui3-accordion-title a',
-				keys:        keys,
-				circular:    false,
-				focusClass:
-				{
-					className: a.getClassName('title', 'focused'),
-					fn: function (node)
-					{
-						return node.get('parentNode');
-					}
-				}
+				Y.later(1, this, updateFocusMgr);
 			});
+			a.on('remove', updateFocusMgr);
 		});
 	});
 
@@ -392,7 +399,8 @@ function(Y)
 	<ul>
 		<li><a href="/yui3-gallery/">Back to project list</a></li>
 		<li><a href="../yuidoc/module_gallery-accordion-horiz-vert.html">Click here</a> to see documentation.</li>
-		<li><a href="index.html">Click here</a> to see fixed width examples.</li>
+		<li><a href="index.html">Click here</a> to see basic examples.</li>
+		<li><a href="fixed_size.html">Click here</a> to see fixed height/width examples.</li>
 		<li>For the horizontal accordion:
 			<ul>
 				<li>The accordion container requires <code>height</code></li>

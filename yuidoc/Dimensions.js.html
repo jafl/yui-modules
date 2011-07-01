@@ -50,7 +50,7 @@
                         <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
 <span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Functions for measuring the size of a node.&lt;/p&gt;</span>
+<span class="cm"> * Functions for measuring the size of a node.</span>
 <span class="cm"> * </span>
 <span class="cm"> * @module node</span>
 <span class="cm"> * @submodule gallery-dimensions</span>
@@ -80,9 +80,8 @@
 	<span class="p">];</span>
 
 <span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Returns the size of one em in pixels.&lt;/p&gt;</span>
-<span class="cm"> * </span>
 <span class="cm"> * @method emToPx</span>
+<span class="cm"> * @return {Number} the size of one em in pixels</span>
 <span class="cm"> * @static</span>
 <span class="cm"> */</span>
 
@@ -104,9 +103,56 @@
 <span class="p">};</span>
 
 <span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Computes the size of everything surrounding the element&#39;s content.&lt;/p&gt;</span>
-<span class="cm"> * </span>
+<span class="cm"> * @method totalWidth</span>
+<span class="cm"> * @return {Number} the total width used by the element, including margin, border, and padding  (Margin is not included in offsetWidth.)</span>
+<span class="cm"> */</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">totalWidth</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">return</span>	<span class="k">this</span><span class="p">.</span><span class="nx">_node</span><span class="p">.</span><span class="nx">offsetWidth</span> <span class="o">+</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;marginLeft&#39;</span><span class="p">)</span> <span class="o">+</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;marginRight&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method totalHeight</span>
+<span class="cm"> * @return {Number} the total height used by the element, including margin, border, and padding  (Margin is not included in offsetHeight.)</span>
+<span class="cm"> */</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">totalHeight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">return</span>	<span class="k">this</span><span class="p">.</span><span class="nx">_node</span><span class="p">.</span><span class="nx">offsetHeight</span> <span class="o">+</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;marginTop&#39;</span><span class="p">)</span> <span class="o">+</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;marginBottom&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method insideWidth</span>
+<span class="cm"> * @return {Number} the available width inside the widget.  (Padding is included in clientWidth.)</span>
+<span class="cm"> */</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">insideWidth</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">return</span>	<span class="k">this</span><span class="p">.</span><span class="nx">_node</span><span class="p">.</span><span class="nx">clientWidth</span> <span class="o">-</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;paddingLeft&#39;</span><span class="p">)</span> <span class="o">-</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;paddingRight&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method insideHeight</span>
+<span class="cm"> * @return {Number} the available height inside the widget.  (Padding is included in clientHeight.)</span>
+<span class="cm"> */</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">insideHeight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">return</span>	<span class="k">this</span><span class="p">.</span><span class="nx">_node</span><span class="p">.</span><span class="nx">clientHeight</span> <span class="o">-</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;paddingTop&#39;</span><span class="p">)</span> <span class="o">-</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;paddingBottom&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**********************************************************************</span>
 <span class="cm"> * @method horizMarginBorderPadding</span>
+<span class="cm"> * @return {Number} the width of everything surrounding the element&#39;s content</span>
 <span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
@@ -123,9 +169,8 @@
 <span class="p">};</span>
 
 <span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Computes the size of everything surrounding the element&#39;s content.&lt;/p&gt;</span>
-<span class="cm"> * </span>
 <span class="cm"> * @method vertMarginBorderPadding</span>
+<span class="cm"> * @return {Number} the height of everything surrounding the element&#39;s content</span>
 <span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
@@ -142,9 +187,9 @@
 <span class="p">};</span>
 
 <span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Returns the size of the style in pixels.&lt;/p&gt;</span>
-<span class="cm"> * </span>
 <span class="cm"> * @method parseDimensionStyle</span>
+<span class="cm"> * @param style {String} the style to parse</span>
+<span class="cm"> * @return {Number} the size of the style in pixels</span>
 <span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">parseDimensionStyle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
@@ -233,7 +278,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Node~optimizations.html#method_all", "access": "", "host": "Node~optimizations", "type": "method", "name": "all"}, {"url": "Node~optimizations.html#method_ancestor", "access": "", "host": "Node~optimizations", "type": "method", "name": "ancestor"}, {"url": "Node~dimensions.html#method_emToPx", "access": "", "host": "Node~dimensions", "type": "method", "name": "emToPx"}, {"url": "Node~optimizations.html#method_getAncestorByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByClassName"}, {"url": "Node~optimizations.html#method_getAncestorByTagName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByTagName"}, {"url": "Node~optimizations.html#method_getElementsByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getElementsByClassName"}, {"url": "Node~dimensions.html#method_horizMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "horizMarginBorderPadding"}, {"url": "Node~dimensions.html#method_parseDimensionStyle", "access": "", "host": "Node~dimensions", "type": "method", "name": "parseDimensionStyle"}, {"url": "Node~dimensions.html#method_vertMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "vertMarginBorderPadding"}];
+    var ALL_YUI_PROPS = [{"url": "Node~optimizations.html#method_all", "access": "", "host": "Node~optimizations", "type": "method", "name": "all"}, {"url": "Node~optimizations.html#method_ancestor", "access": "", "host": "Node~optimizations", "type": "method", "name": "ancestor"}, {"url": "Node~dimensions.html#method_emToPx", "access": "", "host": "Node~dimensions", "type": "method", "name": "emToPx"}, {"url": "Node~optimizations.html#method_getAncestorByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByClassName"}, {"url": "Node~optimizations.html#method_getAncestorByTagName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByTagName"}, {"url": "Node~optimizations.html#method_getElementsByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getElementsByClassName"}, {"url": "Node~dimensions.html#method_horizMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "horizMarginBorderPadding"}, {"url": "Node~dimensions.html#method_insideHeight", "access": "", "host": "Node~dimensions", "type": "method", "name": "insideHeight"}, {"url": "Node~dimensions.html#method_insideWidth", "access": "", "host": "Node~dimensions", "type": "method", "name": "insideWidth"}, {"url": "Node~dimensions.html#method_parseDimensionStyle", "access": "", "host": "Node~dimensions", "type": "method", "name": "parseDimensionStyle"}, {"url": "Node~dimensions.html#method_totalHeight", "access": "", "host": "Node~dimensions", "type": "method", "name": "totalHeight"}, {"url": "Node~dimensions.html#method_totalWidth", "access": "", "host": "Node~dimensions", "type": "method", "name": "totalWidth"}, {"url": "Node~dimensions.html#method_vertMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "vertMarginBorderPadding"}];
 </script>
 </body>
 </html>
