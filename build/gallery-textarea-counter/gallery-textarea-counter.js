@@ -152,8 +152,8 @@ YUI.add('gallery-textarea-counter', function(Y) {
             }
         });
         Y.namespace('Plugin');
-        Y.Plugin.Counter = TC;
+        Y.Plugin.TextareaCounter = TC;
 
 
 
-}, 'gallery-2009.11.09-19' ,{requires:['node', 'event']});
+}, '@VERSION@' ,{requires:['node', 'event']});

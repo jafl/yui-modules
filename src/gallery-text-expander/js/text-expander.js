@@ -117,4 +117,4 @@ Y.extend(TextExpander, Y.Plugin.Base, {
             (this.t_area.get('scrollHeight') > this.get('max_height') ? "auto" : "hidden")); 
     }
 });
-Y.TextExpander = TextExpander;
+Y.namespace('Plugin').TextExpander = TextExpander;

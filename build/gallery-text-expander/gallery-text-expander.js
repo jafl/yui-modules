@@ -119,7 +119,7 @@ Y.extend(TextExpander, Y.Plugin.Base, {
             (this.t_area.get('scrollHeight') > this.get('max_height') ? "auto" : "hidden")); 
     }
 });
-Y.TextExpander = TextExpander;
+Y.namespace('Plugin').TextExpander = TextExpander;
 
 
-}, 'gallery-2010.03.23-17-54' ,{requires:['plugin']});
+}, '@VERSION@' ,{requires:['plugin']});

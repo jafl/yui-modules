@@ -150,5 +150,5 @@
             }
         });
         Y.namespace('Plugin');
-        Y.Plugin.Counter = TC;
+        Y.Plugin.TextareaCounter = TC;
 
