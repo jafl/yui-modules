@@ -1,3 +1,12 @@
+/**
+ * Plugin for expanding/shrinking textareas as users input text. 
+ * 
+ * @module gallery-text-expander
+ * @namespace Plugin
+ * @class TextExpander
+ * @constructor
+ */
+
 var TextExpander = function(cfg) {
     TextExpander.superclass.constructor.apply(this, arguments);
 };
@@ -6,8 +15,31 @@ TextExpander.NAME = "textExpander";
 TextExpander.NS = "expander";
 
 TextExpander.ATTRS = {
+    /**
+     * Specify how tall the text lines are for expanding. The script does
+     * it's best to figure out the correct size, but it can be overridden
+     * with the specific size.
+     * 
+     * @config line_height
+     * @type {Number}
+     */
     line_height: {value: null},
+    /**
+     * The minimum height the textarea can shrink to. If not specified then
+     * it will be set to the starting size of the textarea.
+     *
+     * @config min_height
+     * @type {Number}
+     */
     min_height: {value: null},
+    /**
+     * The maximum height that the textarea can grow to in pixels. If not
+     * specified the default is either 25 lines, if it can be determined,
+     * or else 450 pixels.
+     * 
+     * @config max_height
+     * @type {Number}
+     */
     max_height: {value: null}
 };
 
