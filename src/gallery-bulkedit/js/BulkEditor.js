@@ -1,20 +1,16 @@
-"use strict";
-
-var Dom = YAHOO.util.Dom,
-	SDom = YAHOO.SATG.Dom,
-	Event = YAHOO.util.Event,
-	Util = YAHOO.SATG.Util,
-	FormUtil = YAHOO.SATG.Util.Form,
-	Form = YAHOO.SATG.Form;
+/**********************************************************************
+ * A widget for editing many records at once.
+ *
+ * @module gallery-bulkedit
+ */
 
 /**
  * <p>BulkEditor provides the basic structure for editing all the records
- * in a BulkEditDataSource.  The fields for editing each record are
- * rendered into a separate "row".  This could be a div, a tbody, or
- * something else.</p>
+ * in a BulkEditDataSource.  The fields for editing a record are rendered
+ * into a "row".  This could be a div, a tbody, or something else.</p>
  * 
- * <p>*All event handlers must be placed on the container, not individual
- * DOM elements.*</p>
+ * <p>All event handlers must be placed on the container, not individual
+ * DOM elements.</p>
  * 
  * <p>Errors must be returned from the server in the order in which records
  * are displayed.  Because of this, when data is sent to the server:</p>
@@ -23,67 +19,144 @@ var Dom = YAHOO.util.Dom,
  * <li>If the server doesn't know the ordering, you must send all the data.</li>
  * </ul>
  *
- * @module BulkEdit
- * @namespace YAHOO.SATG
- * @class YAHOO.SATG.BulkEditor
+ * @class BulkEditor
+ * @extends Widget
  * @constructor
- * @param container {String|Element} The container for the widget.
- * @param fields {Map} Configuration for each field: type (input|select|textarea),
- *		label, validation (css, regex, msg). Derived classes can require
- *		additional keys.
- * @param data_source {BulkEditDataSource} The container for the widget.
- * @param config {Object} Object literal of configuration values.
- *		<dl>
- *		<dt>paginator</dt>
- *		<dd>(optional) The instance of YUI Paginator to use.</dd>
- *		<dt>requestExtra</dt>
- *		<dd>(optional) {Object} Extra key/value pairs to pass in the
- *			DataSource request.</dd>
- *		</dl>
+ * @param config {Object}
  */
-YAHOO.SATG.BulkEditor = function(
-	/* string/element */	container,
-	/* map */				fields,
-	/* DataSource */		data_source,
-	/* object */			config)
+function BulkEditor()
 {
-	if (!(data_source instanceof YAHOO.util.BulkEditDataSource))
-	{
-		YAHOO.log('BulkEditor requires instance of YAHOO.util.BulkEditDataSource', 'error', 'BulkEditor');
-		return;
-	}
-
-	Event.onDOMReady(function(type, args1, args2)
-	{
-		this._init.apply(this, args2);
-	},
-	arguments, this);
+	BulkEditor.superclass.constructor.apply(this, arguments);
 };
 
-var BulkEditor = YAHOO.SATG.BulkEditor,
+BulkEditor.NAME = "bulkedit";
 
-	default_page_size = 1e9,
+BulkEditor.ATTRS =
+{
+	/**
+	 * @config ds
+	 * @type {BulkEditDataSource}
+	 * @writeonce
+	 */
+	ds:
+	{
+		validator: function(value)
+		{
+			return (value instanceof BulkEditDataSource);
+		},
+		writeOnce: true
+	},
+
+	/**
+	 * Configuration for each field: type (input|select|textarea), label,
+	 * validation (css, regex, msg, fn). Derived classes can require additional
+	 * keys.
+	 *
+	 * @config fields
+	 * @type {Object}
+	 * @writeonce
+	 */
+	fields:
+	{
+		validator: Y.Lang.isObject,
+		writeOnce: true
+	},
+
+	/**
+	 * Paginator for switching between pages of records.  BulkEditor
+	 * expects it to be configured to display ValidationPageLinks, so the
+	 * user can see which pages have errors that need to be fixed.
+	 *
+	 * @config paginator
+	 * @type {Paginator}
+	 * @writeonce
+	 */
+	paginator:
+	{
+		validator: function(value)
+		{
+			return (value instanceof Y.Paginator);
+		},
+		writeOnce: true
+	},
+
+	/**
+	 * Extra key/value pairs to pass in the DataSource request.
+	 * 
+	 * @config requestExtra
+	 * @type {Object}
+	 * @writeonce
+	 */
+	requestExtra:
+	{
+		value:     {},
+		validator: Y.Lang.isObject,
+		writeOnce: true
+	},
+
+	/**
+	 * CSS class used to temporarily highlight a record.
+	 *
+	 * @config pingClass
+	 * @type {String}
+	 * @default null
+	 */
+	pingClass:
+	{
+		validator: Y.Lang.isString
+	},
+
+	/**
+	 * Duration in seconds that pingClass is applied to a record.
+	 *
+	 * @config pingTimeout
+	 * @type {Number}
+	 * @default 2
+	 */
+	pingTimeout:
+	{
+		value:     2,
+		validator: Y.Lang.isNumber
+	}
+};
+
+/**
+ * @event notifyErrors
+ * @description Fires when widget-level validation messages need to be displayed.
+ * @param msgs {Array} the messages to display
+ */
+/**
+ * @event clearErrorNotification
+ * @description Fires when widget-level validation messages should be cleared.
+ */
+
+var default_page_size = 1e9,
 
 	id_prefix = 'bulk-editor',
 	id_separator = '__',
 	id_regex = new RegExp('^' + id_prefix + id_separator + '(.+?)(?:' + id_separator + '(.+?))?$'),
 
-	field_container_class        = 'satg-be-field-container',
-	field_container_class_prefix = 'satg-be-field-container-',
-	field_class_prefix           = 'satg-be-field-',
+	field_container_class        = Y.ClassNameManager.getClassName('field-container'),
+	field_container_class_prefix = field_container_class + '-',
+	field_class_prefix           = Y.ClassNameManager.getClassName('field') + '-',
 
-	status_prefix = 'satg-has',
-	status_re     = new RegExp(SDom.class_re_prefix + status_prefix + '([a-z]+)' + SDom.class_re_suffix),
+	class_re_prefix = '(?:^|\\s)(?:',
+	class_re_suffix = ')(?:\\s|$)',
 
-	record_status_prefix = 'satg-hasrecord',
-	record_status_re     = new RegExp(SDom.class_re_prefix + record_status_prefix + '([a-z]+)' + SDom.class_re_suffix),
+	status_prefix  = 'bulkedit-has',
+	status_pattern = status_prefix + '([a-z]+)',
+	status_re      = new RegExp(class_re_prefix + status_pattern + class_re_suffix),
 
-	message_container_class = 'satg-be-message-text',
+	record_status_prefix  = 'bulkedit-hasrecord',
+	record_status_pattern = record_status_prefix + '([a-z]+)',
+	record_status_re      = new RegExp(class_re_prefix + record_status_pattern + class_re_suffix),
+
+	message_container_class = Y.ClassNameManager.getClassName('message-text'),
 
 	perl_flags_regex = /^\(\?([a-z]+)\)/;
 
-BulkEditor.record_container_class     = 'satg-be-bd';
-BulkEditor.record_msg_container_class = 'satg-be-record-message-container';
+BulkEditor.record_container_class     = Y.ClassNameManager.getClassName('bd');
+BulkEditor.record_msg_container_class = Y.ClassNameManager.getClassName('record-message-container');
 
 BulkEditor.fieldMarkup = function(key, record)
 {
@@ -93,155 +166,150 @@ BulkEditor.fieldMarkup = function(key, record)
 
 function switchPage(state)
 {
-	this._saveChanges();
+	this.saveChanges();
 
-	this.pg.setTotalRecords(state.totalRecords, true);
-	this.pg.setStartIndex(state.recordOffset, true);
-	this.pg.setRowsPerPage(state.rowsPerPage, true);
-	this.pg.setPage(state.page, true);
+	var pg = this.get('paginator');
+	pg.setTotalRecords(state.totalRecords, true);
+	pg.setStartIndex(state.recordOffset, true);
+	pg.setRowsPerPage(state.rowsPerPage, true);
+	pg.setPage(state.page, true);
 	this._updatePageStatus();
-	this._reload();
+	this.reload();
 }
 
-YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
+Y.extend(BulkEditor, Y.Widget,
 {
-	_init: function(
-		/* string/element */	container,
-		/* map */				fields,
-		/* DataSource */		data_source,
-		/* object */			config)
+	initializer: function(config)
 	{
-		this.container     = Dom.get(container);
-		this.fields        = fields;
-		this.ds            = data_source;
-		this.request_extra = config.requestExtra || {};
-
-		this.createEvent('notifyErrors');
-		this.createEvent('clearErrorNotification');
-
 		if (config.paginator)
 		{
-			this.setPaginator(config.paginator, true);
+			config.paginator.on('changeRequest', switchPage, this);
 		}
-
-		this.clearServerErrors();
-		YAHOO.lang.later(0, this, this._reload);	// allow derived class to _init
 	},
 
-	_reload: function()
+	renderUI: function()
 	{
-		var request =
-		{
-			startIndex:  this.pg ? this.pg.getStartIndex() : 0,
-			resultCount: this.pg ? this.pg.getRowsPerPage() : default_page_size
-		};
-		YAHOO.lang.augmentObject(request, this.request_extra);
+		this.clearServerErrors();
+		this.reload();
+	},
 
-		var callback =
-		{
-			success: function(request, response)
-			{
-				this.busy_overlay.hide();
-				if (this.pg && this.pg.getStartIndex() >= this.ds.getRecordCount())
-				{
-					this.pg.setPage(this.pg.getPreviousPage());
-					return;
-				}
-
-				this._render(response);
-				this._updatePaginator(response);
-				this.scroll_to_index = -1;
-			},
-			error: function()
-			{
-				YAHOO.SATG.Debug.alert('error loading data in BulkEditor');
-
-				this.busy_overlay.hide();
-				this.scroll_to_index = -1;
-			},
-			scope: this
-		};
-
+	/**
+	 * Reloads the current page of records.  This will erase any changes
+	 * unsaved changes!
+	 */
+	reload: function()
+	{
 		if (!this.busy_overlay)
 		{
 			this.busy_overlay = new YAHOO.SATG.BusyOverlay(this.container);
 		}
 		this.busy_overlay.show();
 
-		this.ds.sendRequest(request, callback);
-	},
-
-	setPaginator: function(
-		/* Paginator */	paginator,
-		/* string */	silent)
-	{
-		if (this.pg)
+		var pg = this.get('paginator');
+		var request =
 		{
-			this.pg.unsubscribe('changeRequest', switchPage, this);
-			this.pg = null;
-		}
+			startIndex:  pg ? pg.getStartIndex() : 0,
+			resultCount: pg ? pg.getRowsPerPage() : default_page_size
+		};
+		Y.mix(request, this.get('requestExtra'));
 
-		if (paginator)
+		var ds = this.get('ds');
+		ds.sendRequest(
 		{
-			this.pg = paginator;
-			this.pg.subscribe('changeRequest', switchPage, this, true);
-				// By not using (...,null,this), we can unsubscribe cleanly.
-		}
-
-		if (!silent)
-		{
-			this._reload();
-		}
-	},
-
-	// data
-
-	_saveChanges: function()
-	{
-		var records = this.ds.getCurrentRecords();
-		var id_key  = this.ds.getUniqueIdKey();
-		for (var key in this.fields)
-		{
-			if (YAHOO.lang.hasOwnProperty(this.fields, key))
+			request: request,
+			callback:
 			{
-				for (var i=0; i<records.length; i++)
+				success: Y.bind(function(e)
 				{
-					var r  = records[i];
-					var el = this.getFieldElement(r, key);
-					this.ds.updateValue(r[ id_key ], key, el.value);
-				}
-			}
-		}
+					this.busy_overlay.hide();
+					if (pg && pg.getStartIndex() >= ds.getRecordCount())
+					{
+						pg.setPage(pg.getPreviousPage());
+						return;
+					}
+
+					this._render(e.response);
+					this._updatePaginator(e.response);
+					this.scroll_to_index = -1;
+				},
+				this),
+
+				failure: Y.bind(function()
+				{
+					Y.log('error loading data in BulkEditor', 'error');
+
+					this.busy_overlay.hide();
+					this.scroll_to_index = -1;
+				},
+				this)
+			};
+		});
 	},
 
 	/**
-	 * Do not call this if you use server-side pagination.
+	 * Save the modified values from the current page of records.
+	 */
+	saveChanges: function()
+	{
+		var ds      = this.get('ds');
+		var records = ds.getCurrentRecords();
+		var id_key  = ds.getUniqueIdKey();
+		Y.Object.each(this.fields, function(value, key)
+		{
+			Y.Array.each(records, function(r)
+			{
+				var node = this.getFieldElement(r, key);
+				ds.updateValue(r[ id_key ], key, node.get('value'));
+			},
+			this);
+		},
+		this);
+	},
+
+	/**
+	 * Retrieve *all* the data.  Do not call this if you use server-side
+	 * pagination.
+	 * 
+	 * @param callback {Object} callback object which will be invoked by DataSource
 	 */
 	getAllValues: function(callback)
 	{
 		var request =
 		{
 			startIndex:  0,
-			resultCount: this.ds.getRecordCount()
+			resultCount: this.get('ds').getRecordCount()
 		};
-		YAHOO.lang.augmentObject(request, this.request_extra);
+		YAHOO.lang.augmentObject(request, this.get('requestExtra'));
 
-		this.ds.sendRequest(request, callback);
-	},
-
-	getChanges: function()
-	{
-		return this.ds.getChanges();
+		this.get('ds').sendRequest(
+		{
+			request:  request,
+			callback: callback
+		});
 	},
 
 	/**
-	 * You *must* _reload() the widget after calling this function!
+	 * @return {Object} map of all changed values, keyed by record id
+	 */
+	getChanges: function()
+	{
+		return this.get('ds').getChanges();
+	},
+
+	/**
+	 * <p>Insert a new record.</p>
+	 * 
+	 * <p>You must reload() the widget after calling this function!</p>
+	 * 
+	 * @param index {Number} insertion index
+	 * @param record {Object|String} record to insert or id of record to clone
+	 * @return {String} the new record's id
 	 */
 	insertRecord: function(
 		/* int */		index,
 		/* object */	record)
 	{
-		var record_id = this.ds.insertRecord(index, record);
+		var record_id = this.get('ds').insertRecord(index, record);
 		if (index <= this.server_errors.records.length)
 		{
 			this.server_errors.records.splice(index,0, { id: record_id });
@@ -252,18 +320,26 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 	},
 
 	/**
-	 * You *must* _reload() the widget after calling this function!
+	 * <p>Remove a record.  The removal will be recorded in the diffs.
+	 * There is no way to un-remove a record, so if you need that
+	 * functionality, you may want to use highlighting to indicate removed
+	 * records instead.</p>
+	 * 
+	 * <p>You must reload() the widget after calling this function!</p>
+	 * 
+	 * @param index {Number}
+	 * @return {Boolean} true if the record was successfully removed
 	 */
 	removeRecord: function(
 		/* int */ index)
 	{
-		if (this.ds.removeRecord(index))
+		if (this.get('ds').removeRecord(index))
 		{
 			if (index < this.server_errors.records.length)
 			{
 				var rec = this.server_errors.records[index];
 				this.server_errors.records.splice(index,1);
-				delete this.server_errors.record_map[ rec[ this.ds.getUniqueIdKey() ] ];
+				delete this.server_errors.record_map[ rec[ this.get('ds').getUniqueIdKey() ] ];
 				this._updatePageStatus();
 			}
 			return true;
@@ -274,19 +350,20 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		}
 	},
 
-	// find stuff
-
-	getContainer: function()
-	{
-		return this.container;
-	},
-
+	/**
+	 * @param key {String} field key
+	 * @return {Object} field configuration
+	 */
 	getFieldConfig: function(
 		/* string */	key)
 	{
 		return this.fields[key] || {};
 	},
 
+	/**
+	 * @param record {String|Object} record id or record object
+	 * @return {String} id of DOM element containing the record's input elements
+	 */
 	getRecordContainerId: function(
 		/* string/object */ record)
 	{
@@ -296,10 +373,15 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		}
 		else
 		{
-			return id_prefix + id_separator + record[ this.ds.getUniqueIdKey() ];
+			return id_prefix + id_separator + record[ this.get('ds').getUniqueIdKey() ];
 		}
 	},
 
+	/**
+	 * @param record {String|Object} record id or record object
+	 * @param key {String} field key
+	 * @return {String} id of DOM element containing the field's input element
+	 */
 	getFieldId: function(
 		/* string/object */	record,
 		/* string */		key)
@@ -307,32 +389,36 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		return this.getRecordContainerId(record) + id_separator + key;
 	},
 
+	/**
+	 * @param key {String|Node} field key or field input element
+	 * @return {Object} object containing record and field_key
+	 */
 	getRecordAndFieldKey: function(
 		/* string/element */	field)
 	{
-		var m = id_regex.exec(YAHOO.lang.isString(field) ? field : field.id);
+		var m = id_regex.exec(YAHOO.lang.isString(field) ? field : field.get('id'));
 		if (m && m.length > 0)
 		{
-			return { record: this.ds.getCurrentRecordMap()[ m[1] ], field_key: m[2] };
+			return { record: this.get('ds').getCurrentRecordMap()[ m[1] ], field_key: m[2] };
 		}
 	},
 
+	/**
+	 * @param obj {Object|Node} record object, record container, or any node inside record container
+	 * @return {String} record id
+	 */
 	getRecordId: function(
-		/* object/element */	el)
+		/* object/element */	obj)
 	{
-		if (YAHOO.lang.isObject(el) && !el.tagName)
+		if (Y.Lang.isObject(obj) && !(obj instanceof Y.Node))
 		{
-			return el[ this.ds.getUniqueIdKey() ];
+			return obj[ this.get('ds').getUniqueIdKey() ];
 		}
 
-		if (!Dom.hasClass(el, BulkEditor.record_container_class))
+		var node = obj.getAncestorByClassName(BulkEditor.record_container_class, true);
+		if (node)
 		{
-			el = Dom.getAncestorByClassName(el, BulkEditor.record_container_class);
-		}
-
-		if (el)
-		{
-			var m  = id_regex.exec(el.id);
+			var m  = id_regex.exec(node.get('id'));
 			if (m && m.length > 0)
 			{
 				return m[1];
@@ -340,94 +426,148 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		}
 	},
 
+	/**
+	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
+	 * @return {Node} node containing rendered record
+	 */
 	getRecordContainer: function(
 		/* string/object/element */ record)
 	{
-		if (YAHOO.lang.isString(record))
+		if (Y.Lang.isString(record))
 		{
 			var id = id_prefix + id_separator + record;
 		}
-		else if (record.tagName)
+		else if (record instance of Y.Node)
 		{
-			return Dom.hasClass(record, BulkEditor.record_container_class) ?
-					record : Dom.getAncestorByClassName(record, BulkEditor.record_container_class);
+			return record.getAncestorByClassName(BulkEditor.record_container_class, true);
 		}
 		else	// record object
 		{
 			var id = this.getRecordContainerId(record);
 		}
 
-		return Dom.get(id);
+		return Y.one('#'+id);
 	},
 
+	/**
+	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
+	 * @param key {String} field key
+	 * @return {Node} node containing rendered field
+	 */
 	getFieldContainer: function(
 		/* string/object/element */	record,
 		/* string */				key)
 	{
 		var field = this.getFieldElement(record, key);
-		return Dom.hasClass(field, field_container_class) ?
-				field : Dom.getAncestorByClassName(field, field_container_class);
+		return field.getAncestorByClassName(field_container_class, true);
 	},
 
+	/**
+	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
+	 * @param key {String} field key
+	 * @return {Node} field's input element
+	 */
 	getFieldElement: function(
 		/* string/object/element */	record,
 		/* string */				key)
 	{
-		if (record.tagName)
+		if (record instanceof Node)
 		{
 			record = this.getRecordId(record);
 		}
-		return Dom.get(this.getFieldId(record, key));
+		return Y.one('#'+this.getFieldId(record, key));
 	},
 
+	/**
+	 * Paginate and/or scroll to make the specified record visible.  Record
+	 * is pinged to help the user find it.
+	 * 
+	 * @param index {Number} record index
+	 */
 	showRecordIndex: function(
 		/* int */ index)
 	{
-		if (index < 0 || this.ds.getRecordCount() <= index)
+		if (index < 0 || this.get('ds').getRecordCount() <= index)
 		{
 			return;
 		}
 
-		var start = this.pg ? this.pg.getStartIndex() : 0;
-		var count = this.pg ? this.pg.getRowsPerPage() : default_page_size;
+		var pg    = this.get('paginator');
+		var start = pg ? pg.getStartIndex() : 0;
+		var count = pg ? pg.getRowsPerPage() : default_page_size;
 		if (start <= index && index < start+count)
 		{
-			SDom.scrollIntoView(
-				this.getRecordContainer(this.ds.getCurrentRecords()[ index - start ]));
+			var node = this.getRecordContainer(this.get('ds').getCurrentRecords()[ index - start ]);
+			node.scrollIntoView();
+			this.pingRecord(node);
 		}
-		else if (this.pg)
+		else if (pg)
 		{
 			this.scroll_to_index = index;
-			this.pg.setPage(1 + Math.floor(index / count));
+			pg.setPage(1 + Math.floor(index / count));
 		}
 	},
 
+	/**
+	 * Paginate and/or scroll to make the specified record visible.  Record
+	 * is pinged to help the user find it.
+	 * 
+	 * @param id {Number} record id
+	 */
 	showRecordId: function(
 		/* string */ id)
 	{
-		var index = this.ds.recordIdToIndex(id);
-		if (index !== false)
+		var index = this.get('ds').recordIdToIndex(id);
+		if (index >= 0)
 		{
 			this.showRecordIndex(index);
 		}
 	},
 
-	// rendering
+	/**
+	 * Apply a class to the DOM element containing the record for a short
+	 * while.  Your CSS can use this class to highlight the record in some
+	 * way.
+	 * 
+	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
+	 */
+	pingRecord: function(
+		/* string/object/element */	record)
+	{
+		var ping = this.get('pingClass');
+		if (ping)
+		{
+			var node = this.getRecordContainer(record);
+			node.addClass(ping);
+			Y.later(this.get('pingTimeout')*1000, null, function()
+			{
+				node.removeClass(ping);
+			});
+		}
+	},
 
+	/**
+	 * Render the current page of records.
+	 *
+	 * @param response {Object} response from data source
+	 * @protected
+	 */
 	_render: function(response)
 	{
-		YAHOO.SATG.Debug.alert('_render');
+		Y.log('_render', 'debug');
 
-		Event.purgeElement(this.container);
-		this._renderContainer(this.container);
-		this.container.scrollTop = this.container.scrollLeft = 0;
+		var container = this.get('contentBox');
+		Y.Event.purgeElement(container);
+		this._renderContainer(container);
+		container.set('scrollTop', 0);
+		container.set('scrollLeft', 0);
 
-		var data = response.results;
-		for (var i=0; i<data.length; i++)
+		Y.Array.each(response.results, function(record)
 		{
-			var el  = this._renderRecordContainer(this.container, data[i]);
-			this._renderRecord(el, data[i]);
-		}
+			var node = this._renderRecordContainer(container, record);
+			this._renderRecord(node, record);
+		},
+		this):
 
 		if (this.auto_validate)
 		{
@@ -441,12 +581,25 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		}
 	},
 
+	/**
+	 * Derived class should override to create a structure for the records.
+	 *
+	 * @param container {Node}
+	 * @protected
+	 */
 	_renderContainer: function(
 		/* element */	container)
 	{
-		container.innerHTML = '';
+		container.set('innerHTML', '');
 	},
 
+	/**
+	 * Derived class must override to create a container for the record.
+	 * 
+	 * @param container {Node}
+	 * @param record {Object} record data
+	 * @protected
+	 */
 	_renderRecordContainer: function(
 		/* element */	container,
 		/* object */	record)
@@ -454,44 +607,74 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		return null;
 	},
 
+	/**
+	 * Derived class can override if it needs to do more than just call
+	 * _renderField() for each field.
+	 * 
+	 * @param container {Node} record container
+	 * @param record {Object} record data
+	 * @protected
+	 */
 	_renderRecord: function(
 		/* element */	container,
 		/* object */	record)
 	{
-		for (var key in this.fields)
+		Y.Object.each(this.fields, function(field, key)
 		{
-			if (YAHOO.lang.hasOwnProperty(this.fields, key))
+			this._renderField(
 			{
-				this._renderField(container, key, record[key], this.fields[key], record);
-			}
-		}
+				container: container,
+				key:       key,
+				value:     record[key],
+				field:     field,
+				record:    record
+			});
+		},
+		this);
 	},
 
+	/**
+	 * If _renderRecord is not overridden, derived class must override this
+	 * function to render the field.
+	 * 
+	 * @param o {Object}
+	 *	container {Node} record container,
+	 *	key {String} field key,
+	 *	value {Mixed} field value,
+	 *	field {Object} field configuration,
+	 *	record {Object} record data
+	 * @protected
+	 */
 	_renderField: function(
-		/* element */	container,
-		/* string */	key,
-		/* mixed */		value,
-		/* object */	field,
-		/* object */	record)
+		/* object */ o)
 	{
 	},
 
+	/**
+	 * Update the paginator to match the data source meta information.
+	 * 
+	 * @param response {Object} response from DataSource
+	 * @protected
+	 */
 	_updatePaginator: function(response)
 	{
-		if (this.pg)
+		var pg = this.get('paginator');
+		if (pg)
 		{
-			this.pg.setTotalRecords(this.ds.getRecordCount(), true);
+			pg.setTotalRecords(this.get('ds').getRecordCount(), true);
 		}
 	},
 
-	// server errors
-
+	/**
+	 * Clear errors received from the server.  This clears all displayed
+	 * messages.
+	 */
 	clearServerErrors: function()
 	{
 		if (this.server_errors && this.server_errors.page &&
 			this.server_errors.page.length)
 		{
-			this.fireEvent('clearErrorNotification');
+			this.fire('clearErrorNotification');
 		}
 
 		this.server_errors =
@@ -501,15 +684,27 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 			record_map: {}
 		};
 
-		if (this.pg)
+		var pg = this.get('paginator');
+		if (pg)
 		{
-			this.pg.set('pageStatus', []);
+			pg.set('pageStatus', []);
 		}
 		this.first_error_page = -1;
 
-		this.clearValidationMessages();
+		this._clearValidationMessages();
 	},
 
+	/**
+	 * Set page level, record level, and field level errors received from
+	 * the server.  A message can be either a string (assumed to be an
+	 * error) or an object providing msg and type, where type can be
+	 * 'error', 'warn', 'info', or 'success'.
+	 * 
+	 * @param page_errors {Array} list of page-level error messages
+	 * @param record_field_errors {Array} list of objects *in record display order*,
+	 *		each of which defines id (String), recordError (message),
+	 *		and fieldErrors (map of field keys to error messages)
+	 */
 	setServerErrors: function(
 		/* array */	page_errors,
 		/* array */	record_field_errors)
@@ -517,7 +712,7 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		if (this.server_errors.page.length &&
 			(!page_errors || !page_errors.length))
 		{
-			this.fireEvent('clearErrorNotification');
+			this.fire('clearErrorNotification');
 		}
 
 		this.server_errors =
@@ -527,33 +722,40 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 			record_map: {}
 		};
 
-		var r = this.server_errors.records;
-		for (var i=0; i<r.length; i++)
+		Y.Array.each(this.server_errors.records, function(r)
 		{
-			this.server_errors.record_map[ r[i].id ] = r[i];
-		}
+			this.server_errors.record_map[ r.id ] = r;
+		},
+		this);
 
 		this._updatePageStatus();
 
-		if (!this.pg || this.pg.getCurrentPage() === this.first_error_page)
+		var pg = this.get('paginator');
+		if (!pg || pg.getCurrentPage() === this.first_error_page)
 		{
 			this.validate();
 		}
 		else
 		{
 			this.auto_validate = true;
-			this.pg.setPage(this.first_error_page);
+			pg.setPage(this.first_error_page);
 		}
 	},
 
+	/**
+	 * Update paginator to show which pages have errors.
+	 *
+	 * @protected
+	 */
 	_updatePageStatus: function()
 	{
-		if (!this.pg)
+		var pg = this.get('paginator');
+		if (!pg)
 		{
 			return;
 		}
 
-		var page_size = this.pg ? this.pg.getRowsPerPage() : default_page_size;
+		var page_size = pg ? pg.getRowsPerPage() : default_page_size;
 		var status    = this.page_status.slice(0);
 
 		this.first_error_page = -1;
@@ -572,42 +774,47 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 			}
 		}
 
-		this.pg.set('pageStatus', status);
+		pg.set('pageStatus', status);
 	},
 
-	// validation
-
+	/**
+	 * Validate the visible values (if using server-side pagination) or all
+	 * the values (if using client-side pagination or no pagination).
+	 * 
+	 * @return {Boolean} true if all checked values are acceptable
+	 */
 	validate: function()
 	{
-		this.auto_validate = true;
-		this._saveChanges();
+		this.saveChanges();
 
-		this.clearValidationMessages();
+		this._clearValidationMessages();
+		this.auto_validate = true;
 
 		var status = this._validateVisibleFields();
-		if (!status && this.pg)
+		var pg     = this.get('paginator');
+		if (!status && pg)
 		{
-			this.page_status[ this.pg.getCurrentPage()-1 ] = 'error';
+			this.page_status[ pg.getCurrentPage()-1 ] = 'error';
 		}
 
 		status = this._validateAllPages() && status;	// status last to guarantee call
 
-		if (!status || this.server_errors.page.length)
+		if (!status || this.server_errors.page.length ||
+			this.server_errors.records.length)
 		{
 			var err = this.server_errors.page.slice(0);
 			if (err.length === 0)
 			{
-				err.push(YAHOO.SATG.Locale.SATGForm.yiv_submit_error);
+				err.push(Y.FormManager.Strings.validation_error);
 			}
-			this.fireEvent('notifyErrors', err);
+			this.fire('notifyErrors', err);
 
-			var found = false;
-			Dom.getElementsByClassName(BulkEditor.record_container_class, null, this.container, function(e)
+			this.get('contentBox').getElementsByClassName(BulkEditor.record_container_class).some(function(node)
 			{
-				if (!found && Dom.hasClass(e, status_re))
+				if (node.hasClass(status_pattern))
 				{
-					SDom.scrollIntoView(e);
-					found = true;
+					node.scrollIntoView();
+					return true;
 				}
 			});
 		}
@@ -616,18 +823,31 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		return status;
 	},
 
-	_validateVisibleFields: function()
+	/**
+	 * Validate the visible values.
+	 * 
+	 * @param container {Node} if null, uses contentBox
+	 * @return {Boolean} true if all checked values are acceptable
+	 * @protected
+	 */
+	_validateVisibleFields: function(
+		/* object */ container)
 	{
 		var status = true;
 
+		if (!container)
+		{
+			container = this.get('contentBox');
+		}
+
 		// fields
 
-		var e1 = this.container.getElementsByTagName('input');
-		var e2 = this.container.getElementsByTagName('textarea');
-		var e3 = this.container.getElementsByTagName('select');
+		var e1 = container.getElementsByTagName('input');
+		var e2 = container.getElementsByTagName('textarea');
+		var e3 = container.getElementsByTagName('select');
 
-		FormUtil.cleanValues(e1);
-		FormUtil.cleanValues(e2);
+		Y.FormManager.cleanValues(e1);
+		Y.FormManager.cleanValues(e2);
 
 		status = this._validateElements(e1) && status;	// status last to guarantee call
 		status = this._validateElements(e2) && status;
@@ -635,14 +855,14 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 
 		// records -- after fields, since field class regex would wipe out record class
 
-		Dom.getElementsByClassName(BulkEditor.record_container_class, null, this.container, function(e)
+		container.getElementsByClassName(BulkEditor.record_container_class).each(function(node)
 		{
-			var id  = this.getRecordId(e);
+			var id  = this.getRecordId(node);
 			var err = this.server_errors.record_map[id];
 			if (err && err.recordError)
 			{
 				err = err.recordError;
-				if (YAHOO.lang.isString(err))
+				if (Y.Lang.isString(err))
 				{
 					var msg  = err;
 					var type = 'error';
@@ -656,32 +876,39 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 				status = status && !(type == 'error' || type == 'warn');
 			}
 		},
-		this, true);
+		this);
 
 		return status;
 	},
 
+	/**
+	 * Validate the given elements.
+	 * 
+	 * @param nodes {NodeList}
+	 * @return {Boolean} true if all checked values are acceptable
+	 * @protected
+	 */
 	_validateElements: function(
-		/* array */ e)
+		/* array */ nodes)
 	{
 		var status = true;
-		for (var i=0; i<e.length; i++)
+		nodes.each(function(node)
 		{
-			var field_info = this.getRecordAndFieldKey(e[i]);
+			var field_info = this.getRecordAndFieldKey(node);
 			if (!field_info)
 			{
-				continue;
+				return;
 			}
 
 			var field    = this.getFieldConfig(field_info.field_key);
 			var msg_list = field.validation && field.validation.msg;
 
-			var info = Form.validateFromCSSData(e[i], msg_list);
+			var info = Y.FormManager.validateFromCSSData(node, msg_list);
 			if (info.error)
 			{
-				this.displayFieldMessage(e[i], info.error, 'error', false);
+				this.displayFieldMessage(node, info.error, 'error', false);
 				status = false;
-				continue;
+				return;
 			}
 
 			if (info.keepGoing)
@@ -700,20 +927,20 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 
 				if (field.validation &&
 					field.validation.regex instanceof RegExp &&
-					!field.validation.regex.test(e[i].value))
+					!field.validation.regex.test(node.get('value')))
 				{
-					this.displayFieldMessage(e[i], msg_list && msg_list.regex, 'error', false);
+					this.displayFieldMessage(node, msg_list && msg_list.regex, 'error', false);
 					status = false;
-					continue;
+					return;
 				}
 			}
 
 			if (field.validation &&
 				YAHOO.lang.isFunction(field.validation.fn) &&
-				!field.validation.fn.call(this, e[i]))
+				!field.validation.fn.call(this, node))
 			{
 				status = false;
-				continue;
+				return;
 			}
 
 			var err = this.server_errors.record_map[ this.getRecordId(field_info.record) ];
@@ -732,67 +959,72 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 						var msg  = f.msg;
 						var type = f.type;
 					}
-					this.displayFieldMessage(e[i], msg, type, false);
+					this.displayFieldMessage(node, msg, type, false);
 					status = status && !(type == 'error' || type == 'warn');
+					return;
 				}
-				continue;
 			}
-		}
+		},
+		this);
 
 		return status;
 	},
 
+	/**
+	 * If the data is stored locally and we paginate, validate all of it
+	 * and mark the pages that have invalid values.
+	 * 
+	 * @return {Boolean} true if all checked values are acceptable
+	 * @protected
+	 */
 	_validateAllPages: function()
 	{
-		if (!this.pg || !this.ds._dataIsLocal())
+		var ds = this.get('ds');
+		var pg = this.get('paginator');
+		if (!pg || !ds._dataIsLocal())
 		{
 			return true;
 		}
 
-		if (!this.validation_el)
+		if (!this.validation_node)
 		{
-			this.validation_el = document.createElement('input');
+			this.validation_node = Y.Node.create('<input></input>');
 		}
 
 		if (!this.validation_keys)
 		{
 			this.validation_keys = [];
-			for (var key in this.fields)
+			Y.Object.each(this.fields, function(value, key)
 			{
-				if (YAHOO.lang.hasOwnProperty(this.fields, key) &&
-					this.fields[key].validation)
+				if (value.validation)
 				{
 					this.validation_keys.push(key);
 				}
-			}
+			},
+			this);
 		}
 
-		var count     = this.ds.getRecordCount();
-		var page_size = this.pg.getRowsPerPage();
+		var count     = ds.getRecordCount();
+		var page_size = pg.getRowsPerPage();
 		for (var i=0; i<count; i++)
 		{
 			var status = true;
-			for (var j=0; j<this.validation_keys.length; j++)
+			Y.Array.each(this.validation_keys, function(key)
 			{
-				var key   = this.validation_keys[j];
 				var field = this.fields[key];
-				var value = this.ds.getValue(i, key);
+				var value = ds.getValue(i, key);
 
-				var info = null;
-				if (field.validation.css)
+				this.validation_node.value     = YAHOO.lang.isUndefined(value) ? '' : value;
+				this.validation_node.className = field.validation.css || '';
+
+				var info = Y.FormManager.validateFromCSSData(this.validation_node);
+				if (info.error)
 				{
-					this.validation_el.value     = value;
-					this.validation_el.className = field.validation.css;
-
-					info = Form.validateFromCSSData(this.validation_el);
-					if (info.error)
-					{
-						status = false;
-						break;
-					}
+					status = false;
+					break;
 				}
 
-				if (!info || info.keepGoing)
+				if (info.keepGoing)
 				{
 					if (field.validation.regex instanceof RegExp &&
 						!field.validation.regex.test(value))
@@ -801,12 +1033,13 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 						break;
 					}
 				}
-			}
+			},
+			this);
 
 			if (!status)
 			{
-				j = Math.floor(i / page_size);
-				i = (j+1)*page_size - 1;	// skip to next page
+				var j = Math.floor(i / page_size);
+				i     = (j+1)*page_size - 1;	// skip to next page
 
 				this.page_status[j] = 'error';
 			}
@@ -815,106 +1048,143 @@ YAHOO.lang.extend(BulkEditor, YAHOO.util.EventProvider,
 		return true;
 	},
 
-	clearValidationMessages: function()
+	/**
+	 * Clear all displayed messages.
+	 */
+	_clearValidationMessages: function()
 	{
 		this.has_validation_messages = false;
+		this.auto_validate           = false;
 		this.page_status             = [];
 
-		this.fireEvent('clearErrorNotification');
+		this.fire('clearErrorNotification');
 
-		var list = Dom.getElementsByClassName(status_re, null, this.container, function(e)
-		{
-			Dom.removeClass(e, status_re);
-		});
+		var container = this.get('contentBox');
 
-		var list = Dom.getElementsByClassName(record_status_re, null, this.container, function(e)
-		{
-			Dom.removeClass(e, record_status_re);
-		});
-
-		Dom.getElementsByClassName(message_container_class, null, this.container, function(e)
-		{
-			e.innerHTML = '';
-		})
+		container.getElementsByClassName(status_pattern).removeClass(status_pattern);
+		container.getElementsByClassName(record_status_pattern).removeClass(record_status_pattern);
+		container.getElementsByClassName(message_container_class).set('innerHTML', '');
 	},
 
+	/**
+	 * Display a message for the specified field.
+	 * 
+	 * @param e {Node} field input element
+	 * @param msg {String} message to display
+	 * @param type {String} message type:  error, warn, info, success
+	 * @param scroll {Boolean} whether or not to scroll to the field
+	 */
 	displayFieldMessage: function(
 		/* element */	e,
 		/* string */	msg,
 		/* string */	type,
 		/* boolean */	scroll)
 	{
-		var bd = this.getRecordContainer(e);
-		this._updateRecordStatus(bd, type, status_re, status_prefix, scroll);
+		if (Y.Lang.isUndefined(scroll))
+		{
+			scroll = !this.has_validation_messages;
+		}
 
-		bd = Dom.getAncestorByClassName(e, field_container_class);
-		if (Form.statusTakesPrecedence(this._getElementStatus(bd, status_re), type))
+		var bd1     = this.getRecordContainer(e);
+		var changed = this._updateRecordStatus(bd1, type, status_pattern, status_re, status_prefix);
+
+		var bd2 = e.getAncestorByClassName(field_container_class);
+		if (Y.FormManager.statusTakesPrecedence(this._getElementStatus(bd2, status_re), type))
 		{
 			if (msg)
 			{
-				var m = Dom.getElementsByClassName(message_container_class, null, bd);
-				if (m && m.length > 0)
+				var m = bd2.getElementsByClassName(message_container_class);
+				if (m && m.size() > 0)
 				{
-					m[0].innerHTML = msg;
+					m.item(0).set('innerHTML', msg);
 				}
 			}
 
-			Dom.replaceClass(bd, status_re, status_prefix + type);
+			bd2.replaceClass(status_pattern, status_prefix + type);
 			this.has_validation_messages = true;
+		}
+
+		if (changed && scroll)
+		{
+			bd1.scrollIntoView();
 		}
 	},
 
+	/**
+	 * Display a message for the specified record.
+	 * 
+	 * @param id {String} record id
+	 * @param msg {String} message to display
+	 * @param type {String} message type:  error, warn, info, success
+	 * @param scroll {Boolean} whether or not to scroll to the field
+	 */
 	displayRecordMessage: function(
 		/* string */	id,
 		/* string */	msg,
 		/* string */	type,
 		/* boolean */	scroll)
 	{
-		var bd = this.getRecordContainer(id);
-		this._updateRecordStatus(bd, type, status_re, status_prefix, scroll);
-		if (this._updateRecordStatus(bd, type, record_status_re, record_status_prefix, scroll) &&
-			msg)	// msg last to guarantee call
-		{
-			bd = Dom.getElementsByClassName(BulkEditor.record_msg_container_class, null, bd)[0];
-			if (bd)
-			{
-				var m = Dom.getElementsByClassName(message_container_class, null, bd);
-				if (m && m.length > 0)
-				{
-					m[0].innerHTML = msg;
-				}
-			}
-		}
-	},
-
-	_getElementStatus: function(
-		/* string/object */ e,
-		/* regex */			r)
-	{
-		var m = r.exec(e.className);
-		return ((m && m.length) ? m[1] : false);
-	},
-
-	_updateRecordStatus: function(
-		/* element */	bd,
-		/* string */	type,
-		/* regex */		r,
-		/* string */	prefix,
-		/* boolean */	scroll)
-	{
-		if (YAHOO.lang.isUndefined(scroll))
+		if (Y.Lang.isUndefined(scroll))
 		{
 			scroll = !this.has_validation_messages;
 		}
 
-		if (Form.statusTakesPrecedence(this._getElementStatus(bd, r), type))
+		var bd1     = this.getRecordContainer(id);
+		var changed = this._updateRecordStatus(bd1, type, status_pattern, status_re, status_prefix);
+		if (this._updateRecordStatus(bd1, type, record_status_pattern, record_status_re, record_status_prefix) &&
+			msg)	// msg last to guarantee call
 		{
-			if (scroll)
+			var bd2 = bd1.getElementsByClassName(BulkEditor.record_msg_container_class).item(0);
+			if (bd2)
 			{
-				SDom.scrollIntoView(bd);
+				var m = bd2.getElementsByClassName(message_container_class);
+				if (m && m.size() > 0)
+				{
+					m.item(0).set('innerHTML', msg);
+				}
 			}
+		}
 
-			Dom.replaceClass(bd, r, prefix + type);
+		if (changed && scroll)
+		{
+			bd1.scrollIntoView();
+		}
+	},
+
+	/**
+	 * @param n {Node}
+	 * @param r {RegExp}
+	 * @return {Mixed} status or false
+	 * @protected
+	 */
+	_getElementStatus: function(
+		/* Node */	n,
+		/* regex */	r)
+	{
+		var m = r.exec(n.get('className'));
+		return (m && m.length > 1 ? m[1] : false);
+	},
+
+	/**
+	 * Update the status of the node, if the new status has higher precedence.
+	 *
+	 * @param bd {Node}
+	 * @param type {String} new status
+	 * @param p {String} pattern for extracting status
+	 * @param r {RegExpr} regex for extracting status
+	 * @param prefix {String} status prefix
+	 * @return {Boolean} true if status was modified
+	 */
+	_updateRecordStatus: function(
+		/* element */	bd,
+		/* string */	type,
+		/* string */	p,
+		/* regex */		r,
+		/* string */	prefix)
+	{
+		if (Y.FormManager.statusTakesPrecedence(this._getElementStatus(bd, r), type))
+		{
+			Dom.replaceClass(bd, p, prefix + type);
 			this.has_validation_messages = true;
 			return true;
 		}
@@ -1033,3 +1303,5 @@ BulkEditor.markup =
 		});
 	}
 };
+
+Y.BulkEditor = BulkEditor;

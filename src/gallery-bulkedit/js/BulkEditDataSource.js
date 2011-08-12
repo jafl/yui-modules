@@ -1,14 +1,12 @@
 "use strict";
 
-var lang   = YAHOO.lang,
-	util   = YAHOO.util,
-	DS     = YAHOO.util.DataSourceBase;
-
-DS.TYPE_BULKEDIT = 10;
-
 /**
- * <p>BulkEditDataSource manages a YUI DataSource + diffs (changes to
- * values, insertions, removals).</p>
+ * @module gallery-bulkedit
+ */
+
+/**********************************************************************
+ * <p>BulkEditDataSource manages a YUI DataSource + diffs (insertions,
+ * removals, changes to values).</p>
  * 
  * <p>The YUI DataSource must be immutable, e.g., if it is an XHR
  * datasource, the data must not change.</p>
@@ -17,9 +15,9 @@ DS.TYPE_BULKEDIT = 10;
  * (all data pre-loaded, best-effort save allowed) and server-side
  * pagination (load data when needed, only all-or-nothing save allowed).
  * Server-side pagination is useful when editing a large amount of existing
- * records or after uploading a large number of new records (store them in
- * a scratch space, so everything does not have to be sent back to the
- * client after parsing).  In the case of bulk upload, server-side
+ * records or after uploading a large number of new records. (Store the new
+ * records in a scratch space, so everything does not have to be sent back
+ * to the client after parsing.)  In the case of bulk upload, server-side
  * validation will catch errors in unviewed records.</p>
  * 
  * <p>The responseSchema passed to the YUI DataSource must include a
@@ -27,78 +25,125 @@ DS.TYPE_BULKEDIT = 10;
  * This comparator can either be 'integer', 'decimal', or a function which
  * takes two arguments.</p>
  *
- * @module BulkEdit
- * @namespace YAHOO.util
- * @class YAHOO.util.BulkEditDataSource
- * @extends YAHOO.util.DataSourceBase 
+ * @class BulkEditDataSource
+ * @extends DataSource.Local 
  * @constructor
- * @param oLiveData {DataSource}  The DataSource with the original data.
- * @param oConfigs {Object} Object literal of configuration values.
- *		<dl>
- *		<dt>generateRequest</dt>
- *		<dd>(required) The function to convert the initial request into a
- *			request usable by the underlying DataSource.  This function
- *			takes one argument: state (startIndex,resultCount,...).</dd>
- *		<dt>uniqueIdKey</dt>
- *		<dd>(required) The name of the key in each record that stores an
- *			identifier which is unique across the entire data set.</dd>
- *		<dt>generateUniqueId</dt>
- *		<dd>(optional) The function to call to generate a unique id for a
- *			new record.</dd>
- *		<dt>startIndexExpr</dt>
- *		<dd>(optional) OGNL expression telling how to extract the startIndex
- *			from the received data, e.g., <code>.meta.startIndex</code>.
- *			If it is not provided, startIndex is always assumed to be zero.</dd>
- *		<dt>totalRecordsReturnExpr</dt>
- *		<dd>(optional) OGNL expression telling where in the response to store
- *			the total number of records, e.g., <code>.meta.totalRecords</code>.
- *			This is only appropriate for DataSources that always return the
- *			entire data set.</dd>
- *		<dt>extractTotalRecords</dt>
- *		<dd>(required) The function to call to extract the total number of
- *			records from the response.</dd>
- *		</dl>
+ * @param config {Object}
  */
-util.BulkEditDataSource = function(oLiveData, oConfigs)
+function BulkEditDataSource()
 {
-	if (!(oLiveData instanceof util.DataSourceBase))
+	BulkEditDataSource.superclass.constructor.apply(this, arguments);
+};
+
+BulkEditDataSource.NAME = "bulkEditDataSource";
+
+BulkEditDataSource.ATTRS =
+{
+	/**
+	 * REQUIRED. The original data.  This must be immutable, i.e., the
+	 * values must not change.
+	 * 
+	 * @config ds
+	 * @type {DataSource}
+	 * @writeonce
+	 */
+	ds:
 	{
-		YAHOO.log('BulkEditDataSource requires DataSource', 'error', 'BulkEditDataSource');
-		return;
-	}
+		writeOnce: true
+	},
 
-	if (!lang.isFunction(oConfigs.generateRequest))
+	/**
+	 * REQUIRED.  The function to convert the initial request into a
+	 * request usable by the underlying DataSource.  This function takes
+	 * one argument: state (startIndex,resultCount,...).
+	 * 
+	 * @config generateRequest
+	 * @type {Function}
+	 * @writeonce
+	 */
+	generateRequest:
 	{
-		YAHOO.log('BulkEditDataSource requires generateRequest function', 'error', 'BulkEditDataSource');
-		return;
-	}
+		validator: Y.Lang.isFunction,
+		writeOnce: true
+	},
 
-	if (!oConfigs.uniqueIdKey)
+	/**
+	 * REQUIRED. The name of the key in each record that stores an
+	 * identifier which is unique across the entire data set.
+	 * 
+	 * @config uniqueIdKey
+	 * @type {String}
+	 * @writeonce
+	 */
+	uniqueIdKey:
 	{
-		YAHOO.log('BulkEditDataSource requires oConfigs.uniqueIdKey configuration', 'error', 'BulkEditDataSource');
-		return;
-	}
+		validator: Y.Lang.isString,
+		writeOnce: true
+	},
 
-	if (!oConfigs.totalRecordsExpr && !oConfigs.totalRecordsReturnExpr)
+	/**
+	 * The function to call to generate a unique id for a new record.  The
+	 * default generates "bulk-edit-new-id-#".
+	 * 
+	 * @config generateUniqueId
+	 * @type {Function}
+	 * @writeonce
+	 */
+	generateUniqueId:
 	{
-		YAHOO.log('BulkEditDataSource requires either oConfigs.totalRecordsExpr or oConfigs.totalRecordsReturnExpr configuration', 'error', 'BulkEditDataSource');
-		return;
-	}
+		value: function()
+		{
+			idCounter++;
+			return uniqueIdPrefix + idCounter;
+		},
+		validator: Y.Lang.isFunction,
+		writeOnce: true
+	},
 
-	if (!YAHOO.lang.isFunction(oConfigs.extractTotalRecords))
+	/**
+	 * OGNL expression telling how to extract the startIndex from the
+	 * received data, e.g., <code>.meta.startIndex</code>.  If it is not
+	 * provided, startIndex is always assumed to be zero.
+	 * 
+	 * @config startIndexExpr
+	 * @type {String}
+	 * @writeonce
+	 */
+	startIndexExpr:
 	{
-		YAHOO.log('BulkEditDataSource requires extractTotalRecords function', 'error', 'BulkEditDataSource');
-		return;
+		validator: Y.Lang.isString,
+		writeOnce: true
+	},
+
+	/**
+	 * OGNL expression telling where in the response to store the total
+	 * number of records, e.g., <code>.meta.totalRecords</code>.  This is
+	 * only appropriate for DataSources that always return the entire data
+	 * set.
+	 * 
+	 * @config totalRecordsReturnExpr
+	 * @type {String}
+	 * @writeonce
+	 */
+	totalRecordsReturnExpr:
+	{
+		validator: Y.Lang.isString,
+		writeOnce: true
+	},
+
+	/**
+	 * REQUIRED. The function to call to extract the total number of
+	 * records from the response.
+	 * 
+	 * @config extractTotalRecords
+	 * @type {Function}
+	 * @writeonce
+	 */
+	extractTotalRecords:
+	{
+		validator: Y.Lang.isFunction,
+		writeOnce: true
 	}
-
-	oConfigs.generateUniqueId = oConfigs.generateUniqueId || generateUniqueId;
-
-	this.dataType = DS.TYPE_BULKEDIT;
-	this._index   = null;
-	this._count   = 0;
-	this._new     = {};
-	this._diff    = {};
-	util.BulkEditDataSource.superclass.constructor.call(this, oLiveData, oConfigs);
 };
 
 var uniqueIdPrefix = 'bulk-edit-new-id-',
@@ -109,29 +154,28 @@ var uniqueIdPrefix = 'bulk-edit-new-id-',
 	removed_prefix  = 'be-ds-r:',
 	removed_re      = /^be-ds-r:/;
 
-util.BulkEditDataSource.comparator =
+BulkEditDataSource.comparator =
 {
-	string: function(a,b)
+	'string': function(a,b)
 	{
-		return (lang.trim(a.toString()) === lang.trim(b.toString()));
+		return (Y.Lang.trim(a.toString()) === Y.Lang.trim(b.toString()));
 	},
 
-	integer: function(a,b)
+	'integer': function(a,b)
 	{
 		return (parseInt(a,10) === parseInt(b,10));
 	},
 
-	decimal: function(a,b)
+	'decimal': function(a,b)
 	{
 		return (parseFloat(a,10) === parseFloat(b,10));
+	},
+
+	'boolean': function(a,b)
+	{
+		return (((a && b) || (!a && !b)) ? true : false);
 	}
 };
-
-function generateUniqueId()
-{
-	idCounter++;
-	return uniqueIdPrefix + idCounter;
-}
 
 function fromDisplayIndex(
 	/* int */ index)
@@ -215,32 +259,34 @@ function adjustRequest()
 	this._callback.adjust.indexEnd = i;
 }
 
-function internalSuccess(oRequest, oParsedResponse)
+function internalSuccess(e)
 {
-	if (!oParsedResponse || oParsedResponse.error ||
-		!(oParsedResponse.results instanceof Array))
+	if (!e.response || e.error ||
+		!Y.Lang.isArray(e.response.results))
 	{
 		internalFailure.apply(this, arguments);
 		return;
 	}
 
-	// synch response arrives before setting txId
+	// synch response arrives before setting _tId
 
-	if (!lang.isUndefined(this._callback.txId) &&
-		oParsedResponse.tId !== this._callback.txId)
+	if (!Y.Lang.isUndefined(this._callback._tId) &&
+		e.tId !== this._callback._tId)
 	{
 		return; 	// cancelled request
 	}
 
-	this._callback.response = oParsedResponse;
+	this._callback.response = e.response;
 	checkFinished.call(this);
 }
 
-function internalFailure(oRequest, oParsedResponse)
+function internalFailure(e)
 {
-	if (oParsedResponse.tId === this._callback.txId)
+	if (e.tId === this._callback._tId)
 	{
-		DS.issueCallback(this._callback.callback, [this._callback.request, oParsedResponse], true, this._callback.caller);
+		this._callback.error    = e.error;
+		this._callback.response = e.response;
+		this.fire('response', this._callback);
 	}
 }
 
@@ -254,17 +300,20 @@ function checkFinished()
 	if (!this._fields)
 	{
 		this._fields = {};
-		var fields   = this.liveData.responseSchema.fields;
-		for (var i=0; i<fields.length; i++)
+		Y.Array.each(this.get('ds').schema.get('schema').resultFields, function(value)
 		{
-			this._fields[ fields[i].key ] = fields[i];
-		}
+			if (Y.Lang.isObject(value))
+			{
+				this._fields[ value.key ] = value;
+			}
+		},
+		this);
 	}
 
 	var response = {};
-	lang.augmentObject(response, this._callback.response);
+	Y.mix(response, this._callback.response);
 	response.results = [];
-	response         = cloneObject(response);
+	response         = Y.clone(response);
 
 	var dataStartIndex = 0;
 	if (this.startIndexExpr)
@@ -272,7 +321,7 @@ function checkFinished()
 		eval('dataStartIndex=this._callback.response'+this.startIndexExpr);
 	}
 
-	var startIndex   = this._callback.request.startIndex - dataStartIndex
+	var startIndex   = this._callback.request.startIndex - dataStartIndex;
 	response.results = this._callback.response.results.slice(startIndex, startIndex + this._callback.request.resultCount);
 
 	// insertions/removals
@@ -300,7 +349,7 @@ function checkFinished()
 			if (inserted_re.test(j))
 			{
 				var id = j.substr(inserted_prefix.length);
-				response.results.splice(k,0, cloneObject(this._new[id]));
+				response.results.splice(k,0, Y.clone(this._new[id]));
 			}
 			else if (removed_re.test(j))
 			{
@@ -315,110 +364,113 @@ function checkFinished()
 	this._records   = [];
 	this._recordMap = {};
 
-	for (var i=0; i<response.results.length; i++)
+	Y.Array.each(response.results, function(value)
 	{
-		var rec = cloneObject(response.results[i]);
+		var rec = Y.clone(value);
 		this._records.push(rec);
 		this._recordMap[ rec[ this.uniqueIdKey ] ] = rec;
-	}
+	},
+	this);
 
 	// merge in diffs
 
-	for (var i=0; i<response.results.length; i++)
+	Y.Array.each(response.results, function(rec)
 	{
-		var rec  = response.results[i];
-		var diff = this._diff[ rec[ this.uniqueIdKey ] ] || {};
-		for (var key in diff)
+		var diff = this._diff[ rec[ this.uniqueIdKey ] ];
+		if (diff)
 		{
-			if (lang.hasOwnProperty(diff, key))
-			{
-				rec[key] = diff[key];
-			}
+			Y.mix(rec, diff, true);
 		}
-	}
+	},
+	this);
 
-	DS.issueCallback(this._callback.callback, [this._callback.request, response], false, this._callback.caller);
+	this._callback.response = response;
+	this.fire('response', this._callback);
 }
 
-function cloneObject(o)
+Y.extend(BulkEditDataSource, Y.DataSource.Local,
 {
-	if (!lang.isValue(o))
+	initializer: function(config)
 	{
-		return o;
-	}
-
-	var copy = {};
-
-	if ((o instanceof RegExp) || lang.isFunction(o))
-	{
-		copy = o;
-	}
-	else if (lang.isArray(o))
-	{
-		var array = [];
-		for (var i=0, len=o.length; i<len; i++)
+		if (!(config.ds instanceof DataSource.Local))
 		{
-			array[i] = cloneObject(o[i]);
+			Y.error('BulkEditDataSource requires DataSource');
 		}
-		copy = array;
-	}
-	else if (lang.isObject(o))
-	{
-		for (var x in o)
+
+		if (!config.generateRequest)
 		{
-			if (lang.hasOwnProperty(o, x))
-			{
-				if ((lang.isValue(o[x]) && lang.isObject(o[x])) || lang.isArray(o[x]))
-				{
-					copy[x] = cloneObject(o[x]);
-				}
-				else
-				{
-					copy[x] = o[x];
-				}
-			}
+			Y.error('BulkEditDataSource requires generateRequest function');
 		}
-	}
-	else
-	{
-		copy = o;
-	}
 
-	return copy;
-}
+		if (!config.uniqueIdKey)
+		{
+			Y.error('BulkEditDataSource requires uniqueIdKey configuration');
+		}
 
-// BulkEditDataSource extends DataSourceBase
-lang.extend(util.BulkEditDataSource, DS,
-{
+		if (!config.extractTotalRecords)
+		{
+			Y.error('BulkEditDataSource requires extractTotalRecords function');
+		}
+
+		this._index = null;
+		this._count = 0;
+		this._new   = {};
+		this._diff  = {};
+	},
+
+	/**
+	 * @return {boolean} true if the raw data is stored locally
+	 * @protected
+	 */
 	_dataIsLocal: function()
 	{
-		return (this.liveData.responseType === DS.TYPE_JSARRAY);
+		return (Y.Lang.isArray(this.get('ds').get('source')));
 	},
 
-	getUniqueIdKey: function()
+	/**
+	 * Flush the underlying datasource's cache.
+	 * 
+	 * @protected
+	 */
+	_flushCache: function()
 	{
-		return this.uniqueIdKey;
-	},
+		var ds = this.get('ds');
+		if (ds.cache && Y.Lang.isFunction(ds.cache.flush))
+		{
+			ds.cache.flush();
+		}
+	}
 
-	// use this instead of any meta information in response
-
+	/**
+	 * Use this instead of any meta information in response.
+	 * 
+	 * @return {Number} the total number of records
+	 */
 	getRecordCount: function()
 	{
 		return this._count;
 	},
 
+	/**
+	 * @return {Number} the records returned by the latest request
+	 */
 	getCurrentRecords: function()
 	{
 		return this._records;
 	},
 
+	/**
+	 * @return {Object} the records returned by the latest request, keyed by record id
+	 */
 	getCurrentRecordMap: function()
 	{
 		return this._recordMap;
 	},
 
 	/**
-	 * Returns the current value of the specified item in the specified record.
+	 * @param record_index {Number}
+	 * @param key {String} field key
+	 * @return {mixed} the value of the specified field in the specified record
 	 */
 	getValue: function(
 		/* int */		record_index,
@@ -426,8 +478,7 @@ lang.extend(util.BulkEditDataSource, DS,
 	{
 		if (!this._dataIsLocal())
 		{
-			YAHOO.log('BulkEditDataSource.getValue() can only be called when using a local datasource', 'error', 'BulkEditDataSource');
-			return;
+			Y.error('BulkEditDataSource.getValue() can only be called when using a local datasource');
 		}
 
 		var j = fromDisplayIndex.call(this, record_index);
@@ -444,12 +495,12 @@ lang.extend(util.BulkEditDataSource, DS,
 		}
 		else
 		{
-			var record    = this.liveData.liveData[j];
+			var record    = this.get('ds').get('source')[j];
 			var record_id = record[ this.uniqueIdKey ];
 		}
 
 		if (this._diff[ record_id ] &&
-			!lang.isUndefined(this._diff[ record_id ][ key ]))
+			!Y.Lang.isUndefined(this._diff[ record_id ][ key ]))
 		{
 			return this._diff[ record_id ][ key ];
 		}
@@ -462,29 +513,38 @@ lang.extend(util.BulkEditDataSource, DS,
 	/**
 	 * When using a remote datasource, this will include changes made to
 	 * deleted records.
+	 * 
+	 * @return {Object} map of all changed values, keyed by record id
 	 */
 	getChanges: function()
 	{
 		return this._diff;
 	},
 
+	/**
+	 * @return {Array} list of removed record indices, based on initial ordering
+	 */
 	getRemovedRecordIndexes: function()
 	{
 		var list = [];
-		for (var i=0; i<this._index.length; i++)
+		Y.Array.each(this._index, function(j)
 		{
-			var j = this._index[i];
 			if (removed_re.test(j))
 			{
 				list.push(parseInt(j.substr(removed_prefix.length), 10));
 			}
-		}
+		});
 
 		return list;
 	},
 
 	/**
-	 * You *must* _reload() the widget after calling this function!
+	 * You must reload() the widget after calling this function!
+	 * 
+	 * @param index {Number} insertion index
+	 * @param record {Object|String} record to insert or id of record to clone
+	 * @return {String} id of newly inserted record
+	 * @protected
 	 */
 	insertRecord: function(
 		/* int */		index,
@@ -492,7 +552,7 @@ lang.extend(util.BulkEditDataSource, DS,
 	{
 		this._count++;
 
-		var record_id = this.generateUniqueId();
+		var record_id = String(this.generateUniqueId());
 
 		this._new[ record_id ]                     = {};
 		this._new[ record_id ][ this.uniqueIdKey ] = record_id;
@@ -504,30 +564,38 @@ lang.extend(util.BulkEditDataSource, DS,
 		}
 		this._index.splice(j, 0, inserted_prefix+record_id);
 
-		// insert initial values into _diff
-
-		if (YAHOO.lang.isString(record))
+		if (record && !Y.Lang.isObject(record))		// clone existing record
 		{
-			record = this._recordMap[ record ];
+			var s    = record.toString();
+			record   = Y.clone(this._recordMap[s] || this._new[s]);
+			var diff = this._diff[s];
+			if (record && diff)
+			{
+				Y.mix(record, diff, true);
+			}
 		}
 
-		if (record)
+		if (record)		// insert initial values into _diff
 		{
-			for (var key in record)
+			Y.Object.each(record, function(value, key)
 			{
-				if (key != this.uniqueIdKey &&
-					lang.hasOwnProperty(record, key))
+				if (key != this.uniqueIdKey)
 				{
-					this.updateValue(record_id, key, record[key]);
+					this.updateValue(record_id, key, value);
 				}
-			}
+			},
+			this);
 		}
 
 		return record_id;
 	},
 
 	/**
-	 * You *must* _reload() the widget after calling this function!
+	 * You must reload() the widget after calling this function!
+	 * 
+	 * @param index {Number} index of record to remove
+	 * @return {boolean} true if record was removed
+	 * @protected
 	 */
 	removeRecord: function(
 		/* int */ index)
@@ -550,7 +618,7 @@ lang.extend(util.BulkEditDataSource, DS,
 		{
 			if (this._dataIsLocal())
 			{
-				var record_id = this.liveData.liveData[ this._index[j] ][ this.uniqueIdKey ].toString();
+				var record_id = this.get('ds').get('source')[ this._index[j] ][ this.uniqueIdKey ].toString();
 			}
 
 			this._index[j] = removed_prefix + this._index[j];
@@ -564,11 +632,26 @@ lang.extend(util.BulkEditDataSource, DS,
 		return true;
 	},
 
+	/**
+	 * Update a value in a record.
+	 *
+	 * @param record_id {String}
+	 * @param key {String} field key
+	 * @param value {String} new item value
+	 * @protected
+	 */
 	updateValue: function(
 		/* string */	record_id,
 		/* string */	key,
 		/* string */	value)
 	{
+		if (key == this.uniqueIdKey)
+		{
+			Y.error('BulkEditDataSource.updateValue() does not allow changing the id for a record.  Use BulkEditDataSource.updateRecordId() instead.');
+		}
+
+		record_id = record_id.toString();
+
 		var record = this._recordMap[ record_id ];
 		if (record && this._getComparator(key)(record[key] || '', value || ''))
 		{
@@ -587,48 +670,54 @@ lang.extend(util.BulkEditDataSource, DS,
 		}
 	},
 
+	/**
+	 * @param key {String} field key
+	 * @return {Function} comparator function for the given field
+	 * @protected
+	 */
 	_getComparator: function(
 		/* string */ key)
 	{
 		var f = (this._fields[key] && this._fields[key].comparator) || 'string';
-		if (lang.isFunction(f))
+		if (Y.Lang.isFunction(f))
 		{
 			return f;
 		}
-		else if (util.BulkEditDataSource.comparator[f])
+		else if (BulkEditDataSource.comparator[f])
 		{
-			return util.BulkEditDataSource.comparator[f];
+			return BulkEditDataSource.comparator[f];
 		}
 		else
 		{
-			return util.BulkEditDataSource.comparator.string;
+			return BulkEditDataSource.comparator.string;
 		}
 	},
 
+	/**
+	 * Merge changes into the underlying data, to flush diffs for a record.
+	 * Only usable with DataSource.Local.  When using best-effort save on
+	 * the server, call this for each record that was successfully saved.
+	 *
+	 * @param record_id {String}
+	 */
 	mergeChanges: function(
 		/* string */ record_id)
 	{
 		if (!this._dataIsLocal())
 		{
-			YAHOO.log('BulkEditDataSource.mergeChanges() can only be called when using a local datasource', 'error', 'BulkEditDataSource');
-			return;
+			Y.error('BulkEditDataSource.mergeChanges() can only be called when using a local datasource');
 		}
+
+		record_id = record_id.toString();
 
 		function merge(rec)
 		{
-			if (rec[ this.uniqueIdKey ].toString() === record_id.toString())
+			if (rec[ this.uniqueIdKey ].toString() === record_id)
 			{
 				var diff = this._diff[ record_id ];
 				if (diff)
 				{
-					for (var key in diff)
-					{
-						if (lang.hasOwnProperty(diff, key))
-						{
-							rec[key] = diff[key];
-						}
-					}
-
+					Y.mix(rec, diff, true);
 					delete this._diff[ record_id ];
 				}
 				return true;
@@ -636,64 +725,123 @@ lang.extend(util.BulkEditDataSource, DS,
 		}
 
 		var found = false;
+		this._flushCache();
 
-		this.liveData.flushCache();
-
-		var records = this.liveData.liveData;
-		for (var i=0; i<records.length; i++)
+		Y.Array.some(this.get('ds').get('source'), function(value)
 		{
-			var rec = records[i];
-			if (merge.call(this, records[i]))
+			if (merge.call(this, value))
 			{
 				found = true;
-				break;
+				return true;
 			}
-		}
+		},
+		this);
 
 		if (!found)
 		{
-			for (var id in this._new)
+			Y.Object.some(this._new, function(value)
 			{
-				if (lang.hasOwnProperty(this._new, id) &&
-					merge.call(this, this._new[id]))
+				if (merge.call(this, value))
 				{
 					found = true;
-					break;
+					return true;
 				}
-			}
+			},
+			this);
 		}
 	},
 
 	/**
-	 * Only for use after best-effort save.
-	 * You *must* _reload() the widget after calling this function!
+	 * <p>Completely remove a record, from both the display and the
+	 * underlying data.  Only usable with DataSource.Local.  When using
+	 * best-effort save on the server, call this for each record that was
+	 * successfully deleted.</p>
+	 * 
+	 * <p>You must reload() the widget after calling this function!</p>
+	 * 
+	 * @param record_id {String}
 	 */
 	killRecord: function(
 		/* string */ record_id)
 	{
 		if (!this._dataIsLocal())
 		{
-			YAHOO.log('BulkEditDataSource.killRecord() can only be called when using a local datasource', 'error', 'BulkEditDataSource');
-			return;
+			Y.error('BulkEditDataSource.killRecord() can only be called when using a local datasource');
 		}
 
-		this.liveData.flushCache();
+		record_id = record_id.toString();
 
-		var records = this.liveData.liveData;
-		for (var i=0; i<records.length; i++)
+		function kill(rec)
 		{
-			var rec = records[i];
-			if (rec[ this.uniqueIdKey ].toString() === record_id.toString())
+			if (rec[ this.uniqueIdKey ].toString() === record_id)
 			{
-				records.splice(i,1);
+				var info = {};
+				this.recordIdToIndex(record_id, info);
+
+				var j = this._index[ info.internal_index ];
+				this._index.splice(info.internal_index, 1);
+				if (!inserted_re.test(j))
+				{
+					for (var i=info.internal_index; i<this._index.length; i++)
+					{
+						var k = this._index[i];
+						if (removed_re.test(k))
+						{
+							this._index[i] = removed_prefix +
+								(parseInt(k.substr(removed_prefix.length), 10)-1);
+						}
+						else if (!inserted_re.test(k))
+						{
+							this._index[i]--;
+						}
+					}
+				}
+
+				this._count--;
 				delete this._diff[ record_id ];
-				break;
+				return true;
 			}
+		}
+
+		var found = false;
+		this._flushCache();
+
+		var data = this.get('ds').get('source');
+		Y.Array.some(data, function(value, i)
+		{
+			if (kill.call(this, value))
+			{
+				data.splice(i,1);
+				found = true;
+				return true;
+			}
+		},
+		this);
+
+		if (!found)
+		{
+			Y.Object.some(this._new, function(value, id)
+			{
+				if (kill.call(this, value))
+				{
+					delete this._new[id];
+					found = true;
+					return true;
+				}
+			},
+			this);
 		}
 	},
 
 	/**
-	 * You *must* _reload() the widget after calling this function!
+	 * <p>Change the id of a record.  Only usable with DataSource.Local.
+	 * When using best-effort save on the server, call this for each newly
+	 * created record that was successfully saved.</p>
+	 * 
+	 * <p>You must reload() the widget after calling this function!</p>
+	 * 
+	 * @param orig_record_id {String}
+	 * @param new_record_id {String}
 	 */
 	updateRecordId: function(
 		/* string */	orig_record_id,
@@ -701,41 +849,82 @@ lang.extend(util.BulkEditDataSource, DS,
 	{
 		if (!this._dataIsLocal())
 		{
-			YAHOO.log('BulkEditDataSource.updateRecordId() can only be called when using a local datasource', 'error', 'BulkEditDataSource');
-			return;
+			Y.error('BulkEditDataSource.updateRecordId() can only be called when using a local datasource');
 		}
 
-		this.liveData.flushCache();
+		orig_record_id = orig_record_id.toString();
+		new_record_id  = new_record_id.toString();
 
-		var records = this.liveData.liveData;
-		for (var i=0; i<records.length; i++)
+		function update(rec)
 		{
-			var rec = records[i];
-			if (rec[ this.uniqueIdKey ].toString() === orig_record_id.toString())
+			if (rec[ this.uniqueIdKey ].toString() === orig_record_id)
 			{
+				var info = {};
+				this.recordIdToIndex(orig_record_id, info);
+				var j = info.internal_index;
+				if (inserted_re.test(this._index[j]))
+				{
+					this._index[j] = inserted_prefix + new_record_id;
+				}
+
 				rec[ this.uniqueIdKey ] = new_record_id;
 				if (this._diff[ orig_record_id ])
 				{
 					this._diff[ new_record_id ] = this._diff[ orig_record_id ];
 					delete this._diff[ orig_record_id ];
 				}
-				break;
+				return true;
 			}
+		}
+
+		var found = false;
+		this._flushCache();
+
+		Y.Array.some(this.get('ds').get('source'), function(value)
+		{
+			if (update.call(this, value))
+			{
+				found = true;
+				return true;
+			}
+		},
+		this);
+
+		if (!found)
+		{
+			Y.Object.some(this._new, function(value, id)
+			{
+				if (update.call(this, value))
+				{
+					this._new[ new_record_id ] = value;
+					delete this._new[id];
+					found = true;
+					return true;
+				}
+			},
+			this);
 		}
 	},
 
+	/**
+	 * Find the index of the given record id.  Only usable with
+	 * DataSource.Local.
+	 * 
+	 * @param record_id {String}
+	 * @return {Number} index or record or -1 if not found
+	 */
 	recordIdToIndex: function(
-		/* string */ record_id)
+		/* string */	record_id,
+		/* object */	return_info)
 	{
 		if (!this._dataIsLocal())
 		{
-			YAHOO.log('BulkEditDataSource.recordIdToIndex() can only be called when using a local datasource', 'error', 'BulkEditDataSource');
-			return false;
+			Y.error('BulkEditDataSource.recordIdToIndex() can only be called when using a local datasource');
 		}
 
 		record_id = record_id.toString();
 
-		var records = this.liveData.liveData;
+		var records = this.get('ds').get('source');
 		var count   = 0;
 		for (var i=0; i<this._index.length; i++)
 		{
@@ -747,6 +936,10 @@ lang.extend(util.BulkEditDataSource, DS,
 				(!ins && !del &&
 				 records[j][ this.uniqueIdKey ].toString() === record_id))
 			{
+				if (return_info)
+				{
+					return_info.internal_index = i;
+				}
 				return count;
 			}
 
@@ -756,47 +949,34 @@ lang.extend(util.BulkEditDataSource, DS,
 			}
 		}
 
-		return false;
+		return -1;
 	},
 
 	/**
-	 * Overriding method merges edits into data and returns result.
-	 *
-	 * @method makeConnection
-	 * @param oRequest {Object} Request object: (startIndex,resultCount,...)
-	 * @param oCallback {Object} Callback object literal.
-	 * @param oCaller {Object} (deprecated) Use oCallback.scope.
-	 * @return {Number} Transaction ID.
-	 * @private
+	 * Merges edits into data and returns result.
+	 * 
+	 * @protected
 	 */
-	makeConnection: function(oRequest, oCallback, oCaller)
+	_defRequestFn: function(e)
 	{
-		var tId = DS._nTransactionId++;
-		this.fireEvent("requestEvent", {tId:tId, request:oRequest,callback:oCallback,caller:oCaller});
-
-		this._callback =
-		{
-			request:  cloneObject(oRequest),
-			callback: oCallback,
-			caller:   oCaller
-		};
+		this._callback = e;
 		adjustRequest.call(this);
 
 		this._generatingRequest = true;
 
-		this._callback.txId = this.liveData.sendRequest(this.generateRequest(this._callback.request),
+		this._callback._tId = this.get('ds').sendRequest(
 		{
-			success: internalSuccess,
-			failure: internalFailure,
-			scope:   this
+			request: this.generateRequest(this._callback.request),
+			callback:
+			{
+				success: Y.bind(internalSuccess, this),
+				failure: Y.bind(internalFailure, this)
+			}
 		});
 
 		this._generatingRequest = false;
 		checkFinished.call(this);
-
-		return tId;
 	}
 });
 
-// Copy static members to BulkEditDataSource class
-lang.augmentObject(util.BulkEditDataSource, DS);
+Y.BulkEditDataSource = BulkEditDataSource;

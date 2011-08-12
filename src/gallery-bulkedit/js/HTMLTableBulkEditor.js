@@ -1,3 +1,4 @@
+(function(){
 "use strict";
 
 var Dom = YAHOO.util.Dom,
@@ -255,3 +256,5 @@ YAHOO.lang.extend(TableBulkEditor, BulkEditor,
 		}
 	}
 });
+
+})();
