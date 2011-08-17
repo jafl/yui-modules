@@ -1,0 +1,1127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-bulkedit  BulkEditDataSource   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-bulkedit&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a>
+                 &gt; BulkEditDataSource 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        
+                        
+                            Class <b property="yui:name">BulkEditDataSource</b>
+                        <span class="extends">
+                           - extends <a href="DataSource.Local.html" title="DataSource.Local">DataSource.Local</a>
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        <p>BulkEditDataSource manages a YUI DataSource + diffs (insertions,
+removals, changes to values).</p>
+<p>The YUI DataSource must be immutable, e.g., if it is an XHR
+datasource, the data must not change.</p>
+<p>By using a DataSource, we can support both client-side pagination
+(all data pre-loaded, best-effort save allowed) and server-side
+pagination (load data when needed, only all-or-nothing save allowed).
+Server-side pagination is useful when editing a large amount of existing
+records or after uploading a large number of new records. (Store the new
+records in a scratch space, so everything does not have to be sent back
+to the client after parsing.)  In the case of bulk upload, server-side
+validation will catch errors in unviewed records.</p>
+<p>The responseSchema passed to the YUI DataSource must include a
+comparator for each field that should not be treated like a string.
+This comparator can either be 'integer', 'decimal', or a function which
+takes two arguments.</p>
+                    </div>
+
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">BulkEditDataSource</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                config
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">config</span>
+                                                    &lt;<span property="yui:type">Object</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description"></span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="protected" rel="yui:method" resource="#method__dataIsLocal">
+                                    <h4>
+                                        <a name="method__dataIsLocal">_dataIsLocal</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">_dataIsLocal</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">true if the raw data is stored locally</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__defRequestFn">
+                                    <h4>
+                                        <a name="method__defRequestFn">_defRequestFn</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_defRequestFn</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Merges edits into data and returns result.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__flushCache">
+                                    <h4>
+                                        <a name="method__flushCache">_flushCache</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">_flushCache</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Flush the underlying datasource's cache.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method__getComparator">
+                                    <h4>
+                                        <a name="method__getComparator">_getComparator</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        Function
+                                            <strong property="yui:name">_getComparator</strong>
+                                           (
+                                                
+                                                        
+                                                         key
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">key</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  field key</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Function
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">comparator function for the given field</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getChanges">
+                                    <h4>
+                                        <a name="method_getChanges">getChanges</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Object
+                                            <strong property="yui:name">getChanges</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            When using a remote datasource, this will include changes made to
+deleted records.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">map of all changed values, keyed by record id</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getCurrentRecordMap">
+                                    <h4>
+                                        <a name="method_getCurrentRecordMap">getCurrentRecordMap</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Object
+                                            <strong property="yui:name">getCurrentRecordMap</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the records returned by the latest request, keyed by record id</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getCurrentRecords">
+                                    <h4>
+                                        <a name="method_getCurrentRecords">getCurrentRecords</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Number
+                                            <strong property="yui:name">getCurrentRecords</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Number
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the records returned by the latest request</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getRecordCount">
+                                    <h4>
+                                        <a name="method_getRecordCount">getRecordCount</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Number
+                                            <strong property="yui:name">getRecordCount</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Use this instead of any meta information in response.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Number
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the total number of records</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getRemovedRecordIndexes">
+                                    <h4>
+                                        <a name="method_getRemovedRecordIndexes">getRemovedRecordIndexes</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Array
+                                            <strong property="yui:name">getRemovedRecordIndexes</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Array
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">list of removed record indices, based on initial ordering</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_getValue">
+                                    <h4>
+                                        <a name="method_getValue">getValue</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        mixed
+                                            <strong property="yui:name">getValue</strong>
+                                           (
+                                                
+                                                        
+                                                         record_index
+                                                    
+                                                
+                                                        , 
+                                                         key
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">record_index</span>
+                                                        &lt;<span property="yui:type">Number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"></span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">key</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  field key</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            mixed
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the value of the specified field in the specified record</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method_insertRecord">
+                                    <h4>
+                                        <a name="method_insertRecord">insertRecord</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        String
+                                            <strong property="yui:name">insertRecord</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                                        , 
+                                                         record
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            You must reload() the widget after calling this function!
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">Number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  insertion index</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">record</span>
+                                                        &lt;<span property="yui:type">Object|String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  record to insert or id of record to clone</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            String
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">id of newly inserted record</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_killRecord">
+                                    <h4>
+                                        <a name="method_killRecord">killRecord</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">killRecord</strong>
+                                           (
+                                                
+                                                        
+                                                         record_id
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            <p>Completely remove a record, from both the display and the
+underlying data.  Only usable with DataSource.Local.  When using
+best-effort save on the server, call this for each record that was
+successfully deleted.</p>
+<p>You must reload() the widget after calling this function!</p>
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">record_id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"></span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_mergeChanges">
+                                    <h4>
+                                        <a name="method_mergeChanges">mergeChanges</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">mergeChanges</strong>
+                                           (
+                                                
+                                                        
+                                                         record_id
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Merge changes into the underlying data, to flush diffs for a record.
+Only usable with DataSource.Local.  When using best-effort save on
+the server, call this for each record that was successfully saved.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">record_id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"></span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_recordIdToIndex">
+                                    <h4>
+                                        <a name="method_recordIdToIndex">recordIdToIndex</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Number
+                                            <strong property="yui:name">recordIdToIndex</strong>
+                                           (
+                                                
+                                                        
+                                                         record_id
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Find the index of the given record id.  Only usable with
+DataSource.Local.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">record_id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"></span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Number
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">index or record or -1 if not found</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method_removeRecord">
+                                    <h4>
+                                        <a name="method_removeRecord">removeRecord</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">removeRecord</strong>
+                                           (
+                                                
+                                                        
+                                                         index
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            You must reload() the widget after calling this function!
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">index</span>
+                                                        &lt;<span property="yui:type">Number</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  index of record to remove</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">true if record was removed</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_updateRecordId">
+                                    <h4>
+                                        <a name="method_updateRecordId">updateRecordId</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">updateRecordId</strong>
+                                           (
+                                                
+                                                        
+                                                         orig_record_id
+                                                    
+                                                
+                                                        , 
+                                                         new_record_id
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            <p>Change the id of a record.  Only usable with DataSource.Local.
+When using best-effort save on the server, call this for each newly
+created record that was successfully saved.</p>
+<p>You must reload() the widget after calling this function!</p>
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">orig_record_id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"></span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">new_record_id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"></span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="protected" rel="yui:method" resource="#method_updateValue">
+                                    <h4>
+                                        <a name="method_updateValue">updateValue</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                         protected 
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">updateValue</strong>
+                                           (
+                                                
+                                                        
+                                                         record_id
+                                                    
+                                                
+                                                        , 
+                                                         key
+                                                    
+                                                
+                                                        , 
+                                                         value
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Update a value in a record.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">record_id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"></span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">key</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  field key</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">value</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  new item value</span>
+                                                        </dd>
+                                                </dl>
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+                        <div class="section field details">
+                            <h3 id="configattributes">Configuration Attributes</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:attribute" resource="#config_ds">
+                                    <h4><a name="config_ds">ds</a>
+                                        <code>- writeonce <span property="yui:type">{DataSource}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            REQUIRED. The original data.  This must be immutable, i.e., the
+values must not change.
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_extractTotalRecords">
+                                    <h4><a name="config_extractTotalRecords">extractTotalRecords</a>
+                                        <code>- writeonce <span property="yui:type">{Function}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            REQUIRED. The function to call to extract the total number of
+records from the response.
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_generateRequest">
+                                    <h4><a name="config_generateRequest">generateRequest</a>
+                                        <code>- writeonce <span property="yui:type">{Function}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            REQUIRED.  The function to convert the initial request into a
+request usable by the underlying DataSource.  This function takes
+one argument: state (startIndex,resultCount,...).
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_generateUniqueId">
+                                    <h4><a name="config_generateUniqueId">generateUniqueId</a>
+                                        <code>- writeonce <span property="yui:type">{Function}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The function to call to generate a unique id for a new record.  The
+default generates "bulk-edit-new-id-#".
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_startIndexExpr">
+                                    <h4><a name="config_startIndexExpr">startIndexExpr</a>
+                                        <code>- writeonce <span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            OGNL expression telling how to extract the startIndex from the
+received data, e.g., <code>.meta.startIndex</code>.  If it is not
+provided, startIndex is always assumed to be zero.
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_totalRecordsReturnExpr">
+                                    <h4><a name="config_totalRecordsReturnExpr">totalRecordsReturnExpr</a>
+                                        <code>- writeonce <span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            OGNL expression telling where in the response to store the total
+number of records, e.g., <code>.meta.totalRecords</code>.  This is
+only appropriate for DataSources that always return the entire data
+set.
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+                                    <div class="" rel="yui:attribute" resource="#config_uniqueIdKey">
+                                    <h4><a name="config_uniqueIdKey">uniqueIdKey</a>
+                                        <code>- writeonce <span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            REQUIRED. The name of the key in each record that stores an
+identifier which is unique across the entire data set.
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
+
+                            </div>
+                        </div>
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class="selected"><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="BulkEditDataSource.html" title="BulkEditDataSource">BulkEditDataSource</a></li>
+                                <li class=""><a href="BulkEditor.html" title="BulkEditor">BulkEditor</a></li>
+                                <li class=""><a href="HTMLTableBulkEditor.html" title="HTMLTableBulkEditor">HTMLTableBulkEditor</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="BulkEditDataSource.js.html" title="BulkEditDataSource.js">BulkEditDataSource.js</a></li>
+                                <li class=""><a href="BulkEditor.js.html" title="BulkEditor.js">BulkEditor.js</a></li>
+                                <li class=""><a href="HTMLTableBulkEditor.js.html" title="HTMLTableBulkEditor.js">HTMLTableBulkEditor.js</a></li>
+                        </ul>
+                    </div>
+
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class="protected"><a href="#method__dataIsLocal" title="_dataIsLocal">_dataIsLocal</a></li>
+                                <li class="protected"><a href="#method__defRequestFn" title="_defRequestFn">_defRequestFn</a></li>
+                                <li class="protected"><a href="#method__flushCache" title="_flushCache">_flushCache</a></li>
+                                <li class="protected"><a href="#method__getComparator" title="_getComparator">_getComparator</a></li>
+                                <li class=""><a href="#method_getChanges" title="getChanges">getChanges</a></li>
+                                <li class=""><a href="#method_getCurrentRecordMap" title="getCurrentRecordMap">getCurrentRecordMap</a></li>
+                                <li class=""><a href="#method_getCurrentRecords" title="getCurrentRecords">getCurrentRecords</a></li>
+                                <li class=""><a href="#method_getRecordCount" title="getRecordCount">getRecordCount</a></li>
+                                <li class=""><a href="#method_getRemovedRecordIndexes" title="getRemovedRecordIndexes">getRemovedRecordIndexes</a></li>
+                                <li class=""><a href="#method_getValue" title="getValue">getValue</a></li>
+                                <li class="protected"><a href="#method_insertRecord" title="insertRecord">insertRecord</a></li>
+                                <li class=""><a href="#method_killRecord" title="killRecord">killRecord</a></li>
+                                <li class=""><a href="#method_mergeChanges" title="mergeChanges">mergeChanges</a></li>
+                                <li class=""><a href="#method_recordIdToIndex" title="recordIdToIndex">recordIdToIndex</a></li>
+                                <li class="protected"><a href="#method_removeRecord" title="removeRecord">removeRecord</a></li>
+                                <li class=""><a href="#method_updateRecordId" title="updateRecordId">updateRecordId</a></li>
+                                <li class="protected"><a href="#method_updateValue" title="updateValue">updateValue</a></li>
+                        </ul>
+                    </div>
+
+
+                    <div id="configList" class="module">
+                        <h4>Configuration Attributes</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#config_ds" title="ds">ds</a></li>
+                                <li class=""><a href="#config_extractTotalRecords" title="extractTotalRecords">extractTotalRecords</a></li>
+                                <li class=""><a href="#config_generateRequest" title="generateRequest">generateRequest</a></li>
+                                <li class=""><a href="#config_generateUniqueId" title="generateUniqueId">generateUniqueId</a></li>
+                                <li class=""><a href="#config_startIndexExpr" title="startIndexExpr">startIndexExpr</a></li>
+                                <li class=""><a href="#config_totalRecordsReturnExpr" title="totalRecordsReturnExpr">totalRecordsReturnExpr</a></li>
+                                <li class=""><a href="#config_uniqueIdKey" title="uniqueIdKey">uniqueIdKey</a></li>
+                        </ul>
+                    </div>
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "BulkEditDataSource.html#method__dataIsLocal", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_dataIsLocal"}, {"url": "BulkEditDataSource.html#method__defRequestFn", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_defRequestFn"}, {"url": "BulkEditDataSource.html#config_ds", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "ds"}, {"url": "BulkEditDataSource.html#config_extractTotalRecords", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "extractTotalRecords"}, {"url": "BulkEditDataSource.html#method__flushCache", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_flushCache"}, {"url": "BulkEditDataSource.html#config_generateRequest", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "generateRequest"}, {"url": "BulkEditDataSource.html#config_generateUniqueId", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "generateUniqueId"}, {"url": "BulkEditDataSource.html#method_getChanges", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getChanges"}, {"url": "BulkEditDataSource.html#method__getComparator", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_getComparator"}, {"url": "BulkEditDataSource.html#method_getCurrentRecordMap", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getCurrentRecordMap"}, {"url": "BulkEditDataSource.html#method_getCurrentRecords", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getCurrentRecords"}, {"url": "BulkEditDataSource.html#method_getRecordCount", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getRecordCount"}, {"url": "BulkEditDataSource.html#method_getRemovedRecordIndexes", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getRemovedRecordIndexes"}, {"url": "BulkEditDataSource.html#method_getValue", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getValue"}, {"url": "BulkEditDataSource.html#method_insertRecord", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "insertRecord"}, {"url": "BulkEditDataSource.html#method_killRecord", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "killRecord"}, {"url": "BulkEditDataSource.html#method_mergeChanges", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "mergeChanges"}, {"url": "BulkEditDataSource.html#method_recordIdToIndex", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "recordIdToIndex"}, {"url": "BulkEditDataSource.html#method_removeRecord", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "removeRecord"}, {"url": "BulkEditDataSource.html#config_startIndexExpr", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "startIndexExpr"}, {"url": "BulkEditDataSource.html#config_totalRecordsReturnExpr", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "totalRecordsReturnExpr"}, {"url": "BulkEditDataSource.html#config_uniqueIdKey", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "BulkEditDataSource.html#method_updateRecordId", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "updateRecordId"}, {"url": "BulkEditDataSource.html#method_updateValue", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "updateValue"}];
+</script>
+</body>
+</html>

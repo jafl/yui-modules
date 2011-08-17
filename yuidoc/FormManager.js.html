@@ -320,63 +320,6 @@
 <span class="p">}</span>
 
 <span class="cm">/**</span>
-<span class="cm"> * &lt;p&gt;Names of supported status values, highest precedence first.  Default:</span>
-<span class="cm"> * &lt;code&gt;[ &#39;error&#39;, &#39;warn&#39;, &#39;success&#39;, &#39;info&#39; ]&lt;/code&gt;&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;This is static because it links to CSS rules that define the</span>
-<span class="cm"> * appearance of each status type:  .formmgr-has{status}&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @config Y.FormManager.status_order</span>
-<span class="cm"> * @type {Array}</span>
-<span class="cm"> * @static</span>
-<span class="cm"> */</span>
-<span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span> <span class="o">=</span>
-<span class="p">[</span>
-	<span class="s1">&#39;error&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;warn&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;success&#39;</span><span class="p">,</span>
-	<span class="s1">&#39;info&#39;</span>
-<span class="p">];</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Get the precedence of the given status name.</span>
-<span class="cm"> * </span>
-<span class="cm"> * @method getStatusPrecedence</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param status {String} The name of the status value.</span>
-<span class="cm"> * @return {int} The position in the &lt;code&gt;status_order&lt;/code&gt; array.</span>
-<span class="cm"> */</span>
-<span class="nx">FormManager</span><span class="p">.</span><span class="nx">getStatusPrecedence</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="cm">/* string */</span>	<span class="nx">status</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">status</span> <span class="o">==</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
-		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-
-	<span class="k">return</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Compare two status values.</span>
-<span class="cm"> * </span>
-<span class="cm"> * @method statusTakesPrecedence</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param orig_status {String} The name of the original status value.</span>
-<span class="cm"> * @param new_status {String} The name of the new status value.</span>
-<span class="cm"> * @return {boolean} &lt;code&gt;true&lt;/code&gt; if &lt;code&gt;new_status&lt;/code&gt; takes precedence over &lt;code&gt;orig_status&lt;/code&gt;</span>
-<span class="cm"> */</span>
-<span class="nx">FormManager</span><span class="p">.</span><span class="nx">statusTakesPrecedence</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="cm">/* string */</span>	<span class="nx">orig_status</span><span class="p">,</span>
-	<span class="cm">/* string */</span>	<span class="nx">new_status</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">orig_status</span> <span class="o">||</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">getStatusPrecedence</span><span class="p">(</span><span class="nx">new_status</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nx">FormManager</span><span class="p">.</span><span class="nx">getStatusPrecedence</span><span class="p">(</span><span class="nx">orig_status</span><span class="p">));</span>
-<span class="p">};</span>
-
-<span class="cm">/**</span>
 <span class="cm"> * Get the status of the given fieldset or form row.</span>
 <span class="cm"> * </span>
 <span class="cm"> * @method getElementStatus</span>
@@ -1298,6 +1241,8 @@
                         <ul class="content">
                                 <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
                                 <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
                                 <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
                                 <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>

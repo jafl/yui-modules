@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-bulkedit   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-bulkedit&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a>
+                
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                   
+                    <h3>Module: gallery-bulkedit
+                    
+
+
+                    </h3>
+                    <div class="description summary">
+                        A widget for editing many records at once.
+                    </div>
+
+
+
+                <div class="yui-gc">
+                    <div class="yui-u first">
+
+                            <p>This module contains the following classes:</p>
+                            <script>
+                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>BulkEditDataSource manages a YUI DataSource + diffs (insertions,\nremovals, changes to values).</p>\n<p>The YUI DataSource must be immutable, e.g., if it is an XHR\ndatasource, the data must not change.</p>\n<p>By using a DataSource, we can support both client-side pagination\n(all data pre-loaded, best-effort save allowed) and server-side\npagination (load data when needed, only all-or-nothing save allowed).\nServer-side pagination is useful when editing a large amount of existing\nrecords or after uploading a large number of new records. (Store the new\nrecords in a scratch space, so everything does not have to be sent back\nto the client after parsing.)  In the case of bulk upload, server-side\nvalidation will catch errors in unviewed records.</p>\n<p>The responseSchema passed to the YUI DataSource must include a\ncomparator for each field that should not be treated like a string.\nThis comparator can either be 'integer', 'decimal', or a function which\ntakes two arguments.</p>", "guessedname": "BulkEditDataSource", "name": "BulkEditDataSource"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>BulkEditor provides the basic structure for editing all the records\nin a BulkEditDataSource.  The fields for editing a record are rendered\ninto a \"row\".  This could be a div, a tbody, or something else.</p>\n<p>All event handlers must be placed on the container, not individual\nDOM elements.</p>\n<p>Errors must be returned from the server in the order in which records\nare displayed.  Because of this, when data is sent to the server:</p>\n<ul>\n<li>If the server knows the ordering, you can send the diffs.  (Diffs are an unordered map, keyed on the record id.)</li>\n<li>If the server doesn't know the ordering, you must send all the data.</li>\n</ul>", "guessedname": "BulkEditor", "name": "BulkEditor"}, {"extends": {"superclass": {"BulkEditor": "BulkEditor"}, "events": {"BulkEditor": [{"access": "", "deprecated": false, "name": "clearErrorNotification"}, {"access": "", "deprecated": false, "name": "notifyErrors"}]}, "configs": {"BulkEditor": [{"access": "", "deprecated": false, "name": "ds"}, {"access": "", "deprecated": false, "name": "fields"}, {"access": "", "deprecated": false, "name": "paginator"}, {"access": "", "deprecated": false, "name": "pingClass"}, {"access": "", "deprecated": false, "name": "pingTimeout"}, {"access": "", "deprecated": false, "name": "requestExtra"}]}, "properties": {"BulkEditor": []}, "methods": {"BulkEditor": [{"access": "", "deprecated": false, "name": "_clearValidationMessages"}, {"access": "protected", "deprecated": false, "name": "_getElementStatus"}, {"access": "protected", "deprecated": false, "name": "_render"}, {"access": "protected", "deprecated": false, "name": "_renderContainer"}, {"access": "protected", "deprecated": false, "name": "_renderField"}, {"access": "protected", "deprecated": false, "name": "_renderRecord"}, {"access": "protected", "deprecated": false, "name": "_renderRecordContainer"}, {"access": "protected", "deprecated": false, "name": "_updatePageStatus"}, {"access": "protected", "deprecated": false, "name": "_updatePaginator"}, {"access": "", "deprecated": false, "name": "_updateRecordStatus"}, {"access": "protected", "deprecated": false, "name": "_validateAllPages"}, {"access": "protected", "deprecated": false, "name": "_validateElements"}, {"access": "protected", "deprecated": false, "name": "_validateVisibleFields"}, {"access": "", "deprecated": false, "name": "clearServerErrors"}, {"access": "", "deprecated": false, "name": "displayFieldMessage"}, {"access": "", "deprecated": false, "name": "displayRecordMessage"}, {"access": "", "deprecated": false, "name": "getAllValues"}, {"access": "", "deprecated": false, "name": "getChanges"}, {"access": "", "deprecated": false, "name": "getFieldConfig"}, {"access": "", "deprecated": false, "name": "getFieldContainer"}, {"access": "", "deprecated": false, "name": "getFieldElement"}, {"access": "", "deprecated": false, "name": "getFieldId"}, {"access": "", "deprecated": false, "name": "getRecordAndFieldKey"}, {"access": "", "deprecated": false, "name": "getRecordContainer"}, {"access": "", "deprecated": false, "name": "getRecordContainerId"}, {"access": "", "deprecated": false, "name": "getRecordId"}, {"access": "", "deprecated": false, "name": "insertRecord"}, {"access": "", "deprecated": false, "name": "pingRecord"}, {"access": "", "deprecated": false, "name": "reload"}, {"access": "", "deprecated": false, "name": "removeRecord"}, {"access": "", "deprecated": false, "name": "saveChanges"}, {"access": "", "deprecated": false, "name": "setServerErrors"}, {"access": "", "deprecated": false, "name": "showRecordId"}, {"access": "", "deprecated": false, "name": "showRecordIndex"}, {"access": "", "deprecated": false, "name": "validate"}]}}, "description": "<p>HTMLTableBulkEditor builds an HTML table with one tbody for each\nrecord.</p>", "guessedname": "HTMLTableBulkEditor", "name": "HTMLTableBulkEditor"}];
+                            </script>
+                            <div id="splash_classList">
+                                <ul>
+                                    <li><a href="BulkEditDataSource.html" title="BulkEditDataSource" id="class_0">BulkEditDataSource</a></li>
+                                    <li><a href="BulkEditor.html" title="BulkEditor" id="class_1">BulkEditor</a></li>
+                                    <li><a href="HTMLTableBulkEditor.html" title="HTMLTableBulkEditor" id="class_2">HTMLTableBulkEditor</a></li>
+                                </ul>
+                            </div>
+                    </div>
+                    <div class="yui-u">
+
+                        </div>
+                </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class="selected"><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="BulkEditDataSource.html" title="BulkEditDataSource">BulkEditDataSource</a></li>
+                                <li class=""><a href="BulkEditor.html" title="BulkEditor">BulkEditor</a></li>
+                                <li class=""><a href="HTMLTableBulkEditor.html" title="HTMLTableBulkEditor">HTMLTableBulkEditor</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="BulkEditDataSource.js.html" title="BulkEditDataSource.js">BulkEditDataSource.js</a></li>
+                                <li class=""><a href="BulkEditor.js.html" title="BulkEditor.js">BulkEditor.js</a></li>
+                                <li class=""><a href="HTMLTableBulkEditor.js.html" title="HTMLTableBulkEditor.js">HTMLTableBulkEditor.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "BulkEditor.html#event_clearErrorNotification", "access": "", "host": "BulkEditor", "type": "event", "name": "clearErrorNotification"}, {"url": "BulkEditor.html#method_clearServerErrors", "access": "", "host": "BulkEditor", "type": "method", "name": "clearServerErrors"}, {"url": "BulkEditor.html#method__clearValidationMessages", "access": "", "host": "BulkEditor", "type": "method", "name": "_clearValidationMessages"}, {"url": "HTMLTableBulkEditor.html#config_columns", "access": "", "host": "HTMLTableBulkEditor", "type": "config", "name": "columns"}, {"url": "BulkEditDataSource.html#method__dataIsLocal", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_dataIsLocal"}, {"url": "BulkEditDataSource.html#method__defRequestFn", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_defRequestFn"}, {"url": "BulkEditor.html#method_displayFieldMessage", "access": "", "host": "BulkEditor", "type": "method", "name": "displayFieldMessage"}, {"url": "BulkEditor.html#method_displayRecordMessage", "access": "", "host": "BulkEditor", "type": "method", "name": "displayRecordMessage"}, {"url": "BulkEditDataSource.html#config_ds", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "ds"}, {"url": "BulkEditor.html#config_ds", "access": "", "host": "BulkEditor", "type": "config", "name": "ds"}, {"url": "HTMLTableBulkEditor.html#config_events", "access": "", "host": "HTMLTableBulkEditor", "type": "config", "name": "events"}, {"url": "BulkEditDataSource.html#config_extractTotalRecords", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "extractTotalRecords"}, {"url": "BulkEditor.html#method_fieldMarkup", "access": "", "host": "BulkEditor", "type": "method", "name": "fieldMarkup"}, {"url": "BulkEditor.html#config_fields", "access": "", "host": "BulkEditor", "type": "config", "name": "fields"}, {"url": "BulkEditDataSource.html#method__flushCache", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_flushCache"}, {"url": "BulkEditDataSource.html#config_generateRequest", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "generateRequest"}, {"url": "BulkEditDataSource.html#config_generateUniqueId", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "generateUniqueId"}, {"url": "BulkEditor.html#method_getAllValues", "access": "", "host": "BulkEditor", "type": "method", "name": "getAllValues"}, {"url": "BulkEditDataSource.html#method_getChanges", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getChanges"}, {"url": "BulkEditor.html#method_getChanges", "access": "", "host": "BulkEditor", "type": "method", "name": "getChanges"}, {"url": "BulkEditDataSource.html#method__getComparator", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_getComparator"}, {"url": "BulkEditDataSource.html#method_getCurrentRecordMap", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getCurrentRecordMap"}, {"url": "BulkEditDataSource.html#method_getCurrentRecords", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getCurrentRecords"}, {"url": "BulkEditor.html#method__getElementStatus", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_getElementStatus"}, {"url": "BulkEditor.html#method_getFieldConfig", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldConfig"}, {"url": "BulkEditor.html#method_getFieldContainer", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldContainer"}, {"url": "BulkEditor.html#method_getFieldElement", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldElement"}, {"url": "BulkEditor.html#method_getFieldId", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldId"}, {"url": "BulkEditor.html#method_getRecordAndFieldKey", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordAndFieldKey"}, {"url": "BulkEditor.html#method_getRecordContainer", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordContainer"}, {"url": "BulkEditor.html#method_getRecordContainerId", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordContainerId"}, {"url": "BulkEditDataSource.html#method_getRecordCount", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getRecordCount"}, {"url": "BulkEditor.html#method_getRecordId", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordId"}, {"url": "BulkEditDataSource.html#method_getRemovedRecordIndexes", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getRemovedRecordIndexes"}, {"url": "BulkEditDataSource.html#method_getValue", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getValue"}, {"url": "HTMLTableBulkEditor.html#method_inputFormatter", "access": "", "host": "HTMLTableBulkEditor", "type": "method", "name": "inputFormatter"}, {"url": "BulkEditDataSource.html#method_insertRecord", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "insertRecord"}, {"url": "BulkEditor.html#method_insertRecord", "access": "", "host": "BulkEditor", "type": "method", "name": "insertRecord"}, {"url": "BulkEditDataSource.html#method_killRecord", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "killRecord"}, {"url": "BulkEditor.html#method_labelMarkup", "access": "", "host": "BulkEditor", "type": "method", "name": "labelMarkup"}, {"url": "BulkEditDataSource.html#method_mergeChanges", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "mergeChanges"}, {"url": "BulkEditor.html#event_notifyErrors", "access": "", "host": "BulkEditor", "type": "event", "name": "notifyErrors"}, {"url": "BulkEditor.html#config_paginator", "access": "", "host": "BulkEditor", "type": "config", "name": "paginator"}, {"url": "BulkEditor.html#config_pingClass", "access": "", "host": "BulkEditor", "type": "config", "name": "pingClass"}, {"url": "BulkEditor.html#method_pingRecord", "access": "", "host": "BulkEditor", "type": "method", "name": "pingRecord"}, {"url": "BulkEditor.html#config_pingTimeout", "access": "", "host": "BulkEditor", "type": "config", "name": "pingTimeout"}, {"url": "BulkEditDataSource.html#method_recordIdToIndex", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "recordIdToIndex"}, {"url": "BulkEditor.html#method_reload", "access": "", "host": "BulkEditor", "type": "method", "name": "reload"}, {"url": "BulkEditDataSource.html#method_removeRecord", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "removeRecord"}, {"url": "BulkEditor.html#method_removeRecord", "access": "", "host": "BulkEditor", "type": "method", "name": "removeRecord"}, {"url": "BulkEditor.html#method__render", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_render"}, {"url": "BulkEditor.html#method__renderContainer", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderContainer"}, {"url": "BulkEditor.html#method__renderField", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderField"}, {"url": "BulkEditor.html#method__renderRecord", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderRecord"}, {"url": "BulkEditor.html#method__renderRecordContainer", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderRecordContainer"}, {"url": "BulkEditor.html#config_requestExtra", "access": "", "host": "BulkEditor", "type": "config", "name": "requestExtra"}, {"url": "BulkEditor.html#method_saveChanges", "access": "", "host": "BulkEditor", "type": "method", "name": "saveChanges"}, {"url": "HTMLTableBulkEditor.html#method_selectFormatter", "access": "", "host": "HTMLTableBulkEditor", "type": "method", "name": "selectFormatter"}, {"url": "BulkEditor.html#method_setServerErrors", "access": "", "host": "BulkEditor", "type": "method", "name": "setServerErrors"}, {"url": "BulkEditor.html#method_showRecordId", "access": "", "host": "BulkEditor", "type": "method", "name": "showRecordId"}, {"url": "BulkEditor.html#method_showRecordIndex", "access": "", "host": "BulkEditor", "type": "method", "name": "showRecordIndex"}, {"url": "BulkEditDataSource.html#config_startIndexExpr", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "startIndexExpr"}, {"url": "HTMLTableBulkEditor.html#method_textareaFormatter", "access": "", "host": "HTMLTableBulkEditor", "type": "method", "name": "textareaFormatter"}, {"url": "BulkEditDataSource.html#config_totalRecordsReturnExpr", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "totalRecordsReturnExpr"}, {"url": "BulkEditDataSource.html#config_uniqueIdKey", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "BulkEditor.html#method__updatePageStatus", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_updatePageStatus"}, {"url": "BulkEditor.html#method__updatePaginator", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_updatePaginator"}, {"url": "BulkEditDataSource.html#method_updateRecordId", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "updateRecordId"}, {"url": "BulkEditor.html#method__updateRecordStatus", "access": "", "host": "BulkEditor", "type": "method", "name": "_updateRecordStatus"}, {"url": "BulkEditDataSource.html#method_updateValue", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "updateValue"}, {"url": "BulkEditor.html#method_validate", "access": "", "host": "BulkEditor", "type": "method", "name": "validate"}, {"url": "BulkEditor.html#method__validateAllPages", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_validateAllPages"}, {"url": "BulkEditor.html#method__validateElements", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_validateElements"}, {"url": "BulkEditor.html#method__validateVisibleFields", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_validateVisibleFields"}, {"url": "BulkEditor.html#property_Y.BulkEditor.markup", "access": "", "host": "BulkEditor", "type": "property", "name": "Y.BulkEditor.markup"}, {"url": "HTMLTableBulkEditor.html#property_Y.HTMLTableBulkEditor.defaults", "access": "", "host": "HTMLTableBulkEditor", "type": "property", "name": "Y.HTMLTableBulkEditor.defaults"}];
+</script>
+</body>
+</html>

@@ -57,8 +57,9 @@
 <span class="cm"> * @class Node~optimizations</span>
 <span class="cm"> */</span>
 
-<span class="kd">var</span> <span class="nx">class_name_re</span> <span class="o">=</span> <span class="sr">/^\.([-_a-z0-9]+)$/i</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">tag_name_re</span>   <span class="o">=</span> <span class="sr">/^[a-z]+$/i</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">tag_class_name_re</span> <span class="o">=</span> <span class="sr">/^([a-z]*)\.([-_a-z0-9]+)$/i</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">class_name_re</span>     <span class="o">=</span> <span class="sr">/^\.([-_a-z0-9]+)$/i</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">tag_name_re</span>       <span class="o">=</span> <span class="sr">/^[a-z]+$/i</span><span class="p">;</span>
 
 <span class="cm">/**********************************************************************</span>
 <span class="cm"> * &lt;p&gt;Patch to speed up search for a single class name or single tag name.</span>
@@ -176,11 +177,11 @@
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">class_name_re</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">tag_class_name_re</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;all() calling getElementsByClassName() with &#39;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
-			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;all() calling getElementsByClassName() with &#39;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
+			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">tag_name_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
@@ -247,6 +248,8 @@
                         <ul class="content">
                                 <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
                                 <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
                                 <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
                                 <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>

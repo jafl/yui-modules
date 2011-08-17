@@ -1,0 +1,1483 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-bulkedit   BulkEditor.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-bulkedit&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a>
+                
+                 &gt; BulkEditor.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * A widget for editing many records at once.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module gallery-bulkedit</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * &lt;p&gt;BulkEditor provides the basic structure for editing all the records</span>
+<span class="cm"> * in a BulkEditDataSource.  The fields for editing a record are rendered</span>
+<span class="cm"> * into a &quot;row&quot;.  This could be a div, a tbody, or something else.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;All event handlers must be placed on the container, not individual</span>
+<span class="cm"> * DOM elements.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;Errors must be returned from the server in the order in which records</span>
+<span class="cm"> * are displayed.  Because of this, when data is sent to the server:&lt;/p&gt;</span>
+<span class="cm"> * &lt;ul&gt;</span>
+<span class="cm"> * &lt;li&gt;If the server knows the ordering, you can send the diffs.  (Diffs are an unordered map, keyed on the record id.)&lt;/li&gt;</span>
+<span class="cm"> * &lt;li&gt;If the server doesn&#39;t know the ordering, you must send all the data.&lt;/li&gt;</span>
+<span class="cm"> * &lt;/ul&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * @class BulkEditor</span>
+<span class="cm"> * @extends Widget</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object}</span>
+<span class="cm"> */</span>
+<span class="kd">function</span> <span class="nx">BulkEditor</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;bulkedit&quot;</span><span class="p">;</span>
+
+<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @config ds</span>
+<span class="cm">	 * @type {BulkEditDataSource}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
+	<span class="nx">ds</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="k">instanceof</span> <span class="nx">BulkEditDataSource</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Configuration for each field: type (input|select|textarea), label,</span>
+<span class="cm">	 * validation (css, regex, msg, fn; see</span>
+<span class="cm">	 * gallery-formmgr-css-validation).  Derived classes can require</span>
+<span class="cm">	 * additional keys.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @config fields</span>
+<span class="cm">	 * @type {Object}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
+	<span class="nx">fields</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">,</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Paginator for switching between pages of records.  BulkEditor</span>
+<span class="cm">	 * expects it to be configured to display ValidationPageLinks, so the</span>
+<span class="cm">	 * user can see which pages have errors that need to be fixed.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @config paginator</span>
+<span class="cm">	 * @type {Paginator}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
+	<span class="nx">paginator</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Paginator</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Extra key/value pairs to pass in the DataSource request.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config requestExtra</span>
+<span class="cm">	 * @type {Object}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
+	<span class="nx">requestExtra</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="p">{},</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">,</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * CSS class used to temporarily highlight a record.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @config pingClass</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;yui3-bulkedit-ping&quot;</span>
+<span class="cm">	 */</span>
+	<span class="nx">pingClass</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;ping&#39;</span><span class="p">),</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Duration in seconds that pingClass is applied to a record.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @config pingTimeout</span>
+<span class="cm">	 * @type {Number}</span>
+<span class="cm">	 * @default 2</span>
+<span class="cm">	 */</span>
+	<span class="nx">pingTimeout</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="mi">2</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @event notifyErrors</span>
+<span class="cm"> * @description Fires when widget-level validation messages need to be displayed.</span>
+<span class="cm"> * @param msgs {Array} the messages to display</span>
+<span class="cm"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * @event clearErrorNotification</span>
+<span class="cm"> * @description Fires when widget-level validation messages should be cleared.</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">default_page_size</span> <span class="o">=</span> <span class="mi">1</span><span class="nx">e9</span><span class="p">,</span>
+
+	<span class="nx">id_prefix</span> <span class="o">=</span> <span class="s1">&#39;bulk-editor&#39;</span><span class="p">,</span>
+	<span class="nx">id_separator</span> <span class="o">=</span> <span class="s1">&#39;__&#39;</span><span class="p">,</span>
+	<span class="nx">id_regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;^&#39;</span> <span class="o">+</span> <span class="nx">id_prefix</span> <span class="o">+</span> <span class="nx">id_separator</span> <span class="o">+</span> <span class="s1">&#39;(.+?)(?:&#39;</span> <span class="o">+</span> <span class="nx">id_separator</span> <span class="o">+</span> <span class="s1">&#39;(.+?))?$&#39;</span><span class="p">),</span>
+
+	<span class="nx">field_container_class</span>        <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;field-container&#39;</span><span class="p">),</span>
+	<span class="nx">field_container_class_prefix</span> <span class="o">=</span> <span class="nx">field_container_class</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+	<span class="nx">field_class_prefix</span>           <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;field&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+
+	<span class="nx">class_re_prefix</span> <span class="o">=</span> <span class="s1">&#39;(?:^|\\s)(?:&#39;</span><span class="p">,</span>
+	<span class="nx">class_re_suffix</span> <span class="o">=</span> <span class="s1">&#39;)(?:\\s|$)&#39;</span><span class="p">,</span>
+
+	<span class="nx">status_prefix</span>  <span class="o">=</span> <span class="s1">&#39;bulkedit-has&#39;</span><span class="p">,</span>
+	<span class="nx">status_pattern</span> <span class="o">=</span> <span class="nx">status_prefix</span> <span class="o">+</span> <span class="s1">&#39;([a-z]+)&#39;</span><span class="p">,</span>
+	<span class="nx">status_re</span>      <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">class_re_prefix</span> <span class="o">+</span> <span class="nx">status_pattern</span> <span class="o">+</span> <span class="nx">class_re_suffix</span><span class="p">),</span>
+
+	<span class="nx">record_status_prefix</span>  <span class="o">=</span> <span class="s1">&#39;bulkedit-hasrecord&#39;</span><span class="p">,</span>
+	<span class="nx">record_status_pattern</span> <span class="o">=</span> <span class="nx">record_status_prefix</span> <span class="o">+</span> <span class="s1">&#39;([a-z]+)&#39;</span><span class="p">,</span>
+	<span class="nx">record_status_re</span>      <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">class_re_prefix</span> <span class="o">+</span> <span class="nx">record_status_pattern</span> <span class="o">+</span> <span class="nx">class_re_suffix</span><span class="p">),</span>
+
+	<span class="nx">message_container_class</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;message-text&#39;</span><span class="p">),</span>
+
+	<span class="nx">perl_flags_regex</span> <span class="o">=</span> <span class="sr">/^\(\?([a-z]+)\)/</span><span class="p">;</span>
+
+<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">record_container_class</span>     <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;bd&#39;</span><span class="p">);</span>
+<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">record_msg_container_class</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;record-message-container&#39;</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">switchPage</span><span class="p">(</span><span class="nx">state</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">saveChanges</span><span class="p">();</span>
+
+	<span class="kd">var</span> <span class="nx">pg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;paginator&#39;</span><span class="p">);</span>
+	<span class="nx">pg</span><span class="p">.</span><span class="nx">setTotalRecords</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">totalRecords</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+	<span class="nx">pg</span><span class="p">.</span><span class="nx">setStartIndex</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">recordOffset</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+	<span class="nx">pg</span><span class="p">.</span><span class="nx">setRowsPerPage</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">rowsPerPage</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+	<span class="nx">pg</span><span class="p">.</span><span class="nx">setPage</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">page</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_updatePageStatus</span><span class="p">();</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="p">,</span>
+<span class="p">{</span>
+	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">paginator</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">config</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;changeRequest&#39;</span><span class="p">,</span> <span class="nx">switchPage</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="nx">renderUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">clearServerErrors</span><span class="p">();</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Reloads the current page of records.  This will erase any changes</span>
+<span class="cm">	 * unsaved changes!</span>
+<span class="cm">	 */</span>
+	<span class="nx">reload</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">busy</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">plug</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">BusyOverlay</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">busy</span><span class="p">.</span><span class="nx">show</span><span class="p">();</span>
+
+		<span class="kd">var</span> <span class="nx">pg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;paginator&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span>
+		<span class="p">{</span>
+			<span class="nx">startIndex</span><span class="o">:</span>  <span class="nx">pg</span> <span class="o">?</span> <span class="nx">pg</span><span class="p">.</span><span class="nx">getStartIndex</span><span class="p">()</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+			<span class="nx">resultCount</span><span class="o">:</span> <span class="nx">pg</span> <span class="o">?</span> <span class="nx">pg</span><span class="p">.</span><span class="nx">getRowsPerPage</span><span class="p">()</span> <span class="o">:</span> <span class="nx">default_page_size</span>
+		<span class="p">};</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;requestExtra&#39;</span><span class="p">));</span>
+
+		<span class="kd">var</span> <span class="nx">ds</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">);</span>
+		<span class="nx">ds</span><span class="p">.</span><span class="nx">sendRequest</span><span class="p">(</span>
+		<span class="p">{</span>
+			<span class="nx">request</span><span class="o">:</span> <span class="nx">request</span><span class="p">,</span>
+			<span class="nx">callback</span><span class="o">:</span>
+			<span class="p">{</span>
+				<span class="nx">success</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">busy</span><span class="p">.</span><span class="nx">hide</span><span class="p">();</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">pg</span> <span class="o">&amp;&amp;</span> <span class="nx">pg</span><span class="p">.</span><span class="nx">getStartIndex</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">getRecordCount</span><span class="p">())</span>
+					<span class="p">{</span>
+						<span class="nx">pg</span><span class="p">.</span><span class="nx">setPage</span><span class="p">(</span><span class="nx">pg</span><span class="p">.</span><span class="nx">getPreviousPage</span><span class="p">());</span>
+						<span class="k">return</span><span class="p">;</span>
+					<span class="p">}</span>
+
+					<span class="k">this</span><span class="p">.</span><span class="nx">_render</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_updatePaginator</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">scroll_to_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+				<span class="p">},</span>
+				<span class="k">this</span><span class="p">),</span>
+
+				<span class="nx">failure</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span>
+				<span class="p">{</span>
+					<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;error loading data in BulkEditor&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
+
+					<span class="k">this</span><span class="p">.</span><span class="nx">busy</span><span class="p">.</span><span class="nx">hide</span><span class="p">();</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">scroll_to_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+				<span class="p">},</span>
+				<span class="k">this</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">});</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Save the modified values from the current page of records.</span>
+<span class="cm">	 */</span>
+	<span class="nx">saveChanges</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">ds</span>      <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">records</span> <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">getCurrentRecords</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">id_key</span>  <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">records</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFieldElement</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+				<span class="nx">ds</span><span class="p">.</span><span class="nx">updateValue</span><span class="p">(</span><span class="nx">r</span><span class="p">[</span> <span class="nx">id_key</span> <span class="p">],</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">node</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">));</span>
+			<span class="p">},</span>
+			<span class="k">this</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Retrieve *all* the data.  Do not call this if you use server-side</span>
+<span class="cm">	 * pagination.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param callback {Object} callback object which will be invoked by DataSource</span>
+<span class="cm">	 */</span>
+	<span class="nx">getAllValues</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span>
+		<span class="p">{</span>
+			<span class="nx">startIndex</span><span class="o">:</span>  <span class="mi">0</span><span class="p">,</span>
+			<span class="nx">resultCount</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">getRecordCount</span><span class="p">()</span>
+		<span class="p">};</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;requestExtra&#39;</span><span class="p">));</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">sendRequest</span><span class="p">(</span>
+		<span class="p">{</span>
+			<span class="nx">request</span><span class="o">:</span>  <span class="nx">request</span><span class="p">,</span>
+			<span class="nx">callback</span><span class="o">:</span> <span class="nx">callback</span>
+		<span class="p">});</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Object} map of all changed values, keyed by record id</span>
+<span class="cm">	 */</span>
+	<span class="nx">getChanges</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">getChanges</span><span class="p">();</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * &lt;p&gt;Insert a new record.&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * &lt;p&gt;You must reload() the widget after calling this function!&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {Number} insertion index</span>
+<span class="cm">	 * @param record {Object|String} record to insert or id of record to clone</span>
+<span class="cm">	 * @return {String} the new record&#39;s id</span>
+<span class="cm">	 */</span>
+	<span class="nx">insertRecord</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>		<span class="nx">index</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">record</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">record_id</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">insertRecord</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">record</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">records</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">records</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">record_id</span> <span class="p">});</span>
+			<span class="c1">// leave entry in record_map undefined</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_updatePageStatus</span><span class="p">();</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="nx">record_id</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * &lt;p&gt;Remove a record.  The removal will be recorded in the diffs.</span>
+<span class="cm">	 * There is no way to un-remove a record, so if you need that</span>
+<span class="cm">	 * functionality, you may want to use highlighting to indicate removed</span>
+<span class="cm">	 * records instead.&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * &lt;p&gt;You must reload() the widget after calling this function!&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {Number}</span>
+<span class="cm">	 * @return {Boolean} true if the record was successfully removed</span>
+<span class="cm">	 */</span>
+	<span class="nx">removeRecord</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span> <span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">removeRecord</span><span class="p">(</span><span class="nx">index</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">records</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">rec</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">records</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">records</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+				<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">record_map</span><span class="p">[</span> <span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="p">];</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_updatePageStatus</span><span class="p">();</span>
+			<span class="p">}</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param key {String} field key</span>
+<span class="cm">	 * @return {Object} field configuration</span>
+<span class="cm">	 */</span>
+	<span class="nx">getFieldConfig</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string */</span>	<span class="nx">key</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">)[</span><span class="nx">key</span><span class="p">]</span> <span class="o">||</span> <span class="p">{};</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param record {String|Object} record id or record object</span>
+<span class="cm">	 * @return {String} id of DOM element containing the record&#39;s input elements</span>
+<span class="cm">	 */</span>
+	<span class="nx">getRecordContainerId</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object */</span> <span class="nx">record</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">record</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nx">id_prefix</span> <span class="o">+</span> <span class="nx">id_separator</span> <span class="o">+</span> <span class="nx">record</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nx">id_prefix</span> <span class="o">+</span> <span class="nx">id_separator</span> <span class="o">+</span> <span class="nx">record</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">];</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param record {String|Object} record id or record object</span>
+<span class="cm">	 * @param key {String} field key</span>
+<span class="cm">	 * @return {String} id of DOM element containing the field&#39;s input element</span>
+<span class="cm">	 */</span>
+	<span class="nx">getFieldId</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">record</span><span class="p">,</span>
+		<span class="cm">/* string */</span>		<span class="nx">key</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordContainerId</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="o">+</span> <span class="nx">id_separator</span> <span class="o">+</span> <span class="nx">key</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param key {String|Node} field key or field input element</span>
+<span class="cm">	 * @return {Object} object containing record and field_key</span>
+<span class="cm">	 */</span>
+	<span class="nx">getRecordAndFieldKey</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/element */</span>	<span class="nx">field</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">id_regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">field</span><span class="p">)</span> <span class="o">?</span> <span class="nx">field</span> <span class="o">:</span> <span class="nx">field</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">));</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="p">{</span> <span class="nx">record</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">getCurrentRecordMap</span><span class="p">()[</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">],</span> <span class="nx">field_key</span><span class="o">:</span> <span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">};</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param obj {Object|Node} record object, record container, or any node inside record container</span>
+<span class="cm">	 * @return {String} record id</span>
+<span class="cm">	 */</span>
+	<span class="nx">getRecordId</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* object/element */</span>	<span class="nx">obj</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="nx">obj</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nx">obj</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">];</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">record_container_class</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">m</span>  <span class="o">=</span> <span class="nx">id_regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">));</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">return</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container</span>
+<span class="cm">	 * @return {Node} node containing rendered record</span>
+<span class="cm">	 */</span>
+	<span class="nx">getRecordContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object/element */</span> <span class="nx">record</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">record</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">id_prefix</span> <span class="o">+</span> <span class="nx">id_separator</span> <span class="o">+</span> <span class="nx">record</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">record</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nx">record</span><span class="p">.</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">record_container_class</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>	<span class="c1">// record object</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordContainerId</span><span class="p">(</span><span class="nx">record</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="nx">id</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container</span>
+<span class="cm">	 * @param key {String} field key</span>
+<span class="cm">	 * @return {Node} node containing rendered field</span>
+<span class="cm">	 */</span>
+	<span class="nx">getFieldContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object/element */</span>	<span class="nx">record</span><span class="p">,</span>
+		<span class="cm">/* string */</span>				<span class="nx">key</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">field</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFieldElement</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+		<span class="k">return</span> <span class="nx">field</span><span class="p">.</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">field_container_class</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container</span>
+<span class="cm">	 * @param key {String} field key</span>
+<span class="cm">	 * @return {Node} field&#39;s input element</span>
+<span class="cm">	 */</span>
+	<span class="nx">getFieldElement</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object/element */</span>	<span class="nx">record</span><span class="p">,</span>
+		<span class="cm">/* string */</span>				<span class="nx">key</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">record</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">record</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordId</span><span class="p">(</span><span class="nx">record</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getFieldId</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span> <span class="nx">key</span><span class="p">));</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Paginate and/or scroll to make the specified record visible.  Record</span>
+<span class="cm">	 * is pinged to help the user find it.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {Number} record index</span>
+<span class="cm">	 */</span>
+	<span class="nx">showRecordIndex</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span> <span class="nx">index</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">getRecordCount</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="nx">index</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">pg</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;paginator&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">pg</span> <span class="o">?</span> <span class="nx">pg</span><span class="p">.</span><span class="nx">getStartIndex</span><span class="p">()</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">pg</span> <span class="o">?</span> <span class="nx">pg</span><span class="p">.</span><span class="nx">getRowsPerPage</span><span class="p">()</span> <span class="o">:</span> <span class="nx">default_page_size</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">start</span> <span class="o">&lt;=</span> <span class="nx">index</span> <span class="o">&amp;&amp;</span> <span class="nx">index</span> <span class="o">&lt;</span> <span class="nx">start</span><span class="o">+</span><span class="nx">count</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordContainer</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">getCurrentRecords</span><span class="p">()[</span> <span class="nx">index</span> <span class="o">-</span> <span class="nx">start</span> <span class="p">]);</span>
+			<span class="nx">node</span><span class="p">.</span><span class="nx">scrollIntoView</span><span class="p">();</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">pingRecord</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">pg</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">scroll_to_index</span> <span class="o">=</span> <span class="nx">index</span><span class="p">;</span>
+			<span class="nx">pg</span><span class="p">.</span><span class="nx">setPage</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">index</span> <span class="o">/</span> <span class="nx">count</span><span class="p">));</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Paginate and/or scroll to make the specified record visible.  Record</span>
+<span class="cm">	 * is pinged to help the user find it.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param id {Number} record id</span>
+<span class="cm">	 */</span>
+	<span class="nx">showRecordId</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string */</span> <span class="nx">id</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">recordIdToIndex</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">showRecordIndex</span><span class="p">(</span><span class="nx">index</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Apply a class to the DOM element containing the record for a short</span>
+<span class="cm">	 * while.  Your CSS can use this class to highlight the record in some</span>
+<span class="cm">	 * way.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container</span>
+<span class="cm">	 */</span>
+	<span class="nx">pingRecord</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object/element */</span>	<span class="nx">record</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">ping</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pingClass&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">ping</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordContainer</span><span class="p">(</span><span class="nx">record</span><span class="p">);</span>
+			<span class="nx">node</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">ping</span><span class="p">);</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pingTimeout&#39;</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+			<span class="p">{</span>
+				<span class="nx">node</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">ping</span><span class="p">);</span>
+			<span class="p">});</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Render the current page of records.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @param response {Object} response from data source</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_render</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;_render&#39;</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">Event</span><span class="p">.</span><span class="nx">purgeElement</span><span class="p">(</span><span class="nx">container</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_renderContainer</span><span class="p">(</span><span class="nx">container</span><span class="p">);</span>
+		<span class="nx">container</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;scrollTop&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="nx">container</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;scrollLeft&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">record</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderRecordContainer</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">record</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_renderRecord</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">record</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">auto_validate</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">validate</span><span class="p">();</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">scroll_to_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">showRecordIndex</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">scroll_to_index</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">scroll_to_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Derived class should override to create a structure for the records.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @param container {Node}</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_renderContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* element */</span>	<span class="nx">container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">container</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Derived class must override to create a container for the record.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param container {Node}</span>
+<span class="cm">	 * @param record {Object} record data</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_renderRecordContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* element */</span>	<span class="nx">container</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">record</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Derived class can override if it needs to do more than just call</span>
+<span class="cm">	 * _renderField() for each field.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param container {Node} record container</span>
+<span class="cm">	 * @param record {Object} record data</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_renderRecord</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* element */</span>	<span class="nx">container</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">record</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">field</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_renderField</span><span class="p">(</span>
+			<span class="p">{</span>
+				<span class="nx">container</span><span class="o">:</span> <span class="nx">container</span><span class="p">,</span>
+				<span class="nx">key</span><span class="o">:</span>       <span class="nx">key</span><span class="p">,</span>
+				<span class="nx">value</span><span class="o">:</span>     <span class="nx">record</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span>
+				<span class="nx">field</span><span class="o">:</span>     <span class="nx">field</span><span class="p">,</span>
+				<span class="nx">record</span><span class="o">:</span>    <span class="nx">record</span>
+			<span class="p">});</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * If _renderRecord is not overridden, derived class must override this</span>
+<span class="cm">	 * function to render the field.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param o {Object}</span>
+<span class="cm">	 *	container {Node} record container,</span>
+<span class="cm">	 *	key {String} field key,</span>
+<span class="cm">	 *	value {Mixed} field value,</span>
+<span class="cm">	 *	field {Object} field configuration,</span>
+<span class="cm">	 *	record {Object} record data</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_renderField</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* object */</span> <span class="nx">o</span><span class="p">)</span>
+	<span class="p">{</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Update the paginator to match the data source meta information.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param response {Object} response from DataSource</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_updatePaginator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">pg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;paginator&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">pg</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">pg</span><span class="p">.</span><span class="nx">setTotalRecords</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">getRecordCount</span><span class="p">(),</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Clear errors received from the server.  This clears all displayed</span>
+<span class="cm">	 * messages.</span>
+<span class="cm">	 */</span>
+	<span class="nx">clearServerErrors</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">page</span> <span class="o">&amp;&amp;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">page</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;clearErrorNotification&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span> <span class="o">=</span>
+		<span class="p">{</span>
+			<span class="nx">page</span><span class="o">:</span>       <span class="p">[],</span>
+			<span class="nx">records</span><span class="o">:</span>    <span class="p">[],</span>
+			<span class="nx">record_map</span><span class="o">:</span> <span class="p">{}</span>
+		<span class="p">};</span>
+
+		<span class="kd">var</span> <span class="nx">pg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;paginator&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">pg</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">pg</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;pageStatus&#39;</span><span class="p">,</span> <span class="p">[]);</span>
+		<span class="p">}</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">first_error_page</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_clearValidationMessages</span><span class="p">();</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Set page level, record level, and field level errors received from</span>
+<span class="cm">	 * the server.  A message can be either a string (assumed to be an</span>
+<span class="cm">	 * error) or an object providing msg and type, where type can be</span>
+<span class="cm">	 * &#39;error&#39;, &#39;warn&#39;, &#39;info&#39;, or &#39;success&#39;.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param page_errors {Array} list of page-level error messages</span>
+<span class="cm">	 * @param record_field_errors {Array} list of objects *in record display order*,</span>
+<span class="cm">	 *		each of which defines id (String), recordError (message),</span>
+<span class="cm">	 *		and fieldErrors (map of field keys to error messages)</span>
+<span class="cm">	 */</span>
+	<span class="nx">setServerErrors</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* array */</span>	<span class="nx">page_errors</span><span class="p">,</span>
+		<span class="cm">/* array */</span>	<span class="nx">record_field_errors</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">page</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span>
+			<span class="p">(</span><span class="o">!</span><span class="nx">page_errors</span> <span class="o">||</span> <span class="o">!</span><span class="nx">page_errors</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;clearErrorNotification&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span> <span class="o">=</span>
+		<span class="p">{</span>
+			<span class="nx">page</span><span class="o">:</span>       <span class="nx">page_errors</span> <span class="o">||</span> <span class="p">[],</span>
+			<span class="nx">records</span><span class="o">:</span>    <span class="nx">record_field_errors</span> <span class="o">||</span> <span class="p">[],</span>
+			<span class="nx">record_map</span><span class="o">:</span> <span class="p">{}</span>
+		<span class="p">};</span>
+
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">records</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">record_map</span><span class="p">[</span> <span class="nx">r</span><span class="p">.</span><span class="nx">id</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">r</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_updatePageStatus</span><span class="p">();</span>
+
+		<span class="kd">var</span> <span class="nx">pg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;paginator&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">pg</span> <span class="o">||</span> <span class="nx">pg</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">first_error_page</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">validate</span><span class="p">();</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">auto_validate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="nx">pg</span><span class="p">.</span><span class="nx">setPage</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">first_error_page</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Update paginator to show which pages have errors.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_updatePageStatus</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">pg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;paginator&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">pg</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">page_size</span> <span class="o">=</span> <span class="nx">pg</span> <span class="o">?</span> <span class="nx">pg</span><span class="p">.</span><span class="nx">getRowsPerPage</span><span class="p">()</span> <span class="o">:</span> <span class="nx">default_page_size</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">status</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">page_status</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">first_error_page</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+		<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">records</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">r</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">r</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">recordError</span> <span class="o">||</span> <span class="nx">r</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">fieldErrors</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">j</span>     <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">i</span> <span class="o">/</span> <span class="nx">page_size</span><span class="p">);</span>
+				<span class="nx">status</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span><span class="p">;</span>
+				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">first_error_page</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">first_error_page</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="nx">pg</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;pageStatus&#39;</span><span class="p">,</span> <span class="nx">status</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Validate the visible values (if using server-side pagination) or all</span>
+<span class="cm">	 * the values (if using client-side pagination or no pagination).</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {Boolean} true if all checked values are acceptable</span>
+<span class="cm">	 */</span>
+	<span class="nx">validate</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">saveChanges</span><span class="p">();</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_clearValidationMessages</span><span class="p">();</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">auto_validate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+		<span class="kd">var</span> <span class="nx">status</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_validateVisibleFields</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">pg</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;paginator&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">status</span> <span class="o">&amp;&amp;</span> <span class="nx">pg</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">page_status</span><span class="p">[</span> <span class="nx">pg</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="nx">status</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_validateAllPages</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">status</span><span class="p">;</span>	<span class="c1">// status last to guarantee call</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">status</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">page</span><span class="p">.</span><span class="nx">length</span> <span class="o">||</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">records</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">err</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">page</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">err</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">.</span><span class="nx">validation_error</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;notifyErrors&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">record_container_class</span><span class="p">).</span><span class="nx">some</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">status_pattern</span><span class="p">))</span>
+				<span class="p">{</span>
+					<span class="nx">node</span><span class="p">.</span><span class="nx">scrollIntoView</span><span class="p">();</span>
+					<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">});</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_updatePageStatus</span><span class="p">();</span>
+		<span class="k">return</span> <span class="nx">status</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Validate the visible values.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param container {Node} if null, uses contentBox</span>
+<span class="cm">	 * @return {Boolean} true if all checked values are acceptable</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_validateVisibleFields</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* object */</span> <span class="nx">container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">status</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">container</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">container</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="c1">// fields</span>
+
+		<span class="kd">var</span> <span class="nx">e1</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">e2</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;textarea&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">e3</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">);</span>
+
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">cleanValues</span><span class="p">(</span><span class="nx">e1</span><span class="p">);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">cleanValues</span><span class="p">(</span><span class="nx">e2</span><span class="p">);</span>
+
+		<span class="nx">status</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_validateElements</span><span class="p">(</span><span class="nx">e1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">status</span><span class="p">;</span>	<span class="c1">// status last to guarantee call</span>
+		<span class="nx">status</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_validateElements</span><span class="p">(</span><span class="nx">e2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">status</span><span class="p">;</span>
+		<span class="nx">status</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_validateElements</span><span class="p">(</span><span class="nx">e3</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">status</span><span class="p">;</span>
+
+		<span class="c1">// records -- after fields, since field class regex would wipe out record class</span>
+
+		<span class="nx">container</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">record_container_class</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">id</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordId</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">err</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">record_map</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">err</span> <span class="o">&amp;&amp;</span> <span class="nx">err</span><span class="p">.</span><span class="nx">recordError</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">err</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">recordError</span><span class="p">;</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">err</span><span class="p">))</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">msg</span>  <span class="o">=</span> <span class="nx">err</span><span class="p">;</span>
+					<span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="k">else</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">msg</span>  <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">msg</span><span class="p">;</span>
+					<span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">displayRecordMessage</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">msg</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+				<span class="nx">status</span> <span class="o">=</span> <span class="nx">status</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span> <span class="o">||</span> <span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;warn&#39;</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
+
+		<span class="k">return</span> <span class="nx">status</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Validate the given elements.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param nodes {NodeList}</span>
+<span class="cm">	 * @return {Boolean} true if all checked values are acceptable</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_validateElements</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* array */</span> <span class="nx">nodes</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">status</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="nx">nodes</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">field_info</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordAndFieldKey</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">field_info</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">return</span><span class="p">;</span>
+			<span class="p">}</span>
+
+			<span class="kd">var</span> <span class="nx">field</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFieldConfig</span><span class="p">(</span><span class="nx">field_info</span><span class="p">.</span><span class="nx">field_key</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">msg_list</span> <span class="o">=</span> <span class="nx">field</span><span class="p">.</span><span class="nx">validation</span> <span class="o">&amp;&amp;</span> <span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">msg</span><span class="p">;</span>
+
+			<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">validateFromCSSData</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">msg_list</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">displayFieldMessage</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">error</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+				<span class="nx">status</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+				<span class="k">return</span><span class="p">;</span>
+			<span class="p">}</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">keepGoing</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span><span class="p">))</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">flags</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+					<span class="kd">var</span> <span class="nx">m</span>     <span class="o">=</span> <span class="nx">perl_flags_regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span><span class="p">);</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+					<span class="p">{</span>
+						<span class="nx">flags</span>                  <span class="o">=</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+						<span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span> <span class="o">=</span> <span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">perl_flags_regex</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+					<span class="p">}</span>
+					<span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span><span class="p">,</span> <span class="nx">flags</span><span class="p">);</span>
+				<span class="p">}</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span> <span class="o">&amp;&amp;</span>
+					<span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span> <span class="k">instanceof</span> <span class="nb">RegExp</span> <span class="o">&amp;&amp;</span>
+					<span class="o">!</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)))</span>
+				<span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">displayFieldMessage</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">regex</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+					<span class="nx">status</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span> <span class="o">&amp;&amp;</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">fn</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+				<span class="o">!</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">node</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="nx">status</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+				<span class="k">return</span><span class="p">;</span>
+			<span class="p">}</span>
+
+			<span class="kd">var</span> <span class="nx">err</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">server_errors</span><span class="p">.</span><span class="nx">record_map</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordId</span><span class="p">(</span><span class="nx">field_info</span><span class="p">.</span><span class="nx">record</span><span class="p">)</span> <span class="p">];</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">err</span> <span class="o">&amp;&amp;</span> <span class="nx">err</span><span class="p">.</span><span class="nx">fieldErrors</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">err</span><span class="p">.</span><span class="nx">fieldErrors</span><span class="p">[</span> <span class="nx">field_info</span><span class="p">.</span><span class="nx">field_key</span> <span class="p">];</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">f</span><span class="p">))</span>
+					<span class="p">{</span>
+						<span class="kd">var</span> <span class="nx">msg</span>  <span class="o">=</span> <span class="nx">f</span><span class="p">;</span>
+						<span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span><span class="p">;</span>
+					<span class="p">}</span>
+					<span class="k">else</span>
+					<span class="p">{</span>
+						<span class="kd">var</span> <span class="nx">msg</span>  <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">msg</span><span class="p">;</span>
+						<span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">type</span><span class="p">;</span>
+					<span class="p">}</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">displayFieldMessage</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">msg</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+					<span class="nx">status</span> <span class="o">=</span> <span class="nx">status</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;error&#39;</span> <span class="o">||</span> <span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;warn&#39;</span><span class="p">);</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
+
+		<span class="k">return</span> <span class="nx">status</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * If the data is stored locally and we paginate, validate all of it</span>
+<span class="cm">	 * and mark the pages that have invalid values.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {Boolean} true if all checked values are acceptable</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_validateAllPages</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">ds</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">pg</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;paginator&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">pg</span> <span class="o">||</span> <span class="o">!</span><span class="nx">ds</span><span class="p">.</span><span class="nx">_dataIsLocal</span><span class="p">())</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">validation_node</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">validation_node</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;input&gt;&lt;/input&gt;&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">validation_keys</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">validation_keys</span> <span class="o">=</span> <span class="p">[];</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">validation</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">validation_keys</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			<span class="k">this</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">count</span>     <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">getRecordCount</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">page_size</span> <span class="o">=</span> <span class="nx">pg</span><span class="p">.</span><span class="nx">getRowsPerPage</span><span class="p">();</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">status</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">validation_keys</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">field</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fields&#39;</span><span class="p">)[</span><span class="nx">key</span><span class="p">];</span>
+				<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">getValue</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">validation_node</span><span class="p">.</span><span class="nx">value</span>     <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="nx">value</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">validation_node</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+				<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">validateFromCSSData</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">validation_node</span><span class="p">);</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">status</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">keepGoing</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span> <span class="k">instanceof</span> <span class="nb">RegExp</span> <span class="o">&amp;&amp;</span>
+						<span class="o">!</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span>
+					<span class="p">{</span>
+						<span class="nx">status</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+						<span class="k">return</span><span class="p">;</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+			<span class="k">this</span><span class="p">);</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">status</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">i</span> <span class="o">/</span> <span class="nx">page_size</span><span class="p">);</span>
+				<span class="nx">i</span>     <span class="o">=</span> <span class="p">(</span><span class="nx">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="nx">page_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>	<span class="c1">// skip to next page</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">page_status</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Clear all displayed messages.</span>
+<span class="cm">	 */</span>
+	<span class="nx">_clearValidationMessages</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">has_validation_messages</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">auto_validate</span>           <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">page_status</span>             <span class="o">=</span> <span class="p">[];</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;clearErrorNotification&#39;</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">);</span>
+
+		<span class="nx">container</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">status_pattern</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">status_pattern</span><span class="p">);</span>
+		<span class="nx">container</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">record_status_pattern</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">record_status_pattern</span><span class="p">);</span>
+		<span class="nx">container</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">message_container_class</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Display a message for the specified field.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param e {Node} field input element</span>
+<span class="cm">	 * @param msg {String} message to display</span>
+<span class="cm">	 * @param type {String} message type:  error, warn, info, success</span>
+<span class="cm">	 * @param scroll {Boolean} whether or not to scroll to the field</span>
+<span class="cm">	 */</span>
+	<span class="nx">displayFieldMessage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* element */</span>	<span class="nx">e</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">msg</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">type</span><span class="p">,</span>
+		<span class="cm">/* boolean */</span>	<span class="nx">scroll</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">scroll</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">scroll</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">has_validation_messages</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">bd1</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordContainer</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">changed</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_updateRecordStatus</span><span class="p">(</span><span class="nx">bd1</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">status_pattern</span><span class="p">,</span> <span class="nx">status_re</span><span class="p">,</span> <span class="nx">status_prefix</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">bd2</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="nx">field_container_class</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">statusTakesPrecedence</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_getElementStatus</span><span class="p">(</span><span class="nx">bd2</span><span class="p">,</span> <span class="nx">status_re</span><span class="p">),</span> <span class="nx">type</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">bd2</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">message_container_class</span><span class="p">);</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">m</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">msg</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+
+			<span class="nx">bd2</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">status_pattern</span><span class="p">,</span> <span class="nx">status_prefix</span> <span class="o">+</span> <span class="nx">type</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">has_validation_messages</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">changed</span> <span class="o">&amp;&amp;</span> <span class="nx">scroll</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">bd1</span><span class="p">.</span><span class="nx">scrollIntoView</span><span class="p">();</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Display a message for the specified record.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param id {String} record id</span>
+<span class="cm">	 * @param msg {String} message to display</span>
+<span class="cm">	 * @param type {String} message type:  error, warn, info, success</span>
+<span class="cm">	 * @param scroll {Boolean} whether or not to scroll to the field</span>
+<span class="cm">	 */</span>
+	<span class="nx">displayRecordMessage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">msg</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">type</span><span class="p">,</span>
+		<span class="cm">/* boolean */</span>	<span class="nx">scroll</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">scroll</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">scroll</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">has_validation_messages</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">bd1</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordContainer</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">changed</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_updateRecordStatus</span><span class="p">(</span><span class="nx">bd1</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">status_pattern</span><span class="p">,</span> <span class="nx">status_re</span><span class="p">,</span> <span class="nx">status_prefix</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_updateRecordStatus</span><span class="p">(</span><span class="nx">bd1</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">record_status_pattern</span><span class="p">,</span> <span class="nx">record_status_re</span><span class="p">,</span> <span class="nx">record_status_prefix</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+			<span class="nx">msg</span><span class="p">)</span>	<span class="c1">// msg last to guarantee call</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">bd2</span> <span class="o">=</span> <span class="nx">bd1</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">record_msg_container_class</span><span class="p">).</span><span class="nx">item</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">bd2</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">bd2</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">message_container_class</span><span class="p">);</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">m</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">msg</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">changed</span> <span class="o">&amp;&amp;</span> <span class="nx">scroll</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">bd1</span><span class="p">.</span><span class="nx">scrollIntoView</span><span class="p">();</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @param n {Node}</span>
+<span class="cm">	 * @param r {RegExp}</span>
+<span class="cm">	 * @return {Mixed} status or false</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
+	<span class="nx">_getElementStatus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* Node */</span>	<span class="nx">n</span><span class="p">,</span>
+		<span class="cm">/* regex */</span>	<span class="nx">r</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">));</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">?</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="kc">false</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * Update the status of the node, if the new status has higher precedence.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @param bd {Node}</span>
+<span class="cm">	 * @param type {String} new status</span>
+<span class="cm">	 * @param p {String} pattern for extracting status</span>
+<span class="cm">	 * @param r {RegExpr} regex for extracting status</span>
+<span class="cm">	 * @param prefix {String} status prefix</span>
+<span class="cm">	 * @return {Boolean} true if status was modified</span>
+<span class="cm">	 */</span>
+	<span class="nx">_updateRecordStatus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* element */</span>	<span class="nx">bd</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">type</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">p</span><span class="p">,</span>
+		<span class="cm">/* regex */</span>		<span class="nx">r</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">prefix</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">statusTakesPrecedence</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_getElementStatus</span><span class="p">(</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">r</span><span class="p">),</span> <span class="nx">type</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="nx">bd</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">prefix</span> <span class="o">+</span> <span class="nx">type</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">has_validation_messages</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">//</span>
+<span class="c1">// Markup</span>
+<span class="c1">//</span>
+
+<span class="kd">function</span> <span class="nx">cleanHTML</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">s</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span>
+			<span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;\/?script&gt;/ig</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+			<span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&amp;/g</span><span class="p">,</span> <span class="s1">&#39;&amp;amp;&#39;</span><span class="p">)</span>
+			<span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&lt;/g</span><span class="p">,</span> <span class="s1">&#39;&amp;lt;&#39;</span><span class="p">)</span>
+			<span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&gt;/g</span><span class="p">,</span> <span class="s1">&#39;&amp;gt;&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">error_msg_markup</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="s1">&#39;&lt;div class=&quot;{c}&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">,</span>
+<span class="p">{</span>
+	<span class="nx">c</span><span class="o">:</span> <span class="nx">message_container_class</span>
+<span class="p">});</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @method labelMarkup</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param o {Object}</span>
+<span class="cm"> *	key {String} field key,</span>
+<span class="cm"> *	value {Mixed} field value,</span>
+<span class="cm"> *	field {Object} field configuration,</span>
+<span class="cm"> *	record {Object} record data</span>
+<span class="cm"> * @return {String} markup for the label of the specified field</span>
+<span class="cm"> */</span>
+<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">labelMarkup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">label</span> <span class="o">=</span> <span class="s1">&#39;&lt;label for=&quot;{id}&quot;&gt;{label}&lt;/label&gt;&#39;</span><span class="p">;</span>
+
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">label</span><span class="p">,</span>
+	<span class="p">{</span>
+		<span class="nx">id</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">getFieldId</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">record</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">key</span><span class="p">),</span>
+		<span class="nx">label</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">label</span>
+	<span class="p">});</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Map of field type (input,select,textarea) to function that generates the</span>
+<span class="cm"> * required markup.  You can add additional entries.  Each function takes a</span>
+<span class="cm"> * single argument: an object defining</span>
+<span class="cm"> *	key {String} field key,</span>
+<span class="cm"> *	value {Mixed} field value,</span>
+<span class="cm"> *	field {Object} field configuration,</span>
+<span class="cm"> *	record {Object} record data</span>
+<span class="cm"> *</span>
+<span class="cm"> * @property Y.BulkEditor.markup</span>
+<span class="cm"> * @type {Object}</span>
+<span class="cm"> * @static</span>
+<span class="cm"> */</span>
+<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">markup</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="nx">input</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span>
+			<span class="s1">&#39;&lt;div class=&quot;{cont}{key}&quot;&gt;&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;{label}{msg1}&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;&lt;input type=&quot;text&quot; id=&quot;{id}&quot; value=&quot;{value}&quot; class=&quot;{field}{key} {yiv}&quot; /&gt;&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;{msg2}&#39;</span> <span class="o">+</span>
+			<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span>
+
+		<span class="kd">var</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">label</span> <span class="o">?</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">labelMarkup</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">o</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span>
+		<span class="p">{</span>
+			<span class="nx">cont</span><span class="o">:</span>  <span class="nx">field_container_class</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">field_container_class_prefix</span><span class="p">,</span>
+			<span class="nx">field</span><span class="o">:</span> <span class="nx">field_class_prefix</span><span class="p">,</span>
+			<span class="nx">key</span><span class="o">:</span>   <span class="nx">o</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
+			<span class="nx">id</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">getFieldId</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">record</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">key</span><span class="p">),</span>
+			<span class="nx">label</span><span class="o">:</span> <span class="nx">label</span><span class="p">,</span>
+			<span class="nx">value</span><span class="o">:</span> <span class="nx">cleanHTML</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">),</span>
+			<span class="nx">yiv</span><span class="o">:</span>   <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">field</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+			<span class="nx">msg1</span><span class="o">:</span>  <span class="nx">label</span> <span class="o">?</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">error_msg_markup</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+			<span class="nx">msg2</span><span class="o">:</span>  <span class="nx">label</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">error_msg_markup</span>
+		<span class="p">});</span>
+	<span class="p">},</span>
+
+	<span class="nx">select</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">select</span> <span class="o">=</span>
+			<span class="s1">&#39;&lt;div class=&quot;{cont}{key}&quot;&gt;&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;{label}{msg1}&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;&lt;select id=&quot;{id}&quot; class=&quot;{field}{key}&quot;&gt;{options}&lt;/select&gt;&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;{msg2}&#39;</span> <span class="o">+</span>
+			<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span>
+
+		<span class="kd">var</span> <span class="nx">option</span> <span class="o">=</span> <span class="s1">&#39;&lt;option value=&quot;{value}&quot; {selected}&gt;{text}&lt;/option&gt;&#39;</span><span class="p">;</span>
+
+		<span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">options</span> <span class="o">+=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">option</span><span class="p">,</span>
+			<span class="p">{</span>
+				<span class="nx">value</span><span class="o">:</span>    <span class="nx">v</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
+				<span class="nx">text</span><span class="o">:</span>     <span class="nx">cleanHTML</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">text</span><span class="p">),</span>
+				<span class="nx">selected</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">v</span><span class="p">.</span><span class="nx">value</span> <span class="o">?</span> <span class="s1">&#39;selected&#39;</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span>
+			<span class="p">});</span>
+		<span class="p">});</span>
+
+		<span class="kd">var</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">label</span> <span class="o">?</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">labelMarkup</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">o</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">select</span><span class="p">,</span>
+		<span class="p">{</span>
+			<span class="nx">cont</span><span class="o">:</span>  	 <span class="nx">field_container_class</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">field_container_class_prefix</span><span class="p">,</span>
+			<span class="nx">field</span><span class="o">:</span>   <span class="nx">field_class_prefix</span><span class="p">,</span>
+			<span class="nx">key</span><span class="o">:</span>     <span class="nx">o</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
+			<span class="nx">id</span><span class="o">:</span>      <span class="k">this</span><span class="p">.</span><span class="nx">getFieldId</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">record</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">key</span><span class="p">),</span>
+			<span class="nx">label</span><span class="o">:</span>   <span class="nx">label</span><span class="p">,</span>
+			<span class="nx">options</span><span class="o">:</span> <span class="nx">options</span><span class="p">,</span>
+			<span class="nx">yiv</span><span class="o">:</span>     <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">field</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+			<span class="nx">msg1</span><span class="o">:</span>    <span class="nx">label</span> <span class="o">?</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">error_msg_markup</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+			<span class="nx">msg2</span><span class="o">:</span>    <span class="nx">label</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">error_msg_markup</span>
+		<span class="p">});</span>
+	<span class="p">},</span>
+
+	<span class="nx">textarea</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">textarea</span> <span class="o">=</span>
+			<span class="s1">&#39;&lt;div class=&quot;{cont}{key}&quot;&gt;&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;{label}{msg1}&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;&lt;textarea id=&quot;{id}&quot; class=&quot;satg-textarea-field {prefix}{key} {yiv}&quot;&gt;{value}&lt;/textarea&gt;&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;{msg2}&#39;</span> <span class="o">+</span>
+			<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span>
+
+		<span class="kd">var</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">label</span> <span class="o">?</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">labelMarkup</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">o</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">textarea</span><span class="p">,</span>
+		<span class="p">{</span>
+			<span class="nx">cont</span><span class="o">:</span>   <span class="nx">field_container_class</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">field_container_class_prefix</span><span class="p">,</span>
+			<span class="nx">prefix</span><span class="o">:</span> <span class="nx">field_class_prefix</span><span class="p">,</span>
+			<span class="nx">key</span><span class="o">:</span>    <span class="nx">o</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
+			<span class="nx">id</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getFieldId</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">record</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">key</span><span class="p">),</span>
+			<span class="nx">label</span><span class="o">:</span>  <span class="nx">label</span><span class="p">,</span>
+			<span class="nx">value</span><span class="o">:</span>  <span class="nx">cleanHTML</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">),</span>
+			<span class="nx">yiv</span><span class="o">:</span>    <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">field</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+			<span class="nx">msg1</span><span class="o">:</span>   <span class="nx">label</span> <span class="o">?</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">error_msg_markup</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+			<span class="nx">msg2</span><span class="o">:</span>   <span class="nx">label</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">error_msg_markup</span>
+		<span class="p">});</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @method fieldMarkup</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param key {String} field key</span>
+<span class="cm"> * @param record {Object}</span>
+<span class="cm"> * @return {String} markup for the specified field</span>
+<span class="cm"> */</span>
+<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">fieldMarkup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">record</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">field</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFieldConfig</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+	<span class="k">return</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">markup</span><span class="p">[</span> <span class="nx">field</span><span class="p">.</span><span class="nx">type</span> <span class="o">||</span> <span class="s1">&#39;input&#39;</span> <span class="p">].</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span>
+	<span class="p">{</span>
+		<span class="nx">key</span><span class="o">:</span>    <span class="nx">key</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>  <span class="nx">record</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span>
+		<span class="nx">field</span><span class="o">:</span>  <span class="nx">field</span><span class="p">,</span>
+		<span class="nx">record</span><span class="o">:</span> <span class="nx">record</span>
+	<span class="p">});</span>
+<span class="p">};</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">BulkEditor</span> <span class="o">=</span> <span class="nx">BulkEditor</span><span class="p">;</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class="selected"><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="BulkEditDataSource.html" title="BulkEditDataSource">BulkEditDataSource</a></li>
+                                <li class=""><a href="BulkEditor.html" title="BulkEditor">BulkEditor</a></li>
+                                <li class=""><a href="HTMLTableBulkEditor.html" title="HTMLTableBulkEditor">HTMLTableBulkEditor</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="BulkEditDataSource.js.html" title="BulkEditDataSource.js">BulkEditDataSource.js</a></li>
+                                <li class="selected"><a href="BulkEditor.js.html" title="BulkEditor.js">BulkEditor.js</a></li>
+                                <li class=""><a href="HTMLTableBulkEditor.js.html" title="HTMLTableBulkEditor.js">HTMLTableBulkEditor.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "BulkEditor.html#event_clearErrorNotification", "access": "", "host": "BulkEditor", "type": "event", "name": "clearErrorNotification"}, {"url": "BulkEditor.html#method_clearServerErrors", "access": "", "host": "BulkEditor", "type": "method", "name": "clearServerErrors"}, {"url": "BulkEditor.html#method__clearValidationMessages", "access": "", "host": "BulkEditor", "type": "method", "name": "_clearValidationMessages"}, {"url": "HTMLTableBulkEditor.html#config_columns", "access": "", "host": "HTMLTableBulkEditor", "type": "config", "name": "columns"}, {"url": "BulkEditDataSource.html#method__dataIsLocal", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_dataIsLocal"}, {"url": "BulkEditDataSource.html#method__defRequestFn", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_defRequestFn"}, {"url": "BulkEditor.html#method_displayFieldMessage", "access": "", "host": "BulkEditor", "type": "method", "name": "displayFieldMessage"}, {"url": "BulkEditor.html#method_displayRecordMessage", "access": "", "host": "BulkEditor", "type": "method", "name": "displayRecordMessage"}, {"url": "BulkEditDataSource.html#config_ds", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "ds"}, {"url": "BulkEditor.html#config_ds", "access": "", "host": "BulkEditor", "type": "config", "name": "ds"}, {"url": "HTMLTableBulkEditor.html#config_events", "access": "", "host": "HTMLTableBulkEditor", "type": "config", "name": "events"}, {"url": "BulkEditDataSource.html#config_extractTotalRecords", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "extractTotalRecords"}, {"url": "BulkEditor.html#method_fieldMarkup", "access": "", "host": "BulkEditor", "type": "method", "name": "fieldMarkup"}, {"url": "BulkEditor.html#config_fields", "access": "", "host": "BulkEditor", "type": "config", "name": "fields"}, {"url": "BulkEditDataSource.html#method__flushCache", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_flushCache"}, {"url": "BulkEditDataSource.html#config_generateRequest", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "generateRequest"}, {"url": "BulkEditDataSource.html#config_generateUniqueId", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "generateUniqueId"}, {"url": "BulkEditor.html#method_getAllValues", "access": "", "host": "BulkEditor", "type": "method", "name": "getAllValues"}, {"url": "BulkEditDataSource.html#method_getChanges", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getChanges"}, {"url": "BulkEditor.html#method_getChanges", "access": "", "host": "BulkEditor", "type": "method", "name": "getChanges"}, {"url": "BulkEditDataSource.html#method__getComparator", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_getComparator"}, {"url": "BulkEditDataSource.html#method_getCurrentRecordMap", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getCurrentRecordMap"}, {"url": "BulkEditDataSource.html#method_getCurrentRecords", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getCurrentRecords"}, {"url": "BulkEditor.html#method__getElementStatus", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_getElementStatus"}, {"url": "BulkEditor.html#method_getFieldConfig", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldConfig"}, {"url": "BulkEditor.html#method_getFieldContainer", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldContainer"}, {"url": "BulkEditor.html#method_getFieldElement", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldElement"}, {"url": "BulkEditor.html#method_getFieldId", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldId"}, {"url": "BulkEditor.html#method_getRecordAndFieldKey", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordAndFieldKey"}, {"url": "BulkEditor.html#method_getRecordContainer", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordContainer"}, {"url": "BulkEditor.html#method_getRecordContainerId", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordContainerId"}, {"url": "BulkEditDataSource.html#method_getRecordCount", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getRecordCount"}, {"url": "BulkEditor.html#method_getRecordId", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordId"}, {"url": "BulkEditDataSource.html#method_getRemovedRecordIndexes", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getRemovedRecordIndexes"}, {"url": "BulkEditDataSource.html#method_getValue", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getValue"}, {"url": "HTMLTableBulkEditor.html#method_inputFormatter", "access": "", "host": "HTMLTableBulkEditor", "type": "method", "name": "inputFormatter"}, {"url": "BulkEditDataSource.html#method_insertRecord", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "insertRecord"}, {"url": "BulkEditor.html#method_insertRecord", "access": "", "host": "BulkEditor", "type": "method", "name": "insertRecord"}, {"url": "BulkEditDataSource.html#method_killRecord", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "killRecord"}, {"url": "BulkEditor.html#method_labelMarkup", "access": "", "host": "BulkEditor", "type": "method", "name": "labelMarkup"}, {"url": "BulkEditDataSource.html#method_mergeChanges", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "mergeChanges"}, {"url": "BulkEditor.html#event_notifyErrors", "access": "", "host": "BulkEditor", "type": "event", "name": "notifyErrors"}, {"url": "BulkEditor.html#config_paginator", "access": "", "host": "BulkEditor", "type": "config", "name": "paginator"}, {"url": "BulkEditor.html#config_pingClass", "access": "", "host": "BulkEditor", "type": "config", "name": "pingClass"}, {"url": "BulkEditor.html#method_pingRecord", "access": "", "host": "BulkEditor", "type": "method", "name": "pingRecord"}, {"url": "BulkEditor.html#config_pingTimeout", "access": "", "host": "BulkEditor", "type": "config", "name": "pingTimeout"}, {"url": "BulkEditDataSource.html#method_recordIdToIndex", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "recordIdToIndex"}, {"url": "BulkEditor.html#method_reload", "access": "", "host": "BulkEditor", "type": "method", "name": "reload"}, {"url": "BulkEditDataSource.html#method_removeRecord", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "removeRecord"}, {"url": "BulkEditor.html#method_removeRecord", "access": "", "host": "BulkEditor", "type": "method", "name": "removeRecord"}, {"url": "BulkEditor.html#method__render", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_render"}, {"url": "BulkEditor.html#method__renderContainer", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderContainer"}, {"url": "BulkEditor.html#method__renderField", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderField"}, {"url": "BulkEditor.html#method__renderRecord", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderRecord"}, {"url": "BulkEditor.html#method__renderRecordContainer", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderRecordContainer"}, {"url": "BulkEditor.html#config_requestExtra", "access": "", "host": "BulkEditor", "type": "config", "name": "requestExtra"}, {"url": "BulkEditor.html#method_saveChanges", "access": "", "host": "BulkEditor", "type": "method", "name": "saveChanges"}, {"url": "HTMLTableBulkEditor.html#method_selectFormatter", "access": "", "host": "HTMLTableBulkEditor", "type": "method", "name": "selectFormatter"}, {"url": "BulkEditor.html#method_setServerErrors", "access": "", "host": "BulkEditor", "type": "method", "name": "setServerErrors"}, {"url": "BulkEditor.html#method_showRecordId", "access": "", "host": "BulkEditor", "type": "method", "name": "showRecordId"}, {"url": "BulkEditor.html#method_showRecordIndex", "access": "", "host": "BulkEditor", "type": "method", "name": "showRecordIndex"}, {"url": "BulkEditDataSource.html#config_startIndexExpr", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "startIndexExpr"}, {"url": "HTMLTableBulkEditor.html#method_textareaFormatter", "access": "", "host": "HTMLTableBulkEditor", "type": "method", "name": "textareaFormatter"}, {"url": "BulkEditDataSource.html#config_totalRecordsReturnExpr", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "totalRecordsReturnExpr"}, {"url": "BulkEditDataSource.html#config_uniqueIdKey", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "BulkEditor.html#method__updatePageStatus", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_updatePageStatus"}, {"url": "BulkEditor.html#method__updatePaginator", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_updatePaginator"}, {"url": "BulkEditDataSource.html#method_updateRecordId", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "updateRecordId"}, {"url": "BulkEditor.html#method__updateRecordStatus", "access": "", "host": "BulkEditor", "type": "method", "name": "_updateRecordStatus"}, {"url": "BulkEditDataSource.html#method_updateValue", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "updateValue"}, {"url": "BulkEditor.html#method_validate", "access": "", "host": "BulkEditor", "type": "method", "name": "validate"}, {"url": "BulkEditor.html#method__validateAllPages", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_validateAllPages"}, {"url": "BulkEditor.html#method__validateElements", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_validateElements"}, {"url": "BulkEditor.html#method__validateVisibleFields", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_validateVisibleFields"}, {"url": "BulkEditor.html#property_Y.BulkEditor.markup", "access": "", "host": "BulkEditor", "type": "property", "name": "Y.BulkEditor.markup"}, {"url": "HTMLTableBulkEditor.html#property_Y.HTMLTableBulkEditor.defaults", "access": "", "host": "HTMLTableBulkEditor", "type": "property", "name": "Y.HTMLTableBulkEditor.defaults"}];
+</script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-bulkedit   HTMLTableBulkEditor.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-bulkedit&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a>
+                
+                 &gt; HTMLTableBulkEditor.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @module gallery-bulkedit</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * &lt;p&gt;HTMLTableBulkEditor builds an HTML table with one tbody for each</span>
+<span class="cm"> * record.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * @class HTMLTableBulkEditor</span>
+<span class="cm"> * @extends BulkEditor </span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object}</span>
+<span class="cm"> */</span>
+<span class="kd">function</span> <span class="nx">HTMLTableBulkEditor</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;htmltablebulkedit&quot;</span><span class="p">;</span>
+
+<span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Configuration for each column: key, label, formatter.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @config columns</span>
+<span class="cm">	 * @type {Array}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
+	<span class="nx">columns</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">,</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * &lt;p&gt;Array of event delegations that will be attached to the container</span>
+<span class="cm">	 * via Y.delegate().  Each item is an object defining type, nodes, fn.</span>
+<span class="cm">	 * The function will be called in the context of the BulkEditor</span>
+<span class="cm">	 * instance.&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * &lt;p&gt;Attaching events to the container before the table is created does</span>
+<span class="cm">	 * not work in all browsers.&lt;/p&gt;</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @config events</span>
+<span class="cm">	 * @type {Array}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
+	<span class="nx">events</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">,</span>
+		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">cell_class</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;cell&#39;</span><span class="p">),</span>
+	<span class="nx">cell_class_prefix</span> <span class="o">=</span> <span class="nx">cell_class</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+	<span class="nx">odd_class</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;odd&#39;</span><span class="p">),</span>
+	<span class="nx">even_class</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;even&#39;</span><span class="p">),</span>
+	<span class="nx">msg_class</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;record-message&#39;</span><span class="p">),</span>
+	<span class="nx">liner_class</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;liner&#39;</span><span class="p">);</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Renders an input element in the cell.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @method inputFormatter</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param o {Object} cell, key, value, field, column, record</span>
+<span class="cm"> */</span>
+<span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">inputFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">o</span><span class="p">.</span><span class="nx">cell</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">markup</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">o</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Renders a textarea element in the cell.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @method textareaFormatter</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param o {Object} cell, key, value, field, column, record</span>
+<span class="cm"> */</span>
+<span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">textareaFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">o</span><span class="p">.</span><span class="nx">cell</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">markup</span><span class="p">.</span><span class="nx">textarea</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">o</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Renders a select element in the cell.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @method selectFormatter</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param o {Object} cell, key, value, field, column, record</span>
+<span class="cm"> */</span>
+<span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">selectFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">o</span><span class="p">.</span><span class="nx">cell</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">markup</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">o</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Map of field type to cell formatter.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @property Y.HTMLTableBulkEditor.defaults</span>
+<span class="cm"> * @type {Object}</span>
+<span class="cm"> * @static</span>
+<span class="cm"> */</span>
+<span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">defaults</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="nx">input</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">formatter</span><span class="o">:</span> <span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">inputFormatter</span>
+	<span class="p">},</span>
+
+	<span class="nx">select</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">formatter</span><span class="o">:</span> <span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">selectFormatter</span>
+	<span class="p">},</span>
+
+	<span class="nx">textarea</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">formatter</span><span class="o">:</span> <span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">textareaFormatter</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">moveFocus</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
+
+	<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordAndFieldKey</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">info</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">bd</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordContainer</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">bd</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="mi">38</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">bd</span> <span class="o">=</span> <span class="nx">bd</span><span class="p">.</span><span class="nx">previousSibling</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">bd</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">bd</span> <span class="o">=</span> <span class="nx">bd</span><span class="p">.</span><span class="nx">nextSibling</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">bd</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordId</span><span class="p">(</span><span class="nx">bd</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">field</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFieldElement</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">field_key</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">field</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">try</span>
+			<span class="p">{</span>
+				<span class="nx">field</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+				<span class="nx">field</span><span class="p">.</span><span class="nx">select</span><span class="p">();</span>
+			<span class="p">}</span>
+			<span class="k">catch</span> <span class="p">(</span><span class="nx">ex</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="c1">// no way to determine in IE if focus will fail</span>
+				<span class="c1">// no way to determine if browser allows focus to select elements</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">HTMLTableBulkEditor</span><span class="p">,</span> <span class="nx">BulkEditor</span><span class="p">,</span>
+<span class="p">{</span>
+	<span class="nx">_renderContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* element */</span>	<span class="nx">container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">table_class</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">table</span> <span class="o">||</span>
+			<span class="nx">container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;firstChild&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;tagName&#39;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;table&#39;</span> <span class="o">||</span>
+			<span class="o">!</span><span class="nx">container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;firstChild&#39;</span><span class="p">).</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">table_class</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="s1">&#39;&lt;table class=&quot;{t}&quot;&gt;&lt;thead class=&quot;{hd}&quot;&gt;&lt;tr&gt;&#39;</span><span class="p">,</span>
+			<span class="p">{</span>
+				<span class="nx">t</span><span class="o">:</span>  <span class="nx">table_class</span><span class="p">,</span>
+				<span class="nx">hd</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;hd&#39;</span><span class="p">)</span>
+			<span class="p">});</span>
+
+			<span class="kd">var</span> <span class="nx">row_markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;th class=&quot;{cell} {prefix}{key}&quot;&gt;{label}&lt;/th&gt;&#39;</span><span class="p">;</span>
+
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;columns&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">column</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">s</span> <span class="o">+=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">row_markup</span><span class="p">,</span>
+				<span class="p">{</span>
+					<span class="nx">cell</span><span class="o">:</span>   <span class="nx">cell_class</span><span class="p">,</span>
+					<span class="nx">prefix</span><span class="o">:</span> <span class="nx">cell_class_prefix</span><span class="p">,</span>
+					<span class="nx">key</span><span class="o">:</span>    <span class="nx">column</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
+					<span class="nx">label</span><span class="o">:</span>  <span class="nx">column</span><span class="p">.</span><span class="nx">label</span> <span class="o">||</span> <span class="s1">&#39;&amp;nbsp;&#39;</span>
+				<span class="p">});</span>
+			<span class="p">});</span>
+
+			<span class="nx">s</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/tr&gt;&lt;/thead&gt;&lt;/table&gt;&#39;</span><span class="p">;</span>
+
+			<span class="nx">container</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">s</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">table</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;firstChild&#39;</span><span class="p">);</span>
+
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="nx">moveFocus</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">table</span><span class="p">,</span> <span class="s1">&#39;down:38,40+ctrl&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">delegate</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">fn</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">table</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">nodes</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="p">},</span>
+			<span class="k">this</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">while</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">table</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">).</span><span class="nx">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">table</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lastChild&#39;</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="nx">_renderRecordContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* element */</span>	<span class="nx">container</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">record</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">body</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;tbody&gt;&lt;/tbody&gt;&#39;</span><span class="p">);</span>
+		<span class="nx">body</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">getRecordContainerId</span><span class="p">(</span><span class="nx">record</span><span class="p">));</span>
+		<span class="nx">body</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span>
+			<span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">record_container_class</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span>
+			<span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">table</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">).</span><span class="nx">size</span><span class="p">()</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">?</span> <span class="nx">odd_class</span> <span class="o">:</span> <span class="nx">even_class</span><span class="p">));</span>	<span class="c1">// accounts for th row</span>
+
+		<span class="kd">var</span> <span class="nx">msg_row</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;tr&gt;&lt;/tr&gt;&#39;</span><span class="p">);</span>
+		<span class="nx">msg_row</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">record_msg_container_class</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">msg_cell</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;td&gt;&lt;/td&gt;&#39;</span><span class="p">);</span>
+		<span class="nx">msg_cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;colSpan&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;columns&#39;</span><span class="p">).</span><span class="nx">length</span><span class="p">);</span>
+		<span class="nx">msg_cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">msg_class</span><span class="p">);</span>
+		<span class="nx">msg_cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">BulkEditor</span><span class="p">.</span><span class="nx">error_msg_markup</span><span class="p">);</span>
+
+		<span class="nx">msg_row</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">msg_cell</span><span class="p">);</span>
+		<span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">msg_row</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">row</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;tr&gt;&lt;/tr&gt;&#39;</span><span class="p">);</span>
+		<span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">row</span><span class="p">);</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">table</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+		<span class="k">return</span> <span class="nx">row</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="nx">_renderRecord</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* element */</span>	<span class="nx">row</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">record</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;columns&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">column</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">key</span>    <span class="o">=</span> <span class="nx">column</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">field</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFieldConfig</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+
+			<span class="c1">// create cell</span>
+
+			<span class="kd">var</span> <span class="nx">cell</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;td&gt;&lt;/td&gt;&#39;</span><span class="p">);</span>
+			<span class="nx">cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">cell_class</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">cell_class_prefix</span> <span class="o">+</span> <span class="nx">key</span><span class="p">);</span>
+
+			<span class="c1">// create liner</span>
+
+			<span class="kd">var</span> <span class="nx">liner</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;div&gt;&lt;/div&gt;&#39;</span><span class="p">);</span>
+			<span class="nx">liner</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">liner_class</span><span class="p">);</span>
+
+			<span class="c1">// fill in liner</span>
+
+			<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">column</span><span class="p">.</span><span class="nx">formatter</span><span class="p">))</span>
+			<span class="p">{</span>
+				<span class="nx">f</span> <span class="o">=</span> <span class="nx">column</span><span class="p">.</span><span class="nx">formatter</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">type</span> <span class="o">&amp;&amp;</span> <span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">defaults</span><span class="p">[</span> <span class="nx">field</span><span class="p">.</span><span class="nx">type</span> <span class="p">])</span>
+			<span class="p">{</span>
+				<span class="nx">f</span> <span class="o">=</span> <span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">defaults</span><span class="p">[</span> <span class="nx">field</span><span class="p">.</span><span class="nx">type</span> <span class="p">].</span><span class="nx">formatter</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="k">else</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">field</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;no defaults for type &#39;</span> <span class="o">+</span> <span class="nx">field</span><span class="p">.</span><span class="nx">type</span> <span class="o">+</span> <span class="s1">&#39;, using type &quot;input&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="s1">&#39;HTMLTableBulkEditor&#39;</span><span class="p">);</span>
+				<span class="p">}</span>
+
+				<span class="nx">f</span> <span class="o">=</span> <span class="nx">HTMLTableBulkEditor</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">formatter</span><span class="p">;</span>
+			<span class="p">}</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span>
+				<span class="p">{</span>
+					<span class="nx">cell</span><span class="o">:</span>   <span class="nx">liner</span><span class="p">,</span>
+					<span class="nx">key</span><span class="o">:</span>    <span class="nx">key</span><span class="p">,</span>
+					<span class="nx">value</span><span class="o">:</span>  <span class="nx">record</span><span class="p">[</span><span class="nx">key</span><span class="p">],</span>
+					<span class="nx">field</span><span class="o">:</span>  <span class="nx">field</span><span class="p">,</span>
+					<span class="nx">column</span><span class="o">:</span> <span class="nx">column</span><span class="p">,</span>
+					<span class="nx">record</span><span class="o">:</span> <span class="nx">record</span>
+				<span class="p">});</span>
+			<span class="p">}</span>
+
+			<span class="c1">// append cell</span>
+
+			<span class="nx">cell</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">liner</span><span class="p">);</span>
+			<span class="nx">row</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">cell</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="k">this</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">HTMLTableBulkEditor</span> <span class="o">=</span> <span class="nx">HTMLTableBulkEditor</span><span class="p">;</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class="selected"><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="BulkEditDataSource.html" title="BulkEditDataSource">BulkEditDataSource</a></li>
+                                <li class=""><a href="BulkEditor.html" title="BulkEditor">BulkEditor</a></li>
+                                <li class=""><a href="HTMLTableBulkEditor.html" title="HTMLTableBulkEditor">HTMLTableBulkEditor</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="BulkEditDataSource.js.html" title="BulkEditDataSource.js">BulkEditDataSource.js</a></li>
+                                <li class=""><a href="BulkEditor.js.html" title="BulkEditor.js">BulkEditor.js</a></li>
+                                <li class="selected"><a href="HTMLTableBulkEditor.js.html" title="HTMLTableBulkEditor.js">HTMLTableBulkEditor.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "BulkEditor.html#event_clearErrorNotification", "access": "", "host": "BulkEditor", "type": "event", "name": "clearErrorNotification"}, {"url": "BulkEditor.html#method_clearServerErrors", "access": "", "host": "BulkEditor", "type": "method", "name": "clearServerErrors"}, {"url": "BulkEditor.html#method__clearValidationMessages", "access": "", "host": "BulkEditor", "type": "method", "name": "_clearValidationMessages"}, {"url": "HTMLTableBulkEditor.html#config_columns", "access": "", "host": "HTMLTableBulkEditor", "type": "config", "name": "columns"}, {"url": "BulkEditDataSource.html#method__dataIsLocal", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_dataIsLocal"}, {"url": "BulkEditDataSource.html#method__defRequestFn", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_defRequestFn"}, {"url": "BulkEditor.html#method_displayFieldMessage", "access": "", "host": "BulkEditor", "type": "method", "name": "displayFieldMessage"}, {"url": "BulkEditor.html#method_displayRecordMessage", "access": "", "host": "BulkEditor", "type": "method", "name": "displayRecordMessage"}, {"url": "BulkEditDataSource.html#config_ds", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "ds"}, {"url": "BulkEditor.html#config_ds", "access": "", "host": "BulkEditor", "type": "config", "name": "ds"}, {"url": "HTMLTableBulkEditor.html#config_events", "access": "", "host": "HTMLTableBulkEditor", "type": "config", "name": "events"}, {"url": "BulkEditDataSource.html#config_extractTotalRecords", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "extractTotalRecords"}, {"url": "BulkEditor.html#method_fieldMarkup", "access": "", "host": "BulkEditor", "type": "method", "name": "fieldMarkup"}, {"url": "BulkEditor.html#config_fields", "access": "", "host": "BulkEditor", "type": "config", "name": "fields"}, {"url": "BulkEditDataSource.html#method__flushCache", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_flushCache"}, {"url": "BulkEditDataSource.html#config_generateRequest", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "generateRequest"}, {"url": "BulkEditDataSource.html#config_generateUniqueId", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "generateUniqueId"}, {"url": "BulkEditor.html#method_getAllValues", "access": "", "host": "BulkEditor", "type": "method", "name": "getAllValues"}, {"url": "BulkEditDataSource.html#method_getChanges", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getChanges"}, {"url": "BulkEditor.html#method_getChanges", "access": "", "host": "BulkEditor", "type": "method", "name": "getChanges"}, {"url": "BulkEditDataSource.html#method__getComparator", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "_getComparator"}, {"url": "BulkEditDataSource.html#method_getCurrentRecordMap", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getCurrentRecordMap"}, {"url": "BulkEditDataSource.html#method_getCurrentRecords", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getCurrentRecords"}, {"url": "BulkEditor.html#method__getElementStatus", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_getElementStatus"}, {"url": "BulkEditor.html#method_getFieldConfig", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldConfig"}, {"url": "BulkEditor.html#method_getFieldContainer", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldContainer"}, {"url": "BulkEditor.html#method_getFieldElement", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldElement"}, {"url": "BulkEditor.html#method_getFieldId", "access": "", "host": "BulkEditor", "type": "method", "name": "getFieldId"}, {"url": "BulkEditor.html#method_getRecordAndFieldKey", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordAndFieldKey"}, {"url": "BulkEditor.html#method_getRecordContainer", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordContainer"}, {"url": "BulkEditor.html#method_getRecordContainerId", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordContainerId"}, {"url": "BulkEditDataSource.html#method_getRecordCount", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getRecordCount"}, {"url": "BulkEditor.html#method_getRecordId", "access": "", "host": "BulkEditor", "type": "method", "name": "getRecordId"}, {"url": "BulkEditDataSource.html#method_getRemovedRecordIndexes", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getRemovedRecordIndexes"}, {"url": "BulkEditDataSource.html#method_getValue", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "getValue"}, {"url": "HTMLTableBulkEditor.html#method_inputFormatter", "access": "", "host": "HTMLTableBulkEditor", "type": "method", "name": "inputFormatter"}, {"url": "BulkEditDataSource.html#method_insertRecord", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "insertRecord"}, {"url": "BulkEditor.html#method_insertRecord", "access": "", "host": "BulkEditor", "type": "method", "name": "insertRecord"}, {"url": "BulkEditDataSource.html#method_killRecord", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "killRecord"}, {"url": "BulkEditor.html#method_labelMarkup", "access": "", "host": "BulkEditor", "type": "method", "name": "labelMarkup"}, {"url": "BulkEditDataSource.html#method_mergeChanges", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "mergeChanges"}, {"url": "BulkEditor.html#event_notifyErrors", "access": "", "host": "BulkEditor", "type": "event", "name": "notifyErrors"}, {"url": "BulkEditor.html#config_paginator", "access": "", "host": "BulkEditor", "type": "config", "name": "paginator"}, {"url": "BulkEditor.html#config_pingClass", "access": "", "host": "BulkEditor", "type": "config", "name": "pingClass"}, {"url": "BulkEditor.html#method_pingRecord", "access": "", "host": "BulkEditor", "type": "method", "name": "pingRecord"}, {"url": "BulkEditor.html#config_pingTimeout", "access": "", "host": "BulkEditor", "type": "config", "name": "pingTimeout"}, {"url": "BulkEditDataSource.html#method_recordIdToIndex", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "recordIdToIndex"}, {"url": "BulkEditor.html#method_reload", "access": "", "host": "BulkEditor", "type": "method", "name": "reload"}, {"url": "BulkEditDataSource.html#method_removeRecord", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "removeRecord"}, {"url": "BulkEditor.html#method_removeRecord", "access": "", "host": "BulkEditor", "type": "method", "name": "removeRecord"}, {"url": "BulkEditor.html#method__render", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_render"}, {"url": "BulkEditor.html#method__renderContainer", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderContainer"}, {"url": "BulkEditor.html#method__renderField", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderField"}, {"url": "BulkEditor.html#method__renderRecord", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderRecord"}, {"url": "BulkEditor.html#method__renderRecordContainer", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_renderRecordContainer"}, {"url": "BulkEditor.html#config_requestExtra", "access": "", "host": "BulkEditor", "type": "config", "name": "requestExtra"}, {"url": "BulkEditor.html#method_saveChanges", "access": "", "host": "BulkEditor", "type": "method", "name": "saveChanges"}, {"url": "HTMLTableBulkEditor.html#method_selectFormatter", "access": "", "host": "HTMLTableBulkEditor", "type": "method", "name": "selectFormatter"}, {"url": "BulkEditor.html#method_setServerErrors", "access": "", "host": "BulkEditor", "type": "method", "name": "setServerErrors"}, {"url": "BulkEditor.html#method_showRecordId", "access": "", "host": "BulkEditor", "type": "method", "name": "showRecordId"}, {"url": "BulkEditor.html#method_showRecordIndex", "access": "", "host": "BulkEditor", "type": "method", "name": "showRecordIndex"}, {"url": "BulkEditDataSource.html#config_startIndexExpr", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "startIndexExpr"}, {"url": "HTMLTableBulkEditor.html#method_textareaFormatter", "access": "", "host": "HTMLTableBulkEditor", "type": "method", "name": "textareaFormatter"}, {"url": "BulkEditDataSource.html#config_totalRecordsReturnExpr", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "totalRecordsReturnExpr"}, {"url": "BulkEditDataSource.html#config_uniqueIdKey", "access": "", "host": "BulkEditDataSource", "type": "config", "name": "uniqueIdKey"}, {"url": "BulkEditor.html#method__updatePageStatus", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_updatePageStatus"}, {"url": "BulkEditor.html#method__updatePaginator", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_updatePaginator"}, {"url": "BulkEditDataSource.html#method_updateRecordId", "access": "", "host": "BulkEditDataSource", "type": "method", "name": "updateRecordId"}, {"url": "BulkEditor.html#method__updateRecordStatus", "access": "", "host": "BulkEditor", "type": "method", "name": "_updateRecordStatus"}, {"url": "BulkEditDataSource.html#method_updateValue", "access": "protected", "host": "BulkEditDataSource", "type": "method", "name": "updateValue"}, {"url": "BulkEditor.html#method_validate", "access": "", "host": "BulkEditor", "type": "method", "name": "validate"}, {"url": "BulkEditor.html#method__validateAllPages", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_validateAllPages"}, {"url": "BulkEditor.html#method__validateElements", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_validateElements"}, {"url": "BulkEditor.html#method__validateVisibleFields", "access": "protected", "host": "BulkEditor", "type": "method", "name": "_validateVisibleFields"}, {"url": "BulkEditor.html#property_Y.BulkEditor.markup", "access": "", "host": "BulkEditor", "type": "property", "name": "Y.BulkEditor.markup"}, {"url": "HTMLTableBulkEditor.html#property_Y.HTMLTableBulkEditor.defaults", "access": "", "host": "HTMLTableBulkEditor", "type": "property", "name": "Y.HTMLTableBulkEditor.defaults"}];
+</script>
+</body>
+</html>

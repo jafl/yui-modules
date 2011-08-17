@@ -1,0 +1,51 @@
+<!DOCTYPE html public '-//w3c//dtd html 4.01//en' http://www.w3.org/tr/html4/strict.dtd'>
+<html>
+<head>
+	<title>YUI 3 BusyOverlay Examples</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
+
+	<script src="gallery-busyoverlay-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-busyoverlay.css" />
+
+	<style type="text/css">
+	#widget { width: 50%; border: 1px solid black; margin-top: 10px; }
+	</style>
+</head>
+<body class="yui3-skin-sam">
+
+<script type="text/javascript">
+YUI({
+//	base: '../yui3/',
+//	filter: 'debug',
+//	combine: false,
+	gallery: 'gallery-2011.07.06-19-30'
+}).use('gallery-busyoverlay', function(Y)
+{
+	var node = Y.one('#widget');
+	node.plug(Y.Plugin.BusyOverlay);
+
+	Y.on('click', function()
+	{
+		node.busy.toggleVisible();
+	},
+	'#toggle');
+});
+</script>
+
+<h1><a href="http://yuilibrary.com/gallery/show/busyoverlay">YUI 3 BusyOverlay</a> Examples</h1>
+
+<p><a href="../yuidoc/module_gallery-busyoverlay.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<button id="toggle">Toggle Busy Overlay</button>
+
+<div id="widget">
+<p>This is my widget.</p>
+<p>It doesn't do anything.</p>
+<p>(Try resizing the window while the BusyOverlay is visible.)</p>
+</div>
+
+</body>
+</html>
