@@ -292,3 +292,94 @@ Y.FormManager.validateFromCSSData = function(
 
 	return { keepGoing: true };
 };
+
+/**
+ * Trim leading and trailing whitespace from the specified fields, except
+ * when a field has the CSS class yiv-no-trim.
+ * 
+ * @method cleanValues
+ * @static
+ * @param e {Array} The fields to clean.
+ * @return {boolean} <code>true</code> if there are any file inputs.
+ */
+Y.FormManager.cleanValues = function(
+	/* array */	e)
+{
+	var has_file_inputs = false;
+	for (var i=0; i<e.length; i++)
+	{
+		var input = e[i];
+		var type  = input.type && input.type.toLowerCase();
+		if (type == 'file')
+		{
+			has_file_inputs = true;
+		}
+		else if (type == 'select-multiple')
+		{
+			// don't change the value
+		}
+		else if (input.value && !Y.DOM.hasClass(input, 'yiv-no-trim'))
+		{
+			input.value = Y.Lang.trim(input.value);
+		}
+	}
+
+	return has_file_inputs;
+};
+
+/**
+ * <p>Names of supported status values, highest precedence first.  Default:
+ * <code>[ 'error', 'warn', 'success', 'info' ]</code></p>
+ * 
+ * <p>This is static because it links to CSS rules that define the
+ * appearance of each status type:  .formmgr-has{status}</p>
+ * 
+ * @property Y.FormManager.status_order
+ * @type {Array}
+ * @static
+ */
+Y.FormManager.status_order =
+[
+	'error',
+	'warn',
+	'success',
+	'info'
+];
+
+/**
+ * Get the precedence of the given status name.
+ * 
+ * @method getStatusPrecedence
+ * @static
+ * @param status {String} The name of the status value.
+ * @return {int} The position in the <code>status_order</code> array.
+ */
+Y.FormManager.getStatusPrecedence = function(
+	/* string */	status)
+{
+	for (var i=0; i<Y.FormManager.status_order.length; i++)
+	{
+		if (status == Y.FormManager.status_order[i])
+		{
+			return i;
+		}
+	}
+
+	return Y.FormManager.status_order.length;
+};
+
+/**
+ * Compare two status values.
+ * 
+ * @method statusTakesPrecedence
+ * @static
+ * @param orig_status {String} The name of the original status value.
+ * @param new_status {String} The name of the new status value.
+ * @return {boolean} <code>true</code> if <code>new_status</code> takes precedence over <code>orig_status</code>
+ */
+Y.FormManager.statusTakesPrecedence = function(
+	/* string */	orig_status,
+	/* string */	new_status)
+{
+	return (!orig_status || Y.FormManager.getStatusPrecedence(new_status) < Y.FormManager.getStatusPrecedence(orig_status));
+};

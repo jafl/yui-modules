@@ -18,7 +18,7 @@
  * @class TreebleDataSource
  * @extends DataSource.Local
  * @constructor
- * @param config {Object} Widget configuration
+ * @param config {Object}
  */
 
 function TreebleDataSource()
@@ -473,7 +473,7 @@ function getVisibleSlicesPgAll(
 			var info = getVisibleSlicesPgAll(skip, show, rootDS, node.children,
 											 path.concat(node.index),
 											 node, pre+n, send, slices);
-			if (info instanceof Array)
+			if (Y.Lang.isArray(info))
 			{
 				return info;
 			}
@@ -583,7 +583,7 @@ function findRequest(
 function treeSuccess(e, reqIndex)
 {
 	if (!e.response || e.error ||
-		!(e.response.results instanceof Array))
+		!Y.Lang.isArray(e.response.results))
 	{
 		treeFailure.apply(this, arguments);
 		return;

@@ -22,7 +22,8 @@ Y.namespace("Treeble").buildTwistdownFormatter = function(sendRequest)
 {
 	return function(o)
 	{
-		o.td.addClass('treeble-nub');
+		var td = o.createCell();
+		td.addClass('treeble-nub');
 
 		var ds  = this.datasource.get('datasource');
 		var key = ds.get('root').treeble_config.childNodesKey;
@@ -33,19 +34,19 @@ Y.namespace("Treeble").buildTwistdownFormatter = function(sendRequest)
 			var open  = ds.isOpen(path);
 			var clazz = open ? 'row-open' : 'row-closed';
 
-			o.td.addClass('row-toggle');
-			o.td.replaceClass(/row-(open|closed)/, clazz);
+			td.addClass('row-toggle');
+			td.replaceClass(/row-(open|closed)/, clazz);
 
-			o.td.on('click', function()
+			td.on('click', function()
 			{
 				ds.toggle(path, {}, sendRequest);
 			});
 
-			o.td.set('innerHTML', '<a class="treeble-collapse-nub" href="javascript:void(0);"></a>');
+			td.set('innerHTML', '<a class="treeble-collapse-nub" href="javascript:void(0);"></a>');
 		}
 		else
 		{
-			o.td.set('innerHTML', '');
+			td.set('innerHTML', '');
 		}
 
 		return '';
