@@ -71,7 +71,8 @@
 <span class="p">{</span>
 	<span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;treeble-nub&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">td</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">createCell</span><span class="p">();</span>
+		<span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;treeble-nub&#39;</span><span class="p">);</span>
 
 		<span class="kd">var</span> <span class="nx">ds</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">datasource</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;datasource&#39;</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">).</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">childNodesKey</span><span class="p">;</span>
@@ -82,19 +83,19 @@
 			<span class="kd">var</span> <span class="nx">open</span>  <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">isOpen</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
 			<span class="kd">var</span> <span class="nx">clazz</span> <span class="o">=</span> <span class="nx">open</span> <span class="o">?</span> <span class="s1">&#39;row-open&#39;</span> <span class="o">:</span> <span class="s1">&#39;row-closed&#39;</span><span class="p">;</span>
 
-			<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;row-toggle&#39;</span><span class="p">);</span>
-			<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="sr">/row-(open|closed)/</span><span class="p">,</span> <span class="nx">clazz</span><span class="p">);</span>
+			<span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;row-toggle&#39;</span><span class="p">);</span>
+			<span class="nx">td</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="sr">/row-(open|closed)/</span><span class="p">,</span> <span class="nx">clazz</span><span class="p">);</span>
 
-			<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+			<span class="nx">td</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
 			<span class="p">{</span>
 				<span class="nx">ds</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">sendRequest</span><span class="p">);</span>
 			<span class="p">});</span>
 
-			<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;a class=&quot;treeble-collapse-nub&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;/a&gt;&#39;</span><span class="p">);</span>
+			<span class="nx">td</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;a class=&quot;treeble-collapse-nub&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;/a&gt;&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+			<span class="nx">td</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>

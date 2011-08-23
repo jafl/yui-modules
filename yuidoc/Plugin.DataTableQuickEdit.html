@@ -85,6 +85,8 @@ appropriate form field: &lt;input type="text"&gt;, &lt;textarea&gt;,
 or &lt;select&gt;.</dd>
 <dt>validation</dt><dd>Validation configuration for every field in
 the column.</dd>
+<dt>copyDown</dt><dd>If true, the top cell in the column will have a
+button to copy the value down to the rest of the rows.</dd>
 </dl>
 <p>The following configuration can be provided as part of
 quickEdit.validation:</p>
@@ -116,6 +118,29 @@ you configure a regex validation.</dd>
 <dt>regex</dt><dd>Regular expression that the value must satisfy in
 order to be considered valid.</dd>
 </dl>
+<p>Custom QuickEdit Formatters</p>
+<p>To write a custom cell formatter for QuickEdit mode, you must
+structure the function as follows:</p>
+<pre>
+function myQuickEditFormatter(o) {
+&nbsp;&nbsp;var markup =
+&nbsp;&nbsp;&nbsp;&nbsp;'&lt;input type="text" class="{yiv} quickedit-field quickedit-key:{key}"/&gt;' +
+&nbsp;&nbsp;&nbsp;&nbsp;Y.Plugin.QuickEdit.error_display_markup;
+&nbsp;&nbsp;var qe = o.column.get('quickEdit');
+&nbsp;&nbsp;var td = o.createCell();
+&nbsp;&nbsp;td.set('innerHTML', Y.Lang.sub(markup, {
+&nbsp;&nbsp;&nbsp;&nbsp;key: o.column.get('key'),
+&nbsp;&nbsp;&nbsp;&nbsp;yiv: qe.validation ? (qe.validation.css || '') : ''
+&nbsp;&nbsp;}));
+&nbsp;&nbsp;td.get('firstChild').set('value', extractMyEditableValue(o));
+&nbsp;&nbsp;Y.Plugin.QuickEdit.copyDownFormatter.call(this, o, td);
+};
+</pre>
+<p>You can use textarea or select instead of input, but you can only
+create a single field.</p>
+<p><code>extractMyEditableValue</code> does not have to be a separate
+function. The work should normally be done inline in the formatter
+function, but the name of the sample function makes the point clear.</p>
                     </div>
 
                         <div class="section constructor details" rel="yui:constructor" resource="#constructor">
@@ -341,6 +366,61 @@ table has paginators, you must show them.
 
                                         <div class="description">
 
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_copyDownFormatter">
+                                    <h4>
+                                        <a name="method_copyDownFormatter">copyDownFormatter</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">copyDownFormatter</strong>
+                                           (
+                                                
+                                                        
+                                                         o
+                                                    
+                                                
+                                                        , 
+                                                         td
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Inserts a "Copy down" button if the cell is in the first row of the
+DataTable.  Call this at the end of your QuickEdit formatter.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">o</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  cell formatter object</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">td</span>
+                                                        &lt;<span property="yui:type">Node</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  cell</span>
+                                                        </dd>
+                                                </dl>
 
 
 
@@ -813,6 +893,7 @@ formatter, this function displays an input field.
                                 <li class="protected"><a href="#method__getElementStatus" title="_getElementStatus">_getElementStatus</a></li>
                                 <li class=""><a href="#method_cancel" title="cancel">cancel</a></li>
                                 <li class=""><a href="#method_clearMessages" title="clearMessages">clearMessages</a></li>
+                                <li class=""><a href="#method_copyDownFormatter" title="copyDownFormatter">copyDownFormatter</a></li>
                                 <li class=""><a href="#method_displayMessage" title="displayMessage">displayMessage</a></li>
                                 <li class=""><a href="#method_getChanges" title="getChanges">getChanges</a></li>
                                 <li class=""><a href="#method_readonlyEmailFormatter" title="readonlyEmailFormatter">readonlyEmailFormatter</a></li>
@@ -848,7 +929,7 @@ formatter, this function displays an input field.
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyEmailFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyEmailFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyLinkFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyLinkFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Plugin.DataTableQuickEdit.html#method_textareaFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textareaFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_textFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}];
+    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Plugin.DataTableQuickEdit.html#method_copyDownFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "copyDownFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyEmailFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyEmailFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyLinkFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyLinkFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Plugin.DataTableQuickEdit.html#method_textareaFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textareaFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_textFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}];
 </script>
 </body>
 </html>

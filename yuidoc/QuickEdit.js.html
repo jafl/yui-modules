@@ -82,6 +82,9 @@
 <span class="cm"> * &lt;dt&gt;validation&lt;/dt&gt;&lt;dd&gt;Validation configuration for every field in</span>
 <span class="cm"> * the column.&lt;/dd&gt;</span>
 <span class="cm"> *</span>
+<span class="cm"> * &lt;dt&gt;copyDown&lt;/dt&gt;&lt;dd&gt;If true, the top cell in the column will have a</span>
+<span class="cm"> * button to copy the value down to the rest of the rows.&lt;/dd&gt;</span>
+<span class="cm"> *</span>
 <span class="cm"> * &lt;/dl&gt;</span>
 <span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;The following configuration can be provided as part of</span>
@@ -124,19 +127,6 @@
 <span class="cm"> *</span>
 <span class="cm"> * &lt;/dl&gt;</span>
 <span class="cm"> *</span>
-<span class="cm"> * @module gallery-quickedit</span>
-<span class="cm"> * @namespace Plugin</span>
-<span class="cm"> * @class DataTableQuickEdit</span>
-<span class="cm"> * @extends Plugin.Base</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> * @param config {Object} Object literal to set component configuration.</span>
-<span class="cm"> */</span>
-
-<span class="cm">/*</span>
-<span class="cm"> *</span>
-<span class="cm"> * &lt;dt&gt;copyDown&lt;/dt&gt;&lt;dd&gt;If true, the top cell in the column will have a</span>
-<span class="cm"> * button to copy the value down to the rest of the rows.&lt;/dd&gt;</span>
-<span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;Custom QuickEdit Formatters&lt;/p&gt;</span>
 <span class="cm"> *</span>
 <span class="cm"> * &lt;p&gt;To write a custom cell formatter for QuickEdit mode, you must</span>
@@ -148,16 +138,16 @@
 <span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#39;&amp;lt;input type=&quot;text&quot; class=&quot;{yiv} quickedit-field quickedit-key:{key}&quot;/&amp;gt;&#39; +</span>
 <span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Y.Plugin.QuickEdit.error_display_markup;</span>
 <span class="cm"> *</span>
-<span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;var qe = o.column.get(&#39;quickEdit&#39;);</span>
+<span class="cm"> * &amp;nbsp;&amp;nbsp;var qe = o.column.get(&#39;quickEdit&#39;);</span>
+<span class="cm"> * &amp;nbsp;&amp;nbsp;var td = o.createCell();</span>
+<span class="cm"> * &amp;nbsp;&amp;nbsp;td.set(&#39;innerHTML&#39;, Y.Lang.sub(markup, {</span>
+<span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;key: o.column.get(&#39;key&#39;),</span>
+<span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;yiv: qe.validation ? (qe.validation.css || &#39;&#39;) : &#39;&#39;</span>
+<span class="cm"> * &amp;nbsp;&amp;nbsp;}));</span>
 <span class="cm"> *</span>
-<span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;o.td.set(&#39;innerHTML&#39;, Y.Lang.sub(markup, {</span>
-<span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;key: o.column.get(&#39;key&#39;),</span>
-<span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;yiv: qe.validation ? (qe.validation.css || &#39;&#39;) : &#39;&#39;</span>
-<span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;}));</span>
+<span class="cm"> * &amp;nbsp;&amp;nbsp;td.get(&#39;firstChild&#39;).set(&#39;value&#39;, extractMyEditableValue(o));</span>
 <span class="cm"> *</span>
-<span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;o.td.get(&#39;firstChild&#39;).value = extractMyEditableValue(o);</span>
-<span class="cm"> *</span>
-<span class="cm"> * &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Y.Plugin.QuickEdit.copyDownFormatter.apply(this, arguments);</span>
+<span class="cm"> * &amp;nbsp;&amp;nbsp;Y.Plugin.QuickEdit.copyDownFormatter.call(this, o, td);</span>
 <span class="cm"> * };</span>
 <span class="cm"> * &lt;/pre&gt;</span>
 <span class="cm"> *</span>
@@ -167,6 +157,13 @@
 <span class="cm"> * &lt;p&gt;&lt;code&gt;extractMyEditableValue&lt;/code&gt; does not have to be a separate</span>
 <span class="cm"> * function. The work should normally be done inline in the formatter</span>
 <span class="cm"> * function, but the name of the sample function makes the point clear.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module gallery-quickedit</span>
+<span class="cm"> * @namespace Plugin</span>
+<span class="cm"> * @class DataTableQuickEdit</span>
+<span class="cm"> * @extends Plugin.Base</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object} Object literal to set component configuration.</span>
 <span class="cm"> */</span>
 <span class="kd">function</span> <span class="nx">QuickEdit</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 <span class="p">{</span>
@@ -225,35 +222,21 @@
 <span class="cm"> */</span>
 <span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">textFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="cm">/*</span>
-<span class="cm">	var markup =</span>
-<span class="cm">		&#39;&lt;input type=&quot;text&quot; class=&quot;{yiv} quickedit-field quickedit-key:{key}&quot;/&gt;&#39; +</span>
-<span class="cm">		QuickEdit.error_display_markup;</span>
-
-<span class="cm">	var qe = o.column.get(&#39;quickEdit&#39;);</span>
-
-<span class="cm">	o.td.set(&#39;innerHTML&#39;, Y.Lang.sub(markup,</span>
-<span class="cm">	{</span>
-<span class="cm">		key: o.column.get(&#39;key&#39;),</span>
-<span class="cm">		yiv: qe.validation ? (qe.validation.css || &#39;&#39;) : &#39;&#39;</span>
-<span class="cm">	}));</span>
-
-<span class="cm">	o.td.get(&#39;firstChild&#39;).value = o.value;</span>
-
-<span class="cm">	QuickEdit.copyDownFormatter.apply(this, arguments);</span>
-<span class="cm">*/</span>
 	<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span>
-		<span class="s1">&#39;&lt;input type=&quot;text&quot; class=&quot;{yiv} quickedit-field quickedit-key:{key}&quot; value=&quot;{value}&quot;/&gt;&#39;</span> <span class="o">+</span>
+		<span class="s1">&#39;&lt;input type=&quot;text&quot; class=&quot;{yiv} quickedit-field quickedit-key:{key}&quot;/&gt;&#39;</span> <span class="o">+</span>
 		<span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">error_display_markup</span><span class="p">;</span>
 
 	<span class="kd">var</span> <span class="nx">qe</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">column</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;quickEdit&#39;</span><span class="p">);</span>
-
-	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
+	<span class="kd">var</span> <span class="nx">td</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">createCell</span><span class="p">();</span>
+	<span class="nx">td</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
 	<span class="p">{</span>
 		<span class="nx">key</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">column</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">),</span>
-		<span class="nx">yiv</span><span class="o">:</span> <span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span> <span class="o">?</span> <span class="p">(</span><span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-		<span class="nx">value</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span>
-	<span class="p">});</span>
+		<span class="nx">yiv</span><span class="o">:</span> <span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span> <span class="o">?</span> <span class="p">(</span><span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span>
+	<span class="p">}));</span>
+
+	<span class="nx">td</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;firstChild&#39;</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+
+	<span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">copyDownFormatter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">td</span><span class="p">);</span>
 <span class="p">};</span>
 
 <span class="cm">/**</span>
@@ -265,35 +248,21 @@
 <span class="cm"> */</span>
 <span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">textareaFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="cm">/*</span>
-<span class="cm">	var markup =</span>
-<span class="cm">		&#39;&lt;textarea class=&quot;{yiv} quickedit-field quickedit-key:{key}&quot;/&gt;&#39; +</span>
-<span class="cm">		QuickEdit.error_display_markup;</span>
-
-<span class="cm">	var qe = o.column.get(&#39;quickEdit&#39;);</span>
-
-<span class="cm">	o.td.set(&#39;innerHTML&#39;, Y.Lang.sub(markup,</span>
-<span class="cm">	{</span>
-<span class="cm">		key: o.column.get(&#39;key&#39;),</span>
-<span class="cm">		yiv: qe.validation ? (qe.validation.css || &#39;&#39;) : &#39;&#39;</span>
-<span class="cm">	}));</span>
-
-<span class="cm">	o.td.get(&#39;firstChild&#39;).value = o.value;</span>
-
-<span class="cm">	QuickEdit.copyDownFormatter.apply(this, arguments);</span>
-<span class="cm">*/</span>
 	<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span>
-		<span class="s1">&#39;&lt;textarea class=&quot;{yiv} quickedit-field quickedit-key:{key}&quot; value=&quot;{value}&quot;/&gt;&#39;</span> <span class="o">+</span>
+		<span class="s1">&#39;&lt;textarea class=&quot;{yiv} quickedit-field quickedit-key:{key}&quot;/&gt;&#39;</span> <span class="o">+</span>
 		<span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">error_display_markup</span><span class="p">;</span>
 
 	<span class="kd">var</span> <span class="nx">qe</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">column</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;quickEdit&#39;</span><span class="p">);</span>
-
-	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
+	<span class="kd">var</span> <span class="nx">td</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">createCell</span><span class="p">();</span>
+	<span class="nx">td</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
 	<span class="p">{</span>
 		<span class="nx">key</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">column</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">),</span>
-		<span class="nx">yiv</span><span class="o">:</span> <span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span> <span class="o">?</span> <span class="p">(</span><span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-		<span class="nx">value</span><span class="o">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span>
-	<span class="p">});</span>
+		<span class="nx">yiv</span><span class="o">:</span> <span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span> <span class="o">?</span> <span class="p">(</span><span class="nx">qe</span><span class="p">.</span><span class="nx">validation</span><span class="p">.</span><span class="nx">css</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span>
+	<span class="p">}));</span>
+
+	<span class="nx">td</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;firstChild&#39;</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+
+	<span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">copyDownFormatter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">td</span><span class="p">);</span>
 <span class="p">};</span>
 
 <span class="cm">/**</span>
@@ -359,7 +328,7 @@
 	<span class="k">return</span> <span class="nx">tr</span> <span class="o">?</span> <span class="nx">tr</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">).</span><span class="nx">item</span><span class="p">(</span><span class="nx">col_index</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="cm">/*</span>
+<span class="cm">/**</span>
 <span class="cm"> * Copy value from first cell to all other cells in the column.</span>
 <span class="cm"> *</span>
 <span class="cm"> * @param e {Event} triggering event</span>
@@ -398,16 +367,16 @@
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="cm">/*</span>
-<span class="cm"> * Called with exactly the same arguments as a normal cell</span>
-<span class="cm"> * formatter, this function inserts a &quot;Copy down&quot; button if the</span>
-<span class="cm"> * cell is in the first row of the DataTable.  Call this at the end</span>
-<span class="cm"> * of your QuickEdit formatter.</span>
+<span class="cm">/**</span>
+<span class="cm"> * Inserts a &quot;Copy down&quot; button if the cell is in the first row of the</span>
+<span class="cm"> * DataTable.  Call this at the end of your QuickEdit formatter.</span>
 <span class="cm"> *</span>
 <span class="cm"> * @method copyDownFormatter</span>
 <span class="cm"> * @static</span>
+<span class="cm"> * @param o {Object} cell formatter object</span>
+<span class="cm"> * @param td {Node} cell</span>
 <span class="cm"> */</span>
-<span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">copyDownFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+<span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">copyDownFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">td</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">column</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;quickEdit&#39;</span><span class="p">).</span><span class="nx">copyDown</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">.</span><span class="nx">rowindex</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -415,9 +384,9 @@
 		<span class="nx">button</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Copy down&#39;</span><span class="p">);</span>
 		<span class="nx">button</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;darr;&#39;</span><span class="p">);</span>
 
-		<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">button</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">error_text_class</span><span class="p">));</span>
+		<span class="nx">td</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">button</span><span class="p">,</span> <span class="nx">td</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nx">QuickEdit</span><span class="p">.</span><span class="nx">error_text_class</span><span class="p">));</span>
 
-		<span class="nx">button</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">copyDown</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+		<span class="nx">button</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">copyDown</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">td</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
@@ -429,7 +398,7 @@
 	<span class="p">};</span>
 <span class="p">}</span>
 
-<span class="cm">/*</span>
+<span class="cm">/**</span>
 <span class="cm"> * Shift the focus up/down within a column.</span>
 <span class="cm"> *</span>
 <span class="cm"> * @private</span>
@@ -449,7 +418,7 @@
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="cm">/*</span>
+<span class="cm">/**</span>
 <span class="cm"> * Validate the given form fields.</span>
 <span class="cm"> *</span>
 <span class="cm"> * @param e {Array} Array of form fields.</span>
@@ -862,7 +831,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyEmailFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyEmailFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyLinkFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyLinkFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Plugin.DataTableQuickEdit.html#method_textareaFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textareaFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_textFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}];
+    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Plugin.DataTableQuickEdit.html#method_copyDownFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "copyDownFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyEmailFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyEmailFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyLinkFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyLinkFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Plugin.DataTableQuickEdit.html#method_textareaFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textareaFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_textFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_display_markup", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_display_markup"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.QuickEdit.error_text_class", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.QuickEdit.error_text_class"}];
 </script>
 </body>
 </html>

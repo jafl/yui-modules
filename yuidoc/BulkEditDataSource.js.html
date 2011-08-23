@@ -365,9 +365,9 @@
 	<span class="nx">response</span>         <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
 
 	<span class="kd">var</span> <span class="nx">dataStartIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">startIndexExpr</span><span class="p">)</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;startIndexExpr&#39;</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;dataStartIndex=this._callback.response&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">startIndexExpr</span><span class="p">);</span>
+		<span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;dataStartIndex=this._callback.response&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;startIndexExpr&#39;</span><span class="p">));</span>
 	<span class="p">}</span>
 
 	<span class="kd">var</span> <span class="nx">startIndex</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">startIndex</span> <span class="o">-</span> <span class="nx">dataStartIndex</span><span class="p">;</span>
@@ -377,9 +377,9 @@
 
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">totalRecordsReturnExpr</span><span class="p">)</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;totalRecordsReturnExpr&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">totalRecordsReturnExpr</span><span class="o">+</span><span class="s1">&#39;=&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+			<span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;totalRecordsReturnExpr&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;=&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
 		<span class="p">}</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;extractTotalRecords&#39;</span><span class="p">)(</span><span class="nx">response</span><span class="p">);</span>
 
@@ -412,12 +412,13 @@
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">_records</span>   <span class="o">=</span> <span class="p">[];</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span> <span class="o">=</span> <span class="p">{};</span>
+	<span class="kd">var</span> <span class="nx">uniqueIdKey</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">);</span>
 
 	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">rec</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_records</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">rec</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span><span class="p">[</span> <span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">rec</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span><span class="p">[</span> <span class="nx">rec</span><span class="p">[</span> <span class="nx">uniqueIdKey</span> <span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">rec</span><span class="p">;</span>
 	<span class="p">},</span>
 	<span class="k">this</span><span class="p">);</span>
 
@@ -425,7 +426,7 @@
 
 	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rec</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">]</span> <span class="p">];</span>
+		<span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">rec</span><span class="p">[</span> <span class="nx">uniqueIdKey</span> <span class="p">]</span> <span class="p">];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">diff</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">rec</span><span class="p">,</span> <span class="nx">diff</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -545,7 +546,7 @@
 		<span class="k">else</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">record</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">)[</span><span class="nx">j</span><span class="p">];</span>
-			<span class="kd">var</span> <span class="nx">record_id</span> <span class="o">=</span> <span class="nx">record</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">];</span>
+			<span class="kd">var</span> <span class="nx">record_id</span> <span class="o">=</span> <span class="nx">record</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">];</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">]</span> <span class="o">&amp;&amp;</span>
@@ -601,10 +602,10 @@
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="o">++</span><span class="p">;</span>
 
-		<span class="kd">var</span> <span class="nx">record_id</span> <span class="o">=</span> <span class="nb">String</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">generateUniqueId</span><span class="p">());</span>
+		<span class="kd">var</span> <span class="nx">record_id</span> <span class="o">=</span> <span class="nb">String</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;generateUniqueId&#39;</span><span class="p">)());</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">]</span>                     <span class="o">=</span> <span class="p">{};</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">][</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">record_id</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">]</span>                            <span class="o">=</span> <span class="p">{};</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">][</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">record_id</span><span class="p">;</span>
 
 		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">fromDisplayIndex</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">j</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span>
@@ -626,9 +627,10 @@
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">record</span><span class="p">)</span>		<span class="c1">// insert initial values into _diff</span>
 		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">uniqueIdKey</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">);</span>
 			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span><span class="p">)</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">!=</span> <span class="nx">uniqueIdKey</span><span class="p">)</span>
 				<span class="p">{</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">updateValue</span><span class="p">(</span><span class="nx">record_id</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
 				<span class="p">}</span>
@@ -667,7 +669,7 @@
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_dataIsLocal</span><span class="p">())</span>
 			<span class="p">{</span>
-				<span class="kd">var</span> <span class="nx">record_id</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">)[</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">][</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">].</span><span class="nx">toString</span><span class="p">();</span>
+				<span class="kd">var</span> <span class="nx">record_id</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">)[</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="p">][</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">].</span><span class="nx">toString</span><span class="p">();</span>
 			<span class="p">}</span>
 
 			<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">removed_prefix</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
@@ -694,7 +696,7 @@
 		<span class="cm">/* string */</span>	<span class="nx">key</span><span class="p">,</span>
 		<span class="cm">/* string */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span><span class="p">)</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;BulkEditDataSource.updateValue() does not allow changing the id for a record.  Use BulkEditDataSource.updateRecordId() instead.&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
@@ -761,7 +763,7 @@
 
 		<span class="kd">function</span> <span class="nx">merge</span><span class="p">(</span><span class="nx">rec</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">record_id</span><span class="p">)</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">record_id</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">diff</span><span class="p">)</span>
@@ -822,7 +824,7 @@
 
 		<span class="kd">function</span> <span class="nx">kill</span><span class="p">(</span><span class="nx">rec</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">record_id</span><span class="p">)</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">record_id</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="p">{};</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">recordIdToIndex</span><span class="p">(</span><span class="nx">record_id</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
@@ -906,7 +908,7 @@
 
 		<span class="kd">function</span> <span class="nx">update</span><span class="p">(</span><span class="nx">rec</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">orig_record_id</span><span class="p">)</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">orig_record_id</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="p">{};</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">recordIdToIndex</span><span class="p">(</span><span class="nx">orig_record_id</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
@@ -916,7 +918,7 @@
 					<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">inserted_prefix</span> <span class="o">+</span> <span class="nx">new_record_id</span><span class="p">;</span>
 				<span class="p">}</span>
 
-				<span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">new_record_id</span><span class="p">;</span>
+				<span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">new_record_id</span><span class="p">;</span>
 				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">orig_record_id</span> <span class="p">])</span>
 				<span class="p">{</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">new_record_id</span> <span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">orig_record_id</span> <span class="p">];</span>
@@ -983,7 +985,7 @@
 			<span class="k">if</span> <span class="p">((</span><span class="nx">ins</span> <span class="o">&amp;&amp;</span>
 				 <span class="nx">j</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">inserted_prefix</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="o">===</span> <span class="nx">record_id</span><span class="p">)</span> <span class="o">||</span>
 				<span class="p">(</span><span class="o">!</span><span class="nx">ins</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">del</span> <span class="o">&amp;&amp;</span>
-				 <span class="nx">records</span><span class="p">[</span><span class="nx">j</span><span class="p">][</span> <span class="k">this</span><span class="p">.</span><span class="nx">uniqueIdKey</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">record_id</span><span class="p">))</span>
+				 <span class="nx">records</span><span class="p">[</span><span class="nx">j</span><span class="p">][</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">record_id</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">return_info</span><span class="p">)</span>
 				<span class="p">{</span>
