@@ -20,7 +20,10 @@ YUI({
 //	filter: 'debug',
 //	combine: false,
 	logInclude: { TestRunner: true, Node: true }
-}).use('gallery-node-optimizations', 'test', 'console', 'console-filters', 'dd-plugin', function(Y)
+}).use(
+	'gallery-node-optimizations', 'test',
+	'console', 'console-filters', 'dd-plugin',
+function(Y)
 {
 	Y.one('#display').set('innerHTML',
 		Y.Lang.trim(Y.one('#code').get('innerHTML'))

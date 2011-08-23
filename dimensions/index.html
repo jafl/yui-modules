@@ -16,7 +16,10 @@ YUI({
 //	filter: 'debug',
 //	combine: false,
 	logInclude: { TestRunner: true }
-}).use('gallery-dimensions', 'test', 'console', 'console-filters', 'dd-plugin', function(Y)
+}).use(
+	'gallery-dimensions', 'test',
+	'console', 'console-filters', 'dd-plugin',
+function(Y)
 {
 	Y.one('#display').set('innerHTML',
 		Y.Lang.trim(Y.one('#code').get('innerHTML'))
