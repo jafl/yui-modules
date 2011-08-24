@@ -33,7 +33,7 @@
 function BulkEditDataSource()
 {
 	BulkEditDataSource.superclass.constructor.apply(this, arguments);
-};
+}
 
 BulkEditDataSource.NAME = "bulkEditDataSource";
 
@@ -316,9 +316,9 @@ function checkFinished()
 	response         = Y.clone(response);
 
 	var dataStartIndex = 0;
-	if (this.startIndexExpr)
+	if (this.get('startIndexExpr'))
 	{
-		eval('dataStartIndex=this._callback.response'+this.startIndexExpr);
+		eval('dataStartIndex=this._callback.response'+this.get('startIndexExpr'));
 	}
 
 	var startIndex   = this._callback.request.startIndex - dataStartIndex;
@@ -328,11 +328,11 @@ function checkFinished()
 
 	if (!this._index)
 	{
-		if (this.totalRecordsReturnExpr)
+		if (this.get('totalRecordsReturnExpr'))
 		{
-			eval('response'+this.totalRecordsReturnExpr+'='+this._callback.response.results.length);
+			eval('response'+this.get('totalRecordsReturnExpr')+'='+this._callback.response.results.length);
 		}
-		this._count = this.extractTotalRecords(response);
+		this._count = this.get('extractTotalRecords')(response);
 
 		this._index = [];
 		for (var i=0; i<this._count; i++)
@@ -363,12 +363,13 @@ function checkFinished()
 
 	this._records   = [];
 	this._recordMap = {};
+	var uniqueIdKey = this.get('uniqueIdKey');
 
 	Y.Array.each(response.results, function(value)
 	{
 		var rec = Y.clone(value);
 		this._records.push(rec);
-		this._recordMap[ rec[ this.uniqueIdKey ] ] = rec;
+		this._recordMap[ rec[ uniqueIdKey ] ] = rec;
 	},
 	this);
 
@@ -376,7 +377,7 @@ function checkFinished()
 
 	Y.Array.each(response.results, function(rec)
 	{
-		var diff = this._diff[ rec[ this.uniqueIdKey ] ];
+		var diff = this._diff[ rec[ uniqueIdKey ] ];
 		if (diff)
 		{
 			Y.mix(rec, diff, true);
@@ -392,7 +393,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 {
 	initializer: function(config)
 	{
-		if (!(config.ds instanceof DataSource.Local))
+		if (!(config.ds instanceof Y.DataSource.Local))
 		{
 			Y.error('BulkEditDataSource requires DataSource');
 		}
@@ -439,7 +440,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		{
 			ds.cache.flush();
 		}
-	}
+	},
 
 	/**
 	 * Use this instead of any meta information in response.
@@ -496,7 +497,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		else
 		{
 			var record    = this.get('ds').get('source')[j];
-			var record_id = record[ this.uniqueIdKey ];
+			var record_id = record[ this.get('uniqueIdKey') ];
 		}
 
 		if (this._diff[ record_id ] &&
@@ -552,10 +553,10 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	{
 		this._count++;
 
-		var record_id = String(this.generateUniqueId());
+		var record_id = String(this.get('generateUniqueId')());
 
-		this._new[ record_id ]                     = {};
-		this._new[ record_id ][ this.uniqueIdKey ] = record_id;
+		this._new[ record_id ]                            = {};
+		this._new[ record_id ][ this.get('uniqueIdKey') ] = record_id;
 
 		var j = fromDisplayIndex.call(this, index);
 		if (j === false)
@@ -577,9 +578,10 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		if (record)		// insert initial values into _diff
 		{
+			var uniqueIdKey = this.get('uniqueIdKey');
 			Y.Object.each(record, function(value, key)
 			{
-				if (key != this.uniqueIdKey)
+				if (key != uniqueIdKey)
 				{
 					this.updateValue(record_id, key, value);
 				}
@@ -618,7 +620,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		{
 			if (this._dataIsLocal())
 			{
-				var record_id = this.get('ds').get('source')[ this._index[j] ][ this.uniqueIdKey ].toString();
+				var record_id = this.get('ds').get('source')[ this._index[j] ][ this.get('uniqueIdKey') ].toString();
 			}
 
 			this._index[j] = removed_prefix + this._index[j];
@@ -645,7 +647,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		/* string */	key,
 		/* string */	value)
 	{
-		if (key == this.uniqueIdKey)
+		if (key == this.get('uniqueIdKey'))
 		{
 			Y.error('BulkEditDataSource.updateValue() does not allow changing the id for a record.  Use BulkEditDataSource.updateRecordId() instead.');
 		}
@@ -712,7 +714,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		function merge(rec)
 		{
-			if (rec[ this.uniqueIdKey ].toString() === record_id)
+			if (rec[ this.get('uniqueIdKey') ].toString() === record_id)
 			{
 				var diff = this._diff[ record_id ];
 				if (diff)
@@ -773,7 +775,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		function kill(rec)
 		{
-			if (rec[ this.uniqueIdKey ].toString() === record_id)
+			if (rec[ this.get('uniqueIdKey') ].toString() === record_id)
 			{
 				var info = {};
 				this.recordIdToIndex(record_id, info);
@@ -857,7 +859,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		function update(rec)
 		{
-			if (rec[ this.uniqueIdKey ].toString() === orig_record_id)
+			if (rec[ this.get('uniqueIdKey') ].toString() === orig_record_id)
 			{
 				var info = {};
 				this.recordIdToIndex(orig_record_id, info);
@@ -867,7 +869,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 					this._index[j] = inserted_prefix + new_record_id;
 				}
 
-				rec[ this.uniqueIdKey ] = new_record_id;
+				rec[ this.get('uniqueIdKey') ] = new_record_id;
 				if (this._diff[ orig_record_id ])
 				{
 					this._diff[ new_record_id ] = this._diff[ orig_record_id ];
@@ -934,7 +936,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 			if ((ins &&
 				 j.substr(inserted_prefix.length) === record_id) ||
 				(!ins && !del &&
-				 records[j][ this.uniqueIdKey ].toString() === record_id))
+				 records[j][ this.get('uniqueIdKey') ].toString() === record_id))
 			{
 				if (return_info)
 				{
@@ -966,7 +968,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		this._callback._tId = this.get('ds').sendRequest(
 		{
-			request: this.generateRequest(this._callback.request),
+			request: this.get('generateRequest')(this._callback.request),
 			callback:
 			{
 				success: Y.bind(internalSuccess, this),
