@@ -255,26 +255,6 @@ YUI({
 	var table = new Y.DataTable.Base({columnset: cols});
 	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
 
-		// gist 1157902 -- patch for gallery-patch-340-datatable-formatter
-
-		Y.Do.before(function()
-		{
-			this._tmpKeys = this.get('columnset').keys.slice();
-		},
-		table, '_uiSetRecordset');
-
-		Y.Do.after(function()
-		{
-			this.get('columnset').keys = this._tmpKeys;
-		},
-		table, '_uiSetRecordset');
-
-		Y.Do.before(function(o)
-		{
-			o.classnames = o.classes;
-		},
-		table, '_createTbodyTdNode');
-
 	table.render("#treeble");
 
 	sendRequest();
