@@ -118,16 +118,16 @@ Y.Column.ATTRS.qeFormatter =
  * &nbsp;&nbsp;&nbsp;&nbsp;'&lt;input type="text" class="{yiv} quickedit-field quickedit-key:{key}"/&gt;' +
  * &nbsp;&nbsp;&nbsp;&nbsp;Y.Plugin.QuickEdit.error_display_markup;
  *
- * &nbsp;&nbsp;&nbsp;&nbsp;var qe = o.column.get('quickEdit');
- * &nbsp;&nbsp;&nbsp;&nbsp;var td = o.createCell();
- * &nbsp;&nbsp;&nbsp;&nbsp;td.set('innerHTML', Y.Lang.sub(markup, {
- * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key: o.column.get('key'),
- * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yiv: qe.validation ? (qe.validation.css || '') : ''
- * &nbsp;&nbsp;&nbsp;&nbsp;}));
+ * &nbsp;&nbsp;var qe = o.column.get('quickEdit');
+ * &nbsp;&nbsp;var td = o.createCell();
+ * &nbsp;&nbsp;td.set('innerHTML', Y.Lang.sub(markup, {
+ * &nbsp;&nbsp;&nbsp;&nbsp;key: o.column.get('key'),
+ * &nbsp;&nbsp;&nbsp;&nbsp;yiv: qe.validation ? (qe.validation.css || '') : ''
+ * &nbsp;&nbsp;}));
  *
- * &nbsp;&nbsp;&nbsp;&nbsp;td.get('firstChild').set('value', extractMyEditableValue(o));
+ * &nbsp;&nbsp;td.get('firstChild').set('value', extractMyEditableValue(o));
  *
- * &nbsp;&nbsp;&nbsp;&nbsp;Y.Plugin.QuickEdit.copyDownFormatter.call(this, o, td);
+ * &nbsp;&nbsp;Y.Plugin.QuickEdit.copyDownFormatter.call(this, o, td);
  * };
  * </pre>
  *
