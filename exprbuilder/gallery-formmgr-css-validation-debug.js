@@ -336,7 +336,7 @@ Y.FormManager.cleanValues = function(
  * <p>This is static because it links to CSS rules that define the
  * appearance of each status type:  .formmgr-has{status}</p>
  * 
- * @config Y.FormManager.status_order
+ * @property Y.FormManager.status_order
  * @type {Array}
  * @static
  */

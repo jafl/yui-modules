@@ -12,6 +12,7 @@ YUI.add('gallery-formmgr-overlay-plugin', function(Y) {
  * @module gallery-formmgr-overlay-plugin
  * @namespace Plugin
  * @class OverlayForm
+ * @extends Plugin.Base
  */
 function OverlayFormPlugin()
 {
