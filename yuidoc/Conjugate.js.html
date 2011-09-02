@@ -79,13 +79,13 @@
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">bar_height</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getHorizontalBarHeight</span><span class="p">();</span>
 
-		<span class="kd">var</span> <span class="nx">arg_top_left</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">top_left</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">arg_top_left</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">top_left</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 		<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">y</span>  <span class="o">+=</span> <span class="nx">bar_height</span><span class="p">;</span>
 
 		<span class="kd">var</span> <span class="nx">arg_index</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">prepareToRender</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">arg_top_left</span><span class="p">,</span> <span class="nx">font_size</span><span class="p">,</span> <span class="nx">rect_list</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">arg_info</span>  <span class="o">=</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">arg_index</span><span class="p">);</span>
 
-		<span class="kd">var</span> <span class="nx">r</span>  <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">r</span>  <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 		<span class="nx">r</span><span class="p">.</span><span class="nx">top</span> <span class="o">-=</span> <span class="nx">bar_height</span><span class="p">;</span>
 
 		<span class="k">return</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">midline</span><span class="p">,</span> <span class="nx">font_size</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
