@@ -2648,4 +2648,4 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 Y.HTMLTableBulkEditor = HTMLTableBulkEditor;
 
 
-}, '@VERSION@' ,{skinnable:true, optional:['datasource','dataschema','gallery-scrollintoview'], requires:['datasource-local','gallery-busyoverlay','gallery-paginator','gallery-formmgr-css-validation','gallery-node-optimizations']});
+}, '@VERSION@' ,{skinnable:true, optional:['datasource','dataschema','gallery-paginator'], requires:['widget','datasource-local','gallery-busyoverlay','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-scrollintoview']});
