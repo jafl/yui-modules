@@ -886,7 +886,7 @@ QueryBuilder.String.prototype =
 			{
 				if (var_config.autocomplete)
 				{
-					var config    = Y.clone(var_config.autocomplete);
+					var config    = Y.clone(var_config.autocomplete, true);
 					config.render = Y.one('body');
 					this.value_input.plug(Y.Plugin.AutoComplete, config);
 
@@ -1149,4 +1149,4 @@ QueryBuilder.plugin_mapping =
 };
 
 
-}, '@VERSION@' ,{requires:['widget','gallery-formmgr'], optional:['gallery-scrollintoview','autocomplete'], skinnable:true});
+}, '@VERSION@' ,{skinnable:true, optional:['gallery-scrollintoview','autocomplete'], requires:['widget','gallery-formmgr']});

@@ -315,7 +315,7 @@ function checkFinished()
 	var response = {};
 	Y.mix(response, this._callback.response);
 	response.results = [];
-	response         = Y.clone(response);
+	response         = Y.clone(response, true);
 
 	var dataStartIndex = 0;
 	if (this.get('startIndexExpr'))
@@ -351,7 +351,7 @@ function checkFinished()
 			if (inserted_re.test(j))
 			{
 				var id = j.substr(inserted_prefix.length);
-				response.results.splice(k,0, Y.clone(this._new[id]));
+				response.results.splice(k,0, Y.clone(this._new[id], true));
 			}
 			else if (removed_re.test(j))
 			{
@@ -369,7 +369,7 @@ function checkFinished()
 
 	Y.Array.each(response.results, function(value)
 	{
-		var rec = Y.clone(value);
+		var rec = Y.clone(value, true);
 		this._records.push(rec);
 		this._recordMap[ rec[ uniqueIdKey ] ] = rec;
 	},
@@ -570,7 +570,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		if (record && !Y.Lang.isObject(record))		// clone existing record
 		{
 			var s    = record.toString();
-			record   = Y.clone(this._recordMap[s] || this._new[s]);
+			record   = Y.clone(this._recordMap[s] || this._new[s], true);
 			var diff = this._diff[s];
 			if (record && diff)
 			{
@@ -1789,7 +1789,7 @@ Y.extend(BulkEditor, Y.Widget,
 			{
 				err.push(Y.FormManager.Strings.validation_error);
 			}
-			this.fire('notifyErrors', err);
+			this.fire('notifyErrors', { msgs: err });
 
 			this.get('contentBox').getElementsByClassName(BulkEditor.record_container_class).some(function(node)
 			{
@@ -1996,8 +1996,8 @@ Y.extend(BulkEditor, Y.Widget,
 				var field = this.get('fields')[key];
 				var value = ds.getValue(i, key);
 
-				this.validation_node.value     = Y.Lang.isUndefined(value) ? '' : value;
-				this.validation_node.className = field.validation.css || '';
+				this.validation_node.set('value', Y.Lang.isUndefined(value) ? '' : value);
+				this.validation_node.set('className', field.validation.css || '');
 
 				var info = Y.FormManager.validateFromCSSData(this.validation_node);
 				if (info.error)
@@ -2651,4 +2651,4 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 Y.HTMLTableBulkEditor = HTMLTableBulkEditor;
 
 
-}, '@VERSION@' ,{requires:['datasource-local','gallery-busyoverlay','gallery-paginator','gallery-formmgr-css-validation','gallery-node-optimizations'], optional:['datasource','dataschema','gallery-scrollintoview'], skinnable:true});
+}, '@VERSION@' ,{skinnable:true, optional:['datasource','dataschema','gallery-scrollintoview'], requires:['datasource-local','gallery-busyoverlay','gallery-paginator','gallery-formmgr-css-validation','gallery-node-optimizations']});

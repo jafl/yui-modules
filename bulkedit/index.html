@@ -25,15 +25,15 @@
 	.yui3-skin-sam .yui3-htmltablebulkedit th { background-color: #EDEDED; }
 	.yui3-skin-sam .yui3-htmltablebulkedit th,
 	.yui3-skin-sam .yui3-htmltablebulkedit td { border-color: #C3C3C3; }
+	.yui3-skin-sam .yui3-htmltablebulkedit input,
+	.yui3-skin-sam .yui3-htmltablebulkedit textarea,
+	.yui3-skin-sam .yui3-htmltablebulkedit select { border: 1px #AAAAAA solid; }
 	.yui3-skin-sam .yui3-htmltablebulkedit-even { background-color: #EDEDED; }
 	.yui3-skin-sam .yui3-htmltablebulkedit-odd.bulkedit-haserror { background-color: #FFEEEE; }
 	.yui3-skin-sam .yui3-htmltablebulkedit-even.bulkedit-haserror { background-color: #FFDDDD; }
 	.yui3-skin-sam .yui3-htmltablebulkedit .bulkedit-haserror .yui3-bulkedit-message-text { color: #BE1E2D; }
-	.yui3-skin-sam .yui3-htmltablebulkedit .bulkedit-haswarn .yui3-bulkedit-message-text { color: darkorange; font-weight: bold; }
 
 	#validate { margin-left: 20px; }
-	#server { margin-left: 20px; }
-	#server-note { display: none; }
 	</style>
 </head>
 <body class="yui3-skin-sam">
@@ -45,7 +45,7 @@ YUI({
 	combine: false,
 	gallery: 'gallery-2011.08.24-22-36'
 }).use(
-	'gallery-bulkedit', 'datasource-arrayschema', 'gallery-checkboxgroups',
+	'gallery-bulkedit', 'datasource-arrayschema', 'gallery-checkboxgroups', 'gallery-scrollintoview',
 function(Y)
 {
 // Raw data
@@ -124,28 +124,13 @@ function(Y)
 		},
 		hue:
 		{
-			type:   'select',
-			values: [ ]
-		},
-		foo:
-		{
-			label: 'Foo',
-			type: 'textarea'
-		},
-		bar:
-		{
-			label: 'Bar',
-			validation:
-			{
-				regex: /.+@.+/,
-				msg:
-				{
-					'regex': 'Please enter something that looks vaguely like an email address.'
-				}
-			}
-		},
-		baz: {},
-		bork: {}
+			type: 'select',
+			values:
+			[
+				{ value: 'light', text: 'Light' },
+				{ value: 'dark',  text: 'Dark'  }
+			]
+		}
 	};
 
 // Data source
@@ -164,9 +149,7 @@ function(Y)
 				comparator: 'integer'
 			},
 			"title",
-			"color",
-			"foo",
-			"bar"
+			"color"
 		]
 	};
 
@@ -191,33 +174,6 @@ function(Y)
 
 // Column configuration
 
-	function configureHueMenu(menu, color, hue)
-	{
-		var o    = Y.Node.getDOMNode(menu).options;
-		o.length = 0;
-
-		if (color == 'green')
-		{
-			o[0] = new Option('Lime', '1');
-			o[1] = new Option('Grass', '2');
-		}
-		else
-		{
-			o[0] = new Option('Light', '4');
-			o[1] = new Option('Dark', '5');
-
-			if (color == 'blue')
-			{
-				menu.set('value', 5);
-			}
-		}
-
-		if (!Y.Lang.isUndefined(hue))
-		{
-			menu.set('value', hue);
-		}
-	}
-
 	var columns =
 	[
 		{
@@ -236,22 +192,7 @@ function(Y)
 		{ key: 'year', label: 'Year' },
 		{ key: 'quantity', label: 'Quantity' },
 		{ key: 'color', label: 'Color' },
-		{
-			key:       'foobar',
-			label:     'Stuff',
-			formatter: function(o)
-			{
-				o.cell.set('innerHTML',
-					Y.BulkEditor.fieldMarkup.call(this, 'baz', o.record) +
-					Y.BulkEditor.fieldMarkup.call(this, 'hue', o.record) +
-					Y.BulkEditor.fieldMarkup.call(this, 'foo', o.record) +
-					Y.BulkEditor.fieldMarkup.call(this, 'bar', o.record));
-
-				var menu = o.cell.getElementsByTagName('select').item(0);
-				configureHueMenu(menu, o.record.color, o.record.hue);
-			}
-		},
-		{ key: 'bork', label: 'Bork' }
+		{ key: 'hue', label: 'Hue' }
 	];
 
 // Paginator
@@ -288,31 +229,6 @@ function(Y)
 			var cbs = this.get('contentBox').all('input.record-select');
 			new Y.SelectAllCheckboxGroup('#select-all', cbs);
 			new Y.EnableIfAnyCheckboxGroup(cbs.concat(Y.one('#select-all')), '#clone');
-		},
-
-		_renderRecordContainer: function(
-			/* element */	container,
-			/* object */	record)
-		{
-			var row  = CustomBulkEditor.superclass._renderRecordContainer.apply(this, arguments);
-
-			var row2 = Y.Node.create('<tr class="custom-row"></tr>');
-			row.get('parentNode').appendChild(row2);
-
-			return row;
-		},
-
-		_renderRecord: function(
-			/* element */	container,
-			/* object */	record)
-		{
-			CustomBulkEditor.superclass._renderRecord.apply(this, arguments);
-
-			var cell = Y.Node.create('<td class="custom-panel">You can add fields here by using Y.BulkEditor.fieldMarkup().</td>');
-			cell.set('colSpan', columns.length);
-
-			var row2 = container.siblings('.custom-row').item(0);
-			row2.appendChild(cell);
 		}
 	});
 
@@ -323,19 +239,7 @@ function(Y)
 		ds:        ds,
 		fields:    fields,
 		columns:   columns,
-		paginator: pg,
-		events:
-		[
-			{
-				type:  'change',
-				nodes: '.yui3-htmltablebulkedit-cell-color select',
-				fn: function(e)
-				{
-					var hue = this.getFieldElement(e.target, 'hue');
-					configureHueMenu(hue, e.target.get('value'));
-				}
-			}
-		]
+		paginator: pg
 	});
 	editor.render('#edit');
 
@@ -416,50 +320,6 @@ function(Y)
 	},
 	'#validate');
 
-	Y.on('click', function()
-	{
-		editor.setServerErrors(
-		[
-			'Server is not available.',
-			{ msg: 'Another fake message', type: 'info' }
-		],
-		[
-			{
-				id: 'n1'
-			},
-			{
-				id: 'n2',
-				recordError: 'We don\'t like it!'
-			},
-			{
-				id: 'n3',
-				fieldErrors:
-				{
-					title: { msg: 'Treacle tastes better', type: 'warn' },
-					foo:   'Phooey!'
-				}
-			},
-			{
-				id: 'n4',
-				recordError: { msg: 'Warning!', type: 'warn' }
-			},
-			{
-				id: 'n5',
-				fieldErrors:
-				{
-					title: { msg: 'No horseplay, please', type: 'warn' }
-				}
-			}
-		]);
-	},
-	'#server');
-
-	Y.on('click', function()
-	{
-		editor.clearServerErrors();
-	},
-	'#clear');
-
 	function clearPageMessages()
 	{
 		Y.one('#page-messages').set('innerHTML', '');
@@ -494,7 +354,7 @@ function(Y)
 </script>
 
 <h1><a href="http://yuilibrary.com/gallery/show/bulkedit">YUI 3 Bulk Editor</a> Example</h1>
-<p><a href="index.html">Show me a simpler example</a></p>
+<p><a href="complex.html">Show me a more complicated example</a></p>
 <p><a href="../yuidoc/module_gallery-bulkedit.html">Show me the documentation</a></p>
 <p><a href="/yui3-gallery/">Back to project list</a></p>
 <hr>
@@ -504,9 +364,6 @@ function(Y)
 	<button id="clone">Clone</button>
 	<button id="remove">Remove</button>
 	<button id="validate">Validate</button>
-	<button id="server">Fake server errors</button>
-	<button id="clear">Clear server errors</button>
-	<span id="server-note">(Shift-reload the page to enable <q>Fake server errors</q>.)</span>
 </div>
 
 <div id="page-messages"></div>
