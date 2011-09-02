@@ -28,7 +28,7 @@ Y.extend(MathNegate, MathFunctionWithArgs,
 		/* percentage */	font_size,
 		/* RectList */		rect_list)
 	{
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 		arg_top_left.x  += context.getStringWidth(font_size, '-');
 
 		var arg = this.args[0];

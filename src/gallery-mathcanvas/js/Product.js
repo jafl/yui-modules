@@ -26,7 +26,7 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 		/* percentage */	font_size,
 		/* RectList */		rect_list)
 	{
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 
 		var total_rect =
 		{

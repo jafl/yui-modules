@@ -30,13 +30,13 @@ Y.extend(MathConjugate, MathFunctionWithArgs,
 	{
 		var bar_height = context.getHorizontalBarHeight();
 
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 		arg_top_left.y  += bar_height;
 
 		var arg_index = this.args[0].prepareToRender(context, arg_top_left, font_size, rect_list);
 		var arg_info  = rect_list.get(arg_index);
 
-		var r  = Y.clone(arg_info.rect);
+		var r  = Y.clone(arg_info.rect, true);
 		r.top -= bar_height;
 
 		return rect_list.add(r, arg_info.midline, font_size, this);

@@ -151,7 +151,7 @@ RectList.prototype =
 		}
 
 		var info = this.list[ index ];
-		var orig = Y.clone(info.rect);
+		var orig = Y.clone(info.rect, true);
 		info.rect.top    += dy;
 		info.rect.left   += dx;
 		info.rect.bottom += dy;

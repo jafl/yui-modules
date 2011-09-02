@@ -8,7 +8,6 @@ YUI.add('gallery-mathcanvas', function(Y) {
  * <p>Each item contains rect (top,left,bottom,right), midline,
  * font_size(%), func.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathCanvas
  * @class RectList
  * @constructor
@@ -154,7 +153,7 @@ RectList.prototype =
 		}
 
 		var info = this.list[ index ];
-		var orig = Y.clone(info.rect);
+		var orig = Y.clone(info.rect, true);
 		info.rect.top    += dy;
 		info.rect.left   += dx;
 		info.rect.bottom += dy;
@@ -203,7 +202,6 @@ RectList.prototype =
  * the default rendering which displays the output from toString(), implement
  * prepareToRender() and render().</p>
  * 
- * @module gallery-mathcanvas
  * @namespace
  * @class MathFunction
  * @constructor
@@ -332,7 +330,6 @@ Y.MathFunction = MathFunction;
 /**********************************************************************
  * <p>Constant value</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Value
  * @extends MathFunction
@@ -379,7 +376,6 @@ MathFunction.Value = MathValue;
 /**********************************************************************
  * <p>Variable value</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Variable
  * @extends MathFunction
@@ -418,7 +414,6 @@ MathFunction.Variable = MathVariable;
 /**********************************************************************
  * <p>Pi</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Pi
  * @extends MathFunction
@@ -447,7 +442,6 @@ MathFunction.Pi = MathPi;
 /**********************************************************************
  * <p>e</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class E
  * @extends MathFunction
@@ -476,7 +470,6 @@ MathFunction.E = MathE;
 /**********************************************************************
  * <p>i (square root of -1)</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class I
  * @extends MathFunction
@@ -505,7 +498,6 @@ MathFunction.I = MathI;
 /**********************************************************************
  * <p>Function that takes one or more arguments.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class FunctionWithArgs
  * @extends MathFunction
@@ -722,7 +714,6 @@ MathFunction.FunctionWithArgs = MathFunctionWithArgs;
 /**********************************************************************
  * <p>Negate a number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Negate
  * @extends MathFunction.FunctionWithArgs
@@ -750,7 +741,7 @@ Y.extend(MathNegate, MathFunctionWithArgs,
 		/* percentage */	font_size,
 		/* RectList */		rect_list)
 	{
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 		arg_top_left.x  += context.getStringWidth(font_size, '-');
 
 		var arg = this.args[0];
@@ -809,7 +800,6 @@ MathFunction.Negate = MathNegate;
 /**********************************************************************
  * <p>Sum of values.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Sum
  * @extends MathFunction.FunctionWithArgs
@@ -835,7 +825,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 		/* percentage */	font_size,
 		/* RectList */		rect_list)
 	{
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 
 		var total_rect =
 		{
@@ -974,7 +964,6 @@ MathFunction.Sum = MathSum;
 /**********************************************************************
  * <p>Product of values.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Product
  * @extends MathFunction.FunctionWithArgs
@@ -1000,7 +989,7 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 		/* percentage */	font_size,
 		/* RectList */		rect_list)
 	{
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 
 		var total_rect =
 		{
@@ -1102,7 +1091,6 @@ MathFunction.Product = MathProduct;
 /**********************************************************************
  * <p>Quotient of values.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Quotient
  * @extends MathFunction.FunctionWithArgs
@@ -1143,7 +1131,7 @@ Y.extend(MathQuotient, MathFunctionWithArgs,
 
 		var space_width = context.getStringWidth(font_size, ' ');
 
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 		arg_top_left.x += space_width;
 
 		// get rectangle for numerator
@@ -1215,7 +1203,6 @@ MathFunction.Quotient = MathQuotient;
 /**********************************************************************
  * <p>Magnitude (absolute value) of a number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Magnitude
  * @extends MathFunction.FunctionWithArgs
@@ -1271,7 +1258,7 @@ Y.extend(MathMagnitude, MathFunctionWithArgs,
 
 		this.args[0].render(context, rect_list);
 
-		var r  = Y.clone(info.rect);
+		var r  = Y.clone(info.rect, true);
 		r.left = r.right - context.getVerticalBarWidth();
 		context.drawVerticalBar(r);
 	}
@@ -1281,7 +1268,6 @@ MathFunction.Magnitude = MathMagnitude;
 /**********************************************************************
  * <p>Phase of a complex number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Phase
  * @extends MathFunction.FunctionWithArgs
@@ -1308,7 +1294,6 @@ MathFunction.Phase = MathPhase;
 /**********************************************************************
  * <p>Conjugate of a complex number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Conjugate
  * @extends MathFunction.FunctionWithArgs
@@ -1338,13 +1323,13 @@ Y.extend(MathConjugate, MathFunctionWithArgs,
 	{
 		var bar_height = context.getHorizontalBarHeight();
 
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 		arg_top_left.y  += bar_height;
 
 		var arg_index = this.args[0].prepareToRender(context, arg_top_left, font_size, rect_list);
 		var arg_info  = rect_list.get(arg_index);
 
-		var r  = Y.clone(arg_info.rect);
+		var r  = Y.clone(arg_info.rect, true);
 		r.top -= bar_height;
 
 		return rect_list.add(r, arg_info.midline, font_size, this);
@@ -1364,7 +1349,6 @@ MathFunction.Conjugate = MathConjugate;
 /**********************************************************************
  * <p>Rotate a complex number around the origin.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Rotate
  * @extends MathFunction.FunctionWithArgs
@@ -1392,7 +1376,6 @@ MathFunction.Rotate = MathRotate;
 /**********************************************************************
  * <p>Real part of a complex number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class RealPart
  * @extends MathFunction.FunctionWithArgs
@@ -1420,7 +1403,6 @@ MathFunction.RealPart = MathRealPart;
 /**********************************************************************
  * <p>Imaginary part of a complex number.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class ImaginaryPart
  * @extends MathFunction.FunctionWithArgs
@@ -1448,7 +1430,6 @@ MathFunction.ImaginaryPart = MathImaginaryPart;
 /**********************************************************************
  * <p>Minimum.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Min
  * @extends MathFunction.FunctionWithArgs
@@ -1473,7 +1454,6 @@ MathFunction.Min = MathMin;
 /**********************************************************************
  * <p>Maximum.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Max
  * @extends MathFunction.FunctionWithArgs
@@ -1498,7 +1478,6 @@ MathFunction.Max = MathMax;
 /**********************************************************************
  * <p>Square root.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class SquareRoot
  * @extends MathFunction.FunctionWithArgs
@@ -1584,7 +1563,6 @@ MathFunction.SquareRoot = MathSquareRoot;
 /**********************************************************************
  * <p>Exponential.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Exponential
  * @extends MathFunction.FunctionWithArgs
@@ -1617,7 +1595,7 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 	{
 		var space_width = context.getStringWidth(font_size, ' ');
 
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 		arg_top_left.x += space_width;
 
 		// get rectangle for base
@@ -1688,7 +1666,6 @@ MathFunction.Exponential = MathExponential;
 /**********************************************************************
  * <p>Logarithm.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Logarithm
  * @extends MathFunction.FunctionWithArgs
@@ -1784,7 +1761,6 @@ MathFunction.Logarithm = MathLogarithm;
 /**********************************************************************
  * <p>Natural logarithm.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class NaturalLog
  * @extends MathFunction.FunctionWithArgs
@@ -1811,7 +1787,6 @@ MathFunction.NaturalLog = MathNaturalLog;
 /**********************************************************************
  * <p>Trigonometric sine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Sine
  * @extends MathFunction.FunctionWithArgs
@@ -1838,7 +1813,6 @@ MathFunction.Sine = MathSine;
 /**********************************************************************
  * <p>Trigonometric cosine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Cosine
  * @extends MathFunction.FunctionWithArgs
@@ -1865,7 +1839,6 @@ MathFunction.Cosine = MathCosine;
 /**********************************************************************
  * <p>Trigonometric tangent.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Tangent
  * @extends MathFunction.FunctionWithArgs
@@ -1892,7 +1865,6 @@ MathFunction.Tangent = MathTangent;
 /**********************************************************************
  * <p>Inverse trigonometric sine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Arcsine
  * @extends MathFunction.FunctionWithArgs
@@ -1919,7 +1891,6 @@ MathFunction.Arcsine = MathArcsine;
 /**********************************************************************
  * <p>Inverse trigonometric cosine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Arccosine
  * @extends MathFunction.FunctionWithArgs
@@ -1946,7 +1917,6 @@ MathFunction.Arccosine = MathArccosine;
 /**********************************************************************
  * <p>Inverse trigonometric cosine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Arctangent
  * @extends MathFunction.FunctionWithArgs
@@ -1973,7 +1943,6 @@ MathFunction.Arctangent = MathArctangent;
 /**********************************************************************
  * <p>Inverse trigonometric cosine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class Arctangent2
  * @extends MathFunction.FunctionWithArgs
@@ -2003,7 +1972,6 @@ MathFunction.Arctangent2 = MathArctangent2;
 /**********************************************************************
  * <p>Hyperbolic cosine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class HyperbolicCosine
  * @extends MathFunction.FunctionWithArgs
@@ -2030,7 +1998,6 @@ MathFunction.HyperbolicCosine = MathHyperbolicCosine;
 /**********************************************************************
  * <p>Hyperbolic sine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class HyperbolicSine
  * @extends MathFunction.FunctionWithArgs
@@ -2057,7 +2024,6 @@ MathFunction.HyperbolicSine = MathHyperbolicSine;
 /**********************************************************************
  * <p>Hyperbolic tangent.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class HyperbolicTangent
  * @extends MathFunction.FunctionWithArgs
@@ -2084,7 +2050,6 @@ MathFunction.HyperbolicTangent = MathHyperbolicTangent;
 /**********************************************************************
  * <p>Inverse hyperbolic cosine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class InverseHyperbolicCosine
  * @extends MathFunction.FunctionWithArgs
@@ -2111,7 +2076,6 @@ MathFunction.InverseHyperbolicCosine = MathInverseHyperbolicCosine;
 /**********************************************************************
  * <p>Inverse hyperbolic sine.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class InverseHyperbolicSine
  * @extends MathFunction.FunctionWithArgs
@@ -2138,7 +2102,6 @@ MathFunction.InverseHyperbolicSine = MathInverseHyperbolicSine;
 /**********************************************************************
  * <p>Inverse hyperbolic tangent.</p>
  * 
- * @module gallery-mathcanvas
  * @namespace MathFunction
  * @class InverseHyperbolicTangent
  * @extends MathFunction.FunctionWithArgs
@@ -2681,8 +2644,7 @@ if (typeof module !== 'undefined' && require.main === module) {
 }
 }
 /**********************************************************************
- * <p>Displays an arithmetical expression the way you would write it on
- * paper.</p>
+ * Displays an arithmetical expression the way you would write it on paper.
  * 
  * @module gallery-mathcanvas
  * @namespace

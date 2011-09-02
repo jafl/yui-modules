@@ -313,7 +313,7 @@ function checkFinished()
 	var response = {};
 	Y.mix(response, this._callback.response);
 	response.results = [];
-	response         = Y.clone(response);
+	response         = Y.clone(response, true);
 
 	var dataStartIndex = 0;
 	if (this.get('startIndexExpr'))
@@ -349,7 +349,7 @@ function checkFinished()
 			if (inserted_re.test(j))
 			{
 				var id = j.substr(inserted_prefix.length);
-				response.results.splice(k,0, Y.clone(this._new[id]));
+				response.results.splice(k,0, Y.clone(this._new[id], true));
 			}
 			else if (removed_re.test(j))
 			{
@@ -367,7 +367,7 @@ function checkFinished()
 
 	Y.Array.each(response.results, function(value)
 	{
-		var rec = Y.clone(value);
+		var rec = Y.clone(value, true);
 		this._records.push(rec);
 		this._recordMap[ rec[ uniqueIdKey ] ] = rec;
 	},
@@ -568,7 +568,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		if (record && !Y.Lang.isObject(record))		// clone existing record
 		{
 			var s    = record.toString();
-			record   = Y.clone(this._recordMap[s] || this._new[s]);
+			record   = Y.clone(this._recordMap[s] || this._new[s], true);
 			var diff = this._diff[s];
 			if (record && diff)
 			{

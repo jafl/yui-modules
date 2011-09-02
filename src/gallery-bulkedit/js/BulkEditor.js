@@ -803,7 +803,7 @@ Y.extend(BulkEditor, Y.Widget,
 			{
 				err.push(Y.FormManager.Strings.validation_error);
 			}
-			this.fire('notifyErrors', err);
+			this.fire('notifyErrors', { msgs: err });
 
 			this.get('contentBox').getElementsByClassName(BulkEditor.record_container_class).some(function(node)
 			{
@@ -1010,8 +1010,8 @@ Y.extend(BulkEditor, Y.Widget,
 				var field = this.get('fields')[key];
 				var value = ds.getValue(i, key);
 
-				this.validation_node.value     = Y.Lang.isUndefined(value) ? '' : value;
-				this.validation_node.className = field.validation.css || '';
+				this.validation_node.set('value', Y.Lang.isUndefined(value) ? '' : value);
+				this.validation_node.set('className', field.validation.css || '');
 
 				var info = Y.FormManager.validateFromCSSData(this.validation_node);
 				if (info.error)

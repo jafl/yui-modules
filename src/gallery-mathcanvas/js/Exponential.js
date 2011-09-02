@@ -33,7 +33,7 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 	{
 		var space_width = context.getStringWidth(font_size, ' ');
 
-		var arg_top_left = Y.clone(top_left);
+		var arg_top_left = Y.clone(top_left, true);
 		arg_top_left.x += space_width;
 
 		// get rectangle for base

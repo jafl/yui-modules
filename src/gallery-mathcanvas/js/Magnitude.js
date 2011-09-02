@@ -56,7 +56,7 @@ Y.extend(MathMagnitude, MathFunctionWithArgs,
 
 		this.args[0].render(context, rect_list);
 
-		var r  = Y.clone(info.rect);
+		var r  = Y.clone(info.rect, true);
 		r.left = r.right - context.getVerticalBarWidth();
 		context.drawVerticalBar(r);
 	}
