@@ -11,13 +11,11 @@
 
 	<script src="gallery-bulkedit-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
-	<script src="gallery-paginator-debug.js"></script>
 	<script src="gallery-checkboxgroups-debug.js"></script>
 	<script src="gallery-busyoverlay-debug.js"></script>
 	<script src="gallery-node-optimizations-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.0/build/widget-base/assets/skins/sam/widget-base.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-bulkedit.css" />
-	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
 
 	<style type="text/css">
 	.yui3-js-enabled .yui3-widget-loading { display: none; }
@@ -45,7 +43,7 @@ YUI({
 	combine: false,
 	gallery: 'gallery-2011.08.24-22-36'
 }).use(
-	'gallery-bulkedit', 'datasource-arrayschema', 'gallery-checkboxgroups', 'gallery-scrollintoview',
+	'gallery-bulkedit', 'datasource-arrayschema', 'gallery-checkboxgroups',
 function(Y)
 {
 // Raw data
@@ -195,21 +193,6 @@ function(Y)
 		{ key: 'hue', label: 'Hue' }
 	];
 
-// Paginator
-
-	var pg = new Y.Paginator(
-	{
-		rowsPerPage:10,
-		rowsPerPageOptions:[1,2,5,10,25,50],
-		firstPageLinkLabel:'|&lt;',
-		previousPageLinkLabel:'&lt;',
-		nextPageLinkLabel:'&gt;',
-		lastPageLinkLabel:'&gt;|',
-		pageLinks: Y.Paginator.VALUE_UNLIMITED,
-		template:'{FirstPageLink}{PreviousPageLink}{ValidationPageLinks}{NextPageLink}{LastPageLink} {RowsPerPageDropdown}'
-	});
-	pg.render('#pg');
-
 // BulkEditor extension with record-select checkboxes and extra row in each record
 
 	function CustomBulkEditor()
@@ -238,8 +221,7 @@ function(Y)
 	{
 		ds:        ds,
 		fields:    fields,
-		columns:   columns,
-		paginator: pg
+		columns:   columns
 	});
 	editor.render('#edit');
 
@@ -247,8 +229,6 @@ function(Y)
 
 	Y.on('click', function()
 	{
-		Y.one('#server').set('disabled', true);
-		Y.one('#server-note').setStyle('display', 'inline');
 		editor.saveChanges();
 
 		var new_id = editor.insertRecord(ds.getRecordCount());
@@ -260,7 +240,7 @@ function(Y)
 
 	function getSelectedItems()
 	{
-		var i     = pg.getStartIndex();
+		var i     = 0;
 		var items = [];
 		editor.get('contentBox').all('input.record-select').each(function(node)
 		{
@@ -277,8 +257,6 @@ function(Y)
 
 	Y.on('click', function()
 	{
-		Y.one('#server').set('disabled', true);
-		Y.one('#server-note').setStyle('display', 'inline');
 		editor.saveChanges();
 
 		var items = getSelectedItems();
@@ -295,8 +273,6 @@ function(Y)
 
 	Y.on('click', function()
 	{
-		Y.one('#server').set('disabled', true);
-		Y.one('#server-note').setStyle('display', 'inline');
 		editor.saveChanges();
 
 		var items = getSelectedItems();
@@ -367,8 +343,6 @@ function(Y)
 </div>
 
 <div id="page-messages"></div>
-
-<div id="pg"></div>
 
 <div id="edit"></div>
 
