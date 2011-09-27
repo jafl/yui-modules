@@ -440,7 +440,7 @@ FormManager.displayMessage = function(
 {
 	if (Y.Lang.isUndefined(scroll))
 	{
-		scroll = true;
+		scroll = !had_messages;
 	}
 
 	e     = Y.one(e);
@@ -474,7 +474,7 @@ FormManager.displayMessage = function(
 			fieldset.addClass(FormManager.row_status_prefix + type);
 		}
 
-		if (!had_messages && scroll)
+		if (scroll && e.get('offsetHeight') !== 0)
 		{
 			p.scrollIntoView();
 			try
