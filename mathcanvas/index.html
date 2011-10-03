@@ -14,10 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.0/build/cssreset/reset-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.0/build/cssfonts/fonts-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.0/build/cssbase/base-min.css">
-<!--
-	<script src="yui.js"></script>
-	<link rel="stylesheet" type="text/css" href="yui.css">
--->
+
 	<style type="text/css">
 	#canvas { border: 1px solid black; }
 	#expr { width: 25em; }
@@ -29,11 +26,9 @@
 
 <script type="text/javascript">
 YUI({
-//	filter: 'debug',
+//	filter: 'raw', combine: false,
 }).use('gallery-mathcanvas', function(Y)
 {
-//	Y.on('domready', function() {
-
 	var canvas = new Y.MathCanvas(
 	{
 		minWidth:  300,
@@ -92,8 +87,6 @@ YUI({
 		canvas.set('fontSize', canvas.get('fontSize') + 1);
 	},
 	'#font-up');
-
-//	});
 });
 </script>
 
