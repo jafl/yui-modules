@@ -58,6 +58,40 @@ RectList.ycenter = function(r)
 
 /**
  * @static
+ * @param r {Rect} rectangle
+ * @return area
+ */
+RectList.area = function(r)
+{
+	return RectList.width(r) * RectList.height(r);
+};
+
+/**
+ * @static
+ * @param r {Rect} rectangle
+ * @param xy {point} point
+ * @return true if rectangle contains point
+ */
+RectList.containsPt = function(r, xy)
+{
+	return (r.left <= xy[0] && xy[0] < r.right &&
+			r.top  <= xy[1] && xy[1] < r.bottom);
+};
+
+/**
+ * @static
+ * @param r1 {Rect}
+ * @param r2 {Rect}
+ * @return true if r1 contains r2
+ */
+RectList.containsRect = function(r1, r2)
+{
+	return (r1.left <= r2.left && r2.left <= r2.right && r2.right <= r1.right &&
+			r1.top <= r2.top && r2.top <= r2.bottom && r2.bottom <= r1.bottom);
+};
+
+/**
+ * @static
  * @param r1 {Rect} rectangle
  * @param r2 {Rect} rectangle
  * @return rectangle convering both input arguments
@@ -191,5 +225,68 @@ RectList.prototype =
 	getBounds: function()
 	{
 		return this.list[ this.list.length-1 ].rect;
+	},
+
+	/**
+	 * 	Returns the index of the smallest rectangle that contains both
+	 * 	startPt and currPt.  Returns -1 if there is no such rectangle.  If
+	 * 	startPt is inside the bounding rectangle and currPt is outside, we
+	 * 	return the index of the bounding rectangle.
+	 * 	
+	 * 	@param start_pt {point} point where the drag started
+	 * 	@param curr_pt {point} current cursor location
+	 */
+	getSelection: function(
+		/* point */	start_pt,
+		/* point */	curr_pt)
+	{
+		// Check if start_pt is in the bounding rect.
+
+		var bounds = this.getBounds();
+		if (!RectList.containsPt(bounds, start_pt))
+		{
+			return -1;
+		}
+
+		// The bounding rect is the last rect in the list.
+
+		var minArea = 0;
+		var result  = this.list.length-1;
+		Y.Array.each(this.list, function(info, i)
+		{
+			var area = RectList.area(info.rect);
+			if (RectList.containsPt(info.rect, start_pt) &&
+				RectList.containsPt(info.rect, curr_pt) &&
+				(minArea === 0 || area < minArea))
+			{
+				result  = i;
+				minArea = area;
+			}
+		});
+
+		return result;
+	},
+
+	/**
+	 * Returns the index of the smallest rectangle enclosing the given one.
+	 * 
+	 * @param index {int}
+	 */
+	getParent: function(
+		/* int */	index)
+	{
+		var small_rect = this.list[index].rect;
+		for (var i=index+1; i<this.list.length; i++)
+			{
+			var big_rect = this.list[i].rect;
+			if (RectList.containsRect(big_rect, small_rect))
+				{
+				return i;
+				}
+			}
+
+		// The last element is always the largest, and includes all others.
+
+		return this.list.length-1;
 	}
 };

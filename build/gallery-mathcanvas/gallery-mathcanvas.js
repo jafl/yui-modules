@@ -60,6 +60,40 @@ RectList.ycenter = function(r)
 
 /**
  * @static
+ * @param r {Rect} rectangle
+ * @return area
+ */
+RectList.area = function(r)
+{
+	return RectList.width(r) * RectList.height(r);
+};
+
+/**
+ * @static
+ * @param r {Rect} rectangle
+ * @param xy {point} point
+ * @return true if rectangle contains point
+ */
+RectList.containsPt = function(r, xy)
+{
+	return (r.left <= xy[0] && xy[0] < r.right &&
+			r.top  <= xy[1] && xy[1] < r.bottom);
+};
+
+/**
+ * @static
+ * @param r1 {Rect}
+ * @param r2 {Rect}
+ * @return true if r1 contains r2
+ */
+RectList.containsRect = function(r1, r2)
+{
+	return (r1.left <= r2.left && r2.left <= r2.right && r2.right <= r1.right &&
+			r1.top <= r2.top && r2.top <= r2.bottom && r2.bottom <= r1.bottom);
+};
+
+/**
+ * @static
  * @param r1 {Rect} rectangle
  * @param r2 {Rect} rectangle
  * @return rectangle convering both input arguments
@@ -193,6 +227,69 @@ RectList.prototype =
 	getBounds: function()
 	{
 		return this.list[ this.list.length-1 ].rect;
+	},
+
+	/**
+	 * 	Returns the index of the smallest rectangle that contains both
+	 * 	startPt and currPt.  Returns -1 if there is no such rectangle.  If
+	 * 	startPt is inside the bounding rectangle and currPt is outside, we
+	 * 	return the index of the bounding rectangle.
+	 * 	
+	 * 	@param start_pt {point} point where the drag started
+	 * 	@param curr_pt {point} current cursor location
+	 */
+	getSelection: function(
+		/* point */	start_pt,
+		/* point */	curr_pt)
+	{
+		// Check if start_pt is in the bounding rect.
+
+		var bounds = this.getBounds();
+		if (!RectList.containsPt(bounds, start_pt))
+		{
+			return -1;
+		}
+
+		// The bounding rect is the last rect in the list.
+
+		var minArea = 0;
+		var result  = this.list.length-1;
+		Y.Array.each(this.list, function(info, i)
+		{
+			var area = RectList.area(info.rect);
+			if (RectList.containsPt(info.rect, start_pt) &&
+				RectList.containsPt(info.rect, curr_pt) &&
+				(minArea === 0 || area < minArea))
+			{
+				result  = i;
+				minArea = area;
+			}
+		});
+
+		return result;
+	},
+
+	/**
+	 * Returns the index of the smallest rectangle enclosing the given one.
+	 * 
+	 * @param index {int}
+	 */
+	getParent: function(
+		/* int */	index)
+	{
+		var small_rect = this.list[index].rect;
+		for (var i=index+1; i<this.list.length; i++)
+			{
+			var big_rect = this.list[i].rect;
+			if (RectList.containsRect(big_rect, small_rect))
+				{
+				return i;
+				}
+			}
+
+		// The last element is always the largest, and includes all others.
+
+		return this.list.length-1;
 	}
 };
 /**********************************************************************
@@ -209,10 +306,19 @@ RectList.prototype =
 
 function MathFunction()
 {
+	this.parent = null;
 }
 
 MathFunction.prototype =
 {
+	/**
+	 * @return {MathFunction} parent function or null
+	 */
+	getParent: function()
+	{
+		return this.parent;
+	},
+
 	/**
 	 * Add the layout information for this object and its descendants to
 	 * rect_list.
@@ -518,16 +624,19 @@ function MathFunctionWithArgs(
 		args = args[0];
 	}
 
+	this.args = [];
 	if (Y.Lang.isArray(args))
 	{
-		this.args = Y.Array(args);
+		for (var i=0; i<args.length; i++)
+		{
+			this.appendArg(args[i]);
+		}
 	}
 	else
 	{
-		this.args = [];
 		for (var i=1; i<arguments.length; i++)
 		{
-			this.args.push(arguments[i]);
+			this.appendArg(arguments[i]);
 		}
 	}
 }
@@ -535,12 +644,44 @@ function MathFunctionWithArgs(
 Y.extend(MathFunctionWithArgs, MathFunction,
 {
 	/**
+	 * @return {int} number of arguments
+	 */
+	getArgCount: function()
+	{
+		return this.args.length;
+	},
+
+	/**
+	 * @return {MathFunction} requested argument, or undefined
+	 */
+	getArg: function(
+		/* int */ index)
+	{
+		return this.args[index];
+	},
+
+	/**
 	 * @param f {MathFunction}
 	 */
 	appendArg: function(
 		/* MathFunction */	f)
 	{
+		f.parent = this;
 		this.args.push(f);
+	},
+
+	/**
+	 * @param f {MathFunction}
+	 */
+	removeArg: function(
+		/* MathFunction */	f)
+	{
+		var i = Y.Array.indexOf(this.args, f);
+		if (i >= 0)
+		{
+			f.parent = null;
+			this.args.splice(i,1);
+		}
 	},
 
 	/**
@@ -556,7 +697,9 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 		var i = Y.Array.indexOf(this.args, origArg);
 		if (i >= 0)
 		{
-			this.args[i] = newArg;
+			origArg.parent = null;
+			newArg.parent  = this;
+			this.args[i]   = newArg;
 		}
 	},
 
@@ -2775,14 +2918,73 @@ Y.extend(MathCanvas, Y.Widget,
 		this.context.math_canvas = this;
 
 		this._renderExpression();
+
+		// input (for mobile)
+
+		this.input = Y.Node.create('<input type="text" style="position:absolute;top:-10px;left:-10px;width:1px;height:1px;"></input>');
+		container.appendChild(this.input);
 	},
 
 	bindUI: function()
 	{
-		this.canvas.on('click', function(e)
+		this.canvas.on('mousedown', function(e)
 		{
+			function select(e)
+			{
+				var xy = this.canvas.getXY();
+				var pt =
+				[
+					Math.round(e.pageX - xy[0]) - offset[0],
+					Math.round(e.pageY - xy[1]) - offset[1]
+				];
+
+				this.selection = this.rect_list.getSelection(anchor, pt);
+				this._renderExpression();
+			}
+
+			var bounds = this.rect_list.getBounds();
+			var offset =
+			[
+				Math.floor((this.canvas.getAttribute('width') - RectList.width(bounds)) / 2),
+				Math.floor((this.canvas.getAttribute('height') - RectList.height(bounds)) / 2)
+			];
+
 			var xy = this.canvas.getXY();
-			console.log(Math.round(e.pageX - xy[0]) + ', ' + Math.round(e.pageY - xy[1]));
+			var anchor =
+			[
+				Math.round(e.pageX - xy[0]) - offset[0],
+				Math.round(e.pageY - xy[1]) - offset[1]
+			];
+
+			select.call(this, e);
+			var handler = this.canvas.on('mousemove', select, this);
+
+			Y.one(Y.config.doc).once('mouseup', function(e)
+			{
+				handler.detach();
+				this.input.focus();
+			},
+			this);
+		},
+		this);
+
+		this.input.on('keydown', function(e)
+		{
+//			console.log(e.charCode);
+
+			if (e.charCode == 32 && this.selection >= 0)	// expand
+			{
+				var p = this.rect_list.get(this.selection).func.getParent();
+				if (p)
+				{
+					this.selection = this.rect_list.findIndex(p);
+					this._renderExpression();
+				}
+			}
+			else if (e.charCode == 8 && this.selection >= 0)	// delete
+			{
+				this.deleteFunction(this.rect_list.get(this.selection).func);
+			}
 		},
 		this);
 	},
@@ -2791,6 +2993,51 @@ Y.extend(MathCanvas, Y.Widget,
 	{
 		this.canvas  = null;
 		this.context = null;
+	},
+
+	/**
+	 * @param f {MathFunction} function to remove from the overall expression
+	 */
+	deleteFunction: function(
+		/* MathFunction */ f)
+	{
+		var p = f.getParent();
+		var s = p;
+		if (!p)
+		{
+			this.selection = 0;
+			this.set('func', '0');
+			return;
+		}
+		else if (p.getArgCount() == 1)
+		{
+			this.deleteFunction(p);
+			return;
+		}
+		else if (p.getArgCount() == 2)
+		{
+			var s  = (p.getArg(0) == f ? p.getArg(1) : p.getArg(0));
+			var p1 = p.getParent();
+			if (p1)
+			{
+				p1.replaceArg(p, s);
+			}
+			else
+			{
+				this.selection = -1;
+				s.parent       = null;
+				this.set('func', s);
+			}
+		}
+		else
+		{
+			p.removeArg(f);
+		}
+
+		this.selection = -1;
+		this._renderExpression();	// update rect_list
+		this.selection = this.rect_list.findIndex(s);
+		this._renderExpression();
 	},
 
 	/*
@@ -2823,8 +3070,17 @@ Y.extend(MathCanvas, Y.Widget,
 
 		this.context.save();
 		this.context.translate(
-			Math.floor((this.canvas.getAttribute('width') - (bounds.right - bounds.left)) / 2),
-			Math.floor((this.canvas.getAttribute('height') - (bounds.bottom - bounds.top)) / 2));
+			Math.floor((this.canvas.getAttribute('width') - RectList.width(bounds)) / 2),
+			Math.floor((this.canvas.getAttribute('height') - RectList.height(bounds)) / 2));
+
+		if (this.selection >= 0)
+		{
+			var r = this.rect_list.get(this.selection).rect;
+			this.context.save();
+			this.context.set('fillStyle', '#99FFFF');
+			this.context.fillRect(r.left, r.top, RectList.width(r), RectList.height(r));
+			this.context.restore();
+		}
 
 		f.render(this.context, this.rect_list);
 

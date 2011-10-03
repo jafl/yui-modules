@@ -130,14 +130,73 @@ Y.extend(MathCanvas, Y.Widget,
 		this.context.math_canvas = this;
 
 		this._renderExpression();
+
+		// input (for mobile)
+
+		this.input = Y.Node.create('<input type="text" style="position:absolute;top:-10px;left:-10px;width:1px;height:1px;"></input>');
+		container.appendChild(this.input);
 	},
 
 	bindUI: function()
 	{
-		this.canvas.on('click', function(e)
+		this.canvas.on('mousedown', function(e)
 		{
+			function select(e)
+			{
+				var xy = this.canvas.getXY();
+				var pt =
+				[
+					Math.round(e.pageX - xy[0]) - offset[0],
+					Math.round(e.pageY - xy[1]) - offset[1]
+				];
+
+				this.selection = this.rect_list.getSelection(anchor, pt);
+				this._renderExpression();
+			}
+
+			var bounds = this.rect_list.getBounds();
+			var offset =
+			[
+				Math.floor((this.canvas.getAttribute('width') - RectList.width(bounds)) / 2),
+				Math.floor((this.canvas.getAttribute('height') - RectList.height(bounds)) / 2)
+			];
+
 			var xy = this.canvas.getXY();
-			console.log(Math.round(e.pageX - xy[0]) + ', ' + Math.round(e.pageY - xy[1]));
+			var anchor =
+			[
+				Math.round(e.pageX - xy[0]) - offset[0],
+				Math.round(e.pageY - xy[1]) - offset[1]
+			];
+
+			select.call(this, e);
+			var handler = this.canvas.on('mousemove', select, this);
+
+			Y.one(Y.config.doc).once('mouseup', function(e)
+			{
+				handler.detach();
+				this.input.focus();
+			},
+			this);
+		},
+		this);
+
+		this.input.on('keydown', function(e)
+		{
+//			console.log(e.charCode);
+
+			if (e.charCode == 32 && this.selection >= 0)	// expand
+			{
+				var p = this.rect_list.get(this.selection).func.getParent();
+				if (p)
+				{
+					this.selection = this.rect_list.findIndex(p);
+					this._renderExpression();
+				}
+			}
+			else if (e.charCode == 8 && this.selection >= 0)	// delete
+			{
+				this.deleteFunction(this.rect_list.get(this.selection).func);
+			}
 		},
 		this);
 	},
@@ -146,6 +205,51 @@ Y.extend(MathCanvas, Y.Widget,
 	{
 		this.canvas  = null;
 		this.context = null;
+	},
+
+	/**
+	 * @param f {MathFunction} function to remove from the overall expression
+	 */
+	deleteFunction: function(
+		/* MathFunction */ f)
+	{
+		var p = f.getParent();
+		var s = p;
+		if (!p)
+		{
+			this.selection = 0;
+			this.set('func', '0');
+			return;
+		}
+		else if (p.getArgCount() == 1)
+		{
+			this.deleteFunction(p);
+			return;
+		}
+		else if (p.getArgCount() == 2)
+		{
+			var s  = (p.getArg(0) == f ? p.getArg(1) : p.getArg(0));
+			var p1 = p.getParent();
+			if (p1)
+			{
+				p1.replaceArg(p, s);
+			}
+			else
+			{
+				this.selection = -1;
+				s.parent       = null;
+				this.set('func', s);
+			}
+		}
+		else
+		{
+			p.removeArg(f);
+		}
+
+		this.selection = -1;
+		this._renderExpression();	// update rect_list
+		this.selection = this.rect_list.findIndex(s);
+		this._renderExpression();
 	},
 
 	/*
@@ -178,8 +282,17 @@ Y.extend(MathCanvas, Y.Widget,
 
 		this.context.save();
 		this.context.translate(
-			Math.floor((this.canvas.getAttribute('width') - (bounds.right - bounds.left)) / 2),
-			Math.floor((this.canvas.getAttribute('height') - (bounds.bottom - bounds.top)) / 2));
+			Math.floor((this.canvas.getAttribute('width') - RectList.width(bounds)) / 2),
+			Math.floor((this.canvas.getAttribute('height') - RectList.height(bounds)) / 2));
+
+		if (this.selection >= 0)
+		{
+			var r = this.rect_list.get(this.selection).rect;
+			this.context.save();
+			this.context.set('fillStyle', '#99FFFF');
+			this.context.fillRect(r.left, r.top, RectList.width(r), RectList.height(r));
+			this.context.restore();
+		}
 
 		f.render(this.context, this.rect_list);
 

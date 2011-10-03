@@ -12,10 +12,19 @@
 
 function MathFunction()
 {
+	this.parent = null;
 }
 
 MathFunction.prototype =
 {
+	/**
+	 * @return {MathFunction} parent function or null
+	 */
+	getParent: function()
+	{
+		return this.parent;
+	},
+
 	/**
 	 * Add the layout information for this object and its descendants to
 	 * rect_list.

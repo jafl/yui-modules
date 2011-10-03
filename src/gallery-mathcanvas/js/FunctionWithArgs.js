@@ -21,16 +21,19 @@ function MathFunctionWithArgs(
 		args = args[0];
 	}
 
+	this.args = [];
 	if (Y.Lang.isArray(args))
 	{
-		this.args = Y.Array(args);
+		for (var i=0; i<args.length; i++)
+		{
+			this.appendArg(args[i]);
+		}
 	}
 	else
 	{
-		this.args = [];
 		for (var i=1; i<arguments.length; i++)
 		{
-			this.args.push(arguments[i]);
+			this.appendArg(arguments[i]);
 		}
 	}
 }
@@ -38,12 +41,44 @@ function MathFunctionWithArgs(
 Y.extend(MathFunctionWithArgs, MathFunction,
 {
 	/**
+	 * @return {int} number of arguments
+	 */
+	getArgCount: function()
+	{
+		return this.args.length;
+	},
+
+	/**
+	 * @return {MathFunction} requested argument, or undefined
+	 */
+	getArg: function(
+		/* int */ index)
+	{
+		return this.args[index];
+	},
+
+	/**
 	 * @param f {MathFunction}
 	 */
 	appendArg: function(
 		/* MathFunction */	f)
 	{
+		f.parent = this;
 		this.args.push(f);
+	},
+
+	/**
+	 * @param f {MathFunction}
+	 */
+	removeArg: function(
+		/* MathFunction */	f)
+	{
+		var i = Y.Array.indexOf(this.args, f);
+		if (i >= 0)
+		{
+			f.parent = null;
+			this.args.splice(i,1);
+		}
 	},
 
 	/**
@@ -59,7 +94,9 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 		var i = Y.Array.indexOf(this.args, origArg);
 		if (i >= 0)
 		{
-			this.args[i] = newArg;
+			origArg.parent = null;
+			newArg.parent  = this;
+			this.args[i]   = newArg;
 		}
 	},
 
