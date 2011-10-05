@@ -6,19 +6,20 @@
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
 	<script src="http://yui.yahooapis.com/3.4.0/build/yui/yui-min.js"></script>
-	<script src="gallery-canvas-debug.js"></script>
-	<script src="gallery-math-debug.js"></script>
-	<script src="gallery-complexnumber-debug.js"></script>
-	<script src="gallery-mathcanvas-debug.js"></script>
-
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.0/build/cssreset/reset-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.0/build/cssfonts/fonts-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.0/build/cssbase/base-min.css">
 
+	<script src="gallery-canvas-debug.js"></script>
+	<script src="gallery-math-debug.js"></script>
+	<script src="gallery-complexnumber-debug.js"></script>
+	<script src="gallery-mathcanvas-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.4.0/build/widget-base/assets/skins/sam/widget-base.css">
+	<link rel="stylesheet" type="text/css" href="assets/gallery-mathcanvas.css">
+
 	<style type="text/css">
 	#canvas { border: 1px solid black; }
 	#expr { width: 25em; }
-	.yui3-mathcanvas input { width: 6em; }
 	</style>
 </head>
 
@@ -26,9 +27,10 @@
 
 <script type="text/javascript">
 YUI({
-//	filter: 'raw', combine: false,
-}).use('gallery-mathcanvas', function(Y)
-{
+	filter: 'raw', combine: false
+}).use('gallery-mathcanvas', function(Y) {
+"use strict";
+
 	var canvas = new Y.MathCanvas(
 	{
 		minWidth:  300,
@@ -46,23 +48,27 @@ YUI({
 		return;
 	}
 
+	function evaluate()
+	{
+		Y.one('#value').set('innerHTML', canvas.get('func').evaluate(
+		{
+			x:  1,
+			y:  2,
+			z:  Y.MathCanvas.Parser.parse('x+y'),
+			w1: Y.ComplexMath.I,
+			w2: new Y.ComplexNumber(0,-1)
+		}));
+
+		Y.one('#expr2').set('innerHTML', canvas.get('func').toString());
+	}
+
 	var expr_input = Y.one('#expr');
 	Y.on('click', function()
 	{
 		try
 		{
 			canvas.set('func', expr_input.get('value'));
-
-			Y.one('#value').set('innerHTML', canvas.get('func').evaluate(
-			{
-				x:  1,
-				y:  2,
-				z:  Y.MathCanvas.Parser.parse('x+y'),
-				w1: Y.ComplexMath.I,
-				w2: new Y.ComplexNumber(0,-1)
-			}));
-
-			Y.one('#expr2').set('innerHTML', canvas.get('func').toString());
+			evaluate();
 		}
 		catch (e)
 		{
@@ -70,6 +76,18 @@ YUI({
 		}
 	},
 	'#render');
+
+	canvas.on('evaluate', function()
+	{
+		try
+		{
+			evaluate();
+		}
+		catch (e)
+		{
+			alert(e);
+		}
+	});
 
 	Y.on('click', function()
 	{
