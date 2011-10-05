@@ -2916,7 +2916,7 @@ Y.extend(MathCanvas, Y.Widget,
 		var android = agent.indexOf("android") != -1 || (!iOS && !otherBrowser && touchOS && mobileOS);
 
 		 // navigator.platform doesn't work for iPhoney
-		this.touch = true;//touchOS || agent.indexOf("iphone") != -1;
+		this.touch = touchOS || agent.indexOf("iphone") != -1;
 	},
 
 	renderUI: function()
