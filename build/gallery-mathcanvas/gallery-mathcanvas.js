@@ -2892,6 +2892,31 @@ Y.extend(MathCanvas, Y.Widget,
 		this.after('fontSizeChange', this._renderExpression);
 		this.after('minWidthChange', this._renderExpression);
 		this.after('minHeightChange', this._renderExpression);
+
+		// http://www.thegalaxytabforum.com/index.php?/topic/621-detecting-android-tablets-with-javascript
+
+		var agent    = navigator.userAgent.toLowerCase();
+		var platform = navigator.platform;
+		// We need to eliminate Symbian, Series 60, Windows Mobile and Blackberry
+		// browsers for this quick and dirty check. This can be done with the user agent.
+		var otherBrowser = agent.indexOf("series60")   != -1 ||
+						   agent.indexOf("symbian")    != -1 ||
+						   agent.indexOf("windows ce") != -1 ||
+						   agent.indexOf("blackberry") != -1;
+		// If the screen orientation is defined we are in a modern mobile OS
+		var mobileOS = typeof orientation != 'undefined';
+		// If touch events are defined we are in a modern touch screen OS
+		var touchOS = 'ontouchstart' in document.documentElement;
+		// iPhone and iPad can be reliably identified with the navigator.platform
+		// string, which is currently only available on these devices.
+		var iOS = platform.indexOf("iPhone") != -1 || platform.indexOf("iPad") != -1;
+		// If the user agent string contains "android" then it's Android. If it
+		// doesn't but it's not another browser, not an iOS device and we're in
+		// a mobile and touch OS then we can be 99% certain that it's Android.
+		var android = agent.indexOf("android") != -1 || (!iOS && !otherBrowser && touchOS && mobileOS);
+
+		 // navigator.platform doesn't work for iPhoney
+		this.touch = true;//touchOS || agent.indexOf("iphone") != -1;
 	},
 
 	renderUI: function()
@@ -2921,8 +2946,76 @@ Y.extend(MathCanvas, Y.Widget,
 
 		// input (for mobile)
 
-		this.input = Y.Node.create('<input type="text" style="position:absolute;top:-10px;left:-10px;width:1px;height:1px;"></input>');
-		container.appendChild(this.input);
+		function buttonRow(map)
+		{
+			var s = '';
+			Y.Array.each(map, function(obj)
+			{
+				s += Y.Lang.sub('<button type="button" class="keyboard-{value}" value="{value}">{label}</button>',
+				{
+					value: obj.value || obj,
+					label: obj.label || obj
+				});
+			});
+
+			return '<p>' + s + '</p>';
+		}
+
+		if (this.touch)
+		{
+			this.keyboard = Y.Node.create(
+				'<div class="keyboard">' +
+					buttonRow([1,2,3,4,5,6,7,8,9,0]) +
+					buttonRow(['+', {value:'-',label:'&ndash;'}, {value:'*',label:'&times;'}, '/', '^', '|', ',', 'e', '\u03c0']) +
+					'<p>' +
+						'<button type="button" class="keyboard-hide" value="hide">&dArr;</button>' +
+						'<button type="button" class="keyboard-eval" value="=">=</button>' +
+						'<button type="button" class="keyboard-delete" value="delete">&empty;</button>' +
+						'<button type="button" class="keyboard-expand" value="expand">&hArr;</button>' +
+						'<select class="keyboard-func">' +
+							'<option>Functions</option>' +
+							'<optgroup>' +
+								'<option>abs</option>' +
+								'<option>arccos</option>' +
+								'<option>arcsin</option>' +
+								'<option>arctan</option>' +
+								'<option>arctan2</option>' +
+								'<option>conjugate</option>' +
+								'<option>cos</option>' +
+								'<option>cosh</option>' +
+								'<option>sinh</option>' +
+								'<option>tanh</option>' +
+								'<option>imag</option>' +
+								'<option>arccosh</option>' +
+								'<option>arcsinh</option>' +
+								'<option>arctanh</option>' +
+								'<option>log</option>' +
+								'<option>max</option>' +
+								'<option>min</option>' +
+								'<option>ln</option>' +
+								'<option>phase</option>' +
+								'<option>real</option>' +
+								'<option>rotate</option>' +
+								'<option>sin</option>' +
+								'<option>sqrt</option>' +
+								'<option>tan</option>' +
+							'</optgroup>' +
+						'</select>' +
+						'<br>' +
+						'<select class="keyboard-const">' +
+							'<option>Constants</option>' +
+							'<optgroup>' +
+								'<option>c</option>' +
+								'<option>g</option>' +
+							'</optgroup>' +
+						'</select>' +
+					'</p>' +
+				'</div>'
+			);
+			container.appendChild(this.keyboard);
+
+			this.keyboard.setStyle('bottom', (-this.keyboard.get('offsetHeight'))+'px');
+		}
 	},
 
 	bindUI: function()
@@ -2962,37 +3055,156 @@ Y.extend(MathCanvas, Y.Widget,
 			Y.one(Y.config.doc).once('mouseup', function(e)
 			{
 				handler.detach();
-				this.input.focus();
+				if (this.selection >= 0)
+				{
+					this.showKeyboard();
+				}
+				else
+				{
+					this.hideKeyboard();
+				}
 			},
 			this);
 		},
 		this);
 
-		this.input.on('keydown', function(e)
+		this.canvas.on('keydown', function(e)
 		{
 //			console.log(e.charCode);
 
-			if (e.charCode == 32 && this.selection >= 0)	// expand
+			if (e.charCode == 32)
 			{
-				var p = this.rect_list.get(this.selection).func.getParent();
-				if (p)
-				{
-					this.selection = this.rect_list.findIndex(p);
-					this._renderExpression();
-				}
+				this.expandSelection();
 			}
-			else if (e.charCode == 8 && this.selection >= 0)	// delete
+			else if (e.charCode == 8)
 			{
-				this.deleteFunction(this.rect_list.get(this.selection).func);
+				this.deleteSelection();
 			}
 		},
 		this);
+
+		if (this.keyboard)
+		{
+			this.keyboard.delegate('click', function(e)
+			{
+				var op = e.currentTarget.get('value');
+				if (op == 'hide')
+				{
+					this.hideKeyboard();
+				}
+				else if (op == 'expand')
+				{
+					this.expandSelection();
+				}
+				else if (op == 'delete')
+				{
+					this.deleteSelection();
+				}
+				else if (op == '=')
+				{
+					this.fire('evaluate');
+					this.hideKeyboard();
+				}
+			},
+			'button', this);
+
+			this.keyboard.one('.keyboard-func').on('click', function(e)
+			{
+				this.set('selectedIndex', 0);
+			});
+
+			this.keyboard.one('.keyboard-const').on('click', function(e)
+			{
+				this.set('selectedIndex', 0);
+			});
+		}
 	},
 
 	destructor: function()
 	{
 		this.canvas  = null;
 		this.context = null;
+	},
+
+	/**
+	 * Shows touch keyboard.
+	 */
+	showKeyboard: function()
+	{
+		if (!this.keyboard)
+		{
+			return;
+		}
+
+		if (this.keyboard_anim)
+		{
+			this.keyboard_anim.stop();
+		}
+
+		this.keyboard_anim = new Y.Anim(
+		{
+			node: this.keyboard,
+			to:
+			{
+				bottom: 0
+			},
+			duration: 0.5
+		});
+		this.keyboard_anim.run();
+	},
+
+	/**
+	 * Hides touch keyboard.
+	 */
+	hideKeyboard: function()
+	{
+		if (!this.keyboard)
+		{
+			return;
+		}
+
+		if (this.keyboard_anim)
+		{
+			this.keyboard_anim.stop();
+		}
+
+		this.keyboard_anim = new Y.Anim(
+		{
+			node: this.keyboard,
+			to:
+			{
+				bottom: -this.keyboard.get('offsetHeight')
+			},
+			duration: 0.5
+		});
+		this.keyboard_anim.run();
+	},
+
+	/**
+	 * Expands the selection up one level of the parse tree.
+	 */
+	expandSelection: function()
+	{
+		if (this.selection >= 0)
+		{
+			var p = this.rect_list.get(this.selection).func.getParent();
+			if (p)
+			{
+				this.selection = this.rect_list.findIndex(p);
+				this._renderExpression();
+			}
+		}
+	},
+
+	/**
+	 * Deletes the selected sub-expression.
+	 */
+	deleteSelection: function()
+	{
+		if (this.selection >= 0)
+		{
+			this.deleteFunction(this.rect_list.get(this.selection).func);
+		}
 	},
 
 	/**
@@ -3250,4 +3462,4 @@ Y.MathCanvas.Parser   = MathParser;
  */
 
 
-}, '@VERSION@' ,{requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas']});
+}, '@VERSION@' ,{skinnable:true, requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas','gallery-node-optimizations','anim-base']});
