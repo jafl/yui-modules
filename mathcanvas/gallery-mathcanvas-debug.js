@@ -3017,6 +3017,8 @@ Y.extend(MathCanvas, Y.Widget,
 				'</div>'
 			);
 			container.appendChild(this.keyboard);
+
+			this.keyboard.setStyle('bottom', (-this.keyboard.get('offsetHeight'))+'px');
 		}
 	},
 
@@ -3143,11 +3145,6 @@ Y.extend(MathCanvas, Y.Widget,
 			this.keyboard_anim.stop();
 		}
 
-		this.keyboard.setStyle('visibility', 'hidden');
-		this.keyboard.setStyle('display', 'block');
-		this.keyboard.setStyle('bottom', (-this.keyboard.get('offsetHeight'))+'px');
-		this.keyboard.setStyle('visibility', 'visible');
-
 		this.keyboard_anim = new Y.Anim(
 		{
 			node: this.keyboard,
@@ -3185,12 +3182,6 @@ Y.extend(MathCanvas, Y.Widget,
 			},
 			duration: 0.5
 		});
-
-		this.keyboard_anim.on('end', function()
-		{
-			this.keyboard.setStyle('display', 'none');
-		},
-		this);
 
 		this.keyboard_anim.run();
 	},
