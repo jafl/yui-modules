@@ -99,7 +99,11 @@ Y.extend(MathCanvas, Y.Widget,
 {
 	initializer: function(config)
 	{
-		this.after('funcChange', this._renderExpression);
+		this.after('funcChange', function()
+		{
+			this.selection = -1;
+			this._renderExpression();
+		});
 		this.after('fontNameChange', this._renderExpression);
 		this.after('fontSizeChange', this._renderExpression);
 		this.after('minWidthChange', this._renderExpression);
@@ -128,7 +132,7 @@ Y.extend(MathCanvas, Y.Widget,
 		var android = agent.indexOf("android") != -1 || (!iOS && !otherBrowser && touchOS && mobileOS);
 
 		 // navigator.platform doesn't work for iPhoney
-		this.touch = true;//touchOS || agent.indexOf("iphone") != -1;
+		this.touch = touchOS || agent.indexOf("iphone") != -1;
 	},
 
 	renderUI: function()
@@ -173,13 +177,13 @@ Y.extend(MathCanvas, Y.Widget,
 			return '<p>' + s + '</p>';
 		}
 
-		if (this.touch)
+		if (this.touch || YUI.config.debug_mathcanvs_keyboard)
 		{
 			this.keyboard = Y.Node.create(
 				'<div class="keyboard">' +
 					buttonRow([1,2,3,4,5,6,7,8,9,0]) +
-					buttonRow(['+', {value:'-',label:'&ndash;'}, {value:'*',label:'&times;'}, '/', '^', '|', ',', 'e', '\u03c0']) +
-					'<p>' +
+					buttonRow(['+', {value:'-',label:'&ndash;'}, {value:'*',label:'&times;'}, '/', '^', '|', ',', 'e', '\u03c0', '.']) +
+					'<p class="last">' +
 						'<button type="button" class="keyboard-hide" value="hide">&dArr;</button>' +
 						'<button type="button" class="keyboard-eval" value="=">=</button>' +
 						'<button type="button" class="keyboard-delete" value="delete">&empty;</button>' +
@@ -362,6 +366,7 @@ Y.extend(MathCanvas, Y.Widget,
 			},
 			duration: 0.5
 		});
+
 		this.keyboard_anim.run();
 	},
 
@@ -389,6 +394,7 @@ Y.extend(MathCanvas, Y.Widget,
 			},
 			duration: 0.5
 		});
+
 		this.keyboard_anim.run();
 	},
 
