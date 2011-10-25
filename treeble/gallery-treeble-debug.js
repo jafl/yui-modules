@@ -1032,7 +1032,7 @@ Y.namespace("Treeble").buildTwistdownFormatter = function(sendRequest)
 {
 	return function(o)
 	{
-		var td = o.createCell();
+		var td = this.createCell(o);
 		td.addClass('treeble-nub');
 
 		var ds  = this.datasource.get('datasource');
@@ -1076,4 +1076,4 @@ Y.namespace("Treeble").treeValueFormatter = function(o)
 };
 
 
-}, '@VERSION@' ,{skinnable:true, requires:['datasource','gallery-patch-340-datatable-formatter']});
+}, '@VERSION@' ,{requires:['datasource'], skinnable:true});
