@@ -47,50 +47,50 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
-<span class="cm"> * Adds per-page error notification to Paginator.ui.PageLinks.</span>
-<span class="cm"> *</span>
-<span class="cm"> * @class Paginator.ui.ValidationPageLinks</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> * @param p {Pagintor} Paginator instance to attach to</span>
-<span class="cm"> */</span>
+                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
+<span class="c"> * Adds per-page error notification to Paginator.ui.PageLinks.</span>
+<span class="c"> *</span>
+<span class="c"> * @class Paginator.ui.ValidationPageLinks</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @param p {Pagintor} Paginator instance to attach to</span>
+<span class="c"> */</span>
 
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">ValidationPageLinks</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="cm">/* Paginator */</span>	<span class="nx">p</span><span class="p">)</span>
+	<span class="c">/* Paginator */</span>	<span class="nx">p</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">ValidationPageLinks</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">p</span><span class="p">);</span>
+	<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">ValidationPageLinks</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">p</span><span class="p">);</span>
 
-	<span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;pageStatusChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rebuild</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	<span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;pageStatusChange&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rebuild</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="kd">var</span> <span class="nx">vpl_status_prefix</span> <span class="o">=</span> <span class="s1">&#39;yui3-has&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">vpl_status_prefix</span> <span class="o">=</span> <span class="s1">&#39;yui3-has&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * Array of status strings for each page.  If the status value for a page</span>
-<span class="cm"> * is not empty, it is used to build a CSS class for the page:</span>
-<span class="cm"> * yui3-has&amp;lt;status&amp;gt;</span>
-<span class="cm"> *</span>
-<span class="cm"> * @attribute pageStatus</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * Array of status strings for each page.  If the status value for a page</span>
+<span class="c"> * is not empty, it is used to build a CSS class for the page:</span>
+<span class="c"> * yui3-has&amp;lt;status&amp;gt;</span>
+<span class="c"> *</span>
+<span class="c"> * @attribute pageStatus</span>
+<span class="c"> */</span>
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">pageStatus</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="nx">value</span><span class="o">:</span>     <span class="p">[],</span>
+	<span class="nx">value</span><span class="o">:</span>     <span class="p">[]</span><span class="o">,</span>
 	<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span>
 <span class="p">};</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">ValidationPageLinks</span><span class="p">,</span> <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">PageLinks</span><span class="p">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">ValidationPageLinks</span><span class="o">,</span> <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">PageLinks</span><span class="o">,</span>
 <span class="p">{</span>
 	<span class="nx">update</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span><span class="p">;</span>
+			<span class="k">return</span><span class="o">;</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">currentPage</span>	<span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">();</span>
 
-		<span class="kd">var</span> <span class="nx">curr_markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;span class=&quot;{link} {curr} {status}&quot;&gt;{label}&lt;/span&gt;&#39;</span><span class="p">;</span>
-		<span class="kd">var</span> <span class="nx">link_markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;a href=&quot;#&quot; class=&quot;{link} {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;/a&gt;&#39;</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">curr_markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;span class=&quot;{link} {curr} {status}&quot;&gt;{label}&lt;/span&gt;&#39;</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">link_markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;a href=&quot;#&quot; class=&quot;{link} {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;/a&gt;&#39;</span><span class="o">;</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">!==</span> <span class="nx">currentPage</span> <span class="o">||</span> <span class="o">!</span><span class="nx">currentPage</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">rebuild</span><span class="p">)</span>
 		<span class="p">{</span>
@@ -100,22 +100,22 @@
 
 			<span class="kd">var</span> <span class="nx">range</span> <span class="o">=</span>
 				<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">PageLinks</span><span class="p">.</span><span class="nx">calculateRange</span><span class="p">(</span>
-					<span class="nx">currentPage</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pageLinks&#39;</span><span class="p">));</span>
+					<span class="nx">currentPage</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">()</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pageLinks&#39;</span><span class="p">));</span>
 
-			<span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
 			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">range</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="nx">i</span><span class="o">&lt;=</span><span class="nx">range</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">content</span> <span class="o">+=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="nx">currentPage</span> <span class="o">?</span> <span class="nx">curr_markup</span> <span class="o">:</span> <span class="nx">link_markup</span><span class="p">,</span>
+				<span class="nx">content</span> <span class="o">+=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="nx">currentPage</span> <span class="o">?</span> <span class="nx">curr_markup</span> <span class="o">:</span> <span class="nx">link_markup</span><span class="o">,</span>
 				<span class="p">{</span>
-					<span class="nx">link</span><span class="o">:</span>   <span class="nx">linkClass</span><span class="p">,</span>
-					<span class="nx">curr</span><span class="o">:</span>   <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="nx">currentPage</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;currentPageClass&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
-					<span class="nx">status</span><span class="o">:</span> <span class="nx">status</span><span class="p">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">?</span> <span class="nx">vpl_status_prefix</span> <span class="o">+</span> <span class="nx">status</span><span class="p">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-					<span class="nx">page</span><span class="o">:</span>   <span class="nx">i</span><span class="p">,</span>
-					<span class="nx">label</span><span class="o">:</span>  <span class="nx">labelBuilder</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">)</span>
+					<span class="nx">link</span><span class="o">:</span>   <span class="nx">linkClass</span><span class="o">,</span>
+					<span class="nx">curr</span><span class="o">:</span>   <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="nx">currentPage</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;currentPageClass&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">status</span><span class="o">:</span> <span class="nx">status</span><span class="p">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">?</span> <span class="nx">vpl_status_prefix</span> <span class="o">+</span> <span class="nx">status</span><span class="p">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="o">,</span>
+					<span class="nx">page</span><span class="o">:</span>   <span class="nx">i</span><span class="o">,</span>
+					<span class="kd">label</span><span class="o">:</span>  <span class="nx">labelBuilder</span><span class="p">(</span><span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">)</span>
 				<span class="p">});</span>
 			<span class="p">}</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">content</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="o">,</span> <span class="nx">content</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 

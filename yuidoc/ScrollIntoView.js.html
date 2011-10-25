@@ -47,51 +47,51 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
 
-<span class="cm">/**********************************************************************</span>
-<span class="cm">* &lt;p&gt;Only scrolls the browser if the object is not currently visible.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @module node</span>
-<span class="cm">  * @submodule gallery-scrollintoview</span>
-<span class="cm"> */</span>
+<span class="c">/**********************************************************************</span>
+<span class="c">* &lt;p&gt;Only scrolls the browser if the object is not currently visible.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @module node</span>
+<span class="c">  * @submodule gallery-scrollintoview</span>
+<span class="c"> */</span>
 
-<span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Only scrolls the browser if the object is not currently visible.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;This requires that all scrollable elements have position:relative.</span>
-<span class="cm"> * Otherwise, this algorithm will skip over them with unpredictable</span>
-<span class="cm"> * results.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @class Node~scrollIntoView</span>
-<span class="cm"> * @method scrollIntoView</span>
-<span class="cm"> * @chainable</span>
-<span class="cm"> */</span>
+<span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Only scrolls the browser if the object is not currently visible.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;This requires that all scrollable elements have position:relative.</span>
+<span class="c"> * Otherwise, this algorithm will skip over them with unpredictable</span>
+<span class="c"> * results.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @class Node~scrollIntoView</span>
+<span class="c"> * @method scrollIntoView</span>
+<span class="c"> * @chainable</span>
+<span class="c"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">scrollIntoView</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">ancestor</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetParent&#39;</span><span class="p">));</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ancestor</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
 	<span class="p">}</span>
 
 	<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span>
 	<span class="p">{</span>
-		<span class="nx">top</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetTop&#39;</span><span class="p">),</span>
-		<span class="nx">bottom</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetTop&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">),</span>
-		<span class="nx">left</span><span class="o">:</span>   <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetLeft&#39;</span><span class="p">),</span>
+		<span class="nx">top</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetTop&#39;</span><span class="p">)</span><span class="o">,</span>
+		<span class="nx">bottom</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetTop&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">)</span><span class="o">,</span>
+		<span class="nx">left</span><span class="o">:</span>   <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetLeft&#39;</span><span class="p">)</span><span class="o">,</span>
 		<span class="nx">right</span><span class="o">:</span>  <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetLeft&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetWidth&#39;</span><span class="p">)</span>
 	<span class="p">};</span>
 
 	<span class="nx">r</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>	<span class="nx">dx</span><span class="p">,</span>
-		<span class="cm">/* int */</span>	<span class="nx">dy</span><span class="p">)</span>
+		<span class="c">/* int */</span>	<span class="nx">dx</span><span class="o">,</span>
+		<span class="c">/* int */</span>	<span class="nx">dy</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">top</span>    <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">left</span>   <span class="o">+=</span> <span class="nx">dx</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">right</span>  <span class="o">+=</span> <span class="nx">dx</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">top</span>    <span class="o">+=</span> <span class="nx">dy</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">+=</span> <span class="nx">dy</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">left</span>   <span class="o">+=</span> <span class="nx">dx</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">right</span>  <span class="o">+=</span> <span class="nx">dx</span><span class="o">;</span>
 	<span class="p">};</span>
 
 	<span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -104,15 +104,15 @@
 			<span class="k">if</span> <span class="p">(</span><span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollWidth</span> <span class="o">-</span> <span class="nx">a</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">()</span> <span class="o">&gt;</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">clientWidth</span> <span class="o">||</span>
 				<span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollHeight</span> <span class="o">-</span> <span class="nx">a</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span><span class="p">()</span> <span class="o">&gt;</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">clientHeight</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">break</span><span class="p">;</span>
+				<span class="k">break</span><span class="o">;</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hit_top</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+				<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
 			<span class="p">}</span>
 
-			<span class="nx">r</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetLeft</span> <span class="o">-</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollLeft</span><span class="p">,</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">);</span>
-			<span class="nx">ancestor</span> <span class="o">=</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetParent</span> <span class="o">||</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">;</span>
+			<span class="nx">r</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetLeft</span> <span class="o">-</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollLeft</span><span class="o">,</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">);</span>
+			<span class="nx">ancestor</span> <span class="o">=</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetParent</span> <span class="o">||</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">parentNode</span><span class="o">;</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">scrollX</span> <span class="o">=</span> <span class="p">(</span><span class="nx">hit_top</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">doc</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">scrollLeft</span> <span class="o">||</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">doc</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollLeft</span> <span class="o">:</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollLeft</span><span class="p">);</span>
@@ -120,60 +120,60 @@
 
 		<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">top</span><span class="o">:</span>    <span class="nx">scrollY</span><span class="p">,</span>
-			<span class="nx">bottom</span><span class="o">:</span> <span class="nx">scrollY</span> <span class="o">+</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">clientHeight</span><span class="p">,</span>
-			<span class="nx">left</span><span class="o">:</span>   <span class="nx">scrollX</span><span class="p">,</span>
+			<span class="nx">top</span><span class="o">:</span>    <span class="nx">scrollY</span><span class="o">,</span>
+			<span class="nx">bottom</span><span class="o">:</span> <span class="nx">scrollY</span> <span class="o">+</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">clientHeight</span><span class="o">,</span>
+			<span class="nx">left</span><span class="o">:</span>   <span class="nx">scrollX</span><span class="o">,</span>
 			<span class="nx">right</span><span class="o">:</span>  <span class="nx">scrollX</span> <span class="o">+</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">clientWidth</span>
 		<span class="p">};</span>
 
-		<span class="kd">var</span> <span class="nx">dy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">dy</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;hidden&#39;</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="c1">// don&#39;t scroll</span>
+			<span class="c">// don&#39;t scroll</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">top</span> <span class="o">&lt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">top</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">dy</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
+			<span class="nx">dy</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">top</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">bottom</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">dy</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">bottom</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">top</span><span class="p">);</span>
+			<span class="nx">dy</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">bottom</span><span class="o">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">top</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="kd">var</span> <span class="nx">dx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">dx</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="s1">&#39;overflowX&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;hidden&#39;</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="c1">// don&#39;t scroll</span>
+			<span class="c">// don&#39;t scroll</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">&lt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">left</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">dx</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">left</span><span class="p">;</span>
+			<span class="nx">dx</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">left</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">right</span> <span class="o">&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">dx</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">left</span><span class="p">);</span>
+			<span class="nx">dx</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">right</span><span class="o">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">d</span><span class="p">.</span><span class="nx">left</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">hit_top</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">dx</span> <span class="o">||</span> <span class="nx">dy</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nb">window</span><span class="p">.</span><span class="nx">scrollBy</span><span class="p">(</span><span class="nx">dx</span><span class="p">,</span> <span class="nx">dy</span><span class="p">);</span>
+				<span class="nb">window</span><span class="p">.</span><span class="nx">scrollBy</span><span class="p">(</span><span class="nx">dx</span><span class="o">,</span> <span class="nx">dy</span><span class="p">);</span>
 			<span class="p">}</span>
-			<span class="k">break</span><span class="p">;</span>
+			<span class="k">break</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollLeft</span> <span class="o">+=</span> <span class="nx">dx</span><span class="p">;</span>
-			<span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollTop</span>  <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
+			<span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollLeft</span> <span class="o">+=</span> <span class="nx">dx</span><span class="o">;</span>
+			<span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollTop</span>  <span class="o">+=</span> <span class="nx">dy</span><span class="o">;</span>
 
-			<span class="nx">r</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetLeft</span> <span class="o">-</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollLeft</span><span class="p">,</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">);</span>
+			<span class="nx">r</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetLeft</span> <span class="o">-</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollLeft</span><span class="o">,</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetTop</span> <span class="o">-</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">);</span>
 
-			<span class="nx">ancestor</span> <span class="o">=</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetParent</span><span class="p">;</span>
+			<span class="nx">ancestor</span> <span class="o">=</span> <span class="nx">ancestor</span><span class="p">.</span><span class="nx">offsetParent</span><span class="o">;</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
 <span class="p">};</span>
 </pre></div>
 
