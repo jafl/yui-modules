@@ -90,7 +90,7 @@
  * &nbsp;&nbsp;&nbsp;&nbsp;Y.Plugin.DataTableQuickEdit.error_display_markup;
  *
  * &nbsp;&nbsp;var qe = o.column.get('quickEdit');
- * &nbsp;&nbsp;var td = o.createCell();
+ * &nbsp;&nbsp;var td = this.createCell(o);
  * &nbsp;&nbsp;td.set('innerHTML', Y.Lang.sub(markup, {
  * &nbsp;&nbsp;&nbsp;&nbsp;key: o.column.get('key'),
  * &nbsp;&nbsp;&nbsp;&nbsp;yiv: qe.validation ? (qe.validation.css || '') : ''
@@ -178,7 +178,7 @@ QuickEdit.textFormatter = function(o)
 		QuickEdit.error_display_markup;
 
 	var qe = o.column.get('quickEdit');
-	var td = o.createCell();
+	var td = this.createCell(o);
 	td.set('innerHTML', Y.Lang.sub(markup,
 	{
 		key: o.column.get('key'),
@@ -204,7 +204,7 @@ QuickEdit.textareaFormatter = function(o)
 		QuickEdit.error_display_markup;
 
 	var qe = o.column.get('quickEdit');
-	var td = o.createCell();
+	var td = this.createCell(o);
 	td.set('innerHTML', Y.Lang.sub(markup,
 	{
 		key: o.column.get('key'),
