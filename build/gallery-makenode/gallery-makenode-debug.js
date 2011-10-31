@@ -11,33 +11,148 @@ YUI.add('gallery-makenode', function(Y) {
  * @class MakeNode
  */
 	"use strict";
-	
+	if (Y.version === '3.4.0') { (function () {
+		// See: http://yuilibrary.com/projects/yui3/ticket/2531032
+		var L = Y.Lang, DUMP = 'dump', SPACE = ' ', LBRACE = '{', RBRACE = '}',
+			savedRegExp =  /(~-(\d+)-~)/g, lBraceRegExp = /\{LBRACE\}/g, rBraceRegExp = /\{RBRACE\}/g;
+		
+		Y.substitute = function(s, o, f, recurse) {
+			var i, j, k, key, v, meta, saved = [], token, dump,
+				lidx = s.length;
+
+			for (;;) {
+				i = s.lastIndexOf(LBRACE, lidx);
+				if (i < 0) {
+					break;
+				}
+				j = s.indexOf(RBRACE, i);
+				if (i + 1 >= j) {
+					break;
+				}
+
+				//Extract key and meta info
+				token = s.substring(i + 1, j);
+				key = token;
+				meta = null;
+				k = key.indexOf(SPACE);
+				if (k > -1) {
+					meta = key.substring(k + 1);
+					key = key.substring(0, k);
+				}
+
+				// lookup the value
+				v = o[key];
+
+				// if a substitution function was provided, execute it
+				if (f) {
+					v = f(key, v, meta);
+				}
+
+				if (L.isObject(v)) {
+					if (!Y.dump) {
+						v = v.toString();
+					} else {
+						if (L.isArray(v)) {
+							v = Y.dump(v, parseInt(meta, 10));
+						} else {
+							meta = meta || '';
+
+							// look for the keyword 'dump', if found force obj dump
+							dump = meta.indexOf(DUMP);
+							if (dump > -1) {
+								meta = meta.substring(4);
+							}
+
+							// use the toString if it is not the Object toString
+							// and the 'dump' meta info was not found
+							if (v.toString === Object.prototype.toString ||
+								dump > -1) {
+								v = Y.dump(v, parseInt(meta, 10));
+							} else {
+								v = v.toString();
+							}
+						}
+					}
+				} else if (L.isUndefined(v)) {
+					// This {block} has no replace string. Save it for later.
+					v = '~-' + saved.length + '-~';
+					saved.push(token);
+
+					// break;
+				}
+
+				s = s.substring(0, i) + v + s.substring(j + 1);
+
+				if (!recurse) {
+					lidx = i - 1;
+				}
+
+			}
+			// restore saved {block}s and replace escaped braces
+
+			return s
+				.replace(savedRegExp, function (str, p1, p2) {
+					return LBRACE + saved[parseInt(p2,10)] + RBRACE;
+				})
+				.replace(lBraceRegExp, LBRACE)
+				.replace(rBraceRegExp, RBRACE)
+			;
+
+		};
+	})();}	
 	var WS = /\s+/,
 		NODE = 'Node',
 		DOT = '.',
 		BBX = 'boundingBox',
 		Lang = Y.Lang,
 		DUPLICATE = ' for "{name}" defined in class {recentDef} also defined in class {prevDef}',
+		parsingRegExp = /^(?:([ \t]+)|("[^"\\]*(?:\\.[^"\\]*)*")|(true)|(false)|(null)|([\-+]?[0-9]*(?:\.[0-9]+)?))/, 
+		quotesRegExp = /\\"/g,
+				
 		/** 
 		 * Creates CSS classNames from suffixes listed in <a href="#property__CLASS_NAMES"><code>_CLASS_NAMES</code></a>, 
 		 * stores them in <a href="#property__classNames"><code>this._classNames</code></a>.
 		 * Concatenates <a href="#property__ATTRS_2_UI"><code>_ATTRS_2_UI</code></a> into <code>_UI_ATTRS</code>.
-		 * Sets listeners to render and destroy events to attach/detach UI events
+		 * Sets listeners to render and destroy events to attach/detach UI events.
+		 * If there is no renderUI defined in this class or any of its ancestors (not counting Widget which has a dummy one)
+		 * it will add a default one appending the result of processing _TEMPLATE and then call _locateNodes.
 		 * @constructor
 		 */
 		MakeNode = function () {
-			this._makeClassNames();
-			this._concatUIAttrs();
-			this._publishEvents();
-			this.after('render', this._attachEvents, this);
-			this.after('destroy', this._detachEvents, this);
+			var self = this;
+			self._eventHandles = [];
+			self._makeClassNames();
+			self._concatUIAttrs();
+			self._publishEvents();
+			self.after('render', self._attachEvents, self);
+			self.after('destroy', self._detachEvents, self);
+			if (self.renderUI === Y.Widget.prototype.renderUI) {
+				self.renderUI = self._autoRenderUI;
+			}
 		};
 	MakeNode.prototype = {
+		/**
+		 * Method to be used if no explicit renderUI method is defined.
+		 * @method _autoRenderUI
+		 * @private
+		 */
+		_autoRenderUI: function () {
+			this.get('contentBox').append(this._makeNode());
+			this._locateNodes();
+		},
+		/** 
+		 * An array of event handles returned when attaching listeners to events,
+		 * meant to detach them all when destroying the instance.
+		 * @property _eventHandles
+		 * @type Array
+		 * @private
+		 */	
+		_eventHandles:null,
 		/**
 		 * Contains a hash of CSS classNames generated from the entries in <a href="#property__CLASS_NAMES"><code>_CLASS_NAMES</code></a>
 		 * indexed by those same values.
 		 * It will also have the following entries added automatically: <ul>
-		 * <li><code>.</code> The className for the boundingBox</li>
+		 * <li><code>boundingBox</code> The className for the boundingBox</li>
 		 * <li><code>content</code> The className for the contentBox</li>
 		 * <li><code>HEADER</code> The className for the header section of a StdMod if Y.WidgetStdMod has been loaded</li>
 		 * <li><code>BODY</code> The className for the body section of a StdMod if Y.WidgetStdMod has been loaded</li>
@@ -51,6 +166,7 @@ YUI.add('gallery-makenode', function(Y) {
 		/**
 		 * Hash listing the template processing codes and the functions to handle each.
 		 * The processing functions will receive a string with the arguments that follow the processing code,
+		 * and the extra, second argument passed on to _makeNode (or _substitute)
 		 * and should return the replacement value for the placeholder.
 		 * @property _templateHandlers
 		 * @type Object
@@ -72,8 +188,8 @@ YUI.add('gallery-makenode', function(Y) {
 			'c': function (arg) {
 				return this._classNames[arg];
 			},
-			's': function (arg) {
-				return this.get('strings')[arg];
+			's': function (arg, extras) {
+				return this._substitute(this.get('strings')[arg], extras);
 			},
 			'?': function(args) {
 				args = this._parseMakeNodeArgs(args);
@@ -82,7 +198,22 @@ YUI.add('gallery-makenode', function(Y) {
 			'1': function (args) {
 				args = this._parseMakeNodeArgs(args);
 				return parseInt(args[0],10) ===1?args[1]:args[2];
+			},
+			'n': function (args, extras) {
+				var fn, key, value = this;
+				args = args.split(WS);
+				
+				while (value && args.length) {
+					key = args.shift();
+					fn = this._templateHandlers[key.toLowerCase()];
+					if (!fn) {
+						return;
+					}
+					value =  fn.call(value, args.shift(), extras);
+				}
+				return value;
 			}
+				
 		},
 		/**
 		 * Parses the arguments received by the processor of the <code>{m}</code> placeholder.  
@@ -94,15 +225,14 @@ YUI.add('gallery-makenode', function(Y) {
 		 * @private
 		 */
 		_parseMakeNodeArgs: function (arg) {
-			var regexp = /^(?:([ \t]+)|("[^"\\]*(?:\\.[^"\\]*)*")|(true)|(false)|(null)|([\-+]?[0-9]*(?:\.[0-9]+)?))/, 
-				args = [],
+			var args = [],
 				matcher = function (match, i) {
 					if (match !== undefined && i) {
 						switch (i) {
 							case 1:
 								break;
 							case 2:
-								args.push(match.substr(1, match.length - 2).replace('\\"','"'));
+								args.push(match.substr(1, match.length - 2).replace(quotesRegExp,'"'));
 								break;
 							case 3:
 								args.push(true);
@@ -131,9 +261,35 @@ YUI.add('gallery-makenode', function(Y) {
 				};
 			while (arg.length) {
 				
-				Y.some(regexp.exec(arg), matcher);
+				Y.some(parsingRegExp.exec(arg), matcher);
 			}
 			return args;
+		},
+		/**
+		 * Enumerates all the values and keys of a given static properties for all classes in the hierarchy, 
+		 * starting with the oldest ancestor (Base).
+		 * @method _forAllXinClasses
+		 * @param x {String} name of the static property to be enumerated
+		 * @param fn {function} function to be called for each value.  
+		 * The function will receive a reference to the class where it occurs, the value of the property 
+		 * and the key or index.
+		 * @private
+		 */
+		
+		_forAllXinClasses: function(x, fn) {
+			var self = this,
+				cs = this._getClasses(),
+				l = cs.length,
+				i, c,
+				caller = function (v, k) {
+					fn.call(self, c, v, k);
+				};
+			for (i = l -1;i >= 0;i--) {
+				c = cs[i];
+				if (c[x]) {
+					Y.each(c[x], caller);
+				}
+			}
 		},
 		/**
 		 * Processes the template given and returns a <code>Y.Node</code> instance.
@@ -158,8 +314,7 @@ YUI.add('gallery-makenode', function(Y) {
 		/**
 		 * Processes the given template and returns a string
 		 * @method _substitute
-		 * @param template {String} (optional) Template to process.  
-		 *        If missing, it will use the first static <a href="#property__TEMPLATE"><code>_TEMPLATE</code></a> property found in the inheritance chain.
+		 * @param template {String} Template to process.  
 		 * @param extras {Object} (optional) Hash of extra values to replace into the template, beyond MakeNode's processing codes.
 		 * @return {String} Template with the placeholders replaced.
 		 * @protected
@@ -170,7 +325,7 @@ YUI.add('gallery-makenode', function(Y) {
 				if (arg) {
 					fn = this._templateHandlers[key.toLowerCase()];
 					if (fn) {
-						return fn.call(this, arg);
+						return fn.call(this, arg, extras);
 					}
 				}
 				return suggested;
@@ -181,34 +336,39 @@ YUI.add('gallery-makenode', function(Y) {
 		 * or those specifically requested in its arguments and stores references to them
 		 * in properties named after each className key, prefixed with an underscore
 		 * and followed by <code>"Node"</code>.
+		 * If the className key contains a hyphen followed by a lowercase letter, the hyphen will be dropped and the letter capitalized.
+		 * Any other characters invalid for identifiers will be turned into underscores, 
+		 * thus for the <code>no-label-1</code> className key a <code>_noLabel_1Node</code> property will be created.
 		 * @method _locateNodes
-		 * @param arg1,.... {String} (optional) If given, list of className heys of the nodes to be located.
+		 * @param arg1,.... {String} (optional) If given, list of className keys of the nodes to be located.
 		 *        If missing, all the classNames stored in <a href="#property__classNames"><code>this._classNames</code></a> will be located.
 		 * @protected
 		 */
 		_locateNodes: function () {
-			var bbx = this.get(BBX), el;
+			var bbx = this.get(BBX), 
+				self = this,
+				makeName = function (el, name) {
+					if (el) {
+						self['_' + name.replace(/\-([a-z])/g,function (str, p1, p2) {
+							return p1.toUpperCase();
+						}).replace(/\W/g,'_') + NODE] = el;
+					}
+				};
 			if (arguments.length) {
-				Y.each(arguments, function( name) {
-					el = bbx.one(DOT + this._classNames[name]);
-					if (el) {
-						this['_' +  name + NODE] = el;
-					}
-				}, this);
+				Y.each(arguments, function (name) {
+					makeName(bbx.one(DOT + self._classNames[name]),name);
+				});
 			} else {
-				Y.each(this._classNames, function(selector, name) {
-					el = bbx.one(DOT + selector);
-					if (el) {
-						this['_' +  name + NODE] = el;
-					}
-				}, this);
+				Y.each(self._classNames, function(selector, name) {
+					makeName(bbx.one(DOT + selector), name);
+				});
 			}
 		},
 		/**
 		 * Looks for static properties called <a href="#property__CLASS_NAMES"><code>_CLASS_NAMES</code></a> in each of the classes of the inheritance chain
 		 * and generates CSS classNames based on the <code>_cssPrefix</code> of each class and each of the suffixes listed in each them.
 		 * The classNames generated will be stored in <a href="#property__classNames"><code>this._classNames</code></a> indexed by the suffix.
-		 * It will also store the classNames of the boundingBox ( . )and the contentBox ( content ).  
+		 * It will also store the classNames of the boundingBox ( boundingBox )and the contentBox ( content ).  
 		 * If the WidgetStdMod is used, it will also add the classNames for the three sections ( HEADER, BODY, FOOTER )
 		 * @method _makeClassNames
 		 * @private
@@ -217,20 +377,17 @@ YUI.add('gallery-makenode', function(Y) {
 			var YCM = Y.ClassNameManager.getClassName,
 				defined = {},
 				cns = this._classNames = {};
-			Y.each(this._getClasses(), function (c) {
-				if (c._CLASS_NAMES) {
-					Y.each(c._CLASS_NAMES, function(name) {
-						if (defined[name]) {
-							Y.log(Y.substitute('ClassName' + DUPLICATE, {name:name, recentDef: defined[name], prevDef: c.NAME}), 'warn', 'MakeNode');
-						} else {
-							cns[name] = YCM(c.NAME.toLowerCase(), name);
-							defined[name] = c.NAME;
-						}
-					});
+				
+			this._forAllXinClasses('_CLASS_NAMES', function(c, name) {
+				if (defined[name]) {
+					Y.log(Y.substitute('ClassName' + DUPLICATE, {name:name, recentDef: defined[name], prevDef: c.NAME}), 'warn', 'MakeNode');
+				} else {
+					cns[name] = YCM(c.NAME.toLowerCase(), name);
+					defined[name] = c.NAME;
 				}
 			});
 			
-			cns.content = (cns[DOT] = YCM(this.constructor.NAME.toLowerCase())) + '-content';
+			cns.content = (cns[BBX] = YCM(this.constructor.NAME.toLowerCase())) + '-content';
 			if (this.getStdModNode) {
 				cns.HEADER = 'yui3-widget-hd';
 				cns.BODY = 'yui3-widget-bd';
@@ -272,48 +429,66 @@ YUI.add('gallery-makenode', function(Y) {
 		 * @private
 		 */
 		_attachEvents: function () {
-			/*jslint confusion: true */
-			var bbx = this.get(BBX),
-				selector,
-				self = this,
-				eh = [];
-				
-			Y.each(this._getClasses(), function (c) {
-				Y.each (c._EVENTS || {}, function (handlers, key) {
-					selector = {
-						DOT:bbx, 
-						'..':bbx.get('ownerDocument'), 
-						THIS:self,
-						Y:Y
-					}[key] || DOT + this._classNames[key];
-					Y.each(handlers, function (handler, type) {
-						if (Lang.isString(handler)) {
-							handler = {fn:handler};
-						} 
-						if (Lang.isObject(handler) && handler.hasOwnProperty('fn')) {
-							if (Lang.isString(selector)) {
-								if (type==='key') {
-									eh.push(bbx.delegate(type, self[handler.fn], handler.args, selector, self));
+			var self = this,
+				bbx = self.get(BBX),
+				eh = [],
+				type, fn, args, when, target, t,
+				toInitialCap = function (name) {
+					return name.charAt(0).toUpperCase() + name.substr(1);
+				},
+				equivalents = {
+					boundingBox:bbx, 
+					document:bbx.get('ownerDocument'), 
+					THIS:self,
+					Y:Y
+				};
+			self._forAllXinClasses('_EVENTS', function (c, handlers, key) {
+				target = equivalents[key] || DOT + self._classNames[key];
+				if (key === 'THIS') {key = 'This';}
+				Y.each(Y.Array(handlers), function (handler) {
+					if (Lang.isString(handler)) {
+						handler = {type: handler};
+					} 
+					if (Lang.isObject(handler)) {
+						type = handler.type;
+						when = (handler.when || 'after');
+						fn = handler.fn || '_' + when + toInitialCap(key) + toInitialCap(type);
+						args = handler.args;
+					} else {
+						Y.log('Bad event handler for class: ' + c.NAME + ' key: ' + key,'error','MakeNode');
+					}
+					if (!/^(before|after|delegate)$/.test(when)) { Y.log('When can only be before, after or delegate: ' + when, 'error', 'MakeNode'); }
+					when = when.replace('before','on');
+					if (type) {
+						if (self[fn]) {
+							fn = self[fn];
+						} else {
+							Y.log('Listener method not found: ' + fn,'error','MakeNode');
+						}
+						if (when === 'delegate') {
+							if (Lang.isString(target)) {
+								if (type === 'key') {
+									eh.push(bbx.delegate(type, fn, args, target, self));
 								} else {
-									eh.push(bbx.delegate(type, self[handler.fn], selector, self, handler.args));
+									eh.push(bbx.delegate(type, fn, target, self, args));
 								}
 							} else {
-								if (selector === self || selector === Y) {
-									eh.push(selector.after(type, self[handler.fn], self, handler.args));
-								} else {
-									if (type==='key') {
-										eh.push(Y.after(type, self[handler.fn], selector, handler.args, self));
-									} else {
-										eh.push(Y.after(type, self[handler.fn], selector, self, handler.args));
-									}
-								}
+								Y.log('Delegate used on invalid key: ' + key, 'error', 'MakeNode');
+							}
+						} else {
+							t = Lang.isString(target)?Y.all(target):target;
+							if ( type=== 'key') {
+								eh.push(t[when](type, fn, args, self));
+							} else {
+								eh.push(t[when](type, fn, self, args));
 							}
 						}
-							
-					});
-				}, this);
-			}, this);
-			this._eventHandles = eh;
+					} else {
+						Y.log('No type found in: ' + c.NAME + ', key: ' + key, 'error', 'MakeNode');
+					}
+				});
+			});
+			this._eventHandles = this._eventHandles.concat(eh);
 		},
 		
 		/**
@@ -323,19 +498,13 @@ YUI.add('gallery-makenode', function(Y) {
 		 * @private
 		 */
 		_publishEvents: function () {
-			var cs = this._getClasses(),
-				l = cs.length,
-				i,
-				publisher = function (options, name) {
-					var opts = {};
-					Y.each(options || {}, function (value, opt) {
-						opts[opt] =opt.substr(-2) === 'Fn'?this[value]:value;
-					},this);
-					this.publish(name,opts);
-				};
-			for (i = l -1;i >= 0;i--) {
-				Y.each (cs[i]._PUBLISH || {}, publisher, this);
-			}
+			this._forAllXinClasses('_PUBLISH', function (c, options, name) {
+				var opts = {};
+				Y.each(options || {}, function (value, opt) {
+					opts[opt] = opt.substr(opt.length - 2) === 'Fn'?this[value]:value;
+				},this);
+				this.publish(name,opts);
+			});
 		},
 		/**
 		 * Detaches all the events created by <a href="method__attachEvents"><code>_attachEvents</code></a>
@@ -352,7 +521,7 @@ YUI.add('gallery-makenode', function(Y) {
 	};
 	/**
 	 * <b>**</b> This is a documentation entry only. 
-	 * This property is not defined in this file, it should be defined by the developer. <b>**</b><br/><br/>
+	 * This property is not defined in this file, it can be defined by the developer. <b>**</b><br/><br/>
 	 * Holds the default template to be used by <a href="#method__makeNode"><code>_makeNode</code></a> when none is explicitly provided.<br/>
 	 * The string should contain HTML code with placeholders made of a set of curly braces
 	 * enclosing an initial processing code and arguments.  
@@ -375,6 +544,10 @@ YUI.add('gallery-makenode', function(Y) {
 			Argument arg1 is usually a nested placeholder.</li>
 			<li><code>{1 arg1 arg2 arg3}</code> If arg1 is 1 it returns arg2 otherwise arg3. Used to produce singular/plural text.
 			Argument arg1 is usually a nested placeholder.</li>
+			<li><code>{n p1 arg1 .... pn argn}</code> It will read the value resulting from the processing code <code>p1</code> with argument <code>arg1</code>
+			and use that as the object to process the following processing code.  
+			It takes any number of processing codes and arguments.  
+			It only works with processing codes that take simple identifiers as arguments, ie.: not {m}.
 			<li><code>{}</code> any other value will be	handled just like <code>Y.substitute</code> does. </li>
 		</ul>
 	 * For placeholders containing several arguments they must be separated by white spaces.  
@@ -389,7 +562,7 @@ YUI.add('gallery-makenode', function(Y) {
 	 */
 	/**
 	 * <b>**</b> This is a documentation entry only.
-	 * This property is not defined in this file, it should be defined by the developer. <b>**</b><br/><br/>
+	 * This property is not defined in this file, it can be defined by the developer. <b>**</b><br/><br/>
 	 * Holds an array of strings, each the suffix used to define a CSS className using the 
 	 * _cssPrefix of each class.  The names listed here are used as the keys into
 	 * <a href="#property__classNames"><code>this._classNames</code></a>, 
@@ -405,7 +578,7 @@ YUI.add('gallery-makenode', function(Y) {
 
 	/**
 	 * <b>**</b> This is a documentation entry only.
-	 * This property is not defined in this file, it should be defined by the developer. <b>**</b><br/><br/>
+	 * This property is not defined in this file, it can be defined by the developer. <b>**</b><br/><br/>
 	 * Lists the attributes whose value should be reflected in the UI.  
 	 * It contains an object with two properties, <code>BIND</code> and <code>SYNC</code>, each 
 	 * containing the name of an attribute or an array of names of attributes.
@@ -424,19 +597,47 @@ YUI.add('gallery-makenode', function(Y) {
 	 
 	/**
 	 * <b>**</b> This is a documentation entry only.
-	 * This property is not defined in this file, it should be defined by the developer. <b>**</b><br/><br/>
+	 * This property is not defined in this file, it can be defined by the developer. <b>**</b><br/><br/>
 	 * Contains a hash of elements to attach event listeners to.  
 	 * Each element is identified by the suffix of its generated className,
 	 * as declared in the <a href="#property__CLASS_NAMES"><code>_CLASS_NAMES</code></a> property.  <br/>
-	 * There are three further element identifiers,
-	 * a <code>"."</code> identifies the boundingBox of the Widget, <code>"content"</code> its contextBox, and a <code>".."</code> identifies the document
-	 * where the component is in.
-	 * If the Y.WidgetStdMod extension is used the <code>"HEADER"</code>, <code>"BODY"</code> and <code>"FOOTER"</code> identifiers will also be available.<br/>
-	 * Each entry is made of a further hash using the type of event to listen to (<code>"key"</code>, <code>"mousedown"</code>, etc)
-	 * as the key to each handler.<br/>
-	 * For each type of event, you can list either a string with the name of an instance method that will handle the event
-	 * or an object with properties <code>fn</code> with a string with the name of the instance method and an <code>args</code> property with extra
-	 * arguments for the listener, such as a key descriptor for <code>key</code> events
+	 * There are seveal virtual element identifiers,<ul>
+	 * <li><code>"boundingBox"</code> identifies the boundingBox of the Widget</li>
+	 * <li><code>"content"</code> its contextBox</li>
+	 * <li><code>"document"</code> identifies the document where the component is in</li>
+	 * <li><code>"THIS"</code> identifies this instance</li>
+	 * <li><code>"Y"</code> identifies the YUI instance of the sandbox</li>
+	 * </ul>
+	 * If the Y.WidgetStdMod extension is used the <code>"HEADER"</code>, <code>"BODY"</code> 
+	 * and <code>"FOOTER"</code> identifiers will also be available.<br/>
+	 * Each entry contains a type of event to be listened to or an array of events.
+	 * Each event can be described by its type (i.e.: <code>"key"</code>, <code>"mousedown"</code>, etc).
+	 * MakeNode will set 'after' event listeners by default, but can be instructed to listen to 'before' ('on') events
+	 * or do it by delegation on the boundingBox.
+	 * MakeNode will associate this event with a method named <code>"_after"</code>,<code>"_before"</code> or <code>"_delegate"</code> followed by the element identifier with the first character capitalized 
+	 * and the type of event with the first character capitalized (i.e.: <code>_afterBoundingBoxClick</code>, <code>_afterInputBlur</code>, <code>_afterThisValueChange</code>, <code>_beforeFormSubmit</code>, <code>_delegateListItemClick</code>, etc.).<br/>
+	 * Alternatively, the event listener can be described by an object literal containing properties: <ul>
+	 * <li><code>type</code> (mandatory) the type of event being listened to</li>
+	 * <li><code>fn</code> the name of the method to handle the event.  
+	 * Since _EVENTS is static, it has no access to <code>this</code> so the name of the method must be specified</li>
+	 * <li><code>args</code> extra arguments to be passed to the listener, useful, 
+	 * for example as a key descriptor for <code>key</code> events.</li>
+	 * <li><code>when</code> either 'before', 'after' or 'delegate'.  
+	 * MakeNode defaults to set 'after' event listeners but can be told to set 'before' ('on') listeners 
+	 * or to delegate on the BoundingBox the capture of events on inner elements.  Only className keys can be used with 'delegate'.</li></ul>
+	 * <pre>_EVENTS: {
+ &nbsp; &nbsp; boundingBox: [
+ &nbsp; &nbsp;  &nbsp; &nbsp; {
+ &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; type: 'key',
+ &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; fn:'_onDirectionKey',   // calls this._onDirectionKey
+ &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp; args:((!Y.UA.opera) ? "down:" : "press:") + "38, 40, 33, 34"
+ &nbsp; &nbsp;  &nbsp; &nbsp; },
+ &nbsp; &nbsp;  &nbsp; &nbsp; 'mousedown' &nbsp; &nbsp;  &nbsp; &nbsp; // calls this._afterBoundingBoxMousedown
+ &nbsp; &nbsp; ],
+ &nbsp; &nbsp; document: 'mouseup', &nbsp; &nbsp; // calls this._afterDocumentMouseup
+ &nbsp; &nbsp; input: 'change', &nbsp; &nbsp;  &nbsp; &nbsp; // calls this._afterInputChange
+ &nbsp; &nbsp; form: {type: 'submit', when:'before'}  &nbsp; &nbsp; // calls this._beforeFormSubmit
+},</pre>
 	 * @property _EVENTS
 	 * @type Object
 	 * @static
@@ -445,12 +646,13 @@ YUI.add('gallery-makenode', function(Y) {
 	 
 	/**
 	 * <b>**</b> This is a documentation entry only.
-	 * This property is not defined in this file, it should be defined by the developer. <b>**</b><br/><br/>
+	 * This property is not defined in this file, it can be defined by the developer. <b>**</b><br/><br/>
 	 * Contains a hash of events to be published.  
 	 * Each element has the name of the event as its key
 	 * and the configuration object as its value.  
 	 * If the event has already been published, the configuration of the event will be modified by the
 	 * configuration set in the new definition.
+	 * When setting functions use the name of the function, not a function reference.
 	 * @property _PUBLISH
 	 * @type Object
 	 * @static
@@ -461,4 +663,4 @@ YUI.add('gallery-makenode', function(Y) {
 		
 
 
-}, 'gallery-2011.08.24-23-44' ,{requires:['substitute', 'classnamemanager'], skinnable:false});
+}, 'gallery-2011.10.27-17-08' ,{requires:['substitute', 'classnamemanager'], skinnable:false});
