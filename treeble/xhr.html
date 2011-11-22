@@ -1,0 +1,162 @@
+<!DOCTYPE html public '-//w3c//dtd html 4.01//en' http://www.w3.org/tr/html4/strict.dtd'>
+<html>
+<head>
+	<title>YUI 3 Treeble Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/reset-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssfonts/fonts-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssbase/base-min.css" />
+
+	<script src="gallery-treeble-debug.js"></script>
+	<script src="gallery-paginator-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.4.1/build/widget-base/assets/skins/sam/widget-base.css&3.4.1/build/datatable-base/assets/skins/sam/datatable-base.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-treeble.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
+
+	<style type="text/css">
+	body
+	{
+		margin: 8px;
+	}
+
+	.pg-rpp-label
+	{
+		padding-left: 2em;
+	}
+
+	.yui3-skin-sam .yui3-datatable caption
+	{
+		padding: 0 !important;
+	}
+	</style>
+</head>
+<body class="yui3-skin-sam">
+
+<script type="text/javascript">
+YUI({
+//	filter: 'raw', combine: false,
+	gallery: 'gallery-2011.09.07-20-35'
+}).use('datatable', 'gallery-treeble', 'gallery-paginator', function(Y)
+{
+	function sendRequest()
+	{
+		table.datasource.load(
+		{
+			request:
+			{
+				startIndex:  pg.getStartIndex(),
+				resultCount: pg.getRowsPerPage()
+			}
+		});
+	}
+
+	// column configuration
+
+	var cols =
+	[
+		{
+			key: 'treeblenub',
+			label: '',
+			formatter: Y.Treeble.buildTwistdownFormatter(sendRequest)
+		},
+		{
+			key: 'title',
+			label: 'Title',
+			formatter: Y.Treeble.treeValueFormatter
+		},
+		{ key: 'year', label: 'Year' },
+		{ key: 'quantity', label: 'Quantity' }
+	];
+
+	// treeble config to be set on root datasource
+
+	var schema =
+	{
+		resultFields:
+		[
+			'quantity','year','title', '_open',
+			{key: 'kiddies', parser: 'treebledatasource'}
+		]
+	};
+
+	var schema_plugin_config =
+	{
+		fn:  Y.Plugin.DataSourceJSONSchema,
+		cfg: {schema:schema}
+	};
+
+	var treeble_config =
+	{
+		generateRequest:        function() { },
+		schemaPluginConfig:     schema_plugin_config,
+		childNodesKey:          'kiddies',
+		nodeOpenKey:            '_open',
+		totalRecordsReturnExpr: '.meta.totalRecords'
+	};
+
+	// root data source
+
+	var root            = new Y.DataSource.IO({source: 'xhr_root.json'});
+	root.treeble_config = Y.clone(treeble_config, true);
+	root.plug(schema_plugin_config);
+
+	// TreebleDataSource
+
+	var ds = new Y.TreebleDataSource(
+	{
+		root:             root,
+		paginateChildren: false,
+		uniqueIdKey:      'title'	// normally, it would a database row id, but title happens to be unique in this example
+	});
+
+	// Paginator
+
+	var pg = new Y.Paginator(
+	{
+		totalRecords: 1,
+		rowsPerPage: 1,
+		rowsPerPageOptions: [1,2,5,10,25,50],
+		template: '{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} <span class="pg-rpp-label">Rows per page:</span> {RowsPerPageDropdown}'
+	});
+	pg.render('#pg');
+
+	function updatePaginator(state)
+	{
+		this.setPage(state.page, true);
+		this.setRowsPerPage(state.rowsPerPage, true);
+		this.setTotalRecords(state.totalRecords, true);
+		sendRequest();
+	}
+	pg.on('changeRequest', updatePaginator, pg);
+
+	ds.on('response', function(e)
+	{
+		pg.setTotalRecords(e.response.meta.totalRecords, true);
+		pg.render();
+	});
+
+	// DataTable
+
+	var table = new Y.DataTable.Base({columnset: cols});
+	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
+
+	table.render("#treeble");
+
+	sendRequest();
+});
+</script>
+
+<h1><a href="http://yuilibrary.com/gallery/show/treeble">YUI 3 Treeble</a> Example</h1>
+
+<div id="pg"></div>
+<div id="treeble"></div>
+
+<p><a href="pg_all.html">I want to paginate all nodes instead</a></p>
+<p><a href="../yuidoc/module_gallery-treeble.html">Show me the documentation</a></p>
+<p><a href="/yui2/treeble/index.html">Show me the YUI 2 example</a></p>
+<p><a href="/yui3-gallery/">Back to YUI 3 project list</a></p>
+
+</body>
+</html>
