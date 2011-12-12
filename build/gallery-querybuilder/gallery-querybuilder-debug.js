@@ -311,12 +311,12 @@ Y.extend(QueryBuilder, Y.Widget,
 	 * Append a new query condition to the table.
 	 *
 	 * @param name {String} If specified, this variable is selected.
-	 * @param value {String} If specified, this value is selected.
+	 * @param value {Mixed} If specified, this value is selected.  Refer to the appropriate plugin documentation to figure out what data to pass.
 	 * @return {Object} plugin that was created for the row, if any
 	 */
 	appendNew: function(
 		/* string */	name,
-		/* string */	value)
+		/* mixed */		value)
 	{
 		// if has single, neutral row, use it
 
@@ -435,7 +435,7 @@ Y.extend(QueryBuilder, Y.Widget,
 	 * Set the value of the specified row.
 	 *
 	 * @param row_index {int} The index of the row
-	 * @param value {String} If specified, the value to set
+	 * @param value {Mixed} If specified, the value to set (Refer to the appropriate plugin documentation to figure out what data to pass.)
 	 */
 	update: function(
 		/* int */		row_index,
@@ -1149,4 +1149,4 @@ QueryBuilder.plugin_mapping =
 };
 
 
-}, '@VERSION@' ,{skinnable:true, optional:['gallery-scrollintoview','autocomplete'], requires:['widget','gallery-formmgr']});
+}, '@VERSION@' ,{optional:['gallery-scrollintoview','autocomplete'], skinnable:true, requires:['widget','gallery-formmgr']});
