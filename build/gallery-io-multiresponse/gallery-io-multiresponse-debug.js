@@ -365,4 +365,4 @@ Y.io = function(uri, c) {
 Y.mix(Y.io, orig_io);
 
 
-}, '@VERSION@' ,{requires:['io-upload-iframe'], optional:['json-stringify']});
+}, '@VERSION@' ,{optional:['json-stringify'], requires:['io-upload-iframe']});
