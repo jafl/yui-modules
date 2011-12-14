@@ -2965,17 +2965,17 @@ Y.extend(MathCanvas, Y.Widget,
 			return '<p>' + s + '</p>';
 		}
 
-		if (this.touch || YUI.config.debug_mathcanvs_keyboard)
+		if (this.touch || YUI.config.debug_mathcanvas_keyboard)
 		{
 			this.keyboard = Y.Node.create(
 				'<div class="keyboard">' +
 					buttonRow([1,2,3,4,5,6,7,8,9,0]) +
 					buttonRow(['+', {value:'-',label:'&ndash;'}, {value:'*',label:'&times;'}, '/', '^', '|', ',', 'e', '\u03c0', '.']) +
 					'<p class="last">' +
-						'<button type="button" class="keyboard-hide" value="hide">&dArr;</button>' +
-						'<button type="button" class="keyboard-eval" value="=">=</button>' +
-						'<button type="button" class="keyboard-delete" value="delete">&empty;</button>' +
-						'<button type="button" class="keyboard-expand" value="expand">&hArr;</button>' +
+						'<button type="button" class="keyboard-hide" value="hide" title="Hide keyboard">&dArr;</button>' +
+						'<button type="button" class="keyboard-eval" value="=" title="Evaluate expression">=</button>' +
+						'<button type="button" class="keyboard-delete" value="delete" title="Delete selection">&empty;</button>' +
+						'<button type="button" class="keyboard-expand" value="expand" title="Expand selection">&hArr;</button>' +
 						'<select class="keyboard-func">' +
 							'<option>Functions</option>' +
 							'<optgroup>' +
