@@ -324,12 +324,12 @@ Y.extend(MathCanvas, Y.Widget,
 			},
 			'button', this);
 
-			this.keyboard.one('.keyboard-func').on('click', function(e)
+			this.keyboard.one('.keyboard-func').on('change', function(e)
 			{
 				this.set('selectedIndex', 0);
 			});
 
-			this.keyboard.one('.keyboard-const').on('click', function(e)
+			this.keyboard.one('.keyboard-const').on('change', function(e)
 			{
 				this.set('selectedIndex', 0);
 			});
