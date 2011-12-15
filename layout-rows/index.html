@@ -1,0 +1,125 @@
+<?php
+/* THIS PAGE DEMOS PAGE LAYOUT MANAGER; DO NOT USE GRIDS FOR LAYOUT! */
+
+require('./inc/page.inc');
+
+my_header('Row-based Page Layout Widget');
+
+echo yt__js_manager::post_include_module('PageLayout');
+?>
+<script type="text/javascript">
+YAHOO.namespace('SATG.Test');
+</script>
+<div class="satg-content satg-content-v3" style="visibility:hidden;">
+	<div class="satg-module-row satg-bd">
+		<div class="satg-module">
+			<div class="satg-m-hd">
+				<p>I am a fixed module header</p>
+				<div id="test-vert-collapse" class="satg-layout-vert-collapse-nub">
+					<button>Collapse</button>
+				</div>
+				<div id="test-vert-expand" class="satg-layout-vert-expand-nub">
+					<button>Expand</button>
+				</div>
+			</div>
+			<div class="satg-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+		</div>
+	</div>
+	<div class="satg-module-row satg-bd">
+		<div class="satg-module width:25%">
+			<div class="satg-m-hd">
+				<p>I am a fixed module header</p>
+			</div>
+			<div class="satg-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+				<button id="fit-to-viewport">Fit-to-Viewport</button>
+				<button id="fit-to-content">Fit-to-Content</button>
+			</div>
+		</div>
+		<div class="satg-module">
+			<div class="satg-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+		</div>
+	</div>
+	<div class="satg-module-row satg-bd">
+		<div class="satg-module">
+			<div class="satg-m-hd">
+				<p>I am a fixed module header</p>
+				<div id="test-horiz-left-collapse" class="satg-layout-left-collapse-nub">
+					<button>Collapse</button>
+				</div>
+			</div>
+			<div class="satg-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+			<div class="satg-m-ft">
+				<p>I am a fixed module footer</p>
+			</div>
+			<div id="test-horiz-left-expand" class="satg-layout-left-expand-nub">
+				<button>Expand</button>
+			</div>
+		</div>
+		<div class="satg-module">
+			<div class="satg-m-hd">
+				<p>I am a fixed module header</p>
+			</div>
+			<div class="satg-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+			<div class="satg-m-ft">
+				<p>I am a fixed module footer</p>
+			</div>
+		</div>
+		<div class="satg-module">
+			<div class="satg-m-hd">
+				<p>I am a fixed module header</p>
+				<div id="test-horiz-right-collapse" class="satg-layout-right-collapse-nub">
+					<button>Collapse</button>
+				</div>
+			</div>
+			<div class="satg-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+			<div class="satg-m-ft">
+				<p>I am a fixed module footer</p>
+			</div>
+			<div id="test-horiz-right-expand" class="satg-layout-right-expand-nub">
+				<button>Expand</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+SATG(function(Y)
+{
+	var page_layout = new YAHOO.SATG.PageLayout();
+	page_layout._init();
+
+	page_layout._registerCollapseNub('test-vert-collapse');
+	page_layout._registerExpandNub('test-vert-expand');
+
+	page_layout._registerCollapseNub('test-horiz-left-collapse');
+	page_layout._registerExpandNub('test-horiz-left-expand');
+
+	page_layout._registerCollapseNub('test-horiz-right-collapse');
+	page_layout._registerExpandNub('test-horiz-right-expand');
+
+	Y.on('click', function()
+	{
+		page_layout.setMode(YAHOO.SATG.PageLayout.FIT_TO_VIEWPORT);
+	},
+	'#fit-to-viewport');
+
+	Y.on('click', function()
+	{
+		page_layout.setMode(YAHOO.SATG.PageLayout.FIT_TO_CONTENT);
+	},
+	'#fit-to-content');
+});
+</script>
+
+<?php my_footer(); ?>
