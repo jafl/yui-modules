@@ -769,8 +769,8 @@ Y.extend(QueryBuilder, Y.Widget,
 	_rowControls: function()
 	{
 		var markup =
-			'<span class="{ci}"></span>' +
-			'<span class="{cr}"></span>';
+			'<a href="#" class="{ci}"></a>' +
+			'<a href="#" class="{cr}"></a>';
 
 		if (!this._controls_markup)
 		{
