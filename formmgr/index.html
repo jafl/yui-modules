@@ -92,109 +92,6 @@
 </head>
 <body class="yui3-skin-sam">
 
-<script type="text/javascript">
-YUI({
-//	base: '../yui3/',
-//	filter: 'raw'
-}).use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function(Y)
-{
-	new Y.Console(
-	{
-		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
-	})
-	.render().collapse();
-
-	// create form
-
-	var f = new Y.FormManager('test_form',
-	{
-		status_node: '#form-status',
-		default_value_map:		// overrides values in markup
-		{
-			s1: 'abc',
-			b1: 1,
-			b2: 0
-		}
-	});
-
-	f.prepareForm();
-	f.initFocus();		// only do this for one form on a page
-
-	// validations
-
-	f.setErrorMessages('email',
-	{
-		required: 'Please tell us how to spam you.  (Just kidding!)',
-		regex:    'Please enter a valid email address.'
-	});
-	f.setRegex('email', /@.+\..+/);		// not trying very hard
-
-	f.setErrorMessages('zip',
-	{
-		regex: 'Please enter a valid US ZIP Code.'
-	});
-	f.setRegex('zip', /^[0-9]{5}(?:-[0-9]{4})?$/);
-
-	f.setFunction('pw', function(form)
-	{
-		if (form.pw.value != form.pw2.value)
-		{
-			f.displayMessage(form.pw, 'Your password entries did not match.', 'error');
-			f.displayMessage(form.pw2, '', 'error');
-			return false;
-		}
-
-		return true;
-	});
-
-	f.postValidateForm = function(form)
-	{
-		var count = 0;
-		Y.each([form.b1, form.b2, form.b3], function(b)
-		{
-			if (b.checked) count++;
-		});
-
-		if (count < 2)
-		{
-			f.displayMessage(form.b1, 'Please select at least two checkboxes.', 'warn');
-			return false;
-		}
-
-		return true;
-	};
-
-	// example actions
-
-	Y.on('click', function()
-	{
-		f.validateForm();
-	},
-	'#validate');
-
-	Y.on('click', function()
-	{
-		f.populateForm();	// default_value_map + values in markup
-	},
-	'#reset');
-
-	Y.on('click', function()
-	{
-		f.clearForm();		// values in markup
-	},
-	'#clear');
-
-	// example status display
-
-	var changed_status = Y.one('#changed-status');
-	Y.later(1000, f, function()
-	{
-		changed_status.set('innerHTML', this.isChanged() ? 'yes' : 'no');
-	},
-	null, true);
-});
-</script>
-
 <h1><a href="http://yuilibrary.com/gallery/show/formmgr">YUI 3 Form Manager</a> Example</h1>
 
 <p><a href="../yuidoc/module_gallery-formmgr.html">Show me the documentation</a></p>
@@ -333,6 +230,109 @@ YUI({
 	</fieldset>
 
 </form>
+
+<script type="text/javascript">
+YUI({
+//	base: '../yui3/',
+//	filter: 'raw'
+}).use('gallery-formmgr', 'console', 'console-filters', 'dd-plugin', function(Y)
+{
+	new Y.Console(
+	{
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
+	})
+	.render().collapse();
+
+	// create form
+
+	var f = new Y.FormManager('test_form',
+	{
+		status_node: '#form-status',
+		default_value_map:		// overrides values in markup
+		{
+			s1: 'abc',
+			b1: 1,
+			b2: 0
+		}
+	});
+
+	f.prepareForm();
+	f.initFocus();		// only do this for one form on a page
+
+	// validations
+
+	f.setErrorMessages('email',
+	{
+		required: 'Please tell us how to spam you.  (Just kidding!)',
+		regex:    'Please enter a valid email address.'
+	});
+	f.setRegex('email', /@.+\..+/);		// not trying very hard
+
+	f.setErrorMessages('zip',
+	{
+		regex: 'Please enter a valid US ZIP Code.'
+	});
+	f.setRegex('zip', /^[0-9]{5}(?:-[0-9]{4})?$/);
+
+	f.setFunction('pw', function(form)
+	{
+		if (form.pw.value != form.pw2.value)
+		{
+			f.displayMessage(form.pw, 'Your password entries did not match.', 'error');
+			f.displayMessage(form.pw2, '', 'error');
+			return false;
+		}
+
+		return true;
+	});
+
+	f.postValidateForm = function(form)
+	{
+		var count = 0;
+		Y.each([form.b1, form.b2, form.b3], function(b)
+		{
+			if (b.checked) count++;
+		});
+
+		if (count < 2)
+		{
+			f.displayMessage(form.b1, 'Please select at least two checkboxes.', 'warn');
+			return false;
+		}
+
+		return true;
+	};
+
+	// example actions
+
+	Y.on('click', function()
+	{
+		f.validateForm();
+	},
+	'#validate');
+
+	Y.on('click', function()
+	{
+		f.populateForm();	// default_value_map + values in markup
+	},
+	'#reset');
+
+	Y.on('click', function()
+	{
+		f.clearForm();		// values in markup
+	},
+	'#clear');
+
+	// example status display
+
+	var changed_status = Y.one('#changed-status');
+	Y.later(1000, f, function()
+	{
+		changed_status.set('innerHTML', this.isChanged() ? 'yes' : 'no');
+	},
+	null, true);
+});
+</script>
 
 </body>
 </html>

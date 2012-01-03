@@ -50,6 +50,86 @@
 </head>
 <body class="yui3-skin-sam">
 
+<h1><a href="http://yuilibrary.com/gallery/show/accordion-horiz-vert">YUI 3 Accordion</a> Examples</h1>
+
+<div id="controls">
+	<p>Controls</p>
+	<input type="checkbox" id="allow-multiple">
+	<label for="allow-multiple">Allow multiple open sections</label>
+	<br>
+	<input type="checkbox" id="allow-all-closed">
+	<label for="allow-all-closed">Allow all sections to be closed</label>
+	<br>
+	<input type="checkbox" id="animate-insert">
+	<label for="animate-insert">Animate insert/remove</label>
+	<br>
+	<input type="checkbox" id="animate-open">
+	<label for="animate-open">Animate open/close</label>
+	<br><br>
+	<input type="button" value="Insert a section" id="insert-section">
+	<input type="button" value="Append a section" id="append-section">
+	<br><br>
+	<p>Notes</p>
+	<ul>
+		<li><a href="/yui3-gallery/">Back to project list</a></li>
+		<li><a href="../yuidoc/module_gallery-accordion-horiz-vert.html">Click here</a> to see documentation.</li>
+		<li><a href="fixed_size.html">Click here</a> to see fixed height/width examples.</li>
+		<li><a href="variable_width.html">Click here</a> to see variable height/width examples.</li>
+		<li>For the horizontal accordion:
+			<ul>
+				<li>The accordion container requires <code>height</code></li>
+				<li>The titles require <code>width</code> and <code>height</code></li>
+				<li>The sections require <code>width</code></li>
+			</ul>
+		</li>
+		<li>FocusManager Node Plugin:<br>
+			Use the up/down arrow keys for vertical.<br>
+			Use the left/right arrow keys for horizontal.</li>
+	</ul>
+</div>
+
+<div id="accordions">
+	<h4>Vertical</h4>
+	<div id="accordion-test-vert-js" class="accordion-test-vert"></div>
+
+	<h4>Horizontal</h4>
+	<div id="accordion-test-horiz-js" class="accordion-test-horiz"></div>
+
+	<h4>Vertical (from markup)</h4>
+	<div id="accordion-test-vert-markup" class="accordion-test-vert"></div>
+	<ul id="accordion-test-vert-markup-content" class="yui3-widget-loading">
+		<li>
+			<div class="my-title-vert"><a href="javascript:void(0);">#1</a></div>
+			<div class="my-section-vert"><p>testing</p></div>
+		</li>
+		<li>
+			<div class="my-title-vert"><a href="javascript:void(0);">#2</a></div>
+			<div class="my-section-vert"><p>testing testing</p></div>
+		</li>
+		<li>
+			<div class="my-title-vert"><a href="javascript:void(0);">#3</a></div>
+			<div class="my-section-vert my-section-vert-constrained"><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p></div>
+		</li>
+	</ul>
+
+	<h4>Horizontal (from markup)</h4>
+	<div id="accordion-test-horiz-markup" class="accordion-test-horiz"></div>
+	<ul id="accordion-test-horiz-markup-content" class="yui3-widget-loading">
+		<li>
+			<div class="my-title-horiz"><a href="javascript:void(0);">#1</a></div>
+			<div class="my-section-horiz"><p>testing</p></div>
+		</li>
+		<li>
+			<div class="my-title-horiz"><a href="javascript:void(0);">#2</a></div>
+			<div class="my-section-horiz"><p>testing testing</p></div>
+		</li>
+		<li>
+			<div class="my-title-horiz"><a href="javascript:void(0);">#3</a></div>
+			<div class="my-section-horiz"><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p></div>
+		</li>
+	</ul>
+</div>
+
 <script type="text/javascript">
 YUI({
 //	base: '../yui3/',
@@ -337,86 +417,6 @@ function(Y)
 	'#append-section');
 });
 </script>
-
-<h1><a href="http://yuilibrary.com/gallery/show/accordion-horiz-vert">YUI 3 Accordion</a> Examples</h1>
-
-<div id="controls">
-	<p>Controls</p>
-	<input type="checkbox" id="allow-multiple">
-	<label for="allow-multiple">Allow multiple open sections</label>
-	<br>
-	<input type="checkbox" id="allow-all-closed">
-	<label for="allow-all-closed">Allow all sections to be closed</label>
-	<br>
-	<input type="checkbox" id="animate-insert">
-	<label for="animate-insert">Animate insert/remove</label>
-	<br>
-	<input type="checkbox" id="animate-open">
-	<label for="animate-open">Animate open/close</label>
-	<br><br>
-	<input type="button" value="Insert a section" id="insert-section">
-	<input type="button" value="Append a section" id="append-section">
-	<br><br>
-	<p>Notes</p>
-	<ul>
-		<li><a href="/yui3-gallery/">Back to project list</a></li>
-		<li><a href="../yuidoc/module_gallery-accordion-horiz-vert.html">Click here</a> to see documentation.</li>
-		<li><a href="fixed_size.html">Click here</a> to see fixed height/width examples.</li>
-		<li><a href="variable_width.html">Click here</a> to see variable height/width examples.</li>
-		<li>For the horizontal accordion:
-			<ul>
-				<li>The accordion container requires <code>height</code></li>
-				<li>The titles require <code>width</code> and <code>height</code></li>
-				<li>The sections require <code>width</code></li>
-			</ul>
-		</li>
-		<li>FocusManager Node Plugin:<br>
-			Use the up/down arrow keys for vertical.<br>
-			Use the left/right arrow keys for horizontal.</li>
-	</ul>
-</div>
-
-<div id="accordions">
-	<h4>Vertical</h4>
-	<div id="accordion-test-vert-js" class="accordion-test-vert"></div>
-
-	<h4>Horizontal</h4>
-	<div id="accordion-test-horiz-js" class="accordion-test-horiz"></div>
-
-	<h4>Vertical (from markup)</h4>
-	<div id="accordion-test-vert-markup" class="accordion-test-vert"></div>
-	<ul id="accordion-test-vert-markup-content" class="yui3-widget-loading">
-		<li>
-			<div class="my-title-vert"><a href="javascript:void(0);">#1</a></div>
-			<div class="my-section-vert"><p>testing</p></div>
-		</li>
-		<li>
-			<div class="my-title-vert"><a href="javascript:void(0);">#2</a></div>
-			<div class="my-section-vert"><p>testing testing</p></div>
-		</li>
-		<li>
-			<div class="my-title-vert"><a href="javascript:void(0);">#3</a></div>
-			<div class="my-section-vert my-section-vert-constrained"><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p></div>
-		</li>
-	</ul>
-
-	<h4>Horizontal (from markup)</h4>
-	<div id="accordion-test-horiz-markup" class="accordion-test-horiz"></div>
-	<ul id="accordion-test-horiz-markup-content" class="yui3-widget-loading">
-		<li>
-			<div class="my-title-horiz"><a href="javascript:void(0);">#1</a></div>
-			<div class="my-section-horiz"><p>testing</p></div>
-		</li>
-		<li>
-			<div class="my-title-horiz"><a href="javascript:void(0);">#2</a></div>
-			<div class="my-section-horiz"><p>testing testing</p></div>
-		</li>
-		<li>
-			<div class="my-title-horiz"><a href="javascript:void(0);">#3</a></div>
-			<div class="my-section-horiz"><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p></div>
-		</li>
-	</ul>
-</div>
 
 </body>
 </html>

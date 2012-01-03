@@ -72,26 +72,6 @@
 </head>
 <body>
 
-<script type="text/javascript">
-YUI({
-//	base: '../yui3/',
-//	filter: 'debug'
-}).use('gallery-scrollintoview', function(Y)
-{
-	var target = Y.one('#target');
-
-	Y.one('#default').on('click', function()
-	{
-		Y.Node.getDOMNode(target).scrollIntoView(false);
-	});
-
-	Y.one('#custom').on('click', function()
-	{
-		target.scrollIntoView();
-	});
-});
-</script>
-
 <h1><a href="http://yuilibrary.com/gallery/show/scrollintoview">YUI 3 ScrollIntoView</a> Example</h1>
 
 <p class="buttons">
@@ -296,6 +276,26 @@ YUI({
 </div>
 </div>
 </div>
+
+<script type="text/javascript">
+YUI({
+//	base: '../yui3/',
+//	filter: 'debug'
+}).use('gallery-scrollintoview', function(Y)
+{
+	var target = Y.one('#target');
+
+	Y.one('#default').on('click', function()
+	{
+		Y.Node.getDOMNode(target).scrollIntoView(false);
+	});
+
+	Y.one('#custom').on('click', function()
+	{
+		target.scrollIntoView();
+	});
+});
+</script>
 
 </body>
 </html>

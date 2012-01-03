@@ -6,14 +6,14 @@
 
 	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/reset-min.css">
-<!--
+
 	<script src="gallery-querybuilder-debug.js"></script>
 	<script src="gallery-formmgr-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
 	<script src="gallery-node-optimizations-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.4.1/build/widget-base/assets/skins/sam/widget-base.css&3.4.1/build/autocomplete-list/assets/skins/sam/autocomplete-list.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-querybuilder.css" />
--->
+
 	<style type="text/css">
 	#query
 	{
@@ -40,11 +40,25 @@
 </head>
 <body class="yui3-skin-sam">
 
+<h1><a href="http://yuilibrary.com/gallery/show/querybuilder">YUI 3 QueryBuilder</a> Example</h1>
+
+<form name="query_form">
+	<div id="query"></div>
+</form>
+
+<div id="controls">
+	<button id="validate">Validate</button>
+</div>
+
+<p class="plug">For a more general way to build an expression, see <a href="http://yuilibrary.com/gallery/show/exprbuilder">Expression Builder</a>.
+
+<p><a href="index.html">Show me an example using DataTable</a></p>
+<p><a href="../yuidoc/module_gallery-querybuilder.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
 <script type="text/javascript">
 YUI({
-//	base: '../yui3/',
-//	filter: 'debug',
-//	combine: false,
+//	filter: 'debug', combine: false,
 	gallery: 'gallery-2011.10.27-17-03'
 }).use(
 	'gallery-querybuilder',
@@ -168,22 +182,6 @@ function(Y)
 	Y.on('click', query.validateFields, '#validate', query);
 });
 </script>
-
-<h1><a href="http://yuilibrary.com/gallery/show/querybuilder">YUI 3 QueryBuilder</a> Example</h1>
-
-<form name="query_form">
-	<div id="query"></div>
-</form>
-
-<div id="controls">
-	<button id="validate">Validate</button>
-</div>
-
-<p class="plug">For a more general way to build an expression, see <a href="http://yuilibrary.com/gallery/show/exprbuilder">Expression Builder</a>.
-
-<p><a href="index.html">Show me an example using DataTable</a></p>
-<p><a href="../yuidoc/module_gallery-querybuilder.html">Show me the documentation</a></p>
-<p><a href="/yui3-gallery/">Back to project list</a></p>
 
 </body>
 </html>

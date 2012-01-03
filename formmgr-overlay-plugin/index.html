@@ -111,6 +111,51 @@
 </head>
 <body class="yui3-skin-sam">
 
+<h1><a href="http://yuilibrary.com/gallery/show/formmgr">YUI 3 Form Manager</a> Overlay Plugin Example</h1>
+
+<p><button id="show">Show the overlay</button></p>
+<p><a href="../yuidoc/module_gallery-formmgr-overlay-plugin.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<div id="my-overlay" class="yui3-overlay-loading">
+	<div class="yui3-widget-hd">
+		<p id="form-status"></p>
+	</div>
+	<div class="yui3-widget-bd">
+		<form>
+			<fieldset id="info">
+				<div class="formmgr-row">
+					<label for="email">Email (required)</label>
+					<p class="formmgr-message-text"></p>
+					<input type="text" id="email" name="email" class="formmgr-field yiv-required">
+				</div>
+				<div class="formmgr-row">
+					<label for="pw">Password (not required, 6-10 characters)</label>
+					<p class="formmgr-message-text"></p>
+					<input type="password" id="pw" name="pw" class="formmgr-field yiv-length:[6,10]">
+				</div>
+				<div class="formmgr-row">
+					<label for="pw2">Confirm password</label>
+					<p class="formmgr-message-text"></p>
+					<input type="password" id="pw2" name="pw2" class="formmgr-field">
+				</div>
+				<div class="formmgr-row">
+					<label for="zip">United States ZIP Code</label>
+					<p class="formmgr-message-text"></p>
+					<input type="text" id="zip" name="zip" class="formmgr-field yiv-required">
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<div class="yui3-widget-ft">
+		<button id="validate">Validate</button>
+		<button id="clear">Clear</button>
+		<button id="hide">Hide</button>
+		<br>
+		<span class="changed-status">Data is changed: <span id="changed-status"></span></span>
+	</div>
+</div>
+
 <script type="text/javascript">
 YUI({
 //	base: '../yui3/',
@@ -184,51 +229,6 @@ YUI({
 	null, true);
 });
 </script>
-
-<h1><a href="http://yuilibrary.com/gallery/show/formmgr">YUI 3 Form Manager</a> Overlay Plugin Example</h1>
-
-<p><button id="show">Show the overlay</button></p>
-<p><a href="../yuidoc/module_gallery-formmgr-overlay-plugin.html">Show me the documentation</a></p>
-<p><a href="/yui3-gallery/">Back to project list</a></p>
-
-<div id="my-overlay" class="yui3-overlay-loading">
-	<div class="yui3-widget-hd">
-		<p id="form-status"></p>
-	</div>
-	<div class="yui3-widget-bd">
-		<form>
-			<fieldset id="info">
-				<div class="formmgr-row">
-					<label for="email">Email (required)</label>
-					<p class="formmgr-message-text"></p>
-					<input type="text" id="email" name="email" class="formmgr-field yiv-required">
-				</div>
-				<div class="formmgr-row">
-					<label for="pw">Password (not required, 6-10 characters)</label>
-					<p class="formmgr-message-text"></p>
-					<input type="password" id="pw" name="pw" class="formmgr-field yiv-length:[6,10]">
-				</div>
-				<div class="formmgr-row">
-					<label for="pw2">Confirm password</label>
-					<p class="formmgr-message-text"></p>
-					<input type="password" id="pw2" name="pw2" class="formmgr-field">
-				</div>
-				<div class="formmgr-row">
-					<label for="zip">United States ZIP Code</label>
-					<p class="formmgr-message-text"></p>
-					<input type="text" id="zip" name="zip" class="formmgr-field yiv-required">
-				</div>
-			</fieldset>
-		</form>
-	</div>
-	<div class="yui3-widget-ft">
-		<button id="validate">Validate</button>
-		<button id="clear">Clear</button>
-		<button id="hide">Hide</button>
-		<br>
-		<span class="changed-status">Data is changed: <span id="changed-status"></span></span>
-	</div>
-</div>
 
 </body>
 </html>
