@@ -108,19 +108,16 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 
 	toString: function()
 	{
-		var s = '';
-		Y.Array.each(this.args, function(arg, index)
+		return Y.Array.reduce(this.args, '', function(s, arg, index)
 		{
 			if (index > 0)
 			{
 				s += '*';
 			}
 
-			s += this._printArg(index);
+			return s + this._printArg(index);
 		},
 		this);
-
-		return s;
 	}
 });
 

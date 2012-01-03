@@ -140,8 +140,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 
 	toString: function()
 	{
-		var s = '';
-		Y.Array.each(this.args, function(arg, index)
+		return Y.Array.reduce(this.args, '', function(s, arg, index)
 		{
 			if (arg instanceof MathNegate)
 			{
@@ -153,11 +152,9 @@ Y.extend(MathSum, MathFunctionWithArgs,
 				s += '+';
 			}
 
-			s += this._printArg(arg);
+			return s + this._printArg(arg);
 		},
 		this);
-
-		return s;
 	}
 });
 

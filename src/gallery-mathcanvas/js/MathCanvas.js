@@ -162,12 +162,11 @@ Y.extend(MathCanvas, Y.Widget,
 
 		// input (for mobile)
 
-		function buttonRow(map)
+		function buttonRow(list)
 		{
-			var s = '';
-			Y.Array.each(map, function(obj)
+			var s = Y.Array.reduce(list, '', function(s, obj)
 			{
-				s += Y.Lang.sub('<button type="button" class="keyboard-{value}" value="{value}">{label}</button>',
+				return s + Y.Lang.sub('<button type="button" class="keyboard-{value}" value="{value}">{label}</button>',
 				{
 					value: obj.value || obj,
 					label: obj.label || obj

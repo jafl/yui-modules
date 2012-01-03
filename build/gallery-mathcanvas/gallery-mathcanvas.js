@@ -711,13 +711,10 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	evaluateArgs: function(
 		/* map */	var_list)
 	{
-		var v = [];
-		Y.Array.each(this.args, function(arg)
+		return Y.Array.map(this.args, function(arg)
 		{
-			v.push(arg.evaluate(var_list));
+			return arg.evaluate(var_list);
 		});
-
-		return v;
 	},
 
 	prepareToRender: function(
@@ -1082,8 +1079,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 
 	toString: function()
 	{
-		var s = '';
-		Y.Array.each(this.args, function(arg, index)
+		return Y.Array.reduce(this.args, '', function(s, arg, index)
 		{
 			if (arg instanceof MathNegate)
 			{
@@ -1095,11 +1091,9 @@ Y.extend(MathSum, MathFunctionWithArgs,
 				s += '+';
 			}
 
-			s += this._printArg(arg);
+			return s + this._printArg(arg);
 		},
 		this);
-
-		return s;
 	}
 });
 
@@ -1214,19 +1208,16 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 
 	toString: function()
 	{
-		var s = '';
-		Y.Array.each(this.args, function(arg, index)
+		return Y.Array.reduce(this.args, '', function(s, arg, index)
 		{
 			if (index > 0)
 			{
 				s += '*';
 			}
 
-			s += this._printArg(index);
+			return s + this._printArg(index);
 		},
 		this);
-
-		return s;
 	}
 });
 
@@ -2950,12 +2941,11 @@ Y.extend(MathCanvas, Y.Widget,
 
 		// input (for mobile)
 
-		function buttonRow(map)
+		function buttonRow(list)
 		{
-			var s = '';
-			Y.Array.each(map, function(obj)
+			var s = Y.Array.reduce(list, '', function(s, obj)
 			{
-				s += Y.Lang.sub('<button type="button" class="keyboard-{value}" value="{value}">{label}</button>',
+				return s + Y.Lang.sub('<button type="button" class="keyboard-{value}" value="{value}">{label}</button>',
 				{
 					value: obj.value || obj,
 					label: obj.label || obj
@@ -3468,4 +3458,4 @@ Y.MathCanvas.Parser   = MathParser;
  */
 
 
-}, '@VERSION@' ,{skinnable:true, requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas','gallery-node-optimizations','anim-base']});
+}, '@VERSION@' ,{skinnable:true, requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas','gallery-node-optimizations','anim-base','array-extras']});

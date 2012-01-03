@@ -108,13 +108,10 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	evaluateArgs: function(
 		/* map */	var_list)
 	{
-		var v = [];
-		Y.Array.each(this.args, function(arg)
+		return Y.Array.map(this.args, function(arg)
 		{
-			v.push(arg.evaluate(var_list));
+			return arg.evaluate(var_list);
 		});
-
-		return v;
 	},
 
 	prepareToRender: function(
