@@ -11,8 +11,7 @@
 var Dom = YAHOO.util.Dom,
 	SDom = YAHOO.SATG.Dom,
 	Event = YAHOO.util.Event,
-	CustomEvent = YAHOO.util.CustomEvent,
-	Prof = YAHOO.tool.Profiler;
+	CustomEvent = YAHOO.util.CustomEvent;
 
 YAHOO.SATG.PageLayout = function()
 {
@@ -24,7 +23,6 @@ var PageLayout = YAHOO.SATG.PageLayout,
 	the_init_flag          = false,
 	the_sticky_footer_flag = false,
 
-	the_max_search_depth = 5,
 	reflow_delay = 100,
 
 	the_header_container = null,
@@ -94,7 +92,6 @@ PageLayout.prototype =
 
 	has_no_recalc_auto_bug:    (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
 	has_explosive_modules_bug: (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
-	is_borked_browser:         false,//(7 <= YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
 	is_borked_dom_access:      (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
 
 	onBeforeResizeModule: new CustomEvent('beforeResizeModule'),
@@ -314,27 +311,27 @@ PageLayout.prototype =
 	sectionIsCollapsed: function(
 		/* string */	id)
 	{
-		var e = Dom.get(id);
-		if (SDom.getFirstElementByClassName(e, this.expand_vert_nub_class, the_max_search_depth))
+		var e = Y.one('#'+id);
+		if (e.one('.'+this.expand_vert_nub_class))
 		{
-			var collapsed = Dom.hasClass(e.parentNode, this.collapsed_any_regex);
+			var collapsed = e.get('parentNode').hasClass(this.collapsed_any_regex);
 		}
 		else
 		{
-			var collapsed = Dom.hasClass(e, this.collapsed_any_regex);
+			var collapsed = e.hasClass(this.collapsed_any_regex);
 		}
 
 		return collapsed;
 	},
 
 	expandSection: function(
-		/* string/object */	id)
+		/* string */	id)
 	{
-		var e   = Dom.get(id);
-		var nub = SDom.getFirstElementByClassName(e, this.expand_vert_nub_class, the_max_search_depth);
+		var e   = Y.one('#'+id);
+		var nub = e.one('.'+this.expand_vert_nub_class);
 		if (!nub)
 		{
-			nub = SDom.getFirstElementByClassName(e, this.expand_horiz_nub_regex, the_max_search_depth);
+			nub = e.one('.'+this.expand_horiz_nub_regex);
 		}
 
 		if (nub)
@@ -344,13 +341,13 @@ PageLayout.prototype =
 	},
 
 	collapseSection: function(
-		/* string/object */	id)
+		/* string */	id)
 	{
-		var e   = Dom.get(id);
-		var nub = SDom.getFirstElementByClassName(e, this.collapse_vert_nub_class, the_max_search_depth);
+		var e   = Y.one('#'+id);
+		var nub = e.one(this.collapse_vert_nub_class);
 		if (!nub)
 		{
-			nub = SDom.getFirstElementByClassName(e, this.collapse_horiz_nub_regex, the_max_search_depth);
+			nub = e.one(this.collapse_horiz_nub_regex);
 		}
 
 		if (nub)
@@ -379,14 +376,11 @@ PageLayout.prototype =
 	elementResized: function(
 		/* string/object */	el)
 	{
-		if (el._node)	// allow Y.Node
-		{
-			el = el._node;
-		}
+		el = Y.one(el);
 
-		if (Dom.isAncestor(the_header_container, el) ||
-			Dom.isAncestor(the_body_container,   el) ||
-			Dom.isAncestor(the_footer_container, el))
+		if (the_header_container.contains(el) ||
+			the_body_container.contains(el) ||
+			the_footer_container.contains(el))
 		{
 			if (this.refresh_timer != null)
 			{
@@ -394,7 +388,7 @@ PageLayout.prototype =
 			}
 
 			var t1 = (new Date()).getTime();
-			this.refresh_timer = YAHOO.lang.later(reflow_delay, this, function()
+			this.refresh_timer = Y.later(reflow_delay, this, function()
 			{
 				this.refresh_timer = null;
 
@@ -403,14 +397,12 @@ PageLayout.prototype =
 				var t2 = (new Date()).getTime();
 				if (t2 > t1 + 2*reflow_delay)
 				{
-					YAHOO.SATG.Debug.alert('deferred reflow: ' + (t2-t1));
+					Y.log('deferred reflow: ' + (t2-t1), 'info', 'layout-rows');
 					this.elementResized(el);
 					return;
 				}
 
-				this.need_borked_browser_hack = true;
 				this.getResizeEvent().fire();
-				this.need_borked_browser_hack = false;
 			});
 
 			return true;
@@ -429,7 +421,6 @@ PageLayout.prototype =
 	_init: function(
 		/* array */	page_blocks)
 	{
-		Prof.startBlock("SATG.PageLayout._init");
 		if (!the_mode)
 		{
 			the_mode = PageLayout.FIT_TO_VIEWPORT;
@@ -437,27 +428,25 @@ PageLayout.prototype =
 
 		if (!page_blocks)
 		{
-			page_blocks = Dom.getElementsByClassName(this.page_block_re, 'div');
+			page_blocks = Y.one('body').getElementsByClassName(this.page_block_re, 'div');
 		}
 
-		var list = SDom.filterByClassName(page_blocks, this.page_header_marker_class);
-		if (list.length > 1)
+		var list = page_blocks.filter('.'+this.page_header_marker_class);
+		if (list.size() > 1)
 		{
-			Prof.endBlock();
 			throw Error('There must be at most one div with class ' + this.page_header_marker_class);
 		}
-		the_header_container = (list.length ? list[0] : null);
+		the_header_container = (list.isEmpty() ? null : list.item(0));
 
-		list = SDom.filterByClassName(page_blocks, this.page_content_marker_class);
-		if (list.length != 1)
+		list = page_blocks.filter('.'+this.page_content_marker_class);
+		if (list.size() != 1)
 		{
-			Prof.endBlock();
 			throw Error('There must be exactly one div with class ' + this.page_content_marker_class);
 		}
-		the_body_container = list[0];
+		the_body_container = list.item(0);
 
-		the_body_horiz_mbp = SDom.horizMarginBorderPadding(the_body_container);
-		the_body_vert_mbp  = SDom.vertMarginBorderPadding(the_body_container);
+		the_body_horiz_mbp = the_body_container.horizMarginBorderPadding();
+		the_body_vert_mbp  = the_body_container.vertMarginBorderPadding();
 
 		var m = the_body_container.className.match(this.mode_regex);
 		if (m && m.length)
@@ -465,25 +454,24 @@ PageLayout.prototype =
 			the_mode = PageLayout[ m[0] ];
 		}
 
-		list = SDom.filterByClassName(page_blocks, this.page_footer_marker_class);
-		if (list.length > 1)
+		list = page_blocks.filter('.'+this.page_footer_marker_class);
+		if (list.size() > 1)
 		{
-			Prof.endBlock();
 			throw Error('There must be at most one div with class ' + this.page_footer_marker_class);
 		}
-		the_footer_container = (list.length ? list[0] : null);
+		the_footer_container = (list.isEmpty() ? null : list.item(0));
 
 		updateFitClass.call(this);
 		reparentFooter.call(this);
 		this._rescanBody();
 
-		Event.on(window, 'resize', resize, null, this);
+		var w = Y.one(Y.config.win);
+		w.on('resize', resize, this);
 		SDom.textResizeEvent.subscribe(resize, null, this);
 
-		Event.on(window, 'load', resize, null, this);	// after images load
+		w.on('load', resize, this);		// after images load
 
 		the_init_flag = true;
-		Prof.endBlock();
 	},
 
 	/**********************************************************************
@@ -493,12 +481,10 @@ PageLayout.prototype =
 	_rescanBody: function(
 		/* bool */	rescan_sizes)
 	{
-		Prof.startBlock("SATG.PageLayout._rescanBody");
-
 		var saved_row_heights = the_body_rows.row_heights;
 		var saved_col_widths  = the_body_rows.col_widths;
 
-		the_body_rows.rows        = Dom.getElementsByClassName(this.body_row_class, 'div', the_body_container);
+		the_body_rows.rows        = the_body_container.all('div.' + this.body_row_class);
 		the_body_rows.modules     = [];
 		the_body_rows.row_heights = [];
 		the_body_rows.col_widths  = [];
@@ -507,16 +493,15 @@ PageLayout.prototype =
 		for (var i=0; i<row_count; i++)
 		{
 			var row = the_body_rows.rows[i];
-			Dom.generateId(row, this.body_row_class+'-');
+			row.generateId();
 			the_body_rows.row_heights.push(100.0/row_count);
 
-			var list = Dom.getElementsByClassName(this.module_class, 'div', row);
-			if (list.length == 0)
+			var list = row.all('div.' + this.module_class);
+			if (list.isEmpty())
 			{
 				the_body_rows.rows        = [];
 				the_body_rows.modules     = [];
 				the_body_rows.row_heights = [];
-				Prof.endBlock();
 				throw Error('There must be at least one ' + this.module_class + ' inside ' + this.body_row_class + '.');
 			}
 
@@ -572,7 +557,7 @@ PageLayout.prototype =
 */
 			// restore saved widths, if possible
 
-			if (!rescan_sizes && saved_col_widths[i] && saved_col_widths[i].length == list.length)
+			if (!rescan_sizes && saved_col_widths[i] && saved_col_widths[i].length == list.size())
 			{
 				the_body_rows.col_widths.push(saved_col_widths[i]);
 			}
@@ -596,8 +581,6 @@ PageLayout.prototype =
 		}
 
 		resize.call(this);
-
-		Prof.endBlock();
 	},
 
 	/**********************************************************************
@@ -613,7 +596,7 @@ PageLayout.prototype =
 		if (children.bd)
 		{
 			var h1 = _adjustHeight.call(this, h, children);
-			Dom.setStyle(children.bd, 'height', h1+'px');
+			children.bd.setStyle('height', h1+'px');
 		}
 	},
 
@@ -640,8 +623,8 @@ PageLayout.prototype =
 
 		if (children.bd)
 		{
-			Dom.setStyle(children.bd, 'height', 'auto');
-			this.onBeforeResizeModule.fire(children.bd, 'auto', SDom.insideWidth(children.bd));
+			children.bd.setStyle('height', 'auto');
+			this.onBeforeResizeModule.fire(children.bd, 'auto', children.bd.insideWidth());
 		}
 	},
 
@@ -652,8 +635,8 @@ PageLayout.prototype =
 	_notifyModuleSizeChanged: function(
 		/* string/object */	module_bd)
 	{
-		var h = SDom.insideHeight(module_bd);
-		var w = SDom.insideWidth(module_bd);
+		var h = module_bd.insideHeight();
+		var w = module_bd.insideWidth();
 
 		this.onBeforeResizeModule.fire(module_bd, h, w);
 		this.onAfterResizeModule.fire(module_bd, h, w);
@@ -666,7 +649,6 @@ PageLayout.prototype =
 	_analyzeModule: function(
 		/* node */	root)
 	{
-		Prof.startBlock("SATG.PageLayout._analyzeModule");
 		var result =
 		{
 			root: root,
@@ -677,19 +659,18 @@ PageLayout.prototype =
 
 		// two step process avoid scanning into the module body
 
-		var bd = SDom.getFirstElementByClassName(root, this.module_body_class, the_max_search_depth);
+		var bd = root.one('.'+this.module_body_class);
 		if (!bd)
 		{
-			Prof.endBlock();
 			return result;
 		}
 
-		var list = SDom.getSiblingsByClassName(bd, this.module_body_class);
+		var list = bd.siblings().filter('.'+this.module_body_class);
 		list.push(bd);
-		for (var i=0; i<list.length; i++)
+		for (var i=0; i<list.size(); i++)
 		{
-			if (!Dom.hasClass(list[i], SDom.hide_class) &&
-				!Dom.hasClass(list[i], SDom.force_hide_class))
+			if (!list.item(i).hasClass(SDom.hide_class) &&
+				!list.item(i).hasClass(SDom.force_hide_class))
 			{
 				result.bd = list[i];
 				break;
@@ -698,33 +679,9 @@ PageLayout.prototype =
 
 		if (result.bd)
 		{
-			result.hd = SDom.getFirstSiblingByClassName(result.bd, this.module_header_class);
-			result.ft = SDom.getFirstSiblingByClassName(result.bd, this.module_footer_class);
+			result.hd = result.bd.siblings().filter('.'+this.module_header_class);
+			result.ft = result.bd.siblings().filter('.'+this.module_footer_class);
 		}
-
-		Prof.endBlock();
-		return result;
-	},
-
-	/**********************************************************************
-	 * Returns an opaque array of settings.
-	 */
-
-	_getSettings: function()
-	{
-		if (the_resize_event)
-		{
-			the_resize_event.unsubscribe(resize);
-		}
-
-		var result =
-		[
-			the_mode,
-			the_sticky_footer_flag,
-			the_min_page_height,
-			the_min_page_width,
-			the_resize_event
-		];
 
 		return result;
 	}
@@ -732,7 +689,7 @@ PageLayout.prototype =
 
 function updateFitClass()
 {
-	Dom.replaceClass(the_body_container, /(^|\s)FIT_TO_(VIEWPORT|CONTENT)(\s|$)/,
+	the_body_container.replaceClass(/(^|\s)FIT_TO_(VIEWPORT|CONTENT)(\s|$)/,
 		the_mode == PageLayout.FIT_TO_VIEWPORT ? 'FIT_TO_VIEWPORT' : 'FIT_TO_CONTENT');
 };
 
@@ -745,7 +702,7 @@ function reparentFooter()
 
 	if (the_mode == PageLayout.FIT_TO_VIEWPORT || the_sticky_footer_flag)
 	{
-		the_body_container.parentNode.insertBefore(the_footer_container, Dom.getNextSiblingBy(the_body_container, function(node)
+		the_body_container.('parentNode').insertBefore(the_footer_container, Dom.getNextSiblingBy(the_body_container, function(node)
 		{
 			return node.tagName.toLowerCase() != 'script';
 		}));
@@ -834,10 +791,8 @@ PageLayout._collapseSection = function(
 
 function resize()
 {
-	Prof.startBlock("SATG.PageLayout.resize");
 	if (!the_body_container)
 	{
-		Prof.endBlock();
 		return;
 	}
 
@@ -857,7 +812,6 @@ function resize()
 		(viewport.w === the_body_rows.viewport.w &&
 		 viewport.h === the_body_rows.viewport.h))
 	{
-		Prof.endBlock();
 		return;
 	}
 
@@ -865,13 +819,7 @@ function resize()
 
 	SDom.hideFloaters();	// after confirming that viewport really has changed
 
-	var min_width = the_min_page_width * SDom.getEmToPx();
-	if (this.is_borked_browser && this.need_borked_browser_hack)
-	{
-		the_body_rows.viewport.w -= 5;
-		min_width                -= 5;
-	}
-
+	var min_width  = the_min_page_width * SDom.getEmToPx();
 	var body_width = Math.max(the_body_rows.viewport.w, min_width);
 	Dom.setStyle(the_header_container, 'width', body_width+'px');
 	Dom.setStyle(the_body_container,   'width', (body_width - the_body_horiz_mbp)+'px');
@@ -1210,7 +1158,6 @@ function resize()
 	Dom.setStyle(the_body_container, 'visibility', 'visible');
 
 	YAHOO.lang.later(100, this, checkViewportSize);
-	Prof.endBlock();
 };
 
 function checkViewportSize()
@@ -1231,7 +1178,6 @@ function _adjustHeight(
 	/* int */		total_height,
 	/* object */	children)
 {
-	Prof.startBlock("_adjustHeight");
 	var h = total_height;
 
 	if (this.is_borked_dom_access)
@@ -1256,7 +1202,6 @@ function _adjustHeight(
 
 	h -= SDom.vertMarginBorderPadding(children.bd);
 
-	Prof.endBlock();
 	return Math.max(h, PageLayout.min_module_height);
 };
 
