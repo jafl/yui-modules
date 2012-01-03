@@ -56,6 +56,7 @@ YUI({
 	'gallery-querybuilder',
 	'gallery-formmgr',
 	'gallery-paginator',
+	'array-extras',
 function(Y)
 {
 	function generateRequest()
@@ -189,15 +190,15 @@ function(Y)
 		{
 			contains: function(value, filter)
 			{
-				return (value.indexOf(filter) >= 0);
+				return (value.toLowerCase().indexOf(filter.toLowerCase()) >= 0);
 			},
 			'starts-with': function(value, filter)
 			{
-				return (value.substr(0, filter.length) == filter);
+				return (value.toLowerCase().substr(0, filter.length) == filter.toLowerCase());
 			},
 			'ends-with': function(value, filter)
 			{
-				return (value.substr(-filter.length) == filter);
+				return (value.toLowerCase().substr(-filter.length) == filter.toLowerCase());
 			}
 		},
 
@@ -244,16 +245,10 @@ function(Y)
 		var val  = filter[2];
 		var type = var_type[key];
 
-		var filtered = [];
-		Y.each(data, function(v)
+		return Y.Array.filter(data, function(v)
 		{
-			if (filters[type][op](v[key], val))
-			{
-				filtered.push(v);
-			}
+			return filters[type][op](v[key], val);
 		});
-
-		return filtered;
 	}
 
 // Data Source
