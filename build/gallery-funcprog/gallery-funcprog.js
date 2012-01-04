@@ -66,14 +66,13 @@ Y.mix(Y,
 	 * returned a truthy value.  The function receives the value, the key,
 	 * and the object itself as parameters (in that order).
 	 *
-	 * By default, only properties owned by _obj_ are enumerated. To include
-	 * prototype properties, set the _proto_ parameter to `true`.
+	 * Supports arrays, objects, and NodeLists.
 	 *
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @param proto {Boolean} include prototype properties
-	 * @return {Object} object of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)
+	 * @param proto {Boolean} if true, prototype properties are iterated on objects
+	 * @return {Object} array or object of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)
 	 * @static
 	 */
 	filter: function(o, f, c, proto)
@@ -87,13 +86,12 @@ Y.mix(Y,
 	 * receives the value, the key, and the object itself as parameters (in
 	 * that order).
 	 *
-	 * By default, only properties owned by _obj_ are enumerated. To include
-	 * prototype properties, set the _proto_ parameter to `true`.
+	 * Supports arrays, objects, and NodeLists.
 	 *
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @param proto {Boolean} include prototype properties
+	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Mixed} the first item for which the supplied function returns `true`, or `null` if it never returns `true`
 	 * @static
 	 */
@@ -107,14 +105,13 @@ Y.mix(Y,
 	 * returns a new object with the results.  The function receives the
 	 * value, the key, and the object itself as parameters (in that order).
 	 *
-	 * By default, only properties owned by _obj_ are enumerated. To include
-	 * prototype properties, set the _proto_ parameter to `true`.
+	 * Supports arrays, objects, and NodeLists.
 	 *
 	 * @param o {Object} the object to iterate
 	 * @param f {String} the function to invoke
 	 * @param c {Object} optional context object
-	 * @param proto {Boolean} include prototype properties
-	 * @return {Object} all return values, mapped according to the item key
+	 * @param proto {Boolean} if true, prototype properties are iterated on objects
+	 * @return {Object} array or object of all return values, mapped according to the item key
 	 * @static
 	 */
 	map: function(o, f, c, proto)
@@ -128,14 +125,13 @@ Y.mix(Y,
 	 * for which the function returns `false`.  The function receives the
 	 * value, the key, and the object itself as parameters (in that order).
 	 *
-	 * By default, only properties owned by _obj_ are enumerated. To include
-	 * prototype properties, set the _proto_ parameter to `true`.
+	 * Supports arrays, objects, and NodeLists.
 	 *
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @param proto {Boolean} include prototype properties
-	 * @return {Object} object with two properties: `matches` and `rejects`. Each is an object containing the items that were selected or rejected by the test function (or an empty object if none).
+	 * @param proto {Boolean} if true, prototype properties are iterated on objects
+	 * @return {Object} object with two properties: `matches` and `rejects`. Each is an array or object containing the items that were selected or rejected by the test function (or an empty object if none).
 	 * @static
 	 */
 	partition: function(o, f, c, proto)
@@ -150,14 +146,13 @@ Y.mix(Y,
 	 * the first iteration), the value being iterated, the key, and the
 	 * object itself as parameters (in that order).
 	 *
-	 * By default, only properties owned by _obj_ are enumerated. To include
-	 * prototype properties, set the _proto_ parameter to `true`.
+	 * Supports arrays, objects, and NodeLists.
 	 *
 	 * @param o {Object} the object to iterate
 	 * @param init {Mixed} the initial value
 	 * @param f {String} the function to invoke
 	 * @param c {Object} optional context object
-	 * @param proto {Boolean} include prototype properties
+	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Mixed} final result from iteratively applying the given function to each item in the object
 	 * @static
 	 */
@@ -172,14 +167,13 @@ Y.mix(Y,
 	 * returned a falsey value.  The function receives the value, the key,
 	 * and the object itself as parameters (in that order).
 	 *
-	 * By default, only properties owned by _obj_ are enumerated. To include
-	 * prototype properties, set the _proto_ parameter to `true`.
+	 * Supports arrays, objects, and NodeLists.
 	 *
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @param proto {Boolean} include prototype properties
-	 * @return {Object} object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)
+	 * @param proto {Boolean} if true, prototype properties are iterated on objects
+	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)
 	 * @static
 	 */
 	reject: function(o, f, c, proto)
@@ -189,4 +183,4 @@ Y.mix(Y,
 });
 
 
-}, '@VERSION@' ,{requires:['gallery-object-extras','gallery-nodelist-extras2']});
+}, '@VERSION@' ,{requires:['array-extras','gallery-object-extras','gallery-nodelist-extras2']});
