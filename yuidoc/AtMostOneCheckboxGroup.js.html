@@ -47,45 +47,45 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * At most one checkbox can be selected.  If one is turned on, the active</span>
-<span class="c"> * one is turned off.</span>
-<span class="c"> * </span>
-<span class="c"> * @class AtMostOneCheckboxGroup</span>
-<span class="c"> * @extends CheckboxGroup</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param cb_list {String|Node|NodeList} The list of checkboxes to manage</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * At most one checkbox can be selected.  If one is turned on, the active</span>
+<span class="cm"> * one is turned off.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @class AtMostOneCheckboxGroup</span>
+<span class="cm"> * @extends CheckboxGroup</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param cb_list {String|Node|NodeList} The list of checkboxes to manage</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">AtMostOneCheckboxGroup</span><span class="p">(</span>
-	<span class="c">/* string/Node/NodeList */</span>	<span class="nx">cb_list</span><span class="p">)</span>
+	<span class="cm">/* string/Node/NodeList */</span>	<span class="nx">cb_list</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">AtMostOneCheckboxGroup</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">cb_list</span><span class="p">);</span>
+	<span class="nx">AtMostOneCheckboxGroup</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">cb_list</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">AtMostOneCheckboxGroup</span><span class="o">,</span> <span class="nx">CheckboxGroup</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">AtMostOneCheckboxGroup</span><span class="p">,</span> <span class="nx">CheckboxGroup</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">enforceConstraints</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* NodeList */</span>	<span class="nx">cb_list</span><span class="o">,</span>
-		<span class="c">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+		<span class="cm">/* NodeList */</span>	<span class="nx">cb_list</span><span class="p">,</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">index</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;checked&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="k">return</span><span class="o">;</span>
+			<span class="k">return</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">cb_list</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">!=</span> <span class="nx">index</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">cb_list</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;checked&#39;</span><span class="o">,</span> <span class="kc">false</span><span class="p">);</span>
+				<span class="nx">cb_list</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;checked&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">AtMostOneCheckboxGroup</span> <span class="o">=</span> <span class="nx">AtMostOneCheckboxGroup</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">AtMostOneCheckboxGroup</span> <span class="o">=</span> <span class="nx">AtMostOneCheckboxGroup</span><span class="p">;</span>
 </pre></div>
 
                     </div>
@@ -110,11 +110,14 @@
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
                                 <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
                                 <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
                                 <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
@@ -156,7 +159,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">

@@ -47,259 +47,259 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * Widget which helps user to build a query expression.</span>
-<span class="c"> * </span>
-<span class="c"> * @module gallery-exprbuilder</span>
-<span class="c"> * @class ExpressionBuilder</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param config {Object} Widget configuration</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * Widget which helps user to build a query expression.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-exprbuilder</span>
+<span class="cm"> * @class ExpressionBuilder</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object} Widget configuration</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">ExpressionBuilder</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">ExpressionBuilder</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">config</span><span class="p">);</span>
+	<span class="nx">ExpressionBuilder</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">ExpressionBuilder</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;exprbuilder&quot;</span><span class="o">;</span>
+<span class="nx">ExpressionBuilder</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;exprbuilder&quot;</span><span class="p">;</span>
 
 <span class="nx">ExpressionBuilder</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * The id of the textarea form field.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config fieldId</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default Y.guid()</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The id of the textarea form field.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config fieldId</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default Y.guid()</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">fieldId</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">guid</span><span class="p">()</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">guid</span><span class="p">(),</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The name of the textarea form field.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config fieldName</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &quot;&quot;</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The name of the textarea form field.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config fieldName</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;&quot;</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">fieldName</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;&#39;</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The FormManager to use when validating the constructed expression.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config formMgr</span>
-<span class="c">	 * @type {Y.FormManager}</span>
-<span class="c">	 * @default null</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The FormManager to use when validating the constructed expression.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config formMgr</span>
+<span class="cm">	 * @type {Y.FormManager}</span>
+<span class="cm">	 * @default null</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">formMgr</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span> <span class="o">||</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">);</span> <span class="p">}</span><span class="o">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span> <span class="o">||</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">);</span> <span class="p">},</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The QueryBuilder to help the user construct the expression.  The</span>
-<span class="c">	 * widget must not be rendered.  For each variable type, the values of</span>
-<span class="c">	 * the configured operations must be the pattern to be inserted into</span>
-<span class="c">	 * the expression. {value} will be replaced by the value entered by the</span>
-<span class="c">	 * user.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config queryBuilder</span>
-<span class="c">	 * @type {Y.QueryBuilder}</span>
-<span class="c">	 * @default null</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The QueryBuilder to help the user construct the expression.  The</span>
+<span class="cm">	 * widget must not be rendered.  For each variable type, the values of</span>
+<span class="cm">	 * the configured operations must be the pattern to be inserted into</span>
+<span class="cm">	 * the expression. {value} will be replaced by the value entered by the</span>
+<span class="cm">	 * user.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config queryBuilder</span>
+<span class="cm">	 * @type {Y.QueryBuilder}</span>
+<span class="cm">	 * @default null</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">queryBuilder</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span> <span class="o">||</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">QueryBuilder</span><span class="p">);</span> <span class="p">}</span><span class="o">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">o</span> <span class="o">||</span> <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">QueryBuilder</span><span class="p">);</span> <span class="p">},</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * A map of QueryBuilder operators to objects defining</span>
-<span class="c">	 * {operator,pattern}.  This is needed if a variable type generates</span>
-<span class="c">	 * multiple values, and the values must be combined with something</span>
-<span class="c">	 * other than AND.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config combinatorMap</span>
-<span class="c">	 * @type {Object}</span>
-<span class="c">	 * @default null</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * A map of QueryBuilder operators to objects defining</span>
+<span class="cm">	 * {operator,pattern}.  This is needed if a variable type generates</span>
+<span class="cm">	 * multiple values, and the values must be combined with something</span>
+<span class="cm">	 * other than AND.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config combinatorMap</span>
+<span class="cm">	 * @type {Object}</span>
+<span class="cm">	 * @default null</span>
+<span class="cm">	 */</span>
 	<span class="nx">combinatorMap</span><span class="o">:</span>
 	<span class="p">{</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The label for the Insert Parentheses button.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config parenLabel</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &quot;()&quot;</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The label for the Insert Parentheses button.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config parenLabel</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;()&quot;</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">parenLabel</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;()&#39;</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;()&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The label for the AND button.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config andLabel</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &quot;AND&quot;</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The label for the AND button.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config andLabel</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;AND&quot;</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">andLabel</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;AND&#39;</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;AND&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The label for the OR button.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config orLabel</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &quot;OR&quot;</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The label for the OR button.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config orLabel</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;OR&quot;</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">orLabel</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;OR&#39;</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;OR&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The label for the NOT button.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config notLabel</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &quot;NOT&quot;</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The label for the NOT button.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config notLabel</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;NOT&quot;</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">notLabel</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;NOT&#39;</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;NOT&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The label for the Clear button.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config clearLabel</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &quot;Clear&quot;</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The label for the Clear button.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config clearLabel</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;Clear&quot;</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">clearLabel</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Clear&#39;</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Clear&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The label for the Insert button.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config insertLabel</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &quot;Insert&quot;</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The label for the Insert button.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config insertLabel</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;Insert&quot;</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">insertLabel</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Insert&#39;</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Insert&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The label for the Reset button.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config resetLabel</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &quot;Cancel&quot;</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The label for the Reset button.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config resetLabel</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;Cancel&quot;</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">resetLabel</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Cancel&#39;</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Cancel&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The error message for an unclosed parenthesis. &lt;q&gt;context&lt;/q&gt; is</span>
-<span class="c">	 * replaced by the portion of the expression that generated the error.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config tooManyParensError</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &#39;The expression contains an extra closing parenthesis at &quot;{context}&quot;.&#39;</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The error message for an unclosed parenthesis. &lt;q&gt;context&lt;/q&gt; is</span>
+<span class="cm">	 * replaced by the portion of the expression that generated the error.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config tooManyParensError</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &#39;The expression contains an extra closing parenthesis at &quot;{context}&quot;.&#39;</span>
+<span class="cm">	 */</span>
 	<span class="nx">tooManyParensError</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an extra closing parenthesis at &quot;{context}...&quot;.&#39;</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an extra closing parenthesis at &quot;{context}...&quot;.&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The error message for an unmatched single quote.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config unmatchedSingleQuoteError</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &#39;The expression contains an unmatched single quote.&#39;</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The error message for an unmatched single quote.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config unmatchedSingleQuoteError</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &#39;The expression contains an unmatched single quote.&#39;</span>
+<span class="cm">	 */</span>
 	<span class="nx">unmatchedSingleQuoteError</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an unmatched single quote at &quot;{context}...&quot;.&#39;</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an unmatched single quote at &quot;{context}...&quot;.&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The error message for an unclosed parenthesis.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config unclosedParenError</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &#39;The expression contains an unclosed parenthesis.&#39;</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The error message for an unclosed parenthesis.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config unclosedParenError</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &#39;The expression contains an unclosed parenthesis.&#39;</span>
+<span class="cm">	 */</span>
 	<span class="nx">unclosedParenError</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an unclosed parenthesis at &quot;{context}...&quot;.&#39;</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;The expression contains an unclosed parenthesis at &quot;{context}...&quot;.&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The error message when the user forgets to select a variable for</span>
-<span class="c">	 * insertion.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config noVariableSelectedError</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &#39;Please choose a variable.&#39;</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The error message when the user forgets to select a variable for</span>
+<span class="cm">	 * insertion.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config noVariableSelectedError</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &#39;Please choose a variable.&#39;</span>
+<span class="cm">	 */</span>
 	<span class="nx">noVariableSelectedError</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Please choose a variable.&#39;</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;Please choose a variable.&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
 	<span class="p">}</span>
 <span class="p">};</span>
@@ -309,25 +309,25 @@
 	<span class="k">this</span><span class="p">.</span><span class="nx">ie_range</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">selection</span><span class="p">.</span><span class="nx">createRange</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">insertText</span><span class="p">(</span><span class="nx">text</span><span class="o">,</span> <span class="nx">offset</span><span class="p">)</span>
+<span class="kd">function</span> <span class="nx">insertText</span><span class="p">(</span><span class="nx">text</span><span class="p">,</span> <span class="nx">offset</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">offset</span> <span class="o">=</span> <span class="nx">offset</span> <span class="o">||</span> <span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span>
+	<span class="nx">offset</span> <span class="o">=</span> <span class="nx">offset</span> <span class="o">||</span> <span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
 	<span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">);</span>
 
-	<span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">setSelectionRange</span><span class="p">)</span>		<span class="c">// For Mozilla/WebKit</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">setSelectionRange</span><span class="p">)</span>		<span class="c1">// For Mozilla/WebKit</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">selectionStart</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">selectionStart</span><span class="p">;</span>
 		<span class="nx">el</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span>
-			<span class="nx">el</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span> <span class="nx">start</span><span class="p">)</span> <span class="o">+</span>
+			<span class="nx">el</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">start</span><span class="p">)</span> <span class="o">+</span>
 			<span class="nx">text</span> <span class="o">+</span>
-			<span class="nx">el</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">selectionEnd</span><span class="o">,</span> <span class="nx">el</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+			<span class="nx">el</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">selectionEnd</span><span class="p">,</span> <span class="nx">el</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
 
-		<span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">start</span> <span class="o">+</span> <span class="nx">offset</span><span class="o">;</span>
-		<span class="nx">el</span><span class="p">.</span><span class="nx">setSelectionRange</span><span class="p">(</span><span class="nx">index</span><span class="o">,</span> <span class="nx">index</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">start</span> <span class="o">+</span> <span class="nx">offset</span><span class="p">;</span>
+		<span class="nx">el</span><span class="p">.</span><span class="nx">setSelectionRange</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
 	<span class="p">}</span>
-	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">selection</span><span class="p">)</span>	<span class="c">// For IE</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">selection</span><span class="p">)</span>	<span class="c1">// For IE</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">ie_range</span><span class="p">)</span>
 		<span class="p">{</span>
@@ -335,16 +335,16 @@
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">r</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">ie_range</span><span class="p">.</span><span class="nx">duplicate</span><span class="p">();</span>
-		<span class="nx">r</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="o">;</span>
+		<span class="nx">r</span><span class="p">.</span><span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">;</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">ie_range</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="s1">&#39;character&#39;</span><span class="o">,</span> <span class="nx">offset</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">ie_range</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="s1">&#39;character&#39;</span><span class="p">,</span> <span class="nx">offset</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">ie_range</span><span class="p">.</span><span class="nx">select</span><span class="p">();</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">paren</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">insertText</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s1">&#39;()&#39;</span><span class="o">,</span> <span class="mi">1</span><span class="p">);</span>
+	<span class="nx">insertText</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;()&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 	<span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
 <span class="p">}</span>
 
@@ -352,7 +352,7 @@
 <span class="p">{</span>
 	<span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">insertText</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="o">+</span><span class="s1">&#39;Label&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">);</span>
+		<span class="nx">insertText</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="o">+</span><span class="s1">&#39;Label&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">);</span>
 		<span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
 	<span class="p">};</span>
 <span class="p">}</span>
@@ -369,52 +369,52 @@
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">qb</span><span class="p">.</span><span class="nx">validateFields</span><span class="p">())</span>
 	<span class="p">{</span>
 		<span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
-		<span class="k">return</span><span class="o">;</span>
+		<span class="k">return</span><span class="p">;</span>
 	<span class="p">}</span>
 
 	<span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="nx">qb</span><span class="p">.</span><span class="nx">toDatabaseQuery</span><span class="p">();</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">query</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">qb</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">);</span>
-		<span class="nx">qb</span><span class="p">.</span><span class="nx">displayFieldMessage</span><span class="p">(</span><span class="nx">el</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;noVariableSelectedError&#39;</span><span class="p">)</span><span class="o">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
+		<span class="nx">qb</span><span class="p">.</span><span class="nx">displayFieldMessage</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;noVariableSelectedError&#39;</span><span class="p">),</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
 		<span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
-		<span class="k">return</span><span class="o">;</span>
+		<span class="k">return</span><span class="p">;</span>
 	<span class="p">}</span>
 
 	<span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;combinatorMap&#39;</span><span class="p">);</span>
 
-	<span class="kd">var</span> <span class="nx">s</span>     <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
-	<span class="kd">var</span> <span class="nx">op</span>    <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;andLabel&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">;</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">query</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="kd">var</span> <span class="nx">s</span>     <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">op</span>    <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;andLabel&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">query</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">q</span> <span class="o">=</span> <span class="nx">query</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">s</span> <span class="o">+=</span> <span class="nx">op</span><span class="o">;</span>
+			<span class="nx">s</span> <span class="o">+=</span> <span class="nx">op</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="nx">s</span> <span class="o">+=</span> <span class="nx">q</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
 
 		<span class="kd">var</span> <span class="nx">pattern</span> <span class="o">=</span> <span class="nx">q</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">pattern</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">pattern</span> <span class="o">+=</span> <span class="s1">&#39;{value}&#39;</span><span class="o">;</span>
+			<span class="nx">pattern</span> <span class="o">+=</span> <span class="s1">&#39;{value}&#39;</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">combinator</span> <span class="o">=</span> <span class="nx">map</span> <span class="o">&amp;&amp;</span> <span class="nx">map</span><span class="p">[</span> <span class="nx">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">combinator</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">op</span>      <span class="o">=</span> <span class="nx">combinator</span><span class="p">.</span><span class="nx">operator</span><span class="o">;</span>
-			<span class="nx">pattern</span> <span class="o">=</span> <span class="nx">combinator</span><span class="p">.</span><span class="nx">pattern</span><span class="o">;</span>
+			<span class="nx">op</span>      <span class="o">=</span> <span class="nx">combinator</span><span class="p">.</span><span class="nx">operator</span><span class="p">;</span>
+			<span class="nx">pattern</span> <span class="o">=</span> <span class="nx">combinator</span><span class="p">.</span><span class="nx">pattern</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="nx">s</span> <span class="o">+=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">pattern</span><span class="o">,</span>
+		<span class="nx">s</span> <span class="o">+=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">pattern</span><span class="p">,</span>
 		<span class="p">{</span>
-			<span class="nx">value</span><span class="o">:</span> <span class="nx">q</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&#39;/g</span><span class="o">,</span> <span class="s1">&#39;\\\&#39;&#39;</span><span class="p">)</span>
+			<span class="nx">value</span><span class="o">:</span> <span class="nx">q</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/&#39;/g</span><span class="p">,</span> <span class="s1">&#39;\\\&#39;&#39;</span><span class="p">)</span>
 		<span class="p">});</span>
 	<span class="p">}</span>
 
-	<span class="nx">insertText</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">s</span><span class="p">);</span>
+	<span class="nx">insertText</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">s</span><span class="p">);</span>
 	<span class="nx">qb</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
 	<span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
 <span class="p">}</span>
@@ -433,67 +433,67 @@
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
-		<span class="kd">var</span> <span class="nx">orig_validateForm</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">validateForm</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">orig_validateForm</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">validateForm</span><span class="p">;</span>
 		<span class="nx">f</span><span class="p">.</span><span class="nx">validateForm</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 		<span class="p">{</span>
 			<span class="nx">resetQB</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>
-			<span class="nx">orig_validateForm</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+			<span class="nx">orig_validateForm</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
 		<span class="p">};</span>
 
-		<span class="nx">f</span><span class="p">.</span><span class="nx">setFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">)</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">form</span><span class="o">,</span> <span class="nx">e</span><span class="p">)</span>
+		<span class="nx">f</span><span class="p">.</span><span class="nx">setFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">form</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_validateExpression</span><span class="p">(</span><span class="nx">form</span><span class="o">,</span> <span class="nx">e</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_validateExpression</span><span class="p">(</span><span class="nx">form</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 		<span class="p">});</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">ExpressionBuilder</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">ExpressionBuilder</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="c">// FormManager</span>
+		<span class="c1">// FormManager</span>
 
-		<span class="nx">setValidation</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">config</span><span class="p">.</span><span class="nx">formMgr</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;formMgrChange&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="nx">setValidation</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">.</span><span class="nx">formMgr</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;formMgrChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span><span class="p">.</span><span class="nx">setFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">)</span><span class="o">,</span> <span class="kc">null</span><span class="p">);</span>
+				<span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span><span class="p">.</span><span class="nx">setFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">),</span> <span class="kc">null</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="nx">setValidation</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">);</span>
+			<span class="nx">setValidation</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">);</span>
 		<span class="p">});</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">renderUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">);</span>
-		<span class="nx">container</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_field</span><span class="p">());</span>
+		<span class="nx">container</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_field</span><span class="p">());</span>
 
-		<span class="c">// textarea</span>
+		<span class="c1">// textarea</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">field</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">));</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">selection</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="o">,</span> <span class="nx">updateIERange</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">updateIERange</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="c">// basic controls</span>
+		<span class="c1">// basic controls</span>
 
-		<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;paren&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="nx">paren</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+		<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;paren&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">paren</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 
-		<span class="kd">var</span> <span class="nx">op</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;and&#39;</span><span class="o">,</span> <span class="s1">&#39;or&#39;</span><span class="o">,</span> <span class="s1">&#39;not&#39;</span> <span class="p">];</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">op</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">op</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span> <span class="p">];</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">op</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">op</span><span class="p">[</span><span class="nx">i</span><span class="p">])).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="nx">handler</span><span class="p">(</span><span class="nx">op</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">op</span><span class="p">[</span><span class="nx">i</span><span class="p">])).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">handler</span><span class="p">(</span><span class="nx">op</span><span class="p">[</span><span class="nx">i</span><span class="p">]),</span> <span class="k">this</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="nx">clear</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+		<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">clear</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 
-		<span class="c">// QueryBuilder</span>
+		<span class="c1">// QueryBuilder</span>
 
 		<span class="kd">var</span> <span class="nx">qb</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;queryBuilder&#39;</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">qb</span><span class="p">)</span>
@@ -502,10 +502,10 @@
 
 			<span class="nx">qb</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;querybuilder&#39;</span><span class="p">)));</span>
 
-			<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;insert&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="nx">insertQB</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
-			<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;reset&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="nx">resetQB</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;insert&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">insertQB</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;reset&#39;</span><span class="p">)).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">resetQB</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">destructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
@@ -515,95 +515,95 @@
 			<span class="nx">qb</span><span class="p">.</span><span class="nx">destroy</span><span class="p">();</span>
 		<span class="p">}</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">ie_range</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">ie_range</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Clears the expression.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Clears the expression.</span>
+<span class="cm">	 */</span>
 	<span class="nx">clear</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Validate the expression.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @protected</span>
-<span class="c">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if the expression has balanced parens and single quotes</span>
-<span class="c">	 */</span>
-	<span class="nx">_validateExpression</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">form</span><span class="o">,</span> <span class="nx">e</span><span class="o">,</span> <span class="nx">form_mgr</span><span class="p">)</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Validate the expression.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 * @return {boolean} &lt;code&gt;true&lt;/code&gt; if the expression has balanced parens and single quotes</span>
+<span class="cm">	 */</span>
+	<span class="nx">_validateExpression</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">form</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">form_mgr</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">s</span>     <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">paren</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-		<span class="kd">var</span> <span class="nx">pi</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-		<span class="kd">var</span> <span class="nx">quote</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
-		<span class="kd">var</span> <span class="nx">qi</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">s</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">paren</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">pi</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">quote</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">qi</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">s</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">quote</span> <span class="o">&amp;&amp;</span> <span class="nx">c</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">paren</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">pi</span> <span class="o">=</span> <span class="nx">i</span><span class="o">;</span>
+					<span class="nx">pi</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
 				<span class="p">}</span>
-				<span class="nx">paren</span><span class="o">++;</span>
+				<span class="nx">paren</span><span class="o">++</span><span class="p">;</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">quote</span> <span class="o">&amp;&amp;</span> <span class="nx">c</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">paren</span><span class="o">--;</span>
+				<span class="nx">paren</span><span class="o">--</span><span class="p">;</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">paren</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;tooManyParensError&#39;</span><span class="p">)</span><span class="o">,</span>
+					<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;tooManyParensError&#39;</span><span class="p">),</span>
 					<span class="p">{</span>
-						<span class="nx">context</span><span class="o">:</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+						<span class="nx">context</span><span class="o">:</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 					<span class="p">});</span>
-					<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="o">,</span> <span class="nx">msg</span><span class="o">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
-					<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+					<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
+					<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 				<span class="p">}</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">==</span> <span class="s1">&#39;\&#39;&#39;</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">s</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;\\&#39;</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">quote</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">qi</span> <span class="o">=</span> <span class="nx">i</span><span class="o">;</span>
+					<span class="nx">qi</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
 				<span class="p">}</span>
-				<span class="nx">quote</span> <span class="o">=</span> <span class="o">!</span> <span class="nx">quote</span><span class="o">;</span>
+				<span class="nx">quote</span> <span class="o">=</span> <span class="o">!</span> <span class="nx">quote</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">quote</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">paren</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">qi</span> <span class="o">&lt;</span> <span class="nx">pi</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;unmatchedSingleQuoteError&#39;</span><span class="p">)</span><span class="o">,</span>
+			<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;unmatchedSingleQuoteError&#39;</span><span class="p">),</span>
 			<span class="p">{</span>
-				<span class="nx">context</span><span class="o">:</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="nx">qi</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+				<span class="nx">context</span><span class="o">:</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">qi</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 			<span class="p">});</span>
-			<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="o">,</span> <span class="nx">msg</span><span class="o">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
-			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+			<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">paren</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;unclosedParenError&#39;</span><span class="p">)</span><span class="o">,</span>
+			<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;unclosedParenError&#39;</span><span class="p">),</span>
 			<span class="p">{</span>
-				<span class="nx">context</span><span class="o">:</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="nx">pi</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+				<span class="nx">context</span><span class="o">:</span> <span class="nx">s</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">pi</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 			<span class="p">});</span>
-			<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="o">,</span> <span class="nx">msg</span><span class="o">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
-			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+			<span class="nx">form_mgr</span><span class="p">.</span><span class="nx">displayMessage</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">msg</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">);</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">//</span>
-	<span class="c">// Markup</span>
-	<span class="c">//</span>
+	<span class="c1">//</span>
+	<span class="c1">// Markup</span>
+	<span class="c1">//</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @protected</span>
-<span class="c">	 * @return {String} markup for the textarea and basic buttons</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 * @return {String} markup for the textarea and basic buttons</span>
+<span class="cm">	 */</span>
 	<span class="nx">_field</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span>
@@ -616,33 +616,33 @@
 				<span class="s1">&#39;&lt;button class=&quot;{oc}&quot;&gt;{or}&lt;/button&gt;&#39;</span> <span class="o">+</span>
 				<span class="s1">&#39;&lt;button class=&quot;{nc}&quot;&gt;{not}&lt;/button&gt;&#39;</span> <span class="o">+</span>
 				<span class="s1">&#39;&lt;button class=&quot;{cc}&quot;&gt;{clear}&lt;/button&gt;&#39;</span> <span class="o">+</span>
-			<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="o">;</span>
+			<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span>
 
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">markup</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
 		<span class="p">{</span>
-			<span class="nx">td</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;field-container&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">ff</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="o">,</span>
-			<span class="nx">ta</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">tid</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">tn</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldName&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">fctl</span><span class="o">:</span>   <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;controls&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">pc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;paren&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">ac</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">oc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;or&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">nc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;not&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">cc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">paren</span><span class="o">:</span>  <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parenLabel&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">and</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;andLabel&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">or</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;orLabel&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">not</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;notLabel&#39;</span><span class="p">)</span><span class="o">,</span>
+			<span class="nx">td</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;field-container&#39;</span><span class="p">),</span>
+			<span class="nx">ff</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">,</span>
+			<span class="nx">ta</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">),</span>
+			<span class="nx">tid</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldId&#39;</span><span class="p">),</span>
+			<span class="nx">tn</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fieldName&#39;</span><span class="p">),</span>
+			<span class="nx">fctl</span><span class="o">:</span>   <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;controls&#39;</span><span class="p">),</span>
+			<span class="nx">pc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;paren&#39;</span><span class="p">),</span>
+			<span class="nx">ac</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;and&#39;</span><span class="p">),</span>
+			<span class="nx">oc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;or&#39;</span><span class="p">),</span>
+			<span class="nx">nc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;not&#39;</span><span class="p">),</span>
+			<span class="nx">cc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">),</span>
+			<span class="nx">paren</span><span class="o">:</span>  <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parenLabel&#39;</span><span class="p">),</span>
+			<span class="nx">and</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;andLabel&#39;</span><span class="p">),</span>
+			<span class="nx">or</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;orLabel&#39;</span><span class="p">),</span>
+			<span class="nx">not</span><span class="o">:</span>    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;notLabel&#39;</span><span class="p">),</span>
 			<span class="nx">clear</span><span class="o">:</span>  <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;clearLabel&#39;</span><span class="p">)</span>
 		<span class="p">});</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @protected</span>
-<span class="c">	 * @return {String} markup for the QueryBuilder</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 * @return {String} markup for the QueryBuilder</span>
+<span class="cm">	 */</span>
 	<span class="nx">_query</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span>
@@ -650,22 +650,22 @@
 			<span class="s1">&#39;&lt;div class=&quot;{qbctl} {fr}&quot;&gt;&#39;</span> <span class="o">+</span>
 				<span class="s1">&#39;&lt;button class=&quot;{ic}&quot;&gt;{insert}&lt;/button&gt;&#39;</span> <span class="o">+</span>
 				<span class="s1">&#39;&lt;button class=&quot;{rc}&quot;&gt;{reset}&lt;/button&gt;&#39;</span> <span class="o">+</span>
-			<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="o">;</span>
+			<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span>
 
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">markup</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
 		<span class="p">{</span>
-			<span class="nx">qb</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;querybuilder&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">qbctl</span><span class="o">:</span>  <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;querybuilder-controls&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">fr</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="o">,</span>
-			<span class="nx">ic</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;insert&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">rc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;reset&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">insert</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;insertLabel&#39;</span><span class="p">)</span><span class="o">,</span>
+			<span class="nx">qb</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;querybuilder&#39;</span><span class="p">),</span>
+			<span class="nx">qbctl</span><span class="o">:</span>  <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;querybuilder-controls&#39;</span><span class="p">),</span>
+			<span class="nx">fr</span><span class="o">:</span>     <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">row_marker_class</span><span class="p">,</span>
+			<span class="nx">ic</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;insert&#39;</span><span class="p">),</span>
+			<span class="nx">rc</span><span class="o">:</span>     <span class="k">this</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;reset&#39;</span><span class="p">),</span>
+			<span class="nx">insert</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;insertLabel&#39;</span><span class="p">),</span>
 			<span class="nx">reset</span><span class="o">:</span>  <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;resetLabel&#39;</span><span class="p">)</span>
 		<span class="p">});</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">ExpressionBuilder</span> <span class="o">=</span> <span class="nx">ExpressionBuilder</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">ExpressionBuilder</span> <span class="o">=</span> <span class="nx">ExpressionBuilder</span><span class="p">;</span>
 </pre></div>
 
                     </div>
@@ -690,11 +690,14 @@
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
                                 <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
                                 <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
                                 <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
@@ -728,7 +731,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">

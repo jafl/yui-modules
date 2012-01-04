@@ -8,17 +8,19 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/reset-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssfonts/fonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssbase/base-min.css" />
-<!--
+
 	<script src="gallery-bulkedit-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
 	<script src="gallery-checkboxgroups-debug.js"></script>
 	<script src="gallery-busyoverlay-debug.js"></script>
 	<script src="gallery-node-optimizations-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
+	<script src="gallery-nodelist-extras2-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/widget-base/assets/skins/sam/widget-base.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-bulkedit.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
--->
+
 	<style type="text/css">
 	.yui3-js-enabled .yui3-widget-loading { display: none; }
 
@@ -62,12 +64,10 @@
 
 <script type="text/javascript">
 YUI({
-//	base: '../yui3/',
-//	filter: 'raw',
-//	combine: false,
+//	filter: 'debug', combine: false,
 	gallery: 'gallery-2011.10.27-17-03'
 }).use(
-	'gallery-bulkedit', 'datasource-arrayschema', 'gallery-checkboxgroups', 'gallery-paginator',
+	'gallery-bulkedit', 'datasource-arrayschema', 'gallery-checkboxgroups', 'gallery-paginator', 'gallery-nodelist-extras2',
 function(Y)
 {
 // Raw data
@@ -378,19 +378,17 @@ function(Y)
 
 	function getSelectedItems()
 	{
-		var i     = pg.getStartIndex();
-		var items = [];
-		editor.get('contentBox').all('input.record-select').each(function(node)
-		{
-			if (node.get('checked'))
+		var start = pg.getStartIndex();
+		return editor.get('contentBox')
+			.all('input.record-select')
+			.filter(function(node)
 			{
-				items.push({ n: node, i: i });
-			}
-
-			i++;
-		});
-
-		return items;
+				return node.get('checked');
+			})
+			.map(function(node, i)
+			{
+				return { n: node, i: start + i };
+			});
 	}
 
 	Y.on('click', function()

@@ -47,52 +47,52 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;Constant value&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @namespace MathFunction</span>
-<span class="c"> * @class Value</span>
-<span class="c"> * @extends MathFunction</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param value {number}</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Constant value&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @namespace MathFunction</span>
+<span class="cm"> * @class Value</span>
+<span class="cm"> * @extends MathFunction</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param value {number}</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">MathValue</span><span class="p">(</span>
-	<span class="c">/* float */</span>	<span class="nx">value</span><span class="p">)</span>
+	<span class="cm">/* float */</span>	<span class="nx">value</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="nx">MathValue</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
 	<span class="kd">var</span> <span class="nx">is_string</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">is_string</span> <span class="o">&amp;&amp;</span>
 		<span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">||</span>
-		 <span class="p">(</span><span class="o">!/</span><span class="nx">x</span><span class="o">/</span><span class="nx">i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="sr">/e/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">))))</span>
+		 <span class="p">(</span><span class="o">!</span><span class="sr">/x/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="sr">/e/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">))))</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 	<span class="p">}</span>
 	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">is_string</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>	<span class="c">// do not force base, to allow hex</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>	<span class="c1">// do not force base, to allow hex</span>
 	<span class="p">}</span>
 	<span class="k">else</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathValue</span><span class="o">,</span> <span class="nx">MathFunction</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathValue</span><span class="p">,</span> <span class="nx">MathFunction</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">evaluate</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+	<span class="p">},</span>
 
 	<span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="o">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Value</span> <span class="o">=</span> <span class="nx">MathValue</span><span class="o">;</span>
+<span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Value</span> <span class="o">=</span> <span class="nx">MathValue</span><span class="p">;</span>
 </pre></div>
 
                     </div>
@@ -117,11 +117,14 @@
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class="selected"><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
                                 <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
                                 <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
                                 <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
@@ -231,7 +234,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">

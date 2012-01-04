@@ -47,265 +47,265 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="c">/**</span>
-<span class="c"> * @module gallery-bulkedit</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * @module gallery-bulkedit</span>
+<span class="cm"> */</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;BulkEditDataSource manages a YUI DataSource + diffs (insertions,</span>
-<span class="c"> * removals, changes to values).&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * &lt;p&gt;The YUI DataSource must be immutable, e.g., if it is an XHR</span>
-<span class="c"> * datasource, the data must not change.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * &lt;p&gt;By using a DataSource, we can support both client-side pagination</span>
-<span class="c"> * (all data pre-loaded, best-effort save allowed) and server-side</span>
-<span class="c"> * pagination (load data when needed, only all-or-nothing save allowed).</span>
-<span class="c"> * Server-side pagination is useful when editing a large amount of existing</span>
-<span class="c"> * records or after uploading a large number of new records. (Store the new</span>
-<span class="c"> * records in a scratch space, so everything does not have to be sent back</span>
-<span class="c"> * to the client after parsing.)  In the case of bulk upload, server-side</span>
-<span class="c"> * validation will catch errors in unviewed records.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * &lt;p&gt;The responseSchema passed to the YUI DataSource must include a</span>
-<span class="c"> * comparator for each field that should not be treated like a string.</span>
-<span class="c"> * This comparator can either be &#39;integer&#39;, &#39;decimal&#39;, or a function which</span>
-<span class="c"> * takes two arguments.&lt;/p&gt;</span>
-<span class="c"> *</span>
-<span class="c"> * @class BulkEditDataSource</span>
-<span class="c"> * @extends DataSource.Local </span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param config {Object}</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;BulkEditDataSource manages a YUI DataSource + diffs (insertions,</span>
+<span class="cm"> * removals, changes to values).&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;The YUI DataSource must be immutable, e.g., if it is an XHR</span>
+<span class="cm"> * datasource, the data must not change.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;By using a DataSource, we can support both client-side pagination</span>
+<span class="cm"> * (all data pre-loaded, best-effort save allowed) and server-side</span>
+<span class="cm"> * pagination (load data when needed, only all-or-nothing save allowed).</span>
+<span class="cm"> * Server-side pagination is useful when editing a large amount of existing</span>
+<span class="cm"> * records or after uploading a large number of new records. (Store the new</span>
+<span class="cm"> * records in a scratch space, so everything does not have to be sent back</span>
+<span class="cm"> * to the client after parsing.)  In the case of bulk upload, server-side</span>
+<span class="cm"> * validation will catch errors in unviewed records.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;The responseSchema passed to the YUI DataSource must include a</span>
+<span class="cm"> * comparator for each field that should not be treated like a string.</span>
+<span class="cm"> * This comparator can either be &#39;integer&#39;, &#39;decimal&#39;, or a function which</span>
+<span class="cm"> * takes two arguments.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * @class BulkEditDataSource</span>
+<span class="cm"> * @extends DataSource.Local </span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object}</span>
+<span class="cm"> */</span>
 <span class="kd">function</span> <span class="nx">BulkEditDataSource</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="nx">BulkEditDataSource</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="nx">BulkEditDataSource</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">BulkEditDataSource</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;bulkEditDataSource&quot;</span><span class="o">;</span>
+<span class="nx">BulkEditDataSource</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;bulkEditDataSource&quot;</span><span class="p">;</span>
 
 <span class="nx">BulkEditDataSource</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * REQUIRED. The original data.  This must be immutable, i.e., the</span>
-<span class="c">	 * values must not change.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config ds</span>
-<span class="c">	 * @type {DataSource}</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * REQUIRED. The original data.  This must be immutable, i.e., the</span>
+<span class="cm">	 * values must not change.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config ds</span>
+<span class="cm">	 * @type {DataSource}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">ds</span><span class="o">:</span>
 	<span class="p">{</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * REQUIRED.  The function to convert the initial request into a</span>
-<span class="c">	 * request usable by the underlying DataSource.  This function takes</span>
-<span class="c">	 * one argument: state (startIndex,resultCount,...).</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config generateRequest</span>
-<span class="c">	 * @type {Function}</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * REQUIRED.  The function to convert the initial request into a</span>
+<span class="cm">	 * request usable by the underlying DataSource.  This function takes</span>
+<span class="cm">	 * one argument: state (startIndex,resultCount,...).</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config generateRequest</span>
+<span class="cm">	 * @type {Function}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">generateRequest</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="o">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * REQUIRED. The name of the key in each record that stores an</span>
-<span class="c">	 * identifier which is unique across the entire data set.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config uniqueIdKey</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * REQUIRED. The name of the key in each record that stores an</span>
+<span class="cm">	 * identifier which is unique across the entire data set.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config uniqueIdKey</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">uniqueIdKey</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The function to call to generate a unique id for a new record.  The</span>
-<span class="c">	 * default generates &quot;bulk-edit-new-id-#&quot;.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config generateUniqueId</span>
-<span class="c">	 * @type {Function}</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The function to call to generate a unique id for a new record.  The</span>
+<span class="cm">	 * default generates &quot;bulk-edit-new-id-#&quot;.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config generateUniqueId</span>
+<span class="cm">	 * @type {Function}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">generateUniqueId</span><span class="o">:</span>
 	<span class="p">{</span>
 		<span class="nx">value</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 		<span class="p">{</span>
-			<span class="nx">idCounter</span><span class="o">++;</span>
-			<span class="k">return</span> <span class="nx">uniqueIdPrefix</span> <span class="o">+</span> <span class="nx">idCounter</span><span class="o">;</span>
-		<span class="p">}</span><span class="o">,</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="o">,</span>
+			<span class="nx">idCounter</span><span class="o">++</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">uniqueIdPrefix</span> <span class="o">+</span> <span class="nx">idCounter</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * OGNL expression telling how to extract the startIndex from the</span>
-<span class="c">	 * received data, e.g., &lt;code&gt;.meta.startIndex&lt;/code&gt;.  If it is not</span>
-<span class="c">	 * provided, startIndex is always assumed to be zero.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config startIndexExpr</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * OGNL expression telling how to extract the startIndex from the</span>
+<span class="cm">	 * received data, e.g., &lt;code&gt;.meta.startIndex&lt;/code&gt;.  If it is not</span>
+<span class="cm">	 * provided, startIndex is always assumed to be zero.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config startIndexExpr</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">startIndexExpr</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * OGNL expression telling where in the response to store the total</span>
-<span class="c">	 * number of records, e.g., &lt;code&gt;.meta.totalRecords&lt;/code&gt;.  This is</span>
-<span class="c">	 * only appropriate for DataSources that always return the entire data</span>
-<span class="c">	 * set.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config totalRecordsReturnExpr</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * OGNL expression telling where in the response to store the total</span>
+<span class="cm">	 * number of records, e.g., &lt;code&gt;.meta.totalRecords&lt;/code&gt;.  This is</span>
+<span class="cm">	 * only appropriate for DataSources that always return the entire data</span>
+<span class="cm">	 * set.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config totalRecordsReturnExpr</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">totalRecordsReturnExpr</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="o">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * REQUIRED. The function to call to extract the total number of</span>
-<span class="c">	 * records from the response.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config extractTotalRecords</span>
-<span class="c">	 * @type {Function}</span>
-<span class="c">	 * @writeonce</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * REQUIRED. The function to call to extract the total number of</span>
+<span class="cm">	 * records from the response.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config extractTotalRecords</span>
+<span class="cm">	 * @type {Function}</span>
+<span class="cm">	 * @writeonce</span>
+<span class="cm">	 */</span>
 	<span class="nx">extractTotalRecords</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="o">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">,</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="kd">var</span> <span class="nx">uniqueIdPrefix</span> <span class="o">=</span> <span class="s1">&#39;bulk-edit-new-id-&#39;</span><span class="o">,</span>
-	<span class="nx">idCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span>
+<span class="kd">var</span> <span class="nx">uniqueIdPrefix</span> <span class="o">=</span> <span class="s1">&#39;bulk-edit-new-id-&#39;</span><span class="p">,</span>
+	<span class="nx">idCounter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
 
-	<span class="nx">inserted_prefix</span> <span class="o">=</span> <span class="s1">&#39;be-ds-i:&#39;</span><span class="o">,</span>
-	<span class="nx">inserted_re</span>     <span class="o">=</span> <span class="sr">/^be-ds-i:/</span><span class="o">,</span>
-	<span class="nx">removed_prefix</span>  <span class="o">=</span> <span class="s1">&#39;be-ds-r:&#39;</span><span class="o">,</span>
-	<span class="nx">removed_re</span>      <span class="o">=</span> <span class="sr">/^be-ds-r:/</span><span class="o">;</span>
+	<span class="nx">inserted_prefix</span> <span class="o">=</span> <span class="s1">&#39;be-ds-i:&#39;</span><span class="p">,</span>
+	<span class="nx">inserted_re</span>     <span class="o">=</span> <span class="sr">/^be-ds-i:/</span><span class="p">,</span>
+	<span class="nx">removed_prefix</span>  <span class="o">=</span> <span class="s1">&#39;be-ds-r:&#39;</span><span class="p">,</span>
+	<span class="nx">removed_re</span>      <span class="o">=</span> <span class="sr">/^be-ds-r:/</span><span class="p">;</span>
 
 <span class="nx">BulkEditDataSource</span><span class="p">.</span><span class="nx">comparator</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="s1">&#39;string&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="o">,</span><span class="nx">b</span><span class="p">)</span>
+	<span class="s1">&#39;string&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">toString</span><span class="p">()));</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="s1">&#39;integer&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="o">,</span><span class="nx">b</span><span class="p">)</span>
+	<span class="s1">&#39;integer&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">a</span><span class="o">,</span><span class="mi">10</span><span class="p">)</span> <span class="o">===</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">b</span><span class="o">,</span><span class="mi">10</span><span class="p">));</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="o">===</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span><span class="mi">10</span><span class="p">));</span>
+	<span class="p">},</span>
 
-	<span class="s1">&#39;decimal&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="o">,</span><span class="nx">b</span><span class="p">)</span>
+	<span class="s1">&#39;decimal&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="p">(</span><span class="nb">parseFloat</span><span class="p">(</span><span class="nx">a</span><span class="o">,</span><span class="mi">10</span><span class="p">)</span> <span class="o">===</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">b</span><span class="o">,</span><span class="mi">10</span><span class="p">));</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nb">parseFloat</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="o">===</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span><span class="mi">10</span><span class="p">));</span>
+	<span class="p">},</span>
 
-	<span class="s1">&#39;boolean&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="o">,</span><span class="nx">b</span><span class="p">)</span>
+	<span class="s1">&#39;boolean&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(((</span><span class="nx">a</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="o">!</span><span class="nx">a</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">b</span><span class="p">))</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="kc">false</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
 <span class="kd">function</span> <span class="nx">fromDisplayIndex</span><span class="p">(</span>
-	<span class="c">/* int */</span> <span class="nx">index</span><span class="p">)</span>
+	<span class="cm">/* int */</span> <span class="nx">index</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">removed_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">count</span><span class="o">++;</span>
+			<span class="nx">count</span><span class="o">++</span><span class="p">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">count</span> <span class="o">===</span> <span class="nx">index</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="nx">i</span><span class="o">;</span>
+				<span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+	<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">adjustRequest</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="o">;</span>
+	<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">;</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">adjust</span> <span class="o">=</span>
 	<span class="p">{</span>
-		<span class="nx">origStart</span><span class="o">:</span> <span class="nx">r</span><span class="p">.</span><span class="nx">startIndex</span><span class="o">,</span>
+		<span class="nx">origStart</span><span class="o">:</span> <span class="nx">r</span><span class="p">.</span><span class="nx">startIndex</span><span class="p">,</span>
 		<span class="nx">origCount</span><span class="o">:</span> <span class="nx">r</span><span class="p">.</span><span class="nx">resultCount</span>
 	<span class="p">};</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span><span class="o">;</span>
+		<span class="k">return</span><span class="p">;</span>
 	<span class="p">}</span>
 
-	<span class="c">// find index of first record to request</span>
+	<span class="c1">// find index of first record to request</span>
 
-	<span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">startIndex</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
-	<span class="kd">var</span> <span class="nx">end</span>   <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">start</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">startIndex</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">end</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">start</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">inserted_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">end</span><span class="o">++;</span>
+			<span class="nx">end</span><span class="o">++</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">removed_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">start</span><span class="o">++;</span>
+			<span class="nx">start</span><span class="o">++</span><span class="p">;</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="nx">r</span><span class="p">.</span><span class="nx">startIndex</span> <span class="o">=</span> <span class="nx">end</span><span class="o">;</span>
+	<span class="nx">r</span><span class="p">.</span><span class="nx">startIndex</span> <span class="o">=</span> <span class="nx">end</span><span class="p">;</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">adjust</span><span class="p">.</span><span class="nx">indexStart</span> <span class="o">=</span> <span class="nx">i</span><span class="o">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">adjust</span><span class="p">.</span><span class="nx">indexStart</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
 
-	<span class="c">// adjust number of records to request</span>
+	<span class="c1">// adjust number of records to request</span>
 
-	<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+	<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 	<span class="k">while</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="nx">count</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">adjust</span><span class="p">.</span><span class="nx">origCount</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">inserted_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">r</span><span class="p">.</span><span class="nx">resultCount</span><span class="o">--;</span>
+			<span class="nx">r</span><span class="p">.</span><span class="nx">resultCount</span><span class="o">--</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">removed_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">r</span><span class="p">.</span><span class="nx">resultCount</span><span class="o">++;</span>
+			<span class="nx">r</span><span class="p">.</span><span class="nx">resultCount</span><span class="o">++</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="nx">count</span><span class="o">++;</span>
+			<span class="nx">count</span><span class="o">++</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="nx">i</span><span class="o">++;</span>
+		<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
 	<span class="p">}</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">adjust</span><span class="p">.</span><span class="nx">indexEnd</span> <span class="o">=</span> <span class="nx">i</span><span class="o">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">adjust</span><span class="p">.</span><span class="nx">indexEnd</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">internalSuccess</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
@@ -313,19 +313,19 @@
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">response</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">error</span> <span class="o">||</span>
 		<span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="nx">internalFailure</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
-		<span class="k">return</span><span class="o">;</span>
+		<span class="nx">internalFailure</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+		<span class="k">return</span><span class="p">;</span>
 	<span class="p">}</span>
 
-	<span class="c">// synch response arrives before setting _tId</span>
+	<span class="c1">// synch response arrives before setting _tId</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">_tId</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
 		<span class="nx">e</span><span class="p">.</span><span class="nx">tId</span> <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">_tId</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span><span class="o">;</span> 	<span class="c">// cancelled request</span>
+		<span class="k">return</span><span class="p">;</span> 	<span class="c1">// cancelled request</span>
 	<span class="p">}</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="o">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">;</span>
 	<span class="nx">checkFinished</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -333,9 +333,9 @@
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">tId</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">_tId</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">error</span>    <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">error</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">error</span>    <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">error</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">response</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
@@ -343,37 +343,37 @@
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_generatingRequest</span> <span class="o">||</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span><span class="o">;</span>
+		<span class="k">return</span><span class="p">;</span>
 	<span class="p">}</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_fields</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_fields</span> <span class="o">=</span> <span class="p">{};</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">schema</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">).</span><span class="nx">resultFields</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">schema</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">).</span><span class="nx">resultFields</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_fields</span><span class="p">[</span> <span class="nx">value</span><span class="p">.</span><span class="nx">key</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_fields</span><span class="p">[</span> <span class="nx">value</span><span class="p">.</span><span class="nx">key</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 			<span class="p">}</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 	<span class="p">}</span>
 
 	<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="p">{};</span>
-	<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">response</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span><span class="p">);</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span><span class="p">);</span>
 	<span class="nx">response</span><span class="p">.</span><span class="nx">results</span> <span class="o">=</span> <span class="p">[];</span>
-	<span class="nx">response</span>         <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">response</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+	<span class="nx">response</span>         <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-	<span class="kd">var</span> <span class="nx">dataStartIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+	<span class="kd">var</span> <span class="nx">dataStartIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;startIndexExpr&#39;</span><span class="p">))</span>
 	<span class="p">{</span>
 		<span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;dataStartIndex=this._callback.response&#39;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;startIndexExpr&#39;</span><span class="p">));</span>
 	<span class="p">}</span>
 
-	<span class="kd">var</span> <span class="nx">startIndex</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">startIndex</span> <span class="o">-</span> <span class="nx">dataStartIndex</span><span class="o">;</span>
-	<span class="nx">response</span><span class="p">.</span><span class="nx">results</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="o">,</span> <span class="nx">startIndex</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">resultCount</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">startIndex</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">startIndex</span> <span class="o">-</span> <span class="nx">dataStartIndex</span><span class="p">;</span>
+	<span class="nx">response</span><span class="p">.</span><span class="nx">results</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startIndex</span><span class="p">,</span> <span class="nx">startIndex</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">resultCount</span><span class="p">);</span>
 
-	<span class="c">// insertions/removals</span>
+	<span class="c1">// insertions/removals</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -384,61 +384,61 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">_count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;extractTotalRecords&#39;</span><span class="p">)(</span><span class="nx">response</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">_index</span> <span class="o">=</span> <span class="p">[];</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 	<span class="k">else</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">adjust</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">adjust</span><span class="o">;</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">adjust</span><span class="p">.</span><span class="nx">indexStart</span><span class="o">,</span> <span class="nx">k</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">adjust</span><span class="p">.</span><span class="nx">indexEnd</span><span class="o">;</span> <span class="nx">i</span><span class="o">++,</span> <span class="nx">k</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">adjust</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">adjust</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">adjust</span><span class="p">.</span><span class="nx">indexStart</span><span class="p">,</span> <span class="nx">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">adjust</span><span class="p">.</span><span class="nx">indexEnd</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">,</span> <span class="nx">k</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">inserted_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">j</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">inserted_prefix</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
-				<span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">k</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span><span class="o">,</span> <span class="kc">true</span><span class="p">));</span>
+				<span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span><span class="nx">id</span><span class="p">],</span> <span class="kc">true</span><span class="p">));</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">removed_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">k</span><span class="o">,</span><span class="mi">1</span><span class="p">);</span>
-				<span class="nx">k</span><span class="o">--;</span>
+				<span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">k</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+				<span class="nx">k</span><span class="o">--</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="c">// save results so we can refer to them later</span>
+	<span class="c1">// save results so we can refer to them later</span>
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">_records</span>   <span class="o">=</span> <span class="p">[];</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span> <span class="o">=</span> <span class="p">{};</span>
 	<span class="kd">var</span> <span class="nx">uniqueIdKey</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">);</span>
 
-	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">rec</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">rec</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_records</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">rec</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span><span class="p">[</span> <span class="nx">rec</span><span class="p">[</span> <span class="nx">uniqueIdKey</span> <span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">rec</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span><span class="p">[</span> <span class="nx">rec</span><span class="p">[</span> <span class="nx">uniqueIdKey</span> <span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">rec</span><span class="p">;</span>
+	<span class="p">},</span>
 	<span class="k">this</span><span class="p">);</span>
 
-	<span class="c">// merge in diffs</span>
+	<span class="c1">// merge in diffs</span>
 
-	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rec</span><span class="p">)</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">results</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rec</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">rec</span><span class="p">[</span> <span class="nx">uniqueIdKey</span> <span class="p">]</span> <span class="p">];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">diff</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">rec</span><span class="o">,</span> <span class="nx">diff</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">rec</span><span class="p">,</span> <span class="nx">diff</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 	<span class="k">this</span><span class="p">);</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span> <span class="o">=</span> <span class="nx">response</span><span class="o">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">response</span> <span class="o">=</span> <span class="nx">response</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">BulkEditDataSource</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DataSource</span><span class="p">.</span><span class="nx">Local</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">BulkEditDataSource</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DataSource</span><span class="p">.</span><span class="nx">Local</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -462,26 +462,26 @@
 			<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;BulkEditDataSource requires extractTotalRecords function&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">_index</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_index</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_new</span>   <span class="o">=</span> <span class="p">{};</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_diff</span>  <span class="o">=</span> <span class="p">{};</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {boolean} true if the raw data is stored locally</span>
-<span class="c">	 * @protected</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {boolean} true if the raw data is stored locally</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
 	<span class="nx">_dataIsLocal</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">)));</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Flush the underlying datasource&#39;s cache.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @protected</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Flush the underlying datasource&#39;s cache.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
 	<span class="nx">_flushCache</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">ds</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">);</span>
@@ -489,52 +489,52 @@
 		<span class="p">{</span>
 			<span class="nx">ds</span><span class="p">.</span><span class="nx">cache</span><span class="p">.</span><span class="nx">flush</span><span class="p">();</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Use this instead of any meta information in response.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @return {Number} the total number of records</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Use this instead of any meta information in response.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {Number} the total number of records</span>
+<span class="cm">	 */</span>
 	<span class="nx">getRecordCount</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {Number} the records returned by the latest request</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Number} the records returned by the latest request</span>
+<span class="cm">	 */</span>
 	<span class="nx">getCurrentRecords</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_records</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_records</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {Object} the records returned by the latest request, keyed by record id</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Object} the records returned by the latest request, keyed by record id</span>
+<span class="cm">	 */</span>
 	<span class="nx">getCurrentRecordMap</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param record_index {Number}</span>
-<span class="c">	 * @param key {String} field key</span>
-<span class="c">	 * @return {mixed} the value of the specified field in the specified record</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param record_index {Number}</span>
+<span class="cm">	 * @param key {String} field key</span>
+<span class="cm">	 * @return {mixed} the value of the specified field in the specified record</span>
+<span class="cm">	 */</span>
 	<span class="nx">getValue</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* int */</span>		<span class="nx">record_index</span><span class="o">,</span>
-		<span class="c">/* string */</span>	<span class="nx">key</span><span class="p">)</span>
+		<span class="cm">/* int */</span>		<span class="nx">record_index</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">key</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_dataIsLocal</span><span class="p">())</span>
 		<span class="p">{</span>
 			<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;BulkEditDataSource.getValue() can only be called when using a local datasource&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">fromDisplayIndex</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">record_index</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">fromDisplayIndex</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">record_index</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">j</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="nx">j</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
@@ -558,112 +558,112 @@
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="nx">record</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * When using a remote datasource, this will include changes made to</span>
-<span class="c">	 * deleted records.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @return {Object} map of all changed values, keyed by record id</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * When using a remote datasource, this will include changes made to</span>
+<span class="cm">	 * deleted records.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @return {Object} map of all changed values, keyed by record id</span>
+<span class="cm">	 */</span>
 	<span class="nx">getChanges</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {Array} list of removed record indices, based on initial ordering</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Array} list of removed record indices, based on initial ordering</span>
+<span class="cm">	 */</span>
 	<span class="nx">getRemovedRecordIndexes</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="p">[];</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">j</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">j</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">removed_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">list</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">j</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">removed_prefix</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span><span class="o">,</span> <span class="mi">10</span><span class="p">));</span>
+				<span class="nx">list</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">j</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">removed_prefix</span><span class="p">.</span><span class="nx">length</span><span class="p">),</span> <span class="mi">10</span><span class="p">));</span>
 			<span class="p">}</span>
 		<span class="p">});</span>
 
-		<span class="k">return</span> <span class="nx">list</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">list</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * You must reload() the widget after calling this function!</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param index {Number} insertion index</span>
-<span class="c">	 * @param record {Object|String} record to insert or id of record to clone</span>
-<span class="c">	 * @return {String} id of newly inserted record</span>
-<span class="c">	 * @protected</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * You must reload() the widget after calling this function!</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {Number} insertion index</span>
+<span class="cm">	 * @param record {Object|String} record to insert or id of record to clone</span>
+<span class="cm">	 * @return {String} id of newly inserted record</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
 	<span class="nx">insertRecord</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* int */</span>		<span class="nx">index</span><span class="o">,</span>
-		<span class="c">/* object */</span>	<span class="nx">record</span><span class="p">)</span>
+		<span class="cm">/* int */</span>		<span class="nx">index</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">record</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="o">++;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="o">++</span><span class="p">;</span>
 
 		<span class="kd">var</span> <span class="nx">record_id</span> <span class="o">=</span> <span class="nb">String</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;generateUniqueId&#39;</span><span class="p">)());</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">]</span>                            <span class="o">=</span> <span class="p">{};</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">][</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">record_id</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">][</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">record_id</span><span class="p">;</span>
 
-		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">fromDisplayIndex</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">index</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">fromDisplayIndex</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">j</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">j</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span>
+			<span class="nx">j</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 		<span class="p">}</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">j</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">inserted_prefix</span><span class="o">+</span><span class="nx">record_id</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">inserted_prefix</span><span class="o">+</span><span class="nx">record_id</span><span class="p">);</span>
 
-		<span class="k">if</span> <span class="p">(</span><span class="nx">record</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">(</span><span class="nx">record</span><span class="p">))</span>		<span class="c">// clone existing record</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">record</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">(</span><span class="nx">record</span><span class="p">))</span>		<span class="c1">// clone existing record</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">s</span>    <span class="o">=</span> <span class="nx">record</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
-			<span class="nx">record</span>   <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span><span class="p">[</span><span class="nx">s</span><span class="p">]</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span><span class="nx">s</span><span class="p">]</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+			<span class="nx">record</span>   <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span><span class="p">[</span><span class="nx">s</span><span class="p">]</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span><span class="nx">s</span><span class="p">],</span> <span class="kc">true</span><span class="p">);</span>
 			<span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span><span class="nx">s</span><span class="p">];</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">record</span> <span class="o">&amp;&amp;</span> <span class="nx">diff</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">record</span><span class="o">,</span> <span class="nx">diff</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span> <span class="nx">diff</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="k">if</span> <span class="p">(</span><span class="nx">record</span><span class="p">)</span>		<span class="c">// insert initial values into _diff</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">record</span><span class="p">)</span>		<span class="c1">// insert initial values into _diff</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">uniqueIdKey</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">);</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">record</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="nx">key</span><span class="p">)</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">record</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">!=</span> <span class="nx">uniqueIdKey</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="k">this</span><span class="p">.</span><span class="nx">updateValue</span><span class="p">(</span><span class="nx">record_id</span><span class="o">,</span> <span class="nx">key</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">updateValue</span><span class="p">(</span><span class="nx">record_id</span><span class="p">,</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
 				<span class="p">}</span>
-			<span class="p">}</span><span class="o">,</span>
+			<span class="p">},</span>
 			<span class="k">this</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">record_id</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">record_id</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * You must reload() the widget after calling this function!</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param index {Number} index of record to remove</span>
-<span class="c">	 * @return {boolean} true if record was removed</span>
-<span class="c">	 * @protected</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * You must reload() the widget after calling this function!</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param index {Number} index of record to remove</span>
+<span class="cm">	 * @return {boolean} true if record was removed</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
 	<span class="nx">removeRecord</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* int */</span> <span class="nx">index</span><span class="p">)</span>
+		<span class="cm">/* int */</span> <span class="nx">index</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">fromDisplayIndex</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">index</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">fromDisplayIndex</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">j</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="o">--;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="o">--</span><span class="p">;</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">inserted_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">]))</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">record_id</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">].</span><span class="nx">substr</span><span class="p">(</span><span class="nx">inserted_prefix</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
-			<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">j</span><span class="o">,</span><span class="mi">1</span><span class="p">);</span>
+			<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">j</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
@@ -677,24 +677,24 @@
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">record_id</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
+			<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Update a value in a record.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @param record_id {String}</span>
-<span class="c">	 * @param key {String} field key</span>
-<span class="c">	 * @param value {String} new item value</span>
-<span class="c">	 * @protected</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Update a value in a record.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @param record_id {String}</span>
+<span class="cm">	 * @param key {String} field key</span>
+<span class="cm">	 * @param value {String} new item value</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
 	<span class="nx">updateValue</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">record_id</span><span class="o">,</span>
-		<span class="c">/* string */</span>	<span class="nx">key</span><span class="o">,</span>
-		<span class="c">/* string */</span>	<span class="nx">value</span><span class="p">)</span>
+		<span class="cm">/* string */</span>	<span class="nx">record_id</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">key</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">key</span> <span class="o">==</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
@@ -704,35 +704,35 @@
 		<span class="nx">record_id</span> <span class="o">=</span> <span class="nx">record_id</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
 
 		<span class="kd">var</span> <span class="nx">record</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_recordMap</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">record</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_getComparator</span><span class="p">(</span><span class="nx">key</span><span class="p">)(</span><span class="nx">record</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="o">,</span> <span class="nx">value</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">record</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_getComparator</span><span class="p">(</span><span class="nx">key</span><span class="p">)(</span><span class="nx">record</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">value</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">])</span>
 			<span class="p">{</span>
-				<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">][</span> <span class="nx">key</span> <span class="p">];</span>
+				<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">][</span> <span class="nx">key</span> <span class="p">];</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
-		<span class="k">else</span>	<span class="c">// might be new record</span>
+		<span class="k">else</span>	<span class="c1">// might be new record</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">])</span>
 			<span class="p">{</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">]</span> <span class="o">=</span> <span class="p">{};</span>
 			<span class="p">}</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">][</span> <span class="nx">key</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">][</span> <span class="nx">key</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param key {String} field key</span>
-<span class="c">	 * @return {Function} comparator function for the given field</span>
-<span class="c">	 * @protected</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param key {String} field key</span>
+<span class="cm">	 * @return {Function} comparator function for the given field</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
 	<span class="nx">_getComparator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span> <span class="nx">key</span><span class="p">)</span>
+		<span class="cm">/* string */</span> <span class="nx">key</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_fields</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_fields</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">comparator</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;string&#39;</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_fields</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_fields</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">comparator</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;string&#39;</span><span class="p">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">f</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">f</span><span class="o">;</span>
+			<span class="k">return</span> <span class="nx">f</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">BulkEditDataSource</span><span class="p">.</span><span class="nx">comparator</span><span class="p">[</span><span class="nx">f</span><span class="p">])</span>
 		<span class="p">{</span>
@@ -740,19 +740,19 @@
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">BulkEditDataSource</span><span class="p">.</span><span class="nx">comparator</span><span class="p">.</span><span class="nx">string</span><span class="o">;</span>
+			<span class="k">return</span> <span class="nx">BulkEditDataSource</span><span class="p">.</span><span class="nx">comparator</span><span class="p">.</span><span class="nx">string</span><span class="p">;</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Merge changes into the underlying data, to flush diffs for a record.</span>
-<span class="c">	 * Only usable with DataSource.Local.  When using best-effort save on</span>
-<span class="c">	 * the server, call this for each record that was successfully saved.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @param record_id {String}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Merge changes into the underlying data, to flush diffs for a record.</span>
+<span class="cm">	 * Only usable with DataSource.Local.  When using best-effort save on</span>
+<span class="cm">	 * the server, call this for each record that was successfully saved.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @param record_id {String}</span>
+<span class="cm">	 */</span>
 	<span class="nx">mergeChanges</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span> <span class="nx">record_id</span><span class="p">)</span>
+		<span class="cm">/* string */</span> <span class="nx">record_id</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_dataIsLocal</span><span class="p">())</span>
 		<span class="p">{</span>
@@ -768,52 +768,52 @@
 				<span class="kd">var</span> <span class="nx">diff</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">diff</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">rec</span><span class="o">,</span> <span class="nx">diff</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
-					<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
+					<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">rec</span><span class="p">,</span> <span class="nx">diff</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+					<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
 				<span class="p">}</span>
-				<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_flushCache</span><span class="p">();</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">)</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">merge</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">))</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">merge</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-				<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 			<span class="p">}</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">found</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">if</span> <span class="p">(</span><span class="nx">merge</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">))</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">merge</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
 				<span class="p">{</span>
-					<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-					<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+					<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+					<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 				<span class="p">}</span>
-			<span class="p">}</span><span class="o">,</span>
+			<span class="p">},</span>
 			<span class="k">this</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * &lt;p&gt;Completely remove a record, from both the display and the</span>
-<span class="c">	 * underlying data.  Only usable with DataSource.Local.  When using</span>
-<span class="c">	 * best-effort save on the server, call this for each record that was</span>
-<span class="c">	 * successfully deleted.&lt;/p&gt;</span>
-<span class="c">	 * </span>
-<span class="c">	 * &lt;p&gt;You must reload() the widget after calling this function!&lt;/p&gt;</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param record_id {String}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * &lt;p&gt;Completely remove a record, from both the display and the</span>
+<span class="cm">	 * underlying data.  Only usable with DataSource.Local.  When using</span>
+<span class="cm">	 * best-effort save on the server, call this for each record that was</span>
+<span class="cm">	 * successfully deleted.&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * &lt;p&gt;You must reload() the widget after calling this function!&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param record_id {String}</span>
+<span class="cm">	 */</span>
 	<span class="nx">killRecord</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span> <span class="nx">record_id</span><span class="p">)</span>
+		<span class="cm">/* string */</span> <span class="nx">record_id</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_dataIsLocal</span><span class="p">())</span>
 		<span class="p">{</span>
@@ -827,76 +827,76 @@
 			<span class="k">if</span> <span class="p">(</span><span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">record_id</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="p">{};</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">recordIdToIndex</span><span class="p">(</span><span class="nx">record_id</span><span class="o">,</span> <span class="nx">info</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">recordIdToIndex</span><span class="p">(</span><span class="nx">record_id</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
 
 				<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span> <span class="nx">info</span><span class="p">.</span><span class="nx">internal_index</span> <span class="p">];</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">internal_index</span><span class="o">,</span> <span class="mi">1</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">internal_index</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">inserted_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span>
 				<span class="p">{</span>
-					<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">info</span><span class="p">.</span><span class="nx">internal_index</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+					<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">info</span><span class="p">.</span><span class="nx">internal_index</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 					<span class="p">{</span>
 						<span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 						<span class="k">if</span> <span class="p">(</span><span class="nx">removed_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">k</span><span class="p">))</span>
 						<span class="p">{</span>
 							<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">removed_prefix</span> <span class="o">+</span>
-								<span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">k</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">removed_prefix</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+								<span class="p">(</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">k</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">removed_prefix</span><span class="p">.</span><span class="nx">length</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
 						<span class="p">}</span>
 						<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">inserted_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">k</span><span class="p">))</span>
 						<span class="p">{</span>
-							<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">--;</span>
+							<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">--</span><span class="p">;</span>
 						<span class="p">}</span>
 					<span class="p">}</span>
 				<span class="p">}</span>
 
-				<span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="o">--;</span>
-				<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
-				<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_count</span><span class="o">--</span><span class="p">;</span>
+				<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">record_id</span> <span class="p">];</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_flushCache</span><span class="p">();</span>
 
 		<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">);</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="nx">data</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="nx">i</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">kill</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">))</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">kill</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">data</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="o">,</span><span class="mi">1</span><span class="p">);</span>
-				<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-				<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="nx">data</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+				<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 			<span class="p">}</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">found</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="nx">id</span><span class="p">)</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">if</span> <span class="p">(</span><span class="nx">kill</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">))</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">kill</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
 				<span class="p">{</span>
-					<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
-					<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-					<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+					<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+					<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+					<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 				<span class="p">}</span>
-			<span class="p">}</span><span class="o">,</span>
+			<span class="p">},</span>
 			<span class="k">this</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * &lt;p&gt;Change the id of a record.  Only usable with DataSource.Local.</span>
-<span class="c">	 * When using best-effort save on the server, call this for each newly</span>
-<span class="c">	 * created record that was successfully saved.&lt;/p&gt;</span>
-<span class="c">	 * </span>
-<span class="c">	 * &lt;p&gt;You must reload() the widget after calling this function!&lt;/p&gt;</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param orig_record_id {String}</span>
-<span class="c">	 * @param new_record_id {String}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * &lt;p&gt;Change the id of a record.  Only usable with DataSource.Local.</span>
+<span class="cm">	 * When using best-effort save on the server, call this for each newly</span>
+<span class="cm">	 * created record that was successfully saved.&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * &lt;p&gt;You must reload() the widget after calling this function!&lt;/p&gt;</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param orig_record_id {String}</span>
+<span class="cm">	 * @param new_record_id {String}</span>
+<span class="cm">	 */</span>
 	<span class="nx">updateRecordId</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">orig_record_id</span><span class="o">,</span>
-		<span class="c">/* string */</span>	<span class="nx">new_record_id</span><span class="p">)</span>
+		<span class="cm">/* string */</span>	<span class="nx">orig_record_id</span><span class="p">,</span>
+		<span class="cm">/* string */</span>	<span class="nx">new_record_id</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_dataIsLocal</span><span class="p">())</span>
 		<span class="p">{</span>
@@ -911,62 +911,62 @@
 			<span class="k">if</span> <span class="p">(</span><span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">].</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="nx">orig_record_id</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="p">{};</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">recordIdToIndex</span><span class="p">(</span><span class="nx">orig_record_id</span><span class="o">,</span> <span class="nx">info</span><span class="p">);</span>
-				<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">info</span><span class="p">.</span><span class="nx">internal_index</span><span class="o">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">recordIdToIndex</span><span class="p">(</span><span class="nx">orig_record_id</span><span class="p">,</span> <span class="nx">info</span><span class="p">);</span>
+				<span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">info</span><span class="p">.</span><span class="nx">internal_index</span><span class="p">;</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">inserted_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">]))</span>
 				<span class="p">{</span>
-					<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">inserted_prefix</span> <span class="o">+</span> <span class="nx">new_record_id</span><span class="o">;</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">=</span> <span class="nx">inserted_prefix</span> <span class="o">+</span> <span class="nx">new_record_id</span><span class="p">;</span>
 				<span class="p">}</span>
 
-				<span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">new_record_id</span><span class="o">;</span>
+				<span class="nx">rec</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">new_record_id</span><span class="p">;</span>
 				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">orig_record_id</span> <span class="p">])</span>
 				<span class="p">{</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">new_record_id</span> <span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">orig_record_id</span> <span class="p">];</span>
-					<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">orig_record_id</span> <span class="p">];</span>
+					<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_diff</span><span class="p">[</span> <span class="nx">orig_record_id</span> <span class="p">];</span>
 				<span class="p">}</span>
-				<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_flushCache</span><span class="p">();</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">)</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">update</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">))</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">update</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-				<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+				<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 			<span class="p">}</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">found</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="nx">id</span><span class="p">)</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">if</span> <span class="p">(</span><span class="nx">update</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">))</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">update</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
 				<span class="p">{</span>
-					<span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">new_record_id</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
-					<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
-					<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-					<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span> <span class="nx">new_record_id</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+					<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_new</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+					<span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+					<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
 				<span class="p">}</span>
-			<span class="p">}</span><span class="o">,</span>
+			<span class="p">},</span>
 			<span class="k">this</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Find the index of the given record id.  Only usable with</span>
-<span class="c">	 * DataSource.Local.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param record_id {String}</span>
-<span class="c">	 * @return {Number} index or record or -1 if not found</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Find the index of the given record id.  Only usable with</span>
+<span class="cm">	 * DataSource.Local.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param record_id {String}</span>
+<span class="cm">	 * @return {Number} index or record or -1 if not found</span>
+<span class="cm">	 */</span>
 	<span class="nx">recordIdToIndex</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">record_id</span><span class="o">,</span>
-		<span class="c">/* object */</span>	<span class="nx">return_info</span><span class="p">)</span>
+		<span class="cm">/* string */</span>	<span class="nx">record_id</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">return_info</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_dataIsLocal</span><span class="p">())</span>
 		<span class="p">{</span>
@@ -976,8 +976,8 @@
 		<span class="nx">record_id</span> <span class="o">=</span> <span class="nx">record_id</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
 
 		<span class="kd">var</span> <span class="nx">records</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;source&#39;</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">count</span>   <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">count</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">j</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_index</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 			<span class="kd">var</span> <span class="nx">ins</span> <span class="o">=</span> <span class="nx">inserted_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
@@ -989,48 +989,48 @@
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">return_info</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">return_info</span><span class="p">.</span><span class="nx">internal_index</span> <span class="o">=</span> <span class="nx">i</span><span class="o">;</span>
+					<span class="nx">return_info</span><span class="p">.</span><span class="nx">internal_index</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
 				<span class="p">}</span>
-				<span class="k">return</span> <span class="nx">count</span><span class="o">;</span>
+				<span class="k">return</span> <span class="nx">count</span><span class="p">;</span>
 			<span class="p">}</span>
 
 			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">del</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">count</span><span class="o">++;</span>
+				<span class="nx">count</span><span class="o">++</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Merges edits into data and returns result.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @protected</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Merges edits into data and returns result.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
 	<span class="nx">_defRequestFn</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span> <span class="o">=</span> <span class="nx">e</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span> <span class="o">=</span> <span class="nx">e</span><span class="p">;</span>
 		<span class="nx">adjustRequest</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">_generatingRequest</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_generatingRequest</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">_tId</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;ds&#39;</span><span class="p">).</span><span class="nx">sendRequest</span><span class="p">(</span>
 		<span class="p">{</span>
-			<span class="nx">request</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;generateRequest&#39;</span><span class="p">)(</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">)</span><span class="o">,</span>
+			<span class="nx">request</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;generateRequest&#39;</span><span class="p">)(</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">request</span><span class="p">),</span>
 			<span class="nx">callback</span><span class="o">:</span>
 			<span class="p">{</span>
-				<span class="nx">success</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">internalSuccess</span><span class="o">,</span> <span class="k">this</span><span class="p">)</span><span class="o">,</span>
-				<span class="nx">failure</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">internalFailure</span><span class="o">,</span> <span class="k">this</span><span class="p">)</span>
+				<span class="nx">success</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">internalSuccess</span><span class="p">,</span> <span class="k">this</span><span class="p">),</span>
+				<span class="nx">failure</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">internalFailure</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
 			<span class="p">}</span>
 		<span class="p">});</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">_generatingRequest</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_generatingRequest</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="nx">checkFinished</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">BulkEditDataSource</span> <span class="o">=</span> <span class="nx">BulkEditDataSource</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">BulkEditDataSource</span> <span class="o">=</span> <span class="nx">BulkEditDataSource</span><span class="p">;</span>
 </pre></div>
 
                     </div>
@@ -1055,11 +1055,14 @@
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
                                 <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
                                 <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
                                 <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
@@ -1097,7 +1100,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">

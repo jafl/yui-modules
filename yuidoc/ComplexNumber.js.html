@@ -47,207 +47,207 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * Class for representing a complex number.</span>
-<span class="c"> * </span>
-<span class="c"> * @class ComplexNumber</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param real {number} the real component (default: 0)</span>
-<span class="c"> * @param imag {number} the imaginary component (default: 0)</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * Class for representing a complex number.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @class ComplexNumber</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param real {number} the real component (default: 0)</span>
+<span class="cm"> * @param imag {number} the imaginary component (default: 0)</span>
+<span class="cm"> */</span>
 
-<span class="kd">function</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">real</span><span class="o">,</span> <span class="nx">imag</span><span class="p">)</span>
+<span class="kd">function</span> <span class="nx">ComplexNumber</span><span class="p">(</span><span class="nx">real</span><span class="p">,</span> <span class="nx">imag</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">real</span> <span class="o">||</span> <span class="mi">0</span><span class="o">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="nx">imag</span> <span class="o">||</span> <span class="mi">0</span><span class="o">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">real</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="nx">imag</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="c">/**</span>
-<span class="c"> * Construct a ComplexNumber from polar coordinates.</span>
-<span class="c"> * </span>
-<span class="c"> * @static</span>
-<span class="c"> * @param magnitude {number}</span>
-<span class="c"> * @param phase {number}</span>
-<span class="c"> * @return ComplexNumber</span>
-<span class="c"> */</span>
-<span class="nx">ComplexNumber</span><span class="p">.</span><span class="nx">fromPolar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">magnitude</span><span class="o">,</span> <span class="nx">phase</span><span class="p">)</span>
+<span class="cm">/**</span>
+<span class="cm"> * Construct a ComplexNumber from polar coordinates.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param magnitude {number}</span>
+<span class="cm"> * @param phase {number}</span>
+<span class="cm"> * @return ComplexNumber</span>
+<span class="cm"> */</span>
+<span class="nx">ComplexNumber</span><span class="p">.</span><span class="nx">fromPolar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">magnitude</span><span class="p">,</span> <span class="nx">phase</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="k">new</span> <span class="nx">ComplexNumber</span><span class="p">(</span>
-		<span class="nx">magnitude</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">phase</span><span class="p">)</span><span class="o">,</span>
+		<span class="nx">magnitude</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">phase</span><span class="p">),</span>
 		<span class="nx">magnitude</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">phase</span><span class="p">));</span>
 <span class="p">};</span>
 
 <span class="nx">ComplexNumber</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * @return {number} real component</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {number} real component</span>
+<span class="cm">	 */</span>
 	<span class="nx">real</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {number} imaginary component</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {number} imaginary component</span>
+<span class="cm">	 */</span>
 	<span class="nx">imag</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {number} length of the vector in the complex plane</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {number} length of the vector in the complex plane</span>
+<span class="cm">	 */</span>
 	<span class="nx">magnitude</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {number} angle of the vector (in radians) in the complex plane relative to the positive real axis</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {number} angle of the vector (in radians) in the complex plane relative to the positive real axis</span>
+<span class="cm">	 */</span>
 	<span class="nx">phase</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">);</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Equivalent of += operator.</span>
-<span class="c">	 * @param v {number}</span>
-<span class="c">	 * @chainable</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Equivalent of += operator.</span>
+<span class="cm">	 * @param v {number}</span>
+<span class="cm">	 * @chainable</span>
+<span class="cm">	 */</span>
 	<span class="nx">add</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">failIfConstant</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">+=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="o">;</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">+=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">+=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">+=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">+=</span> <span class="nx">v</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">+=</span> <span class="nx">v</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Equivalent of -= operator.</span>
-<span class="c">	 * @param v {number}</span>
-<span class="c">	 * @chainable</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Equivalent of -= operator.</span>
+<span class="cm">	 * @param v {number}</span>
+<span class="cm">	 * @chainable</span>
+<span class="cm">	 */</span>
 	<span class="nx">subtract</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">failIfConstant</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">-=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="o">;</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">-=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">-=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">-=</span> <span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">-=</span> <span class="nx">v</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">-=</span> <span class="nx">v</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Equivalent of *= operator.</span>
-<span class="c">	 * @param v {number}</span>
-<span class="c">	 * @chainable</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Equivalent of *= operator.</span>
+<span class="cm">	 * @param v {number}</span>
+<span class="cm">	 * @chainable</span>
+<span class="cm">	 */</span>
 	<span class="nx">multiply</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">failIfConstant</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="o">;</span>
-			<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">i</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">*</span><span class="nx">v</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">r</span><span class="o">;</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="nx">i</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">r</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">*=</span> <span class="nx">v</span><span class="o">;</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">*=</span> <span class="nx">v</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">*=</span> <span class="nx">v</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">*=</span> <span class="nx">v</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Equivalent of /= operator.</span>
-<span class="c">	 * @param v {number}</span>
-<span class="c">	 * @chainable</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Equivalent of /= operator.</span>
+<span class="cm">	 * @param v {number}</span>
+<span class="cm">	 * @chainable</span>
+<span class="cm">	 */</span>
 	<span class="nx">divide</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">failIfConstant</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">isComplexNumber</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">x</span>  <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">divide</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">r</span><span class="o">;</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">i</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">x</span>  <span class="o">=</span> <span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">divide</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">v</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">/=</span> <span class="nx">v</span><span class="o">;</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">/=</span> <span class="nx">v</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">/=</span> <span class="nx">v</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">/=</span> <span class="nx">v</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Equivalent of unary minus operator.</span>
-<span class="c">	 * @chainable</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Equivalent of unary minus operator.</span>
+<span class="cm">	 * @chainable</span>
+<span class="cm">	 */</span>
 	<span class="nx">negate</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="nx">failIfConstant</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Negates the imaginary part.</span>
-<span class="c">	 * @chainable</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Negates the imaginary part.</span>
+<span class="cm">	 * @chainable</span>
+<span class="cm">	 */</span>
 	<span class="nx">conjugate</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="nx">failIfConstant</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Rotates the number around the origin by the specified angle in radians.</span>
-<span class="c">	 * @param angle {number}</span>
-<span class="c">	 * @chainable</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Rotates the number around the origin by the specified angle in radians.</span>
+<span class="cm">	 * @param angle {number}</span>
+<span class="cm">	 * @chainable</span>
+<span class="cm">	 */</span>
 	<span class="nx">rotate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* float */</span>	<span class="nx">angle</span><span class="p">)</span>
+		<span class="cm">/* float */</span>	<span class="nx">angle</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">failIfConstant</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="nx">ComplexNumber</span><span class="p">.</span><span class="nx">fromPolar</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="nx">angle</span><span class="p">));</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="nx">ComplexNumber</span><span class="p">.</span><span class="nx">fromPolar</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">angle</span><span class="p">));</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+	<span class="p">},</span>
 
 	<span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
@@ -255,7 +255,7 @@
 		<span class="p">{</span>
 			<span class="k">return</span>  <span class="nx">v</span> <span class="o">===</span>  <span class="mi">1</span> <span class="o">?</span>  <span class="s1">&#39;i&#39;</span> <span class="o">:</span>
 					<span class="nx">v</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span> <span class="o">?</span> <span class="s1">&#39;-i&#39;</span> <span class="o">:</span>
-					<span class="nx">v</span> <span class="o">+</span> <span class="s1">&#39;i&#39;</span><span class="o">;</span>
+					<span class="nx">v</span> <span class="o">+</span> <span class="s1">&#39;i&#39;</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
@@ -273,7 +273,7 @@
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">ComplexNumber</span> <span class="o">=</span> <span class="nx">ComplexNumber</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">ComplexNumber</span> <span class="o">=</span> <span class="nx">ComplexNumber</span><span class="p">;</span>
 </pre></div>
 
                     </div>
@@ -298,11 +298,14 @@
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
                                 <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
                                 <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
                                 <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
@@ -338,7 +341,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">

@@ -47,152 +47,152 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * Displays an arithmetical expression the way you would write it on paper.</span>
-<span class="c"> * </span>
-<span class="c"> * @module gallery-mathcanvas</span>
-<span class="c"> * @namespace</span>
-<span class="c"> * @class MathCanvas</span>
-<span class="c"> * @extends Widget</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param config {Object} Widget configuration</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * Displays an arithmetical expression the way you would write it on paper.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-mathcanvas</span>
+<span class="cm"> * @namespace</span>
+<span class="cm"> * @class MathCanvas</span>
+<span class="cm"> * @extends Widget</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object} Widget configuration</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">MathCanvas</span><span class="p">(</span>
-	<span class="c">/* object */</span>	<span class="nx">config</span><span class="p">)</span>
+	<span class="cm">/* object */</span>	<span class="nx">config</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">config</span><span class="p">);</span>
+	<span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;MathCanvas&quot;</span><span class="o">;</span>
+<span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;MathCanvas&quot;</span><span class="p">;</span>
 
 <span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * The function to display.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config func</span>
-<span class="c">	 * @type {Y.MathFunction|String}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The function to display.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config func</span>
+<span class="cm">	 * @type {Y.MathFunction|String}</span>
+<span class="cm">	 */</span>
 	<span class="nx">func</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Value</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
 		<span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">?</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">Parser</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">:</span> <span class="nx">value</span><span class="o">;</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">Parser</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">:</span> <span class="nx">value</span><span class="p">;</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The font name to use.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config fontName</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The font name to use.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config fontName</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 */</span>
 	<span class="nx">fontName</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;sans-serif&#39;</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;sans-serif&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The font size to use, in em&#39;s.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config fontSize</span>
-<span class="c">	 * @type {number}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The font size to use, in em&#39;s.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config fontSize</span>
+<span class="cm">	 * @type {number}</span>
+<span class="cm">	 */</span>
 	<span class="nx">fontSize</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="mi">1</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="mi">1</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The minimum width of the canvas.  If the expression is wider, the</span>
-<span class="c">	 * width will increase to fit.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config minWidth</span>
-<span class="c">	 * @type {Integer}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The minimum width of the canvas.  If the expression is wider, the</span>
+<span class="cm">	 * width will increase to fit.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config minWidth</span>
+<span class="cm">	 * @type {Integer}</span>
+<span class="cm">	 */</span>
 	<span class="nx">minWidth</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="mi">100</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="mi">100</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * The minimum height of the canvas.  If the expression is taller, the</span>
-<span class="c">	 * height will increase to fit.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @config minHeight</span>
-<span class="c">	 * @type {Integer}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * The minimum height of the canvas.  If the expression is taller, the</span>
+<span class="cm">	 * height will increase to fit.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config minHeight</span>
+<span class="cm">	 * @type {Integer}</span>
+<span class="cm">	 */</span>
 	<span class="nx">minHeight</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="mi">100</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="mi">100</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
 <span class="kd">function</span> <span class="nx">setSize</span><span class="p">(</span>
-	<span class="c">/* width/height */</span>	<span class="nx">type</span><span class="p">)</span>
+	<span class="cm">/* width/height */</span>	<span class="nx">type</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">type</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">toUpperCase</span><span class="p">()</span> <span class="o">+</span> <span class="nx">type</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-	<span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;min&#39;</span><span class="o">+</span><span class="nx">c</span><span class="p">)</span><span class="o">,</span> <span class="k">this</span><span class="p">[</span> <span class="s1">&#39;render_&#39;</span><span class="o">+</span><span class="nx">type</span> <span class="p">]</span><span class="o">+</span><span class="mi">5</span><span class="p">);</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">type</span><span class="o">,</span> <span class="nx">v</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">type</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;min&#39;</span><span class="o">+</span><span class="nx">c</span><span class="p">),</span> <span class="k">this</span><span class="p">[</span> <span class="s1">&#39;render_&#39;</span><span class="o">+</span><span class="nx">type</span> <span class="p">]</span><span class="o">+</span><span class="mi">5</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">v</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">v</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathCanvas</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathCanvas</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;funcChange&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;funcChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">();</span>
 		<span class="p">});</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;fontNameChange&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;fontSizeChange&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;minWidthChange&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;minHeightChange&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;fontNameChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;fontSizeChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;minWidthChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;minHeightChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">);</span>
 
-		<span class="c">// http://www.thegalaxytabforum.com/index.php?/topic/621-detecting-android-tablets-with-javascript</span>
+		<span class="c1">// http://www.thegalaxytabforum.com/index.php?/topic/621-detecting-android-tablets-with-javascript</span>
 
 		<span class="kd">var</span> <span class="nx">agent</span>    <span class="o">=</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
-		<span class="kd">var</span> <span class="nx">platform</span> <span class="o">=</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">platform</span><span class="o">;</span>
-		<span class="c">// We need to eliminate Symbian, Series 60, Windows Mobile and Blackberry</span>
-		<span class="c">// browsers for this quick and dirty check. This can be done with the user agent.</span>
+		<span class="kd">var</span> <span class="nx">platform</span> <span class="o">=</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">platform</span><span class="p">;</span>
+		<span class="c1">// We need to eliminate Symbian, Series 60, Windows Mobile and Blackberry</span>
+		<span class="c1">// browsers for this quick and dirty check. This can be done with the user agent.</span>
 		<span class="kd">var</span> <span class="nx">otherBrowser</span> <span class="o">=</span> <span class="nx">agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;series60&quot;</span><span class="p">)</span>   <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span>
 						   <span class="nx">agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;symbian&quot;</span><span class="p">)</span>    <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span>
 						   <span class="nx">agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;windows ce&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span>
-						   <span class="nx">agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;blackberry&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-		<span class="c">// If the screen orientation is defined we are in a modern mobile OS</span>
-		<span class="kd">var</span> <span class="nx">mobileOS</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">orientation</span> <span class="o">!=</span> <span class="s1">&#39;undefined&#39;</span><span class="o">;</span>
-		<span class="c">// If touch events are defined we are in a modern touch screen OS</span>
-		<span class="kd">var</span> <span class="nx">touchOS</span> <span class="o">=</span> <span class="s1">&#39;ontouchstart&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="o">;</span>
-		<span class="c">// iPhone and iPad can be reliably identified with the navigator.platform</span>
-		<span class="c">// string, which is currently only available on these devices.</span>
-		<span class="kd">var</span> <span class="nx">iOS</span> <span class="o">=</span> <span class="nx">platform</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;iPhone&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="nx">platform</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;iPad&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-		<span class="c">// If the user agent string contains &quot;android&quot; then it&#39;s Android. If it</span>
-		<span class="c">// doesn&#39;t but it&#39;s not another browser, not an iOS device and we&#39;re in</span>
-		<span class="c">// a mobile and touch OS then we can be 99% certain that it&#39;s Android.</span>
+						   <span class="nx">agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;blackberry&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="c1">// If the screen orientation is defined we are in a modern mobile OS</span>
+		<span class="kd">var</span> <span class="nx">mobileOS</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">orientation</span> <span class="o">!=</span> <span class="s1">&#39;undefined&#39;</span><span class="p">;</span>
+		<span class="c1">// If touch events are defined we are in a modern touch screen OS</span>
+		<span class="kd">var</span> <span class="nx">touchOS</span> <span class="o">=</span> <span class="s1">&#39;ontouchstart&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">;</span>
+		<span class="c1">// iPhone and iPad can be reliably identified with the navigator.platform</span>
+		<span class="c1">// string, which is currently only available on these devices.</span>
+		<span class="kd">var</span> <span class="nx">iOS</span> <span class="o">=</span> <span class="nx">platform</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;iPhone&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="nx">platform</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;iPad&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="c1">// If the user agent string contains &quot;android&quot; then it&#39;s Android. If it</span>
+		<span class="c1">// doesn&#39;t but it&#39;s not another browser, not an iOS device and we&#39;re in</span>
+		<span class="c1">// a mobile and touch OS then we can be 99% certain that it&#39;s Android.</span>
 		<span class="kd">var</span> <span class="nx">android</span> <span class="o">=</span> <span class="nx">agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;android&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="p">(</span><span class="o">!</span><span class="nx">iOS</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">otherBrowser</span> <span class="o">&amp;&amp;</span> <span class="nx">touchOS</span> <span class="o">&amp;&amp;</span> <span class="nx">mobileOS</span><span class="p">);</span>
 
-		 <span class="c">// navigator.platform doesn&#39;t work for iPhoney</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">touch</span> <span class="o">=</span> <span class="nx">touchOS</span> <span class="o">||</span> <span class="nx">agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;iphone&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		 <span class="c1">// navigator.platform doesn&#39;t work for iPhoney</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">touch</span> <span class="o">=</span> <span class="nx">touchOS</span> <span class="o">||</span> <span class="nx">agent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;iphone&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+	<span class="p">},</span>
 
 	<span class="nx">renderUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">);</span>
 
 		<span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;minWidth&#39;</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="nx">w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 
 		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;minHeight&#39;</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="nx">w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
 			<span class="s1">&#39;&lt;canvas width=&quot;&#39;</span> <span class="o">+</span> <span class="nx">w</span> <span class="o">+</span> <span class="s1">&#39;&quot; height=&quot;&#39;</span> <span class="o">+</span> <span class="nx">h</span> <span class="o">+</span> <span class="s1">&#39;&quot; tabindex=&quot;0&quot;&gt;&lt;/canvas&gt;&#39;</span><span class="p">);</span>
@@ -204,39 +204,38 @@
 		<span class="nx">container</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">Context2d</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">);</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="o">,</span> <span class="nx">math_rendering</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">math_canvas</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">,</span> <span class="nx">math_rendering</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">math_canvas</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">();</span>
 
-		<span class="c">// input (for mobile)</span>
+		<span class="c1">// input (for mobile)</span>
 
-		<span class="kd">function</span> <span class="nx">buttonRow</span><span class="p">(</span><span class="nx">map</span><span class="p">)</span>
+		<span class="kd">function</span> <span class="nx">buttonRow</span><span class="p">(</span><span class="nx">list</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">map</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span>
+			<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">s</span> <span class="o">+=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-{value}&quot; value=&quot;{value}&quot;&gt;{label}&lt;/button&gt;&#39;</span><span class="o">,</span>
+				<span class="k">return</span> <span class="nx">s</span> <span class="o">+</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-{value}&quot; value=&quot;{value}&quot;&gt;{label}&lt;/button&gt;&#39;</span><span class="p">,</span>
 				<span class="p">{</span>
-					<span class="nx">value</span><span class="o">:</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="nx">obj</span><span class="o">,</span>
-					<span class="kd">label</span><span class="o">:</span> <span class="nx">obj</span><span class="p">.</span><span class="kd">label</span> <span class="o">||</span> <span class="nx">obj</span>
+					<span class="nx">value</span><span class="o">:</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="nx">obj</span><span class="p">,</span>
+					<span class="nx">label</span><span class="o">:</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">label</span> <span class="o">||</span> <span class="nx">obj</span>
 				<span class="p">});</span>
 			<span class="p">});</span>
 
-			<span class="k">return</span> <span class="s1">&#39;&lt;p&gt;&#39;</span> <span class="o">+</span> <span class="nx">s</span> <span class="o">+</span> <span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="o">;</span>
+			<span class="k">return</span> <span class="s1">&#39;&lt;p&gt;&#39;</span> <span class="o">+</span> <span class="nx">s</span> <span class="o">+</span> <span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">touch</span> <span class="o">||</span> <span class="nx">YUI</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">debug_mathcanvs_keyboard</span><span class="p">)</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">touch</span> <span class="o">||</span> <span class="nx">YUI</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">debug_mathcanvas_keyboard</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
 				<span class="s1">&#39;&lt;div class=&quot;keyboard&quot;&gt;&#39;</span> <span class="o">+</span>
-					<span class="nx">buttonRow</span><span class="p">([</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="mi">7</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="mi">9</span><span class="o">,</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span>
-					<span class="nx">buttonRow</span><span class="p">([</span><span class="s1">&#39;+&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;-&#39;</span><span class="o">,</span><span class="kd">label</span><span class="o">:</span><span class="s1">&#39;&amp;ndash;&#39;</span><span class="p">}</span><span class="o">,</span> <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;*&#39;</span><span class="o">,</span><span class="kd">label</span><span class="o">:</span><span class="s1">&#39;&amp;times;&#39;</span><span class="p">}</span><span class="o">,</span> <span class="s1">&#39;/&#39;</span><span class="o">,</span> <span class="s1">&#39;^&#39;</span><span class="o">,</span> <span class="s1">&#39;|&#39;</span><span class="o">,</span> <span class="s1">&#39;,&#39;</span><span class="o">,</span> <span class="s1">&#39;e&#39;</span><span class="o">,</span> <span class="s1">&#39;\u03c0&#39;</span><span class="o">,</span> <span class="s1">&#39;.&#39;</span><span class="p">])</span> <span class="o">+</span>
+					<span class="nx">buttonRow</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span>
+					<span class="nx">buttonRow</span><span class="p">([</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="nx">label</span><span class="o">:</span><span class="s1">&#39;&amp;ndash;&#39;</span><span class="p">},</span> <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;*&#39;</span><span class="p">,</span><span class="nx">label</span><span class="o">:</span><span class="s1">&#39;&amp;times;&#39;</span><span class="p">},</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;\u03c0&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">])</span> <span class="o">+</span>
 					<span class="s1">&#39;&lt;p class=&quot;last&quot;&gt;&#39;</span> <span class="o">+</span>
-						<span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-hide&quot; value=&quot;hide&quot;&gt;&amp;dArr;&lt;/button&gt;&#39;</span> <span class="o">+</span>
-						<span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-eval&quot; value=&quot;=&quot;&gt;=&lt;/button&gt;&#39;</span> <span class="o">+</span>
-						<span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-delete&quot; value=&quot;delete&quot;&gt;&amp;empty;&lt;/button&gt;&#39;</span> <span class="o">+</span>
-						<span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-expand&quot; value=&quot;expand&quot;&gt;&amp;hArr;&lt;/button&gt;&#39;</span> <span class="o">+</span>
+						<span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-hide&quot; value=&quot;hide&quot; title=&quot;Hide keyboard&quot;&gt;&amp;dArr;&lt;/button&gt;&#39;</span> <span class="o">+</span>
+						<span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-eval&quot; value=&quot;=&quot; title=&quot;Evaluate expression&quot;&gt;=&lt;/button&gt;&#39;</span> <span class="o">+</span>
+						<span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-delete&quot; value=&quot;delete&quot; title=&quot;Delete selection&quot;&gt;&amp;empty;&lt;/button&gt;&#39;</span> <span class="o">+</span>
+						<span class="s1">&#39;&lt;button type=&quot;button&quot; class=&quot;keyboard-expand&quot; value=&quot;expand&quot; title=&quot;Expand selection&quot;&gt;&amp;hArr;&lt;/button&gt;&#39;</span> <span class="o">+</span>
 						<span class="s1">&#39;&lt;select class=&quot;keyboard-func&quot;&gt;&#39;</span> <span class="o">+</span>
 							<span class="s1">&#39;&lt;option&gt;Functions&lt;/option&gt;&#39;</span> <span class="o">+</span>
 							<span class="s1">&#39;&lt;optgroup&gt;&#39;</span> <span class="o">+</span>
@@ -279,45 +278,45 @@
 			<span class="p">);</span>
 			<span class="nx">container</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">);</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="o">,</span> <span class="p">(</span><span class="o">-</span><span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">bindUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousedown&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousedown&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">function</span> <span class="nx">select</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">xy</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getXY</span><span class="p">();</span>
 				<span class="kd">var</span> <span class="nx">pt</span> <span class="o">=</span>
 				<span class="p">[</span>
-					<span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">-</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="nx">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">,</span>
+					<span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">-</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="nx">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
 					<span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">-</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="nx">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 				<span class="p">];</span>
 
-				<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">.</span><span class="nx">getSelection</span><span class="p">(</span><span class="nx">anchor</span><span class="o">,</span> <span class="nx">pt</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">.</span><span class="nx">getSelection</span><span class="p">(</span><span class="nx">anchor</span><span class="p">,</span> <span class="nx">pt</span><span class="p">);</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">();</span>
 			<span class="p">}</span>
 
 			<span class="kd">var</span> <span class="nx">bounds</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">.</span><span class="nx">getBounds</span><span class="p">();</span>
 			<span class="kd">var</span> <span class="nx">offset</span> <span class="o">=</span>
 			<span class="p">[</span>
-				<span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">bounds</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">,</span>
+				<span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">bounds</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
 				<span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">bounds</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 			<span class="p">];</span>
 
 			<span class="kd">var</span> <span class="nx">xy</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getXY</span><span class="p">();</span>
 			<span class="kd">var</span> <span class="nx">anchor</span> <span class="o">=</span>
 			<span class="p">[</span>
-				<span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">-</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="nx">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">,</span>
+				<span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">-</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="nx">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
 				<span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">-</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="nx">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 			<span class="p">];</span>
 
-			<span class="nx">select</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">e</span><span class="p">);</span>
-			<span class="kd">var</span> <span class="nx">handler</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousemove&#39;</span><span class="o">,</span> <span class="nx">select</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="nx">select</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">e</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">handler</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="nx">select</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 
-			<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">doc</span><span class="p">).</span><span class="nx">once</span><span class="p">(</span><span class="s1">&#39;mouseup&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">doc</span><span class="p">).</span><span class="nx">once</span><span class="p">(</span><span class="s1">&#39;mouseup&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="nx">handler</span><span class="p">.</span><span class="nx">detach</span><span class="p">();</span>
 				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
@@ -328,14 +327,14 @@
 				<span class="p">{</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">hideKeyboard</span><span class="p">();</span>
 				<span class="p">}</span>
-			<span class="p">}</span><span class="o">,</span>
+			<span class="p">},</span>
 			<span class="k">this</span><span class="p">);</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
-<span class="c">//			console.log(e.charCode);</span>
+<span class="c1">//			console.log(e.charCode);</span>
 
 			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">charCode</span> <span class="o">==</span> <span class="mi">32</span><span class="p">)</span>
 			<span class="p">{</span>
@@ -345,12 +344,12 @@
 			<span class="p">{</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">deleteSelection</span><span class="p">();</span>
 			<span class="p">}</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">delegate</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">delegate</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">op</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">op</span> <span class="o">==</span> <span class="s1">&#39;hide&#39;</span><span class="p">)</span>
@@ -370,35 +369,35 @@
 					<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;evaluate&#39;</span><span class="p">);</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">hideKeyboard</span><span class="p">();</span>
 				<span class="p">}</span>
-			<span class="p">}</span><span class="o">,</span>
-			<span class="s1">&#39;button&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="p">},</span>
+			<span class="s1">&#39;button&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.keyboard-func&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.keyboard-func&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;selectedIndex&#39;</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;selectedIndex&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 			<span class="p">});</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.keyboard-const&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.keyboard-const&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;selectedIndex&#39;</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;selectedIndex&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 			<span class="p">});</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">destructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span>  <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span>  <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Shows touch keyboard.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Shows touch keyboard.</span>
+<span class="cm">	 */</span>
 	<span class="nx">showKeyboard</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span><span class="o">;</span>
+			<span class="k">return</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">keyboard_anim</span><span class="p">)</span>
@@ -408,25 +407,25 @@
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">keyboard_anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">(</span>
 		<span class="p">{</span>
-			<span class="nx">node</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="o">,</span>
+			<span class="nx">node</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">,</span>
 			<span class="nx">to</span><span class="o">:</span>
 			<span class="p">{</span>
 				<span class="nx">bottom</span><span class="o">:</span> <span class="mi">0</span>
-			<span class="p">}</span><span class="o">,</span>
+			<span class="p">},</span>
 			<span class="nx">duration</span><span class="o">:</span> <span class="mf">0.5</span>
 		<span class="p">});</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">keyboard_anim</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Hides touch keyboard.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Hides touch keyboard.</span>
+<span class="cm">	 */</span>
 	<span class="nx">hideKeyboard</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span><span class="o">;</span>
+			<span class="k">return</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">keyboard_anim</span><span class="p">)</span>
@@ -436,20 +435,20 @@
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">keyboard_anim</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">(</span>
 		<span class="p">{</span>
-			<span class="nx">node</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="o">,</span>
+			<span class="nx">node</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">,</span>
 			<span class="nx">to</span><span class="o">:</span>
 			<span class="p">{</span>
 				<span class="nx">bottom</span><span class="o">:</span> <span class="o">-</span><span class="k">this</span><span class="p">.</span><span class="nx">keyboard</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">)</span>
-			<span class="p">}</span><span class="o">,</span>
+			<span class="p">},</span>
 			<span class="nx">duration</span><span class="o">:</span> <span class="mf">0.5</span>
 		<span class="p">});</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">keyboard_anim</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Expands the selection up one level of the parse tree.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Expands the selection up one level of the parse tree.</span>
+<span class="cm">	 */</span>
 	<span class="nx">expandSelection</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
@@ -461,37 +460,37 @@
 				<span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">();</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Deletes the selected sub-expression.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Deletes the selected sub-expression.</span>
+<span class="cm">	 */</span>
 	<span class="nx">deleteSelection</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">deleteFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selection</span><span class="p">).</span><span class="nx">func</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param f {MathFunction} function to remove from the overall expression</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param f {MathFunction} function to remove from the overall expression</span>
+<span class="cm">	 */</span>
 	<span class="nx">deleteFunction</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* MathFunction */</span> <span class="nx">f</span><span class="p">)</span>
+		<span class="cm">/* MathFunction */</span> <span class="nx">f</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">getParent</span><span class="p">();</span>
-		<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">p</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">p</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;func&#39;</span><span class="o">,</span> <span class="s1">&#39;0&#39;</span><span class="p">);</span>
-			<span class="k">return</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;func&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">);</span>
+			<span class="k">return</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">getArgCount</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">deleteFunction</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
-			<span class="k">return</span><span class="o">;</span>
+			<span class="k">return</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">getArgCount</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 		<span class="p">{</span>
@@ -499,13 +498,13 @@
 			<span class="kd">var</span> <span class="nx">p1</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">getParent</span><span class="p">();</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">p1</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">p1</span><span class="p">.</span><span class="nx">replaceArg</span><span class="p">(</span><span class="nx">p</span><span class="o">,</span> <span class="nx">s</span><span class="p">);</span>
+				<span class="nx">p1</span><span class="p">.</span><span class="nx">replaceArg</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">s</span><span class="p">);</span>
 			<span class="p">}</span>
 			<span class="k">else</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-				<span class="nx">s</span><span class="p">.</span><span class="nx">parent</span>       <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;func&#39;</span><span class="o">,</span> <span class="nx">s</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+				<span class="nx">s</span><span class="p">.</span><span class="nx">parent</span>       <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;func&#39;</span><span class="p">,</span> <span class="nx">s</span><span class="p">);</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
@@ -513,220 +512,220 @@
 			<span class="nx">p</span><span class="p">.</span><span class="nx">removeArg</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">();</span>	<span class="c">// update rect_list</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">();</span>	<span class="c1">// update rect_list</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_renderExpression</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/*</span>
-<span class="c">	 * Renders the expression.</span>
-<span class="c">	 */</span>
+	<span class="cm">/*</span>
+<span class="cm">	 * Renders the expression.</span>
+<span class="cm">	 */</span>
 	<span class="nx">_renderExpression</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">)</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">),</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">));</span>
 
 		<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;func&#39;</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">f</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span><span class="o">;</span>
+			<span class="k">return</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RectList</span><span class="p">();</span>
 
-		<span class="kd">var</span> <span class="nx">top_left</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">x</span><span class="o">:</span><span class="mi">0</span><span class="o">,</span> <span class="nx">y</span><span class="o">:</span><span class="mi">0</span> <span class="p">};</span>
-		<span class="nx">f</span><span class="p">.</span><span class="nx">prepareToRender</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="o">,</span> <span class="nx">top_left</span><span class="o">,</span> <span class="mi">100</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">top_left</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">x</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span><span class="mi">0</span> <span class="p">};</span>
+		<span class="nx">f</span><span class="p">.</span><span class="nx">prepareToRender</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">,</span> <span class="nx">top_left</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">);</span>
 
 		<span class="kd">var</span> <span class="nx">bounds</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">.</span><span class="nx">getBounds</span><span class="p">();</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">render_width</span>  <span class="o">=</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">bounds</span><span class="p">);</span>
-		<span class="nx">setSize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s1">&#39;width&#39;</span><span class="p">);</span>
+		<span class="nx">setSize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">render_height</span> <span class="o">=</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">bounds</span><span class="p">);</span>
-		<span class="nx">setSize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s1">&#39;height&#39;</span><span class="p">);</span>
+		<span class="nx">setSize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">translate</span><span class="p">(</span>
-			<span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">bounds</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">,</span>
+			<span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">bounds</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
 			<span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">bounds</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">));</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selection</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selection</span><span class="p">).</span><span class="nx">rect</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">selection</span><span class="p">).</span><span class="nx">rect</span><span class="p">;</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;fillStyle&#39;</span><span class="o">,</span> <span class="s1">&#39;#99FFFF&#39;</span><span class="p">);</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="o">,</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="o">,</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;fillStyle&#39;</span><span class="p">,</span> <span class="s1">&#39;#99FFFF&#39;</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">,</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">r</span><span class="p">),</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">r</span><span class="p">));</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
 		<span class="p">}</span>
 
-		<span class="nx">f</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">);</span>
+		<span class="nx">f</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">rect_list</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="kd">var</span> <span class="nx">paren_angle</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">/</span><span class="mi">6</span><span class="o">;</span>	<span class="c">// 30 degrees</span>
+<span class="kd">var</span> <span class="nx">paren_angle</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">/</span><span class="mi">6</span><span class="p">;</span>	<span class="c1">// 30 degrees</span>
 
 <span class="kd">var</span> <span class="nx">math_rendering</span> <span class="o">=</span>
 <span class="p">{</span>
 	<span class="nx">drawString</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* int */</span>			<span class="nx">left</span><span class="o">,</span>
-		<span class="c">/* int */</span>			<span class="nx">midline</span><span class="o">,</span>
-		<span class="c">/* percentage */</span>	<span class="nx">font_size</span><span class="o">,</span>
-		<span class="c">/* string */</span>		<span class="nx">s</span><span class="p">)</span>
+		<span class="cm">/* int */</span>			<span class="nx">left</span><span class="p">,</span>
+		<span class="cm">/* int */</span>			<span class="nx">midline</span><span class="p">,</span>
+		<span class="cm">/* percentage */</span>	<span class="nx">font_size</span><span class="p">,</span>
+		<span class="cm">/* string */</span>		<span class="nx">s</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getLineHeight</span><span class="p">(</span><span class="nx">font_size</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_setFont</span><span class="p">(</span><span class="nx">font_size</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;textBaseline&#39;</span><span class="o">,</span> <span class="s1">&#39;top&#39;</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">s</span><span class="o">,</span> <span class="nx">left</span><span class="o">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">midline</span> <span class="o">-</span> <span class="nx">h</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;textBaseline&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">fillText</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">left</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">midline</span> <span class="o">-</span> <span class="nx">h</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
+	<span class="p">},</span>
 
 	<span class="nx">getLineHeight</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* percentage */</span>	<span class="nx">font_size</span><span class="p">)</span>
+		<span class="cm">/* percentage */</span>	<span class="nx">font_size</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="mi">13</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">math_canvas</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fontSize&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="nx">font_size</span><span class="o">/</span><span class="mf">100.0</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">getStringWidth</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* percentage */</span>	<span class="nx">font_size</span><span class="o">,</span>
-		<span class="c">/* string */</span>		<span class="nx">text</span><span class="p">)</span>
+		<span class="cm">/* percentage */</span>	<span class="nx">font_size</span><span class="p">,</span>
+		<span class="cm">/* string */</span>		<span class="nx">text</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_setFont</span><span class="p">(</span><span class="nx">font_size</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">measureText</span><span class="p">(</span><span class="nx">text</span><span class="p">).</span><span class="nx">width</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">measureText</span><span class="p">(</span><span class="nx">text</span><span class="p">).</span><span class="nx">width</span><span class="p">;</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">restore</span><span class="p">();</span>
-		<span class="k">return</span> <span class="nx">w</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">w</span><span class="p">;</span>
+	<span class="p">},</span>
 
 	<span class="nx">_setFont</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* percentage */</span>	<span class="nx">font_size</span><span class="p">)</span>
+		<span class="cm">/* percentage */</span>	<span class="nx">font_size</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span>
 			<span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">math_canvas</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fontSize&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="nx">font_size</span><span class="o">/</span><span class="mf">100.0</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;em &#39;</span> <span class="o">+</span>
 			 <span class="k">this</span><span class="p">.</span><span class="nx">math_canvas</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;fontName&#39;</span><span class="p">));</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">getSuperSubFontSize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* percentage */</span>	<span class="nx">font_size</span><span class="p">)</span>
+		<span class="cm">/* percentage */</span>	<span class="nx">font_size</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">font_size</span> <span class="o">*</span> <span class="mf">0.6</span><span class="o">;</span>
-		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">v</span><span class="o">,</span> <span class="mi">40</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">font_size</span> <span class="o">*</span> <span class="mf">0.6</span><span class="p">;</span>
+		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">v</span><span class="p">,</span> <span class="mi">40</span><span class="p">);</span>
+	<span class="p">},</span>
 
 	<span class="nx">getSuperscriptHeight</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
+		<span class="cm">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+	<span class="p">},</span>
 
 	<span class="nx">getSubscriptDepth</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
+		<span class="cm">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+	<span class="p">},</span>
 
 	<span class="nx">drawSquareBrackets</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
+		<span class="cm">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="o">;</span>
-		<span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getSquareBracketWidth</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getSquareBracketWidth</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="o">-</span><span class="nx">w</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="nx">h</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="nx">w</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="o">-</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">h</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">right</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="nx">w</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="mi">0</span><span class="o">,</span><span class="nx">h</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="o">-</span><span class="nx">w</span><span class="o">,</span><span class="mi">0</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">right</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">h</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="o">-</span><span class="nx">w</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">getSquareBracketWidth</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
+		<span class="cm">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
 		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="mi">3</span><span class="o">+</span><span class="p">((</span><span class="nx">h</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">));</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">drawParentheses</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
+		<span class="cm">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">h</span>       <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">h</span>       <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
 		<span class="kd">var</span> <span class="nx">radius</span>  <span class="o">=</span> <span class="nx">h</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">paren_angle</span><span class="p">));</span>
 		<span class="kd">var</span> <span class="nx">radius1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">radius</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">yc</span>      <span class="o">=</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">ycenter</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">pw</span>      <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getParenthesisWidth</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">pw</span> <span class="o">+</span> <span class="nx">radius</span><span class="o">,</span> <span class="nx">yc</span><span class="o">,</span> <span class="nx">radius1</span><span class="o">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">-</span><span class="nx">paren_angle</span><span class="o">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">+</span><span class="nx">paren_angle</span><span class="o">,</span> <span class="kc">false</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">pw</span> <span class="o">+</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">yc</span><span class="p">,</span> <span class="nx">radius1</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">-</span><span class="nx">paren_angle</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">+</span><span class="nx">paren_angle</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">right</span> <span class="o">+</span> <span class="nx">pw</span> <span class="o">-</span> <span class="nx">radius</span><span class="o">,</span> <span class="nx">yc</span><span class="o">,</span> <span class="nx">radius1</span><span class="o">,</span> <span class="nx">paren_angle</span><span class="o">,</span> <span class="o">-</span><span class="nx">paren_angle</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">right</span> <span class="o">+</span> <span class="nx">pw</span> <span class="o">-</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">yc</span><span class="p">,</span> <span class="nx">radius1</span><span class="p">,</span> <span class="nx">paren_angle</span><span class="p">,</span> <span class="o">-</span><span class="nx">paren_angle</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">getParenthesisWidth</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
+		<span class="cm">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
 		<span class="k">return</span> <span class="mi">2</span><span class="o">+</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="p">(</span><span class="nx">h</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">paren_angle</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">paren_angle</span><span class="p">)));</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">drawVerticalBar</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
+		<span class="cm">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">+</span><span class="mi">1</span><span class="o">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">getVerticalBarWidth</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="mi">3</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="mi">3</span><span class="p">;</span>
+	<span class="p">},</span>
 
 	<span class="nx">drawHorizontalBar</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
+		<span class="cm">/* rect */</span>	<span class="nx">r</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">,</span> <span class="nx">y</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">right</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="nx">y</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">right</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">getHorizontalBarHeight</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="mi">3</span><span class="o">;</span>
+		<span class="k">return</span> <span class="mi">3</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="nx">MathParser</span><span class="p">.</span><span class="nx">yy</span><span class="p">.</span><span class="nx">MathFunction</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">MathFunction</span><span class="o">;</span>
+<span class="nx">MathParser</span><span class="p">.</span><span class="nx">yy</span><span class="p">.</span><span class="nx">MathFunction</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">MathFunction</span><span class="p">;</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">MathCanvas</span>          <span class="o">=</span> <span class="nx">MathCanvas</span><span class="o">;</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">RectList</span> <span class="o">=</span> <span class="nx">RectList</span><span class="o">;</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">Parser</span>   <span class="o">=</span> <span class="nx">MathParser</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">MathCanvas</span>          <span class="o">=</span> <span class="nx">MathCanvas</span><span class="p">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">RectList</span> <span class="o">=</span> <span class="nx">RectList</span><span class="p">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">MathCanvas</span><span class="p">.</span><span class="nx">Parser</span>   <span class="o">=</span> <span class="nx">MathParser</span><span class="p">;</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * Parser used to convert a string expression into Y.MathFunction</span>
-<span class="c"> * </span>
-<span class="c"> * @namespace MathCanvas</span>
-<span class="c"> * @class Parser</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * Parser used to convert a string expression into Y.MathFunction</span>
+<span class="cm"> * </span>
+<span class="cm"> * @namespace MathCanvas</span>
+<span class="cm"> * @class Parser</span>
+<span class="cm"> */</span>
 
-<span class="c">/**</span>
-<span class="c"> * Parses a string into a Y.MathFunction.</span>
-<span class="c"> * </span>
-<span class="c"> * @method parse</span>
-<span class="c"> * @static</span>
-<span class="c"> * @param expr {String} expression to parse</span>
-<span class="c"> * @return {MathFunction}</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * Parses a string into a Y.MathFunction.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method parse</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param expr {String} expression to parse</span>
+<span class="cm"> * @return {MathFunction}</span>
+<span class="cm"> */</span>
 </pre></div>
 
                     </div>
@@ -751,11 +750,14 @@
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class="selected"><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
                                 <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
                                 <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
                                 <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
@@ -865,7 +867,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">

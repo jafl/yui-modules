@@ -1,0 +1,1251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-math   PageLayoutCols.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-math&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-math.html" title="gallery-math">gallery-math</a>
+                
+                 &gt; PageLayoutCols.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+<span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Manages the stacked columns on a page between header and footer:</span>
+<span class="cm"> *		header, body column, body column, ..., body column, footer</span>
+<span class="cm"> *</span>
+<span class="cm"> * This class must be used as a singleton.</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">Dom</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Dom</span><span class="p">,</span>
+	<span class="nx">SDom</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">SATG</span><span class="p">.</span><span class="nx">Dom</span><span class="p">,</span>
+	<span class="nx">Event</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Event</span><span class="p">,</span>
+	<span class="nx">CustomEvent</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">CustomEvent</span><span class="p">,</span>
+	<span class="nx">PageLayout</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">SATG</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">,</span>
+	<span class="nx">DDTarget</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">DDTarget</span><span class="p">,</span>
+	<span class="nx">PageLayoutDDProxy</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">SATG</span><span class="p">.</span><span class="nx">PageLayoutDDProxy</span><span class="p">,</span>
+	<span class="nx">Prof</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">tool</span><span class="p">.</span><span class="nx">Profiler</span><span class="p">;</span>
+
+<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">SATG</span><span class="p">.</span><span class="nx">PageLayoutT</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">PageLayoutT</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">SATG</span><span class="p">.</span><span class="nx">PageLayoutT</span><span class="p">,</span>
+
+	<span class="nx">the_mode</span>                       <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+	<span class="nx">the_init_flag</span>                  <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+	<span class="nx">the_sticky_footer_flag</span>         <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+	<span class="nx">the_match_content_heights_flag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+
+	<span class="nx">the_min_page_height</span> <span class="o">=</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">min_page_height</span><span class="p">,</span>	<span class="c1">// em</span>
+	<span class="nx">the_min_page_width</span>  <span class="o">=</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">min_page_width</span><span class="p">,</span>	<span class="c1">// em</span>
+
+	<span class="nx">the_max_search_depth</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+	<span class="nx">reflow_delay</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+
+	<span class="nx">the_header_container</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+	<span class="nx">the_body_container</span>   <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+	<span class="nx">the_body_horiz_mbp</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>		<span class="c1">// compute once; required for bug in Safari 3.1.2</span>
+	<span class="nx">the_body_vert_mbp</span>    <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>		<span class="c1">// compute once; required for bug in Safari 3.1.2</span>
+	<span class="nx">the_footer_container</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+	<span class="nx">the_resize_event</span>     <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+
+	<span class="nx">the_body_cols</span> <span class="o">=</span>
+	<span class="p">{</span>
+		<span class="nx">viewport</span><span class="o">:</span>    <span class="p">{</span> <span class="nx">w</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">h</span><span class="o">:</span> <span class="mi">0</span> <span class="p">},</span>
+		<span class="nx">cols</span><span class="o">:</span>        <span class="p">[],</span>
+		<span class="nx">modules</span><span class="o">:</span>     <span class="p">[],</span>	<span class="c1">// list of modules inside each column</span>
+		<span class="nx">col_widths</span><span class="o">:</span>  <span class="p">[],</span>	<span class="c1">// list of percentages</span>
+		<span class="nx">row_heights</span><span class="o">:</span> <span class="p">[]</span>		<span class="c1">// list of lists of percentages</span>
+	<span class="p">},</span>
+
+	<span class="nx">the_dd_targets</span> <span class="o">=</span> <span class="p">{},</span>
+	<span class="nx">the_dd_nubs</span>    <span class="o">=</span> <span class="p">{};</span>
+
+<span class="nx">PageLayoutT</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="nx">horizontal</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+
+	<span class="nx">page_header_marker_class</span><span class="o">:</span>  <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">page_header_marker_class</span><span class="p">,</span>
+	<span class="nx">page_content_marker_class</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">page_content_marker_class</span><span class="p">,</span>
+	<span class="nx">page_footer_marker_class</span><span class="o">:</span>  <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">page_footer_marker_class</span><span class="p">,</span>
+	<span class="nx">page_block_re</span><span class="o">:</span>             <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">page_block_re</span><span class="p">,</span>
+
+	<span class="nx">body_col_class</span><span class="o">:</span>      <span class="s1">&#39;satg-module-col&#39;</span><span class="p">,</span>
+	<span class="nx">module_class</span><span class="o">:</span>        <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">module_class</span><span class="p">,</span>
+	<span class="nx">module_header_class</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">module_header_class</span><span class="p">,</span>
+	<span class="nx">module_body_class</span><span class="o">:</span>   <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">module_body_class</span><span class="p">,</span>
+	<span class="nx">module_footer_class</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">module_footer_class</span><span class="p">,</span>
+
+	<span class="nx">not_managed_class</span><span class="o">:</span>        <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">not_managed_class</span><span class="p">,</span>
+	<span class="nx">collapse_horiz_nub_regex</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">collapse_horiz_nub_regex</span><span class="p">,</span>
+	<span class="nx">collapse_vert_nub_class</span><span class="o">:</span>  <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">collapse_vert_nub_class</span><span class="p">,</span>
+	<span class="nx">expand_horiz_nub_regex</span><span class="o">:</span>   <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">expand_horiz_nub_regex</span><span class="p">,</span>
+	<span class="nx">expand_vert_nub_class</span><span class="o">:</span>    <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">expand_vert_nub_class</span><span class="p">,</span>
+	<span class="nx">collapsed_vert_class</span><span class="o">:</span>     <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">collapsed_vert_class</span><span class="p">,</span>
+	<span class="nx">collapsed_horiz_class</span><span class="o">:</span>    <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span><span class="p">,</span>
+	<span class="nx">collapsed_any_regex</span><span class="o">:</span>      <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">collapsed_any_regex</span><span class="p">,</span>
+
+	<span class="nx">mode_regex</span><span class="o">:</span>              <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">mode_regex</span><span class="p">,</span>
+	<span class="nx">col_width_class_re</span><span class="o">:</span>      <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">col_width_class_re</span><span class="p">,</span>
+	<span class="nx">row_height_class_re</span><span class="o">:</span>     <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">row_height_class_re</span><span class="p">,</span>
+
+	<span class="nx">dd_group_name</span><span class="o">:</span>            <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">dd_group_name</span><span class="p">,</span>
+	<span class="nx">drag_target_class</span><span class="o">:</span>        <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">drag_target_class</span><span class="p">,</span>
+	<span class="nx">drag_nub_class</span><span class="o">:</span>           <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">drag_nub_class</span><span class="p">,</span>
+	<span class="nx">module_header_drag_class</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">module_header_drag_class</span><span class="p">,</span>
+	<span class="nx">module_no_drag_class</span><span class="o">:</span>     <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">module_no_drag_class</span><span class="p">,</span>
+	<span class="nx">bomb_sight_class</span><span class="o">:</span>         <span class="s1">&#39;satg-layout-bomb-sight satg-layout-bomb-sight-cols&#39;</span><span class="p">,</span>
+
+	<span class="nx">has_explosive_modules_bug</span><span class="o">:</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ua</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&amp;&amp;</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ua</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">),</span>
+	<span class="nx">is_borked_browser</span><span class="o">:</span>         <span class="kc">false</span><span class="p">,</span><span class="c1">//(7 &lt;= YAHOO.env.ua.ie &amp;&amp; YAHOO.env.ua.ie &lt; 8),</span>
+
+	<span class="nx">onBeforeResizeModule</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onBeforeResizeModule</span><span class="p">,</span>
+	<span class="nx">onAfterResizeModule</span><span class="o">:</span>  <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onAfterResizeModule</span><span class="p">,</span>
+
+	<span class="nx">onBeforeCollapseModule</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onBeforeCollapseModule</span><span class="p">,</span>
+	<span class="nx">onAfterCollapseModule</span><span class="o">:</span>  <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onAfterCollapseModule</span><span class="p">,</span>
+	<span class="nx">onBeforeExpandModule</span><span class="o">:</span>   <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onBeforeExpandModule</span><span class="p">,</span>
+	<span class="nx">onAfterExpandModule</span><span class="o">:</span>    <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onAfterExpandModule</span><span class="p">,</span>
+
+	<span class="nx">onAfterReflow</span><span class="o">:</span>     <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onAfterReflow</span><span class="p">,</span>
+	<span class="nx">onAfterModeChange</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">onAfterModeChange</span><span class="p">,</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Returns true after initialization is complete.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">hasInitialized</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">the_init_flag</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Returns the height of the sticky header.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">getHeaderHeight</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">the_header_container</span> <span class="o">?</span> <span class="nx">the_header_container</span><span class="p">.</span><span class="nx">offsetHeight</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="nx">_getHeaderContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">the_header_container</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Returns the height of the scrolling body.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">getBodyHeight</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">the_body_container</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="nx">_getBodyContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">the_body_container</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Returns the height of the sticky footer.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">getFooterHeight</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">the_sticky_footer_flag</span> <span class="o">&amp;&amp;</span> <span class="nx">the_footer_container</span> <span class="o">?</span>
+				<span class="nx">the_footer_container</span><span class="p">.</span><span class="nx">offsetHeight</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="nx">_getFooterContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">the_footer_container</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Returns the current behavior of the layout.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">getMode</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="nx">the_mode</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Call this to change the behavior of the layout.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">setMode</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* mode */</span> <span class="nx">mode</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">mode</span> <span class="o">!==</span> <span class="nx">the_mode</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">the_mode</span> <span class="o">=</span> <span class="nx">mode</span><span class="p">;</span>
+			<span class="nx">updateFitClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="nx">the_body_container</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">the_body_container</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="p">}</span>
+
+			<span class="nx">reparentFooter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+			<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+			<span class="k">this</span><span class="p">.</span><span class="nx">onAfterModeChange</span><span class="p">.</span><span class="nx">fire</span><span class="p">();</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Call this to change the behavior of the footer in FIT_TO_CONTENT.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">setStickyFooter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* bool */</span> <span class="nx">sticky</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">the_sticky_footer_flag</span> <span class="o">=</span> <span class="nx">sticky</span><span class="p">;</span>
+		<span class="nx">reparentFooter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Call this to turn column height matching on or off.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">setMatchColumnHeights</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* bool */</span> <span class="nx">match</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">the_match_content_heights_flag</span> <span class="o">=</span> <span class="nx">match</span><span class="p">;</span>
+		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Sets the minimum allowed size of the viewport in *em*.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">setMinViewportSize</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">w</span><span class="p">,</span>
+		<span class="cm">/* int */</span>	<span class="nx">h</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">the_min_page_width</span>  <span class="o">=</span> <span class="nx">w</span><span class="p">;</span>
+		<span class="nx">the_min_page_height</span> <span class="o">=</span> <span class="nx">h</span><span class="p">;</span>
+		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Sets the percentage sizes of all the columns in the body of the page.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">setColumnWidths</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* array */</span>	<span class="nx">col_widths</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">col_widths</span><span class="p">.</span><span class="nx">length</span> <span class="o">!=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Wrong number of column widths.  Expected &#39;</span> <span class="o">+</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">col_widths</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">sum</span> <span class="o">+=</span> <span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">sum</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">100</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Column widths must add up to 100%&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span> <span class="o">=</span> <span class="nx">col_widths</span><span class="p">;</span>
+		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Sets the percentage sizes of all the rows in one column of the page.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">setRowHeights</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* int */</span>	<span class="nx">col_index</span><span class="p">,</span>
+		<span class="cm">/* array */</span>	<span class="nx">row_heights</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">row_heights</span><span class="p">[</span> <span class="nx">col_index</span> <span class="p">];</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">row_heights</span><span class="p">.</span><span class="nx">length</span> <span class="o">!=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Wrong number of row heights.  Expected &#39;</span> <span class="o">+</span> <span class="nx">w</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_heights</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">sum</span> <span class="o">+=</span> <span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">sum</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">100</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Row heights must add up to 100%&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="nx">w</span> <span class="o">=</span> <span class="nx">row_heights</span><span class="p">;</span>
+		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Returns an event that, when fired, causes the sizing of all modules</span>
+<span class="cm">	 * to be recalculated.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">getResizeEvent</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">the_resize_event</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">the_resize_event</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CustomEvent</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="nx">the_resize_event</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">resize</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="nx">the_resize_event</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Attaches a listener to the given element.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">_registerExpandNub</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">_expandSection</span><span class="p">,</span>
+				 <span class="p">[</span><span class="nx">id</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">module_class</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_col_class</span><span class="p">],</span> <span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="nx">_registerCollapseNub</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">_collapseSection</span><span class="p">,</span>
+				 <span class="p">[</span><span class="nx">id</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">module_class</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_col_class</span><span class="p">],</span> <span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Expand/collapse a section.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">sectionIsCollapsed</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">SDom</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">expand_horiz_nub_regex</span><span class="p">,</span> <span class="nx">the_max_search_depth</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">collapsed</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collapsed_any_regex</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">collapsed</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collapsed_any_regex</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="nx">collapsed</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="nx">expandSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">id</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">e</span>   <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">nub</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">expand_vert_nub_class</span><span class="p">,</span> <span class="nx">the_max_search_depth</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">nub</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">nub</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">expand_horiz_nub_regex</span><span class="p">,</span> <span class="nx">the_max_search_depth</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">nub</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">_expandSection</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="p">[</span><span class="nx">nub</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">module_class</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_col_class</span><span class="p">]);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="nx">collapseSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">id</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">e</span>   <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">nub</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collapse_vert_nub_class</span><span class="p">,</span> <span class="nx">the_max_search_depth</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">nub</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">nub</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collapse_horiz_nub_regex</span><span class="p">,</span> <span class="nx">the_max_search_depth</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">nub</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">_collapseSection</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="p">[</span><span class="nx">nub</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">module_class</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_col_class</span><span class="p">]);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="nx">toggleSection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">sectionIsCollapsed</span><span class="p">(</span><span class="nx">id</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">expandSection</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">collapseSection</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Updates the layout which contains the specified element.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">elementResized</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* string/object */</span>	<span class="nx">el</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">_node</span><span class="p">)</span>	<span class="c1">// allow Y.Node</span>
+		<span class="p">{</span>
+			<span class="nx">el</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">_node</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Dom</span><span class="p">.</span><span class="nx">isAncestor</span><span class="p">(</span><span class="nx">the_header_container</span><span class="p">,</span> <span class="nx">el</span><span class="p">)</span> <span class="o">||</span>
+			<span class="nx">Dom</span><span class="p">.</span><span class="nx">isAncestor</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">,</span>   <span class="nx">el</span><span class="p">)</span> <span class="o">||</span>
+			<span class="nx">Dom</span><span class="p">.</span><span class="nx">isAncestor</span><span class="p">(</span><span class="nx">the_footer_container</span><span class="p">,</span> <span class="nx">el</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
+			<span class="p">}</span>
+
+			<span class="kd">var</span> <span class="nx">t1</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTime</span><span class="p">();</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="nx">reflow_delay</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+				<span class="c1">// if JS is really busy, wait a bit longer</span>
+
+				<span class="kd">var</span> <span class="nx">t2</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTime</span><span class="p">();</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">t2</span> <span class="o">&gt;</span> <span class="nx">t1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="nx">reflow_delay</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">SATG</span><span class="p">.</span><span class="nx">Debug</span><span class="p">.</span><span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;deferred reflow: &#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">t2</span><span class="o">-</span><span class="nx">t1</span><span class="p">));</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">elementResized</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+					<span class="k">return</span><span class="p">;</span>
+				<span class="p">}</span>
+
+				<span class="k">this</span><span class="p">.</span><span class="nx">need_borked_browser_hack</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">getResizeEvent</span><span class="p">().</span><span class="nx">fire</span><span class="p">();</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">need_borked_browser_hack</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="p">});</span>
+
+			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * For use before _init() is called.  Copies settings from another</span>
+<span class="cm">	 * instance of PageLayout.  This is intentionally opaque.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">_copySettings</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* object */</span>	<span class="nx">pl</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">list</span>               <span class="o">=</span> <span class="nx">pl</span><span class="p">.</span><span class="nx">_getSettings</span><span class="p">();</span>
+		<span class="nx">the_mode</span>               <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+		<span class="nx">the_sticky_footer_flag</span> <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+		<span class="nx">the_min_page_height</span>    <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+		<span class="nx">the_min_page_width</span>     <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+		<span class="nx">the_resize_event</span>       <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">the_resize_event</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">the_resize_event</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">resize</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Scan the DOM for the elements we care about.  Called automatically</span>
+<span class="cm">	 * after the page loads.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* array */</span>	<span class="nx">page_blocks</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">Prof</span><span class="p">.</span><span class="nx">startBlock</span><span class="p">(</span><span class="s2">&quot;SATG.PageLayoutT._init&quot;</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">the_mode</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">the_mode</span> <span class="o">=</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">page_blocks</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">page_blocks</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">page_block_re</span><span class="p">,</span> <span class="s1">&#39;div&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">filterByClassName</span><span class="p">(</span><span class="nx">page_blocks</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">page_header_marker_class</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">Prof</span><span class="p">.</span><span class="nx">endBlock</span><span class="p">();</span>
+			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;There must be at most one div with class &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">page_header_marker_class</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="nx">the_header_container</span> <span class="o">=</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span> <span class="nx">list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">:</span> <span class="kc">null</span><span class="p">);</span>
+
+		<span class="nx">list</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">filterByClassName</span><span class="p">(</span><span class="nx">page_blocks</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">page_content_marker_class</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">Prof</span><span class="p">.</span><span class="nx">endBlock</span><span class="p">();</span>
+			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;There must be exactly one div with class &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">page_content_marker_class</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="nx">the_body_container</span> <span class="o">=</span> <span class="nx">list</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+		<span class="nx">the_body_horiz_mbp</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">);</span>
+		<span class="nx">the_body_vert_mbp</span>  <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">the_body_container</span><span class="p">.</span><span class="nx">className</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">mode_regex</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">the_mode</span> <span class="o">=</span> <span class="nx">PageLayout</span><span class="p">[</span> <span class="nx">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">];</span>
+		<span class="p">}</span>
+
+		<span class="nx">list</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">filterByClassName</span><span class="p">(</span><span class="nx">page_blocks</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">page_footer_marker_class</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">Prof</span><span class="p">.</span><span class="nx">endBlock</span><span class="p">();</span>
+			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;There must be at most one div with class &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">page_footer_marker_class</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="nx">the_footer_container</span> <span class="o">=</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span> <span class="nx">list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">:</span> <span class="kc">null</span><span class="p">);</span>
+
+		<span class="nx">updateFitClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="nx">reparentFooter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_rescanBody</span><span class="p">();</span>
+
+		<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="nx">resize</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+		<span class="nx">SDom</span><span class="p">.</span><span class="nx">textResizeEvent</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">resize</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+
+		<span class="nx">Event</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="nx">resize</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>	<span class="c1">// after images load</span>
+
+		<span class="nx">the_init_flag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+		<span class="nx">Prof</span><span class="p">.</span><span class="nx">endBlock</span><span class="p">();</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Call this after manually adding or removing modules on the page.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">_rescanBody</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="cm">/* bool */</span>	<span class="nx">rescan_sizes</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">Prof</span><span class="p">.</span><span class="nx">startBlock</span><span class="p">(</span><span class="s2">&quot;SATG.PageLayout._rescanBody&quot;</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">saved_col_widths</span>  <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">saved_row_heights</span> <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">row_heights</span><span class="p">;</span>
+
+		<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span>        <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_col_class</span><span class="p">,</span> <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="nx">the_body_container</span><span class="p">);</span>
+		<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">modules</span>     <span class="o">=</span> <span class="p">[];</span>
+		<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span>  <span class="o">=</span> <span class="p">[];</span>
+		<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">row_heights</span> <span class="o">=</span> <span class="p">[];</span>
+
+		<span class="kd">var</span> <span class="nx">col_count</span> <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">col_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">col</span> <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+			<span class="nx">Dom</span><span class="p">.</span><span class="nx">generateId</span><span class="p">(</span><span class="nx">col</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_col_class</span><span class="o">+</span><span class="s1">&#39;-&#39;</span><span class="p">);</span>
+			<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mf">100.0</span><span class="o">/</span><span class="nx">col_count</span><span class="p">);</span>
+
+			<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">module_class</span><span class="p">,</span> <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="nx">col</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span>       <span class="o">=</span> <span class="p">[];</span>
+				<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">modules</span>    <span class="o">=</span> <span class="p">[];</span>
+				<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span> <span class="o">=</span> <span class="p">[];</span>
+				<span class="nx">Prof</span><span class="p">.</span><span class="nx">endBlock</span><span class="p">();</span>
+				<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;There must be at least one &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">module_class</span> <span class="o">+</span> <span class="s1">&#39; inside &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_col_class</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
+			<span class="p">}</span>
+
+			<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">modules</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">list</span><span class="p">);</span>
+<span class="cm">/*</span>
+<span class="cm">			if (PageLayoutDDProxy)</span>
+<span class="cm">			{</span>
+<span class="cm">				var row_count = list.length;</span>
+<span class="cm">				var has_nubs  = false;</span>
+<span class="cm">				for (var j=0; j&lt;row_count; j++)</span>
+<span class="cm">				{</span>
+<span class="cm">					var module = list[j];</span>
+<span class="cm">					Dom.generateId(module, this.module_class+&#39;-&#39;);</span>
+<span class="cm">					Dom.removeClass(module, this.module_no_drag_class);</span>
+
+<span class="cm">					if (the_dd_nubs[ module.id ])</span>
+<span class="cm">					{</span>
+<span class="cm">						has_nubs = (the_dd_nubs[ module.id ] != &#39;none&#39;);</span>
+<span class="cm">					}</span>
+<span class="cm">					else</span>
+<span class="cm">					{</span>
+<span class="cm">						var nub = Dom.getElementsByClassName(this.drag_nub_class, null, module)[0];</span>
+<span class="cm">						if (nub)</span>
+<span class="cm">						{</span>
+<span class="cm">							var children = this._analyzeModule(module);</span>
+<span class="cm">							if (children.hd)</span>
+<span class="cm">							{</span>
+<span class="cm">								Dom.addClass(children.hd, this.module_header_drag_class);</span>
+<span class="cm">								the_dd_nubs[ module.id ] =</span>
+<span class="cm">									new PageLayoutDDProxy(this, module.id, children.hd, this.dd_group_name);</span>
+<span class="cm">								has_nubs = true;</span>
+<span class="cm">							}</span>
+<span class="cm">						}</span>
+
+<span class="cm">						if (!the_dd_nubs[ module.id ])</span>
+<span class="cm">						{</span>
+<span class="cm">							the_dd_nubs[ module.id ] = &#39;none&#39;;</span>
+<span class="cm">						}</span>
+<span class="cm">					}</span>
+<span class="cm">				}</span>
+
+<span class="cm">				if (!the_dd_targets[ col.id ] &amp;&amp;</span>
+<span class="cm">					(has_nubs || Dom.hasClass(col, this.drag_target_class)))</span>
+<span class="cm">				{</span>
+<span class="cm">					the_dd_targets[ col.id ] = new DDTarget(col.id, this.dd_group_name);</span>
+<span class="cm">				}</span>
+
+<span class="cm">				if (row_count == 1)</span>
+<span class="cm">				{</span>
+<span class="cm">					Dom.addClass(list[0], this.module_no_drag_class);</span>
+<span class="cm">				}</span>
+<span class="cm">			}</span>
+<span class="cm">*/</span>
+			<span class="c1">// restore saved widths, if possible</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">rescan_sizes</span> <span class="o">&amp;&amp;</span> <span class="nx">saved_row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">saved_row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">length</span> <span class="o">==</span> <span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">row_heights</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">saved_row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+			<span class="p">}</span>
+			<span class="k">else</span>
+			<span class="p">{</span>
+				<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">row_heights</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span>
+					<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">_normalizeSizes</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">list</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">row_height_class_re</span><span class="p">));</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+
+		<span class="c1">// restore saved heights, if possible</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">rescan_sizes</span> <span class="o">&amp;&amp;</span> <span class="nx">saved_col_widths</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span> <span class="o">=</span> <span class="nx">saved_col_widths</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span> <span class="o">=</span>
+				<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">_normalizeSizes</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">col_width_class_re</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+		<span class="nx">Prof</span><span class="p">.</span><span class="nx">endBlock</span><span class="p">();</span>
+	<span class="p">},</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Adjusts the module body height so that the total module (hd,bd,ft)</span>
+<span class="cm">	 * has the specified height.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">_setModuleHeight</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_setModuleHeight</span><span class="p">,</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Clears the height of the module, so it expands to fit its content.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">_clearModuleHeight</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_clearModuleHeight</span><span class="p">,</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Clears the height of the module, so it expands to fit its content.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">_notifyModuleSizeChanged</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_notifyModuleSizeChanged</span><span class="p">,</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * Returns the components of the module.</span>
+<span class="cm">	 */</span>
+
+	<span class="nx">_analyzeModule</span><span class="o">:</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_analyzeModule</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">updateFitClass</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="nx">Dom</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">,</span> <span class="sr">/(^|\s)FIT_TO_(VIEWPORT|CONTENT)(\s|$)/</span><span class="p">,</span>
+		<span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">?</span> <span class="s1">&#39;FIT_TO_VIEWPORT&#39;</span> <span class="o">:</span> <span class="s1">&#39;FIT_TO_CONTENT&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">reparentFooter</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">the_footer_container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">||</span> <span class="nx">the_sticky_footer_flag</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">the_body_container</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">the_footer_container</span><span class="p">,</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getNextSiblingBy</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;script&#39;</span><span class="p">;</span>
+		<span class="p">}));</span>
+	<span class="p">}</span>
+	<span class="k">else</span>
+	<span class="p">{</span>
+		<span class="nx">the_body_container</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">the_footer_container</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">resize</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="nx">Prof</span><span class="p">.</span><span class="nx">startBlock</span><span class="p">(</span><span class="s2">&quot;SATG.PageLayoutT.resize&quot;</span><span class="p">);</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">the_body_container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">Prof</span><span class="p">.</span><span class="nx">endBlock</span><span class="p">();</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">,</span> <span class="s1">&#39;overflow-x&#39;</span><span class="p">,</span>
+		<span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span> <span class="o">?</span> <span class="s1">&#39;auto&#39;</span> <span class="o">:</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+	<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">,</span> <span class="s1">&#39;overflow-y&#39;</span><span class="p">,</span>
+		<span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span> <span class="o">?</span> <span class="s1">&#39;scroll&#39;</span> <span class="o">:</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+
+	<span class="kd">var</span> <span class="nx">viewport</span> <span class="o">=</span>
+	<span class="p">{</span>
+		<span class="nx">w</span><span class="o">:</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getViewportWidth</span><span class="p">(),</span>
+		<span class="nx">h</span><span class="o">:</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">getViewportHeight</span><span class="p">()</span>
+	<span class="p">};</span>
+
+	<span class="kd">var</span> <span class="nx">resize_event</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;resize&#39;</span><span class="p">;</span>	<span class="c1">// IE7 generates no-op&#39;s</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">resize_event</span> <span class="o">&amp;&amp;</span>
+		<span class="p">(</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">===</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">&amp;&amp;</span>
+		 <span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span> <span class="o">===</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="nx">Prof</span><span class="p">.</span><span class="nx">endBlock</span><span class="p">();</span>
+		<span class="k">return</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span> <span class="o">=</span> <span class="nx">viewport</span><span class="p">;</span>
+
+	<span class="nx">SDom</span><span class="p">.</span><span class="nx">hideFloaters</span><span class="p">();</span>	<span class="c1">// after confirming that viewport really has changed</span>
+
+	<span class="kd">var</span> <span class="nx">min_width</span> <span class="o">=</span> <span class="nx">the_min_page_width</span> <span class="o">*</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">getEmToPx</span><span class="p">();</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">is_borked_browser</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">need_borked_browser_hack</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">-=</span> <span class="mi">5</span><span class="p">;</span>
+		<span class="nx">min_width</span>                <span class="o">-=</span> <span class="mi">5</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">body_width</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span><span class="p">,</span> <span class="nx">min_width</span><span class="p">);</span>
+	<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">the_header_container</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">body_width</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+	<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">,</span>   <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">body_width</span> <span class="o">-</span> <span class="nx">the_body_horiz_mbp</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+	<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">the_footer_container</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">the_sticky_footer_flag</span> <span class="o">?</span> <span class="nx">body_width</span><span class="o">+</span><span class="s1">&#39;px&#39;</span> <span class="o">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+	<span class="nx">body_width</span> <span class="o">=</span> <span class="nx">the_body_container</span><span class="p">.</span><span class="nx">clientWidth</span> <span class="o">-</span> <span class="nx">the_body_horiz_mbp</span><span class="p">;</span>
+
+	<span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">bcw</span> <span class="o">=</span> <span class="nx">the_body_container</span><span class="p">.</span><span class="nx">clientWidth</span><span class="p">;</span>
+
+	<span class="kd">var</span> <span class="nx">h</span>     <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">h_min</span> <span class="o">=</span> <span class="nx">the_min_page_height</span> <span class="o">*</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">getEmToPx</span><span class="p">();</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">&amp;&amp;</span> <span class="nx">h</span> <span class="o">&lt;</span> <span class="nx">h_min</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">=</span> <span class="nx">h_min</span><span class="p">;</span>
+		<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">,</span> <span class="s1">&#39;overflow-y&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="o">||</span> <span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">apex_firebug_lite</span><span class="p">)</span>	<span class="c1">// remove inactive vertical scrollbar in IE</span>
+	<span class="p">{</span>
+		<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">,</span> <span class="s1">&#39;overflow-y&#39;</span><span class="p">,</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">the_header_container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">-=</span> <span class="nx">the_header_container</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">the_footer_container</span> <span class="o">&amp;&amp;</span>
+		<span class="p">(</span><span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">||</span> <span class="nx">the_sticky_footer_flag</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">-=</span> <span class="nx">the_footer_container</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">body_height</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">-</span> <span class="nx">the_body_vert_mbp</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">h</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>						<span class="c1">// FIT_TO_CONTENT doesn&#39;t enforce min height</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">+</span> <span class="nx">the_body_vert_mbp</span><span class="p">;</span>		<span class="c1">// arbitrary, positive number</span>
+	<span class="p">}</span>
+
+	<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">h</span> <span class="o">-</span> <span class="nx">the_body_vert_mbp</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+
+	<span class="kd">var</span> <span class="nx">col_count</span> <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+
+	<span class="c1">// fit-to-viewport: adjust for vertically collapsed modules</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">row_heights</span> <span class="o">=</span> <span class="p">[],</span>
+			<span class="nx">col_heights</span> <span class="o">=</span> <span class="p">[];</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">col_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">heights</span> <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+			<span class="nx">row_heights</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">heights</span><span class="p">);</span>
+			<span class="nx">col_heights</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">body_height</span><span class="p">);</span>
+
+			<span class="kd">var</span> <span class="nx">uncollapsed_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+				<span class="nx">sum</span>               <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+			<span class="kd">var</span> <span class="nx">modules</span> <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">modules</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">Dom</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collapsed_vert_class</span><span class="p">))</span>
+				<span class="p">{</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+					<span class="nx">heights</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>      <span class="o">=</span> <span class="o">-</span> <span class="nx">module</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">;</span>
+					<span class="nx">col_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">-=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">heights</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">uncollapsed_count</span><span class="o">++</span><span class="p">;</span>
+					<span class="nx">sum</span> <span class="o">+=</span> <span class="nx">heights</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="nx">uncollapsed_count</span> <span class="o">&lt;</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">modules</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">heights</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+					<span class="p">{</span>
+						<span class="nx">heights</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">/</span> <span class="nx">sum</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="c1">// adjust for horizontally collapsed or fixed width modules</span>
+
+	<span class="kd">var</span> <span class="nx">module_info</span> <span class="o">=</span> <span class="p">{};</span>
+	<span class="kd">var</span> <span class="nx">col_widths</span>  <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">col_widths</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+	<span class="kd">var</span> <span class="nx">uncollapsed_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+		<span class="nx">sum</span>               <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">col_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">col</span>       <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+		<span class="kd">var</span> <span class="nx">collapsed</span> <span class="o">=</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">col</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">modules</span>   <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">collapsed</span> <span class="o">||</span> <span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">collapsed</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">col</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">modules</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">has_explosive_modules_bug</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">modules</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">root_w</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span> <span class="o">+</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">(</span><span class="nx">modules</span><span class="p">[</span><span class="nx">j</span><span class="p">]);</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">root_w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">col</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">root_w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+
+			<span class="nx">body_width</span> <span class="o">-=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">col</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="nx">uncollapsed_count</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">sum</span> <span class="o">+=</span> <span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="nx">modules</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">modules</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">uncollapsed_count</span> <span class="o">&lt;</span> <span class="nx">col_count</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">col_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">/</span> <span class="nx">sum</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="c1">// set width of each column and size of each module</span>
+
+	<span class="kd">var</span> <span class="nx">total_w</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+		<span class="nx">m</span>        <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+		<span class="nx">ftc_size</span> <span class="o">=</span> <span class="p">[];</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">col_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">module</span>   <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+			<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">getHeight</span><span class="p">(</span><span class="nx">col_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">row_heights</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">module</span><span class="p">,</span> <span class="nx">module_info</span><span class="p">);</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">h</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">h1</span> <span class="o">=</span> <span class="nx">_adjustHeight</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">children</span><span class="p">);</span>
+					<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">insideWidth</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">onBeforeResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">w1</span><span class="p">);</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">h1</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">onAfterResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">w1</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">onBeforeResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+				<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="nx">the_match_content_heights_flag</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">ftc_size</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span> <span class="p">[</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">insideWidth</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)]</span> <span class="p">]);</span>
+				<span class="p">}</span>
+				<span class="k">else</span>
+				<span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">onAfterResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span>
+						<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span>
+						<span class="nx">SDom</span><span class="p">.</span><span class="nx">insideHeight</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">),</span>
+						<span class="nx">SDom</span><span class="p">.</span><span class="nx">insideWidth</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">));</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="k">continue</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="nx">m</span><span class="o">++</span><span class="p">;</span>
+
+		<span class="kd">var</span> <span class="nx">w</span>    <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">body_width</span> <span class="o">*</span> <span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">));</span>
+		<span class="nx">total_w</span> <span class="o">+=</span> <span class="nx">w</span><span class="p">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">==</span> <span class="nx">uncollapsed_count</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">w</span> <span class="o">+=</span> <span class="nx">body_width</span> <span class="o">-</span> <span class="nx">total_w</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="nx">w</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">(</span><span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
+		<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+		<span class="nx">w</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">(</span><span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]));</span>
+
+		<span class="kd">var</span> <span class="nx">modules</span> <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="c1">// adjust for vertically collapsed or fixed height modules</span>
+
+			<span class="kd">var</span> <span class="nx">total_h</span>    <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">open_count</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">modules</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">];</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">h</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="nx">total_h</span> <span class="o">+=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">modules</span><span class="p">[</span><span class="nx">j</span><span class="p">]);</span>
+					<span class="nx">open_count</span><span class="o">--</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+
+			<span class="c1">// set the height of each module</span>
+
+			<span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">modules</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">modules</span><span class="p">[</span><span class="nx">j</span><span class="p">]);</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">h1</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">insideHeight</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
+					<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">)</span> <span class="o">-</span>
+							 <span class="nx">SDom</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">onBeforeResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">w1</span><span class="p">);</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">modules</span><span class="p">[</span><span class="nx">j</span><span class="p">],</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">onAfterResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">w1</span><span class="p">);</span>
+					<span class="k">continue</span><span class="p">;</span>
+				<span class="p">}</span>
+				<span class="nx">k</span><span class="o">++</span><span class="p">;</span>
+
+				<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">h</span>    <span class="o">=</span> <span class="nx">getHeight</span><span class="p">(</span><span class="nx">col_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">row_heights</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">modules</span><span class="p">[</span><span class="nx">j</span><span class="p">],</span> <span class="nx">module_info</span><span class="p">);</span>
+					<span class="kd">var</span> <span class="nx">h1</span>   <span class="o">=</span> <span class="nx">_adjustHeight</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">children</span><span class="p">);</span>
+					<span class="nx">total_h</span> <span class="o">+=</span> <span class="nx">h</span> <span class="o">+</span> <span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span><span class="p">;</span>
+
+					<span class="k">if</span> <span class="p">(</span><span class="nx">k</span> <span class="o">==</span> <span class="nx">open_count</span><span class="p">)</span>
+					<span class="p">{</span>
+						<span class="nx">h1</span> <span class="o">+=</span> <span class="nx">body_height</span> <span class="o">-</span> <span class="nx">total_h</span><span class="p">;</span>
+					<span class="p">}</span>
+
+					<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">));</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">onBeforeResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">w1</span><span class="p">);</span>
+					<span class="nx">setWidth</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">children</span><span class="p">,</span> <span class="nx">w</span><span class="p">);</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">h1</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">onAfterResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">w1</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="c1">// set the width of each module</span>
+			<span class="c1">// clear the height of each module</span>
+
+			<span class="nx">ftc_size</span><span class="p">.</span><span class="nx">push</span><span class="p">([]);</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">modules</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">modules</span><span class="p">[</span><span class="nx">j</span><span class="p">]);</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">));</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">onBeforeResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="nx">w1</span><span class="p">);</span>
+					<span class="nx">setWidth</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">children</span><span class="p">,</span> <span class="nx">w</span><span class="p">);</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+
+					<span class="k">if</span> <span class="p">(</span><span class="nx">the_match_content_heights_flag</span><span class="p">)</span>
+					<span class="p">{</span>
+						<span class="nx">ftc_size</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">push</span><span class="p">([</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">w1</span><span class="p">]);</span>
+					<span class="p">}</span>
+					<span class="k">else</span>
+					<span class="p">{</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">onAfterResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">insideHeight</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">),</span> <span class="nx">w1</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="c1">// set the height of the last module in each column</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">the_mode</span> <span class="o">==</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span> <span class="o">&amp;&amp;</span> <span class="nx">the_match_content_heights_flag</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">col_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">h</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">offsetHeight</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">col_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">modules</span> <span class="o">=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span>
+				<span class="nx">module</span>  <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+				<span class="nx">w1</span>      <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="nx">modules</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">j</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">--</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">modules</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">||</span>
+					<span class="p">(</span><span class="o">!</span><span class="nx">module</span> <span class="o">&amp;&amp;</span>
+					 <span class="o">!</span><span class="nx">Dom</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">modules</span><span class="p">[</span><span class="nx">j</span><span class="p">],</span> <span class="k">this</span><span class="p">.</span><span class="nx">collapsed_vert_class</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+					 <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span>
+				<span class="p">{</span>
+					<span class="nx">module</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+					<span class="nx">w1</span>     <span class="o">=</span> <span class="nx">ftc_size</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+				<span class="p">}</span>
+				<span class="k">else</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">bd</span> <span class="o">=</span> <span class="nx">ftc_size</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">onAfterResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">insideHeight</span><span class="p">(</span><span class="nx">bd</span><span class="p">),</span> <span class="nx">ftc_size</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="nx">module</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">delta</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">-</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">cols</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">offsetHeight</span><span class="p">;</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">delta</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">Dom</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span><span class="p">))</span>
+				<span class="p">{</span>
+					<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">SDom</span><span class="p">.</span><span class="nx">insideHeight</span><span class="p">(</span><span class="nx">module</span><span class="p">)</span> <span class="o">+</span> <span class="nx">delta</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">else</span>	<span class="c1">// always fire afterResizeModule</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
+					<span class="p">{</span>
+						<span class="kd">var</span> <span class="nx">h1</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">insideHeight</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span> <span class="o">+</span> <span class="nx">delta</span><span class="p">;</span>
+						<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">module</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+						<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">h1</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">onAfterResizeModule</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">w1</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">the_body_container</span><span class="p">,</span> <span class="s1">&#39;visibility&#39;</span><span class="p">,</span> <span class="s1">&#39;visible&#39;</span><span class="p">);</span>
+
+	<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">checkViewportSize</span><span class="p">);</span>
+
+	<span class="nx">Prof</span><span class="p">.</span><span class="nx">endBlock</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">checkViewportSize</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">Dom</span><span class="p">.</span><span class="nx">getViewportWidth</span><span class="p">()</span>         <span class="o">!=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">||</span>
+		<span class="nx">Dom</span><span class="p">.</span><span class="nx">getViewportHeight</span><span class="p">()</span>        <span class="o">!=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span> <span class="o">||</span>
+		<span class="nx">the_body_container</span><span class="p">.</span><span class="nx">clientWidth</span> <span class="o">!=</span> <span class="nx">the_body_cols</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">bcw</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">else</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">onAfterReflow</span><span class="p">.</span><span class="nx">fire</span><span class="p">();</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">_adjustHeight</span><span class="p">(</span>
+	<span class="cm">/* int */</span>		<span class="nx">total_height</span><span class="p">,</span>
+	<span class="cm">/* object */</span>	<span class="nx">children</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="c1">//Prof.startBlock(&quot;_adjustHeight&quot;);</span>
+<span class="c1">//try {</span>
+	<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">total_height</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">hd</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">-=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">hd</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">ft</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">-=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">ft</span><span class="p">.</span><span class="nx">offsetHeight</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="nx">h</span> <span class="o">-=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
+
+	<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">min_module_height</span><span class="p">);</span>
+<span class="c1">//}</span>
+<span class="c1">//finally { Prof.endBlock(); }</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">getHeight</span><span class="p">(</span>
+	<span class="cm">/* int */</span>		<span class="nx">body_height</span><span class="p">,</span>
+	<span class="cm">/* array */</span>		<span class="nx">row_heights</span><span class="p">,</span>
+	<span class="cm">/* int */</span>		<span class="nx">col_index</span><span class="p">,</span>
+	<span class="cm">/* int */</span>		<span class="nx">row_index</span><span class="p">,</span>
+	<span class="cm">/* object */</span>	<span class="nx">module</span><span class="p">,</span>
+	<span class="cm">/* object */</span>	<span class="nx">module_info</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span> <span class="o">=</span> <span class="nx">SDom</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
+	<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">body_height</span> <span class="o">*</span> <span class="nx">row_heights</span><span class="p">[</span> <span class="nx">col_index</span> <span class="p">][</span> <span class="nx">row_index</span> <span class="p">]</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">-</span> <span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">setWidth</span><span class="p">(</span>
+	<span class="cm">/* object */</span>	<span class="nx">children</span><span class="p">,</span>
+	<span class="cm">/* int */</span>		<span class="nx">w</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">Dom</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="p">})();</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class="selected"><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Math.html" title="Math">Math</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="Math.js.html" title="Math.js">Math.js</a></li>
+                                <li class="selected"><a href="PageLayoutCols.js.html" title="PageLayoutCols.js">PageLayoutCols.js</a></li>
+                                <li class=""><a href="PageLayoutRows.js.html" title="PageLayoutRows.js">PageLayoutRows.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "Math.html#method_acosh", "access": "", "host": "Math", "type": "method", "name": "acosh"}, {"url": "Math.html#method_add", "access": "", "host": "Math", "type": "method", "name": "add"}, {"url": "Math.html#method_addReciprocals", "access": "", "host": "Math", "type": "method", "name": "addReciprocals"}, {"url": "Math.html#method_asinh", "access": "", "host": "Math", "type": "method", "name": "asinh"}, {"url": "Math.html#method_atanh", "access": "", "host": "Math", "type": "method", "name": "atanh"}, {"url": "Math.html#method_cosh", "access": "", "host": "Math", "type": "method", "name": "cosh"}, {"url": "Math.html#method_degreesToRadians", "access": "", "host": "Math", "type": "method", "name": "degreesToRadians"}, {"url": "Math.html#method_multiply", "access": "", "host": "Math", "type": "method", "name": "multiply"}, {"url": "Math.html#method_parallel", "access": "", "host": "Math", "type": "method", "name": "parallel"}, {"url": "Math.html#method_radiansToDegrees", "access": "", "host": "Math", "type": "method", "name": "radiansToDegrees"}, {"url": "Math.html#method_sinh", "access": "", "host": "Math", "type": "method", "name": "sinh"}, {"url": "Math.html#method_tanh", "access": "", "host": "Math", "type": "method", "name": "tanh"}];
+</script>
+</body>
+</html>

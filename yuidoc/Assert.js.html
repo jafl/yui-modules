@@ -47,57 +47,57 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;Additional assertions for unit tests.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @module gallery-test-extras</span>
-<span class="c"> * @class Assert</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Additional assertions for unit tests.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-test-extras</span>
+<span class="cm"> * @class Assert</span>
+<span class="cm"> */</span>
 
 <span class="kd">var</span> <span class="nx">logToLog10</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Assert</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Assert</span><span class="p">,</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * Asserts that the mantissas of two values are with epsilon of each</span>
-<span class="c">	 * other.  (The test automatically fails if the exponents are different.)</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param expected {Number} the expected value</span>
-<span class="c">	 * @param actual {Number} the actual value to test</span>
-<span class="c">	 * @param epsilon {Number} the maximum allowed difference in the mantissas</span>
-<span class="c">	 */</span>
-	<span class="nx">areWithinEpsilon</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">expected</span><span class="o">,</span> <span class="nx">actual</span><span class="o">,</span> <span class="nx">epsilon</span><span class="p">)</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Asserts that the mantissas of two values are with epsilon of each</span>
+<span class="cm">	 * other.  (The test automatically fails if the exponents are different.)</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param expected {Number} the expected value</span>
+<span class="cm">	 * @param actual {Number} the actual value to test</span>
+<span class="cm">	 * @param epsilon {Number} the maximum allowed difference in the mantissas</span>
+<span class="cm">	 */</span>
+	<span class="nx">areWithinEpsilon</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">expected</span><span class="p">,</span> <span class="nx">actual</span><span class="p">,</span> <span class="nx">epsilon</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">epsilon</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">epsilon</span> <span class="o">=</span> <span class="mi">1</span><span class="nx">e</span><span class="o">-</span><span class="mi">9</span><span class="o">;</span>
+			<span class="nx">epsilon</span> <span class="o">=</span> <span class="mi">1</span><span class="nx">e</span><span class="o">-</span><span class="mi">9</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">expected</span> <span class="o">!==</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">scale</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">10</span><span class="o">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">expected</span><span class="p">))</span><span class="o">*</span><span class="nx">logToLog10</span><span class="p">));</span>
-			<span class="nx">expected</span> <span class="o">/=</span> <span class="nx">scale</span><span class="o">;</span>
-			<span class="nx">actual</span>   <span class="o">/=</span> <span class="nx">scale</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">scale</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">expected</span><span class="p">))</span><span class="o">*</span><span class="nx">logToLog10</span><span class="p">));</span>
+			<span class="nx">expected</span> <span class="o">/=</span> <span class="nx">scale</span><span class="p">;</span>
+			<span class="nx">actual</span>   <span class="o">/=</span> <span class="nx">scale</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">Assert</span><span class="p">.</span><span class="nx">isTrue</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">expected</span><span class="o">-</span><span class="nx">actual</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nx">epsilon</span><span class="o">,</span> <span class="s1">&#39;Values should be within &#39;</span><span class="o">+</span><span class="nx">epsilon</span><span class="o">+</span><span class="s1">&#39;\nExpected: &#39;</span><span class="o">+</span><span class="nx">expected</span><span class="o">+</span><span class="s1">&#39; (number)\nActual:&#39;</span><span class="o">+</span><span class="nx">actual</span><span class="o">+</span> <span class="s1">&#39; (number)\n-----&#39;</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">Assert</span><span class="p">.</span><span class="nx">isTrue</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">expected</span><span class="o">-</span><span class="nx">actual</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nx">epsilon</span><span class="p">,</span> <span class="s1">&#39;Values should be within &#39;</span><span class="o">+</span><span class="nx">epsilon</span><span class="o">+</span><span class="s1">&#39;\nExpected: &#39;</span><span class="o">+</span><span class="nx">expected</span><span class="o">+</span><span class="s1">&#39; (number)\nActual:&#39;</span><span class="o">+</span><span class="nx">actual</span><span class="o">+</span> <span class="s1">&#39; (number)\n-----&#39;</span><span class="p">);</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Asserts that both real and imaginary parts of two complex values are</span>
-<span class="c">	 * with epsilon of each other.  (The test automatically fails if the</span>
-<span class="c">	 * exponents are different.)</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param expected {ComplexNumber} the expected value</span>
-<span class="c">	 * @param actual {ComplexNumber} the actual value to test</span>
-<span class="c">	 * @param epsilon {ComplexNumber} the maximum allowed difference in the mantissas</span>
-<span class="c">	 */</span>
-	<span class="nx">complexWithinEpsilon</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">expected</span><span class="o">,</span> <span class="nx">actual</span><span class="o">,</span> <span class="nx">epsilon</span><span class="p">)</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Asserts that both real and imaginary parts of two complex values are</span>
+<span class="cm">	 * with epsilon of each other.  (The test automatically fails if the</span>
+<span class="cm">	 * exponents are different.)</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param expected {ComplexNumber} the expected value</span>
+<span class="cm">	 * @param actual {ComplexNumber} the actual value to test</span>
+<span class="cm">	 * @param epsilon {ComplexNumber} the maximum allowed difference in the mantissas</span>
+<span class="cm">	 */</span>
+	<span class="nx">complexWithinEpsilon</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">expected</span><span class="p">,</span> <span class="nx">actual</span><span class="p">,</span> <span class="nx">epsilon</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">Assert</span><span class="p">.</span><span class="nx">areWithinEpsilon</span><span class="p">(</span><span class="nx">expected</span><span class="p">.</span><span class="nx">r</span><span class="o">,</span> <span class="nx">actual</span><span class="p">.</span><span class="nx">r</span><span class="o">,</span> <span class="nx">epsilon</span><span class="p">);</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">Assert</span><span class="p">.</span><span class="nx">areWithinEpsilon</span><span class="p">(</span><span class="nx">expected</span><span class="p">.</span><span class="nx">i</span><span class="o">,</span> <span class="nx">actual</span><span class="p">.</span><span class="nx">i</span><span class="o">,</span> <span class="nx">epsilon</span><span class="p">);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">Assert</span><span class="p">.</span><span class="nx">areWithinEpsilon</span><span class="p">(</span><span class="nx">expected</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">actual</span><span class="p">.</span><span class="nx">r</span><span class="p">,</span> <span class="nx">epsilon</span><span class="p">);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">Assert</span><span class="p">.</span><span class="nx">areWithinEpsilon</span><span class="p">(</span><span class="nx">expected</span><span class="p">.</span><span class="nx">i</span><span class="p">,</span> <span class="nx">actual</span><span class="p">.</span><span class="nx">i</span><span class="p">,</span> <span class="nx">epsilon</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 </pre></div>
@@ -124,11 +124,14 @@
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
                                 <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
                                 <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
                                 <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
@@ -162,7 +165,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">

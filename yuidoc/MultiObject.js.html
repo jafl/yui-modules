@@ -47,53 +47,53 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;MultiObject exposes exactly the same API as each individual object,</span>
-<span class="c"> * both functions and events, and the state of all the objects is kept in</span>
-<span class="c"> * sync.  The objects must maintain all state via</span>
-<span class="c"> * Y.Attribute.&lt;p&gt;</span>
-<span class="c"> *</span>
-<span class="c"> * &lt;p&gt;MultiObject is similar to Y.ArrayList, except:&lt;/p&gt;</span>
-<span class="c"> * &lt;ul&gt;</span>
-<span class="c"> * &lt;li&gt;All objects must be of the same type, since MultiObject is supposed</span>
-<span class="c"> *		to behave exactly like any single object.&lt;/li&gt;</span>
-<span class="c"> * &lt;li&gt;MultiObject automatically delegates all methods.&lt;/li&gt;</span>
-<span class="c"> * &lt;li&gt;By default, MultiObject returns the result from the first object</span>
-<span class="c"> *		in the list, not an array of results.&lt;/li&gt;</span>
-<span class="c"> * &lt;li&gt;MultiObject propagates all events.&lt;/li&gt;</span>
-<span class="c"> * &lt;/ul&gt;</span>
-<span class="c"> *</span>
-<span class="c"> * &lt;p&gt;Internally, MultiObject delegates all methods by name, so it supports</span>
-<span class="c"> * Y.Do.before, Y.Do.after, etc.&lt;/p&gt;</span>
-<span class="c"> *</span>
-<span class="c"> * &lt;p&gt;To avoid shadowing potential function names, we inherit from</span>
-<span class="c"> * Y.EventTarget and use multi_ as the prefix for our own functions.&lt;/p&gt;</span>
-<span class="c"> *</span>
-<span class="c"> * @module gallery-multiobject</span>
-<span class="c"> * @class MultiObject</span>
-<span class="c"> * @extends EventTarget</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param items {Array} initial set of items</span>
-<span class="c"> * @param config {Object} configuration</span>
-<span class="c"> *		&lt;dl&gt;</span>
-<span class="c"> *		&lt;dt&gt;return_all_results&lt;/dt&gt;</span>
-<span class="c"> *		&lt;dd&gt;Default: false.  If this is true, then all delegated functions</span>
-<span class="c"> *			will return an array of results instead of the result from the</span>
-<span class="c"> *			primary item.  Note that functions which return &quot;undefined&quot; or</span>
-<span class="c"> *			the item itself always cause the MultiObject to be returned,</span>
-<span class="c"> *			to support chaining.&lt;/dd&gt;</span>
-<span class="c"> *		&lt;dt&gt;primary_item_index&lt;/dt&gt;</span>
-<span class="c"> *		&lt;dd&gt;Default: 0.  When return_all_results=false, this is the index of</span>
-<span class="c"> *			the item which generates the return result for all delegated</span>
-<span class="c"> *			functions.&lt;/dd&gt;</span>
-<span class="c"> *		&lt;/dl&gt;</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;MultiObject exposes exactly the same API as each individual object,</span>
+<span class="cm"> * both functions and events, and the state of all the objects is kept in</span>
+<span class="cm"> * sync.  The objects must maintain all state via</span>
+<span class="cm"> * Y.Attribute.&lt;p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * &lt;p&gt;MultiObject is similar to Y.ArrayList, except:&lt;/p&gt;</span>
+<span class="cm"> * &lt;ul&gt;</span>
+<span class="cm"> * &lt;li&gt;All objects must be of the same type, since MultiObject is supposed</span>
+<span class="cm"> *		to behave exactly like any single object.&lt;/li&gt;</span>
+<span class="cm"> * &lt;li&gt;MultiObject automatically delegates all methods.&lt;/li&gt;</span>
+<span class="cm"> * &lt;li&gt;By default, MultiObject returns the result from the first object</span>
+<span class="cm"> *		in the list, not an array of results.&lt;/li&gt;</span>
+<span class="cm"> * &lt;li&gt;MultiObject propagates all events.&lt;/li&gt;</span>
+<span class="cm"> * &lt;/ul&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * &lt;p&gt;Internally, MultiObject delegates all methods by name, so it supports</span>
+<span class="cm"> * Y.Do.before, Y.Do.after, etc.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * &lt;p&gt;To avoid shadowing potential function names, we inherit from</span>
+<span class="cm"> * Y.EventTarget and use multi_ as the prefix for our own functions.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module gallery-multiobject</span>
+<span class="cm"> * @class MultiObject</span>
+<span class="cm"> * @extends EventTarget</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param items {Array} initial set of items</span>
+<span class="cm"> * @param config {Object} configuration</span>
+<span class="cm"> *		&lt;dl&gt;</span>
+<span class="cm"> *		&lt;dt&gt;return_all_results&lt;/dt&gt;</span>
+<span class="cm"> *		&lt;dd&gt;Default: false.  If this is true, then all delegated functions</span>
+<span class="cm"> *			will return an array of results instead of the result from the</span>
+<span class="cm"> *			primary item.  Note that functions which return &quot;undefined&quot; or</span>
+<span class="cm"> *			the item itself always cause the MultiObject to be returned,</span>
+<span class="cm"> *			to support chaining.&lt;/dd&gt;</span>
+<span class="cm"> *		&lt;dt&gt;primary_item_index&lt;/dt&gt;</span>
+<span class="cm"> *		&lt;dd&gt;Default: 0.  When return_all_results=false, this is the index of</span>
+<span class="cm"> *			the item which generates the return result for all delegated</span>
+<span class="cm"> *			functions.&lt;/dd&gt;</span>
+<span class="cm"> *		&lt;/dl&gt;</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">MultiObject</span><span class="p">(</span>
-	<span class="c">/* array */</span>		<span class="nx">items</span><span class="o">,</span>
-	<span class="c">/* object */</span>	<span class="nx">config</span><span class="p">)</span>
+	<span class="cm">/* array */</span>		<span class="nx">items</span><span class="p">,</span>
+	<span class="cm">/* object */</span>	<span class="nx">config</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">items</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">items</span><span class="p">);</span>
 
@@ -102,54 +102,54 @@
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">item</span><span class="p">[</span><span class="nx">f</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">[</span><span class="nx">f</span><span class="p">])</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">[</span><span class="nx">f</span><span class="p">]</span> <span class="o">=</span> <span class="nx">delegate</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">f</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">[</span><span class="nx">f</span><span class="p">]</span> <span class="o">=</span> <span class="nx">delegate</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">f</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">args_adjuster</span> <span class="o">=</span> <span class="p">{};</span>
 
 	<span class="nx">config</span>                  <span class="o">=</span> <span class="nx">config</span> <span class="o">||</span> <span class="p">{};</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">primary_item_index</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">primary_item_index</span> <span class="o">||</span> <span class="mi">0</span><span class="o">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">return_all_results</span><span class="o">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">primary_item_index</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">primary_item_index</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">return_all_results</span><span class="p">;</span>
 
-	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="o">,</span> <span class="nx">installItem</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">,</span> <span class="nx">installItem</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
 
-	<span class="nx">config</span><span class="p">.</span><span class="nx">prefix</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span><span class="o">;</span>
-	<span class="nx">MultiObject</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">config</span><span class="p">);</span>
+	<span class="nx">config</span><span class="p">.</span><span class="nx">prefix</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span><span class="p">;</span>
+	<span class="nx">MultiObject</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">delegate</span><span class="p">(</span>
-	<span class="c">/* string */</span>	<span class="nx">f</span><span class="p">)</span>
+	<span class="cm">/* string */</span>	<span class="nx">f</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">args</span>    <span class="o">=</span> <span class="nx">arguments</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">args</span>    <span class="o">=</span> <span class="nx">arguments</span><span class="p">;</span>
 		<span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="p">[];</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="o">,</span> <span class="nx">index</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">args1</span> <span class="o">=</span> <span class="nx">args</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">args1</span> <span class="o">=</span> <span class="nx">args</span><span class="p">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args_adjuster</span><span class="p">[</span><span class="nx">f</span><span class="p">])</span>
 			<span class="p">{</span>
-				<span class="nx">args1</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">args_adjuster</span><span class="p">[</span><span class="nx">f</span><span class="p">].</span><span class="nx">call</span><span class="p">(</span><span class="nx">item</span><span class="o">,</span> <span class="nx">index</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">args</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="kc">true</span><span class="p">));</span>
+				<span class="nx">args1</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">args_adjuster</span><span class="p">[</span><span class="nx">f</span><span class="p">].</span><span class="nx">call</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">args</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">true</span><span class="p">));</span>
 			<span class="p">}</span>
 
-			<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">item</span><span class="p">[</span><span class="nx">f</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">item</span><span class="o">,</span> <span class="nx">args1</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">item</span><span class="p">[</span><span class="nx">f</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">args1</span><span class="p">);</span>
 
 			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">result</span> <span class="o">!==</span> <span class="nx">item</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="nx">results</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
 			<span class="p">}</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="k">this</span><span class="o">;</span>	<span class="c">// chainable</span>
+			<span class="k">return</span> <span class="k">this</span><span class="p">;</span>	<span class="c1">// chainable</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">results</span><span class="o">;</span>
+			<span class="k">return</span> <span class="nx">results</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
@@ -158,125 +158,125 @@
 	<span class="p">};</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">distributeValue</span><span class="p">(</span><span class="nx">e</span><span class="o">,</span> <span class="nx">index</span><span class="o">,</span> <span class="nx">key</span><span class="p">)</span>
+<span class="kd">function</span> <span class="nx">distributeValue</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="o">,</span> <span class="nx">i</span><span class="p">)</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">!==</span> <span class="nx">index</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">item</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="o">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">);</span>
+			<span class="nx">item</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">});</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">installItem</span><span class="p">(</span>
-	<span class="c">/* object */</span>	<span class="nx">item</span><span class="o">,</span>
-	<span class="c">/* int */</span>		<span class="nx">index</span><span class="p">)</span>
+	<span class="cm">/* object */</span>	<span class="nx">item</span><span class="p">,</span>
+	<span class="cm">/* int */</span>		<span class="nx">index</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span><span class="o">;</span>
+		<span class="k">return</span><span class="p">;</span>
 	<span class="p">}</span>
 
-	<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">getAttrs</span><span class="p">()</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="nx">key</span><span class="p">)</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">getAttrs</span><span class="p">(),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">item</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="nx">key</span><span class="o">+</span><span class="s1">&#39;Change&#39;</span><span class="o">,</span> <span class="nx">distributeValue</span><span class="o">,</span> <span class="k">this</span><span class="o">,</span> <span class="nx">index</span><span class="o">,</span> <span class="nx">key</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="nx">item</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="nx">key</span><span class="o">+</span><span class="s1">&#39;Change&#39;</span><span class="p">,</span> <span class="nx">distributeValue</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+	<span class="p">},</span>
 	<span class="k">this</span><span class="p">);</span>
 
 	<span class="nx">item</span><span class="p">.</span><span class="nx">addTarget</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">uninstallItem</span><span class="p">(</span>
-	<span class="c">/* object */</span>	<span class="nx">item</span><span class="o">,</span>
-	<span class="c">/* int */</span>		<span class="nx">index</span><span class="p">)</span>
+	<span class="cm">/* object */</span>	<span class="nx">item</span><span class="p">,</span>
+	<span class="cm">/* int */</span>		<span class="nx">index</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span><span class="o">;</span>
+		<span class="k">return</span><span class="p">;</span>
 	<span class="p">}</span>
 
-	<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">getAttrs</span><span class="p">()</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="nx">key</span><span class="p">)</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">getAttrs</span><span class="p">(),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">item</span><span class="p">.</span><span class="nx">detach</span><span class="p">(</span><span class="nx">key</span><span class="o">+</span><span class="s1">&#39;Change&#39;</span><span class="o">,</span> <span class="nx">distributeValue</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="nx">item</span><span class="p">.</span><span class="nx">detach</span><span class="p">(</span><span class="nx">key</span><span class="o">+</span><span class="s1">&#39;Change&#39;</span><span class="p">,</span> <span class="nx">distributeValue</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
 	<span class="k">this</span><span class="p">);</span>
 
 	<span class="nx">item</span><span class="p">.</span><span class="nx">removeTarget</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MultiObject</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">EventTarget</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MultiObject</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">EventTarget</span><span class="p">,</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * Destroys the MultiObject, but not the individual objects.</span>
-<span class="c">	 * &lt;code&gt;destroy()&lt;/code&gt; is, of course, delegated.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Destroys the MultiObject, but not the individual objects.</span>
+<span class="cm">	 * &lt;code&gt;destroy()&lt;/code&gt; is, of course, delegated.</span>
+<span class="cm">	 */</span>
 	<span class="nx">multi_destroy</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="o">,</span> <span class="nx">uninstallItem</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">,</span> <span class="nx">uninstallItem</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return the index of the primary item</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return the index of the primary item</span>
+<span class="cm">	 */</span>
 	<span class="nx">multi_get_primary_item_index</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">primary_item_index</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">primary_item_index</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param index {int} the index of the primary item</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param index {int} the index of the primary item</span>
+<span class="cm">	 */</span>
 	<span class="nx">multi_set_primary_item_index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">primary_item_index</span> <span class="o">=</span> <span class="nx">index</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">primary_item_index</span> <span class="o">=</span> <span class="nx">index</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return true if all results will be returned by delegated functions</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return true if all results will be returned by delegated functions</span>
+<span class="cm">	 */</span>
 	<span class="nx">multi_get_return_all_results</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param all {boolean} true if delegated functions should return all results</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param all {boolean} true if delegated functions should return all results</span>
+<span class="cm">	 */</span>
 	<span class="nx">multi_set_return_all_results</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* bool */</span>	<span class="nx">all</span><span class="p">)</span>
+		<span class="cm">/* bool */</span>	<span class="nx">all</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span> <span class="o">=</span> <span class="nx">all</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span> <span class="o">=</span> <span class="nx">all</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Return an array of all the individual results from calling the</span>
-<span class="c">	 * specified function.  This is only useful if return_all_results=false.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @param f {String} name of the function to invoke</span>
-<span class="c">	 * @param arg* {mixed} 0..n arguments to pass to the function</span>
-<span class="c">	 * @return {Array} results from delegating the named function</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Return an array of all the individual results from calling the</span>
+<span class="cm">	 * specified function.  This is only useful if return_all_results=false.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @param f {String} name of the function to invoke</span>
+<span class="cm">	 * @param arg* {mixed} 0..n arguments to pass to the function</span>
+<span class="cm">	 * @return {Array} results from delegating the named function</span>
+<span class="cm">	 */</span>
 	<span class="nx">multi_get_all</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span> <span class="nx">f</span><span class="p">)</span>
+		<span class="cm">/* string */</span> <span class="nx">f</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 		<span class="nx">args</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
 
-		<span class="kd">var</span> <span class="nx">all</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-		<span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="nx">f</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span> <span class="o">=</span> <span class="nx">all</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">all</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="nx">f</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">return_all_results</span> <span class="o">=</span> <span class="nx">all</span><span class="p">;</span>
 
-		<span class="k">return</span> <span class="nx">results</span><span class="o">;</span>
+		<span class="k">return</span> <span class="nx">results</span><span class="p">;</span>
 	<span class="p">}</span>
 
-<span class="c">//	push, pop, shift, unshift, add, remove (index or object), splice</span>
-<span class="c">//	item, indexOf, size</span>
+<span class="c1">//	push, pop, shift, unshift, add, remove (index or object), splice</span>
+<span class="c1">//	item, indexOf, size</span>
 <span class="p">});</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">MultiObject</span> <span class="o">=</span> <span class="nx">MultiObject</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">MultiObject</span> <span class="o">=</span> <span class="nx">MultiObject</span><span class="p">;</span>
 </pre></div>
 
                     </div>
@@ -301,11 +301,14 @@
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class="selected"><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
                                 <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
                                 <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
                                 <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
@@ -339,7 +342,7 @@
 	</div>
 	<div id="ft">
         <hr />
-        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
 	</div>
 </div>
 <script type="text/javascript">
