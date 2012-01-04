@@ -2,7 +2,8 @@
 
 /**********************************************************************
  * <p>Augments global Y object with the same higher-order functions that
- * array-extras adds to Y.Array.</p>
+ * array-extras adds to Y.Array.  Note that, unlike arrays and NodeLists,
+ * iteration order for an object is arbitrary!</p>
  *
  * @module gallery-funcprog
  */
