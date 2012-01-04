@@ -18,7 +18,7 @@ Y.mix(Y.Object,
 	 * Executes the supplied function on each item in the object.
 	 * Iteration stops if the supplied function does not return a truthy
 	 * value.  The function receives the value, the key, and the object
-	 * itself as paramters (in that order).
+	 * itself as parameters (in that order).
 	 *
 	 * By default, only properties owned by _obj_ are enumerated. To include
 	 * prototype properties, set the _proto_ parameter to `true`.
@@ -47,7 +47,7 @@ Y.mix(Y.Object,
 	 * Executes the supplied function on each item in the object.  Returns
 	 * a new object containing the items for which the supplied function
 	 * returned a truthy value.  The function receives the value, the key,
-	 * and the object itself as paramters (in that order).
+	 * and the object itself as parameters (in that order).
 	 *
 	 * By default, only properties owned by _obj_ are enumerated. To include
 	 * prototype properties, set the _proto_ parameter to `true`.
@@ -78,7 +78,7 @@ Y.mix(Y.Object,
 	/**
 	 * Executes the supplied function on each item in the object, searching
 	 * for the first item that matches the supplied function.  The function
-	 * receives the value, the key, and the object itself as paramters (in
+	 * receives the value, the key, and the object itself as parameters (in
 	 * that order).
 	 *
 	 * By default, only properties owned by _obj_ are enumerated. To include
@@ -161,7 +161,10 @@ Y.mix(Y.Object,
 	/**
 	 * Executes the supplied function on each item in the object and
 	 * returns a new object with the results.  The function receives the
-	 * value, the key, and the object itself as paramters (in that order).
+	 * value, the key, and the object itself as parameters (in that order).
+	 *
+	 * By default, only properties owned by _obj_ are enumerated. To include
+	 * prototype properties, set the _proto_ parameter to `true`.
 	 *
 	 * @param o {Object} the object to iterate
 	 * @param f {String} the function to invoke
@@ -186,10 +189,10 @@ Y.mix(Y.Object,
 	},
 
 	/**
-	 * Executes the supplied function on each item in the object.  Returns
-	 * a new object containing the items for which the supplied function
-	 * returned a truthy value.  The function receives the value, the key,
-	 * and the object itself as paramters (in that order).
+	 * Partitions an object into two new objects, one with the items for
+	 * which the supplied function returns `true`, and one with the items
+	 * for which the function returns `false`.  The function receives the
+	 * value, the key, and the object itself as parameters (in that order).
 	 *
 	 * By default, only properties owned by _obj_ are enumerated. To include
 	 * prototype properties, set the _proto_ parameter to `true`.
@@ -224,17 +227,20 @@ Y.mix(Y.Object,
 
 	/**
 	 * Executes the supplied function on each item in the object, folding
-	 * the object into a single value.  The function receives the previous
-	 * value returned by the previous iteration (or the initial value if
-	 * this is the first iteration), the value being iterated, the key, and
-	 * the object itself as paramters (in that order).
+	 * the object into a single value.  The function receives the value
+	 * returned by the previous iteration (or the initial value if this is
+	 * the first iteration), the value being iterated, the key, and the
+	 * object itself as parameters (in that order).
+	 *
+	 * By default, only properties owned by _obj_ are enumerated. To include
+	 * prototype properties, set the _proto_ parameter to `true`.
 	 *
 	 * @param o {Object} the object to iterate
 	 * @param init {Mixed} the initial value
 	 * @param f {String} the function to invoke
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} include prototype properties
-	 * @return {Object} all return values, mapped according to the item key
+	 * @return {Mixed} final result from iteratively applying the given function to each item in the object
 	 * @static
 	 */
 	reduce: function(o, init, f, c, proto)
@@ -256,7 +262,7 @@ Y.mix(Y.Object,
 	 * Executes the supplied function on each item in the object.  Returns
 	 * a new object containing the items for which the supplied function
 	 * returned a falsey value.  The function receives the value, the key,
-	 * and the object itself as paramters (in that order).
+	 * and the object itself as parameters (in that order).
 	 *
 	 * By default, only properties owned by _obj_ are enumerated. To include
 	 * prototype properties, set the _proto_ parameter to `true`.

@@ -1,20 +1,44 @@
-YUI.add('gallery-object-extras', function(Y) {
+YUI.add('gallery-funcprog', function(Y) {
 
 "use strict";
 
 /**********************************************************************
- * <p>Augments Y.Object with the same higher-order functions that
- * array-extras adds to Y.Array.  Note that, unlike Y.Array, iteration
- * order in Y.Object is not guaranteed!</p>
- * 
- * @module gallery-object-extras
+ * <p>Augments global Y object with the same higher-order functions that
+ * array-extras adds to Y.Array.</p>
+ *
+ * @module gallery-funcprog
  */
 
 /**
- * @class Object
+ * @class YUI
  */
 
-Y.mix(Y.Object,
+// adjusted from YUI's oop.js
+function dispatch(action, o)
+{
+	var args = Y.Array(arguments, 1, true);
+
+	switch (Y.Array.test(o))
+	{
+		case 1:
+			return Y.Array[action].apply(null, args);
+		case 2:
+			args[0] = Y.Array(o, 0, true);
+			return Y.Array[action].apply(null, args);
+		default:
+			if (o && o[action] && o !== Y)
+			{
+				args.shift();
+				return o[action].apply(o, args);
+			}
+			else
+			{
+				return Y.Object[action].apply(null, args);
+			}
+	}
+}
+
+Y.mix(Y,
 {
 	/**
 	 * Executes the supplied function on each item in the object.
@@ -22,27 +46,18 @@ Y.mix(Y.Object,
 	 * value.  The function receives the value, the key, and the object
 	 * itself as parameters (in that order).
 	 *
-	 * By default, only properties owned by _obj_ are enumerated. To include
-	 * prototype properties, set the _proto_ parameter to `true`.
+	 * Supports arrays, objects, and NodeLists.
 	 *
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @param proto {Boolean} include prototype properties
+	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Boolean} `true` if every item in the array returns `true` from the supplied function, `false` otherwise
 	 * @static
 	 */
 	every: function(o, f, c, proto)
 	{
-		for (var k in o)
-		{
-			if ((proto || o.hasOwnProperty(k)) && !f.call(c, o[k], k, o))
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return dispatch('every', o, f, c, proto);
 	},
 
 	/**
@@ -63,18 +78,7 @@ Y.mix(Y.Object,
 	 */
 	filter: function(o, f, c, proto)
 	{
-		var result = {};
-
-		for (var k in o)
-		{
-			var v = o[k];
-			if ((proto || o.hasOwnProperty(k)) && f.call(c, v, k, o))
-			{
-				result[k] = v;
-			}
-		}
-
-		return result;
+		return dispatch('filter', o, f, c, proto);
 	},
 
 	/**
@@ -95,69 +99,7 @@ Y.mix(Y.Object,
 	 */
 	find: function(o, f, c, proto)
 	{
-		for (var k in o)
-		{
-			var v = o[k];
-			if ((proto || o.hasOwnProperty(k)) && f.call(c, v, k, o))
-			{
-				return v;
-			}
-		}
-
-		return null;
-	},
-
-	/**
-	 * Executes the supplied function on each item in the object, searching
-	 * for the first item that matches the supplied function.
-	 *
-	 * By default, only properties owned by _obj_ are enumerated. To include
-	 * prototype properties, set the _proto_ parameter to `true`.
-	 *
-	 * @param o {Object} the object to iterate
-	 * @param v {Mixed} the value to search for
-	 * @param proto {Boolean} include prototype properties
-	 * @return {String} key of an item strictly equal to _v_, or null if not found
-	 * @static
-	 */
-	keyOf: function(o, v, proto)
-	{
-		for (var k in o)
-		{
-			if ((proto || o.hasOwnProperty(k)) && o[k] === v)
-			{
-				return k;
-			}
-		}
-
-		return null;
-	},
-
-	/**
-	 * Executes a named method on each item in the object. Items that do
-	 * not have a function by that name will be skipped.
-	 *
-	 * @param o {Object} the object to iterate
-	 * @param f {String} the function to invoke
-	 * @param args* {Any} any number of additional args are passed as parameters to the execution of the named method
-	 * @return {Object} all return values, mapped according to the item key
-	 * @static
-	 */
-	invoke: function(o, f)
-	{
-		var args = Y.Array(arguments, 2, true),
-			result = {};
-
-		for (var k in o)
-		{
-			var v = o[k];
-			if (o.hasOwnProperty(k) && Y.Lang.isFunction(v[f]))
-			{
-				result[k] = v[f].apply(v, args);
-			}
-		}
-
-		return result;
+		return dispatch('find', o, f, c, proto);
 	},
 
 	/**
@@ -177,17 +119,7 @@ Y.mix(Y.Object,
 	 */
 	map: function(o, f, c, proto)
 	{
-		var result = {};
-
-		for (var k in o)
-		{
-			if (proto || o.hasOwnProperty(k))
-			{
-				result[k] = f.call(c, o[k], k, o);
-			}
-		}
-
-		return result;
+		return dispatch('map', o, f, c, proto);
 	},
 
 	/**
@@ -208,23 +140,7 @@ Y.mix(Y.Object,
 	 */
 	partition: function(o, f, c, proto)
 	{
-		var result =
-		{
-			matches: {},
-			rejects: {}
-		};
-
-		for (var k in o)
-		{
-			var v = o[k];
-			if (proto || o.hasOwnProperty(k))
-			{
-				var set = f.call(c, v, k, o) ? result.matches : result.rejects;
-				set[k]  = v;
-			}
-		}
-
-		return result;
+		return dispatch('partition', o, f, c, proto);
 	},
 
 	/**
@@ -247,17 +163,7 @@ Y.mix(Y.Object,
 	 */
 	reduce: function(o, init, f, c, proto)
 	{
-		var result = init;
-
-		for (var k in o)
-		{
-			if (proto || o.hasOwnProperty(k))
-			{
-				result = f.call(c, result, o[k], k, o);
-			}
-		}
-
-		return result;
+		return dispatch('reduce', o, init, f, c, proto);
 	},
 
 	/**
@@ -278,60 +184,9 @@ Y.mix(Y.Object,
 	 */
 	reject: function(o, f, c, proto)
 	{
-		return Y.Object.filter(o, function(v, k, o)
-		{
-			return !f.call(c, v, k, o);
-		},
-		c, proto);
-	},
-
-	/**
-	 * Creates an object by pairing the corresponding elements of two arrays.
-	 *
-	 * @param a1 {Array} the keys which must be strings
-	 * @param a2 {Array} the values
-	 * @return {Object} object formed by pairing each element of the first array with an item in the second array having the corresponding index
-	 * @static
-	 */
-	zip: function(a1, a2)
-	{
-		var result = {};
-
-		Y.Array.each(a1, function(v, i)
-		{
-			result[ v.toString() ] = a2[i];
-		});
-
-		return result;
-	}
-});
-/**********************************************************************
- * @class Array
- */
-
-Y.mix(Y.Array,
-{
-	/**
-	 * Converts the array of objects into a map of the same objects, keyed
-	 * off a particular attribute.
-	 *
-	 * @param a {Array} the array to iterate
-	 * @param k {String} the attribute to key off
-	 * @return {Object} map of the objects
-	 * @static
-	 */
-	toObject: function(a, k)
-	{
-		var result = {};
-
-		Y.Array.each(a, function(v)
-		{
-			result[ v[k] ] = v;
-		});
-
-		return result;
+		return dispatch('reject', o, f, c, proto);
 	}
 });
 
 
-}, '@VERSION@' );
+}, '@VERSION@' ,{requires:['gallery-object-extras','gallery-nodelist-extras2']});

@@ -1701,14 +1701,8 @@ Y.extend(BulkEditor, Y.Widget,
 		{
 			page:       page_errors || [],
 			records:    record_field_errors || [],
-			record_map: {}
+			record_map: Y.Array.toObject(record_field_errors || [], 'id')
 		};
-
-		Y.Array.each(this.server_errors.records, function(r)
-		{
-			this.server_errors.record_map[ r.id ] = r;
-		},
-		this);
 
 		this._updatePageStatus();
 
@@ -2650,4 +2644,4 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 Y.HTMLTableBulkEditor = HTMLTableBulkEditor;
 
 
-}, '@VERSION@' ,{skinnable:true, optional:['datasource','dataschema','gallery-paginator'], requires:['widget','datasource-local','gallery-busyoverlay','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-scrollintoview','array-extras']});
+}, '@VERSION@' ,{skinnable:true, optional:['datasource','dataschema','gallery-paginator'], requires:['widget','datasource-local','gallery-busyoverlay','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-scrollintoview','array-extras','gallery-object-extras']});
