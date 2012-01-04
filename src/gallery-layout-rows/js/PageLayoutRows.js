@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 
-/**********************************************************************
+/*
  * Manages the stacked rows on a page:
  *		header, body row, body row, ..., body row, footer
  *
@@ -105,7 +105,7 @@ PageLayout.prototype =
 	onAfterReflow:     new CustomEvent('afterReflow'),
 	onAfterModeChange: new CustomEvent('afterModeChange'),
 
-	/**********************************************************************
+	/*
 	 * Returns true after initialization is complete.
 	 */
 
@@ -114,7 +114,7 @@ PageLayout.prototype =
 		return the_init_flag;
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns the height of the sticky header.
 	 */
 
@@ -128,7 +128,7 @@ PageLayout.prototype =
 		return the_header_container;
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns the height of the scrolling body.
 	 */
 
@@ -142,7 +142,7 @@ PageLayout.prototype =
 		return the_body_container;
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns the height of the sticky footer.
 	 */
 
@@ -157,7 +157,7 @@ PageLayout.prototype =
 		return the_footer_container;
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns the current behavior of the layout.
 	 */
 
@@ -166,7 +166,7 @@ PageLayout.prototype =
 		return the_mode;
 	},
 
-	/**********************************************************************
+	/*
 	 * Call this to change the behavior of the layout.
 	 */
 
@@ -190,7 +190,7 @@ PageLayout.prototype =
 		}
 	},
 
-	/**********************************************************************
+	/*
 	 * Call this to change the behavior of the footer in FIT_TO_CONTENT.
 	 */
 
@@ -202,7 +202,7 @@ PageLayout.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Sets the minimum allowed size of the viewport in *em*.
 	 */
 
@@ -215,7 +215,7 @@ PageLayout.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Sets the percentage sizes of all the rows in the body of the page.
 	 */
 
@@ -242,7 +242,7 @@ PageLayout.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Sets the percentage sizes of all the columns in one row of the page.
 	 */
 
@@ -271,7 +271,7 @@ PageLayout.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns an event that, when fired, causes the sizing of all modules
 	 * to be recalculated.
 	 */
@@ -286,7 +286,7 @@ PageLayout.prototype =
 		return the_resize_event;
 	},
 
-	/**********************************************************************
+	/*
 	 * Attaches a listener to the given element.
 	 */
 
@@ -304,7 +304,7 @@ PageLayout.prototype =
 				 [id, this.body_row_class, this.module_class], this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Expand/collapse a section.
 	 */
 
@@ -369,7 +369,7 @@ PageLayout.prototype =
 		}
 	},
 
-	/**********************************************************************
+	/*
 	 * Updates the layout which contains the specified element.
 	 */
 
@@ -413,7 +413,7 @@ PageLayout.prototype =
 		}
 	},
 
-	/**********************************************************************
+	/*
 	 * Scan the DOM for the elements we care about.  Called automatically
 	 * after the page loads.
 	 */
@@ -474,7 +474,7 @@ PageLayout.prototype =
 		the_init_flag = true;
 	},
 
-	/**********************************************************************
+	/*
 	 * Call this after manually adding or removing modules on the page.
 	 */
 
@@ -583,7 +583,7 @@ PageLayout.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Adjusts the module body height so that the total module (hd,bd,ft)
 	 * has the specified height.
 	 */
@@ -600,7 +600,7 @@ PageLayout.prototype =
 		}
 	},
 
-	/**********************************************************************
+	/*
 	 * Clears the height of the module, so it expands to fit its content.
 	 */
 
@@ -628,7 +628,7 @@ PageLayout.prototype =
 		}
 	},
 
-	/**********************************************************************
+	/*
 	 * Clears the height of the module, so it expands to fit its content.
 	 */
 
@@ -642,7 +642,7 @@ PageLayout.prototype =
 		this.onAfterResizeModule.fire(module_bd, h, w);
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns the components of the module.
 	 */
 

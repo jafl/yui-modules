@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 
-/**********************************************************************
+/*
  * Manages the stacked columns on a page between header and footer:
  *		header, body column, body column, ..., body column, footer
  *
@@ -102,7 +102,7 @@ PageLayoutT.prototype =
 	onAfterReflow:     PageLayout.prototype.onAfterReflow,
 	onAfterModeChange: PageLayout.prototype.onAfterModeChange,
 
-	/**********************************************************************
+	/*
 	 * Returns true after initialization is complete.
 	 */
 
@@ -111,7 +111,7 @@ PageLayoutT.prototype =
 		return the_init_flag;
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns the height of the sticky header.
 	 */
 
@@ -125,7 +125,7 @@ PageLayoutT.prototype =
 		return the_header_container;
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns the height of the scrolling body.
 	 */
 
@@ -139,7 +139,7 @@ PageLayoutT.prototype =
 		return the_body_container;
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns the height of the sticky footer.
 	 */
 
@@ -154,7 +154,7 @@ PageLayoutT.prototype =
 		return the_footer_container;
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns the current behavior of the layout.
 	 */
 
@@ -163,7 +163,7 @@ PageLayoutT.prototype =
 		return the_mode;
 	},
 
-	/**********************************************************************
+	/*
 	 * Call this to change the behavior of the layout.
 	 */
 
@@ -187,7 +187,7 @@ PageLayoutT.prototype =
 		}
 	},
 
-	/**********************************************************************
+	/*
 	 * Call this to change the behavior of the footer in FIT_TO_CONTENT.
 	 */
 
@@ -199,7 +199,7 @@ PageLayoutT.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Call this to turn column height matching on or off.
 	 */
 
@@ -210,7 +210,7 @@ PageLayoutT.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Sets the minimum allowed size of the viewport in *em*.
 	 */
 
@@ -223,7 +223,7 @@ PageLayoutT.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Sets the percentage sizes of all the columns in the body of the page.
 	 */
 
@@ -250,7 +250,7 @@ PageLayoutT.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Sets the percentage sizes of all the rows in one column of the page.
 	 */
 
@@ -279,7 +279,7 @@ PageLayoutT.prototype =
 		resize.call(this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Returns an event that, when fired, causes the sizing of all modules
 	 * to be recalculated.
 	 */
@@ -294,7 +294,7 @@ PageLayoutT.prototype =
 		return the_resize_event;
 	},
 
-	/**********************************************************************
+	/*
 	 * Attaches a listener to the given element.
 	 */
 
@@ -312,7 +312,7 @@ PageLayoutT.prototype =
 				 [id, this.module_class, this.body_col_class], this);
 	},
 
-	/**********************************************************************
+	/*
 	 * Expand/collapse a section.
 	 */
 
@@ -377,7 +377,7 @@ PageLayoutT.prototype =
 		}
 	},
 
-	/**********************************************************************
+	/*
 	 * Updates the layout which contains the specified element.
 	 */
 
@@ -426,7 +426,7 @@ PageLayoutT.prototype =
 		}
 	},
 
-	/**********************************************************************
+	/*
 	 * For use before _init() is called.  Copies settings from another
 	 * instance of PageLayout.  This is intentionally opaque.
 	 */
@@ -447,7 +447,7 @@ PageLayoutT.prototype =
 		}
 	},
 
-	/**********************************************************************
+	/*
 	 * Scan the DOM for the elements we care about.  Called automatically
 	 * after the page loads.
 	 */
@@ -514,7 +514,7 @@ PageLayoutT.prototype =
 		Prof.endBlock();
 	},
 
-	/**********************************************************************
+	/*
 	 * Call this after manually adding or removing modules on the page.
 	 */
 
@@ -628,26 +628,26 @@ PageLayoutT.prototype =
 		Prof.endBlock();
 	},
 
-	/**********************************************************************
+	/*
 	 * Adjusts the module body height so that the total module (hd,bd,ft)
 	 * has the specified height.
 	 */
 
 	_setModuleHeight: PageLayout.prototype._setModuleHeight,
 
-	/**********************************************************************
+	/*
 	 * Clears the height of the module, so it expands to fit its content.
 	 */
 
 	_clearModuleHeight: PageLayout.prototype._clearModuleHeight,
 
-	/**********************************************************************
+	/*
 	 * Clears the height of the module, so it expands to fit its content.
 	 */
 
 	_notifyModuleSizeChanged: PageLayout.prototype._notifyModuleSizeChanged,
 
-	/**********************************************************************
+	/*
 	 * Returns the components of the module.
 	 */
 
