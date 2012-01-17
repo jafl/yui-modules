@@ -1,11 +1,13 @@
-(function(){
 "use strict";
 
-/*
- * Manages the stacked rows on a page:
- *		header, body row, body row, ..., body row, footer
+/**
+ * Manages stacked rows on a page: header, body row, ..., body
+ * row, footer.  Each row contains one or more modules.
  *
- * This class must be used as a singleton.
+ * @class PageLayout
+ * @extends Base
+ * @constructor
+ * @param config {Object}
  */
 
 var Dom = YAHOO.util.Dom,
@@ -13,22 +15,103 @@ var Dom = YAHOO.util.Dom,
 	Event = YAHOO.util.Event,
 	CustomEvent = YAHOO.util.CustomEvent;
 
-YAHOO.SATG.PageLayout = function()
+function PageLayout()
 {
+	PageLayout.superclass.constructor.apply(this, arguments);
+}
+
+PageLayout.NAME = "pagelayout";
+
+PageLayout.ATTRS =
+{
+	/**
+	 * FIT_TO_VIEWPORT sizes the rows to fit everything inside the
+	 * browser's viewport.  FIT_TO_CONTENT sizes the rows to eliminate all
+	 * scrollbars on module bodies.
+	 *
+	 * @config mode
+	 * @type PageLayout.FIT_TO_VIEWPORT or PageLayout.FIT_TO_CONTENT
+	 * @default PageLayout.FIT_TO_VIEWPORT
+	 */
+	mode:
+	{
+		value:     PageLayout.FIT_TO_VIEWPORT,
+		validator: function(value)
+		{
+			return (value === PageLayout.FIT_TO_VIEWPORT || value === PageLayout.FIT_TO_CONTENT);
+		}
+	},
+
+	/**
+	 * Minimum page width in FIT_TO_VIEWPORT mode, measured in em's.  If
+	 * the page content will not collapse narrower than this width.  If the
+	 * viewport is smaller, the brower's horizontal scrollbar will appear.
+	 * 
+	 * @config minWidth
+	 * @type {Number} em's
+	 * @default 73 (em) 950px @ 13px font
+	 */
+	minWidth:
+	{
+		value:     73,
+		validator: function(value)
+		{
+			return Y.Lang.isNumber(value) && value > 0
+		}
+	},
+
+	/**
+	 * Minimum page height in FIT_TO_VIEWPORT mode, measured in em's.  If
+	 * the page content will not collapse lower than this height.  If the
+	 * viewport is smaller, the brower's vertical scrollbar will appear.
+	 * 
+	 * @config minHeight
+	 * @type {Number} em's
+	 * @default 44 (em) 570px @ 13px font
+	 */
+	minHeight:
+	{
+		value:     44,
+		validator: function(value)
+		{
+			return Y.Lang.isNumber(value) && value > 0
+		}
+	},
+
+	/**
+	 * In FIT_TO_CONTENT mode, set this to true to make the footer stick to
+	 * the bottom of the viewport.  The default is for the footer to scroll
+	 * along with the rest of the page content.
+	 *
+	 * @config stickyFooter
+	 * @type {Boolean}
+	 * @default false
+	 */
+	stickyFooter:
+	{
+		value:     false,
+		validator: Y.Lang.isBoolean
+	}
 };
 
-var PageLayout = YAHOO.SATG.PageLayout,
+/**
+ * @property Y.PageLayout.FIT_TO_VIEWPORT
+ */
+PageLayout.FIT_TO_VIEWPORT = 0;
 
-	the_mode               = null,
-	the_init_flag          = false,
-	the_sticky_footer_flag = false,
+/**
+ * @property Y.PageLayout.FIT_TO_CONTENT
+ */
+PageLayout.FIT_TO_CONTENT  = 1;
 
-	reflow_delay = 100,
+var reflow_delay      = 100,	// ms
+	min_module_height = 10,		// px
+	unmanaged_size    = -1,		// smaller than any module size (collapsed size = - normal size)
 
 	the_header_container = null,
 	the_body_container   = null,
-	the_body_horiz_mbp   = 0,		// compute once; required for bug in Safari 3.1.2
-	the_body_vert_mbp    = 0,		// compute once; required for bug in Safari 3.1.2
+	the_body_horiz_mbp   = 0,
+	the_body_vert_mbp    = 0,
 	the_footer_container = null,
 	the_resize_event     = null,
 
@@ -44,21 +127,8 @@ var PageLayout = YAHOO.SATG.PageLayout,
 	the_dd_targets = {},
 	the_dd_nubs    = {};
 
-PageLayout.FIT_TO_VIEWPORT = 0;
-PageLayout.FIT_TO_CONTENT  = 1;
-
-PageLayout.min_page_height   = 44;	// em; 570px @ 13px
-PageLayout.min_page_width    = 73;	// em; 950px @ 13px
-PageLayout.min_module_height = 10;	// px
-PageLayout.unmanaged_size    = -1;	// smaller than any module size (collapsed size = - normal size)
-
-var the_min_page_height = PageLayout.min_page_height,	// em
-	the_min_page_width  = PageLayout.min_page_width;	// em
-
-PageLayout.prototype =
+Y.extend(PageLayout, Y.Base,
 {
-	horizontal: true,
-
 	page_header_marker_class:  'satg-hdb',
 	page_content_marker_class: 'satg-content',
 	page_footer_marker_class:  'satg-ftb',
@@ -93,26 +163,6 @@ PageLayout.prototype =
 	has_no_recalc_auto_bug:    (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
 	has_explosive_modules_bug: (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
 	is_borked_dom_access:      (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
-
-	onBeforeResizeModule: new CustomEvent('beforeResizeModule'),
-	onAfterResizeModule:  new CustomEvent('afterResizeModule'),
-
-	onBeforeCollapseModule: new CustomEvent('beforeCollapseModule'),
-	onAfterCollapseModule:  new CustomEvent('afterCollapseModule'),
-	onBeforeExpandModule:   new CustomEvent('beforeExpandModule'),
-	onAfterExpandModule:    new CustomEvent('afterExpandModule'),
-
-	onAfterReflow:     new CustomEvent('afterReflow'),
-	onAfterModeChange: new CustomEvent('afterModeChange'),
-
-	/*
-	 * Returns true after initialization is complete.
-	 */
-
-	hasInitialized: function()
-	{
-		return the_init_flag;
-	},
 
 	/*
 	 * Returns the height of the sticky header.
@@ -155,64 +205,6 @@ PageLayout.prototype =
 	_getFooterContainer: function()
 	{
 		return the_footer_container;
-	},
-
-	/*
-	 * Returns the current behavior of the layout.
-	 */
-
-	getMode: function()
-	{
-		return the_mode;
-	},
-
-	/*
-	 * Call this to change the behavior of the layout.
-	 */
-
-	setMode: function(
-		/* mode */ mode)
-	{
-		if (mode !== the_mode)
-		{
-			the_mode = mode;
-			updateFitClass.call(this);
-
-			if (the_body_container)
-			{
-				the_body_container.scrollTop = 0;
-			}
-
-			reparentFooter.call(this);
-			resize.call(this);
-
-			this.onAfterModeChange.fire();
-		}
-	},
-
-	/*
-	 * Call this to change the behavior of the footer in FIT_TO_CONTENT.
-	 */
-
-	setStickyFooter: function(
-		/* bool */ sticky)
-	{
-		the_sticky_footer_flag = sticky;
-		reparentFooter.call(this);
-		resize.call(this);
-	},
-
-	/*
-	 * Sets the minimum allowed size of the viewport in *em*.
-	 */
-
-	setMinViewportSize: function(
-		/* int */	w,
-		/* int */	h)
-	{
-		the_min_page_width  = w;
-		the_min_page_height = h;
-		resize.call(this);
 	},
 
 	/*
@@ -421,10 +413,27 @@ PageLayout.prototype =
 	_init: function(
 		/* array */	page_blocks)
 	{
-		if (!the_mode)
+		this.after('modeChange', function()
 		{
-			the_mode = PageLayout.FIT_TO_VIEWPORT;
-		}
+			updateFitClass.call(this);
+
+			if (the_body_container)
+			{
+				the_body_container.scrollTop = 0;
+			}
+
+			reparentFooter.call(this);
+			resize.call(this);
+		});
+
+		this.after('minWidthChange', resize);
+		this.after('minHeightChange', resize);
+
+		this.after('stickyFooterChange', function()
+		{
+			reparentFooter.call(this);
+			resize.call(this);
+		});
 
 		if (!page_blocks)
 		{
@@ -470,8 +479,6 @@ PageLayout.prototype =
 		SDom.textResizeEvent.subscribe(resize, null, this);
 
 		w.on('load', resize, this);		// after images load
-
-		the_init_flag = true;
 	},
 
 	/*
@@ -624,7 +631,7 @@ PageLayout.prototype =
 		if (children.bd)
 		{
 			children.bd.setStyle('height', 'auto');
-			this.onBeforeResizeModule.fire(children.bd, 'auto', children.bd.insideWidth());
+			this.fire('beforeResizeModule', children.bd, 'auto', children.bd.insideWidth());
 		}
 	},
 
@@ -638,8 +645,8 @@ PageLayout.prototype =
 		var h = module_bd.insideHeight();
 		var w = module_bd.insideWidth();
 
-		this.onBeforeResizeModule.fire(module_bd, h, w);
-		this.onAfterResizeModule.fire(module_bd, h, w);
+		this.fire('beforeResizeModule', module_bd, h, w);
+		this.fire('afterResizeModule', module_bd, h, w);
 	},
 
 	/*
@@ -685,7 +692,7 @@ PageLayout.prototype =
 
 		return result;
 	}
-};
+});
 
 function updateFitClass()
 {
@@ -727,12 +734,12 @@ PageLayout._expandSection = function(
 		if (p)
 		{
 			var children = this._analyzeModule(p);
-			this.onBeforeExpandModule.fire(children.bd);
+			this.fire('beforeExpandModule', children.bd);
 
 			Dom.removeClass(p, this.collapsed_vert_class);
 			this.getResizeEvent().fire();
 
-			this.onAfterExpandModule.fire(children.bd);
+			this.fire('afterExpandModule', children.bd);
 		}
 	}
 	else
@@ -741,12 +748,12 @@ PageLayout._expandSection = function(
 		if (p)
 		{
 			var children = this._analyzeModule(p);
-			this.onBeforeExpandModule.fire(children.bd);
+			this.fire('beforeExpandModule', children.bd);
 
 			Dom.removeClass(p, this.collapsed_horiz_class);
 			this.getResizeEvent().fire();
 
-			this.onAfterExpandModule.fire(children.bd);
+			this.fire('afterExpandModule', children.bd);
 		}
 	}
 };
@@ -765,12 +772,12 @@ PageLayout._collapseSection = function(
 		if (p)
 		{
 			var children = this._analyzeModule(p);
-			this.onBeforeCollapseModule.fire(children.bd);
+			this.fire('beforeCollapseModule', children.bd);
 
 			Dom.addClass(p, this.collapsed_vert_class);
 			this.getResizeEvent().fire();
 
-			this.onAfterCollapseModule.fire(children.bd);
+			this.fire('afterCollapseModule', children.bd);
 		}
 	}
 	else
@@ -779,12 +786,12 @@ PageLayout._collapseSection = function(
 		if (p)
 		{
 			var children = this._analyzeModule(p);
-			this.onBeforeCollapseModule.fire(children.bd);
+			this.fire('beforeCollapseModule', children.bd);
 
 			Dom.addClass(p, this.collapsed_horiz_class);
 			this.getResizeEvent().fire();
 
-			this.onAfterCollapseModule.fire(children.bd);
+			this.fire('afterCollapseModule', children.bd);
 		}
 	}
 };
@@ -819,7 +826,7 @@ function resize()
 
 	SDom.hideFloaters();	// after confirming that viewport really has changed
 
-	var min_width  = the_min_page_width * SDom.getEmToPx();
+	var min_width  = this.get('minWidth') * SDom.getEmToPx();
 	var body_width = Math.max(the_body_rows.viewport.w, min_width);
 	Dom.setStyle(the_header_container, 'width', body_width+'px');
 	Dom.setStyle(the_body_container,   'width', (body_width - the_body_horiz_mbp)+'px');
@@ -829,7 +836,7 @@ function resize()
 	the_body_rows.viewport.bcw = the_body_container.clientWidth;
 
 	var h     = the_body_rows.viewport.h;
-	var h_min = the_min_page_height * SDom.getEmToPx();
+	var h_min = this.get('minHeight') * SDom.getEmToPx();
 	if (the_mode == PageLayout.FIT_TO_VIEWPORT && h < h_min)
 	{
 		h = h_min;
@@ -936,7 +943,7 @@ function resize()
 				if (w < 0)
 				{
 					var total_w_hacked = false;
-					if (w == PageLayout.unmanaged_size && this.has_explosive_modules_bug)
+					if (w == unmanaged_size && this.has_explosive_modules_bug)
 					{
 						var children = this._analyzeModule(modules[j]);
 						if (children.bd)
@@ -963,7 +970,7 @@ function resize()
 				var w = col_widths[i][j];
 				if (w < 0)
 				{
-					if (w == PageLayout.unmanaged_size)
+					if (w == unmanaged_size)
 					{
 						var children = this._analyzeModule(modules[j]);
 						if (children.bd)
@@ -990,7 +997,7 @@ function resize()
 					}
 
 					var w1 = Math.max(1, w - SDom.horizMarginBorderPadding(children.bd));
-					this.onBeforeResizeModule.fire(children.bd, 'auto', w1);
+					this.fire('beforeResizeModule', children.bd, 'auto', w1);
 					setWidth.call(this, children, w);
 					Dom.setStyle(children.root, 'height', 'auto');
 					Dom.setStyle(children.bd, 'height', 'auto');
@@ -1061,9 +1068,9 @@ function resize()
 					var h1 = SDom.insideHeight(children.bd);
 					var w  = getWidth(row_widths[i], col_widths, i, 0, module, module_info);
 					var w1 = Math.max(1, w - SDom.horizMarginBorderPadding(children.bd));
-					this.onBeforeResizeModule.fire(children.bd, h1, w1);
+					this.fire('beforeResizeModule', children.bd, h1, w1);
 					setWidth.call(this, children, w);
-					this.onAfterResizeModule.fire(children.bd, h1, w1);
+					this.fire('afterResizeModule', children.bd, h1, w1);
 				}
 				continue;
 			}
@@ -1083,14 +1090,14 @@ function resize()
 			if (w < 0)
 			{
 				var total_w_hacked = false;
-				if (w == PageLayout.unmanaged_size)
+				if (w == unmanaged_size)
 				{
 					var children = this._analyzeModule(modules[j]);
 					if (children.bd)
 					{
 						var h1 = _adjustHeight.call(this, h, children);
 						var w1 = SDom.insideWidth(children.bd);
-						this.onBeforeResizeModule.fire(children.bd, h1, w1);
+						this.fire('beforeResizeModule', children.bd, h1, w1);
 						Dom.setStyle(children.bd, 'height', h1+'px');
 
 						if (this.has_explosive_modules_bug)
@@ -1102,7 +1109,7 @@ function resize()
 							Dom.setStyle(children.root, 'width', bd_w+'px');
 						}
 
-						this.onAfterResizeModule.fire(children.bd, h1, w1);
+						this.fire('afterResizeModule', children.bd, h1, w1);
 					}
 				}
 				else
@@ -1144,13 +1151,13 @@ function resize()
 				var w1 = Math.max(1, w - SDom.horizMarginBorderPadding(children.bd));
 				if (the_mode == PageLayout.FIT_TO_VIEWPORT)
 				{
-					this.onBeforeResizeModule.fire(children.bd, h1, w1);
+					this.fire('beforeResizeModule', children.bd, h1, w1);
 					setWidth.call(this, children, w);
 				}
 
 				Dom.setStyle(children.bd, 'height', h1+'px');
 
-				this.onAfterResizeModule.fire(children.bd, h1, w1);
+				this.fire('afterResizeModule', children.bd, h1, w1);
 			}
 		}
 	}
@@ -1170,7 +1177,7 @@ function checkViewportSize()
 	}
 	else
 	{
-		this.onAfterReflow.fire();
+		this.fire('afterReflow');
 	}
 };
 
@@ -1202,7 +1209,7 @@ function _adjustHeight(
 
 	h -= SDom.vertMarginBorderPadding(children.bd);
 
-	return Math.max(h, PageLayout.min_module_height);
+	return Math.max(h, min_module_height);
 };
 
 function getWidth(
@@ -1239,7 +1246,7 @@ PageLayout._normalizeSizes = function(
 		var m = list[i].className.match(pattern);
 		if (Dom.hasClass(list[i], this.not_managed_class))
 		{
-			sizes.push(PageLayout.unmanaged_size);
+			sizes.push(unmanaged_size);
 		}
 		else if (m && m.length)
 		{
@@ -1288,5 +1295,3 @@ PageLayout._normalizeSizes = function(
 
 	return sizes;
 };
-
-})();
