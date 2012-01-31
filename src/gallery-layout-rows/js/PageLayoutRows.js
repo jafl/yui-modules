@@ -104,6 +104,10 @@ PageLayout.FIT_TO_VIEWPORT = 0;
  */
 PageLayout.FIT_TO_CONTENT  = 1;
 
+mode_regex                     = /\bFIT_TO_[A-Z_]+/;
+PageLayout.row_height_class_re = /(?:^|\s)height:([0-9]+)%/;
+PageLayout.col_width_class_re  = /(?:^|\s)width:([0-9]+)%/;
+
 var reflow_delay      = 100,	// ms
 	min_module_height = 10,		// px
 	unmanaged_size    = -1,		// smaller than any module size (collapsed size = - normal size)
@@ -126,7 +130,14 @@ var reflow_delay      = 100,	// ms
 
 	the_dd_targets = {},
 	the_dd_nubs    = {};
-
+/*
+	dd_group_name:            'satg-layout-dd-group',
+	drag_target_class:        'satg-layout-dd-target',
+	drag_nub_class:           'satg-layout-dragnub',
+	module_header_drag_class: 'satg-layout-draggable',
+	module_no_drag_class:     'satg-layout-drag-disabled',
+	bomb_sight_class:         'satg-layout-bomb-sight satg-layout-bomb-sight-rows',
+*/
 Y.extend(PageLayout, Y.Base,
 {
 	page_header_marker_class:  'satg-hdb',
@@ -149,16 +160,6 @@ Y.extend(PageLayout, Y.Base,
 	collapsed_horiz_class:    'satg-collapsed-horiz',
 	collapsed_any_regex:      /satg-collapsed-(horiz|vert)/,
 
-	mode_regex:              /[A-Z_]*FIT_TO_[A-Z_]+/,
-	row_height_class_re:     /(?:^|\s)height:([0-9]+)%/,
-	col_width_class_re:      /(?:^|\s)width:([0-9]+)%/,
-
-	dd_group_name:            'satg-layout-dd-group',
-	drag_target_class:        'satg-layout-dd-target',
-	drag_nub_class:           'satg-layout-dragnub',
-	module_header_drag_class: 'satg-layout-draggable',
-	module_no_drag_class:     'satg-layout-drag-disabled',
-	bomb_sight_class:         'satg-layout-bomb-sight satg-layout-bomb-sight-rows',
 
 	has_no_recalc_auto_bug:    (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
 	has_explosive_modules_bug: (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),

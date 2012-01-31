@@ -106,7 +106,8 @@ Y.mix(Y.NodeList.prototype,
 	 * the NodeList into a single value.  The function receives the value
 	 * returned by the previous iteration (or the initial value if this is
 	 * the first iteration), the Node being iterated, the index, and the
-	 * NodeList itself as parameters (in that order).
+	 * NodeList itself as parameters (in that order).  The function must
+	 * return the updated value.
 	 *
 	 * @param init {Mixed} the initial value
 	 * @param f {String} the function to invoke

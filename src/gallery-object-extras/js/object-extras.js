@@ -230,7 +230,8 @@ Y.mix(Y.Object,
 	 * the object into a single value.  The function receives the value
 	 * returned by the previous iteration (or the initial value if this is
 	 * the first iteration), the value being iterated, the key, and the
-	 * object itself as parameters (in that order).
+	 * object itself as parameters (in that order).  The function must
+	 * return the updated value.
 	 *
 	 * By default, only properties owned by _obj_ are enumerated. To include
 	 * prototype properties, set the _proto_ parameter to `true`.

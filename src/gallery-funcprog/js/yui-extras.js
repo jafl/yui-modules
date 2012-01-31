@@ -143,7 +143,8 @@ Y.mix(Y,
 	 * the object into a single value.  The function receives the value
 	 * returned by the previous iteration (or the initial value if this is
 	 * the first iteration), the value being iterated, the key, and the
-	 * object itself as parameters (in that order).
+	 * object itself as parameters (in that order).  The function must
+	 * return the updated value.
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
