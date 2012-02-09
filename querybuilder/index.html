@@ -68,10 +68,11 @@
 
 <script type="text/javascript">
 YUI({
-//	filter: 'raw', combine: false,
+	filter: 'raw', combine: false,
 	gallery: 'gallery-2012.01.11-21-03'
 }).use(
 	'datatable-datasource',
+	'datasource-arrayschema',
 	'gallery-querybuilder',
 	'gallery-formmgr',
 	'gallery-paginator',
@@ -272,17 +273,43 @@ function(Y)
 
 // Data Source
 
-	// extend local data source to understand filtering and pagination
+	// Wrap ordinary data source to implement filtering and pagination.
+	// (All DataSource*Schema plugins prevent DataSource._defDataFn from executing.)
 
-	function CustomDataSource()
+	function FilterDataSource()
 	{
-		CustomDataSource.superclass.constructor.apply(this, arguments);
+		FilterDataSource.superclass.constructor.apply(this, arguments);
 	}
 
-	CustomDataSource.NAME = "customdatasource";
+	FilterDataSource.NAME = "filterdatasource";
 
-	Y.extend(CustomDataSource, Y.DataSource.Local,
+	Y.extend(FilterDataSource, Y.DataSource.Local,
 	{
+		_defRequestFn: function(e)
+		{
+			var self    = this;
+			var payload = e.details[0];
+
+			this.get('source').sendRequest(
+			{
+				request: e.request,
+				callback:
+				{
+					success: function(e1)
+					{
+						payload.data = e1.response.results;
+						payload.meta = e1.response.meta;
+						self.fire('data', payload);
+					},
+					failure: function(e1)
+					{
+						payload.error = e1.error;
+						self.fire('data', payload);
+					}
+				}
+			});
+		},
+
 		_defDataFn: function(e)
 		{
 			var data = filterData(e.data, e.request.filter);
@@ -309,12 +336,14 @@ function(Y)
 		]
 	};
 
-	var ds = new CustomDataSource({source: data});
-	ds.plug(
+	var ds1 = new Y.DataSource.Local({source: data});
+	ds1.plug(
 	{
 		fn:  Y.Plugin.DataSourceArraySchema,
 		cfg: {schema:schema}
 	});
+
+	var ds = new FilterDataSource({source: ds1});
 
 // Paginator
 

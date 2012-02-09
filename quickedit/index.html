@@ -144,22 +144,9 @@ function(Y)
 		}
 	});
 
-	// configure data source
-
-	var schema =
-	{
-		resultFields:
-		[
-			'quantity', 'year', 'title'
-		]
-	};
+	// create data source
 
 	var ds = new CustomDataSource({source: data});
-	ds.plug(
-	{
-		fn:  Y.Plugin.DataSourceArraySchema,
-		cfg: {schema:schema}
-	});
 
 // Paginator
 
