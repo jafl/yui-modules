@@ -2,9 +2,7 @@
 
 var Dom = YAHOO.util.Dom,
 	SDom = YAHOO.SATG.Dom,
-	Event = YAHOO.util.Event,
-	CustomEvent = YAHOO.util.CustomEvent,
-	Calendar = YAHOO.SATG.Calendar;
+	Event = YAHOO.util.Event;
 
 /**********************************************************************
  * Manages a pair of DateTime's.

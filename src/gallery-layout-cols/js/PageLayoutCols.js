@@ -1,298 +1,29 @@
-(function(){
 "use strict";
-
-/*
- * Manages the stacked columns on a page between header and footer:
- *		header, body column, body column, ..., body column, footer
- *
- * This class must be used as a singleton.
- */
 
 var Dom = YAHOO.util.Dom,
 	SDom = YAHOO.SATG.Dom,
 	Event = YAHOO.util.Event,
-	CustomEvent = YAHOO.util.CustomEvent,
-	PageLayout = YAHOO.SATG.PageLayout,
-	DDTarget = YAHOO.util.DDTarget,
-	PageLayoutDDProxy = YAHOO.SATG.PageLayoutDDProxy,
-	Prof = YAHOO.tool.Profiler;
+	CustomEvent = YAHOO.util.CustomEvent;
 
-YAHOO.SATG.PageLayoutT = function()
+var has_explosive_modules_bug = (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8);
+
+/*
+ * Manages horizontally stacked columns on a page, sandwiched vertically
+ * between header and footer.  Each row contains one or more modules.
+ *
+ * @class PageLayoutCols
+ * @extends Base
+ * @constructor
+ * @param config {Object}
+ */
+
+YAHOO.SATG.PageLayoutCols = function()
 {
 };
 
-var PageLayoutT = YAHOO.SATG.PageLayoutT,
-
-	the_mode                       = null,
-	the_init_flag                  = false,
-	the_sticky_footer_flag         = false,
-	the_match_content_heights_flag = true,
-
-	the_min_page_height = PageLayout.min_page_height,	// em
-	the_min_page_width  = PageLayout.min_page_width,	// em
-
-	the_max_search_depth = 5,
-	reflow_delay = 100,
-
-	the_header_container = null,
-	the_body_container   = null,
-	the_body_horiz_mbp   = 0,		// compute once; required for bug in Safari 3.1.2
-	the_body_vert_mbp    = 0,		// compute once; required for bug in Safari 3.1.2
-	the_footer_container = null,
-	the_resize_event     = null,
-
-	the_body_cols =
-	{
-		viewport:    { w: 0, h: 0 },
-		cols:        [],
-		modules:     [],	// list of modules inside each column
-		col_widths:  [],	// list of percentages
-		row_heights: []		// list of lists of percentages
-	},
-
-	the_dd_targets = {},
-	the_dd_nubs    = {};
-
-PageLayoutT.prototype =
+PageLayoutCols.prototype =
 {
-	horizontal: false,
-
-	page_header_marker_class:  PageLayout.prototype.page_header_marker_class,
-	page_content_marker_class: PageLayout.prototype.page_content_marker_class,
-	page_footer_marker_class:  PageLayout.prototype.page_footer_marker_class,
-	page_block_re:             PageLayout.prototype.page_block_re,
-
-	body_col_class:      'satg-module-col',
-	module_class:        PageLayout.prototype.module_class,
-	module_header_class: PageLayout.prototype.module_header_class,
-	module_body_class:   PageLayout.prototype.module_body_class,
-	module_footer_class: PageLayout.prototype.module_footer_class,
-
-	not_managed_class:        PageLayout.prototype.not_managed_class,
-	collapse_horiz_nub_regex: PageLayout.prototype.collapse_horiz_nub_regex,
-	collapse_vert_nub_class:  PageLayout.prototype.collapse_vert_nub_class,
-	expand_horiz_nub_regex:   PageLayout.prototype.expand_horiz_nub_regex,
-	expand_vert_nub_class:    PageLayout.prototype.expand_vert_nub_class,
-	collapsed_vert_class:     PageLayout.prototype.collapsed_vert_class,
-	collapsed_horiz_class:    PageLayout.prototype.collapsed_horiz_class,
-	collapsed_any_regex:      PageLayout.prototype.collapsed_any_regex,
-
-	mode_regex:              PageLayout.prototype.mode_regex,
-	col_width_class_re:      PageLayout.prototype.col_width_class_re,
-	row_height_class_re:     PageLayout.prototype.row_height_class_re,
-
-	dd_group_name:            PageLayout.prototype.dd_group_name,
-	drag_target_class:        PageLayout.prototype.drag_target_class,
-	drag_nub_class:           PageLayout.prototype.drag_nub_class,
-	module_header_drag_class: PageLayout.prototype.module_header_drag_class,
-	module_no_drag_class:     PageLayout.prototype.module_no_drag_class,
-	bomb_sight_class:         'satg-layout-bomb-sight satg-layout-bomb-sight-cols',
-
-	has_explosive_modules_bug: (0 < YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
-	is_borked_browser:         false,//(7 <= YAHOO.env.ua.ie && YAHOO.env.ua.ie < 8),
-
-	onBeforeResizeModule: PageLayout.prototype.onBeforeResizeModule,
-	onAfterResizeModule:  PageLayout.prototype.onAfterResizeModule,
-
-	onBeforeCollapseModule: PageLayout.prototype.onBeforeCollapseModule,
-	onAfterCollapseModule:  PageLayout.prototype.onAfterCollapseModule,
-	onBeforeExpandModule:   PageLayout.prototype.onBeforeExpandModule,
-	onAfterExpandModule:    PageLayout.prototype.onAfterExpandModule,
-
-	onAfterReflow:     PageLayout.prototype.onAfterReflow,
-	onAfterModeChange: PageLayout.prototype.onAfterModeChange,
-
-	/*
-	 * Returns true after initialization is complete.
-	 */
-
-	hasInitialized: function()
-	{
-		return the_init_flag;
-	},
-
-	/*
-	 * Returns the height of the sticky header.
-	 */
-
-	getHeaderHeight: function()
-	{
-		return (the_header_container ? the_header_container.offsetHeight : 0);
-	},
-
-	_getHeaderContainer: function()
-	{
-		return the_header_container;
-	},
-
-	/*
-	 * Returns the height of the scrolling body.
-	 */
-
-	getBodyHeight: function()
-	{
-		return the_body_container.offsetHeight;
-	},
-
-	_getBodyContainer: function()
-	{
-		return the_body_container;
-	},
-
-	/*
-	 * Returns the height of the sticky footer.
-	 */
-
-	getFooterHeight: function()
-	{
-		return (the_sticky_footer_flag && the_footer_container ?
-				the_footer_container.offsetHeight : 0);
-	},
-
-	_getFooterContainer: function()
-	{
-		return the_footer_container;
-	},
-
-	/*
-	 * Returns the current behavior of the layout.
-	 */
-
-	getMode: function()
-	{
-		return the_mode;
-	},
-
-	/*
-	 * Call this to change the behavior of the layout.
-	 */
-
-	setMode: function(
-		/* mode */ mode)
-	{
-		if (mode !== the_mode)
-		{
-			the_mode = mode;
-			updateFitClass.call(this);
-
-			if (the_body_container)
-			{
-				the_body_container.scrollTop = 0;
-			}
-
-			reparentFooter.call(this);
-			resize.call(this);
-
-			this.onAfterModeChange.fire();
-		}
-	},
-
-	/*
-	 * Call this to change the behavior of the footer in FIT_TO_CONTENT.
-	 */
-
-	setStickyFooter: function(
-		/* bool */ sticky)
-	{
-		the_sticky_footer_flag = sticky;
-		reparentFooter.call(this);
-		resize.call(this);
-	},
-
-	/*
-	 * Call this to turn column height matching on or off.
-	 */
-
-	setMatchColumnHeights: function(
-		/* bool */ match)
-	{
-		the_match_content_heights_flag = match;
-		resize.call(this);
-	},
-
-	/*
-	 * Sets the minimum allowed size of the viewport in *em*.
-	 */
-
-	setMinViewportSize: function(
-		/* int */	w,
-		/* int */	h)
-	{
-		the_min_page_width  = w;
-		the_min_page_height = h;
-		resize.call(this);
-	},
-
-	/*
-	 * Sets the percentage sizes of all the columns in the body of the page.
-	 */
-
-	setColumnWidths: function(
-		/* array */	col_widths)
-	{
-		if (col_widths.length != the_body_cols.col_widths.length)
-		{
-			throw Error('Wrong number of column widths.  Expected ' + the_body_cols.col_widths.length);
-		}
-
-		var sum = 0;
-		for (var i=0; i<col_widths.length; i++)
-		{
-			sum += col_widths[i];
-		}
-
-		if (Math.round(sum) != 100)
-		{
-			throw Error('Column widths must add up to 100%');
-		}
-
-		the_body_cols.col_widths = col_widths;
-		resize.call(this);
-	},
-
-	/*
-	 * Sets the percentage sizes of all the rows in one column of the page.
-	 */
-
-	setRowHeights: function(
-		/* int */	col_index,
-		/* array */	row_heights)
-	{
-		var w = the_body_cols.row_heights[ col_index ];
-		if (row_heights.length != w.length)
-		{
-			throw Error('Wrong number of row heights.  Expected ' + w.length);
-		}
-
-		var sum = 0;
-		for (var i=0; i<row_heights.length; i++)
-		{
-			sum += row_heights[i];
-		}
-
-		if (Math.round(sum) != 100)
-		{
-			throw Error('Row heights must add up to 100%');
-		}
-
-		w = row_heights;
-		resize.call(this);
-	},
-
-	/*
-	 * Returns an event that, when fired, causes the sizing of all modules
-	 * to be recalculated.
-	 */
-
-	getResizeEvent: function()
-	{
-		if (!the_resize_event)
-		{
-			the_resize_event = new CustomEvent('resize', this);
-			the_resize_event.subscribe(resize, null, this);
-		}
-		return the_resize_event;
-	},
+	body_col_class: 'satg-module-col',
 
 	/*
 	 * Attaches a listener to the given element.
@@ -362,331 +93,13 @@ PageLayoutT.prototype =
 		{
 			PageLayout._collapseSection.call(this, null, [nub, this.module_class, this.body_col_class]);
 		}
-	},
-
-	toggleSection: function(
-		/* string */	id)
-	{
-		if (this.sectionIsCollapsed(id))
-		{
-			this.expandSection(id);
-		}
-		else
-		{
-			this.collapseSection(id);
-		}
-	},
-
-	/*
-	 * Updates the layout which contains the specified element.
-	 */
-
-	elementResized: function(
-		/* string/object */	el)
-	{
-		if (el._node)	// allow Y.Node
-		{
-			el = el._node;
-		}
-
-		if (Dom.isAncestor(the_header_container, el) ||
-			Dom.isAncestor(the_body_container,   el) ||
-			Dom.isAncestor(the_footer_container, el))
-		{
-			if (this.refresh_timer != null)
-			{
-				this.refresh_timer.cancel();
-			}
-
-			var t1 = (new Date()).getTime();
-			this.refresh_timer = YAHOO.lang.later(reflow_delay, this, function()
-			{
-				this.refresh_timer = null;
-
-				// if JS is really busy, wait a bit longer
-
-				var t2 = (new Date()).getTime();
-				if (t2 > t1 + 2*reflow_delay)
-				{
-					YAHOO.SATG.Debug.alert('deferred reflow: ' + (t2-t1));
-					this.elementResized(el);
-					return;
-				}
-
-				this.need_borked_browser_hack = true;
-				this.getResizeEvent().fire();
-				this.need_borked_browser_hack = false;
-			});
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	},
-
-	/*
-	 * For use before _init() is called.  Copies settings from another
-	 * instance of PageLayout.  This is intentionally opaque.
-	 */
-
-	_copySettings: function(
-		/* object */	pl)
-	{
-		var list               = pl._getSettings();
-		the_mode               = list[0];
-		the_sticky_footer_flag = list[1];
-		the_min_page_height    = list[2];
-		the_min_page_width     = list[3];
-		the_resize_event       = list[4];
-
-		if (the_resize_event)
-		{
-			the_resize_event.subscribe(resize, null, this);
-		}
-	},
-
-	/*
-	 * Scan the DOM for the elements we care about.  Called automatically
-	 * after the page loads.
-	 */
-
-	_init: function(
-		/* array */	page_blocks)
-	{
-		Prof.startBlock("SATG.PageLayoutT._init");
-
-		if (!the_mode)
-		{
-			the_mode = PageLayout.FIT_TO_VIEWPORT;
-		}
-
-		if (!page_blocks)
-		{
-			page_blocks = Dom.getElementsByClassName(this.page_block_re, 'div');
-		}
-
-		var list = SDom.filterByClassName(page_blocks, this.page_header_marker_class);
-		if (list.length > 1)
-		{
-			Prof.endBlock();
-			throw Error('There must be at most one div with class ' + this.page_header_marker_class);
-		}
-		the_header_container = (list.length ? list[0] : null);
-
-		list = SDom.filterByClassName(page_blocks, this.page_content_marker_class);
-		if (list.length != 1)
-		{
-			Prof.endBlock();
-			throw Error('There must be exactly one div with class ' + this.page_content_marker_class);
-		}
-		the_body_container = list[0];
-
-		the_body_horiz_mbp = SDom.horizMarginBorderPadding(the_body_container);
-		the_body_vert_mbp  = SDom.vertMarginBorderPadding(the_body_container);
-
-		var m = the_body_container.className.match(this.mode_regex);
-		if (m && m.length)
-		{
-			the_mode = PageLayout[ m[0] ];
-		}
-
-		list = SDom.filterByClassName(page_blocks, this.page_footer_marker_class);
-		if (list.length > 1)
-		{
-			Prof.endBlock();
-			throw Error('There must be at most one div with class ' + this.page_footer_marker_class);
-		}
-		the_footer_container = (list.length ? list[0] : null);
-
-		updateFitClass.call(this);
-		reparentFooter.call(this);
-		this._rescanBody();
-
-		Event.on(window, 'resize', resize, null, this);
-		SDom.textResizeEvent.subscribe(resize, null, this);
-
-		Event.on(window, 'load', resize, null, this);	// after images load
-
-		the_init_flag = true;
-
-		Prof.endBlock();
-	},
-
-	/*
-	 * Call this after manually adding or removing modules on the page.
-	 */
-
-	_rescanBody: function(
-		/* bool */	rescan_sizes)
-	{
-		Prof.startBlock("SATG.PageLayout._rescanBody");
-
-		var saved_col_widths  = the_body_cols.col_widths;
-		var saved_row_heights = the_body_cols.row_heights;
-
-		the_body_cols.cols        = Dom.getElementsByClassName(this.body_col_class, 'div', the_body_container);
-		the_body_cols.modules     = [];
-		the_body_cols.col_widths  = [];
-		the_body_cols.row_heights = [];
-
-		var col_count = the_body_cols.cols.length;
-		for (var i=0; i<col_count; i++)
-		{
-			var col = the_body_cols.cols[i];
-			Dom.generateId(col, this.body_col_class+'-');
-			the_body_cols.col_widths.push(100.0/col_count);
-
-			var list = Dom.getElementsByClassName(this.module_class, 'div', col);
-			if (list.length == 0)
-			{
-				the_body_cols.cols       = [];
-				the_body_cols.modules    = [];
-				the_body_cols.col_widths = [];
-				Prof.endBlock();
-				throw Error('There must be at least one ' + this.module_class + ' inside ' + this.body_col_class + '.');
-			}
-
-			the_body_cols.modules.push(list);
-/*
-			if (PageLayoutDDProxy)
-			{
-				var row_count = list.length;
-				var has_nubs  = false;
-				for (var j=0; j<row_count; j++)
-				{
-					var module = list[j];
-					Dom.generateId(module, this.module_class+'-');
-					Dom.removeClass(module, this.module_no_drag_class);
-
-					if (the_dd_nubs[ module.id ])
-					{
-						has_nubs = (the_dd_nubs[ module.id ] != 'none');
-					}
-					else
-					{
-						var nub = Dom.getElementsByClassName(this.drag_nub_class, null, module)[0];
-						if (nub)
-						{
-							var children = this._analyzeModule(module);
-							if (children.hd)
-							{
-								Dom.addClass(children.hd, this.module_header_drag_class);
-								the_dd_nubs[ module.id ] =
-									new PageLayoutDDProxy(this, module.id, children.hd, this.dd_group_name);
-								has_nubs = true;
-							}
-						}
-
-						if (!the_dd_nubs[ module.id ])
-						{
-							the_dd_nubs[ module.id ] = 'none';
-						}
-					}
-				}
-
-				if (!the_dd_targets[ col.id ] &&
-					(has_nubs || Dom.hasClass(col, this.drag_target_class)))
-				{
-					the_dd_targets[ col.id ] = new DDTarget(col.id, this.dd_group_name);
-				}
-
-				if (row_count == 1)
-				{
-					Dom.addClass(list[0], this.module_no_drag_class);
-				}
-			}
-*/
-			// restore saved widths, if possible
-
-			if (!rescan_sizes && saved_row_heights[i] && saved_row_heights[i].length == list.length)
-			{
-				the_body_cols.row_heights.push(saved_row_heights[i]);
-			}
-			else
-			{
-				the_body_cols.row_heights.push(
-					PageLayout._normalizeSizes.call(this, list, this.row_height_class_re));
-			}
-		}
-
-		// restore saved heights, if possible
-
-		if (!rescan_sizes && saved_col_widths.length == the_body_cols.col_widths.length)
-		{
-			the_body_cols.col_widths = saved_col_widths;
-		}
-		else
-		{
-			the_body_cols.col_widths =
-				PageLayout._normalizeSizes.call(this, the_body_cols.cols, this.col_width_class_re);
-		}
-
-		resize.call(this);
-
-		Prof.endBlock();
-	},
-
-	/*
-	 * Adjusts the module body height so that the total module (hd,bd,ft)
-	 * has the specified height.
-	 */
-
-	_setModuleHeight: PageLayout.prototype._setModuleHeight,
-
-	/*
-	 * Clears the height of the module, so it expands to fit its content.
-	 */
-
-	_clearModuleHeight: PageLayout.prototype._clearModuleHeight,
-
-	/*
-	 * Clears the height of the module, so it expands to fit its content.
-	 */
-
-	_notifyModuleSizeChanged: PageLayout.prototype._notifyModuleSizeChanged,
-
-	/*
-	 * Returns the components of the module.
-	 */
-
-	_analyzeModule: PageLayout.prototype._analyzeModule
-};
-
-function updateFitClass()
-{
-	Dom.replaceClass(the_body_container, /(^|\s)FIT_TO_(VIEWPORT|CONTENT)(\s|$)/,
-		the_mode == PageLayout.FIT_TO_VIEWPORT ? 'FIT_TO_VIEWPORT' : 'FIT_TO_CONTENT');
-};
-
-function reparentFooter()
-{
-	if (!the_footer_container)
-	{
-		return;
-	}
-
-	if (the_mode == PageLayout.FIT_TO_VIEWPORT || the_sticky_footer_flag)
-	{
-		the_body_container.parentNode.insertBefore(the_footer_container, Dom.getNextSiblingBy(the_body_container, function(node)
-		{
-			return node.tagName.toLowerCase() != 'script';
-		}));
-	}
-	else
-	{
-		the_body_container.appendChild(the_footer_container);
 	}
 };
 
 function resize()
 {
-	Prof.startBlock("SATG.PageLayoutT.resize");
-
 	if (!the_body_container)
 	{
-		Prof.endBlock();
 		return;
 	}
 
@@ -706,7 +119,6 @@ function resize()
 		(viewport.w === the_body_cols.viewport.w &&
 		 viewport.h === the_body_cols.viewport.h))
 	{
-		Prof.endBlock();
 		return;
 	}
 
@@ -715,11 +127,6 @@ function resize()
 	SDom.hideFloaters();	// after confirming that viewport really has changed
 
 	var min_width = the_min_page_width * SDom.getEmToPx();
-	if (this.is_borked_browser && this.need_borked_browser_hack)
-	{
-		the_body_cols.viewport.w -= 5;
-		min_width                -= 5;
-	}
 
 	var body_width = Math.max(the_body_cols.viewport.w, min_width);
 	Dom.setStyle(the_header_container, 'width', body_width+'px');
@@ -1062,30 +469,12 @@ function resize()
 	Dom.setStyle(the_body_container, 'visibility', 'visible');
 
 	YAHOO.lang.later(100, this, checkViewportSize);
-
-	Prof.endBlock();
-};
-
-function checkViewportSize()
-{
-	if (Dom.getViewportWidth()         != the_body_cols.viewport.w ||
-		Dom.getViewportHeight()        != the_body_cols.viewport.h ||
-		the_body_container.clientWidth != the_body_cols.viewport.bcw)
-	{
-		resize.call(this);
-	}
-	else
-	{
-		this.onAfterReflow.fire();
-	}
 };
 
 function _adjustHeight(
 	/* int */		total_height,
 	/* object */	children)
 {
-//Prof.startBlock("_adjustHeight");
-//try {
 	var h = total_height;
 
 	if (children.hd)
@@ -1100,8 +489,6 @@ function _adjustHeight(
 	h -= SDom.vertMarginBorderPadding(children.bd);
 
 	return Math.max(h, PageLayout.min_module_height);
-//}
-//finally { Prof.endBlock(); }
 };
 
 function getHeight(
@@ -1115,12 +502,3 @@ function getHeight(
 	module_info.mbp = SDom.vertMarginBorderPadding(module);
 	return Math.max(1, Math.floor(body_height * row_heights[ col_index ][ row_index ] / 100.0) - module_info.mbp);
 };
-
-function setWidth(
-	/* object */	children,
-	/* int */		w)
-{
-	Dom.setStyle(children.root, 'width', w+'px');
-};
-
-})();

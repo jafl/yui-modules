@@ -1,29 +1,35 @@
 "use strict";
 
-/**********************************************************************
- * Manages a calendar and a legend explaining the ways in which a day
- * can be marked.
- */
-
 var Dom = YAHOO.util.Dom,
 	SDom = YAHOO.SATG.Dom,
 	Event = YAHOO.util.Event,
-	CustomEvent = YAHOO.util.CustomEvent,
 	Calendar = YAHOO.SATG.Calendar;
 
+var blackout_min_seconds = -40,
+	blackout_max_seconds = +40,
+	change_after_focus = (0 < YAHOO.env.ua.ie);
+
 /**********************************************************************
- * Manages a pair of radio buttons, date input field + time menus, and
- * a calendar for selecting the date.
+ * <p>Manages an optional set of radio buttons (for "no date", etc.), a
+ * date input field + hour and minute menus, a calendar for selecting the
+ * date (either inline or as a popup tied to the date input field), and a
+ * legend explaining the ways in which a day can be marked, based on
+ * blackouts.</p>
+ * 
+ * <p>Date/time values can be specified as either a Date object or an
+ * object specifying year,month,day (all 1-based) or date_str and
+ * optionally hour,minute or time_str.  Individual values take precedence
+ * over string values.  Time resolution is in minutes.</p>
+ * 
+ * @class DateTime
+ * @extends Widget
+ * @constructor
+ * @param config {Object}
  */
 
-YAHOO.SATG.DateTime = function(
-	/* object/string */	container,
-	/* map */			config)
+function DateTime = function(config)
 {
 	config = config || {};
-
-	this.createEvent('init', {fireOnce:true}).signature = CustomEvent.LIST;
-	this.createEvent('limitsEnforced').signature = CustomEvent.LIST;
 
 	this.blackout      = [];
 	this.blackout_snap = config.blackout_snap || +1;
@@ -35,41 +41,370 @@ YAHOO.SATG.DateTime = function(
 	[container, config], this);
 };
 
-var DateTime = YAHOO.SATG.DateTime,
-	blackout_min_seconds = -40,
-	blackout_max_seconds = +40,
-	change_after_focus = (0 < YAHOO.env.ua.ie);
+DateTime.NAME = "datetime";
 
-function disableElement(e, disabled)
+DateTime.ATTRS =
 {
-	e.disabled = disabled;
+	/**
+	 * Blackout ranges, specified as a list of objects, each defining start
+	 * and end.
+	 * 
+	 * @param blackout
+	 * @type Array
+	 */
+	blackouts:
+	{
+		value:     [],
+		validator: Y.Lang.isArray,
+		setter: function(ranges)
+		{
+			// store ranges in ascending order of start time
+
+			blackout   = [];
+			blank_time = this.get('blank_time');
+			for (var i=0; i<ranges.length; i++)
+			{
+				var r   = ranges[i];
+				r.start = DateTime.normalize(r.start, blank_time);
+				r.end   = DateTime.normalize(r.end,   blank_time);
+
+				r =
+				[
+					new Date(r.start.year, r.start.month-1, r.start.day,
+							 r.start.hour, r.start.minute, blackout_min_seconds)
+							 .getTime(),
+					new Date(r.end.year, r.end.month-1, r.end.day,
+							 r.end.hour, r.end.minute, blackout_max_seconds)
+							 .getTime()
+				];
+
+				var inserted = false;
+				for (var j=0; j<blackout.length; j++)
+				{
+					var r1 = blackout[j];
+					if (r[0] <= r1[0])
+					{
+						if (j > 0 &&
+							r[0] <  blackout[j-1][1] &&
+							r[1] <= blackout[j-1][1])
+						{
+							// covered by prev
+						}
+						else if (j > 0 &&
+								 r[0] - 60000 < blackout[j-1][1] &&
+								 r1[0] < r[1] + 60000)
+						{
+							// overlaps prev and next
+							r = [ blackout[j-1][0], r[1] ];
+							blackout.splice(j-1, 2, r);
+						}
+						else if (j > 0 &&
+								 r[0] - 60000 < blackout[j-1][1])
+						{
+							// overlaps prev
+							blackout[j-1][1] = r[1];
+						}
+						else if (r1[0] < r[1] + 60000)
+						{
+							// overlaps next
+							r1[0] = r[0];
+						}
+						else
+						{
+							blackout.splice(j, 0, r);
+						}
+						inserted = true;
+						break;
+					}
+				}
+
+				// j == blackout.length
+
+				if (!inserted && j > 0 &&
+					r[0] <  blackout[j-1][1] &&
+					r[1] <= blackout[j-1][1])
+				{
+					// covered by prev
+				}
+				else if (!inserted && j > 0 &&
+						 r[0] - 60000 < blackout[j-1][1])
+				{
+					// overlaps prev
+					blackout[j-1][1] = r[1];
+				}
+				else if (!inserted)
+				{
+					blackout.push(r);
+				}
+			}
+
+			return blackout;
+		}
+	}
 }
 
-function normalizeDateTime(obj, blank)
+/**
+ * Position of the year in a string representation of a date: 1,2,3
+ *
+ * @property Y.DateTime.YEAR_POSITION
+ * @type {Number}
+ * @default 1
+ * @static
+ */
+DateTime.YEAR_POSITION = 1;
+
+/**
+ * Position of the month in a string representation of a date: 1,2,3
+ *
+ * @property Y.DateTime.MONTH_POSITION
+ * @type {Number}
+ * @default 2
+ * @static
+ */
+DateTime.MONTH_POSITION = 2;
+
+/**
+ * Position of the day in a string representation of a date: 1,2,3
+ *
+ * @property Y.DateTime.DAY_POSITION
+ * @type {Number}
+ * @default 3
+ * @static
+ */
+DateTime.DAY_POSITION = 3;
+
+/**
+ * Delimiter of fields in a string representation of a date.
+ *
+ * @property Y.DateTime.DATE_FIELD_DELIMITER
+ * @type {String}
+ * @default "/"
+ * @static
+ */
+DateTime.DATE_FIELD_DELIMITER = '/';
+
+/**
+ * Delimiter of fields in a string representation of a time.
+ *
+ * @property Y.DateTime.TIME_FIELD_DELIMITER
+ * @type {String}
+ * @default ":"
+ * @static
+ */
+DateTime.TIME_FIELD_DELIMITER = ':';
+
+/**
+ * How hours are displayed: 12hr or 24hr.  (Internal values are always
+ * 24hr.)  This is global because your app should be consistent about how
+ * it displays times.
+ * 
+ * @property Y.DateTime.CLOCK_DISPLAY_TYPE
+ * @type {Number} 12 or 24
+ * @default 24
+ * @static
+ */
+DateTime.CLOCK_DISPLAY_TYPE = 24;
+
+/**
+ * <p>Normalizes the given object by converting date_str into
+ * year,month,day, converting time_str into hour,minute (or adding in
+ * hour,minute from default_time), and adding date (instanceof Date).
+ * Individual fields take precedence over strings.</p>
+ * 
+ * <p>If input is a Date object, then the result contains a breakdown of
+ * the values.</p>
+ * 
+ * @param input {Object}
+ *	Can be specified either as instance of Date or as an object defining
+ *	date_str or year,month,day and (optional) either time_str or
+ *	hour,minute.
+ * @param default_time {Object} Default hour and minute to use if input only has date.
+ * @static
+ */
+DateTime.normalize(input, default_time)
 {
-	if (obj.date_str)
+	if (input instanceof Date)
 	{
-		var d = Calendar.parseDate(obj.date_str);
-		delete obj.date_str;
-		obj.year  = d.getFullYear();
-		obj.month = d.getMonth()+1;
-		obj.day   = d.getDate();
+		var result =
+		{
+			year:   input.getFullYear(),
+			month:  input.getMonth()+1,
+			day:    input.getDate(),
+			hour:   input.getHours(),
+			minute: input.getMinutes(),
+			date:   input
+		};
+		return result;
 	}
 
-	if (obj.time_str)
+	var result = Y.clone(input);
+	if (result.date_str)
 	{
-		var t = Calendar.parseTime(obj.time_str);
-		delete obj.time_str;
-		obj.hour   = t.hour;
-		obj.minute = t.minute;
-	}
-	else if (YAHOO.lang.isUndefined(obj.hour))
-	{
-		obj.hour   = blank.hour;
-		obj.minute = blank.minute;
+		if (Y.Lang.isUndefined(result.year) &&
+			Y.Lang.isUndefined(result.month) &&
+			Y.Lang.isUndefined(result.day))
+		{
+			Y.mix(result, DateTime.parseDate(result.date_str));
+		}
+		delete result.date_str;
 	}
 
-	obj.date = new Date(obj.year, obj.month-1, obj.day, obj.hour, obj.minute);
+	if (result.time_str)
+	{
+		if (Y.Lang.isUndefined(result.hour) &&
+			Y.Lang.isUndefined(result.minute))
+		{
+			Y.mix(result, DateTime.parseTime(result.time_str));
+		}
+		delete result.time_str;
+	}
+	else if (Y.Lang.isUndefined(result.hour))
+	{
+		result.hour   = default_time.hour;
+		result.minute = default_time.minute;
+	}
+
+	result.date = new Date(result.year, result.month-1, result.day, result.hour, result.minute);
+	return result;
+}
+
+function pad2(n)
+{
+	var s = n.toString();
+	if (s.length < 2)
+	{
+		s = '0' + s;
+	}
+	return s;
+}
+
+/**
+ * Format the date portion of a Date object.
+ * 
+ * @param date {Mixed} string (returned as-is), Date, or object specifying day,month,year
+ * @return {String} formatted date, using positions and delimiated
+ * @static
+ */
+DateTime.formatDate = function(date)
+{
+	if (!date)
+	{
+		return '';
+	}
+	else if (Y.Lang.isString(date))
+	{
+		return date;
+	}
+
+	var a = [];
+	if (date instanceof Date)
+	{
+		a[ DateTime.YEAR_POSITION-1 ]  = date.getFullYear().toString();
+		a[ DateTime.MONTH_POSITION-1 ] = pad2(date.getMonth()+1);
+		a[ DateTime.DAY_POSITION-1 ]   = pad2(date.getDate());
+	}
+	else
+	{
+		a[ DateTime.YEAR_POSITION-1 ]  = date.year.toString();
+		a[ DateTime.MONTH_POSITION-1 ] = pad2(date.month);
+		a[ DateTime.DAY_POSITION-1 ]   = pad2(date.day);
+	}
+
+	return a.join(DateTime.DATE_FIELD_DELIMITER);
+}
+
+function validInteger(v)
+{
+	return /^\d+$/.test(v);
+}
+
+/**
+ * Inverse of formatDate().  Extracts year, month, and day from the string.
+ * 
+ * @param date {String} string from DateTime.formatDate()
+ * @return {Object} year,month,day
+ * @static
+ */
+DateTime.parseDate = function(date)
+{
+	if (!date)
+	{
+		return null;
+	}
+	else if (!Y.Lang.isString(date))
+	{
+		return date;
+	}
+
+	var d = date.split(DateTime.DATE_FIELD_DELIMITER);
+	if (d.length != 3 || !Y.every(d, validInteger))
+	{
+		throw Error('Unparseable date format.');
+	}
+
+	var result =
+	{
+		year:  parseInt(d[ DateTime.YEAR_POSITION-1 ], 10),
+		month: parseInt(d[ DateTime.MONTH_POSITION-1 ], 10),
+		day:   parseInt(d[ DateTime.DAY_POSITION-1 ], 10)
+	};
+	return result;
+}
+
+/**
+ * Format the time portion of a Date object.
+ * 
+ * @param time {Mixed} string (returned as-is), Date, or object specifying hour,minute
+ * @return {String} formatted date, using positions and delimiated
+ * @static
+ */
+DateTime.formatTime = function(time)
+{
+	if (!time)
+	{
+		return '';
+	}
+	else if (Y.Lang.isString(time))
+	{
+		return time;
+	}
+	else
+	{
+		return time.hour + DateTime.TIME_FIELD_DELIMITER + time.minute;
+	}
+}
+
+/**
+ * Inverse of formatTime().  Extracts hour and minute from the string.
+ * 
+ * @param date {String} string from DateTime.formatTime()
+ * @return {Object} hour,minute
+ * @static
+ */
+DateTime.parseTime = function(
+	/* string */	time)
+{
+	if (!time)
+	{
+		return null;
+	}
+	else if (!Y.Lang.isString(time))
+	{
+		return time;
+	}
+
+	var t = time.split(DateTime.TIME_FIELD_DELIMITER);
+	if (t.length != 2 || !Y.every(t, validInteger))
+	{
+		throw Error('Unparseable time format.');
+	}
+
+	var result =
+	{
+		hour:   parseInt(t[0], 10),
+		minute: parseInt(t[1], 10)
+	};
+	return result;
 }
 
 function installDateTimeCalendarSelection()
@@ -311,7 +646,7 @@ function enforceDateTimeLimits(
 		this._ping.apply(this, pings);
 	}
 
-	this.fireEvent('limitsEnforced');
+	this.fire('limitsEnforced');
 }
 
 function updateRendering()
@@ -356,7 +691,7 @@ function updateRendering()
 			(this.min_date_time.hour > 0 || this.min_date_time.minute > 0))
 		{
 			this.calendar.calendar.addRenderer(
-				Calendar.formatDate(this.min_date_time.date),
+				DateTime.formatDate(this.min_date_time.date),
 				cellRenderer('satg-partial-blackout'));
 		}
 	}
@@ -391,7 +726,7 @@ function updateRendering()
 			(this.max_date_time.hour < 23 || this.max_date_time.minute < 59))
 		{
 			this.calendar.calendar.addRenderer(
-				Calendar.formatDate(this.max_date_time.date),
+				DateTime.formatDate(this.max_date_time.date),
 				cellRenderer('satg-partial-blackout'));
 		}
 	}
@@ -405,7 +740,7 @@ function updateRendering()
 		if (start.getHours() > 0 || start.getMinutes() > 0)
 		{
 			this.calendar.calendar.addRenderer(
-				Calendar.formatDate(start),
+				DateTime.formatDate(start),
 				cellRenderer('satg-partial-blackout'));
 			start.setDate(start.getDate()+1);
 			start.setHours(0);
@@ -414,7 +749,7 @@ function updateRendering()
 		if (end.getHours() < 23 || end.getMinutes() < 59)
 		{
 			this.calendar.calendar.addRenderer(
-				Calendar.formatDate(end),
+				DateTime.formatDate(end),
 				cellRenderer('satg-partial-blackout'));
 			end.setDate(end.getDate()-1);
 			end.setHours(23);
@@ -422,8 +757,8 @@ function updateRendering()
 
 		if (start.getTime() < end.getTime())
 		{
-			var s = Calendar.formatDate(start),
-				e = Calendar.formatDate(end);
+			var s = DateTime.formatDate(start),
+				e = DateTime.formatDate(end);
 			if (s != e)
 			{
 				s += YAHOO.SATG.Locale.Calendar.YUI_DATE_RANGE_DELIMITER + e;
@@ -480,19 +815,19 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		this.min_date_time = config.min_date_time;
 		if (this.min_date_time)
 		{
-			normalizeDateTime(this.min_date_time, this.blank_time);
+			this.min_date_time = DateTime.normalize(this.min_date_time, this.blank_time);
 		}
 
 		this.max_date_time = config.max_date_time;
 		if (this.max_date_time)
 		{
-			normalizeDateTime(this.max_date_time, this.blank_time);
+			this.max_date_time = DateTime.normalize(this.max_date_time, this.blank_time);
 		}
 
 		this.default_date_time = config.default_date_time;
 		if (this.default_date_time)
 		{
-			normalizeDateTime(this.default_date_time, this.blank_time);
+			this.default_date_time = DateTime.normalize(this.default_date_time, this.blank_time);
 		}
 
 		this.ping_hilight_time = config.ping_hilight_time || SDom.visual_ping_timeout;
@@ -611,7 +946,7 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 
 		YAHOO.lang.later(1, this, function()
 		{
-			this.fireEvent('init');
+			this.fire('init');
 		});
 	},
 
@@ -662,14 +997,14 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 			month:  date.getMonth()+1,
 			day:    date.getDate(),
 
-			date_str: Calendar.formatDate(date)
+			date_str: DateTime.formatDate(date)
 		};
 
 		if (!this.no_time)
 		{
 			result.hour     = parseInt(this.hour_menu.value, 10);
 			result.minute   = parseInt(this.minute_menu.value, 10);
-			result.time_str = Calendar.formatTime(this.hour_menu.value, this.minute_menu.value);
+			result.time_str = DateTime.formatTime({ hour: this.hour_menu.value, minute: this.minute_menu.value });
 		}
 
 		return result;
@@ -690,7 +1025,7 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		}
 		else if (date_time.time_str)
 		{
-			var obj                = Calendar.parseTime(date_time.time_str);
+			var obj                = DateTime.parseTime(date_time.time_str);
 			this.hour_menu.value   = obj.hour;
 			this.minute_menu.value = obj.minute;
 		}
@@ -741,7 +1076,7 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		this.default_date_time = date_time;
 		if (this.default_date_time)
 		{
-			normalizeDateTime(this.default_date_time, this.blank_time);
+			this.default_date_time = DateTime.normalize(this.default_date_time, this.blank_time);
 		}
 	},
 
@@ -755,7 +1090,7 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 	{
 		if (min)
 		{
-			normalizeDateTime(min, this.blank_time);
+			min = DateTime.normalize(min, this.blank_time);
 
 			if (!this.min_date_time ||
 				this.min_date_time.date.getTime() != min.date.getTime())
@@ -790,7 +1125,7 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 	{
 		if (max)
 		{
-			normalizeDateTime(max, this.blank_time);
+			max = DateTime.normalize(max, this.blank_time);
 
 			if (!this.max_date_time ||
 				this.max_date_time.date.getTime() != max.date.getTime())
@@ -845,84 +1180,6 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		/* array */	ranges,
 		/* bool */	_skip_render)
 	{
-		// store ranges in ascending order of start time
-
-		this.blackout = [];
-		for (var i=0; i<ranges.length; i++)
-		{
-			var r = ranges[i];
-			normalizeDateTime(r.start, this.blank_time);
-			normalizeDateTime(r.end,   this.blank_time);
-
-			r =
-			[
-				new Date(r.start.year, r.start.month-1, r.start.day,
-						 r.start.hour, r.start.minute, blackout_min_seconds)
-						 .getTime(),
-				new Date(r.end.year, r.end.month-1, r.end.day,
-						 r.end.hour, r.end.minute, blackout_max_seconds)
-						 .getTime()
-			];
-
-			var inserted = false;
-			for (var j=0; j<this.blackout.length; j++)
-			{
-				var r1 = this.blackout[j];
-				if (r[0] <= r1[0])
-				{
-					if (j > 0 &&
-						r[0] < this.blackout[j-1][1] &&
-						r[1] <= this.blackout[j-1][1])
-					{
-						// covered by prev
-					}
-					else if (j > 0 &&
-							 r[0] - 60000 < this.blackout[j-1][1] &&
-							 r1[0] < r[1] + 60000)
-					{
-						// overlaps prev and next
-						r = [ this.blackout[j-1][0], r[1] ];
-						this.blackout.splice(j-1, 2, r);
-					}
-					else if (j > 0 &&
-							 r[0] - 60000 < this.blackout[j-1][1])
-					{
-						// overlaps prev
-						this.blackout[j-1][1] = r[1];
-					}
-					else if (r1[0] < r[1] + 60000)
-					{
-						// overlaps next
-						r1[0] = r[0];
-					}
-					else
-					{
-						this.blackout.splice(j, 0, r);
-					}
-					inserted = true;
-					break;
-				}
-			}
-
-			// j == this.blackout.length
-
-			if (!inserted && j > 0 &&
-				r[0] < this.blackout[j-1][1] &&
-				r[1] <= this.blackout[j-1][1])
-			{
-				// covered by prev
-			}
-			else if (!inserted && j > 0 &&
-					 r[0] - 60000 < this.blackout[j-1][1])
-			{
-				// overlaps prev
-				this.blackout[j-1][1] = r[1];
-			}
-			else if (!inserted)
-			{
-				this.blackout.push(r);
-			}
-		}
 
 		// render blackouts
 
