@@ -36,21 +36,25 @@
 			<div class="b-child" id="b3"></div>
 			<div class="b-child" id="b4"></div>
 		</li>
+		<li>
+			<span class="s-child" id="s1"></span>
+			<span class="s-child" id="s2"></span>
+		</li>
 	</ul>
 </div>
 </div>
 
 <div id="should-be-ignored" style="display:none;">
-	<ul id="list">
-		<li class="a" id="a">
-			<div class="a-child" id="a1"></div>
-			<div class="a-child" id="a2"></div>
+	<ul id="list-2">
+		<li class="a" id="c">
+			<div class="a-child" id="c1"></div>
+			<div class="a-child" id="c2"></div>
 		</li>
-		<li class="b" id="b">
-			<div class="b-child" id="b1"></div>
-			<div class="b-child" id="b2"></div>
-			<div class="b-child" id="b3"></div>
-			<div class="b-child" id="b4"></div>
+		<li class="b" id="d">
+			<div class="b-child" id="d1"></div>
+			<div class="b-child" id="d2"></div>
+			<div class="b-child" id="d3"></div>
+			<div class="b-child" id="d4"></div>
 		</li>
 	</ul>
 </div>
@@ -113,6 +117,11 @@ function(Y)
 			Y.Assert.areSame(Y.one('#a1'), list.item(0));
 			Y.Assert.areSame(Y.one('#a2'), list.item(1));
 
+			list = node.getElementsByClassName('a-child', 'div');
+			Y.Assert.areSame(2, list.size());
+			Y.Assert.areSame(Y.one('#a1'), list.item(0));
+			Y.Assert.areSame(Y.one('#a2'), list.item(1));
+
 			list = node.getElementsByClassName('b-child');
 			Y.Assert.areSame(4, list.size());
 			Y.Assert.areSame(Y.one('#b1'), list.item(0));
@@ -125,10 +134,40 @@ function(Y)
 			Y.Assert.areSame(Y.one('#a1'), list.item(0));
 			Y.Assert.areSame(Y.one('#a2'), list.item(1));
 
+			Y.Assert.areSame(Y.one('#a1'), node.one('.a-child'));
+			Y.Assert.areSame(Y.one('#a1'), node.one('div.a-child'));
+
 			list = node.getElementsByClassName('a-.*');
 			Y.Assert.areSame(2, list.size());
 			Y.Assert.areSame(Y.one('#a1'), list.item(0));
 			Y.Assert.areSame(Y.one('#a2'), list.item(1));
+
+			list = node.getElementsByClassName('a-child', 'span');
+			Y.Assert.areSame(0, list.size());
+
+			list = node.getElementsByClassName('s-child');
+			Y.Assert.areSame(2, list.size());
+			Y.Assert.areSame(Y.one('#s1'), list.item(0));
+			Y.Assert.areSame(Y.one('#s2'), list.item(1));
+
+			list = node.getElementsByClassName('s-child', 'span');
+			Y.Assert.areSame(2, list.size());
+			Y.Assert.areSame(Y.one('#s1'), list.item(0));
+			Y.Assert.areSame(Y.one('#s2'), list.item(1));
+
+			Y.Assert.areSame(Y.one('#a1'), Y.one('#a').one('*'));
+		},
+
+		testFirstElementByClassName: function()
+		{
+			var node = Y.one('#root');
+
+			Y.Assert.areSame(Y.one('#b1'), node.getFirstElementByClassName('b-child'));
+			Y.Assert.areSame(Y.one('#b1'), node.getFirstElementByClassName('b-child', 'div'));
+			Y.Assert.areSame(Y.one('#s1'), node.getFirstElementByClassName('s-child'));
+			Y.Assert.areSame(Y.one('#s1'), node.getFirstElementByClassName('s-child', 'span'));
+			Y.Assert.areSame(null, node.getFirstElementByClassName('c-child'));
+			Y.Assert.areSame(null, node.getFirstElementByClassName('c-child', 'a'));
 		}
 	}));
 

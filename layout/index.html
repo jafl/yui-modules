@@ -1,15 +1,22 @@
-<?php
-/* THIS PAGE DEMOS PAGE LAYOUT MANAGER; DO NOT USE GRIDS FOR LAYOUT! */
+<!DOCTYPE HTML>
+<html>
 
-require('./inc/page.inc');
+<head>
+	<title>Layout Manager Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-my_header('Row-based Page Layout Widget');
+	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/reset-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssfonts/fonts-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssbase/base-min.css">
 
-echo yt__js_manager::post_include_module('PageLayout');
-?>
-<script type="text/javascript">
-YAHOO.namespace('SATG.Test');
-</script>
+	<script src="gallery-layout-debug.js"></script>
+	<script src="gallery-layout-rows-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-layout.css">
+</head>
+
+<body>
+
 <div class="satg-content satg-content-v3" style="visibility:hidden;">
 	<div class="satg-module-row satg-bd">
 		<div class="satg-module">
@@ -94,8 +101,11 @@ YAHOO.namespace('SATG.Test');
 </div>
 
 <script type="text/javascript">
-SATG(function(Y)
-{
+YUI({
+//	filter: 'raw', combine: false
+}).use('gallery-layout', function(Y) {
+"use strict";
+
 	var page_layout = new YAHOO.SATG.PageLayout();
 	page_layout._init();
 
@@ -122,4 +132,5 @@ SATG(function(Y)
 });
 </script>
 
-<?php my_footer(); ?>
+</body>
+</html>

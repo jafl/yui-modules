@@ -129,6 +129,12 @@ Y.Node.prototype.one = function(
 {
 	if (Y.Lang.isString(selector))
 	{
+		if (selector == '*')
+		{
+			Y.log('one() returning children[0]', 'info', 'Node');
+			return Y.one(Y.Node.getDOMNode(this).children[0]);
+		}
+
 		var m = tag_class_name_re.exec(selector);
 		if (m && m.length)
 		{
@@ -193,14 +199,13 @@ Y.Node.prototype.getElementsByClassName = function(
 	/* string */	class_name,
 	/* string */	tag_name)
 {
-	var descendants = this.getElementsByTagName(tag_name || '*');
+	var descendants = Y.Node.getDOMNode(this).getElementsByTagName(tag_name || '*');
 
-	var list  = new Y.NodeList();
-	var count = descendants.size();
-	for (var i=0; i<count; i++)
+	var list = new Y.NodeList();
+	for (var i=0; i<descendants.length; i++)
 	{
-		var e = descendants.item(i);
-		if (Y.DOM.hasClass(Y.Node.getDOMNode(e), class_name))
+		var e = descendants[i];
+		if (Y.DOM.hasClass(e, class_name))
 		{
 			list.push(e);
 		}
@@ -211,7 +216,7 @@ Y.Node.prototype.getElementsByClassName = function(
 
 /**********************************************************************
  * <p>Searches for one descendant by class name.  Unlike Y.one(), this
- * function accepts a regular expression.</p>
+ * function accepts a regular expression.  </p>
  * 
  * @method getFirstElementByClassName
  * @param class_name {String|Regexp} class to search for
@@ -223,15 +228,43 @@ Y.Node.prototype.getFirstElementByClassName = function(
 	/* string */	class_name,
 	/* string */	tag_name)
 {
-	var descendants = this.getElementsByTagName(tag_name || '*');
-
-	var count = descendants.size();
-	for (var i=0; i<count; i++)
+	if (!tag_name || tag_name == '*' || tag_name == 'div')
 	{
-		var e = descendants.item(i);
-		if (Y.DOM.hasClass(Y.Node.getDOMNode(e), class_name))
+		// breadth first search
+
+		var list1 = [ Y.Node.getDOMNode(this) ], list2 = [];
+		while (list1.length)
 		{
-			return e;
+			for (var i=0; i<list1.length; i++)
+			{
+				var root = list1[i];
+				for (var j=0; j<root.children.length; j++)
+				{
+					var e = root.children[j];
+					if (Y.DOM.hasClass(e, class_name))
+					{
+						return Y.one(e);
+					}
+
+					list2.push(e);
+				}
+			}
+
+			list1 = list2;
+			list2 = [];
+		}
+	}
+	else
+	{
+		var descendants = Y.Node.getDOMNode(this).getElementsByTagName(tag_name || '*');
+
+		for (var i=0; i<descendants.length; i++)
+		{
+			var e = descendants[i];
+			if (Y.DOM.hasClass(e, class_name))
+			{
+				return Y.one(e);
+			}
 		}
 	}
 
