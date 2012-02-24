@@ -1,3 +1,5 @@
+YUI.add('gallery-layout-rows', function(Y) {
+
 "use strict";
 
 var has_no_recalc_auto_bug    = (0 < Y.UA.ie && Y.UA.ie < 8),
@@ -8,9 +10,6 @@ var has_no_recalc_auto_bug    = (0 < Y.UA.ie && Y.UA.ie < 8),
  * PageLayout plugin for managing vertically stacked rows on a page,
  * sandwiched vertically between header and footer.  Each row contains one
  * or more modules.
- * 
- * @module gallery-layout
- * @submodule gallery-layout-rows
  */
 
 Y.namespace('PageLayoutRows');
@@ -128,12 +127,12 @@ Y.PageLayoutRows.resize = function(host)
 
 	if (host.header_container)
 	{
-		h -= host.header_container.get('offsetHeight');
+		h -= host.header_container.totalHeight();
 	}
 	if (host.footer_container &&
 		(mode === Y.PageLayout.FIT_TO_VIEWPORT || host.get('stickyFooter')))
 	{
-		h -= host.footer_container.get('offsetHeight');
+		h -= host.footer_container.totalHeight();
 	}
 
 	if (mode === Y.PageLayout.FIT_TO_VIEWPORT)
@@ -456,3 +455,6 @@ Y.PageLayoutRows.resize = function(host)
 
 	Y.Lang.later(100, host, host._checkViewportSize);
 };
+
+
+}, '@VERSION@' ,{requires:['gallery-layout','gallery-dimensions','gallery-node-optimizations']});

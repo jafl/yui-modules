@@ -1,3 +1,5 @@
+YUI.add('gallery-layout', function(Y) {
+
 "use strict";
 
 /**
@@ -24,13 +26,7 @@
  * expands (fit-to-content) until it would push the footer below the fold.
  * Then it switches to fit-to-content so the scrollbar appears on the
  * module instead of the entire viewport.</p>
- * 
- * <p>Note that a non-zero margin-top on the top element inside any
- * container will break the layout because browsers lie about the total
- * height of the container in this case.  Use padding instead of margin on
- * elements inside headers and footers.</p>
  *
- * @module gallery-layout
  * @class PageLayout
  * @extends Base
  * @constructor
@@ -983,3 +979,6 @@ Y.extend(PageLayout, Y.Base,
 });
 
 Y.PageLayout = PageLayout;
+
+
+}, '@VERSION@' ,{requires:['base','gallery-funcprog','gallery-node-optimizations','gallery-dimensions'], optional:['gallery-layout-rows','gallery-layout-cols']});

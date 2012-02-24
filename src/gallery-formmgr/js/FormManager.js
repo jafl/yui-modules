@@ -166,11 +166,6 @@ function FormManager(
 	this.has_file_inputs = false;
 }
 
-// CSS class pattern bookends
-
-var class_re_prefix = '(?:^|\\s)(?:';
-var class_re_suffix = ')(?:\\s|$)';
-
 /**
  * The CSS class which marks each row of the form.  Typically, each field
  * (or a very tightly coupled set of fields) is placed in a separate row.
@@ -265,7 +260,7 @@ function rowStatusRegex()
 {
 	if (!cached_row_status_regex)
 	{
-		cached_row_status_regex = new RegExp(class_re_prefix + rowStatusPattern() + class_re_suffix);
+		cached_row_status_regex = new RegExp(Y.Node.class_re_prefix + rowStatusPattern() + Y.Node.class_re_suffix);
 	}
 	return cached_row_status_regex;
 }

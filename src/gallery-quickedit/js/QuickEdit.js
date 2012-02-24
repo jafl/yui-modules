@@ -137,15 +137,13 @@ QuickEdit.ATTRS =
 	}
 };
 
-var class_re_prefix        = '(?:^|\\s)(?:',
-	class_re_suffix        = ')(?:\\s|$)',
-	quick_edit_re          = /quickedit-key:([^\s]+)/,
+var quick_edit_re          = /quickedit-key:([^\s]+)/,
 	qe_row_status_prefix   = 'quickedit-has',
 	qe_row_status_pattern  = qe_row_status_prefix + '([a-z]+)',
-	qe_row_status_re       = new RegExp(class_re_prefix + qe_row_status_pattern + class_re_suffix),
+	qe_row_status_re       = new RegExp(Y.Node.class_re_prefix + qe_row_status_pattern + Y.Node.class_re_suffix),
 	qe_cell_status_prefix  = 'quickedit-has',
 	qe_cell_status_pattern = qe_cell_status_prefix + '([a-z]+)',
-	qe_cell_status_re      = new RegExp(class_re_prefix + qe_cell_status_pattern + class_re_suffix);
+	qe_cell_status_re      = new RegExp(Y.Node.class_re_prefix + qe_cell_status_pattern + Y.Node.class_re_suffix);
 
 /**
  * The CSS class that marks the container for the error message inside a cell.

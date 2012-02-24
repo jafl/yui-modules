@@ -1,3 +1,5 @@
+YUI.add('gallery-layout-cols', function(Y) {
+
 "use strict";
 
 var has_explosive_modules_bug = (0 < Y.UA.ie && Y.UA.ie < 8);
@@ -6,9 +8,6 @@ var has_explosive_modules_bug = (0 < Y.UA.ie && Y.UA.ie < 8);
  * PageLayout plugin for managing horizontally stacked columns on a page,
  * sandwiched vertically between header and footer.  Each column contains
  * one or more modules.
- * 
- * @module gallery-layout
- * @submodule gallery-layout-cols
  */
 
 Y.namespace('PageLayoutCols');
@@ -76,19 +75,19 @@ Y.PageLayoutCols.resize = function(host)
 
 	var resize_event = arguments[0] && arguments[0].type == 'resize';	// IE7 generates no-op's
 	if (resize_event &&
-		(viewport.w === host.viewport.w &&
-		 viewport.h === host.viewport.h))
+		(viewport.w === the_body_cols.viewport.w &&
+		 viewport.h === the_body_cols.viewport.h))
 	{
 		return;
 	}
 
-	host.viewport = viewport;
+	the_body_cols.viewport = viewport;
 
 	host.fire('beforeReflow');	// after confirming that viewport really has changed
 
 	var min_width = host.get('minWidth') * Y.Node.emToPx();
 
-	var body_width = Math.max(host.viewport.w, min_width);
+	var body_width = Math.max(the_body_cols.viewport.w, min_width);
 	if (host.header_container)
 	{
 		host.header_container.setStyle('width', body_width+'px');
@@ -100,9 +99,9 @@ Y.PageLayoutCols.resize = function(host)
 	}
 	body_width = host.body_container.get('clientWidth') - host.body_horiz_mbp;
 
-	host.viewport.bcw = host.body_container.get('clientWidth');
+	the_body_cols.viewport.bcw = host.body_container.get('clientWidth');
 
-	var h     = host.viewport.h;
+	var h     = the_body_cols.viewport.h;
 	var h_min = host.get('minHeight') * Y.Node.emToPx();
 	if (mode === Y.PageLayout.FIT_TO_VIEWPORT && h < h_min)
 	{
@@ -192,7 +191,7 @@ Y.PageLayoutCols.resize = function(host)
 		sum               = 0;
 	for (var i=0; i<col_count; i++)
 	{
-		var col       = the_body_cols.cols.item(i);
+		var col       = the_body_cols.cols[i];
 		var collapsed = col.hasClass(Y.PageLayout.collapsed_horiz_class);
 		var modules   = the_body_cols.modules[i];
 		if (collapsed || col_widths[i] < 0)
@@ -446,3 +445,6 @@ Y.PageLayoutCols.resize = function(host)
 
 	Y.Lang.later(100, host, host._checkViewportSize);
 };
+
+
+}, '@VERSION@' ,{requires:['gallery-layout','gallery-dimensions','gallery-node-optimizations']});
