@@ -13,120 +13,132 @@
 	<script src="gallery-layout-debug.js"></script>
 	<script src="gallery-layout-rows-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-layout.css">
+
+	<style type="text/css">
+	.layout-hd,.layout-ft {text-align:center;}
+	.layout-hd h1 {font-size:150%;font-weight:bold;margin:0;padding:5px 0;}
+	.layout-ft p {font-size:80%;color:#666;margin:0;padding:5px 0;}
+	</style>
 </head>
 
 <body>
 
-<div class="satg-content satg-content-v3" style="visibility:hidden;">
-	<div class="satg-module-row satg-bd">
-		<div class="satg-module">
-			<div class="satg-m-hd">
+<div class="layout-hd">
+	<h1>Page Header</h1>
+	<p>
+		<a href="cols.html">Column-based Layout</a> |
+		<a href="../yuidoc/module_gallery-layout.html">Documentation</a> |
+		<a href="../yui3-gallery/">Project List</a>
+	</p>
+</div>
+
+<!-- visibility:hidden will be removed once the layout has been calculated -->
+<div class="layout-bd" style="visibility:hidden;">
+	<div class="layout-module-row">
+		<div class="layout-module">
+			<div class="layout-m-hd">
 				<p>I am a fixed module header</p>
-				<div id="test-vert-collapse" class="satg-layout-vert-collapse-nub">
+				<div id="test-vert-collapse" class="layout-vert-collapse-nub">
 					<button>Collapse</button>
 				</div>
-				<div id="test-vert-expand" class="satg-layout-vert-expand-nub">
+				<div id="test-vert-expand" class="layout-vert-expand-nub">
 					<button>Expand</button>
 				</div>
 			</div>
-			<div class="satg-m-bd">
+			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
 			</div>
 		</div>
 	</div>
-	<div class="satg-module-row satg-bd">
-		<div class="satg-module width:25%">
-			<div class="satg-m-hd">
+	<div class="layout-module-row">
+		<div class="layout-module width:25%">
+			<div class="layout-m-hd">
 				<p>I am a fixed module header</p>
 			</div>
-			<div class="satg-m-bd">
+			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
 				<button id="fit-to-viewport">Fit-to-Viewport</button>
 				<button id="fit-to-content">Fit-to-Content</button>
 			</div>
 		</div>
-		<div class="satg-module">
-			<div class="satg-m-bd">
+		<div class="layout-module">
+			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
 			</div>
 		</div>
 	</div>
-	<div class="satg-module-row satg-bd">
-		<div class="satg-module">
-			<div class="satg-m-hd">
+	<div class="layout-module-row">
+		<div class="layout-module">
+			<div class="layout-m-hd">
 				<p>I am a fixed module header</p>
-				<div id="test-horiz-left-collapse" class="satg-layout-left-collapse-nub">
+				<div id="test-horiz-left-collapse" class="layout-left-collapse-nub">
 					<button>Collapse</button>
 				</div>
 			</div>
-			<div class="satg-m-bd">
+			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
 			</div>
-			<div class="satg-m-ft">
+			<div class="layout-m-ft">
 				<p>I am a fixed module footer</p>
 			</div>
-			<div id="test-horiz-left-expand" class="satg-layout-left-expand-nub">
+			<div id="test-horiz-left-expand" class="layout-left-expand-nub">
 				<button>Expand</button>
 			</div>
 		</div>
-		<div class="satg-module">
-			<div class="satg-m-hd">
+		<div class="layout-module">
+			<div class="layout-m-hd">
 				<p>I am a fixed module header</p>
 			</div>
-			<div class="satg-m-bd">
+			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
 			</div>
-			<div class="satg-m-ft">
+			<div class="layout-m-ft">
 				<p>I am a fixed module footer</p>
 			</div>
 		</div>
-		<div class="satg-module">
-			<div class="satg-m-hd">
+		<div class="layout-module">
+			<div class="layout-m-hd">
 				<p>I am a fixed module header</p>
-				<div id="test-horiz-right-collapse" class="satg-layout-right-collapse-nub">
+				<div id="test-horiz-right-collapse" class="layout-right-collapse-nub">
 					<button>Collapse</button>
 				</div>
 			</div>
-			<div class="satg-m-bd">
+			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
 			</div>
-			<div class="satg-m-ft">
+			<div class="layout-m-ft">
 				<p>I am a fixed module footer</p>
 			</div>
-			<div id="test-horiz-right-expand" class="satg-layout-right-expand-nub">
+			<div id="test-horiz-right-expand" class="layout-right-expand-nub">
 				<button>Expand</button>
 			</div>
 		</div>
 	</div>
 </div>
 
+<!-- visibility:hidden will be removed once the layout has been calculated -->
+<div class="layout-ft" style="visibility:hidden;">
+	<p>Page Footer</p>
+</div>
+
 <script type="text/javascript">
 YUI({
-//	filter: 'raw', combine: false
-}).use('gallery-layout', function(Y) {
+	filter: 'raw', combine: false,
+	gallery: 'gallery-2012.01.11-21-03'
+}).use('gallery-layout-rows', function(Y) {
 "use strict";
 
-	var page_layout = new YAHOO.SATG.PageLayout();
-	page_layout._init();
-
-	page_layout._registerCollapseNub('test-vert-collapse');
-	page_layout._registerExpandNub('test-vert-expand');
-
-	page_layout._registerCollapseNub('test-horiz-left-collapse');
-	page_layout._registerExpandNub('test-horiz-left-expand');
-
-	page_layout._registerCollapseNub('test-horiz-right-collapse');
-	page_layout._registerExpandNub('test-horiz-right-expand');
+	var page_layout = new Y.PageLayout();
 
 	Y.on('click', function()
 	{
-		page_layout.setMode(YAHOO.SATG.PageLayout.FIT_TO_VIEWPORT);
+		page_layout.set('mode', Y.PageLayout.FIT_TO_VIEWPORT);
 	},
 	'#fit-to-viewport');
 
 	Y.on('click', function()
 	{
-		page_layout.setMode(YAHOO.SATG.PageLayout.FIT_TO_CONTENT);
+		page_layout.set('mode', Y.PageLayout.FIT_TO_CONTENT);
 	},
 	'#fit-to-content');
 });

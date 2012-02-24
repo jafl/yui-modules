@@ -124,16 +124,15 @@ structure the function as follows:</p>
 <pre>
 function myQuickEditFormatter(o) {
 &nbsp;&nbsp;var markup =
-&nbsp;&nbsp;&nbsp;&nbsp;'&lt;input type="text" class="{yiv} quickedit-field quickedit-key:{key}"/&gt;' +
-&nbsp;&nbsp;&nbsp;&nbsp;Y.Plugin.DataTableQuickEdit.error_display_markup;
-&nbsp;&nbsp;var qe = o.column.get('quickEdit');
-&nbsp;&nbsp;var td = this.createCell(o);
-&nbsp;&nbsp;td.set('innerHTML', Y.Lang.sub(markup, {
-&nbsp;&nbsp;&nbsp;&nbsp;key: o.column.get('key'),
-&nbsp;&nbsp;&nbsp;&nbsp;yiv: qe.validation ? (qe.validation.css || '') : ''
-&nbsp;&nbsp;}));
-&nbsp;&nbsp;td.get('firstChild').set('value', extractMyEditableValue(o));
-&nbsp;&nbsp;Y.Plugin.DataTableQuickEdit.copyDownFormatter.call(this, o, td);
+&nbsp;&nbsp;&nbsp;&nbsp;'&lt;input type="text" class="{yiv} quickedit-field quickedit-key:{key}" value="{value}"/&gt;' +
+&nbsp;&nbsp;&nbsp;&nbsp;'{cd}' + Y.Plugin.DataTableQuickEdit.error_display_markup;
+&nbsp;&nbsp;var qe = o.column.quickEdit;
+&nbsp;&nbsp;return Y.Lang.sub(markup, {
+&nbsp;&nbsp;&nbsp;&nbsp;key: o.column.key,
+&nbsp;&nbsp;&nbsp;&nbsp;value: o.value.toString().replace(/"/g, '&quot;'),
+&nbsp;&nbsp;&nbsp;&nbsp;yiv: qe.validation ? (qe.validation.css || '') : '',
+&nbsp;&nbsp;&nbsp;&nbsp;cd: QuickEdit.copyDownFormatter.call(this, o)
+&nbsp;&nbsp;});
 };
 </pre>
 <p>You can use textarea or select instead of input, but you can only
@@ -177,6 +176,21 @@ function, but the name of the sample function makes the point clear.</p>
                         <div class="section field details">
                             <h3 id="properties">Properties</h3>
                             <div class="content">
+                                    <div class="" rel="yui:property" resource="#property_Y.Plugin.DataTableQuickEdit.copy_down_button_class">
+                                    <h4><a name="property_Y.Plugin.DataTableQuickEdit.copy_down_button_class" property="yui:name">Y.Plugin.DataTableQuickEdit.copy_down_button_class</a>
+                                        - <code><span property="yui:type">{String}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            The CSS class that marks the "Copy Down" button inside a cell.
+                                        </div>
+                                    </div>
+     
+                                        
+
+
+                                    <hr />
+                                    </div>
                                     <div class="" rel="yui:property" resource="#property_Y.Plugin.DataTableQuickEdit.error_display_markup">
                                     <h4><a name="property_Y.Plugin.DataTableQuickEdit.error_display_markup" property="yui:name">Y.Plugin.DataTableQuickEdit.error_display_markup</a>
                                         - <code><span property="yui:type">{String}</span></code>
@@ -849,6 +863,7 @@ formatter, this function displays an input field.
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
                                 <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
@@ -868,7 +883,6 @@ formatter, this function displays an input field.
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
-                                <li class=""><a href="Column.html" title="Column">Column</a></li>
                                 <li class="selected"><a href="Plugin.DataTableQuickEdit.html" title="Plugin.DataTableQuickEdit">Plugin.DataTableQuickEdit</a></li>
                         </ul>
                     </div>
@@ -876,7 +890,6 @@ formatter, this function displays an input field.
                     <div id="fileList" class="module">
                         <h4>Files</h4>
                         <ul class="content">        
-                                <li class=""><a href="Column.js.html" title="Column.js">Column.js</a></li>
                                 <li class=""><a href="QuickEdit.js.html" title="QuickEdit.js">QuickEdit.js</a></li>
                         </ul>
                     </div>
@@ -884,6 +897,7 @@ formatter, this function displays an input field.
                     <div id="propertyList" class="module">
                         <h4>Properties</h4>
                         <ul class="content">        
+                                <li class=""><a href="#property_Y.Plugin.DataTableQuickEdit.copy_down_button_class" title="Y.Plugin.DataTableQuickEdit.copy_down_button_class">Y.Plugin.DataTableQuickEdit.copy_down_button_class</a></li>
                                 <li class=""><a href="#property_Y.Plugin.DataTableQuickEdit.error_display_markup" title="Y.Plugin.DataTableQuickEdit.error_display_markup">Y.Plugin.DataTableQuickEdit.error_display_markup</a></li>
                                 <li class=""><a href="#property_Y.Plugin.DataTableQuickEdit.error_text_class" title="Y.Plugin.DataTableQuickEdit.error_text_class">Y.Plugin.DataTableQuickEdit.error_text_class</a></li>
                         </ul>
@@ -932,7 +946,7 @@ formatter, this function displays an input field.
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Plugin.DataTableQuickEdit.html#method_copyDownFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "copyDownFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Column.html#config_qeFormatter", "access": "", "host": "Column", "type": "config", "name": "qeFormatter"}, {"url": "Column.html#event_qeFormatterChange", "access": "", "host": "Column", "type": "event", "name": "qeFormatterChange"}, {"url": "Column.html#config_quickEdit", "access": "", "host": "Column", "type": "config", "name": "quickEdit"}, {"url": "Column.html#event_quickEditChange", "access": "", "host": "Column", "type": "event", "name": "quickEditChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyEmailFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyEmailFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyLinkFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyLinkFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Plugin.DataTableQuickEdit.html#method_textareaFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textareaFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_textFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.DataTableQuickEdit.error_display_markup", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.DataTableQuickEdit.error_display_markup"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.DataTableQuickEdit.error_text_class", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.DataTableQuickEdit.error_text_class"}];
+    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableQuickEdit.html#method_cancel", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "cancel"}, {"url": "Plugin.DataTableQuickEdit.html#config_changesAlwaysInclude", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "config", "name": "changesAlwaysInclude"}, {"url": "Plugin.DataTableQuickEdit.html#event_changesAlwaysIncludeChange", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "event", "name": "changesAlwaysIncludeChange"}, {"url": "Plugin.DataTableQuickEdit.html#method_clearMessages", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "clearMessages"}, {"url": "Plugin.DataTableQuickEdit.html#method_copyDownFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "copyDownFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_displayMessage", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "displayMessage"}, {"url": "Plugin.DataTableQuickEdit.html#method_getChanges", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "getChanges"}, {"url": "Plugin.DataTableQuickEdit.html#method__getColumnKey", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getColumnKey"}, {"url": "Plugin.DataTableQuickEdit.html#method__getElementStatus", "access": "protected", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "_getElementStatus"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyEmailFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyEmailFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_readonlyLinkFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "readonlyLinkFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_start", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "start"}, {"url": "Plugin.DataTableQuickEdit.html#method_textareaFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textareaFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_textFormatter", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "textFormatter"}, {"url": "Plugin.DataTableQuickEdit.html#method_validate", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "method", "name": "validate"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.DataTableQuickEdit.copy_down_button_class", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.DataTableQuickEdit.copy_down_button_class"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.DataTableQuickEdit.error_display_markup", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.DataTableQuickEdit.error_display_markup"}, {"url": "Plugin.DataTableQuickEdit.html#property_Y.Plugin.DataTableQuickEdit.error_text_class", "access": "", "host": "Plugin.DataTableQuickEdit", "type": "property", "name": "Y.Plugin.DataTableQuickEdit.error_text_class"}];
 </script>
 </body>
 </html>

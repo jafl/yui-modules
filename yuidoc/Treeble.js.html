@@ -47,72 +47,94 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
-<span class="cm"> * Treeble displays a tree of data in a table.</span>
-<span class="cm"> *</span>
-<span class="cm"> * @module gallery-treeble</span>
-<span class="cm"> */</span>
+                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
+<span class="c"> * Treeble displays a tree of data in a table.</span>
+<span class="c"> *</span>
+<span class="c"> * @module gallery-treeble</span>
+<span class="c"> */</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * Utility functions for displaying tree data in a table.</span>
-<span class="cm"> *</span>
-<span class="cm"> * @namespace</span>
-<span class="cm"> * @class Treeble</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * Extension to DataTable for displaying tree data.</span>
+<span class="c"> *</span>
+<span class="c"> * @namespace</span>
+<span class="c"> * @class Treeble</span>
+<span class="c"> * @extends DataTable</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @param config {Object}</span>
+<span class="c"> */</span>
+<span class="kd">function</span> <span class="nx">Treeble</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="nx">Treeble</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+<span class="p">}</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * &lt;p&gt;Formatter for open/close twistdown.&lt;/p&gt;</span>
-<span class="cm"> *</span>
-<span class="cm"> * @method twistdownFormatter</span>
-<span class="cm"> * @param sendRequest {Function} Function that reloads DataTable</span>
-<span class="cm"> * @static</span>
-<span class="cm"> */</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Treeble&quot;</span><span class="p">).</span><span class="nx">buildTwistdownFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sendRequest</span><span class="p">)</span>
+<span class="nx">Treeble</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;datatable&quot;</span><span class="o">;</span>		<span class="c">// same styling</span>
+
+<span class="c">/**</span>
+<span class="c"> * &lt;p&gt;Formatter for open/close twistdown.&lt;/p&gt;</span>
+<span class="c"> *</span>
+<span class="c"> * @method twistdownFormatter</span>
+<span class="c"> * @param sendRequest {Function} Function that reloads DataTable</span>
+<span class="c"> * @static</span>
+<span class="c"> */</span>
+<span class="nx">Treeble</span><span class="p">.</span><span class="nx">buildTwistdownFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sendRequest</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">td</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">createCell</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span>
-		<span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;treeble-nub&#39;</span><span class="p">);</span>
+		<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;treeble-nub&#39;</span><span class="p">);</span>
 
 		<span class="kd">var</span> <span class="nx">ds</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">datasource</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;datasource&#39;</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">).</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">childNodesKey</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">).</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">childNodesKey</span><span class="o">;</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">path</span>  <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">_yui_node_path</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">path</span>  <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">_yui_node_path</span><span class="o">;</span>
 			<span class="kd">var</span> <span class="nx">open</span>  <span class="o">=</span> <span class="nx">ds</span><span class="p">.</span><span class="nx">isOpen</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
-			<span class="kd">var</span> <span class="nx">clazz</span> <span class="o">=</span> <span class="nx">open</span> <span class="o">?</span> <span class="s1">&#39;row-open&#39;</span> <span class="o">:</span> <span class="s1">&#39;row-closed&#39;</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">clazz</span> <span class="o">=</span> <span class="nx">open</span> <span class="o">?</span> <span class="s1">&#39;row-open&#39;</span> <span class="o">:</span> <span class="s1">&#39;row-closed&#39;</span><span class="o">;</span>
 
-			<span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;row-toggle&#39;</span><span class="p">);</span>
-			<span class="nx">td</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="sr">/row-(open|closed)/</span><span class="p">,</span> <span class="nx">clazz</span><span class="p">);</span>
+			<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;row-toggle&#39;</span><span class="p">);</span>
+			<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="sr">/row-(open|closed)/</span><span class="o">,</span> <span class="nx">clazz</span><span class="p">);</span>
 
-			<span class="nx">td</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+			<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span>
 			<span class="p">{</span>
-				<span class="nx">ds</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="p">{},</span> <span class="nx">sendRequest</span><span class="p">);</span>
+				<span class="nx">ds</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="nx">path</span><span class="o">,</span> <span class="p">{}</span><span class="o">,</span> <span class="nx">sendRequest</span><span class="p">);</span>
 			<span class="p">});</span>
 
-			<span class="nx">td</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;a class=&quot;treeble-collapse-nub&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;/a&gt;&#39;</span><span class="p">);</span>
-		<span class="p">}</span>
-		<span class="k">else</span>
-		<span class="p">{</span>
-			<span class="nx">td</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+			<span class="nx">o</span><span class="p">.</span><span class="nx">cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="o">,</span> <span class="s1">&#39;&lt;a class=&quot;treeble-collapse-nub&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;/a&gt;&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>	<span class="c">// keep the Y.Node instances</span>
 	<span class="p">};</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * &lt;p&gt;Default formatter for indented column.&lt;/p&gt;</span>
-<span class="cm"> *</span>
-<span class="cm"> * @method treeValueFormatter</span>
-<span class="cm"> * @static</span>
-<span class="cm"> */</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Treeble&quot;</span><span class="p">).</span><span class="nx">treeValueFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+<span class="c">/**</span>
+<span class="c"> * &lt;p&gt;Default formatter for indented column.&lt;/p&gt;</span>
+<span class="c"> *</span>
+<span class="c"> * @method treeValueFormatter</span>
+<span class="c"> * @static</span>
+<span class="c"> */</span>
+<span class="nx">Treeble</span><span class="p">.</span><span class="nx">treeValueFormatter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">depth_class</span> <span class="o">=</span> <span class="s1">&#39;treeble-depth-&#39;</span><span class="o">+</span><span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">_yui_node_depth</span><span class="p">;</span>
-	<span class="k">return</span> <span class="s1">&#39;&lt;span class=&quot;&#39;</span><span class="o">+</span><span class="nx">depth_class</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="o">+</span><span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">depth_class</span> <span class="o">=</span> <span class="s1">&#39;treeble-depth-&#39;</span><span class="o">+</span><span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">_yui_node_depth</span><span class="o">;</span>
+	<span class="k">return</span> <span class="s1">&#39;&lt;span class=&quot;&#39;</span><span class="o">+</span><span class="nx">depth_class</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span><span class="o">+</span><span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="o">;</span>
 <span class="p">};</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">Treeble</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DataTable</span><span class="o">,</span>
+<span class="p">{</span>
+	<span class="nx">plug</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">plugin</span><span class="o">,</span> <span class="nx">config</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">plugin</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">DataTableDataSource</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">recordType</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;recordType&#39;</span><span class="p">);</span>
+			<span class="nx">recordType</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">[</span> <span class="nx">config</span><span class="p">.</span><span class="nx">datasource</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;root&#39;</span><span class="p">).</span><span class="nx">treeble_config</span><span class="p">.</span><span class="nx">childNodesKey</span> <span class="p">]</span> <span class="o">=</span> <span class="p">{};</span>
+			<span class="nx">recordType</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">_yui_node_path</span>  <span class="o">=</span> <span class="p">{};</span>
+			<span class="nx">recordType</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">_yui_node_depth</span> <span class="o">=</span> <span class="p">{};</span>
+		<span class="p">}</span>
+
+		<span class="nx">Treeble</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">plug</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Treeble</span> <span class="o">=</span> <span class="nx">Treeble</span><span class="o">;</span>
 </pre></div>
 
                     </div>
@@ -139,6 +161,7 @@
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
                                 <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>

@@ -47,145 +47,145 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
 
-<span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Augments built-in JavaScript Math namespace with additional</span>
-<span class="cm"> * mathematical functions.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @module gallery-math</span>
-<span class="cm"> * @class Math</span>
-<span class="cm"> */</span>
+<span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Augments built-in JavaScript Math namespace with additional</span>
+<span class="c"> * mathematical functions.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @module gallery-math</span>
+<span class="c"> * @class Math</span>
+<span class="c"> */</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nb">Math</span><span class="p">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nb">Math</span><span class="o">,</span>
 <span class="p">{</span>
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {number} sum of all the arguments (either passed separately or as an array)</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {number} sum of all the arguments (either passed separately or as an array)</span>
+<span class="c">	 */</span>
 	<span class="nx">add</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="o">,</span> <span class="nx">v</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">v</span><span class="p">);</span>
+				<span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">add</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="k">return</span> <span class="nx">s</span> <span class="o">+</span> <span class="nx">v</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">s</span> <span class="o">+</span> <span class="nx">v</span><span class="o">;</span>
 		<span class="p">});</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {number} sum of the reciprocals of all the arguments (either passed separately or as an array)</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {number} sum of the reciprocals of all the arguments (either passed separately or as an array)</span>
+<span class="c">	 */</span>
 	<span class="nx">addReciprocals</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="o">,</span> <span class="nx">v</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="nx">s</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">addReciprocals</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">v</span><span class="p">);</span>
+				<span class="k">return</span> <span class="nx">s</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">addReciprocals</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
 			<span class="p">}</span>
 			<span class="k">else</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="nx">s</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="nx">v</span><span class="p">;</span>
+				<span class="k">return</span> <span class="nx">s</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="nx">v</span><span class="o">;</span>
 			<span class="p">}</span>
 		<span class="p">});</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {number} net value of N resistors in parallel (either passed separately or as an array)</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {number} net value of N resistors in parallel (either passed separately or as an array)</span>
+<span class="c">	 */</span>
 	<span class="nx">parallel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="nb">Math</span><span class="p">.</span><span class="nx">addReciprocals</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="nb">Math</span><span class="p">.</span><span class="nx">addReciprocals</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {number} product of all the arguments (either passed separately or as an array)</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {number} product of all the arguments (either passed separately or as an array)</span>
+<span class="c">	 */</span>
 	<span class="nx">multiply</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="o">,</span> <span class="nx">v</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">v</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">multiply</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">v</span><span class="p">);</span>
+				<span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">multiply</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">v</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="k">return</span> <span class="nx">p</span> <span class="o">*</span> <span class="nx">v</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">p</span> <span class="o">*</span> <span class="nx">v</span><span class="o">;</span>
 		<span class="p">});</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param a {number} angle in degrees</span>
-<span class="cm">	 * @return {number} angle in radians</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param a {number} angle in degrees</span>
+<span class="c">	 * @return {number} angle in radians</span>
+<span class="c">	 */</span>
 	<span class="nx">degreesToRadians</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">a</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">180</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">a</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">180</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param a {number} angle in radians</span>
-<span class="cm">	 * @return {number} angle in degrees</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param a {number} angle in radians</span>
+<span class="c">	 * @return {number} angle in degrees</span>
+<span class="c">	 */</span>
 	<span class="nx">radiansToDegrees</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">a</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">a</span> <span class="o">*</span> <span class="mi">180</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param v {number}</span>
-<span class="cm">	 * @return {number} inverse hyperbolic cosine</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} inverse hyperbolic cosine</span>
+<span class="c">	 */</span>
 	<span class="nx">acosh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">v</span><span class="o">*</span><span class="nx">v</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param v {number}</span>
-<span class="cm">	 * @return {number} inverse hyperbolic sine</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} inverse hyperbolic sine</span>
+<span class="c">	 */</span>
 	<span class="nx">asinh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">v</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">v</span><span class="o">*</span><span class="nx">v</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param v {number}</span>
-<span class="cm">	 * @return {number} inverse hyperbolic tangent</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} inverse hyperbolic tangent</span>
+<span class="c">	 */</span>
 	<span class="nx">atanh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="nx">v</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">v</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="nx">v</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">v</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param v {number}</span>
-<span class="cm">	 * @return {number} hyperbolic cosine</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} hyperbolic cosine</span>
+<span class="c">	 */</span>
 	<span class="nx">cosh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
-		<span class="k">return</span> <span class="p">(</span><span class="nx">e</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="nx">e</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">e</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="nx">e</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param v {number}</span>
-<span class="cm">	 * @return {number} hyperbolic sine</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} hyperbolic sine</span>
+<span class="c">	 */</span>
 	<span class="nx">sinh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
-		<span class="k">return</span> <span class="p">(</span><span class="nx">e</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="nx">e</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">e</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="nx">e</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param v {number}</span>
-<span class="cm">	 * @return {number} hyperbolic sine</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param v {number}</span>
+<span class="c">	 * @return {number} hyperbolic sine</span>
+<span class="c">	 */</span>
 	<span class="nx">tanh</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nx">v</span><span class="p">);</span>
@@ -218,6 +218,7 @@
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
                                 <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
                                 <li class="selected"><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
@@ -245,8 +246,6 @@
                         <h4>Files</h4>
                         <ul class="content">        
                                 <li class="selected"><a href="Math.js.html" title="Math.js">Math.js</a></li>
-                                <li class=""><a href="PageLayoutCols.js.html" title="PageLayoutCols.js">PageLayoutCols.js</a></li>
-                                <li class=""><a href="PageLayoutRows.js.html" title="PageLayoutRows.js">PageLayoutRows.js</a></li>
                         </ul>
                     </div>
 

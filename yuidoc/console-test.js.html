@@ -47,54 +47,54 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
 
-<span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Adds a menu of registered unit test suites to the YUI 3 Console.&lt;/p&gt;</span>
-<span class="cm"> *</span>
-<span class="cm"> * @module gallery-console-test</span>
-<span class="cm"> * @namespace Plugin</span>
-<span class="cm"> * @class ConsoleTest</span>
-<span class="cm"> * @extends Plugin.Base</span>
-<span class="cm"> */</span>
+<span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Adds a menu of registered unit test suites to the YUI 3 Console.&lt;/p&gt;</span>
+<span class="c"> *</span>
+<span class="c"> * @module gallery-console-test</span>
+<span class="c"> * @namespace Plugin</span>
+<span class="c"> * @class ConsoleTest</span>
+<span class="c"> * @extends Plugin.Base</span>
+<span class="c"> */</span>
 
 <span class="kd">function</span> <span class="nx">ConsoleTest</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">ConsoleTest</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
+	<span class="nx">ConsoleTest</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">config</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">ConsoleTest</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;ConsoleTestPlugin&quot;</span><span class="p">;</span>
-<span class="nx">ConsoleTest</span><span class="p">.</span><span class="nx">NS</span>   <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="p">;</span>
+<span class="nx">ConsoleTest</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;ConsoleTestPlugin&quot;</span><span class="o">;</span>
+<span class="nx">ConsoleTest</span><span class="p">.</span><span class="nx">NS</span>   <span class="o">=</span> <span class="s2">&quot;test&quot;</span><span class="o">;</span>
 
 <span class="kd">function</span> <span class="nx">updateMenu</span><span class="p">(</span><span class="nx">menu</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">options</span>    <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">menu</span><span class="p">);</span>
-	<span class="nx">options</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="nx">options</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 
-	<span class="nx">options</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Option</span><span class="p">(</span><span class="s1">&#39;All tests&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+	<span class="nx">options</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Option</span><span class="p">(</span><span class="s1">&#39;All tests&#39;</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
 
-	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">masterSuite</span><span class="p">.</span><span class="nx">items</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">masterSuite</span><span class="p">.</span><span class="nx">items</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">t</span><span class="o">,</span> <span class="nx">i</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">options</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Option</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+		<span class="nx">options</span><span class="p">[</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Option</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">name</span><span class="o">,</span> <span class="nx">i</span><span class="p">);</span>
 	<span class="p">});</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">ConsoleTest</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">ConsoleTest</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="o">,</span>
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">doAfter</span><span class="p">(</span><span class="s1">&#39;renderUI&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderUI</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">doAfter</span><span class="p">(</span><span class="s1">&#39;renderUI&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">renderUI</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;rendered&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">renderUI</span><span class="p">();</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
 	<span class="nx">destructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
 	<span class="nx">renderUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
@@ -107,30 +107,30 @@
 						<span class="s1">&#39;&lt;select class=&quot;menu&quot;&gt;&lt;/select&gt;&#39;</span> <span class="o">+</span>
 						<span class="s1">&#39;&lt;button class=&quot;run&quot;&gt;{b1}&lt;/button&gt;&#39;</span> <span class="o">+</span>
 						<span class="s1">&#39;&lt;button class=&quot;refresh&quot;&gt;{b2}&lt;/button&gt;&#39;</span> <span class="o">+</span>
-					<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">,</span>
+					<span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="o">,</span>
 				<span class="p">{</span>
-					<span class="nx">c</span><span class="o">:</span>  <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;console&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;container&#39;</span><span class="p">),</span>
-					<span class="nx">b1</span><span class="o">:</span> <span class="s1">&#39;Run&#39;</span><span class="p">,</span>
+					<span class="nx">c</span><span class="o">:</span>  <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;console&#39;</span><span class="o">,</span> <span class="s1">&#39;test&#39;</span><span class="o">,</span> <span class="s1">&#39;container&#39;</span><span class="p">)</span><span class="o">,</span>
+					<span class="nx">b1</span><span class="o">:</span> <span class="s1">&#39;Run&#39;</span><span class="o">,</span>
 					<span class="nx">b2</span><span class="o">:</span> <span class="s1">&#39;Refresh&#39;</span>
 				<span class="p">}));</span>
 
 			<span class="kd">var</span> <span class="nx">menu</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">);</span>
 			<span class="nx">updateMenu</span><span class="p">(</span><span class="nx">menu</span><span class="p">);</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;button.run&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;button.run&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">menu</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="kd">var</span> <span class="nx">tests</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">masterSuite</span><span class="p">.</span><span class="nx">items</span><span class="p">;</span>
+					<span class="kd">var</span> <span class="nx">tests</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">masterSuite</span><span class="p">.</span><span class="nx">items</span><span class="o">;</span>
 					<span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
 					<span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">tests</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
 
-					<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;complete&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+					<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;complete&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span>
 					<span class="p">{</span>
 						<span class="nx">h</span><span class="p">.</span><span class="nx">detach</span><span class="p">();</span>
 						<span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
-						<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">tests</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
+						<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">tests</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
 						<span class="p">{</span>
 							<span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">t</span><span class="p">);</span>
 						<span class="p">});</span>
@@ -140,7 +140,7 @@
 				<span class="nx">Y</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">Runner</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 			<span class="p">});</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;button.refresh&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;button.refresh&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span>
 			<span class="p">{</span>
 				<span class="nx">updateMenu</span><span class="p">(</span><span class="nx">menu</span><span class="p">);</span>
 			<span class="p">});</span>
@@ -149,7 +149,7 @@
 			<span class="kd">var</span> <span class="nx">n2</span> <span class="o">=</span> <span class="nx">n1</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;nextSibling&#39;</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">n2</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">ft</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">,</span> <span class="nx">n2</span><span class="p">);</span>
+				<span class="nx">ft</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="o">,</span> <span class="nx">n2</span><span class="p">);</span>
 			<span class="p">}</span>
 			<span class="k">else</span>
 			<span class="p">{</span>
@@ -160,7 +160,7 @@
 <span class="p">});</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Plugin&quot;</span><span class="p">);</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">ConsoleTest</span> <span class="o">=</span> <span class="nx">ConsoleTest</span><span class="p">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">ConsoleTest</span> <span class="o">=</span> <span class="nx">ConsoleTest</span><span class="o">;</span>
 </pre></div>
 
                     </div>
@@ -187,6 +187,7 @@
                                 <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
                                 <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>

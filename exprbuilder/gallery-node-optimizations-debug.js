@@ -14,6 +14,24 @@ var tag_class_name_re = /^([a-z]*)\.([-_a-z0-9]+)$/i;
 var class_name_re     = /^\.([-_a-z0-9]+)$/i;
 var tag_name_re       = /^[a-z]+$/i;
 
+/**
+ * Useful when constructing regular expressions that match CSS classes.
+ *
+ * @property Y.Node.class_re_prefix
+ * @type {String}
+ * @value "(?:^|\\s)(?:"
+ */
+Y.Node.class_re_prefix = '(?:^|\\s)(?:';
+
+/**
+ * Useful when constructing regular expressions that match CSS classes.
+ *
+ * @property Y.Node.class_re_suffix
+ * @type {String}
+ * @value ")(?:\\s|$)"
+ */
+Y.Node.class_re_suffix = ')(?:\\s|$)';
+
 /**********************************************************************
  * <p>Patch to speed up search for a single class name or single tag name.
  * To use a regular expression, call getAncestorByClassName().</p>

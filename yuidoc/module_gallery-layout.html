@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-layout   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-layout&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-layout.html" title="gallery-layout">gallery-layout</a>
+                
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                   
+                    <h3>Module: gallery-layout
+                    
+
+
+                    </h3>
+                    <div class="description summary">
+                        <p>Manages header (layout-hd), body (layout-bd), footer (layout-ft)
+stacked vertically to either fit inside the viewport (fit-to-viewport)
+or adjust to the size of the body content (fit-to-content).</p>
+<p>The body content is sub-divided into modules, arranged either in rows
+or columns.  The layout is automatically detected based on the marker
+classes attached to the two layers of divs inside layout-bd:  either
+layout-module-row > layout-module or layout-module-col > layout-module</p>
+<p>Each module has an optional header (layout-m-hd), a body
+(layout-m-bd), and an optional footer (layout-m-ft).  You can have
+multiple layout-m-bd's, but only one can be visible at a time.  If you
+change the DOM in any way that affects the height of any module header,
+body, or footer, or if you switch bodies, you must call
+<code>elementResized()</code> to reflow the layout.  (Technically, you
+do not have to call <code>elementResized()</code> if you modify a module
+body in fit-to-viewport mode, but if you later decide to switch to
+fit-to-content, your optimization will cause trouble.)</p>
+<p>If the body content is a single module, it expands as the content
+expands (fit-to-content) until it would push the footer below the fold.
+Then it switches to fit-to-content so the scrollbar appears on the
+module instead of the entire viewport.</p>
+<p>Note that a non-zero margin-top on the top element inside any
+container will break the layout because browsers lie about the total
+height of the container in this case.  Use padding instead of margin on
+elements inside headers and footers.</p>
+                    </div>
+
+
+
+                <div class="yui-gc">
+                    <div class="yui-u first">
+
+                            <p>This module contains the following classes:</p>
+                            <script>
+                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "<p>Manages header (layout-hd), body (layout-bd), footer (layout-ft)\nstacked vertically to either fit inside the viewport (fit-to-viewport)\nor adjust to the size of the body content (fit-to-content).</p>\n<p>The body content is sub-divided into modules, arranged either in rows\nor columns.  The layout is automatically detected based on the marker\nclasses attached to the two layers of divs inside layout-bd:  either\nlayout-module-row > layout-module or layout-module-col > layout-module</p>\n<p>Each module has an optional header (layout-m-hd), a body\n(layout-m-bd), and an optional footer (layout-m-ft).  You can have\nmultiple layout-m-bd's, but only one can be visible at a time.  If you\nchange the DOM in any way that affects the height of any module header,\nbody, or footer, or if you switch bodies, you must call\n<code>elementResized()</code> to reflow the layout.  (Technically, you\ndo not have to call <code>elementResized()</code> if you modify a module\nbody in fit-to-viewport mode, but if you later decide to switch to\nfit-to-content, your optimization will cause trouble.)</p>\n<p>If the body content is a single module, it expands as the content\nexpands (fit-to-content) until it would push the footer below the fold.\nThen it switches to fit-to-content so the scrollbar appears on the\nmodule instead of the entire viewport.</p>\n<p>Note that a non-zero margin-top on the top element inside any\ncontainer will break the layout because browsers lie about the total\nheight of the container in this case.  Use padding instead of margin on\nelements inside headers and footers.</p>", "guessedname": "PageLayout", "name": "PageLayout"}];
+                            </script>
+                            <div id="splash_classList">
+                                <ul>
+                                    <li><a href="PageLayout.html" title="PageLayout" id="class_0">PageLayout</a></li>
+                                </ul>
+                            </div>
+                    </div>
+                    <div class="yui-u">
+                                    <div class="submodules">
+                                        <h4>Submodules:</h4> 
+                                        <dl>
+                                            <dt><code>gallery-layout-cols</code></dt>
+                                            <dd>PageLayout plugin for managing horizontally stacked columns on a page,
+sandwiched vertically between header and footer.  Each column contains
+one or more modules.</dd>
+                                            <dt><code>gallery-layout-rows</code></dt>
+                                            <dd>PageLayout plugin for managing vertically stacked rows on a page,
+sandwiched vertically between header and footer.  Each row contains one
+or more modules.</dd>
+                                        </dl>
+                                    </div>
+
+                        </div>
+                </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class="selected"><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="PageLayout.html" title="PageLayout">PageLayout</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="PageLayout.js.html" title="PageLayout.js">PageLayout.js</a></li>
+                                <li class=""><a href="PageLayoutCols.js.html" title="PageLayoutCols.js">PageLayoutCols.js</a></li>
+                                <li class=""><a href="PageLayoutRows.js.html" title="PageLayoutRows.js">PageLayoutRows.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "PageLayout.html#event_afterCollapseModule", "access": "", "host": "PageLayout", "type": "event", "name": "afterCollapseModule"}, {"url": "PageLayout.html#event_afterExpandModule", "access": "", "host": "PageLayout", "type": "event", "name": "afterExpandModule"}, {"url": "PageLayout.html#event_afterReflow", "access": "", "host": "PageLayout", "type": "event", "name": "afterReflow"}, {"url": "PageLayout.html#event_afterResizeModule", "access": "", "host": "PageLayout", "type": "event", "name": "afterResizeModule"}, {"url": "PageLayout.html#event_beforeCollapseModule", "access": "", "host": "PageLayout", "type": "event", "name": "beforeCollapseModule"}, {"url": "PageLayout.html#event_beforeExpandModule", "access": "", "host": "PageLayout", "type": "event", "name": "beforeExpandModule"}, {"url": "PageLayout.html#event_beforeReflow", "access": "", "host": "PageLayout", "type": "event", "name": "beforeReflow"}, {"url": "PageLayout.html#event_beforeResizeModule", "access": "", "host": "PageLayout", "type": "event", "name": "beforeResizeModule"}, {"url": "PageLayout.html#method_collapseModule", "access": "", "host": "PageLayout", "type": "method", "name": "collapseModule"}, {"url": "PageLayout.html#method_elementResized", "access": "", "host": "PageLayout", "type": "method", "name": "elementResized"}, {"url": "PageLayout.html#method_expandModule", "access": "", "host": "PageLayout", "type": "method", "name": "expandModule"}, {"url": "PageLayout.html#method_getBodyContainer", "access": "", "host": "PageLayout", "type": "method", "name": "getBodyContainer"}, {"url": "PageLayout.html#method_getBodyHeight", "access": "", "host": "PageLayout", "type": "method", "name": "getBodyHeight"}, {"url": "PageLayout.html#method_getFooterContainer", "access": "", "host": "PageLayout", "type": "method", "name": "getFooterContainer"}, {"url": "PageLayout.html#method_getFooterHeight", "access": "", "host": "PageLayout", "type": "method", "name": "getFooterHeight"}, {"url": "PageLayout.html#method_getHeaderContainer", "access": "", "host": "PageLayout", "type": "method", "name": "getHeaderContainer"}, {"url": "PageLayout.html#method_getHeaderHeight", "access": "", "host": "PageLayout", "type": "method", "name": "getHeaderHeight"}, {"url": "PageLayout.html#config_matchColumnHeights", "access": "", "host": "PageLayout", "type": "config", "name": "matchColumnHeights"}, {"url": "PageLayout.html#config_minHeight", "access": "", "host": "PageLayout", "type": "config", "name": "minHeight"}, {"url": "PageLayout.html#config_minWidth", "access": "", "host": "PageLayout", "type": "config", "name": "minWidth"}, {"url": "PageLayout.html#config_mode", "access": "", "host": "PageLayout", "type": "config", "name": "mode"}, {"url": "PageLayout.html#method_moduleIsCollapsed", "access": "", "host": "PageLayout", "type": "method", "name": "moduleIsCollapsed"}, {"url": "PageLayout.html#method_rescanBody", "access": "", "host": "PageLayout", "type": "method", "name": "rescanBody"}, {"url": "PageLayout.html#config_stickyFooter", "access": "", "host": "PageLayout", "type": "config", "name": "stickyFooter"}, {"url": "PageLayout.html#method_toggleModule", "access": "", "host": "PageLayout", "type": "method", "name": "toggleModule"}, {"url": "PageLayout.html#property_Y.PageLayout.collapsed_horiz_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapsed_horiz_class"}, {"url": "PageLayout.html#property_Y.PageLayout.collapsed_vert_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapsed_vert_class"}, {"url": "PageLayout.html#property_Y.PageLayout.collapse_left_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapse_left_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.collapse_right_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapse_right_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.collapse_vert_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapse_vert_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.expand_left_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.expand_left_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.expand_right_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.expand_right_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.expand_vert_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.expand_vert_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.FIT_TO_CONTENT", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.FIT_TO_CONTENT"}, {"url": "PageLayout.html#property_Y.PageLayout.FIT_TO_VIEWPORT", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.FIT_TO_VIEWPORT"}, {"url": "PageLayout.html#property_Y.PageLayout.min_module_height", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.min_module_height"}, {"url": "PageLayout.html#property_Y.PageLayout.module_body_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_body_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_cols_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_cols_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_footer_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_footer_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_header_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_header_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_rows_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_rows_class"}, {"url": "PageLayout.html#property_Y.PageLayout.not_managed_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.not_managed_class"}, {"url": "PageLayout.html#property_Y.PageLayout.page_body_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.page_body_class"}, {"url": "PageLayout.html#property_Y.PageLayout.page_footer_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.page_footer_class"}, {"url": "PageLayout.html#property_Y.PageLayout.page_header_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.page_header_class"}];
+</script>
+</body>
+</html>
