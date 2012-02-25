@@ -11,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssbase/base-min.css">
 
 	<script src="gallery-layout-debug.js"></script>
-	<script src="gallery-layout-cols-debug.js"></script>
+	<script src="gallery-layout-rows-debug.js"></script>
 	<script src="gallery-dimensions-debug.js"></script>
 	<script src="gallery-node-optimizations-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-layout.css">
@@ -19,20 +19,7 @@
 	<style type="text/css">
 	.layout-hd,.layout-ft {text-align:center;}
 	.layout-hd h1 {font-size:150%;font-weight:bold;margin:0;padding:5px 0;}
-
-	.layout-bd .layout-module-col {padding:0 5px;}
-	.layout-bd .layout-module {margin:5px 0;border-radius:10px;}
-	.layout-bd .layout-m-hd {background-color:#EEE;border-top-left-radius:10px;border-top-right-radius:10px;border-bottom:1px solid #666;}
-	.layout-bd .layout-m-ft {text-align:center;background-color:#EEE;border-bottom-left-radius:10px;border-bottom-right-radius:10px;border-top:1px solid #666;}
-
-	.layout-bd .layout-m-hd,
-	.layout-bd .layout-m-bd,
-	.layout-bd .layout-m-ft {padding:5px;}
-
-	.layout-bd .layout-m-hd p,
-	.layout-bd .layout-m-ft p {margin:0}
-
-	.layout-ft p {font-size:80%;color:#666;margin:0;padding:0 0 10px 0;}
+	.layout-ft p {font-size:80%;color:#666;margin:0;padding:5px 0;}
 	</style>
 </head>
 
@@ -42,7 +29,7 @@
 	<h1>Page Header</h1>
 	<p>
 		<a href="index.html">Row-based Layout</a> |
-		<a href="rows-basic.html">Basic Row-based Layout</a> |
+		<a href="cols.html">Column-based Layout</a> |
 		<a href="cols-basic.html">Basic Column-based Layout</a> |
 		<a href="../yuidoc/module_gallery-layout.html">Documentation</a> |
 		<a href="/yui3-gallery/">Project List</a>
@@ -51,7 +38,43 @@
 
 <!-- visibility:hidden will be removed once the layout has been calculated -->
 <div class="layout-bd" style="visibility:hidden;">
-	<div class="layout-module-col width:10%">
+	<div class="layout-module-row height:20%">
+		<div class="layout-module">
+			<div class="layout-m-hd">
+				<p>I am a fixed module header</p>
+				<div id="test-vert-collapse" class="layout-vert-collapse-nub">
+					<button>Collapse</button>
+				</div>
+				<div id="test-vert-expand" class="layout-vert-expand-nub">
+					<button>Expand</button>
+				</div>
+			</div>
+			<div class="layout-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+		</div>
+	</div>
+	<div class="layout-module-row">
+		<div class="layout-module width:25%">
+			<div class="layout-m-hd">
+				<p>I am a fixed module header</p>
+			</div>
+			<div class="layout-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+				<button id="fit-to-viewport">Fit-to-Viewport</button>
+				<button id="fit-to-content">Fit-to-Content</button>
+				<div id="fit-to-content-options">
+					<button id="sticky-footer">Toggle <q>sticky footer</q></button>
+				</div>
+			</div>
+		</div>
+		<div class="layout-module">
+			<div class="layout-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+		</div>
+	</div>
+	<div class="layout-module-row">
 		<div class="layout-module">
 			<div class="layout-m-hd">
 				<p>I am a fixed module header</p>
@@ -62,51 +85,13 @@
 			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
 			</div>
+			<div class="layout-m-ft">
+				<p>I am a fixed module footer</p>
+			</div>
 			<div id="test-horiz-left-expand" class="layout-left-expand-nub">
 				<button>Expand</button>
 			</div>
 		</div>
-	</div>
-	<div class="layout-module-col">
-		<div class="layout-module height:25%">
-			<div class="layout-m-hd">
-				<p>I am a fixed module header</p>
-			</div>
-			<div class="layout-m-bd">
-				<p>I am a module body that scrolls if needed</p>
-				<button id="fit-to-viewport">Fit-to-Viewport</button>
-				<button id="fit-to-content">Fit-to-Content</button>
-				<div id="fit-to-content-options">
-					<button id="sticky-footer">Toggle <q>sticky footer</q></button>
-					<br>
-					<button id="match-columns">Toggle <q>match column heights</q></button>
-				</div>
-			</div>
-		</div>
-		<div class="layout-module">
-			<div class="layout-m-bd">
-				<p>I am a module body that scrolls if needed</p>
-			</div>
-		</div>
-	</div>
-	<div class="layout-module-col">
-		<div class="layout-module">
-			<div class="layout-m-hd">
-				<p>I am a fixed module header</p>
-				<div id="test-vert-collapse-1" class="layout-vert-collapse-nub">
-					<button>Collapse</button>
-				</div>
-				<div id="test-vert-expand-1" class="layout-vert-expand-nub">
-					<button>Expand</button>
-				</div>
-			</div>
-			<div class="layout-m-bd">
-				<p>I am a module body that scrolls if needed</p>
-			</div>
-			<div class="layout-m-ft">
-				<p>I am a fixed module footer</p>
-			</div>
-		</div>
 		<div class="layout-module">
 			<div class="layout-m-hd">
 				<p>I am a fixed module header</p>
@@ -118,25 +103,6 @@
 				<p>I am a fixed module footer</p>
 			</div>
 		</div>
-		<div class="layout-module">
-			<div class="layout-m-hd">
-				<p>I am a fixed module header</p>
-				<div id="test-vert-collapse-2" class="layout-vert-collapse-nub">
-					<button>Collapse</button>
-				</div>
-				<div id="test-vert-expand-2" class="layout-vert-expand-nub">
-					<button>Expand</button>
-				</div>
-			</div>
-			<div class="layout-m-bd">
-				<p>I am a module body that scrolls if needed</p>
-			</div>
-			<div class="layout-m-ft">
-				<p>I am a fixed module footer</p>
-			</div>
-		</div>
-	</div>
-	<div class="layout-module-col">
 		<div class="layout-module">
 			<div class="layout-m-hd">
 				<p>I am a fixed module header</p>
@@ -146,6 +112,9 @@
 			</div>
 			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
+			</div>
+			<div class="layout-m-ft">
+				<p>I am a fixed module footer</p>
 			</div>
 			<div id="test-horiz-right-expand" class="layout-right-expand-nub">
 				<button>Expand</button>
@@ -190,12 +159,6 @@ YUI({
 		page_layout.set('stickyFooter', !page_layout.get('stickyFooter'));
 	},
 	'#sticky-footer');
-
-	Y.on('click', function()
-	{
-		page_layout.set('matchColumnHeights', !page_layout.get('matchColumnHeights'));
-	},
-	'#match-columns');
 });
 </script>
 
