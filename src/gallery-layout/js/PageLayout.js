@@ -25,10 +25,11 @@
  * Then it switches to fit-to-content so the scrollbar appears on the
  * module instead of the entire viewport.</p>
  * 
- * <p>Note that a non-zero margin-top on the top element inside any
- * container will break the layout because browsers lie about the total
- * height of the container in this case.  Use padding instead of margin on
- * elements inside headers and footers.</p>
+ * <p>Note that a non-zero margin-top on the top element or a non-zero
+ * margin-bottom on the bottom element inside any container will break the
+ * layout because browsers lie about the total height of the container in
+ * this case.  Use padding instead of margin on elements inside headers and
+ * footers.</p>
  *
  * @module gallery-layout
  * @class PageLayout
