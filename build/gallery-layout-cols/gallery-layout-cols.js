@@ -8,6 +8,9 @@ var has_explosive_modules_bug = (0 < Y.UA.ie && Y.UA.ie < 8);
  * PageLayout plugin for managing horizontally stacked columns on a page,
  * sandwiched vertically between header and footer.  Each column contains
  * one or more modules.
+ * 
+ * @module gallery-layout
+ * @submodule gallery-layout-cols
  */
 
 Y.namespace('PageLayoutCols');
@@ -53,88 +56,14 @@ function getHeight(
 	return Math.max(1, Math.floor(body_height * row_heights[ col_index ][ row_index ] / 100.0) - module_info.mbp);
 }
 
-Y.PageLayoutCols.resize = function(host)
+Y.PageLayoutCols.resize = function(
+	/* PageLayout */	host,
+	/* int */			body_width,
+	/* int */			body_height)
 {
-	if (!host.body_container)
-	{
-		return;
-	}
-
-	var mode = host.get('mode');
-
-	host.body_container.setStyle('overflowX',
-		mode === Y.PageLayout.FIT_TO_CONTENT ? 'auto' : 'hidden');
-	host.body_container.setStyle('overflowY',
-		mode === Y.PageLayout.FIT_TO_CONTENT ? 'scroll' : 'hidden');
-
-	var viewport =
-	{
-		w: host.body_container.get('winWidth'),
-		h: host.body_container.get('winHeight')
-	};
-
-	var resize_event = arguments[0] && arguments[0].type == 'resize';	// IE7 generates no-op's
-	if (resize_event &&
-		(viewport.w === the_body_cols.viewport.w &&
-		 viewport.h === the_body_cols.viewport.h))
-	{
-		return;
-	}
-
-	the_body_cols.viewport = viewport;
-
-	host.fire('beforeReflow');	// after confirming that viewport really has changed
-
-	var min_width = host.get('minWidth') * Y.Node.emToPx();
-
-	var body_width = Math.max(the_body_cols.viewport.w, min_width);
-	if (host.header_container)
-	{
-		host.header_container.setStyle('width', body_width+'px');
-	}
-	host.body_container.setStyle('width', (body_width - host.body_horiz_mbp)+'px');
-	if (host.footer_container)
-	{
-		host.footer_container.setStyle('width', host.get('stickyFooter') ? body_width+'px' : 'auto');
-	}
-	body_width = host.body_container.get('clientWidth') - host.body_horiz_mbp;
-
-	the_body_cols.viewport.bcw = host.body_container.get('clientWidth');
-
-	var h     = the_body_cols.viewport.h;
-	var h_min = host.get('minHeight') * Y.Node.emToPx();
-	if (mode === Y.PageLayout.FIT_TO_VIEWPORT && h < h_min)
-	{
-		h = h_min;
-		Y.one(document.documentElement).setStyle('overflowY', 'auto');
-	}
-	else if (!window.console || !window.console.layout_force_viewport_scrollbars)	// remove inactive vertical scrollbar in IE
-	{
-		Y.one(document.documentElement).setStyle('overflowY', 'hidden');
-	}
-
-	if (host.header_container)
-	{
-		h -= host.header_container.get('offsetHeight');
-	}
-	if (host.footer_container &&
-		(mode === Y.PageLayout.FIT_TO_VIEWPORT || host.get('stickyFooter')))
-	{
-		h -= host.footer_container.get('offsetHeight');
-	}
-
-	if (mode === Y.PageLayout.FIT_TO_VIEWPORT)
-	{
-		var body_height = h - host.body_vert_mbp;
-	}
-	else if (h < 0)						// FIT_TO_CONTENT doesn't enforce min height
-	{
-		h = 10 + host.body_vert_mbp;		// arbitrary, positive number
-	}
-
-	host.body_container.setStyle('height', (h - host.body_vert_mbp)+'px');
-
-	var col_count = the_body_cols.cols.size();
+	var mode          = host.get('mode');
+	var match_heights = host.get('matchColumnHeights');
+	var col_count     = host.body_info.outers.size();
 
 	// fit-to-viewport: adjust for vertically collapsed modules
 
@@ -144,14 +73,14 @@ Y.PageLayoutCols.resize = function(host)
 			col_heights = [];
 		for (var i=0; i<col_count; i++)
 		{
-			var heights = the_body_cols.row_heights[i].slice(0);
+			var heights = host.body_info.inner_sizes[i].slice(0);
 			row_heights.push(heights);
 			col_heights.push(body_height);
 
 			var uncollapsed_count = 0,
 				sum               = 0;
 
-			var modules = the_body_cols.modules[i];
+			var modules = host.body_info.modules[i];
 			var count   = modules.size();
 			for (var j=0; j<count; j++)
 			{
@@ -185,26 +114,26 @@ Y.PageLayoutCols.resize = function(host)
 	// adjust for horizontally collapsed or fixed width modules
 
 	var module_info = {};
-	var col_widths  = the_body_cols.col_widths.slice(0);
+	var col_widths  = host.body_info.outer_sizes.slice(0);
 
 	var uncollapsed_count = 0,
 		sum               = 0;
 	for (var i=0; i<col_count; i++)
 	{
-		var col       = the_body_cols.cols[i];
+		var col       = host.body_info.outers.item(i);
 		var collapsed = col.hasClass(Y.PageLayout.collapsed_horiz_class);
-		var modules   = the_body_cols.modules[i];
+		var modules   = host.body_info.modules[i];
 		if (collapsed || col_widths[i] < 0)
 		{
 			col_widths[i] = 0;
 			if (collapsed)
 			{
 				col.setStyle('width', 'auto');
-				modules[0].setStyle('width', 'auto');
+				modules.item(0).setStyle('width', 'auto');
 			}
 			else if (has_explosive_modules_bug)
 			{
-				var children = host._analyzeModule(modules[0]);
+				var children = host._analyzeModule(modules.item(0));
 				if (children.bd)
 				{
 					var root_w = children.bd.totalWidth() + modules.item(j).horizMarginBorderPadding();
@@ -222,7 +151,7 @@ Y.PageLayoutCols.resize = function(host)
 
 			if (modules.size() == 1)
 			{
-				modules[0].setStyle('height', 'auto');
+				modules.item(0).setStyle('height', 'auto');
 			}
 		}
 	}
@@ -244,7 +173,7 @@ Y.PageLayoutCols.resize = function(host)
 	{
 		if (col_widths[i] == 0)
 		{
-			var module   = the_body_cols.modules[i].item(0);
+			var module   = host.body_info.modules[i].item(0);
 			var children = host._analyzeModule(module);
 			if (mode === Y.PageLayout.FIT_TO_VIEWPORT)
 			{
@@ -267,7 +196,7 @@ Y.PageLayoutCols.resize = function(host)
 				children.root.setStyle('height', 'auto');
 				children.bd.setStyle('height', 'auto');
 
-				if (host.get('matchColumnHeights'))
+				if (match_heights)
 				{
 					ftc_size.push([ [children.bd, children.bd.insideWidth()] ]);
 				}
@@ -290,11 +219,11 @@ Y.PageLayoutCols.resize = function(host)
 			w += body_width - total_w;
 		}
 
-		w = Math.max(1, w - the_body_cols.cols.item(i).horizMarginBorderPadding());
-		the_body_cols.cols.item(i).setStyle('width', w+'px');
-		w = Math.max(1, w - the_body_cols.modules[0][0].horizMarginBorderPadding());
+		w = Math.max(1, w - host.body_info.outers.item(i).horizMarginBorderPadding());
+		host.body_info.outers.item(i).setStyle('width', w+'px');
+		w = Math.max(1, w - host.body_info.modules[0].item(0).horizMarginBorderPadding());
 
-		var modules = the_body_cols.modules[i];
+		var modules = host.body_info.modules[i];
 		if (mode === Y.PageLayout.FIT_TO_VIEWPORT)
 		{
 			// adjust for vertically collapsed or fixed height modules
@@ -368,7 +297,7 @@ Y.PageLayoutCols.resize = function(host)
 					children.root.setStyle('height', 'auto');
 					children.bd.setStyle('height', 'auto');
 
-					if (host.get('matchColumnHeights'))
+					if (match_heights)
 					{
 						ftc_size[i].push([children.bd, w1]);
 					}
@@ -383,17 +312,17 @@ Y.PageLayoutCols.resize = function(host)
 
 	// set the height of the last module in each column
 
-	if (mode === Y.PageLayout.FIT_TO_CONTENT && host.get('matchColumnHeights'))
+	if (mode === Y.PageLayout.FIT_TO_CONTENT && match_heights)
 	{
 		var h = 0;
 		for (var i=0; i<col_count; i++)
 		{
-			h = Math.max(h, the_body_cols.cols.item(i).get('offsetHeight'));
+			h = Math.max(h, host.body_info.outers.item(i).get('offsetHeight'));
 		}
 
 		for (var i=0; i<col_count; i++)
 		{
-			var modules = the_body_cols.modules[i],
+			var modules = host.body_info.modules[i],
 				count   = modules.size(),
 				module  = null,
 				w1      = 0;
@@ -403,7 +332,7 @@ Y.PageLayoutCols.resize = function(host)
 				if (count == 1 ||
 					(!module &&
 					 !module1.hasClass(Y.PageLayout.collapsed_vert_class) &&
-					 the_body_cols.row_heights[i][j] > 0))
+					 host.body_info.inner_sizes[i][j] > 0))
 				{
 					module = module1;
 					w1     = ftc_size[i][j][1];
@@ -417,8 +346,8 @@ Y.PageLayoutCols.resize = function(host)
 
 			if (module)
 			{
-				var delta = h - the_body_cols.cols.item(i).get('offsetHeight');
-				if (delta > 0 && module.parentNode.hasClass(Y.PageLayout.collapsed_horiz_class))
+				var delta = h - host.body_info.outers.item(i).get('offsetHeight');
+				if (delta > 0 && module.get('parentNode').hasClass(Y.PageLayout.collapsed_horiz_class))
 				{
 					module.setStyle('height', (module.insideHeight() + delta)+'px');
 				}
@@ -436,14 +365,6 @@ Y.PageLayoutCols.resize = function(host)
 			}
 		}
 	}
-
-	host.body_container.setStyle('visibility', 'visible');
-	if (host.footer_container)
-	{
-		host.footer_container.setStyle('visibility', 'visible');
-	}
-
-	Y.Lang.later(100, host, host._checkViewportSize);
 };
 
 

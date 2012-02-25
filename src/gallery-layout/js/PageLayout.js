@@ -325,7 +325,25 @@ var mode_regex          = /\bFIT_TO_[A-Z_]+/,
 	row_height_class_re = /(?:^|\s)height:([0-9]+)%/,
 	col_width_class_re  = /(?:^|\s)width:([0-9]+)%/,
 
-	reflow_delay = 100; // ms
+	reflow_delay = 100, // ms
+
+	plugin_info =
+	{
+		row:
+		{
+			module:     'gallery-layout-rows',
+			plugin:     'PageLayoutRows',
+			outer_size: row_height_class_re,
+			inner_size: col_width_class_re
+		},
+		col:
+		{
+			module:     'gallery-layout-cols',
+			plugin:     'PageLayoutCols',
+			outer_size: col_width_class_re,
+			inner_size: row_height_class_re
+		}
+	};
 /*
 	dd_group_name:            'satg-layout-dd-group',
 	drag_target_class:        'satg-layout-dd-target',
@@ -428,9 +446,120 @@ function reparentFooter()
 
 function resize()
 {
-	if (this.layout_plugin)
+	if (!this.layout_plugin || !this.body_container)
 	{
-		this.layout_plugin.resize(this);
+		return;
+	}
+
+	// check if viewport changed
+
+	var mode          = this.get('mode');
+	var sticky_footer = this.get('stickyFooter');
+
+	this.body_container.setStyle('overflowX',
+		mode === Y.PageLayout.FIT_TO_CONTENT ? 'auto' : 'hidden');
+	this.body_container.setStyle('overflowY',
+		mode === Y.PageLayout.FIT_TO_CONTENT ? 'scroll' : 'hidden');
+
+	var viewport =
+	{
+		w: this.body_container.get('winWidth'),
+		h: this.body_container.get('winHeight')
+	};
+
+	var resize_event = arguments[0] && arguments[0].type == 'resize';	// IE7 generates no-op's
+	if (resize_event &&
+		(viewport.w === this.viewport.w &&
+		 viewport.h === this.viewport.h))
+	{
+		return;
+	}
+
+	this.viewport = viewport;
+
+	this.fire('beforeReflow');	// after confirming that viewport really has changed
+
+	// set width of hd,bd,ft and height of bd
+
+	var min_width  = Y.Node.emToPx(this.get('minWidth'));
+	var body_width = Math.max(this.viewport.w, min_width);
+	if (this.header_container)
+	{
+		this.header_container.setStyle('width', body_width+'px');
+	}
+	this.body_container.setStyle('width', (body_width - this.body_horiz_mbp)+'px');
+	if (this.footer_container)
+	{
+		this.footer_container.setStyle('width', sticky_footer ? body_width+'px' : 'auto');
+	}
+	body_width = this.body_container.get('clientWidth') - this.body_horiz_mbp;
+
+	this.viewport.bcw = this.body_container.get('clientWidth');
+
+	var h     = this.viewport.h;
+	var h_min = Y.Node.emToPx(this.get('minHeight'));
+	if (mode === Y.PageLayout.FIT_TO_VIEWPORT && h < h_min)
+	{
+		h = h_min;
+		Y.one(document.documentElement).setStyle('overflowY', 'auto');
+	}
+	else if (!window.console || !window.console.layout_force_viewport_scrollbars)	// remove inactive vertical scrollbar in IE
+	{
+		Y.one(document.documentElement).setStyle('overflowY', 'hidden');
+	}
+
+	if (this.header_container)
+	{
+		h -= this.header_container.get('offsetHeight');
+	}
+	if (this.footer_container &&
+		(mode === Y.PageLayout.FIT_TO_VIEWPORT || sticky_footer))
+	{
+		h -= this.footer_container.get('offsetHeight');
+	}
+
+	if (mode === Y.PageLayout.FIT_TO_VIEWPORT)
+	{
+		var body_height = h - this.body_vert_mbp;
+	}
+	else if (h < 0)						// FIT_TO_CONTENT doesn't enforce min height
+	{
+		h = 10 + this.body_vert_mbp;	// arbitrary, positive number
+	}
+
+	this.body_container.setStyle('height', (h - this.body_vert_mbp)+'px');
+
+	// resize modules
+
+	this.layout_plugin.resize(this, body_width, body_height);
+
+	// show body and footer
+
+	this.body_container.setStyle('visibility', 'visible');
+	if (this.footer_container)
+	{
+		this.footer_container.setStyle('visibility', 'visible');
+	}
+
+	Y.Lang.later(100, this, checkViewportSize);
+}
+
+/*
+ * Check if the viewport size has changed, usually due to the browser
+ * removing no-longer-needed scrollbars.  If the viewport size is
+ * stable, fires the afterReflow event.
+ */
+function checkViewportSize()
+{
+	if (this.body_container.get('winWidth')    != this.viewport.w ||
+		this.body_container.get('winHeight')   != this.viewport.h ||
+		this.body_container.get('clientWidth') != this.viewport.bcw)
+	{
+		resize.call(this);
+	}
+	else
+	{
+		this.fire('afterReflow');
 	}
 }
 
@@ -508,19 +637,11 @@ Y.extend(PageLayout, Y.Base,
 {
 	initializer: function()
 	{
-		this.body_rows =
-		{
-			rows:        [],
-			modules:     [],	// list of modules inside each row
-			row_heights: [],	// list of percentages
-			col_widths:  []		// list of lists of percentages
-		};
-
 		this.viewport =
 		{
 			w:   0,
 			h:   0,
-			bcw: 0,
+			bcw: 0
 		};
 
 		// find header, body, footer
@@ -557,14 +678,12 @@ Y.extend(PageLayout, Y.Base,
 		}
 		this.footer_container = (list.isEmpty() ? null : list.item(0));
 
+		Y.one(Y.config.win).on('resize', resize, this);
+//		SDom.textResizeEvent.subscribe(resize, null, this);
+
 		updateFitClass.call(this);
 		reparentFooter.call(this);
 		this.rescanBody();
-
-		var w = Y.one(Y.config.win);
-		w.on('resize', resize, this);
-//		SDom.textResizeEvent.subscribe(resize, null, this);
-		resize.call(this);
 
 		// stay in sync
 
@@ -600,10 +719,26 @@ Y.extend(PageLayout, Y.Base,
 	{
 		Y.detach('PageLayoutCollapse|click');
 
-		this.body_rows.rows        = this.body_container.all('div.' + PageLayout.module_rows_class);
-		this.body_rows.modules     = [];
-		this.body_rows.row_heights = [];
-		this.body_rows.col_widths  = [];
+		this.body_info =
+		{
+			outers:      [],
+			modules:     [],	// list of modules inside each row
+			outer_sizes: [],	// list of percentages
+			inner_sizes: []		// list of lists of percentages
+		};
+
+		var outer_list  = this.body_container.all('div.' + PageLayout.module_rows_class);
+		var plugin_data = plugin_info.row;
+		if (outer_list.isEmpty())
+		{
+			outer_list  = this.body_container.all('div.' + PageLayout.module_cols_class);
+			plugin_data = plugin_info.col;
+		}
+		if (outer_list.isEmpty())
+		{
+			throw Error('There must be at least one ' + PageLayout.module_rows_class + ' or ' + PageLayout.module_cols_class + ' inside ' + PageLayout.page_body_class + '.');
+		}
+		this.body_info.outers = outer_list;
 
 		var collapse_nub_pattern =
 			'(' +
@@ -619,22 +754,21 @@ Y.extend(PageLayout, Y.Base,
 			PageLayout.expand_right_nub_class +
 			')';
 
-		var row_count = this.body_rows.rows.size();
-		Y.each(this.body_rows.rows, function(row)
+		var row_count = this.body_info.outers.size();
+		Y.each(this.body_info.outers, function(row)
 		{
-			row.generateID();
-			this.body_rows.row_heights.push(100.0/row_count);
+			var row_id = row.generateID();
+			this.body_info.outer_sizes.push(100.0/row_count);
 
 			var list = row.all('div.' + PageLayout.module_class);
 			if (list.isEmpty())
 			{
-				this.body_rows.rows        = [];
-				this.body_rows.modules     = [];
-				this.body_rows.row_heights = [];
+				this.body_info.outers  = [];
+				this.body_info.modules = [];
 				throw Error('There must be at least one ' + PageLayout.module_class + ' inside ' + PageLayout.module_rows_class + '.');
 			}
 
-			this.body_rows.modules.push(list);
+			this.body_info.modules.push(list);
 
 			Y.each(list, function(module)
 			{
@@ -657,59 +791,62 @@ Y.extend(PageLayout, Y.Base,
 				var has_nubs = false;
 				Y.each(list, function(module)
 				{
-					Dom.generateID(module, PageLayout.module_class+'-');
-					Dom.removeClass(module, PageLayout.module_no_drag_class);
+					var id = module.generateID();
+					module.removeClass(PageLayout.module_no_drag_class);
 
-					if (the_dd_nubs[ module.id ])
+					if (the_dd_nubs[id])
 					{
-						has_nubs = (the_dd_nubs[ module.id ] != 'none');
+						has_nubs = (the_dd_nubs[id] != 'none');
 					}
 					else
 					{
-						var nub = Dom.getElementsByClassName(PageLayout.drag_nub_class, null, module)[0];
+						var nub = module.getFirstElementByClassName(PageLayout.drag_nub_class);
 						if (nub)
 						{
 							var children = this._analyzeModule(module);
 							if (children.hd)
 							{
-								Dom.addClass(children.hd, PageLayout.module_header_drag_class);
-								the_dd_nubs[ module.id ] =
-									new PageLayoutDDProxy(this, module.id, children.hd, PageLayout.dd_group_name);
+								children.hd.addClass(PageLayout.module_header_drag_class);
+								the_dd_nubs[id] =
+									new PageLayoutDDProxy(this, id, children.hd, PageLayout.dd_group_name);
 								has_nubs = true;
 							}
 						}
 
-						if (!the_dd_nubs[ module.id ])
+						if (!the_dd_nubs[id])
 						{
-							the_dd_nubs[ module.id ] = 'none';
+							the_dd_nubs[id] = 'none';
 						}
 					}
 				},
 				this);
 
-				if (!the_dd_targets[ row.id ] &&
-					(has_nubs || Dom.hasClass(row, PageLayout.drag_target_class)))
+				if (!the_dd_targets[ row_id ] &&
+					(has_nubs || row.hasClass(PageLayout.drag_target_class)))
 				{
-					the_dd_targets[ row.id ] = new DDTarget(row.id, PageLayout.dd_group_name);
+					the_dd_targets[ row_id ] = new DDTarget(row_id, PageLayout.dd_group_name);
 				}
 
 				if (list.size() == 1)
 				{
-					Dom.addClass(list[0], PageLayout.module_no_drag_class);
+					list.item(0).addClass(PageLayout.module_no_drag_class);
 				}
 			}
 */
-			this.body_rows.col_widths.push(
-				normalizeSizes(list, col_width_class_re));
+			this.body_info.inner_sizes.push(
+				normalizeSizes(list, plugin_data.inner_size));
 		},
 		this);
 
-		this.body_rows.row_heights =
-			normalizeSizes(this.body_rows.rows, row_height_class_re);
+		this.body_info.outer_sizes =
+			normalizeSizes(this.body_info.outers, plugin_data.outer_size);
 
-		this.layout_plugin = Y.PageLayoutRows;
-
-		resize.call(this);
+		var self = this;
+		Y.use(plugin_data.module, function(Y)
+		{
+			self.layout_plugin = Y[ plugin_data.plugin ];
+			resize.call(self);
+		});
 	},
 
 	/**
@@ -936,6 +1073,10 @@ Y.extend(PageLayout, Y.Base,
 		{
 			return (n.get('offsetWidth') > 0);
 		});
+		if (!result.bd)
+		{	
+			result.bd = bd;
+		}
 
 		if (result.bd)
 		{
@@ -944,27 +1085,6 @@ Y.extend(PageLayout, Y.Base,
 		}
 
 		return result;
-	},
-
-	/**
-	 * Check if the viewport size has changed, usually due to the browser
-	 * removing no-longer-needed scrollbars.  If the viewport size is
-	 * stable, fires the afterReflow event.
-	 * 
-	 * @private
-	 */
-	_checkViewportSize: function()
-	{
-		if (this.body_container.get('winWidth')    != this.viewport.w ||
-			this.body_container.get('winHeight')   != this.viewport.h ||
-			this.body_container.get('clientWidth') != this.viewport.bcw)
-		{
-			resize.call(this);
-		}
-		else
-		{
-			this.fire('afterReflow');
-		}
 	},
 
 	/**

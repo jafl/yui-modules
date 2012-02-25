@@ -67,87 +67,13 @@ function getWidth(
 	return Math.max(1, Math.floor(body_width * col_widths[ row_index ][ col_index ] / 100.0) - module_info.mbp);
 }
 
-Y.PageLayoutRows.resize = function(host)
+Y.PageLayoutRows.resize = function(
+	/* PageLayout */	host,
+	/* int */			body_width,
+	/* int */			body_height)
 {
-	if (!host.body_container)
-	{
-		return;
-	}
-
-	var mode = host.get('mode');
-
-	host.body_container.setStyle('overflowX',
-		mode === Y.PageLayout.FIT_TO_CONTENT ? 'auto' : 'hidden');
-	host.body_container.setStyle('overflowY',
-		mode === Y.PageLayout.FIT_TO_CONTENT ? 'scroll' : 'hidden');
-
-	var viewport =
-	{
-		w: host.body_container.get('winWidth'),
-		h: host.body_container.get('winHeight')
-	};
-
-	var resize_event = arguments[0] && arguments[0].type == 'resize';	// IE7 generates no-op's
-	if (resize_event &&
-		(viewport.w === host.viewport.w &&
-		 viewport.h === host.viewport.h))
-	{
-		return;
-	}
-
-	host.viewport = viewport;
-
-	host.fire('beforeReflow');	// after confirming that viewport really has changed
-
-	var min_width  = host.get('minWidth') * Y.Node.emToPx();
-	var body_width = Math.max(host.viewport.w, min_width);
-	if (host.header_container)
-	{
-		host.header_container.setStyle('width', body_width+'px');
-	}
-	host.body_container.setStyle('width', (body_width - host.body_horiz_mbp)+'px');
-	if (host.footer_container)
-	{
-		host.footer_container.setStyle('width', host.get('stickyFooter') ? body_width+'px' : 'auto');
-	}
-	body_width = host.body_container.get('clientWidth') - host.body_horiz_mbp;
-
-	host.viewport.bcw = host.body_container.get('clientWidth');
-
-	var h     = host.viewport.h;
-	var h_min = host.get('minHeight') * Y.Node.emToPx();
-	if (mode === Y.PageLayout.FIT_TO_VIEWPORT && h < h_min)
-	{
-		h = h_min;
-		Y.one(document.documentElement).setStyle('overflowY', 'auto');
-	}
-	else if (!window.console || !window.console.layout_force_viewport_scrollbars)	// remove inactive vertical scrollbar in IE
-	{
-		Y.one(document.documentElement).setStyle('overflowY', 'hidden');
-	}
-
-	if (host.header_container)
-	{
-		h -= host.header_container.get('offsetHeight');
-	}
-	if (host.footer_container &&
-		(mode === Y.PageLayout.FIT_TO_VIEWPORT || host.get('stickyFooter')))
-	{
-		h -= host.footer_container.get('offsetHeight');
-	}
-
-	if (mode === Y.PageLayout.FIT_TO_VIEWPORT)
-	{
-		var body_height = h - host.body_vert_mbp;
-	}
-	else if (h < 0)							// FIT_TO_CONTENT doesn't enforce min height
-	{
-		h = 10 + host.body_vert_mbp;		// arbitrary, positive number
-	}
-
-	host.body_container.setStyle('height', (h - host.body_vert_mbp)+'px');
-
-	var row_count = host.body_rows.rows.size();
+	var mode      = host.get('mode');
+	var row_count = host.body_info.outers.size();
 
 	// reset module heights
 	// adjust for horizontally collapsed or fixed width modules
@@ -156,14 +82,14 @@ Y.PageLayoutRows.resize = function(host)
 		row_widths = [];
 	for (var i=0; i<row_count; i++)
 	{
-		var widths = host.body_rows.col_widths[i].slice(0);
+		var widths = host.body_info.inner_sizes[i].slice(0);
 		col_widths.push(widths);
 		row_widths.push(body_width);
 
 		var uncollapsed_count = 0,
 			sum               = 0;
 
-		var modules = host.body_rows.modules[i];
+		var modules = host.body_info.modules[i];
 		var count   = modules.size();
 		for (var j=0; j<count; j++)
 		{
@@ -211,9 +137,9 @@ Y.PageLayoutRows.resize = function(host)
 		var row_heights = [];
 		for (var i=0; i<row_count; i++)
 		{
-			host.body_rows.rows.item(i).setStyle('height', 'auto');
+			host.body_info.outers.item(i).setStyle('height', 'auto');
 
-			var modules    = host.body_rows.modules[i];
+			var modules    = host.body_info.modules[i];
 			var h          = 0;
 			var total_w    = 0;
 			var open_count = modules.size();
@@ -294,13 +220,13 @@ Y.PageLayoutRows.resize = function(host)
 	}
 	else
 	{
-		var row_heights = host.body_rows.row_heights.slice(0);
+		var row_heights = host.body_info.outer_sizes.slice(0);
 
 		var uncollapsed_count = 0,
 			sum               = 0;
 		for (var i=0; i<row_count; i++)
 		{
-			var row       = host.body_rows.rows.item(i);
+			var row       = host.body_info.outers.item(i);
 			var collapsed = row.hasClass(Y.PageLayout.collapsed_vert_class);
 			if (collapsed || row_heights[i] < 0)
 			{
@@ -344,7 +270,7 @@ Y.PageLayoutRows.resize = function(host)
 		{
 			if (row_heights[i] === 0)
 			{
-				var module   = host.body_rows.modules[i].item(0);
+				var module   = host.body_info.modules[i].item(0);
 				var children = host._analyzeModule(module);
 				if (children.bd)
 				{
@@ -358,13 +284,13 @@ Y.PageLayoutRows.resize = function(host)
 				continue;
 			}
 
-			var h = Math.max(1, Math.floor(body_height * row_heights[i] / 100.0) - host.body_rows.rows.item(i).vertMarginBorderPadding());
+			var h = Math.max(1, Math.floor(body_height * row_heights[i] / 100.0) - host.body_info.outers.item(i).vertMarginBorderPadding());
 		}
-		host.body_rows.rows.item(i).setStyle('height', h+'px');
+		host.body_info.outers.item(i).setStyle('height', h+'px');
 
 		// adjust for horizontally collapsed or fixed width modules
 
-		var modules    = host.body_rows.modules[i];
+		var modules    = host.body_info.modules[i];
 		var total_w    = 0;
 		var open_count = modules.size();
 		var count      = open_count;
@@ -447,12 +373,4 @@ Y.PageLayoutRows.resize = function(host)
 			}
 		}
 	}
-
-	host.body_container.setStyle('visibility', 'visible');
-	if (host.footer_container)
-	{
-		host.footer_container.setStyle('visibility', 'visible');
-	}
-
-	Y.Lang.later(100, host, host._checkViewportSize);
 };
