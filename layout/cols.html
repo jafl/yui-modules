@@ -12,6 +12,8 @@
 
 	<script src="gallery-layout-debug.js"></script>
 	<script src="gallery-layout-cols-debug.js"></script>
+	<script src="gallery-dimensions-debug.js"></script>
+	<script src="gallery-node-optimizations-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-layout.css">
 
 	<style type="text/css">
@@ -34,7 +36,7 @@
 
 <!-- visibility:hidden will be removed once the layout has been calculated -->
 <div class="layout-bd" style="visibility:hidden;">
-	<div class="layout-module-col">
+	<div class="layout-module-col width:10%">
 		<div class="layout-module">
 			<div class="layout-m-hd">
 				<p>I am a fixed module header</p>
@@ -59,6 +61,11 @@
 				<p>I am a module body that scrolls if needed</p>
 				<button id="fit-to-viewport">Fit-to-Viewport</button>
 				<button id="fit-to-content">Fit-to-Content</button>
+				<div id="fit-to-content-options">
+					<button id="sticky-footer">Toggle <q>sticky footer</q></button>
+					<br>
+					<button id="match-columns">Toggle <q>match column heights</q></button>
+				</div>
 			</div>
 		</div>
 		<div class="layout-module">
@@ -141,22 +148,39 @@
 YUI({
 	filter: 'raw', combine: false,
 	gallery: 'gallery-2012.01.11-21-03'
-}).use('gallery-layout-cols', function(Y) {
+}).use('gallery-layout', function(Y) {
 "use strict";
 
 	var page_layout = new Y.PageLayout();
 
+	var ftc_options = Y.one('#fit-to-content-options');
+	ftc_options.setStyle('display', 'none');
+
 	Y.on('click', function()
 	{
+		ftc_options.setStyle('display', 'none');
 		page_layout.set('mode', Y.PageLayout.FIT_TO_VIEWPORT);
 	},
 	'#fit-to-viewport');
 
 	Y.on('click', function()
 	{
+		ftc_options.setStyle('display', 'block');
 		page_layout.set('mode', Y.PageLayout.FIT_TO_CONTENT);
 	},
 	'#fit-to-content');
+
+	Y.on('click', function()
+	{
+		page_layout.set('stickyFooter', !page_layout.get('stickyFooter'));
+	},
+	'#sticky-footer');
+
+	Y.on('click', function()
+	{
+		page_layout.set('matchColumnHeights', !page_layout.get('matchColumnHeights'));
+	},
+	'#match-columns');
 });
 </script>
 
