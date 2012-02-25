@@ -124,9 +124,9 @@
 	<span class="p">}</span><span class="o">,</span>
 
 	<span class="c">/**</span>
-<span class="c">	 * Minimum page width in FIT_TO_VIEWPORT mode, measured in em&#39;s.  If</span>
-<span class="c">	 * the page content will not collapse narrower than this width.  If the</span>
-<span class="c">	 * viewport is smaller, the brower&#39;s horizontal scrollbar will appear.</span>
+<span class="c">	 * Minimum page width, measured in em&#39;s.  The page content will not</span>
+<span class="c">	 * collapse narrower than this width.  If the viewport is smaller, the</span>
+<span class="c">	 * brower&#39;s horizontal scrollbar will appear.</span>
 <span class="c">	 * </span>
 <span class="c">	 * @config minWidth</span>
 <span class="c">	 * @type {Number} em&#39;s</span>
@@ -142,8 +142,8 @@
 	<span class="p">}</span><span class="o">,</span>
 
 	<span class="c">/**</span>
-<span class="c">	 * Minimum page height in FIT_TO_VIEWPORT mode, measured in em&#39;s.  If</span>
-<span class="c">	 * the page content will not collapse lower than this height.  If the</span>
+<span class="c">	 * Minimum page height in FIT_TO_VIEWPORT mode, measured in em&#39;s.  The</span>
+<span class="c">	 * page content will not collapse lower than this height.  If the</span>
 <span class="c">	 * viewport is smaller, the brower&#39;s vertical scrollbar will appear.</span>
 <span class="c">	 * </span>
 <span class="c">	 * @config minHeight</span>
@@ -306,42 +306,42 @@
 <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">not_managed_class</span> <span class="o">=</span> <span class="s1">&#39;layout-not-managed&#39;</span><span class="o">;</span>
 
 <span class="c">/**</span>
-<span class="c"> * @property Y.PageLayout.collapse_vert_nub_regex</span>
+<span class="c"> * @property Y.PageLayout.collapse_vert_nub_class</span>
 <span class="c"> * @type {String}</span>
 <span class="c"> * @default &quot;layout-vert-collapse-nub&quot;</span>
 <span class="c"> */</span>
 <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_vert_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-vert-collapse-nub&#39;</span><span class="o">;</span>
 
 <span class="c">/**</span>
-<span class="c"> * @property Y.PageLayout.collapse_left_nub_regex</span>
+<span class="c"> * @property Y.PageLayout.collapse_left_nub_class</span>
 <span class="c"> * @type {String}</span>
 <span class="c"> * @default &quot;layout-left-collapse-nub&quot;</span>
 <span class="c"> */</span>
 <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_left_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-left-collapse-nub&#39;</span><span class="o">;</span>
 
 <span class="c">/**</span>
-<span class="c"> * @property Y.PageLayout.collapse_right_nub_regex</span>
+<span class="c"> * @property Y.PageLayout.collapse_right_nub_class</span>
 <span class="c"> * @type {String}</span>
 <span class="c"> * @default &quot;layout-right-collapse-nub&quot;</span>
 <span class="c"> */</span>
 <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_right_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-right-collapse-nub&#39;</span><span class="o">;</span>
 
 <span class="c">/**</span>
-<span class="c"> * @property Y.PageLayout.expand_vert_nub_regex</span>
+<span class="c"> * @property Y.PageLayout.expand_vert_nub_class</span>
 <span class="c"> * @type {String}</span>
 <span class="c"> * @default &quot;layout-vert-expand-nub&quot;</span>
 <span class="c"> */</span>
 <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_vert_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-vert-expand-nub&#39;</span><span class="o">;</span>
 
 <span class="c">/**</span>
-<span class="c"> * @property Y.PageLayout.expand_left_nub_regex</span>
+<span class="c"> * @property Y.PageLayout.expand_left_nub_class</span>
 <span class="c"> * @type {String}</span>
 <span class="c"> * @default &quot;layout-left-expand-nub&quot;</span>
 <span class="c"> */</span>
 <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_left_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-left-expand-nub&#39;</span><span class="o">;</span>
 
 <span class="c">/**</span>
-<span class="c"> * @property Y.PageLayout.expand_right_nub_regex</span>
+<span class="c"> * @property Y.PageLayout.expand_right_nub_class</span>
 <span class="c"> * @type {String}</span>
 <span class="c"> * @default &quot;layout-right-expand-nub&quot;</span>
 <span class="c"> */</span>
@@ -374,7 +374,25 @@
 	<span class="nx">row_height_class_re</span> <span class="o">=</span> <span class="sr">/(?:^|\s)height:([0-9]+)%/</span><span class="o">,</span>
 	<span class="nx">col_width_class_re</span>  <span class="o">=</span> <span class="sr">/(?:^|\s)width:([0-9]+)%/</span><span class="o">,</span>
 
-	<span class="nx">reflow_delay</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span> <span class="c">// ms</span>
+	<span class="nx">reflow_delay</span> <span class="o">=</span> <span class="mi">100</span><span class="o">,</span> <span class="c">// ms</span>
+
+	<span class="nx">plugin_info</span> <span class="o">=</span>
+	<span class="p">{</span>
+		<span class="nx">row</span><span class="o">:</span>
+		<span class="p">{</span>
+			<span class="nx">module</span><span class="o">:</span>     <span class="s1">&#39;gallery-layout-rows&#39;</span><span class="o">,</span>
+			<span class="nx">plugin</span><span class="o">:</span>     <span class="s1">&#39;PageLayoutRows&#39;</span><span class="o">,</span>
+			<span class="nx">outer_size</span><span class="o">:</span> <span class="nx">row_height_class_re</span><span class="o">,</span>
+			<span class="nx">inner_size</span><span class="o">:</span> <span class="nx">col_width_class_re</span>
+		<span class="p">}</span><span class="o">,</span>
+		<span class="nx">col</span><span class="o">:</span>
+		<span class="p">{</span>
+			<span class="nx">module</span><span class="o">:</span>     <span class="s1">&#39;gallery-layout-cols&#39;</span><span class="o">,</span>
+			<span class="nx">plugin</span><span class="o">:</span>     <span class="s1">&#39;PageLayoutCols&#39;</span><span class="o">,</span>
+			<span class="nx">outer_size</span><span class="o">:</span> <span class="nx">col_width_class_re</span><span class="o">,</span>
+			<span class="nx">inner_size</span><span class="o">:</span> <span class="nx">row_height_class_re</span>
+		<span class="p">}</span>
+	<span class="p">};</span>
 <span class="c">/*</span>
 <span class="c">	dd_group_name:            &#39;satg-layout-dd-group&#39;,</span>
 <span class="c">	drag_target_class:        &#39;satg-layout-dd-target&#39;,</span>
@@ -477,9 +495,120 @@
 
 <span class="kd">function</span> <span class="nx">resize</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">)</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span> <span class="o">||</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="k">return</span><span class="o">;</span>
+	<span class="p">}</span>
+
+	<span class="c">// check if viewport changed</span>
+
+	<span class="kd">var</span> <span class="nx">mode</span>          <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">sticky_footer</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;stickyFooter&#39;</span><span class="p">);</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowX&#39;</span><span class="o">,</span>
+		<span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span> <span class="o">?</span> <span class="s1">&#39;auto&#39;</span> <span class="o">:</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="o">,</span>
+		<span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span> <span class="o">?</span> <span class="s1">&#39;scroll&#39;</span> <span class="o">:</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+
+	<span class="kd">var</span> <span class="nx">viewport</span> <span class="o">=</span>
+	<span class="p">{</span>
+		<span class="nx">w</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winWidth&#39;</span><span class="p">)</span><span class="o">,</span>
+		<span class="nx">h</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winHeight&#39;</span><span class="p">)</span>
+	<span class="p">};</span>
+
+	<span class="kd">var</span> <span class="nx">resize_event</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;resize&#39;</span><span class="o">;</span>	<span class="c">// IE7 generates no-op&#39;s</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">resize_event</span> <span class="o">&amp;&amp;</span>
+		<span class="p">(</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">&amp;&amp;</span>
+		 <span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="k">return</span><span class="o">;</span>
+	<span class="p">}</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">viewport</span> <span class="o">=</span> <span class="nx">viewport</span><span class="o">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeReflow&#39;</span><span class="p">);</span>	<span class="c">// after confirming that viewport really has changed</span>
+
+	<span class="c">// set width of hd,bd,ft and height of bd</span>
+
+	<span class="kd">var</span> <span class="nx">min_width</span>  <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">emToPx</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;minWidth&#39;</span><span class="p">));</span>
+	<span class="kd">var</span> <span class="nx">body_width</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span><span class="o">,</span> <span class="nx">min_width</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="nx">body_width</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="p">(</span><span class="nx">body_width</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_horiz_mbp</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="nx">sticky_footer</span> <span class="o">?</span> <span class="nx">body_width</span><span class="o">+</span><span class="s1">&#39;px&#39;</span> <span class="o">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="nx">body_width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;clientWidth&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_horiz_mbp</span><span class="o">;</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">bcw</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;clientWidth&#39;</span><span class="p">);</span>
+
+	<span class="kd">var</span> <span class="nx">h</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span><span class="o">;</span>
+	<span class="kd">var</span> <span class="nx">h_min</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">emToPx</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;minHeight&#39;</span><span class="p">));</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">&amp;&amp;</span> <span class="nx">h</span> <span class="o">&lt;</span> <span class="nx">h_min</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">=</span> <span class="nx">h_min</span><span class="o">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="o">||</span> <span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">layout_force_viewport_scrollbars</span><span class="p">)</span>	<span class="c">// remove inactive vertical scrollbar in IE</span>
+	<span class="p">{</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="o">,</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">-=</span> <span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span> <span class="o">&amp;&amp;</span>
+		<span class="p">(</span><span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">||</span> <span class="nx">sticky_footer</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">-=</span> <span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">body_height</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_vert_mbp</span><span class="o">;</span>
+	<span class="p">}</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">h</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>						<span class="c">// FIT_TO_CONTENT doesn&#39;t enforce min height</span>
+	<span class="p">{</span>
+		<span class="nx">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_vert_mbp</span><span class="o">;</span>	<span class="c">// arbitrary, positive number</span>
+	<span class="p">}</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="p">(</span><span class="nx">h</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_vert_mbp</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+
+	<span class="c">// resize modules</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">body_width</span><span class="o">,</span> <span class="nx">body_height</span><span class="p">);</span>
+
+	<span class="c">// show body and footer</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="s1">&#39;visible&#39;</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="s1">&#39;visible&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span> <span class="k">this</span><span class="o">,</span> <span class="nx">checkViewportSize</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c">/*</span>
+<span class="c"> * Check if the viewport size has changed, usually due to the browser</span>
+<span class="c"> * removing no-longer-needed scrollbars.  If the viewport size is</span>
+<span class="c"> * stable, fires the afterReflow event.</span>
+<span class="c"> */</span>
+<span class="kd">function</span> <span class="nx">checkViewportSize</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winWidth&#39;</span><span class="p">)</span>    <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">||</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winHeight&#39;</span><span class="p">)</span>   <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span> <span class="o">||</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;clientWidth&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">bcw</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">else</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterReflow&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
@@ -557,19 +686,11 @@
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span> <span class="o">=</span>
-		<span class="p">{</span>
-			<span class="nx">rows</span><span class="o">:</span>        <span class="p">[]</span><span class="o">,</span>
-			<span class="nx">modules</span><span class="o">:</span>     <span class="p">[]</span><span class="o">,</span>	<span class="c">// list of modules inside each row</span>
-			<span class="nx">row_heights</span><span class="o">:</span> <span class="p">[]</span><span class="o">,</span>	<span class="c">// list of percentages</span>
-			<span class="nx">col_widths</span><span class="o">:</span>  <span class="p">[]</span>		<span class="c">// list of lists of percentages</span>
-		<span class="p">};</span>
-
 		<span class="k">this</span><span class="p">.</span><span class="nx">viewport</span> <span class="o">=</span>
 		<span class="p">{</span>
 			<span class="nx">w</span><span class="o">:</span>   <span class="mi">0</span><span class="o">,</span>
 			<span class="nx">h</span><span class="o">:</span>   <span class="mi">0</span><span class="o">,</span>
-			<span class="nx">bcw</span><span class="o">:</span> <span class="mi">0</span><span class="o">,</span>
+			<span class="nx">bcw</span><span class="o">:</span> <span class="mi">0</span>
 		<span class="p">};</span>
 
 		<span class="c">// find header, body, footer</span>
@@ -606,14 +727,12 @@
 		<span class="p">}</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span> <span class="o">=</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">()</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="nx">list</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
 
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">win</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="o">,</span> <span class="nx">resize</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+<span class="c">//		SDom.textResizeEvent.subscribe(resize, null, this);</span>
+
 		<span class="nx">updateFitClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 		<span class="nx">reparentFooter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">rescanBody</span><span class="p">();</span>
-
-		<span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">win</span><span class="p">);</span>
-		<span class="nx">w</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="o">,</span> <span class="nx">resize</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
-<span class="c">//		SDom.textResizeEvent.subscribe(resize, null, this);</span>
-		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
 		<span class="c">// stay in sync</span>
 
@@ -649,10 +768,26 @@
 	<span class="p">{</span>
 		<span class="nx">Y</span><span class="p">.</span><span class="nx">detach</span><span class="p">(</span><span class="s1">&#39;PageLayoutCollapse|click&#39;</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">rows</span>        <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;div.&#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">modules</span>     <span class="o">=</span> <span class="p">[];</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">row_heights</span> <span class="o">=</span> <span class="p">[];</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">col_widths</span>  <span class="o">=</span> <span class="p">[];</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span> <span class="o">=</span>
+		<span class="p">{</span>
+			<span class="nx">outers</span><span class="o">:</span>      <span class="p">[]</span><span class="o">,</span>
+			<span class="nx">modules</span><span class="o">:</span>     <span class="p">[]</span><span class="o">,</span>	<span class="c">// list of modules inside each row</span>
+			<span class="nx">outer_sizes</span><span class="o">:</span> <span class="p">[]</span><span class="o">,</span>	<span class="c">// list of percentages</span>
+			<span class="nx">inner_sizes</span><span class="o">:</span> <span class="p">[]</span>		<span class="c">// list of lists of percentages</span>
+		<span class="p">};</span>
+
+		<span class="kd">var</span> <span class="nx">outer_list</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;div.&#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">plugin_data</span> <span class="o">=</span> <span class="nx">plugin_info</span><span class="p">.</span><span class="nx">row</span><span class="o">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">outer_list</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span>
+		<span class="p">{</span>
+			<span class="nx">outer_list</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;div.&#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_cols_class</span><span class="p">);</span>
+			<span class="nx">plugin_data</span> <span class="o">=</span> <span class="nx">plugin_info</span><span class="p">.</span><span class="nx">col</span><span class="o">;</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">outer_list</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span>
+		<span class="p">{</span>
+			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;There must be at least one &#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span> <span class="o">+</span> <span class="s1">&#39; or &#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_cols_class</span> <span class="o">+</span> <span class="s1">&#39; inside &#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">page_body_class</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span> <span class="o">=</span> <span class="nx">outer_list</span><span class="o">;</span>
 
 		<span class="kd">var</span> <span class="nx">collapse_nub_pattern</span> <span class="o">=</span>
 			<span class="s1">&#39;(&#39;</span> <span class="o">+</span>
@@ -668,22 +803,21 @@
 			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_right_nub_class</span> <span class="o">+</span>
 			<span class="s1">&#39;)&#39;</span><span class="o">;</span>
 
-		<span class="kd">var</span> <span class="nx">row_count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">rows</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">rows</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">row</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">row_count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">row</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">row</span><span class="p">.</span><span class="nx">generateID</span><span class="p">();</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">row_heights</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mf">100.0</span><span class="o">/</span><span class="nx">row_count</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">row_id</span> <span class="o">=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">generateID</span><span class="p">();</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outer_sizes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mf">100.0</span><span class="o">/</span><span class="nx">row_count</span><span class="p">);</span>
 
 			<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;div.&#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_class</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">rows</span>        <span class="o">=</span> <span class="p">[];</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">modules</span>     <span class="o">=</span> <span class="p">[];</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">row_heights</span> <span class="o">=</span> <span class="p">[];</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span>  <span class="o">=</span> <span class="p">[];</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">modules</span> <span class="o">=</span> <span class="p">[];</span>
 				<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;There must be at least one &#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_class</span> <span class="o">+</span> <span class="s1">&#39; inside &#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">modules</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">list</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">modules</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">list</span><span class="p">);</span>
 
 			<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">list</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">module</span><span class="p">)</span>
 			<span class="p">{</span>
@@ -706,59 +840,62 @@
 <span class="c">				var has_nubs = false;</span>
 <span class="c">				Y.each(list, function(module)</span>
 <span class="c">				{</span>
-<span class="c">					Dom.generateID(module, PageLayout.module_class+&#39;-&#39;);</span>
-<span class="c">					Dom.removeClass(module, PageLayout.module_no_drag_class);</span>
+<span class="c">					var id = module.generateID();</span>
+<span class="c">					module.removeClass(PageLayout.module_no_drag_class);</span>
 
-<span class="c">					if (the_dd_nubs[ module.id ])</span>
+<span class="c">					if (the_dd_nubs[id])</span>
 <span class="c">					{</span>
-<span class="c">						has_nubs = (the_dd_nubs[ module.id ] != &#39;none&#39;);</span>
+<span class="c">						has_nubs = (the_dd_nubs[id] != &#39;none&#39;);</span>
 <span class="c">					}</span>
 <span class="c">					else</span>
 <span class="c">					{</span>
-<span class="c">						var nub = Dom.getElementsByClassName(PageLayout.drag_nub_class, null, module)[0];</span>
+<span class="c">						var nub = module.getFirstElementByClassName(PageLayout.drag_nub_class);</span>
 <span class="c">						if (nub)</span>
 <span class="c">						{</span>
 <span class="c">							var children = this._analyzeModule(module);</span>
 <span class="c">							if (children.hd)</span>
 <span class="c">							{</span>
-<span class="c">								Dom.addClass(children.hd, PageLayout.module_header_drag_class);</span>
-<span class="c">								the_dd_nubs[ module.id ] =</span>
-<span class="c">									new PageLayoutDDProxy(this, module.id, children.hd, PageLayout.dd_group_name);</span>
+<span class="c">								children.hd.addClass(PageLayout.module_header_drag_class);</span>
+<span class="c">								the_dd_nubs[id] =</span>
+<span class="c">									new PageLayoutDDProxy(this, id, children.hd, PageLayout.dd_group_name);</span>
 <span class="c">								has_nubs = true;</span>
 <span class="c">							}</span>
 <span class="c">						}</span>
 
-<span class="c">						if (!the_dd_nubs[ module.id ])</span>
+<span class="c">						if (!the_dd_nubs[id])</span>
 <span class="c">						{</span>
-<span class="c">							the_dd_nubs[ module.id ] = &#39;none&#39;;</span>
+<span class="c">							the_dd_nubs[id] = &#39;none&#39;;</span>
 <span class="c">						}</span>
 <span class="c">					}</span>
 <span class="c">				},</span>
 <span class="c">				this);</span>
 
-<span class="c">				if (!the_dd_targets[ row.id ] &amp;&amp;</span>
-<span class="c">					(has_nubs || Dom.hasClass(row, PageLayout.drag_target_class)))</span>
+<span class="c">				if (!the_dd_targets[ row_id ] &amp;&amp;</span>
+<span class="c">					(has_nubs || row.hasClass(PageLayout.drag_target_class)))</span>
 <span class="c">				{</span>
-<span class="c">					the_dd_targets[ row.id ] = new DDTarget(row.id, PageLayout.dd_group_name);</span>
+<span class="c">					the_dd_targets[ row_id ] = new DDTarget(row_id, PageLayout.dd_group_name);</span>
 <span class="c">				}</span>
 
 <span class="c">				if (list.size() == 1)</span>
 <span class="c">				{</span>
-<span class="c">					Dom.addClass(list[0], PageLayout.module_no_drag_class);</span>
+<span class="c">					list.item(0).addClass(PageLayout.module_no_drag_class);</span>
 <span class="c">				}</span>
 <span class="c">			}</span>
 <span class="c">*/</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">col_widths</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span>
-				<span class="nx">normalizeSizes</span><span class="p">(</span><span class="nx">list</span><span class="o">,</span> <span class="nx">col_width_class_re</span><span class="p">));</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">inner_sizes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span>
+				<span class="nx">normalizeSizes</span><span class="p">(</span><span class="nx">list</span><span class="o">,</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">inner_size</span><span class="p">));</span>
 		<span class="p">}</span><span class="o">,</span>
 		<span class="k">this</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">row_heights</span> <span class="o">=</span>
-			<span class="nx">normalizeSizes</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_rows</span><span class="p">.</span><span class="nx">rows</span><span class="o">,</span> <span class="nx">row_height_class_re</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outer_sizes</span> <span class="o">=</span>
+			<span class="nx">normalizeSizes</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="o">,</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">outer_size</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayoutRows</span><span class="o">;</span>
-
-		<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">plugin_data</span><span class="p">.</span><span class="nx">module</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">self</span><span class="p">.</span><span class="nx">layout_plugin</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">[</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">plugin</span> <span class="p">];</span>
+			<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>
+		<span class="p">});</span>
 	<span class="p">}</span><span class="o">,</span>
 
 	<span class="c">/**</span>
@@ -985,6 +1122,10 @@
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetWidth&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
 		<span class="p">});</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
+		<span class="p">{</span>	
+			<span class="nx">result</span><span class="p">.</span><span class="nx">bd</span> <span class="o">=</span> <span class="nx">bd</span><span class="o">;</span>
+		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
 		<span class="p">{</span>
@@ -993,27 +1134,6 @@
 		<span class="p">}</span>
 
 		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
-
-	<span class="c">/**</span>
-<span class="c">	 * Check if the viewport size has changed, usually due to the browser</span>
-<span class="c">	 * removing no-longer-needed scrollbars.  If the viewport size is</span>
-<span class="c">	 * stable, fires the afterReflow event.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @private</span>
-<span class="c">	 */</span>
-	<span class="nx">_checkViewportSize</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
-	<span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winWidth&#39;</span><span class="p">)</span>    <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">||</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winHeight&#39;</span><span class="p">)</span>   <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span> <span class="o">||</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;clientWidth&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">bcw</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-		<span class="p">}</span>
-		<span class="k">else</span>
-		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterReflow&#39;</span><span class="p">);</span>
-		<span class="p">}</span>
 	<span class="p">}</span><span class="o">,</span>
 
 	<span class="c">/**</span>
@@ -1105,7 +1225,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "PageLayout.html#event_afterCollapseModule", "access": "", "host": "PageLayout", "type": "event", "name": "afterCollapseModule"}, {"url": "PageLayout.html#event_afterExpandModule", "access": "", "host": "PageLayout", "type": "event", "name": "afterExpandModule"}, {"url": "PageLayout.html#event_afterReflow", "access": "", "host": "PageLayout", "type": "event", "name": "afterReflow"}, {"url": "PageLayout.html#event_afterResizeModule", "access": "", "host": "PageLayout", "type": "event", "name": "afterResizeModule"}, {"url": "PageLayout.html#event_beforeCollapseModule", "access": "", "host": "PageLayout", "type": "event", "name": "beforeCollapseModule"}, {"url": "PageLayout.html#event_beforeExpandModule", "access": "", "host": "PageLayout", "type": "event", "name": "beforeExpandModule"}, {"url": "PageLayout.html#event_beforeReflow", "access": "", "host": "PageLayout", "type": "event", "name": "beforeReflow"}, {"url": "PageLayout.html#event_beforeResizeModule", "access": "", "host": "PageLayout", "type": "event", "name": "beforeResizeModule"}, {"url": "PageLayout.html#method_collapseModule", "access": "", "host": "PageLayout", "type": "method", "name": "collapseModule"}, {"url": "PageLayout.html#method_elementResized", "access": "", "host": "PageLayout", "type": "method", "name": "elementResized"}, {"url": "PageLayout.html#method_expandModule", "access": "", "host": "PageLayout", "type": "method", "name": "expandModule"}, {"url": "PageLayout.html#method_getBodyContainer", "access": "", "host": "PageLayout", "type": "method", "name": "getBodyContainer"}, {"url": "PageLayout.html#method_getBodyHeight", "access": "", "host": "PageLayout", "type": "method", "name": "getBodyHeight"}, {"url": "PageLayout.html#method_getFooterContainer", "access": "", "host": "PageLayout", "type": "method", "name": "getFooterContainer"}, {"url": "PageLayout.html#method_getFooterHeight", "access": "", "host": "PageLayout", "type": "method", "name": "getFooterHeight"}, {"url": "PageLayout.html#method_getHeaderContainer", "access": "", "host": "PageLayout", "type": "method", "name": "getHeaderContainer"}, {"url": "PageLayout.html#method_getHeaderHeight", "access": "", "host": "PageLayout", "type": "method", "name": "getHeaderHeight"}, {"url": "PageLayout.html#config_matchColumnHeights", "access": "", "host": "PageLayout", "type": "config", "name": "matchColumnHeights"}, {"url": "PageLayout.html#config_minHeight", "access": "", "host": "PageLayout", "type": "config", "name": "minHeight"}, {"url": "PageLayout.html#config_minWidth", "access": "", "host": "PageLayout", "type": "config", "name": "minWidth"}, {"url": "PageLayout.html#config_mode", "access": "", "host": "PageLayout", "type": "config", "name": "mode"}, {"url": "PageLayout.html#method_moduleIsCollapsed", "access": "", "host": "PageLayout", "type": "method", "name": "moduleIsCollapsed"}, {"url": "PageLayout.html#method_rescanBody", "access": "", "host": "PageLayout", "type": "method", "name": "rescanBody"}, {"url": "PageLayout.html#config_stickyFooter", "access": "", "host": "PageLayout", "type": "config", "name": "stickyFooter"}, {"url": "PageLayout.html#method_toggleModule", "access": "", "host": "PageLayout", "type": "method", "name": "toggleModule"}, {"url": "PageLayout.html#property_Y.PageLayout.collapsed_horiz_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapsed_horiz_class"}, {"url": "PageLayout.html#property_Y.PageLayout.collapsed_vert_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapsed_vert_class"}, {"url": "PageLayout.html#property_Y.PageLayout.collapse_left_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapse_left_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.collapse_right_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapse_right_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.collapse_vert_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapse_vert_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.expand_left_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.expand_left_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.expand_right_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.expand_right_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.expand_vert_nub_regex", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.expand_vert_nub_regex"}, {"url": "PageLayout.html#property_Y.PageLayout.FIT_TO_CONTENT", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.FIT_TO_CONTENT"}, {"url": "PageLayout.html#property_Y.PageLayout.FIT_TO_VIEWPORT", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.FIT_TO_VIEWPORT"}, {"url": "PageLayout.html#property_Y.PageLayout.min_module_height", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.min_module_height"}, {"url": "PageLayout.html#property_Y.PageLayout.module_body_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_body_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_cols_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_cols_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_footer_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_footer_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_header_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_header_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_rows_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_rows_class"}, {"url": "PageLayout.html#property_Y.PageLayout.not_managed_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.not_managed_class"}, {"url": "PageLayout.html#property_Y.PageLayout.page_body_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.page_body_class"}, {"url": "PageLayout.html#property_Y.PageLayout.page_footer_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.page_footer_class"}, {"url": "PageLayout.html#property_Y.PageLayout.page_header_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.page_header_class"}];
+    var ALL_YUI_PROPS = [{"url": "PageLayout.html#event_afterCollapseModule", "access": "", "host": "PageLayout", "type": "event", "name": "afterCollapseModule"}, {"url": "PageLayout.html#event_afterExpandModule", "access": "", "host": "PageLayout", "type": "event", "name": "afterExpandModule"}, {"url": "PageLayout.html#event_afterReflow", "access": "", "host": "PageLayout", "type": "event", "name": "afterReflow"}, {"url": "PageLayout.html#event_afterResizeModule", "access": "", "host": "PageLayout", "type": "event", "name": "afterResizeModule"}, {"url": "PageLayout.html#event_beforeCollapseModule", "access": "", "host": "PageLayout", "type": "event", "name": "beforeCollapseModule"}, {"url": "PageLayout.html#event_beforeExpandModule", "access": "", "host": "PageLayout", "type": "event", "name": "beforeExpandModule"}, {"url": "PageLayout.html#event_beforeReflow", "access": "", "host": "PageLayout", "type": "event", "name": "beforeReflow"}, {"url": "PageLayout.html#event_beforeResizeModule", "access": "", "host": "PageLayout", "type": "event", "name": "beforeResizeModule"}, {"url": "PageLayout.html#method_collapseModule", "access": "", "host": "PageLayout", "type": "method", "name": "collapseModule"}, {"url": "PageLayout.html#method_elementResized", "access": "", "host": "PageLayout", "type": "method", "name": "elementResized"}, {"url": "PageLayout.html#method_expandModule", "access": "", "host": "PageLayout", "type": "method", "name": "expandModule"}, {"url": "PageLayout.html#method_getBodyContainer", "access": "", "host": "PageLayout", "type": "method", "name": "getBodyContainer"}, {"url": "PageLayout.html#method_getBodyHeight", "access": "", "host": "PageLayout", "type": "method", "name": "getBodyHeight"}, {"url": "PageLayout.html#method_getFooterContainer", "access": "", "host": "PageLayout", "type": "method", "name": "getFooterContainer"}, {"url": "PageLayout.html#method_getFooterHeight", "access": "", "host": "PageLayout", "type": "method", "name": "getFooterHeight"}, {"url": "PageLayout.html#method_getHeaderContainer", "access": "", "host": "PageLayout", "type": "method", "name": "getHeaderContainer"}, {"url": "PageLayout.html#method_getHeaderHeight", "access": "", "host": "PageLayout", "type": "method", "name": "getHeaderHeight"}, {"url": "PageLayout.html#config_matchColumnHeights", "access": "", "host": "PageLayout", "type": "config", "name": "matchColumnHeights"}, {"url": "PageLayout.html#config_minHeight", "access": "", "host": "PageLayout", "type": "config", "name": "minHeight"}, {"url": "PageLayout.html#config_minWidth", "access": "", "host": "PageLayout", "type": "config", "name": "minWidth"}, {"url": "PageLayout.html#config_mode", "access": "", "host": "PageLayout", "type": "config", "name": "mode"}, {"url": "PageLayout.html#method_moduleIsCollapsed", "access": "", "host": "PageLayout", "type": "method", "name": "moduleIsCollapsed"}, {"url": "PageLayout.html#method_rescanBody", "access": "", "host": "PageLayout", "type": "method", "name": "rescanBody"}, {"url": "PageLayout.html#config_stickyFooter", "access": "", "host": "PageLayout", "type": "config", "name": "stickyFooter"}, {"url": "PageLayout.html#method_toggleModule", "access": "", "host": "PageLayout", "type": "method", "name": "toggleModule"}, {"url": "PageLayout.html#property_Y.PageLayout.collapsed_horiz_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapsed_horiz_class"}, {"url": "PageLayout.html#property_Y.PageLayout.collapsed_vert_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapsed_vert_class"}, {"url": "PageLayout.html#property_Y.PageLayout.collapse_left_nub_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapse_left_nub_class"}, {"url": "PageLayout.html#property_Y.PageLayout.collapse_right_nub_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapse_right_nub_class"}, {"url": "PageLayout.html#property_Y.PageLayout.collapse_vert_nub_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.collapse_vert_nub_class"}, {"url": "PageLayout.html#property_Y.PageLayout.expand_left_nub_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.expand_left_nub_class"}, {"url": "PageLayout.html#property_Y.PageLayout.expand_right_nub_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.expand_right_nub_class"}, {"url": "PageLayout.html#property_Y.PageLayout.expand_vert_nub_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.expand_vert_nub_class"}, {"url": "PageLayout.html#property_Y.PageLayout.FIT_TO_CONTENT", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.FIT_TO_CONTENT"}, {"url": "PageLayout.html#property_Y.PageLayout.FIT_TO_VIEWPORT", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.FIT_TO_VIEWPORT"}, {"url": "PageLayout.html#property_Y.PageLayout.min_module_height", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.min_module_height"}, {"url": "PageLayout.html#property_Y.PageLayout.module_body_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_body_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_cols_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_cols_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_footer_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_footer_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_header_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_header_class"}, {"url": "PageLayout.html#property_Y.PageLayout.module_rows_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.module_rows_class"}, {"url": "PageLayout.html#property_Y.PageLayout.not_managed_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.not_managed_class"}, {"url": "PageLayout.html#property_Y.PageLayout.page_body_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.page_body_class"}, {"url": "PageLayout.html#property_Y.PageLayout.page_footer_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.page_footer_class"}, {"url": "PageLayout.html#property_Y.PageLayout.page_header_class", "access": "", "host": "PageLayout", "type": "property", "name": "Y.PageLayout.page_header_class"}];
 </script>
 </body>
 </html>
