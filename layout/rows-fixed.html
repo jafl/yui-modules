@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Layout Manager Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/reset-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssfonts/fonts-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssbase/base-min.css">
+
+	<script src="gallery-layout-debug.js"></script>
+	<script src="gallery-layout-rows-debug.js"></script>
+	<script src="gallery-dimensions-debug.js"></script>
+	<script src="gallery-node-optimizations-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-layout.css">
+
+	<style type="text/css">
+	.layout-hd,.layout-ft {text-align:center;}
+	.layout-hd h1 {font-size:150%;font-weight:bold;margin:0;padding:5px 0;}
+	.layout-ft {background-color:#CCC;}
+	.layout-ft p {font-size:80%;color:#666;margin:0;padding:5px 0;}
+
+	#fixed-height-module {height:100px;}
+	#fixed-width-module {width:200px;}
+	</style>
+</head>
+
+<body>
+
+<div class="layout-hd">
+	<h1>Page Header</h1>
+	<p>
+		<a href="index.html">Rows</a> |
+		<a href="cols.html">Columns</a> |
+		<a href="rows-basic.html">Basic Rows</a> |
+		<a href="cols-basic.html">Basic Columns</a> |
+		<strong>Fixed-size Rows</strong> |
+		<a href="cols-fixed.html">Fixed-size Columns</a>
+	</p>
+	<p>
+		<a href="../yuidoc/module_gallery-layout.html">Documentation</a> |
+		<a href="/yui3-gallery/">Project List</a>
+	</p>
+</div>
+
+<!-- visibility:hidden will be removed once the layout has been calculated -->
+<div class="layout-bd" style="visibility:hidden;">
+	<div class="layout-module-row layout-not-managed">
+		<div class="layout-module">
+			<div class="layout-m-hd">
+				<p>I am a fixed module header</p>
+			</div>
+			<div id="fixed-height-module" class="layout-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+		</div>
+	</div>
+	<div class="layout-module-row">
+		<div id="fixed-width-module" class="layout-module layout-not-managed">
+			<div class="layout-m-hd">
+				<p>I am a fixed module header</p>
+			</div>
+			<div class="layout-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+		</div>
+		<div class="layout-module">
+			<div class="layout-m-bd">
+				<p>I am a module body that scrolls if needed</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+YUI({
+	filter: 'raw', combine: false,
+	gallery: 'gallery-2012.01.11-21-03'
+}).use('gallery-layout', function(Y) {
+"use strict";
+
+	new Y.PageLayout();
+});
+</script>
+
+</body>
+</html>
