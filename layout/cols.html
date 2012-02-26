@@ -23,7 +23,10 @@
 	.layout-bd .layout-module-col {padding:0 5px;}
 	.layout-bd .layout-module {margin:5px 0;border-radius:10px;}
 	.layout-bd .layout-m-hd {background-color:#EEE;border-top-left-radius:10px;border-top-right-radius:10px;border-bottom:1px solid #666;}
-	.layout-bd .layout-m-ft {text-align:center;background-color:#EEE;border-bottom-left-radius:10px;border-bottom-right-radius:10px;border-top:1px solid #666;}
+	.layout-bd .layout-m-ft {text-align:center;background-color:#EEE;border-top:1px solid #666;}
+	.layout-bd .layout-m-ft,
+	.layout-bd .layout-collapsed-vert .layout-m-hd {border-bottom-left-radius:10px;border-bottom-right-radius:10px;}
+	.layout-bd .layout-collapsed-vert .layout-m-hd {border-bottom:0;}
 
 	.layout-bd .layout-m-hd,
 	.layout-bd .layout-m-bd,
@@ -32,7 +35,15 @@
 	.layout-bd .layout-m-hd p,
 	.layout-bd .layout-m-ft p {margin:0}
 
+	.layout-ft {background-color:#CCC;}
 	.layout-ft p {font-size:80%;color:#666;margin:0;padding:0 0 10px 0;}
+
+	.layout-bd .layout-collapsed-vert .layout-vert-expand-nub {display:inline;}
+
+	.layout-bd .layout-collapsed-vert .layout-vert-expand-nub {display:inline;}
+	.layout-bd .layout-collapsed-horiz .layout-left-expand-nub,
+	.layout-bd .layout-collapsed-horiz .layout-right-expand-nub {cursor:pointer;background-color:#EEE;border-radius:10px;}
+	.layout-bd .layout-collapsed-horiz .layout-horiz-expand-icon {padding:20px 2px 2px 2px;}
 	</style>
 </head>
 
@@ -54,16 +65,16 @@
 	<div class="layout-module-col width:10%">
 		<div class="layout-module">
 			<div class="layout-m-hd">
-				<p>I am a fixed module header</p>
-				<div id="test-horiz-left-collapse" class="layout-left-collapse-nub">
-					<button>Collapse</button>
-				</div>
+				<p>
+					<button class="layout-left-collapse-nub">&larr;</button>
+					I am a fixed module header
+				</p>
 			</div>
 			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
 			</div>
-			<div id="test-horiz-left-expand" class="layout-left-expand-nub">
-				<button>Expand</button>
+			<div class="layout-left-expand-nub">
+				<div class="layout-horiz-expand-icon">&rarr;</div>
 			</div>
 		</div>
 	</div>
@@ -92,13 +103,11 @@
 	<div class="layout-module-col">
 		<div class="layout-module">
 			<div class="layout-m-hd">
-				<p>I am a fixed module header</p>
-				<div id="test-vert-collapse-1" class="layout-vert-collapse-nub">
-					<button>Collapse</button>
-				</div>
-				<div id="test-vert-expand-1" class="layout-vert-expand-nub">
-					<button>Expand</button>
-				</div>
+				<p>
+					<button class="layout-vert-collapse-nub">&uarr;</button>
+					<button class="layout-vert-expand-nub">&darr;</button>
+					I am a fixed module header
+				</p>
 			</div>
 			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
@@ -120,13 +129,11 @@
 		</div>
 		<div class="layout-module">
 			<div class="layout-m-hd">
-				<p>I am a fixed module header</p>
-				<div id="test-vert-collapse-2" class="layout-vert-collapse-nub">
-					<button>Collapse</button>
-				</div>
-				<div id="test-vert-expand-2" class="layout-vert-expand-nub">
-					<button>Expand</button>
-				</div>
+				<p>
+					<button class="layout-vert-collapse-nub">&darr;</button>
+					<button class="layout-vert-expand-nub">&uarr;</button>
+					I am a fixed module header
+				</p>
 			</div>
 			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
@@ -139,16 +146,16 @@
 	<div class="layout-module-col">
 		<div class="layout-module">
 			<div class="layout-m-hd">
-				<p>I am a fixed module header</p>
-				<div id="test-horiz-right-collapse" class="layout-right-collapse-nub">
-					<button>Collapse</button>
-				</div>
+				<p>
+					<button class="layout-right-collapse-nub">&rarr;</button>
+					I am a fixed module header
+				</p>
 			</div>
 			<div class="layout-m-bd">
 				<p>I am a module body that scrolls if needed</p>
 			</div>
-			<div id="test-horiz-right-expand" class="layout-right-expand-nub">
-				<button>Expand</button>
+			<div class="layout-right-expand-nub">
+				<div class="layout-horiz-expand-icon">&larr;</div>
 			</div>
 		</div>
 	</div>
