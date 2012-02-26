@@ -27,10 +27,11 @@ YUI.add('gallery-layout', function(Y) {
  * Then it switches to fit-to-content so the scrollbar appears on the
  * module instead of the entire viewport.</p>
  * 
- * <p>Note that a non-zero margin-top on the top element inside any
- * container will break the layout because browsers lie about the total
- * height of the container in this case.  Use padding instead of margin on
- * elements inside headers and footers.</p>
+ * <p>Note that a non-zero margin-top on the top element or a non-zero
+ * margin-bottom on the bottom element inside any container will break the
+ * layout because browsers lie about the total height of the container in
+ * this case.  Use padding instead of margin on elements inside headers and
+ * footers.</p>
  *
  * @module gallery-layout
  * @class PageLayout
@@ -77,9 +78,9 @@ PageLayout.ATTRS =
 	},
 
 	/**
-	 * Minimum page width in FIT_TO_VIEWPORT mode, measured in em's.  If
-	 * the page content will not collapse narrower than this width.  If the
-	 * viewport is smaller, the brower's horizontal scrollbar will appear.
+	 * Minimum page width, measured in em's.  The page content will not
+	 * collapse narrower than this width.  If the viewport is smaller, the
+	 * brower's horizontal scrollbar will appear.
 	 * 
 	 * @config minWidth
 	 * @type {Number} em's
@@ -95,8 +96,8 @@ PageLayout.ATTRS =
 	},
 
 	/**
-	 * Minimum page height in FIT_TO_VIEWPORT mode, measured in em's.  If
-	 * the page content will not collapse lower than this height.  If the
+	 * Minimum page height in FIT_TO_VIEWPORT mode, measured in em's.  The
+	 * page content will not collapse lower than this height.  If the
 	 * viewport is smaller, the brower's vertical scrollbar will appear.
 	 * 
 	 * @config minHeight
@@ -259,42 +260,42 @@ PageLayout.module_footer_class = 'layout-m-ft';
 PageLayout.not_managed_class = 'layout-not-managed';
 
 /**
- * @property Y.PageLayout.collapse_vert_nub_regex
+ * @property Y.PageLayout.collapse_vert_nub_class
  * @type {String}
  * @default "layout-vert-collapse-nub"
  */
 PageLayout.collapse_vert_nub_class = 'layout-vert-collapse-nub';
 
 /**
- * @property Y.PageLayout.collapse_left_nub_regex
+ * @property Y.PageLayout.collapse_left_nub_class
  * @type {String}
  * @default "layout-left-collapse-nub"
  */
 PageLayout.collapse_left_nub_class = 'layout-left-collapse-nub';
 
 /**
- * @property Y.PageLayout.collapse_right_nub_regex
+ * @property Y.PageLayout.collapse_right_nub_class
  * @type {String}
  * @default "layout-right-collapse-nub"
  */
 PageLayout.collapse_right_nub_class = 'layout-right-collapse-nub';
 
 /**
- * @property Y.PageLayout.expand_vert_nub_regex
+ * @property Y.PageLayout.expand_vert_nub_class
  * @type {String}
  * @default "layout-vert-expand-nub"
  */
 PageLayout.expand_vert_nub_class = 'layout-vert-expand-nub';
 
 /**
- * @property Y.PageLayout.expand_left_nub_regex
+ * @property Y.PageLayout.expand_left_nub_class
  * @type {String}
  * @default "layout-left-expand-nub"
  */
 PageLayout.expand_left_nub_class = 'layout-left-expand-nub';
 
 /**
- * @property Y.PageLayout.expand_right_nub_regex
+ * @property Y.PageLayout.expand_right_nub_class
  * @type {String}
  * @default "layout-right-expand-nub"
  */
