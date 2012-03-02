@@ -908,7 +908,7 @@ Y.extend(PageLayout, Y.Base,
 
 	/**
 	 * @param node {String|Node} .layout-module
-	 * @return {Boolean} `true` if module is collapsed
+	 * @return {Boolean} true if module is collapsed
 	 */
 	moduleIsCollapsed: function(
 		/* string/Node */	node)
@@ -1006,7 +1006,7 @@ Y.extend(PageLayout, Y.Base,
 	 * layout.
 	 * 
 	 * @param el {String|Node} element that changed size
-	 * @return {Boolean} `true` if the element is inside the managed containers
+	 * @return {Boolean} true if the element is inside the managed containers
 	 */
 	elementResized: function(
 		/* string/Node */	el)
@@ -1112,4 +1112,4 @@ Y.extend(PageLayout, Y.Base,
 Y.PageLayout = PageLayout;
 
 
-}, '@VERSION@' ,{requires:['base','gallery-funcprog','gallery-node-optimizations','gallery-dimensions'], optional:['gallery-layout-rows','gallery-layout-cols']});
+}, '@VERSION@' ,{optional:['gallery-layout-rows','gallery-layout-cols'], skinnable:true, requires:['base','gallery-funcprog','gallery-node-optimizations','gallery-dimensions']});
