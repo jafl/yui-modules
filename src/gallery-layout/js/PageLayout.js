@@ -906,7 +906,7 @@ Y.extend(PageLayout, Y.Base,
 
 	/**
 	 * @param node {String|Node} .layout-module
-	 * @return {Boolean} `true` if module is collapsed
+	 * @return {Boolean} true if module is collapsed
 	 */
 	moduleIsCollapsed: function(
 		/* string/Node */	node)
@@ -1004,7 +1004,7 @@ Y.extend(PageLayout, Y.Base,
 	 * layout.
 	 * 
 	 * @param el {String|Node} element that changed size
-	 * @return {Boolean} `true` if the element is inside the managed containers
+	 * @return {Boolean} true if the element is inside the managed containers
 	 */
 	elementResized: function(
 		/* string/Node */	el)

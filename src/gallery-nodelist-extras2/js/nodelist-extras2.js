@@ -18,7 +18,7 @@ Y.mix(Y.NodeList.prototype,
 	 *
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @return {Boolean} `true` if every item in the array returns `true` from the supplied function, `false` otherwise
+	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise
 	 */
 	every: function(f, c)
 	{
@@ -38,7 +38,7 @@ Y.mix(Y.NodeList.prototype,
 	 *
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @return {Node} the first Node for which the supplied function returns `true`, or `null` if it never returns `true`
+	 * @return {Node} the first Node for which the supplied function returns true, or null if it never returns true
 	 */
 	find: function(f, c)
 	{
@@ -73,14 +73,14 @@ Y.mix(Y.NodeList.prototype,
 
 	/**
 	 * Partitions the NodeList into two new NodeLists, one with the items
-	 * for which the supplied function returns `true`, and one with the
-	 * items for which the function returns `false`.  The function receives
+	 * for which the supplied function returns true, and one with the
+	 * items for which the function returns false.  The function receives
 	 * the Node, the index, and the NodeList itself as parameters (in that
 	 * order).
 	 *
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @return {Object} object with two properties: `matches` and `rejects`. Each is a NodeList containing the items that were selected or rejected by the test function (or an empty object if none).
+	 * @return {Object} object with two properties: matches and rejects. Each is a NodeList containing the items that were selected or rejected by the test function (or an empty object if none).
 	 */
 	partition: function(f, c)
 	{

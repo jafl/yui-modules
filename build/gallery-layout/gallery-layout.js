@@ -22,6 +22,11 @@ YUI.add('gallery-layout', function(Y) {
  * body in fit-to-viewport mode, but if you later decide to switch to
  * fit-to-content, your optimization will cause trouble.)</p>
  * 
+ * <p>If you want a row, column, or module to have a fixed size, add the
+ * class layout-not-managed to the layout-module-row, layout-module-column,
+ * or layout-module.  Then use CSS to set the width of layout-module (for a
+ * row) or layout-module-col (for a col), or the height of layout-m-bd.</p>
+ * 
  * <p>If the body content is a single module, it expands as the content
  * expands (fit-to-content) until it would push the footer below the fold.
  * Then it switches to fit-to-content so the scrollbar appears on the

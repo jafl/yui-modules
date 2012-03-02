@@ -378,4 +378,4 @@ Y.PageLayoutRows.resize = function(
 };
 
 
-}, '@VERSION@' ,{requires:['gallery-layout','gallery-dimensions','gallery-node-optimizations']});
+}, '@VERSION@' ,{requires:['gallery-layout']});
