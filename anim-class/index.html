@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>CSS Class Animation Examples</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
+	<script src="gallery-anim-class-debug.js"></script>
+	<script src="gallery-funcprog-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
+
+	<style type="text/css">
+	.example {cursor:pointer;}
+	.a {margin:20px;border:5px solid #FF0000;padding:20px;color:#00FF00;background-color:#0000FF;}
+	.b {margin:10px;border-color:#0000FF;background-color:#FF0000;}
+	</style>
+</head>
+
+<body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/anim-class">YUI 3 CSS Class Animation</a> Examples</h1>
+
+<p><a href="../yuidoc/module_gallery-anim-class.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<hr>
+
+<p id="to-a" class="example">Click to animate</p>
+<p id="add-b" class="a example">Click to animate</p>
+<p id="a-to-b" class="a example">Click to animate</p>
+<p id="a-to-style" class="a example">Click to animate</p>
+
+<script type="text/javascript">
+YUI({
+//	filter: 'raw', combine: false,
+	gallery: 'gallery-2012.01.11-21-03'
+}).use(
+	'gallery-anim-class', 'anim-color', 'anim-node-plugin',
+function(Y)
+{
+	function run()
+	{
+		this.fx.run();
+	}
+
+	function reverse()
+	{
+		this.set('reverse', !this.get('reverse'));
+	}
+
+	// to-a
+
+	var to_a = Y.one('#to-a');
+	to_a.plug(Y.Plugin.NodeFX,
+	{
+		to: { cssClass: 'a' }
+	});
+
+	to_a.fx.on('end', reverse);
+	Y.on('click', run, '#to-a');
+
+	// add-b
+
+	var add_b = Y.one('#add-b');
+	add_b.plug(Y.Plugin.NodeFX,
+	{
+		to: { cssClass: 'b' }
+	});
+
+	add_b.fx.on('end', reverse);
+	Y.on('click', run, '#add-b');
+
+	// a-to-b
+
+	var a_to_b = Y.one('#a-to-b');
+	a_to_b.plug(Y.Plugin.NodeFX,
+	{
+		from: { cssClass: 'a' },
+		to:   { cssClass: 'b' }
+	});
+
+	a_to_b.fx.on('end', reverse);
+	Y.on('click', run, '#a-to-b');
+
+	// a-to-style
+
+	var a_to_style = Y.one('#a-to-style');
+	a_to_style.plug(Y.Plugin.NodeFX,
+	{
+		from:	// must specify starting values, to get reversible animation
+		{
+			backgroundColor: a_to_style.getStyle('backgroundColor'),
+			color:           a_to_style.getStyle('color')
+		},
+		to:
+		{
+			cssClass:       'b',
+			color:          '#000000',
+			backgroundColor:'#FFFF00'
+		}
+	});
+
+	a_to_style.fx.on('end', reverse);
+	Y.on('click', run, '#a-to-style');
+});
+</script>
+
+</body>
+</html>
