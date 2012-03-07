@@ -87,7 +87,7 @@ Y.mix(Paginator, {
      *
      * @method Paginator.isNumeric
      * @param v {Number|String} value to be checked for number or numeric string
-     * @returns {Boolean} true if the input is coercable into a finite number
+     * @return {Boolean} true if the input is coercable into a finite number
      * @static
      */
     isNumeric : function (v) {
