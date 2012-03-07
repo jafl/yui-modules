@@ -7,6 +7,8 @@
 
 	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
 	<script src="gallery-linkedlist-debug.js"></script>
+	<script src="gallery-iterable-extras-debug.js"></script>
+	<script src="gallery-funcprog-debug.js"></script>
 	<script src="gallery-test-extras-debug.js"></script>
 </head>
 
@@ -22,7 +24,7 @@ YUI({
 //	filter: 'raw', combine: false,
 	logInclude: { TestRunner: true }
 }).use(
-	'gallery-linkedlist', 'gallery-test-extras',
+	'gallery-linkedlist', 'gallery-funcprog', 'gallery-test-extras',
 	'console', 'console-filters', 'dd-plugin',
 function(Y)
 {
@@ -176,7 +178,7 @@ function(Y)
 		testIterator: function()
 		{
 			var list = new Y.LinkedList();
-			var iter = new Y.LinkedListIterator(list);
+			var iter = list.iterator();
 			Y.Assert.isTrue(iter.atBeginning());
 			Y.Assert.isTrue(iter.atEnd());
 			Y.Assert.isUndefined(iter.prev());
@@ -190,7 +192,7 @@ function(Y)
 			Y.Assert.isTrue(iter.atEnd());
 
 			var list = new Y.LinkedList(1);
-			var iter = new Y.LinkedListIterator(list);
+			var iter = list.iterator();
 			Y.Assert.isTrue(iter.atBeginning());
 			Y.Assert.isFalse(iter.atEnd());
 			Y.Assert.isUndefined(iter.prev());
@@ -210,7 +212,7 @@ function(Y)
 			Y.Assert.isFalse(iter.atEnd());
 
 			var list = new Y.LinkedList(1,2);
-			var iter = new Y.LinkedListIterator(list);
+			var iter = list.iterator();
 			Y.Assert.isTrue(iter.atBeginning());
 			Y.Assert.isFalse(iter.atEnd());
 			Y.Assert.isUndefined(iter.prev());
@@ -236,7 +238,7 @@ function(Y)
 			Y.Assert.isFalse(iter.atEnd());
 
 			var list = new Y.LinkedList(1,2,3);
-			var iter = new Y.LinkedListIterator(list);
+			var iter = list.iterator();
 			Y.Assert.isTrue(iter.atBeginning());
 			Y.Assert.isFalse(iter.atEnd());
 			Y.Assert.isUndefined(iter.prev());
@@ -277,6 +279,14 @@ function(Y)
 			});
 
 			Y.ArrayAssert.itemsAreSame([1,2,3], array);
+
+			array = [];
+			Y.each(list, function(value)
+			{
+				array.push(value);
+			});
+
+			Y.ArrayAssert.itemsAreSame([1,2,3], array);
 		},
 
 		testEvery: function()
@@ -289,12 +299,30 @@ function(Y)
 			});
 
 			Y.ArrayAssert.itemsAreSame([1,2], array);
+
+			array = [];
+			Y.every(list, function(value)
+			{
+				array.push(value);
+				return (value < 2);
+			});
+
+			Y.ArrayAssert.itemsAreSame([1,2], array);
 		},
 
 		testSome: function()
 		{
 			var list = new Y.LinkedList(1,2,3), array = [];
 			list.some(function(value)
+			{
+				array.push(value);
+				return (value == 2);
+			});
+
+			Y.ArrayAssert.itemsAreSame([1,2], array);
+
+			array = [];
+			Y.some(list, function(value)
 			{
 				array.push(value);
 				return (value == 2);

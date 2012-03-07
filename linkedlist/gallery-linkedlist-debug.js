@@ -6,8 +6,12 @@ YUI.add('gallery-linkedlist', function(Y) {
  * Item stored by LinkedList.
  * 
  * @class LinkedListItem
- * @constructor
+ */
+
+/**
+ * @method constructor
  * @param value {Mixed} value to store
+ * @private
  */
 
 function LinkedListItem(
@@ -42,8 +46,12 @@ Y.LinkedListItem = LinkedListItem;
  * calling list.remove() instead of iter.removeNext().
  *
  * @class LinkedListIterator
- * @constructor
+ */
+
+/**
+ * @method constructor
  * @param list {LinkedList}
+ * @private
  */
 
 function LinkedListIterator(
@@ -51,7 +59,7 @@ function LinkedListIterator(
 {
 	this._list   = list;
 	this._next   = list._head;
-	this._at_end = false;
+	this._at_end = !this._next;
 }
 
 LinkedListIterator.prototype =
@@ -203,8 +211,6 @@ LinkedListIterator.prototype =
 		}
 	}
 };
-
-Y.LinkedListIterator = LinkedListIterator;
 /**********************************************************************
  * Doubly linked list for storing items.  Supports iteration via
  * Y.LinkedListIterator or Y.each().  Also supports all the other
@@ -281,6 +287,53 @@ LinkedList.prototype =
 		}
 
 		return count;
+	},
+
+	/**
+	 * @return {LinkedListIterator}
+	 */
+	iterator: function()
+	{
+		return new LinkedListIterator(this);
+	},
+
+	/**
+	 * @param needle {Mixed} the item to search for
+	 * @return {Number} first index of the needle, or -1 if not found
+	 */
+	indexOf: function(needle)
+	{
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			if (iter.next() === needle)
+			{
+				return i;
+			}
+			i++;
+		}
+
+		return -1;
+	},
+
+	/**
+	 * @param needle {Mixed} the item to search for
+	 * @return {Number} last index of the needle, or -1 if not found
+	 */
+	lastIndexOf: function(needle)
+	{
+		var iter = this.iterator(), i = 0;
+		iter.goToEnd();
+		while (!iter.atBeginning())
+		{
+			if (iter.prev() === needle)
+			{
+				return i;
+			}
+			i++;
+		}
+
+		return -1;
 	},
 
 	/**
@@ -420,75 +473,12 @@ LinkedList.prototype =
 		}
 
 		item._prev = item._next = null;
-	},
-
-	/**
-	 * Executes the supplied function on each item in the list.  The
-	 * function receives the value, the index, and the list itself as
-	 * parameters (in that order).
-	 *
-	 * @param f {Function} the function to execute on each item
-	 * @param c {Object} optional context object
-	 */
-	each: function(f, c)
-	{
-		var iter = new LinkedListIterator(this), item, i = 0;
-		while (item = iter.next())
-		{
-			f.call(c, item, i, this);
-		}
-	},
-
-	/**
-	 * Executes the supplied function on each item in the list.  Iteration
-	 * stops if the supplied function does not return a truthy value.  The
-	 * function receives the value, the index, and the list itself as
-	 * parameters (in that order).
-	 *
-	 * @param f {Function} the function to execute on each item
-	 * @param c {Object} optional context object
-	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise
-	 */
-	every: function(f, c)
-	{
-		var iter = new LinkedListIterator(this), item, i = 0;
-		while (item = iter.next())
-		{
-			if (!f.call(c, item, i, this))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	},
-
-	/**
-	 * Executes the supplied function on each item in the list.  Iteration
-	 * stops if the supplied function returns a truthy value.  The function
-	 * receives the value, the index, and the list itself as parameters
-	 * (in that order).
-	 *
-	 * @param f {Function} the function to execute on each item
-	 * @param c {Object} optional context object
-	 * @return {Boolean} true if the function returns a truthy value on any of the items in the array, false otherwise
-	 */
-	some: function(f, c)
-	{
-		var iter = new LinkedListIterator(this), item, i = 0;
-		while (item = iter.next())
-		{
-			if (f.call(c, item, i, this))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 };
+
+Y.mix(LinkedList, Y.Iterable, false, null, 4);
 
 Y.LinkedList = LinkedList;
 
 
-}, '@VERSION@' ,{optional:['gallery-funcprog']});
+}, '@VERSION@' ,{requires:['gallery-iterable-extras'], optional:['gallery-funcprog']});
