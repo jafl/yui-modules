@@ -2480,4 +2480,4 @@ Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
 });
 
 
-}, '@VERSION@' ,{skinnable:true, requires:['widget','event-key','substitute']});
+}, '@VERSION@' ,{requires:['widget','event-key','substitute'], skinnable:true});

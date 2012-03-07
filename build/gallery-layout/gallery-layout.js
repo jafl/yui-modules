@@ -29,7 +29,7 @@ YUI.add('gallery-layout', function(Y) {
  * 
  * <p>If the body content is a single module, it expands as the content
  * expands (fit-to-content) until it would push the footer below the fold.
- * Then it switches to fit-to-content so the scrollbar appears on the
+ * Then it switches to fit-to-viewport so the scrollbar appears on the
  * module instead of the entire viewport.</p>
  * 
  * <p>Note that a non-zero margin-top on the top element or a non-zero
@@ -67,7 +67,9 @@ PageLayout.ATTRS =
 	/**
 	 * FIT_TO_VIEWPORT sizes the rows to fit everything inside the
 	 * browser's viewport.  FIT_TO_CONTENT sizes the rows to eliminate all
-	 * scrollbars on module bodies.
+	 * scrollbars on module bodies.  Note that you can configure this
+	 * property by putting the CSS class "FIT_TO_VIEWPORT" or
+	 * "FIT_TO_CONTENT" on layout-bd.
 	 *
 	 * @config mode
 	 * @type PageLayout.FIT_TO_VIEWPORT or PageLayout.FIT_TO_CONTENT
@@ -461,7 +463,7 @@ function resize()
 
 	// check if viewport changed
 
-	var mode          = this.get('mode');
+	var mode          = this.single_module ? Y.PageLayout.FIT_TO_VIEWPORT : this.get('mode');
 	var sticky_footer = this.get('stickyFooter');
 
 	this.body_container.setStyle('overflowX',
@@ -539,7 +541,7 @@ function resize()
 
 	// resize modules
 
-	this.layout_plugin.resize(this, body_width, body_height);
+	this.layout_plugin.resize(this, mode, body_width, body_height);
 
 	// show body and footer
 
@@ -849,10 +851,18 @@ Y.extend(PageLayout, Y.Base,
 		this.body_info.outer_sizes =
 			normalizeSizes(this.body_info.outers, plugin_data.outer_size);
 
+		this.single_module = false;
+		if (this.body_info.outers.size() == 1 && this.body_info.modules[0].size() == 1)
+		{
+			plugin_data        = plugin_info.row;
+			this.single_module = true;
+		}
+
 		var self = this;
 		Y.use(plugin_data.module, function(Y)
 		{
 			self.layout_plugin = Y[ plugin_data.plugin ];
+			updateFitClass.call(self);	// plugin may modify it
 			resize.call(self);
 		});
 	},
@@ -1017,7 +1027,7 @@ Y.extend(PageLayout, Y.Base,
 			this.body_container.contains(el) ||
 			(this.footer_container && this.footer_container.contains(el)))
 		{
-			if (this.refresh_timer !== null)
+			if (this.refresh_timer)
 			{
 				this.refresh_timer.cancel();
 			}
