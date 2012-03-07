@@ -60,10 +60,12 @@
 
                     <div class="summary description" property="yui:description">
                         <p>Functional programming support for iterable classes.  The class must
-implement the iterator() method, and this must return an object that
-implements next() and atEnd().</p>
+implement the iterator() (which must return an object that implements
+next() and atEnd()) and newInstance() methods.</p>
 <p>Iterable classes must mix these functions:  <code>Y.mix(SomeClass,
-Y.Iterable, false, null, 4);</code></p>
+Y.Iterable, false, null, 4);</code>  Passing false as the third argument
+allows your class to provide optimized implementations of individual
+functions.</p>
                     </div>
 
                     

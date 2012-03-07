@@ -43,7 +43,9 @@ LinkedListItem.prototype =
 Y.LinkedListItem = LinkedListItem;
 /**********************************************************************
  * Iterator for LinkedList.  Stable except when the next item is removed by
- * calling list.remove() instead of iter.removeNext().
+ * calling list.remove() instead of iter.removeNext().  When items are
+ * inserted into an empty list, the pointer remains at the end, not the
+ * beginning.
  *
  * @class LinkedListIterator
  */
@@ -57,9 +59,8 @@ Y.LinkedListItem = LinkedListItem;
 function LinkedListIterator(
 	/* LinkedList */    list)
 {
-	this._list   = list;
-	this._next   = list._head;
-	this._at_end = !this._next;
+	this._list = list;
+	this.moveToBeginning();
 }
 
 LinkedListIterator.prototype =
@@ -78,6 +79,24 @@ LinkedListIterator.prototype =
 	atEnd: function()
 	{
 		return (!this._next || this._at_end);
+	},
+
+	/**
+	 * Move to the beginning of the list.
+	 */
+	moveToBeginning: function()
+	{
+		this._next   = this._list._head;
+		this._at_end = !this._next;
+	},
+
+	/**
+	 * Move to the end of the list.
+	 */
+	moveToEnd: function()
+	{
+		this._next   = this._list._tail;
+		this._at_end = true;
 	},
 
 	/**
@@ -155,6 +174,34 @@ LinkedListIterator.prototype =
 	},
 
 	/**
+	 * Remove the previous item from the list.
+	 * 
+	 * @return {LinkedListItem} removed item or undefined if at the end
+	 */
+	removePrev: function()
+	{
+		var result;
+		if (this._at_end)
+		{
+			result = this._next;
+			if (this._next)
+			{
+				this._next = this._next._prev;
+			}
+		}
+		else if (this._next)
+		{
+			result = this._next._prev;
+		}
+
+		if (result)
+		{
+			this._list.remove(result);
+			return result;
+		}
+	},
+
+	/**
 	 * Remove the next item from the list.
 	 * 
 	 * @return {LinkedListItem} removed item or undefined if at the end
@@ -181,40 +228,16 @@ LinkedListIterator.prototype =
 			this._list.remove(result);
 			return result;
 		}
-	},
-
-	/**
-	 * Remove the previous item from the list.
-	 * 
-	 * @return {LinkedListItem} removed item or undefined if at the end
-	 */
-	removePrev: function()
-	{
-		var result;
-		if (this._at_end)
-		{
-			result = this._next;
-			if (this._next)
-			{
-				this._next = this._next._prev;
-			}
-		}
-		else if (this._next)
-		{
-			result = this._next._prev;
-		}
-
-		if (result)
-		{
-			this._list.remove(result);
-			return result;
-		}
 	}
 };
 /**********************************************************************
- * Doubly linked list for storing items.  Supports iteration via
- * Y.LinkedListIterator or Y.each().  Also supports all the other
- * operations defined in gallery-funcprog.
+ * <p>Doubly linked list for storing items.  Supports iteration via
+ * LinkedListIterator (returned by this.iterator()) or Y.each().  Also
+ * supports all the other operations defined in gallery-funcprog.</p>
+ * 
+ * <p>Direct indexing into the list is not supported, as a reminder that it
+ * is an expensive operation.  Instead, use find() with a function that
+ * checks the index.</p>
  * 
  * @module gallery-linkedlist
  * @class LinkedList
@@ -230,7 +253,7 @@ function LinkedList(list)
 	{
 		list = Y.Array(arguments);
 	}
-	else if (!Y.Lang.isUndefined(list) && !Y.Array.test(list))
+	else if (!Y.Lang.isUndefined(list) && !(list instanceof LinkedList) && !Y.Array.test(list))
 	{
 		list = Y.Array(list);
 	}
@@ -298,6 +321,16 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * Creates a new, empty LinkedList.
+	 *
+	 * @return {LinkedList}
+	 */
+	newInstance: function()
+	{
+		return new LinkedList();
+	},
+
+	/**
 	 * @param needle {Mixed} the item to search for
 	 * @return {Number} first index of the needle, or -1 if not found
 	 */
@@ -322,15 +355,15 @@ LinkedList.prototype =
 	 */
 	lastIndexOf: function(needle)
 	{
-		var iter = this.iterator(), i = 0;
-		iter.goToEnd();
+		var iter = this.iterator(), i = this.size();
+		iter.moveToEnd();
 		while (!iter.atBeginning())
 		{
+			i--;
 			if (iter.prev() === needle)
 			{
 				return i;
 			}
-			i++;
 		}
 
 		return -1;
@@ -473,6 +506,40 @@ LinkedList.prototype =
 		}
 
 		item._prev = item._next = null;
+	},
+
+	/**
+	 * Reverses the items in place.
+	 */
+	reverse: function()
+	{
+		var list = new LinkedList();
+		var iter = this.iterator();
+		while (!iter.atEnd())
+		{
+			var item = iter.removeNext();
+			list.prepend(item);
+		}
+
+		this._head = list._head;
+		this._tail = list._tail;
+	},
+
+	/**
+	 * @return {Array}
+	 */
+	toArray: function()
+	{
+		var result = [],
+			item   = this._head;
+
+		while (item)
+		{
+			result.push(item.value);
+			item = item._next;
+		}
+
+		return result;
 	}
 };
 

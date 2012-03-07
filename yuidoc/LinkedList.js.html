@@ -48,9 +48,13 @@
                             #doc3 .classopts { display:none; }
                         </style>
                         <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * Doubly linked list for storing items.  Supports iteration via</span>
-<span class="c"> * Y.LinkedListIterator or Y.each().  Also supports all the other</span>
-<span class="c"> * operations defined in gallery-funcprog.</span>
+<span class="c"> * &lt;p&gt;Doubly linked list for storing items.  Supports iteration via</span>
+<span class="c"> * LinkedListIterator (returned by this.iterator()) or Y.each().  Also</span>
+<span class="c"> * supports all the other operations defined in gallery-funcprog.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;Direct indexing into the list is not supported, as a reminder that it</span>
+<span class="c"> * is an expensive operation.  Instead, use find() with a function that</span>
+<span class="c"> * checks the index.&lt;/p&gt;</span>
 <span class="c"> * </span>
 <span class="c"> * @module gallery-linkedlist</span>
 <span class="c"> * @class LinkedList</span>
@@ -66,7 +70,7 @@
 	<span class="p">{</span>
 		<span class="nx">list</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
 	<span class="p">}</span>
-	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">list</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">list</span><span class="p">))</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">list</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="nx">list</span> <span class="k">instanceof</span> <span class="nx">LinkedList</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">list</span><span class="p">))</span>
 	<span class="p">{</span>
 		<span class="nx">list</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">list</span><span class="p">);</span>
 	<span class="p">}</span>
@@ -134,6 +138,16 @@
 	<span class="p">}</span><span class="o">,</span>
 
 	<span class="c">/**</span>
+<span class="c">	 * Creates a new, empty LinkedList.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @return {LinkedList}</span>
+<span class="c">	 */</span>
+	<span class="nx">newInstance</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
 <span class="c">	 * @param needle {Mixed} the item to search for</span>
 <span class="c">	 * @return {Number} first index of the needle, or -1 if not found</span>
 <span class="c">	 */</span>
@@ -158,15 +172,15 @@
 <span class="c">	 */</span>
 	<span class="nx">lastIndexOf</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-		<span class="nx">iter</span><span class="p">.</span><span class="nx">goToEnd</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
+		<span class="nx">iter</span><span class="p">.</span><span class="nx">moveToEnd</span><span class="p">();</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atBeginning</span><span class="p">())</span>
 		<span class="p">{</span>
+			<span class="nx">i</span><span class="o">--;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">iter</span><span class="p">.</span><span class="nx">prev</span><span class="p">()</span> <span class="o">===</span> <span class="nx">needle</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="k">return</span> <span class="nx">i</span><span class="o">;</span>
 			<span class="p">}</span>
-			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
 
 		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
@@ -309,6 +323,40 @@
 		<span class="p">}</span>
 
 		<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * Reverses the items in place.</span>
+<span class="c">	 */</span>
+	<span class="nx">reverse</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">();</span>
+		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">removeNext</span><span class="p">();</span>
+			<span class="nx">list</span><span class="p">.</span><span class="nx">prepend</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">_head</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">_tail</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * @return {Array}</span>
+<span class="c">	 */</span>
+	<span class="nx">toArray</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[]</span><span class="o">,</span>
+			<span class="nx">item</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="o">;</span>
+
+		<span class="k">while</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+			<span class="nx">item</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
@@ -501,7 +549,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "LinkedList.html#method_append", "access": "", "host": "LinkedList", "type": "method", "name": "append"}, {"url": "LinkedListIterator.html#method_atBeginning", "access": "", "host": "LinkedListIterator", "type": "method", "name": "atBeginning"}, {"url": "LinkedListIterator.html#method_atEnd", "access": "", "host": "LinkedListIterator", "type": "method", "name": "atEnd"}, {"url": "LinkedList.html#method_clear", "access": "", "host": "LinkedList", "type": "method", "name": "clear"}, {"url": "LinkedList.html#method_each", "access": "", "host": "LinkedList", "type": "method", "name": "each"}, {"url": "LinkedList.html#method_every", "access": "", "host": "LinkedList", "type": "method", "name": "every"}, {"url": "LinkedList.html#method_filter", "access": "", "host": "LinkedList", "type": "method", "name": "filter"}, {"url": "LinkedList.html#method_find", "access": "", "host": "LinkedList", "type": "method", "name": "find"}, {"url": "LinkedList.html#method_indexOf", "access": "", "host": "LinkedList", "type": "method", "name": "indexOf"}, {"url": "LinkedListIterator.html#method_insert", "access": "", "host": "LinkedListIterator", "type": "method", "name": "insert"}, {"url": "LinkedList.html#method_insertAfter", "access": "", "host": "LinkedList", "type": "method", "name": "insertAfter"}, {"url": "LinkedList.html#method_insertBefore", "access": "", "host": "LinkedList", "type": "method", "name": "insertBefore"}, {"url": "LinkedList.html#method_isEmpty", "access": "", "host": "LinkedList", "type": "method", "name": "isEmpty"}, {"url": "LinkedList.html#method_iterator", "access": "", "host": "LinkedList", "type": "method", "name": "iterator"}, {"url": "LinkedList.html#method_lastIndexOf", "access": "", "host": "LinkedList", "type": "method", "name": "lastIndexOf"}, {"url": "LinkedList.html#method_map", "access": "", "host": "LinkedList", "type": "method", "name": "map"}, {"url": "LinkedListItem.html#method_next", "access": "", "host": "LinkedListItem", "type": "method", "name": "next"}, {"url": "LinkedListIterator.html#method_next", "access": "", "host": "LinkedListIterator", "type": "method", "name": "next"}, {"url": "LinkedList.html#method_partition", "access": "", "host": "LinkedList", "type": "method", "name": "partition"}, {"url": "LinkedList.html#method_prepend", "access": "", "host": "LinkedList", "type": "method", "name": "prepend"}, {"url": "LinkedListItem.html#method_prev", "access": "", "host": "LinkedListItem", "type": "method", "name": "prev"}, {"url": "LinkedListIterator.html#method_prev", "access": "", "host": "LinkedListIterator", "type": "method", "name": "prev"}, {"url": "LinkedList.html#method_reduce", "access": "", "host": "LinkedList", "type": "method", "name": "reduce"}, {"url": "LinkedList.html#method_reject", "access": "", "host": "LinkedList", "type": "method", "name": "reject"}, {"url": "LinkedList.html#method_remove", "access": "", "host": "LinkedList", "type": "method", "name": "remove"}, {"url": "LinkedListIterator.html#method_removeNext", "access": "", "host": "LinkedListIterator", "type": "method", "name": "removeNext"}, {"url": "LinkedListIterator.html#method_removePrev", "access": "", "host": "LinkedListIterator", "type": "method", "name": "removePrev"}, {"url": "LinkedList.html#method_size", "access": "", "host": "LinkedList", "type": "method", "name": "size"}, {"url": "LinkedList.html#method_some", "access": "", "host": "LinkedList", "type": "method", "name": "some"}];
+    var ALL_YUI_PROPS = [{"url": "LinkedList.html#method_append", "access": "", "host": "LinkedList", "type": "method", "name": "append"}, {"url": "LinkedListIterator.html#method_atBeginning", "access": "", "host": "LinkedListIterator", "type": "method", "name": "atBeginning"}, {"url": "LinkedListIterator.html#method_atEnd", "access": "", "host": "LinkedListIterator", "type": "method", "name": "atEnd"}, {"url": "LinkedList.html#method_clear", "access": "", "host": "LinkedList", "type": "method", "name": "clear"}, {"url": "LinkedList.html#method_each", "access": "", "host": "LinkedList", "type": "method", "name": "each"}, {"url": "LinkedList.html#method_every", "access": "", "host": "LinkedList", "type": "method", "name": "every"}, {"url": "LinkedList.html#method_filter", "access": "", "host": "LinkedList", "type": "method", "name": "filter"}, {"url": "LinkedList.html#method_find", "access": "", "host": "LinkedList", "type": "method", "name": "find"}, {"url": "LinkedList.html#method_indexOf", "access": "", "host": "LinkedList", "type": "method", "name": "indexOf"}, {"url": "LinkedListIterator.html#method_insert", "access": "", "host": "LinkedListIterator", "type": "method", "name": "insert"}, {"url": "LinkedList.html#method_insertAfter", "access": "", "host": "LinkedList", "type": "method", "name": "insertAfter"}, {"url": "LinkedList.html#method_insertBefore", "access": "", "host": "LinkedList", "type": "method", "name": "insertBefore"}, {"url": "LinkedList.html#method_isEmpty", "access": "", "host": "LinkedList", "type": "method", "name": "isEmpty"}, {"url": "LinkedList.html#method_iterator", "access": "", "host": "LinkedList", "type": "method", "name": "iterator"}, {"url": "LinkedList.html#method_lastIndexOf", "access": "", "host": "LinkedList", "type": "method", "name": "lastIndexOf"}, {"url": "LinkedList.html#method_map", "access": "", "host": "LinkedList", "type": "method", "name": "map"}, {"url": "LinkedListIterator.html#method_moveToBeginning", "access": "", "host": "LinkedListIterator", "type": "method", "name": "moveToBeginning"}, {"url": "LinkedListIterator.html#method_moveToEnd", "access": "", "host": "LinkedListIterator", "type": "method", "name": "moveToEnd"}, {"url": "LinkedList.html#method_newInstance", "access": "", "host": "LinkedList", "type": "method", "name": "newInstance"}, {"url": "LinkedListItem.html#method_next", "access": "", "host": "LinkedListItem", "type": "method", "name": "next"}, {"url": "LinkedListIterator.html#method_next", "access": "", "host": "LinkedListIterator", "type": "method", "name": "next"}, {"url": "LinkedList.html#method_partition", "access": "", "host": "LinkedList", "type": "method", "name": "partition"}, {"url": "LinkedList.html#method_prepend", "access": "", "host": "LinkedList", "type": "method", "name": "prepend"}, {"url": "LinkedListItem.html#method_prev", "access": "", "host": "LinkedListItem", "type": "method", "name": "prev"}, {"url": "LinkedListIterator.html#method_prev", "access": "", "host": "LinkedListIterator", "type": "method", "name": "prev"}, {"url": "LinkedList.html#method_reduce", "access": "", "host": "LinkedList", "type": "method", "name": "reduce"}, {"url": "LinkedList.html#method_reject", "access": "", "host": "LinkedList", "type": "method", "name": "reject"}, {"url": "LinkedList.html#method_remove", "access": "", "host": "LinkedList", "type": "method", "name": "remove"}, {"url": "LinkedListIterator.html#method_removeNext", "access": "", "host": "LinkedListIterator", "type": "method", "name": "removeNext"}, {"url": "LinkedListIterator.html#method_removePrev", "access": "", "host": "LinkedListIterator", "type": "method", "name": "removePrev"}, {"url": "LinkedList.html#method_reverse", "access": "", "host": "LinkedList", "type": "method", "name": "reverse"}, {"url": "LinkedList.html#method_size", "access": "", "host": "LinkedList", "type": "method", "name": "size"}, {"url": "LinkedList.html#method_some", "access": "", "host": "LinkedList", "type": "method", "name": "some"}, {"url": "LinkedList.html#method_toArray", "access": "", "host": "LinkedList", "type": "method", "name": "toArray"}];
 </script>
 </body>
 </html>

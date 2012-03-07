@@ -49,11 +49,13 @@
                         </style>
                         <div class="highlight"><pre><span class="c">/**********************************************************************</span>
 <span class="c"> * &lt;p&gt;Functional programming support for iterable classes.  The class must</span>
-<span class="c"> * implement the iterator() method, and this must return an object that</span>
-<span class="c"> * implements next() and atEnd().&lt;/p&gt;</span>
+<span class="c"> * implement the iterator() (which must return an object that implements</span>
+<span class="c"> * next() and atEnd()) and newInstance() methods.&lt;/p&gt;</span>
 <span class="c"> * </span>
 <span class="c"> * &lt;p&gt;Iterable classes must mix these functions:  &lt;code&gt;Y.mix(SomeClass,</span>
-<span class="c"> * Y.Iterable, false, null, 4);&lt;/code&gt;&lt;/p&gt;</span>
+<span class="c"> * Y.Iterable, false, null, 4);&lt;/code&gt;  Passing false as the third argument</span>
+<span class="c"> * allows your class to provide optimized implementations of individual</span>
+<span class="c"> * functions.&lt;/p&gt;</span>
 <span class="c"> * </span>
 <span class="c"> * @module gallery-iterable-extras</span>
 <span class="c"> * @class Iterable</span>
@@ -119,7 +121,7 @@
 <span class="c">	 */</span>
 	<span class="nx">filter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">();</span>
 
 		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
@@ -174,7 +176,7 @@
 <span class="c">	 */</span>
 	<span class="nx">map</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">();</span>
 
 		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
@@ -197,12 +199,12 @@
 <span class="c">	 * @param c {Object} optional context object</span>
 <span class="c">	 * @return {Object} object with two properties: matches and rejects. Each is a list containing the items that were selected or rejected by the test function (or an empty object if none).</span>
 <span class="c">	 */</span>
-	<span class="nx">partition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">)</span>
+	<span class="nx">partition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">matches</span><span class="o">:</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">()</span><span class="o">,</span>
-			<span class="nx">rejects</span><span class="o">:</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">()</span>
+			<span class="nx">matches</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">()</span><span class="o">,</span>
+			<span class="nx">rejects</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">()</span>
 		<span class="p">};</span>
 
 		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
@@ -255,9 +257,9 @@
 <span class="c">	 * @param c {Object} optional context object</span>
 <span class="c">	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)</span>
 <span class="c">	 */</span>
-	<span class="nx">reject</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">)</span>
+	<span class="nx">reject</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">();</span>
 
 		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
