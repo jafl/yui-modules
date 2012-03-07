@@ -47,66 +47,66 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * Functions for measuring the size of a node.</span>
-<span class="c"> * </span>
-<span class="c"> * @module node</span>
-<span class="c"> * @submodule gallery-dimensions</span>
-<span class="c"> * @class Node~dimensions</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * Functions for measuring the size of a node.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module node</span>
+<span class="cm"> * @submodule gallery-dimensions</span>
+<span class="cm"> * @class Node~dimensions</span>
+<span class="cm"> */</span>
 
-<span class="kd">var</span> <span class="nx">em_div</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span>
+<span class="kd">var</span> <span class="nx">em_div</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
 
 	<span class="nx">the_horiz_styles</span> <span class="o">=</span>
 	<span class="p">[</span>
-		<span class="s1">&#39;marginLeft&#39;</span><span class="o">,</span>
-		<span class="s1">&#39;borderLeftWidth&#39;</span><span class="o">,</span>
-		<span class="s1">&#39;paddingLeft&#39;</span><span class="o">,</span>
-		<span class="s1">&#39;paddingRight&#39;</span><span class="o">,</span>
-		<span class="s1">&#39;borderRightWidth&#39;</span><span class="o">,</span>
+		<span class="s1">&#39;marginLeft&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;borderLeftWidth&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;paddingLeft&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;paddingRight&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;borderRightWidth&#39;</span><span class="p">,</span>
 		<span class="s1">&#39;marginRight&#39;</span>
-	<span class="p">]</span><span class="o">,</span>
+	<span class="p">],</span>
 
 	<span class="nx">the_vert_styles</span> <span class="o">=</span>
 	<span class="p">[</span>
-		<span class="s1">&#39;marginTop&#39;</span><span class="o">,</span>
-		<span class="s1">&#39;borderTopWidth&#39;</span><span class="o">,</span>
-		<span class="s1">&#39;paddingTop&#39;</span><span class="o">,</span>
-		<span class="s1">&#39;paddingBottom&#39;</span><span class="o">,</span>
-		<span class="s1">&#39;borderBottomWidth&#39;</span><span class="o">,</span>
+		<span class="s1">&#39;marginTop&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;borderTopWidth&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;paddingTop&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;paddingBottom&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;borderBottomWidth&#39;</span><span class="p">,</span>
 		<span class="s1">&#39;marginBottom&#39;</span>
 	<span class="p">];</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * @method emToPx</span>
-<span class="c"> * @param em_count {Number} the number of em&#39;s to convert (defaults to 1)</span>
-<span class="c"> * @return {Number} the size of one em in pixels</span>
-<span class="c"> * @static</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method emToPx</span>
+<span class="cm"> * @param em_count {Number} the number of em&#39;s to convert (defaults to 1)</span>
+<span class="cm"> * @return {Number} the size of one em in pixels</span>
+<span class="cm"> * @static</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">emToPx</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="c">/* float */</span>	<span class="nx">em_count</span><span class="p">)</span>
+	<span class="cm">/* float */</span>	<span class="nx">em_count</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">em_div</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">em_div</span>                  <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">doc</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
-		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">position</span>   <span class="o">=</span> <span class="s1">&#39;absolute&#39;</span><span class="o">;</span>
-		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span>        <span class="o">=</span> <span class="s1">&#39;-10000px&#39;</span><span class="o">;</span>
-		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">left</span>       <span class="o">=</span> <span class="s1">&#39;-10000px&#39;</span><span class="o">;</span>
-		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">visibility</span> <span class="o">=</span> <span class="s1">&#39;hidden&#39;</span><span class="o">;</span>
-		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">width</span>      <span class="o">=</span> <span class="s1">&#39;10em&#39;</span><span class="o">;</span>
-		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">height</span>     <span class="o">=</span> <span class="s1">&#39;10em&#39;</span><span class="o">;</span>
+		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">position</span>   <span class="o">=</span> <span class="s1">&#39;absolute&#39;</span><span class="p">;</span>
+		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span>        <span class="o">=</span> <span class="s1">&#39;-10000px&#39;</span><span class="p">;</span>
+		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">left</span>       <span class="o">=</span> <span class="s1">&#39;-10000px&#39;</span><span class="p">;</span>
+		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">visibility</span> <span class="o">=</span> <span class="s1">&#39;hidden&#39;</span><span class="p">;</span>
+		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">width</span>      <span class="o">=</span> <span class="s1">&#39;10em&#39;</span><span class="p">;</span>
+		<span class="nx">em_div</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">height</span>     <span class="o">=</span> <span class="s1">&#39;10em&#39;</span><span class="p">;</span>
 		<span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">doc</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">em_div</span><span class="p">);</span>
 	<span class="p">}</span>
 	<span class="k">return</span> <span class="p">(</span><span class="nx">em_count</span> <span class="o">||</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nx">em_div</span><span class="p">.</span><span class="nx">offsetWidth</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * @method totalWidth</span>
-<span class="c"> * @return {Number} the total width used by the element, including margin, border, and padding  (Margin is not included in offsetWidth.)</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method totalWidth</span>
+<span class="cm"> * @return {Number} the total width used by the element, including margin, border, and padding  (Margin is not included in offsetWidth.)</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">totalWidth</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
@@ -115,10 +115,10 @@
 			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;marginRight&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * @method totalHeight</span>
-<span class="c"> * @return {Number} the total height used by the element, including margin, border, and padding  (Margin is not included in offsetHeight.)</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method totalHeight</span>
+<span class="cm"> * @return {Number} the total height used by the element, including margin, border, and padding  (Margin is not included in offsetHeight.)</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">totalHeight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
@@ -127,10 +127,10 @@
 			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;marginBottom&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * @method insideWidth</span>
-<span class="c"> * @return {Number} the available width inside the widget.  (Padding is included in clientWidth.)</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method insideWidth</span>
+<span class="cm"> * @return {Number} the available width inside the widget.  (Padding is included in clientWidth.)</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">insideWidth</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
@@ -139,10 +139,10 @@
 			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;paddingRight&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * @method insideHeight</span>
-<span class="c"> * @return {Number} the available height inside the widget.  (Padding is included in clientHeight.)</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method insideHeight</span>
+<span class="cm"> * @return {Number} the available height inside the widget.  (Padding is included in clientHeight.)</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">insideHeight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
@@ -151,50 +151,50 @@
 			<span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="s1">&#39;paddingBottom&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * @method horizMarginBorderPadding</span>
-<span class="c"> * @return {Number} the width of everything surrounding the element&#39;s content</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method horizMarginBorderPadding</span>
+<span class="cm"> * @return {Number} the width of everything surrounding the element&#39;s content</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">the_horiz_styles</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">w</span><span class="o">,</span> <span class="nx">style</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">the_horiz_styles</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">style</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="nx">w</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="nx">style</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 	<span class="k">this</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * @method vertMarginBorderPadding</span>
-<span class="c"> * @return {Number} the height of everything surrounding the element&#39;s content</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method vertMarginBorderPadding</span>
+<span class="cm"> * @return {Number} the height of everything surrounding the element&#39;s content</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">the_vert_styles</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">h</span><span class="o">,</span> <span class="nx">style</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">the_vert_styles</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span> <span class="nx">style</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="nx">h</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">parseDimensionStyle</span><span class="p">(</span><span class="nx">style</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 	<span class="k">this</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * @method parseDimensionStyle</span>
-<span class="c"> * @param style {String} the style to parse</span>
-<span class="c"> * @return {Number} the size of the style in pixels</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * @method parseDimensionStyle</span>
+<span class="cm"> * @param style {String} the style to parse</span>
+<span class="cm"> * @return {Number} the size of the style in pixels</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">parseDimensionStyle</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="c">/* string */</span>	<span class="nx">style</span><span class="p">)</span>
+	<span class="cm">/* string */</span>	<span class="nx">style</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getComputedStyle</span><span class="p">(</span><span class="nx">style</span><span class="p">);</span>
-	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">s</span> <span class="o">||</span> <span class="o">!/^</span><span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span><span class="o">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">s</span><span class="p">))</span>	<span class="c">// ignore values like &quot;medium&quot;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">s</span> <span class="o">||</span> <span class="o">!</span><span class="sr">/^[0-9]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">s</span><span class="p">))</span>	<span class="c1">// ignore values like &quot;medium&quot;</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 	<span class="p">}</span>
 
-	<span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">s</span><span class="o">,</span> <span class="mi">10</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="sr">/em$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">s</span><span class="p">))</span>
 	<span class="p">{</span>
 		<span class="nx">v</span> <span class="o">*=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">emToPx</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>

@@ -47,57 +47,57 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;Adds CSS class animation to Y.Anim, so you can specify cssClass in</span>
-<span class="c"> * from and/or to.  At the end of the animation, the from class is replaced</span>
-<span class="c"> * by the to class, and all the individual styles used during the animation</span>
-<span class="c"> * are removed.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * &lt;p&gt;Explicit entries in from or to override values set by cssClass.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @module gallery-anim-class</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Adds CSS class animation to Y.Anim, so you can specify cssClass in</span>
+<span class="cm"> * from and/or to.  At the end of the animation, the from class is replaced</span>
+<span class="cm"> * by the to class, and all the individual styles used during the animation</span>
+<span class="cm"> * are removed.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;Explicit entries in from or to override values set by cssClass.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-anim-class</span>
+<span class="cm"> */</span>
 
 <span class="kd">var</span> <span class="nx">css_attribute</span> <span class="o">=</span>
 <span class="p">[</span>
-	<span class="s2">&quot;top&quot;</span><span class="o">,</span><span class="s2">&quot;bottom&quot;</span><span class="o">,</span><span class="s2">&quot;left&quot;</span><span class="o">,</span><span class="s2">&quot;right&quot;</span><span class="o">,</span><span class="s2">&quot;width&quot;</span><span class="o">,</span><span class="s2">&quot;height&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;maxHeight&quot;</span><span class="o">,</span><span class="s2">&quot;maxWidth&quot;</span><span class="o">,</span><span class="s2">&quot;minHeight&quot;</span><span class="o">,</span><span class="s2">&quot;minWidth&quot;</span><span class="o">,</span>
+	<span class="s2">&quot;top&quot;</span><span class="p">,</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span><span class="s2">&quot;left&quot;</span><span class="p">,</span><span class="s2">&quot;right&quot;</span><span class="p">,</span><span class="s2">&quot;width&quot;</span><span class="p">,</span><span class="s2">&quot;height&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;maxHeight&quot;</span><span class="p">,</span><span class="s2">&quot;maxWidth&quot;</span><span class="p">,</span><span class="s2">&quot;minHeight&quot;</span><span class="p">,</span><span class="s2">&quot;minWidth&quot;</span><span class="p">,</span>
 
-	<span class="s2">&quot;color&quot;</span><span class="o">,</span><span class="s2">&quot;fontSize&quot;</span><span class="o">,</span><span class="s2">&quot;fontSizeAdjust&quot;</span><span class="o">,</span><span class="s2">&quot;fontWeight&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;textIndent&quot;</span><span class="o">,</span><span class="s2">&quot;textShadow&quot;</span><span class="o">,</span><span class="s2">&quot;wordSpacing&quot;</span><span class="o">,</span>
+	<span class="s2">&quot;color&quot;</span><span class="p">,</span><span class="s2">&quot;fontSize&quot;</span><span class="p">,</span><span class="s2">&quot;fontSizeAdjust&quot;</span><span class="p">,</span><span class="s2">&quot;fontWeight&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;textIndent&quot;</span><span class="p">,</span><span class="s2">&quot;textShadow&quot;</span><span class="p">,</span><span class="s2">&quot;wordSpacing&quot;</span><span class="p">,</span>
 
-	<span class="s2">&quot;backgroundColor&quot;</span><span class="o">,</span><span class="s2">&quot;backgroundPosition&quot;</span><span class="o">,</span><span class="s2">&quot;backgroundOrigin&quot;</span><span class="o">,</span><span class="s2">&quot;backgroundSize&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;outlineColor&quot;</span><span class="o">,</span><span class="s2">&quot;outlineWidth&quot;</span><span class="o">,</span>
+	<span class="s2">&quot;backgroundColor&quot;</span><span class="p">,</span><span class="s2">&quot;backgroundPosition&quot;</span><span class="p">,</span><span class="s2">&quot;backgroundOrigin&quot;</span><span class="p">,</span><span class="s2">&quot;backgroundSize&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;outlineColor&quot;</span><span class="p">,</span><span class="s2">&quot;outlineWidth&quot;</span><span class="p">,</span>
 
-	<span class="s2">&quot;borderColor&quot;</span><span class="o">,</span><span class="s2">&quot;borderSpacing&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;borderTop&quot;</span><span class="o">,</span><span class="s2">&quot;borderRight&quot;</span><span class="o">,</span><span class="s2">&quot;borderBottom&quot;</span><span class="o">,</span><span class="s2">&quot;borderLeft&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;borderTopColor&quot;</span><span class="o">,</span><span class="s2">&quot;borderRightColor&quot;</span><span class="o">,</span><span class="s2">&quot;borderBottomColor&quot;</span><span class="o">,</span><span class="s2">&quot;borderLeftColor&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;borderTopWidth&quot;</span><span class="o">,</span><span class="s2">&quot;borderRightWidth&quot;</span><span class="o">,</span><span class="s2">&quot;borderBottomWidth&quot;</span><span class="o">,</span><span class="s2">&quot;borderLeftWidth&quot;</span><span class="o">,</span><span class="s2">&quot;borderWidth&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;borderRadius&quot;</span><span class="o">,</span><span class="s2">&quot;borderTopLeftRadius&quot;</span><span class="o">,</span><span class="s2">&quot;borderTopRightRadius&quot;</span><span class="o">,</span><span class="s2">&quot;borderBottomLeftRadius&quot;</span><span class="o">,</span><span class="s2">&quot;borderBottomRightRadius&quot;</span><span class="o">,</span>
+	<span class="s2">&quot;borderColor&quot;</span><span class="p">,</span><span class="s2">&quot;borderSpacing&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;borderTop&quot;</span><span class="p">,</span><span class="s2">&quot;borderRight&quot;</span><span class="p">,</span><span class="s2">&quot;borderBottom&quot;</span><span class="p">,</span><span class="s2">&quot;borderLeft&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;borderTopColor&quot;</span><span class="p">,</span><span class="s2">&quot;borderRightColor&quot;</span><span class="p">,</span><span class="s2">&quot;borderBottomColor&quot;</span><span class="p">,</span><span class="s2">&quot;borderLeftColor&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;borderTopWidth&quot;</span><span class="p">,</span><span class="s2">&quot;borderRightWidth&quot;</span><span class="p">,</span><span class="s2">&quot;borderBottomWidth&quot;</span><span class="p">,</span><span class="s2">&quot;borderLeftWidth&quot;</span><span class="p">,</span><span class="s2">&quot;borderWidth&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;borderRadius&quot;</span><span class="p">,</span><span class="s2">&quot;borderTopLeftRadius&quot;</span><span class="p">,</span><span class="s2">&quot;borderTopRightRadius&quot;</span><span class="p">,</span><span class="s2">&quot;borderBottomLeftRadius&quot;</span><span class="p">,</span><span class="s2">&quot;borderBottomRightRadius&quot;</span><span class="p">,</span>
 
-	<span class="s2">&quot;margin&quot;</span><span class="o">,</span><span class="s2">&quot;marginTop&quot;</span><span class="o">,</span><span class="s2">&quot;marginRight&quot;</span><span class="o">,</span><span class="s2">&quot;marginBottom&quot;</span><span class="o">,</span><span class="s2">&quot;marginLeft&quot;</span><span class="o">,</span>
+	<span class="s2">&quot;margin&quot;</span><span class="p">,</span><span class="s2">&quot;marginTop&quot;</span><span class="p">,</span><span class="s2">&quot;marginRight&quot;</span><span class="p">,</span><span class="s2">&quot;marginBottom&quot;</span><span class="p">,</span><span class="s2">&quot;marginLeft&quot;</span><span class="p">,</span>
 
-	<span class="s2">&quot;padding&quot;</span><span class="o">,</span><span class="s2">&quot;paddingTop&quot;</span><span class="o">,</span><span class="s2">&quot;paddingRight&quot;</span><span class="o">,</span><span class="s2">&quot;paddingBottom&quot;</span><span class="o">,</span><span class="s2">&quot;paddingLeft&quot;</span><span class="o">,</span>
+	<span class="s2">&quot;padding&quot;</span><span class="p">,</span><span class="s2">&quot;paddingTop&quot;</span><span class="p">,</span><span class="s2">&quot;paddingRight&quot;</span><span class="p">,</span><span class="s2">&quot;paddingBottom&quot;</span><span class="p">,</span><span class="s2">&quot;paddingLeft&quot;</span><span class="p">,</span>
 
-	<span class="s2">&quot;zIndex&quot;</span><span class="o">,</span><span class="s2">&quot;opacity&quot;</span><span class="o">,</span>
+	<span class="s2">&quot;zIndex&quot;</span><span class="p">,</span><span class="s2">&quot;opacity&quot;</span><span class="p">,</span>
 
-	<span class="s2">&quot;boxShadow&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;letterSpacing&quot;</span><span class="o">,</span><span class="s2">&quot;lineHeight&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;markerOffset&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;orphans&quot;</span><span class="o">,</span><span class="s2">&quot;widows&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;size&quot;</span><span class="o">,</span>
+	<span class="s2">&quot;boxShadow&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;letterSpacing&quot;</span><span class="p">,</span><span class="s2">&quot;lineHeight&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;markerOffset&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;orphans&quot;</span><span class="p">,</span><span class="s2">&quot;widows&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;size&quot;</span><span class="p">,</span>
 
-	<span class="s2">&quot;fillOpacity&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;outlineOffset&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;floodColor&quot;</span><span class="o">,</span><span class="s2">&quot;floodOpacity&quot;</span><span class="o">,</span><span class="s2">&quot;lightingColor&quot;</span><span class="o">,</span><span class="s2">&quot;stopColor&quot;</span><span class="o">,</span><span class="s2">&quot;stopOpacity&quot;</span><span class="o">,</span>
-	<span class="s2">&quot;stroke&quot;</span><span class="o">,</span><span class="s2">&quot;strokeDashoffset&quot;</span><span class="o">,</span><span class="s2">&quot;strokeMiterlimit&quot;</span><span class="o">,</span><span class="s2">&quot;strokeOpacity&quot;</span><span class="o">,</span><span class="s2">&quot;strokeWidth&quot;</span>
+	<span class="s2">&quot;fillOpacity&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;outlineOffset&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;floodColor&quot;</span><span class="p">,</span><span class="s2">&quot;floodOpacity&quot;</span><span class="p">,</span><span class="s2">&quot;lightingColor&quot;</span><span class="p">,</span><span class="s2">&quot;stopColor&quot;</span><span class="p">,</span><span class="s2">&quot;stopOpacity&quot;</span><span class="p">,</span>
+	<span class="s2">&quot;stroke&quot;</span><span class="p">,</span><span class="s2">&quot;strokeDashoffset&quot;</span><span class="p">,</span><span class="s2">&quot;strokeMiterlimit&quot;</span><span class="p">,</span><span class="s2">&quot;strokeOpacity&quot;</span><span class="p">,</span><span class="s2">&quot;strokeWidth&quot;</span>
 <span class="p">];</span>
 
 <span class="kd">function</span> <span class="nx">getStyles</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">css_attribute</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">attr</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">css_attribute</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">attr</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="nx">attr</span><span class="p">);</span>
 	<span class="p">});</span>
@@ -105,10 +105,10 @@
 
 <span class="kd">function</span> <span class="nx">isValidAttributeValue</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="sr">/[#0-9]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>	<span class="c">// # covers colors like #AABBCC</span>
+	<span class="k">return</span> <span class="sr">/[#0-9]/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>	<span class="c1">// # covers colors like #AABBCC</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">initialState</span><span class="p">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">from</span><span class="o">,</span> <span class="nx">to</span><span class="p">)</span>
+<span class="kd">function</span> <span class="nx">initialState</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">to</span><span class="p">.</span><span class="nx">cssClass</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -120,7 +120,7 @@
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">finalState</span><span class="p">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">from</span><span class="o">,</span> <span class="nx">to</span><span class="p">)</span>
+<span class="kd">function</span> <span class="nx">finalState</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">from</span><span class="p">.</span><span class="nx">cssClass</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -132,37 +132,37 @@
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kd">var</span> <span class="nx">orig_start</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_start</span><span class="o">;</span>
+<span class="kd">var</span> <span class="nx">orig_start</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_start</span><span class="p">;</span>
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_start</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;node&#39;</span><span class="p">)</span><span class="o">,</span>
-		<span class="nx">from</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="p">{}</span><span class="o">,</span>
+	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;node&#39;</span><span class="p">),</span>
+		<span class="nx">from</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="p">{},</span>
 		<span class="nx">to</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="p">)</span>   <span class="o">||</span> <span class="p">{};</span>
 
-	<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="o">;</span>
+	<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">;</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">from</span><span class="p">.</span><span class="nx">cssClass</span> <span class="o">||</span> <span class="nx">to</span><span class="p">.</span><span class="nx">cssClass</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">finalState</span><span class="p">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">from</span><span class="o">,</span> <span class="nx">to</span><span class="p">);</span>
+		<span class="nx">finalState</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">new_style</span> <span class="o">=</span> <span class="nx">getStyles</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
 
-		<span class="c">// second, so initial state is correct in forward case</span>
+		<span class="c1">// second, so initial state is correct in forward case</span>
 
-		<span class="nx">initialState</span><span class="p">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">from</span><span class="o">,</span> <span class="nx">to</span><span class="p">);</span>
+		<span class="nx">initialState</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">orig_style</span> <span class="o">=</span> <span class="nx">getStyles</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;reverse&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">finalState</span><span class="p">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">from</span><span class="o">,</span> <span class="nx">to</span><span class="p">);</span>
+			<span class="nx">finalState</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">fromClass</span><span class="o">:</span> <span class="nx">from</span><span class="p">.</span><span class="nx">cssClass</span><span class="o">,</span>
-			<span class="nx">from</span><span class="o">:</span>      <span class="p">[]</span><span class="o">,</span>
-			<span class="nx">toClass</span><span class="o">:</span>   <span class="nx">to</span><span class="p">.</span><span class="nx">cssClass</span><span class="o">,</span>
+			<span class="nx">fromClass</span><span class="o">:</span> <span class="nx">from</span><span class="p">.</span><span class="nx">cssClass</span><span class="p">,</span>
+			<span class="nx">from</span><span class="o">:</span>      <span class="p">[],</span>
+			<span class="nx">toClass</span><span class="o">:</span>   <span class="nx">to</span><span class="p">.</span><span class="nx">cssClass</span><span class="p">,</span>
 			<span class="nx">to</span><span class="o">:</span>        <span class="p">[]</span>
 		<span class="p">};</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">new_style</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">style</span><span class="o">,</span> <span class="nx">i</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">new_style</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">style</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">orig</span> <span class="o">=</span> <span class="nx">orig_style</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">style</span> <span class="o">!==</span> <span class="nx">orig</span><span class="p">)</span>
@@ -171,32 +171,32 @@
 				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">from</span><span class="p">[</span><span class="nx">attr</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">isValidAttributeValue</span><span class="p">(</span><span class="nx">orig</span><span class="p">))</span>
 				<span class="p">{</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">from</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">attr</span><span class="p">);</span>
-					<span class="nx">from</span><span class="p">[</span><span class="nx">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nx">orig</span><span class="o">;</span>
+					<span class="nx">from</span><span class="p">[</span><span class="nx">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nx">orig</span><span class="p">;</span>
 				<span class="p">}</span>
 				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">to</span><span class="p">[</span><span class="nx">attr</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">isValidAttributeValue</span><span class="p">(</span><span class="nx">style</span><span class="p">))</span>
 				<span class="p">{</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">to</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">attr</span><span class="p">);</span>
-					<span class="nx">to</span><span class="p">[</span><span class="nx">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nx">style</span><span class="o">;</span>
+					<span class="nx">to</span><span class="p">[</span><span class="nx">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nx">style</span><span class="p">;</span>
 				<span class="p">}</span>
 			<span class="p">}</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 
-		<span class="nx">delete</span> <span class="nx">from</span><span class="p">.</span><span class="nx">cssClass</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="o">,</span> <span class="nx">from</span><span class="p">);</span>
+		<span class="k">delete</span> <span class="nx">from</span><span class="p">.</span><span class="nx">cssClass</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="nx">from</span><span class="p">);</span>
 
-		<span class="nx">delete</span> <span class="nx">to</span><span class="p">.</span><span class="nx">cssClass</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="o">,</span> <span class="nx">to</span><span class="p">);</span>
+		<span class="k">delete</span> <span class="nx">to</span><span class="p">.</span><span class="nx">cssClass</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nx">to</span><span class="p">);</span>
 	<span class="p">}</span>
 
-	<span class="nx">orig_start</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="nx">orig_start</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="kd">var</span> <span class="nx">orig_runFrame</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_runFrame</span><span class="o">;</span>
+<span class="kd">var</span> <span class="nx">orig_runFrame</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_runFrame</span><span class="p">;</span>
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_runFrame</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="c">// The first frame doesn&#39;t happen immediately, so _start() has to leave</span>
-	<span class="c">// the original class in place.</span>
+	<span class="c1">// The first frame doesn&#39;t happen immediately, so _start() has to leave</span>
+	<span class="c1">// the original class in place.</span>
 
 	<span class="kd">var</span> <span class="nx">reverse</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;reverse&#39;</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">reverse</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">fromClass</span><span class="p">)</span>
@@ -208,46 +208,46 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;node&#39;</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">toClass</span><span class="p">);</span>
 	<span class="p">}</span>
 
-	<span class="nx">orig_runFrame</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="nx">orig_runFrame</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="kd">var</span> <span class="nx">orig_end</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_end</span><span class="o">;</span>
+<span class="kd">var</span> <span class="nx">orig_end</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_end</span><span class="p">;</span>
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">_end</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;node&#39;</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">from</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="p">{}</span><span class="o">,</span>
+		<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;node&#39;</span><span class="p">),</span>
+			<span class="nx">from</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="p">{},</span>
 			<span class="nx">to</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="p">)</span>   <span class="o">||</span> <span class="p">{};</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">from</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">attr</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">from</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">attr</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">delete</span> <span class="nx">from</span><span class="p">[</span><span class="nx">attr</span><span class="p">];</span>
+			<span class="k">delete</span> <span class="nx">from</span><span class="p">[</span><span class="nx">attr</span><span class="p">];</span>
 		<span class="p">});</span>
 
-		<span class="nx">from</span><span class="p">.</span><span class="nx">cssClass</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">fromClass</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="o">,</span> <span class="nx">from</span><span class="p">);</span>
+		<span class="nx">from</span><span class="p">.</span><span class="nx">cssClass</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">fromClass</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="nx">from</span><span class="p">);</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">to</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">attr</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">to</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">attr</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">delete</span> <span class="nx">to</span><span class="p">[</span><span class="nx">attr</span><span class="p">];</span>
-			<span class="nx">node</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">attr</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+			<span class="k">delete</span> <span class="nx">to</span><span class="p">[</span><span class="nx">attr</span><span class="p">];</span>
+			<span class="nx">node</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">attr</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
 		<span class="p">});</span>
 
-		<span class="nx">to</span><span class="p">.</span><span class="nx">cssClass</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">toClass</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="o">,</span> <span class="nx">to</span><span class="p">);</span>
+		<span class="nx">to</span><span class="p">.</span><span class="nx">cssClass</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_class_diff_attr</span><span class="p">.</span><span class="nx">toClass</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="nx">to</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;reverse&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">initialState</span><span class="p">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">from</span><span class="o">,</span> <span class="nx">to</span><span class="p">);</span>
+			<span class="nx">initialState</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">);</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="nx">finalState</span><span class="p">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">from</span><span class="o">,</span> <span class="nx">to</span><span class="p">);</span>
+			<span class="nx">finalState</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="nx">orig_end</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="nx">orig_end</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
 

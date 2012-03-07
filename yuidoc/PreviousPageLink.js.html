@@ -47,145 +47,145 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/*</span>
-<span class="c">Copyright (c) 2009, Yahoo! Inc. All rights reserved.</span>
-<span class="c">Code licensed under the BSD License:</span>
-<span class="c">http://developer.yahoo.net/yui/license.txt</span>
-<span class="c">*/</span>
+                        <div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">Copyright (c) 2009, Yahoo! Inc. All rights reserved.</span>
+<span class="cm">Code licensed under the BSD License:</span>
+<span class="cm">http://developer.yahoo.net/yui/license.txt</span>
+<span class="cm">*/</span>
 
-<span class="c">/**</span>
-<span class="c"> * ui Component to generate the link to jump to the previous page.</span>
-<span class="c"> *</span>
-<span class="c"> * @class Paginator.ui.PreviousPageLink</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param p {Pagintor} Paginator instance to attach to</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * ui Component to generate the link to jump to the previous page.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @class Paginator.ui.PreviousPageLink</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param p {Pagintor} Paginator instance to attach to</span>
+<span class="cm"> */</span>
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">PreviousPageLink</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span> <span class="o">=</span> <span class="nx">p</span><span class="o">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
 
-    <span class="nx">p</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;destroy&#39;</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">destroy</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;recordOffsetChange&#39;</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;rowsPerPageChange&#39;</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;totalRecordsChange&#39;</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;destroy&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">destroy</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;recordOffsetChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;rowsPerPageChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;totalRecordsChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
 
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;previousPageLinkLabelChange&#39;</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;previousPageLinkClassChange&#39;</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;previousPageLinkLabelChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;previousPageLinkClassChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="c">/**</span>
-<span class="c"> * CSS class assigned to the link/span</span>
-<span class="c"> * @attribute previousPageLinkClass</span>
-<span class="c"> * @default &#39;yui-paginator-previous&#39;</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * CSS class assigned to the link/span</span>
+<span class="cm"> * @attribute previousPageLinkClass</span>
+<span class="cm"> * @default &#39;yui-paginator-previous&#39;</span>
+<span class="cm"> */</span>
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">previousPageLinkClass</span> <span class="o">=</span>
 <span class="p">{</span>
-    <span class="nx">value</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">Paginator</span><span class="p">.</span><span class="nx">NAME</span><span class="o">,</span> <span class="s1">&#39;previous&#39;</span><span class="p">)</span><span class="o">,</span>
+    <span class="nx">value</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">Paginator</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;previous&#39;</span><span class="p">),</span>
     <span class="nx">validator</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
 <span class="p">};</span>
 
-<span class="c">/**</span>
-<span class="c"> * Used as innerHTML for the previous page link/span.</span>
-<span class="c"> * @attribute previousPageLinkLabel</span>
-<span class="c"> * @default &#39;&amp;lt; prev&#39;</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * Used as innerHTML for the previous page link/span.</span>
+<span class="cm"> * @attribute previousPageLinkLabel</span>
+<span class="cm"> * @default &#39;&amp;lt; prev&#39;</span>
+<span class="cm"> */</span>
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">previousPageLinkLabel</span> <span class="o">=</span>
 <span class="p">{</span>
-    <span class="nx">value</span> <span class="o">:</span> <span class="s1">&#39;&amp;lt; prev&#39;</span><span class="o">,</span>
+    <span class="nx">value</span> <span class="o">:</span> <span class="s1">&#39;&amp;lt; prev&#39;</span><span class="p">,</span>
     <span class="nx">validator</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
 <span class="p">};</span>
 
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">PreviousPageLink</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
 
-    <span class="c">/**</span>
-<span class="c">     * Currently placed HTMLElement node</span>
-<span class="c">     * @property current</span>
-<span class="c">     * @type HTMLElement</span>
-<span class="c">     * @private</span>
-<span class="c">     */</span>
-    <span class="nx">current</span>   <span class="o">:</span> <span class="kc">null</span><span class="o">,</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Currently placed HTMLElement node</span>
+<span class="cm">     * @property current</span>
+<span class="cm">     * @type HTMLElement</span>
+<span class="cm">     * @private</span>
+<span class="cm">     */</span>
+    <span class="nx">current</span>   <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
 
-    <span class="c">/**</span>
-<span class="c">     * Link node</span>
-<span class="c">     * @property link</span>
-<span class="c">     * @type HTMLElement</span>
-<span class="c">     * @private</span>
-<span class="c">     */</span>
-    <span class="nx">link</span>      <span class="o">:</span> <span class="kc">null</span><span class="o">,</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Link node</span>
+<span class="cm">     * @property link</span>
+<span class="cm">     * @type HTMLElement</span>
+<span class="cm">     * @private</span>
+<span class="cm">     */</span>
+    <span class="nx">link</span>      <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
 
-    <span class="c">/**</span>
-<span class="c">     * Span node (inactive link)</span>
-<span class="c">     * @property span</span>
-<span class="c">     * @type HTMLElement</span>
-<span class="c">     * @private</span>
-<span class="c">     */</span>
-    <span class="nx">span</span>      <span class="o">:</span> <span class="kc">null</span><span class="o">,</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Span node (inactive link)</span>
+<span class="cm">     * @property span</span>
+<span class="cm">     * @type HTMLElement</span>
+<span class="cm">     * @private</span>
+<span class="cm">     */</span>
+    <span class="nx">span</span>      <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
 
 
-    <span class="c">/**</span>
-<span class="c">     * Removes the link/span node and clears event listeners</span>
-<span class="c">     * @method destroy</span>
-<span class="c">     * @private</span>
-<span class="c">     */</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Removes the link/span node and clears event listeners</span>
+<span class="cm">     * @method destroy</span>
+<span class="cm">     * @private</span>
+<span class="cm">     */</span>
     <span class="nx">destroy</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="p">}</span><span class="o">,</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">},</span>
 
-    <span class="c">/**</span>
-<span class="c">     * Generate the nodes and return the appropriate node given the current</span>
-<span class="c">     * pagination state.</span>
-<span class="c">     * @method render</span>
-<span class="c">     * @param id_base {string} used to create unique ids for generated nodes</span>
-<span class="c">     * @return {HTMLElement}</span>
-<span class="c">     */</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Generate the nodes and return the appropriate node given the current</span>
+<span class="cm">     * pagination state.</span>
+<span class="cm">     * @method render</span>
+<span class="cm">     * @param id_base {string} used to create unique ids for generated nodes</span>
+<span class="cm">     * @return {HTMLElement}</span>
+<span class="cm">     */</span>
     <span class="nx">render</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">id_base</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">p</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="o">,</span>
-            <span class="nx">c</span>     <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;previousPageLinkClass&#39;</span><span class="p">)</span><span class="o">,</span>
-            <span class="kd">label</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;previousPageLinkLabel&#39;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">p</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">,</span>
+            <span class="nx">c</span>     <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;previousPageLinkClass&#39;</span><span class="p">),</span>
+            <span class="nx">label</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;previousPageLinkLabel&#39;</span><span class="p">);</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;a href=&quot;#&quot; id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-prev-link&quot;&gt;&#39;</span><span class="o">+</span><span class="kd">label</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="o">,</span> <span class="nx">c</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">onClick</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
+            <span class="s1">&#39;&lt;a href=&quot;#&quot; id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-prev-link&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">label</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">onClick</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
-            <span class="s1">&#39;&lt;span id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-prev-span&quot;&gt;&#39;</span><span class="o">+</span><span class="kd">label</span><span class="o">+</span><span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="o">,</span> <span class="nx">c</span><span class="p">);</span>
+            <span class="s1">&#39;&lt;span id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-prev-span&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">label</span><span class="o">+</span><span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">c</span><span class="p">);</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span> <span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="o">;</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="o">;</span>
-    <span class="p">}</span><span class="o">,</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span> <span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">;</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">;</span>
+    <span class="p">},</span>
 
-    <span class="c">/**</span>
-<span class="c">     * Swap the link and span nodes if appropriate.</span>
-<span class="c">     * @method update</span>
-<span class="c">     * @param e {CustomEvent} The calling change event</span>
-<span class="c">     */</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Swap the link and span nodes if appropriate.</span>
+<span class="cm">     * @method update</span>
+<span class="cm">     * @param e {CustomEvent} The calling change event</span>
+<span class="cm">     */</span>
     <span class="nx">update</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span><span class="o">;</span>
+            <span class="k">return</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="kd">var</span> <span class="nx">par</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="kd">var</span> <span class="nx">par</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
         <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">par</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">par</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="o">;</span>
+                <span class="nx">par</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">par</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">link</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">par</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="o">;</span>
+                <span class="nx">par</span><span class="p">.</span><span class="nx">replaceChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">;</span>
             <span class="p">}</span>
         <span class="p">}</span>
-    <span class="p">}</span><span class="o">,</span>
+    <span class="p">},</span>
 
-    <span class="c">/**</span>
-<span class="c">     * Listener for the link&#39;s onclick event.  Passes to setPage method.</span>
-<span class="c">     * @method onClick</span>
-<span class="c">     * @param e {DOMEvent} The click event</span>
-<span class="c">     */</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Listener for the link&#39;s onclick event.  Passes to setPage method.</span>
+<span class="cm">     * @method onClick</span>
+<span class="cm">     * @param e {DOMEvent} The click event</span>
+<span class="cm">     */</span>
     <span class="nx">onClick</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">setPage</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">getPreviousPage</span><span class="p">());</span>
