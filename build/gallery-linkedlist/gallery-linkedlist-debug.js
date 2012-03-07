@@ -478,6 +478,114 @@ LinkedList.prototype =
 
 Y.mix(LinkedList, Y.Iterable, false, null, 4);
 
+	/**
+	 * Executes the supplied function on each item in the list.  The
+	 * function receives the value, the index, and the list itself as
+	 * parameters (in that order).
+	 *
+	 * @method each
+	 * @param f {Function} the function to execute on each item
+	 * @param c {Object} optional context object
+	 */
+
+	/**
+	 * Executes the supplied function on each item in the list.  Iteration
+	 * stops if the supplied function does not return a truthy value.  The
+	 * function receives the value, the index, and the list itself as
+	 * parameters (in that order).
+	 *
+	 * @method every
+	 * @param f {Function} the function to execute on each item
+	 * @param c {Object} optional context object
+	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise
+	 */
+
+	/**
+	 * Executes the supplied function on each item in the list.  Returns a
+	 * new list containing the items for which the supplied function
+	 * returned a truthy value.  The function receives the value, the
+	 * index, and the object itself as parameters (in that order).
+	 *
+	 * @method filter
+	 * @param f {Function} the function to execute on each item
+	 * @param c {Object} optional context object
+	 * @return {Object} list of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)
+	 */
+
+	/**
+	 * Executes the supplied function on each item in the list, searching
+	 * for the first item that matches the supplied function.  The function
+	 * receives the value, the index, and the object itself as parameters
+	 * (in that order).
+	 *
+	 * @method find
+	 * @param f {Function} the function to execute on each item
+	 * @param c {Object} optional context object
+	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true
+	 */
+
+	/**
+	 * Executes the supplied function on each item in the list and returns
+	 * a new list with the results.  The function receives the value, the
+	 * index, and the object itself as parameters (in that order).
+	 *
+	 * @method map
+	 * @param f {String} the function to invoke
+	 * @param c {Object} optional context object
+	 * @return {Object} list of all return values
+	 */
+
+	/**
+	 * Partitions an list into two new list, one with the items for which
+	 * the supplied function returns true, and one with the items for which
+	 * the function returns false.  The function receives the value, the
+	 * index, and the object itself as parameters (in that order).
+	 *
+	 * @method partition
+	 * @param f {Function} the function to execute on each item
+	 * @param c {Object} optional context object
+	 * @return {Object} object with two properties: matches and rejects. Each is a list containing the items that were selected or rejected by the test function (or an empty object if none).
+	 */
+
+	/**
+	 * Executes the supplied function on each item in the list, folding the
+	 * list into a single value.  The function receives the value returned
+	 * by the previous iteration (or the initial value if this is the first
+	 * iteration), the value being iterated, the index, and the list itself
+	 * as parameters (in that order).  The function must return the updated
+	 * value.
+	 *
+	 * @method reduce
+	 * @param init {Mixed} the initial value
+	 * @param f {String} the function to invoke
+	 * @param c {Object} optional context object
+	 * @return {Mixed} final result from iteratively applying the given function to each item in the list
+	 */
+
+	/**
+	 * Executes the supplied function on each item in the list.  Returns a
+	 * new list containing the items for which the supplied function
+	 * returned a falsey value.  The function receives the value, the
+	 * index, and the object itself as parameters (in that order).
+	 *
+	 * @method reject
+	 * @param f {Function} the function to execute on each item
+	 * @param c {Object} optional context object
+	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)
+	 */
+
+	/**
+	 * Executes the supplied function on each item in the list.  Iteration
+	 * stops if the supplied function returns a truthy value.  The function
+	 * receives the value, the index, and the list itself as parameters
+	 * (in that order).
+	 *
+	 * @method some
+	 * @param f {Function} the function to execute on each item
+	 * @param c {Object} optional context object
+	 * @return {Boolean} true if the function returns a truthy value on any of the items in the array, false otherwise
+	 */
+
 Y.LinkedList = LinkedList;
 
 
