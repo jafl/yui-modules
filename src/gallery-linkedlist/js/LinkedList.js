@@ -1,7 +1,11 @@
 /**********************************************************************
- * Doubly linked list for storing items.  Supports iteration via
- * Y.LinkedListIterator or Y.each().  Also supports all the other
- * operations defined in gallery-funcprog.
+ * <p>Doubly linked list for storing items.  Supports iteration via
+ * LinkedListIterator (returned by this.iterator()) or Y.each().  Also
+ * supports all the other operations defined in gallery-funcprog.</p>
+ * 
+ * <p>Direct indexing into the list is not supported, as a reminder that it
+ * is an expensive operation.  Instead, use find() with a function that
+ * checks the index.</p>
  * 
  * @module gallery-linkedlist
  * @class LinkedList
@@ -17,7 +21,7 @@ function LinkedList(list)
 	{
 		list = Y.Array(arguments);
 	}
-	else if (!Y.Lang.isUndefined(list) && !Y.Array.test(list))
+	else if (!Y.Lang.isUndefined(list) && !(list instanceof LinkedList) && !Y.Array.test(list))
 	{
 		list = Y.Array(list);
 	}
@@ -85,6 +89,16 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * Creates a new, empty LinkedList.
+	 *
+	 * @return {LinkedList}
+	 */
+	newInstance: function()
+	{
+		return new LinkedList();
+	},
+
+	/**
 	 * @param needle {Mixed} the item to search for
 	 * @return {Number} first index of the needle, or -1 if not found
 	 */
@@ -109,15 +123,15 @@ LinkedList.prototype =
 	 */
 	lastIndexOf: function(needle)
 	{
-		var iter = this.iterator(), i = 0;
-		iter.goToEnd();
+		var iter = this.iterator(), i = this.size();
+		iter.moveToEnd();
 		while (!iter.atBeginning())
 		{
+			i--;
 			if (iter.prev() === needle)
 			{
 				return i;
 			}
-			i++;
 		}
 
 		return -1;
@@ -260,6 +274,40 @@ LinkedList.prototype =
 		}
 
 		item._prev = item._next = null;
+	},
+
+	/**
+	 * Reverses the items in place.
+	 */
+	reverse: function()
+	{
+		var list = new LinkedList();
+		var iter = this.iterator();
+		while (!iter.atEnd())
+		{
+			var item = iter.removeNext();
+			list.prepend(item);
+		}
+
+		this._head = list._head;
+		this._tail = list._tail;
+	},
+
+	/**
+	 * @return {Array}
+	 */
+	toArray: function()
+	{
+		var result = [],
+			item   = this._head;
+
+		while (item)
+		{
+			result.push(item.value);
+			item = item._next;
+		}
+
+		return result;
 	}
 };
 

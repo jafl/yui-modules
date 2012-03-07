@@ -1,10 +1,12 @@
 /**********************************************************************
  * <p>Functional programming support for iterable classes.  The class must
- * implement the iterator() method, and this must return an object that
- * implements next() and atEnd().</p>
+ * implement the iterator() (which must return an object that implements
+ * next() and atEnd()) and newInstance() methods.</p>
  * 
  * <p>Iterable classes must mix these functions:  <code>Y.mix(SomeClass,
- * Y.Iterable, false, null, 4);</code></p>
+ * Y.Iterable, false, null, 4);</code>  Passing false as the third argument
+ * allows your class to provide optimized implementations of individual
+ * functions.</p>
  * 
  * @module gallery-iterable-extras
  * @class Iterable
@@ -70,7 +72,7 @@ Y.Iterable =
 	 */
 	filter: function(f, c)
 	{
-		var result = new LinkedList();
+		var result = this.newInstance();
 
 		var iter = this.iterator(), i = 0;
 		while (!iter.atEnd())
@@ -125,7 +127,7 @@ Y.Iterable =
 	 */
 	map: function(f, c)
 	{
-		var result = new LinkedList();
+		var result = this.newInstance();
 
 		var iter = this.iterator(), i = 0;
 		while (!iter.atEnd())
@@ -148,12 +150,12 @@ Y.Iterable =
 	 * @param c {Object} optional context object
 	 * @return {Object} object with two properties: matches and rejects. Each is a list containing the items that were selected or rejected by the test function (or an empty object if none).
 	 */
-	partition: function(o, f, c, proto)
+	partition: function(f, c)
 	{
 		var result =
 		{
-			matches: new LinkedList(),
-			rejects: new LinkedList()
+			matches: this.newInstance(),
+			rejects: this.newInstance()
 		};
 
 		var iter = this.iterator(), i = 0;
@@ -206,9 +208,9 @@ Y.Iterable =
 	 * @param c {Object} optional context object
 	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)
 	 */
-	reject: function(o, f, c, proto)
+	reject: function(f, c)
 	{
-		var result = new LinkedList();
+		var result = this.newInstance();
 
 		var iter = this.iterator(), i = 0;
 		while (!iter.atEnd())

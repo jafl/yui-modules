@@ -1,6 +1,8 @@
 /**********************************************************************
  * Iterator for LinkedList.  Stable except when the next item is removed by
- * calling list.remove() instead of iter.removeNext().
+ * calling list.remove() instead of iter.removeNext().  When items are
+ * inserted into an empty list, the pointer remains at the end, not the
+ * beginning.
  *
  * @class LinkedListIterator
  */
@@ -14,9 +16,8 @@
 function LinkedListIterator(
 	/* LinkedList */    list)
 {
-	this._list   = list;
-	this._next   = list._head;
-	this._at_end = !this._next;
+	this._list = list;
+	this.moveToBeginning();
 }
 
 LinkedListIterator.prototype =
@@ -35,6 +36,24 @@ LinkedListIterator.prototype =
 	atEnd: function()
 	{
 		return (!this._next || this._at_end);
+	},
+
+	/**
+	 * Move to the beginning of the list.
+	 */
+	moveToBeginning: function()
+	{
+		this._next   = this._list._head;
+		this._at_end = !this._next;
+	},
+
+	/**
+	 * Move to the end of the list.
+	 */
+	moveToEnd: function()
+	{
+		this._next   = this._list._tail;
+		this._at_end = true;
 	},
 
 	/**
@@ -112,6 +131,34 @@ LinkedListIterator.prototype =
 	},
 
 	/**
+	 * Remove the previous item from the list.
+	 * 
+	 * @return {LinkedListItem} removed item or undefined if at the end
+	 */
+	removePrev: function()
+	{
+		var result;
+		if (this._at_end)
+		{
+			result = this._next;
+			if (this._next)
+			{
+				this._next = this._next._prev;
+			}
+		}
+		else if (this._next)
+		{
+			result = this._next._prev;
+		}
+
+		if (result)
+		{
+			this._list.remove(result);
+			return result;
+		}
+	},
+
+	/**
 	 * Remove the next item from the list.
 	 * 
 	 * @return {LinkedListItem} removed item or undefined if at the end
@@ -131,34 +178,6 @@ LinkedListIterator.prototype =
 				this._next   = this._next ? this._next._prev : null;
 				this._at_end = true;
 			}
-		}
-
-		if (result)
-		{
-			this._list.remove(result);
-			return result;
-		}
-	},
-
-	/**
-	 * Remove the previous item from the list.
-	 * 
-	 * @return {LinkedListItem} removed item or undefined if at the end
-	 */
-	removePrev: function()
-	{
-		var result;
-		if (this._at_end)
-		{
-			result = this._next;
-			if (this._next)
-			{
-				this._next = this._next._prev;
-			}
-		}
-		else if (this._next)
-		{
-			result = this._next._prev;
 		}
 
 		if (result)
