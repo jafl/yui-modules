@@ -76,7 +76,7 @@
 <span class="c"> * </span>
 <span class="c"> * &lt;p&gt;If the body content is a single module, it expands as the content</span>
 <span class="c"> * expands (fit-to-content) until it would push the footer below the fold.</span>
-<span class="c"> * Then it switches to fit-to-content so the scrollbar appears on the</span>
+<span class="c"> * Then it switches to fit-to-viewport so the scrollbar appears on the</span>
 <span class="c"> * module instead of the entire viewport.&lt;/p&gt;</span>
 <span class="c"> * </span>
 <span class="c"> * &lt;p&gt;Note that a non-zero margin-top on the top element or a non-zero</span>
@@ -114,7 +114,9 @@
 	<span class="c">/**</span>
 <span class="c">	 * FIT_TO_VIEWPORT sizes the rows to fit everything inside the</span>
 <span class="c">	 * browser&#39;s viewport.  FIT_TO_CONTENT sizes the rows to eliminate all</span>
-<span class="c">	 * scrollbars on module bodies.</span>
+<span class="c">	 * scrollbars on module bodies.  Note that you can configure this</span>
+<span class="c">	 * property by putting the CSS class &quot;FIT_TO_VIEWPORT&quot; or</span>
+<span class="c">	 * &quot;FIT_TO_CONTENT&quot; on layout-bd.</span>
 <span class="c">	 *</span>
 <span class="c">	 * @config mode</span>
 <span class="c">	 * @type PageLayout.FIT_TO_VIEWPORT or PageLayout.FIT_TO_CONTENT</span>
@@ -508,7 +510,7 @@
 
 	<span class="c">// check if viewport changed</span>
 
-	<span class="kd">var</span> <span class="nx">mode</span>          <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">mode</span>          <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">single_module</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">);</span>
 	<span class="kd">var</span> <span class="nx">sticky_footer</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;stickyFooter&#39;</span><span class="p">);</span>
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowX&#39;</span><span class="o">,</span>
@@ -586,7 +588,7 @@
 
 	<span class="c">// resize modules</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">body_width</span><span class="o">,</span> <span class="nx">body_height</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">mode</span><span class="o">,</span> <span class="nx">body_width</span><span class="o">,</span> <span class="nx">body_height</span><span class="p">);</span>
 
 	<span class="c">// show body and footer</span>
 
@@ -896,10 +898,18 @@
 		<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outer_sizes</span> <span class="o">=</span>
 			<span class="nx">normalizeSizes</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="o">,</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">outer_size</span><span class="p">);</span>
 
+		<span class="k">this</span><span class="p">.</span><span class="nx">single_module</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">plugin_data</span>        <span class="o">=</span> <span class="nx">plugin_info</span><span class="p">.</span><span class="nx">row</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">single_module</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+		<span class="p">}</span>
+
 		<span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
 		<span class="nx">Y</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">plugin_data</span><span class="p">.</span><span class="nx">module</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="nx">self</span><span class="p">.</span><span class="nx">layout_plugin</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">[</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">plugin</span> <span class="p">];</span>
+			<span class="nx">updateFitClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>	<span class="c">// plugin may modify it</span>
 			<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>
 		<span class="p">});</span>
 	<span class="p">}</span><span class="o">,</span>
@@ -1064,7 +1074,7 @@
 			<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="o">||</span>
 			<span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">el</span><span class="p">)))</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
 			<span class="p">}</span>
@@ -1186,6 +1196,7 @@
                                 <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class="selected"><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
+                                <li class=""><a href="module_gallery-linkedlist.html" title="gallery-linkedlist">gallery-linkedlist</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>

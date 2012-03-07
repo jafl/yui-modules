@@ -118,10 +118,10 @@
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayoutRows</span><span class="p">.</span><span class="nx">resize</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
 	<span class="c">/* PageLayout */</span>	<span class="nx">host</span><span class="o">,</span>
+	<span class="c">/* enum */</span>			<span class="nx">mode</span><span class="o">,</span>
 	<span class="c">/* int */</span>			<span class="nx">body_width</span><span class="o">,</span>
 	<span class="c">/* int */</span>			<span class="nx">body_height</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">mode</span>      <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">);</span>
 	<span class="kd">var</span> <span class="nx">row_count</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
 
 	<span class="c">// reset module heights</span>
@@ -177,10 +177,32 @@
 		<span class="p">}</span>
 	<span class="p">}</span>
 
+	<span class="c">// smart fit:  if only one module, fit-to-content until it won&#39;t fit inside viewport</span>
+
+	<span class="kd">var</span> <span class="nx">module_info</span> <span class="o">=</span> <span class="p">{};</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">host</span><span class="p">.</span><span class="nx">single_module</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">module</span>   <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">item</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">w</span>  <span class="o">=</span> <span class="nx">getWidth</span><span class="p">(</span><span class="nx">row_widths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">,</span> <span class="nx">col_widths</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">module</span><span class="o">,</span> <span class="nx">module_info</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">());</span>
+			<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="o">,</span> <span class="nx">w1</span><span class="p">);</span>
+			<span class="nx">host</span><span class="p">.</span><span class="nx">_setWidth</span><span class="p">(</span><span class="nx">children</span><span class="o">,</span> <span class="nx">w</span><span class="p">);</span>
+			<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+			<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">totalHeight</span><span class="p">();</span>
+		<span class="nx">mode</span>  <span class="o">=</span> <span class="p">(</span><span class="nx">h</span> <span class="o">&gt;</span> <span class="nx">body_height</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span><span class="p">);</span>
+
+		<span class="nx">host</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;FIT_TO_[A-Z_]+&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+
 	<span class="c">// fit-to-content:  compute height of each row; requires setting module widths</span>
 	<span class="c">// fit-to-viewport: adjust for vertically collapsed modules</span>
 
-	<span class="kd">var</span> <span class="nx">module_info</span> <span class="o">=</span> <span class="p">{};</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">row_heights</span> <span class="o">=</span> <span class="p">[];</span>
@@ -451,6 +473,7 @@
                                 <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
                                 <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
                                 <li class="selected"><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
+                                <li class=""><a href="module_gallery-linkedlist.html" title="gallery-linkedlist">gallery-linkedlist</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>

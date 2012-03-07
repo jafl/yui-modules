@@ -1,0 +1,319 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Linked List Unit Tests</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
+	<script src="gallery-linkedlist-debug.js"></script>
+	<script src="gallery-test-extras-debug.js"></script>
+</head>
+
+<body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/linkedlist">YUI 3 Linked List</a> Unit Tests</h1>
+
+<p><a href="../yuidoc/module_gallery-linkedlist.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<script type="text/javascript">
+YUI({
+//	filter: 'raw', combine: false,
+	logInclude: { TestRunner: true }
+}).use(
+	'gallery-linkedlist', 'gallery-test-extras',
+	'console', 'console-filters', 'dd-plugin',
+function(Y)
+{
+	Y.Test.Runner.add(new Y.Test.Case(
+	{
+		name: 'Linked List',
+
+		testInsert: function()
+		{
+			var list = new Y.LinkedList();
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var last = list.append(4);
+			Y.Assert.isFalse(list.isEmpty());
+			Y.Assert.areSame(1, list.size());
+
+			var first = list.prepend(1);
+			Y.Assert.areSame(2, list.size());
+
+			list.insertAfter(first, 2);
+			list.insertBefore(3, last);
+			Y.Assert.areSame(4, list.size());
+
+			list.clear();
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var first = list.prepend(1);
+			Y.Assert.areSame(1, list.size());
+
+			var last = list.append(4);
+			Y.Assert.areSame(2, list.size());
+
+			list.insertAfter(first, 2);
+			list.insertBefore(3, last);
+			Y.Assert.areSame(4, list.size());
+		},
+
+		testRemove: function()
+		{
+			var list = new Y.LinkedList();
+			var last = list.append(1);
+			list.remove(last);
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var v1 = list.append(1);
+			var v2 = list.append(2);
+			Y.Assert.areSame(2, list.size());
+			list.remove(v1);
+			Y.Assert.areSame(1, list.size());
+			list.remove(v2);
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var v1 = list.append(1);
+			var v2 = list.append(2);
+			Y.Assert.areSame(2, list.size());
+			list.remove(v2);
+			Y.Assert.areSame(1, list.size());
+			list.remove(v1);
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var v1 = list.append(1);
+			var v2 = list.append(2);
+			var v3 = list.append(3);
+			Y.Assert.areSame(3, list.size());
+			list.remove(v1);
+			Y.Assert.areSame(2, list.size());
+			list.remove(v2);
+			Y.Assert.areSame(1, list.size());
+			list.remove(v3);
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var v1 = list.append(1);
+			var v2 = list.append(2);
+			var v3 = list.append(3);
+			Y.Assert.areSame(3, list.size());
+			list.remove(v1);
+			Y.Assert.areSame(2, list.size());
+			list.remove(v3);
+			Y.Assert.areSame(1, list.size());
+			list.remove(v2);
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var v1 = list.append(1);
+			var v2 = list.append(2);
+			var v3 = list.append(3);
+			Y.Assert.areSame(3, list.size());
+			list.remove(v2);
+			Y.Assert.areSame(2, list.size());
+			list.remove(v1);
+			Y.Assert.areSame(1, list.size());
+			list.remove(v3);
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var v1 = list.append(1);
+			var v2 = list.append(2);
+			var v3 = list.append(3);
+			Y.Assert.areSame(3, list.size());
+			list.remove(v2);
+			Y.Assert.areSame(2, list.size());
+			list.remove(v3);
+			Y.Assert.areSame(1, list.size());
+			list.remove(v1);
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var v1 = list.append(1);
+			var v2 = list.append(2);
+			var v3 = list.append(3);
+			Y.Assert.areSame(3, list.size());
+			list.remove(v3);
+			Y.Assert.areSame(2, list.size());
+			list.remove(v1);
+			Y.Assert.areSame(1, list.size());
+			list.remove(v2);
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+
+			var v1 = list.append(1);
+			var v2 = list.append(2);
+			var v3 = list.append(3);
+			Y.Assert.areSame(3, list.size());
+			list.remove(v3);
+			Y.Assert.areSame(2, list.size());
+			list.remove(v2);
+			Y.Assert.areSame(1, list.size());
+			list.remove(v1);
+			Y.Assert.isTrue(list.isEmpty());
+			Y.Assert.areSame(0, list.size());
+		},
+
+		testCtor: function()
+		{
+			var list = new Y.LinkedList(1,2,3);
+			Y.Assert.areSame(3, list.size());
+
+			var list = new Y.LinkedList([1,2,3]);
+			Y.Assert.areSame(3, list.size());
+
+			var list = new Y.LinkedList(1);
+			Y.Assert.areSame(1, list.size());
+		},
+
+		testIterator: function()
+		{
+			var list = new Y.LinkedList();
+			var iter = new Y.LinkedListIterator(list);
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+			Y.Assert.isUndefined(iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+			Y.Assert.isUndefined(iter.next());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+			Y.Assert.isUndefined(iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+
+			var list = new Y.LinkedList(1);
+			var iter = new Y.LinkedListIterator(list);
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.isUndefined(iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.areSame(1, iter.next());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+			Y.Assert.isUndefined(iter.next());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+			Y.Assert.areSame(1, iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.isUndefined(iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+
+			var list = new Y.LinkedList(1,2);
+			var iter = new Y.LinkedListIterator(list);
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.isUndefined(iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.areSame(1, iter.next());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.areSame(2, iter.next());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+			Y.Assert.isUndefined(iter.next());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+			Y.Assert.areSame(2, iter.prev());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.areSame(1, iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.isUndefined(iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+
+			var list = new Y.LinkedList(1,2,3);
+			var iter = new Y.LinkedListIterator(list);
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.isUndefined(iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.areSame(1, iter.next());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.areSame(2, iter.next());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.areSame(3, iter.next());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+			Y.Assert.isUndefined(iter.next());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isTrue(iter.atEnd());
+			Y.Assert.areSame(3, iter.prev());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.areSame(2, iter.prev());
+			Y.Assert.isFalse(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.areSame(1, iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+			Y.Assert.isUndefined(iter.prev());
+			Y.Assert.isTrue(iter.atBeginning());
+			Y.Assert.isFalse(iter.atEnd());
+		},
+
+		testEach: function()
+		{
+			var list = new Y.LinkedList(1,2,3), array = [];
+			list.each(function(value)
+			{
+				array.push(value);
+			});
+
+			Y.ArrayAssert.itemsAreSame([1,2,3], array);
+		},
+
+		testEvery: function()
+		{
+			var list = new Y.LinkedList(1,2,3), array = [];
+			list.every(function(value)
+			{
+				array.push(value);
+				return (value < 2);
+			});
+
+			Y.ArrayAssert.itemsAreSame([1,2], array);
+		},
+
+		testSome: function()
+		{
+			var list = new Y.LinkedList(1,2,3), array = [];
+			list.some(function(value)
+			{
+				array.push(value);
+				return (value == 2);
+			});
+
+			Y.ArrayAssert.itemsAreSame([1,2], array);
+		}
+	}));
+
+	new Y.Console(
+	{
+		newestOnTop: false,
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
+	})
+	.render();
+
+	Y.Test.Runner.run();
+});
+</script>
+
+</body>
+</html>
