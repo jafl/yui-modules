@@ -4,8 +4,12 @@
  * Item stored by LinkedList.
  * 
  * @class LinkedListItem
- * @constructor
+ */
+
+/**
+ * @method constructor
  * @param value {Mixed} value to store
+ * @private
  */
 
 function LinkedListItem(

@@ -3,8 +3,12 @@
  * calling list.remove() instead of iter.removeNext().
  *
  * @class LinkedListIterator
- * @constructor
+ */
+
+/**
+ * @method constructor
  * @param list {LinkedList}
+ * @private
  */
 
 function LinkedListIterator(
@@ -12,7 +16,7 @@ function LinkedListIterator(
 {
 	this._list   = list;
 	this._next   = list._head;
-	this._at_end = false;
+	this._at_end = !this._next;
 }
 
 LinkedListIterator.prototype =
@@ -164,5 +168,3 @@ LinkedListIterator.prototype =
 		}
 	}
 };
-
-Y.LinkedListIterator = LinkedListIterator;

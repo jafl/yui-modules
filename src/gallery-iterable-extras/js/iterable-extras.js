@@ -1,270 +1,17 @@
 /**********************************************************************
- * Doubly linked list for storing items.  Supports iteration via
- * Y.LinkedListIterator or Y.each().  Also supports all the other
- * operations defined in gallery-funcprog.
+ * <p>Functional programming support for iterable classes.  The class must
+ * implement the iterator() method, and this must return an object that
+ * implements next() and atEnd().</p>
  * 
- * @module gallery-linkedlist
- * @class LinkedList
- * @constructor
- * @param list {Mixed} (Optional) any scalar or iterable list
+ * <p>Iterable classes must mix these functions:  <code>Y.mix(SomeClass,
+ * Y.Iterable, false, null, 4);</code></p>
+ * 
+ * @module gallery-iterable-extras
+ * @class Iterable
  */
 
-function LinkedList(list)
+Y.Iterable =
 {
-	this._head = this._tail = null;
-
-	if (arguments.length > 1)
-	{
-		list = Y.Array(arguments);
-	}
-	else if (!Y.Lang.isUndefined(list) && !Y.Array.test(list))
-	{
-		list = Y.Array(list);
-	}
-
-	if (!Y.Lang.isUndefined(list))
-	{
-		Y.each(list, function(value)
-		{
-			this.append(value);
-		},
-		this);
-	}
-}
-
-function wrap(value)
-{
-	if (value instanceof LinkedListItem)
-	{
-		this.remove(value);
-	}
-	else
-	{
-		value = new LinkedListItem(value);
-	}
-
-	return value;
-}
-
-LinkedList.prototype =
-{
-	/**
-	 * @return {Boolean} true if the list is empty
-	 */
-	isEmpty: function()
-	{
-		return (!this._head && !this._tail);
-	},
-
-	/**
-	 * Warning:  This requires traversing the list!  Use isEmpty() whenever
-	 * possible.
-	 *
-	 * @return {Number} the number of items in the list
-	 */
-	size: function()
-	{
-		var count = 0,
-			item  = this._head;
-
-		while (item)
-		{
-			count++;
-			item = item._next;
-		}
-
-		return count;
-	},
-
-	/**
-	 * @return {LinkedListIterator}
-	 */
-	iterator: function()
-	{
-		return new LinkedListIterator(this);
-	},
-
-	/**
-	 * @param needle {Mixed} the item to search for
-	 * @return {Number} first index of the needle, or -1 if not found
-	 */
-	indexOf: function(needle)
-	{
-		var iter = this.iterator(), i = 0;
-		while (!iter.atEnd())
-		{
-			if (iter.next() === needle)
-			{
-				return i;
-			}
-			i++;
-		}
-
-		return -1;
-	},
-
-	/**
-	 * @param needle {Mixed} the item to search for
-	 * @return {Number} last index of the needle, or -1 if not found
-	 */
-	lastIndexOf: function(needle)
-	{
-		var iter = this.iterator(), i = 0;
-		iter.goToEnd();
-		while (!iter.atBeginning())
-		{
-			if (iter.prev() === needle)
-			{
-				return i;
-			}
-			i++;
-		}
-
-		return -1;
-	},
-
-	/**
-	 * Clear the list.
-	 */
-	clear: function()
-	{
-		this._head = this._tail = null;
-	},
-
-	/**
-	 * @param value {Mixed} value to insert
-	 * @param item {LinkedListItem} existing item
-	 * @return {LinkedListItem} inserted item
-	 */
-	insertBefore: function(
-		/* object */	value,
-		/* item */		item)
-	{
-		value = wrap.call(this, value);
-
-		value._prev = item._prev;
-		value._next = item;
-
-		if (item._prev)
-		{
-			item._prev._next = value;
-		}
-		else
-		{
-			this._head = value;
-		}
-		item._prev = value;
-
-		return value;
-	},
-
-	/**
-	 * @param item {LinkedListItem} existing item
-	 * @param value {Mixed} value to insert
-	 * @return {LinkedListItem} inserted item
-	 */
-	insertAfter: function(
-		/* item */		item,
-		/* object */	value)
-	{
-		value = wrap.call(this, value);
-
-		value._prev = item;
-		value._next = item._next;
-
-		if (item._next)
-		{
-			item._next._prev = value;
-		}
-		else
-		{
-			this._tail = value;
-		}
-		item._next = value;
-
-		return value;
-	},
-
-	/**
-	 * @param value {Mixed} value to prepend
-	 * @return {LinkedListItem} prepended item
-	 */
-	prepend: function(
-		/* object */	value)
-	{
-		value = wrap.call(this, value);
-
-		if (this.isEmpty())
-		{
-			this._head = this._tail = value;
-		}
-		else
-		{
-			this.insertBefore(value, this._head);
-		}
-
-		return value;
-	},
-
-	/**
-	 * @param value {Mixed} value to append
-	 * @return {LinkedListItem} appended item
-	 */
-	append: function(
-		/* object */	value)
-	{
-		value = wrap.call(this, value);
-
-		if (this.isEmpty())
-		{
-			this._head = this._tail = value;
-		}
-		else
-		{
-			this.insertAfter(this._tail, value);
-		}
-
-		return value;
-	},
-
-	/**
-	 * Remove the item from the list.
-	 */
-	remove: function(
-		/* item */	item)
-	{
-		if (item._prev)
-		{
-			item._prev._next = item._next;
-		}
-		else if (item === this._head)
-		{
-			this._head = item._next;
-			if (item._next)
-			{
-				item._next._prev = null;
-			}
-		}
-
-		if (item._next)
-		{
-			item._next._prev = item._prev;
-		}
-		else if (item === this._tail)
-		{
-			this._tail = item._prev;
-			if (item._prev)
-			{
-				item._prev._next = null;
-			}
-		}
-
-		item._prev = item._next = null;
-	}
-};
-
-Y.mix(LinkedList, Y.Iterable, false, null, 4);
-
 	/**
 	 * Executes the supplied function on each item in the list.  The
 	 * function receives the value, the index, and the list itself as
@@ -274,6 +21,15 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 */
+	each: function(f, c)
+	{
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			f.call(c, iter.next(), i, this);
+			i++;
+		}
+	},
 
 	/**
 	 * Executes the supplied function on each item in the list.  Iteration
@@ -286,6 +42,20 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 	 * @param c {Object} optional context object
 	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise
 	 */
+	every: function(f, c)
+	{
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			if (!f.call(c, iter.next(), i, this))
+			{
+				return false;
+			}
+			i++;
+		}
+
+		return true;
+	},
 
 	/**
 	 * Executes the supplied function on each item in the list.  Returns a
@@ -298,6 +68,23 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 	 * @param c {Object} optional context object
 	 * @return {Object} list of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)
 	 */
+	filter: function(f, c)
+	{
+		var result = new LinkedList();
+
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			var item = iter.next();
+			if (f.call(c, item, i, this))
+			{
+				result.append(item);
+			}
+			i++;
+		}
+
+		return result;
+	},
 
 	/**
 	 * Executes the supplied function on each item in the list, searching
@@ -310,6 +97,21 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 	 * @param c {Object} optional context object
 	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true
 	 */
+	find: function(f, c)
+	{
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			var item = iter.next();
+			if (f.call(c, item, i, this))
+			{
+				return item;
+			}
+			i++;
+		}
+
+		return null;
+	},
 
 	/**
 	 * Executes the supplied function on each item in the list and returns
@@ -321,6 +123,19 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 	 * @param c {Object} optional context object
 	 * @return {Object} list of all return values
 	 */
+	map: function(f, c)
+	{
+		var result = new LinkedList();
+
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			result.append(f.call(c, iter.next(), i, this));
+			i++;
+		}
+
+		return result;
+	},
 
 	/**
 	 * Partitions an list into two new list, one with the items for which
@@ -333,6 +148,24 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 	 * @param c {Object} optional context object
 	 * @return {Object} object with two properties: matches and rejects. Each is a list containing the items that were selected or rejected by the test function (or an empty object if none).
 	 */
+	partition: function(o, f, c, proto)
+	{
+		var result =
+		{
+			matches: new LinkedList(),
+			rejects: new LinkedList()
+		};
+
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			var item = iter.next();
+			result[ f.call(c, item, i, this) ? 'matches' : 'rejects' ].append(item);
+			i++;
+		}
+
+		return result;
+	},
 
 	/**
 	 * Executes the supplied function on each item in the list, folding the
@@ -348,6 +181,19 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 	 * @param c {Object} optional context object
 	 * @return {Mixed} final result from iteratively applying the given function to each item in the list
 	 */
+	reduce: function(init, f, c)
+	{
+		var result = init;
+
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			result = f.call(c, result, iter.next(), i, this);
+			i++;
+		}
+
+		return result;
+	},
 
 	/**
 	 * Executes the supplied function on each item in the list.  Returns a
@@ -360,6 +206,23 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 	 * @param c {Object} optional context object
 	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)
 	 */
+	reject: function(o, f, c, proto)
+	{
+		var result = new LinkedList();
+
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			var item = iter.next();
+			if (!f.call(c, item, i, this))
+			{
+				result.append(item);
+			}
+			i++;
+		}
+
+		return result;
+	},
 
 	/**
 	 * Executes the supplied function on each item in the list.  Iteration
@@ -372,5 +235,18 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 	 * @param c {Object} optional context object
 	 * @return {Boolean} true if the function returns a truthy value on any of the items in the array, false otherwise
 	 */
+	some: function(f, c)
+	{
+		var iter = this.iterator(), i = 0;
+		while (!iter.atEnd())
+		{
+			if (f.call(c, iter.next(), i, this))
+			{
+				return true;
+			}
+			i++;
+		}
 
-Y.LinkedList = LinkedList;
+		return false;
+	}
+};
