@@ -228,7 +228,7 @@ LinkedList.prototype =
 		var iter = new LinkedListIterator(this), item, i = 0;
 		while (item = iter.next())
 		{
-			f.call(c, item.value, i, this);
+			f.call(c, item, i, this);
 		}
 	},
 
@@ -247,7 +247,7 @@ LinkedList.prototype =
 		var iter = new LinkedListIterator(this), item, i = 0;
 		while (item = iter.next())
 		{
-			if (!f.call(c, item.value, i, this))
+			if (!f.call(c, item, i, this))
 			{
 				return false;
 			}
@@ -271,7 +271,7 @@ LinkedList.prototype =
 		var iter = new LinkedListIterator(this), item, i = 0;
 		while (item = iter.next())
 		{
-			if (f.call(c, item.value, i, this))
+			if (f.call(c, item, i, this))
 			{
 				return true;
 			}

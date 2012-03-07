@@ -211,9 +211,6 @@ Y.LinkedListIterator = LinkedListIterator;
  * operations defined in gallery-funcprog.
  * 
  * @module gallery-linkedlist
- */
-
-/**
  * @class LinkedList
  * @constructor
  * @param list {Mixed} (Optional) any scalar or iterable list
@@ -432,14 +429,13 @@ LinkedList.prototype =
 	 *
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @static
 	 */
 	each: function(f, c)
 	{
 		var iter = new LinkedListIterator(this), item, i = 0;
 		while (item = iter.next())
 		{
-			f.call(c, item.value, i, this);
+			f.call(c, item, i, this);
 		}
 	},
 
@@ -452,14 +448,13 @@ LinkedList.prototype =
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise
-	 * @static
 	 */
 	every: function(f, c)
 	{
 		var iter = new LinkedListIterator(this), item, i = 0;
 		while (item = iter.next())
 		{
-			if (!f.call(c, item.value, i, this))
+			if (!f.call(c, item, i, this))
 			{
 				return false;
 			}
@@ -477,14 +472,13 @@ LinkedList.prototype =
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @return {Boolean} true if the function returns a truthy value on any of the items in the array, false otherwise
-	 * @static
 	 */
 	some: function(f, c)
 	{
 		var iter = new LinkedListIterator(this), item, i = 0;
 		while (item = iter.next())
 		{
-			if (f.call(c, item.value, i, this))
+			if (f.call(c, item, i, this))
 			{
 				return true;
 			}
