@@ -47,35 +47,35 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * A plugin for Y.Node or Y.Widget that creates an overlaying div.</span>
-<span class="c"> * Especially useful for a widget that is waiting for an AJAX response.</span>
-<span class="c"> * </span>
-<span class="c"> * @module gallery-busyoverlay</span>
-<span class="c"> * @namespace Plugin</span>
-<span class="c"> * @class BusyOverlay</span>
-<span class="c"> * @extends Plugin.Base</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * A plugin for Y.Node or Y.Widget that creates an overlaying div.</span>
+<span class="cm"> * Especially useful for a widget that is waiting for an AJAX response.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-busyoverlay</span>
+<span class="cm"> * @namespace Plugin</span>
+<span class="cm"> * @class BusyOverlay</span>
+<span class="cm"> * @extends Plugin.Base</span>
+<span class="cm"> */</span>
 <span class="kd">function</span> <span class="nx">BusyOverlayPlugin</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">BusyOverlayPlugin</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="nx">BusyOverlayPlugin</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">BusyOverlayPlugin</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;BusyOverlayPlugin&quot;</span><span class="o">;</span>
-<span class="nx">BusyOverlayPlugin</span><span class="p">.</span><span class="nx">NS</span>   <span class="o">=</span> <span class="s2">&quot;busy&quot;</span><span class="o">;</span>
+<span class="nx">BusyOverlayPlugin</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;BusyOverlayPlugin&quot;</span><span class="p">;</span>
+<span class="nx">BusyOverlayPlugin</span><span class="p">.</span><span class="nx">NS</span>   <span class="o">=</span> <span class="s2">&quot;busy&quot;</span><span class="p">;</span>
 
 <span class="nx">BusyOverlayPlugin</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * CSS class to apply to the overlay.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @config css</span>
-<span class="c">	 * @type {String}</span>
-<span class="c">	 * @default &quot;yui3-component-busy&quot;</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * CSS class to apply to the overlay.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @config css</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 * @default &quot;yui3-component-busy&quot;</span>
+<span class="cm">	 */</span>
 	<span class="nx">css</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;yui3-component-busy&#39;</span><span class="o">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;yui3-component-busy&#39;</span><span class="p">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
 	<span class="p">}</span>
 <span class="p">};</span>
@@ -90,84 +90,84 @@
 		 <span class="nx">r</span><span class="p">.</span><span class="nx">left</span>   <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">target_region</span><span class="p">.</span><span class="nx">left</span>   <span class="o">||</span>
 		 <span class="nx">r</span><span class="p">.</span><span class="nx">right</span>  <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">target_region</span><span class="p">.</span><span class="nx">right</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">target_region</span> <span class="o">=</span> <span class="nx">r</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">target_region</span> <span class="o">=</span> <span class="nx">r</span><span class="p">;</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setXY</span><span class="p">([</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">]);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span>  <span class="nx">r</span><span class="p">.</span><span class="nx">width</span>  <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setXY</span><span class="p">([</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">]);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span>  <span class="nx">r</span><span class="p">.</span><span class="nx">width</span>  <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">BusyOverlayPlugin</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">BusyOverlayPlugin</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">o</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s1">&#39;&lt;div style=&quot;position:absolute;display:none;visibility:hidden;&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;css&#39;</span><span class="p">));</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;css&#39;</span><span class="p">));</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">getTargetNode</span><span class="p">().</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">).</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;cssChange&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;cssChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="o">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">);</span>
 		<span class="p">});</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">destructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {Boolean} true if the overlay is visible</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Boolean} true if the overlay is visible</span>
+<span class="cm">	 */</span>
 	<span class="nx">isVisible</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="s1">&#39;visibility&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Show the overlay.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Show the overlay.</span>
+<span class="cm">	 */</span>
 	<span class="nx">show</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">setVisible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Hide the overlay.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Hide the overlay.</span>
+<span class="cm">	 */</span>
 	<span class="nx">hide</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">setVisible</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Toggle the visibility of the overlay.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Toggle the visibility of the overlay.</span>
+<span class="cm">	 */</span>
 	<span class="nx">toggleVisible</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">setVisible</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">isVisible</span><span class="p">());</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Set the visibility of the overlay.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param visible {Boolean}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Set the visibility of the overlay.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param visible {Boolean}</span>
+<span class="cm">	 */</span>
 	<span class="nx">setVisible</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* boolean */</span>	<span class="nx">visible</span><span class="p">)</span>
+		<span class="cm">/* boolean */</span>	<span class="nx">visible</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">target_region</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">target_region</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="o">,</span> <span class="p">(</span><span class="nx">visible</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;none&#39;</span><span class="p">));</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">visible</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;none&#39;</span><span class="p">));</span>
 		<span class="nx">resizeOverlay</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="p">(</span><span class="nx">visible</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;hidden&#39;</span><span class="p">));</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;visibility&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">visible</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;hidden&#39;</span><span class="p">));</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">visible</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">timer</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">timer</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">500</span><span class="o">,</span> <span class="k">this</span><span class="o">,</span> <span class="nx">resizeOverlay</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">timer</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">resizeOverlay</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 			<span class="p">}</span>
 
 			<span class="k">this</span><span class="p">.</span><span class="nx">getTargetNode</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;yui3-busyoverlay-browser-hacks&#39;</span><span class="p">);</span>
@@ -177,16 +177,16 @@
 			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">timer</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">timer</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">timer</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">timer</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 			<span class="p">}</span>
 
 			<span class="k">this</span><span class="p">.</span><span class="nx">getTargetNode</span><span class="p">().</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;yui3-busyoverlay-browser-hacks&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {Node} node to overlay</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Node} node to overlay</span>
+<span class="cm">	 */</span>
 	<span class="nx">getTargetNode</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">host</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">);</span>
@@ -195,7 +195,7 @@
 <span class="p">});</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Plugin&quot;</span><span class="p">);</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">BusyOverlay</span> <span class="o">=</span> <span class="nx">BusyOverlayPlugin</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">BusyOverlay</span> <span class="o">=</span> <span class="nx">BusyOverlayPlugin</span><span class="p">;</span>
 </pre></div>
 
                     </div>

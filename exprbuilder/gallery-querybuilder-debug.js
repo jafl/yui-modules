@@ -1157,4 +1157,4 @@ QueryBuilder.plugin_mapping =
 };
 
 
-}, '@VERSION@' ,{optional:['gallery-scrollintoview','autocomplete'], skinnable:true, requires:['widget','gallery-formmgr']});
+}, '@VERSION@' ,{skinnable:true, optional:['gallery-scrollintoview','autocomplete'], requires:['widget','gallery-formmgr']});

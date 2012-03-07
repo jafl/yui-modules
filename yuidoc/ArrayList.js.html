@@ -47,64 +47,64 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**</span>
-<span class="c"> * @module gallery-algorithms</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @module gallery-algorithms</span>
+<span class="cm"> */</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">ArrayList</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="c">/**********************************************************************</span>
-<span class="c">	 * Useful algorithms that are not provided by browsers.  Available if</span>
-<span class="c">	 * Y.ArrayList (collection) is loaded.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @class ArrayList</span>
-<span class="c">	 */</span>
+	<span class="cm">/**********************************************************************</span>
+<span class="cm">	 * Useful algorithms that are not provided by browsers.  Available if</span>
+<span class="cm">	 * Y.ArrayList (collection) is loaded.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @class ArrayList</span>
+<span class="cm">	 */</span>
 
-	<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">ArrayList</span><span class="o">,</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">ArrayList</span><span class="p">,</span>
 	<span class="p">{</span>
-		<span class="c">/**</span>
-<span class="c">		 * &lt;p&gt;Swap two elements.&lt;/p&gt;</span>
-<span class="c">		 * </span>
-<span class="c">		 * @method swap</span>
-<span class="c">		 * @param i {int} first index</span>
-<span class="c">		 * @param j {int} second index</span>
-<span class="c">		 */</span>
-		<span class="nx">swap</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="o">,</span><span class="nx">j</span><span class="p">)</span>
+		<span class="cm">/**</span>
+<span class="cm">		 * &lt;p&gt;Swap two elements.&lt;/p&gt;</span>
+<span class="cm">		 * </span>
+<span class="cm">		 * @method swap</span>
+<span class="cm">		 * @param i {int} first index</span>
+<span class="cm">		 * @param j {int} second index</span>
+<span class="cm">		 */</span>
+		<span class="nx">swap</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="nx">j</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">swap</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_items</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span><span class="nx">j</span><span class="p">);</span>
-		<span class="p">}</span><span class="o">,</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">swap</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_items</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span><span class="nx">j</span><span class="p">);</span>
+		<span class="p">},</span>
 
-		<span class="c">/**</span>
-<span class="c">		 * &lt;p&gt;Set comparison function.&lt;/p&gt;</span>
-<span class="c">		 * </span>
-<span class="c">		 * @method setComparator</span>
-<span class="c">		 * @param compare {Function} the -1,0,+1 comparison function to use when sorting and searching</span>
-<span class="c">		 */</span>
+		<span class="cm">/**</span>
+<span class="cm">		 * &lt;p&gt;Set comparison function.&lt;/p&gt;</span>
+<span class="cm">		 * </span>
+<span class="cm">		 * @method setComparator</span>
+<span class="cm">		 * @param compare {Function} the -1,0,+1 comparison function to use when sorting and searching</span>
+<span class="cm">		 */</span>
 		<span class="nx">setComparator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">compare</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_compare</span> <span class="o">=</span> <span class="nx">compare</span><span class="o">;</span>
-		<span class="p">}</span><span class="o">,</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_compare</span> <span class="o">=</span> <span class="nx">compare</span><span class="p">;</span>
+		<span class="p">},</span>
 
-		<span class="c">/**</span>
-<span class="c">		 * &lt;p&gt;Quick sort the given list, using the function passed to setComparator().&lt;/p&gt;</span>
-<span class="c">		 * </span>
-<span class="c">		 * @method quickSort</span>
-<span class="c">		 */</span>
+		<span class="cm">/**</span>
+<span class="cm">		 * &lt;p&gt;Quick sort the given list, using the function passed to setComparator().&lt;/p&gt;</span>
+<span class="cm">		 * </span>
+<span class="cm">		 * @method quickSort</span>
+<span class="cm">		 */</span>
 		<span class="nx">quickSort</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">quickSort</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_items</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_compare</span><span class="p">);</span>
-		<span class="p">}</span><span class="o">,</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">quickSort</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_items</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_compare</span><span class="p">);</span>
+		<span class="p">},</span>
 
-		<span class="c">/**</span>
-<span class="c">		 * &lt;p&gt;Binary search, using the function passed to setComparator().&lt;/p&gt;</span>
-<span class="c">		 * </span>
-<span class="c">		 * @method binarySearch</span>
-<span class="c">		 * @param target {Mixed} the object to search for</span>
-<span class="c">		 * @return {int} index of matched item or -1 if no match</span>
-<span class="c">		 */</span>
+		<span class="cm">/**</span>
+<span class="cm">		 * &lt;p&gt;Binary search, using the function passed to setComparator().&lt;/p&gt;</span>
+<span class="cm">		 * </span>
+<span class="cm">		 * @method binarySearch</span>
+<span class="cm">		 * @param target {Mixed} the object to search for</span>
+<span class="cm">		 * @return {int} index of matched item or -1 if no match</span>
+<span class="cm">		 */</span>
 		<span class="nx">binarySearch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">binarySearch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_items</span><span class="o">,</span> <span class="nx">target</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_compare</span><span class="p">);</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">binarySearch</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_items</span><span class="p">,</span> <span class="nx">target</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_compare</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">});</span>
 <span class="p">}</span>

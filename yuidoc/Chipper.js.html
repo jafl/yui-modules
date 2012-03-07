@@ -47,23 +47,23 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;Destroys objects asynchronously.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @module gallery-chipper</span>
-<span class="c"> * @class Chipper</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Destroys objects asynchronously.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-chipper</span>
+<span class="cm"> * @class Chipper</span>
+<span class="cm"> */</span>
 
-<span class="kd">var</span> <span class="nx">list</span>  <span class="o">=</span> <span class="p">[]</span><span class="o">,</span>
-	<span class="nx">timer</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+<span class="kd">var</span> <span class="nx">list</span>  <span class="o">=</span> <span class="p">[],</span>
+	<span class="nx">timer</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
 <span class="kd">function</span> <span class="nx">spinUp</span><span class="p">()</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">timer</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">timer</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span>
+		<span class="nx">timer</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 			<span class="p">{</span>
@@ -76,25 +76,25 @@
 			<span class="k">else</span>
 			<span class="p">{</span>
 				<span class="nx">timer</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
-				<span class="nx">timer</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+				<span class="nx">timer</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 			<span class="p">}</span>
-		<span class="p">}</span><span class="o">,</span>
-		<span class="kc">null</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="kc">null</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Chipper</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * Throw objects into the chipper.  If an object does not implement</span>
-<span class="c">	 * destroy(), it is ignored.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @method Y.Chipper.destroy</span>
-<span class="c">	 * @static</span>
-<span class="c">	 * @param objs {Object/Array} The object(s) to destroy.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Throw objects into the chipper.  If an object does not implement</span>
+<span class="cm">	 * destroy(), it is ignored.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @method Y.Chipper.destroy</span>
+<span class="cm">	 * @static</span>
+<span class="cm">	 * @param objs {Object/Array} The object(s) to destroy.</span>
+<span class="cm">	 */</span>
 	<span class="nx">destroy</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* object/array */</span>	<span class="nx">objs</span><span class="p">)</span>
+		<span class="cm">/* object/array */</span>	<span class="nx">objs</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">list</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">objs</span><span class="p">);</span>
 		<span class="nx">spinUp</span><span class="p">();</span>

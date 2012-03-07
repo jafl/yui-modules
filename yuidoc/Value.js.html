@@ -47,52 +47,52 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;Constant value&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @namespace MathFunction</span>
-<span class="c"> * @class Value</span>
-<span class="c"> * @extends MathFunction</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param value {number}</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Constant value&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @namespace MathFunction</span>
+<span class="cm"> * @class Value</span>
+<span class="cm"> * @extends MathFunction</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param value {number}</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">MathValue</span><span class="p">(</span>
-	<span class="c">/* float */</span>	<span class="nx">value</span><span class="p">)</span>
+	<span class="cm">/* float */</span>	<span class="nx">value</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="nx">MathValue</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
 	<span class="kd">var</span> <span class="nx">is_string</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">is_string</span> <span class="o">&amp;&amp;</span>
 		<span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">||</span>
-		 <span class="p">(</span><span class="o">!/</span><span class="nx">x</span><span class="o">/</span><span class="nx">i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="sr">/e/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">))))</span>
+		 <span class="p">(</span><span class="o">!</span><span class="sr">/x/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="sr">/e/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">value</span><span class="p">))))</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 	<span class="p">}</span>
 	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">is_string</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>	<span class="c">// do not force base, to allow hex</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>	<span class="c1">// do not force base, to allow hex</span>
 	<span class="p">}</span>
 	<span class="k">else</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathValue</span><span class="o">,</span> <span class="nx">MathFunction</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathValue</span><span class="p">,</span> <span class="nx">MathFunction</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">evaluate</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+	<span class="p">},</span>
 
 	<span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="o">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Value</span> <span class="o">=</span> <span class="nx">MathValue</span><span class="o">;</span>
+<span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Value</span> <span class="o">=</span> <span class="nx">MathValue</span><span class="p">;</span>
 </pre></div>
 
                     </div>
