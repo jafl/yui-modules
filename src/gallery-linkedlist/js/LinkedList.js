@@ -4,9 +4,6 @@
  * operations defined in gallery-funcprog.
  * 
  * @module gallery-linkedlist
- */
-
-/**
  * @class LinkedList
  * @constructor
  * @param list {Mixed} (Optional) any scalar or iterable list
@@ -225,7 +222,6 @@ LinkedList.prototype =
 	 *
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
-	 * @static
 	 */
 	each: function(f, c)
 	{
@@ -245,7 +241,6 @@ LinkedList.prototype =
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise
-	 * @static
 	 */
 	every: function(f, c)
 	{
@@ -270,7 +265,6 @@ LinkedList.prototype =
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @return {Boolean} true if the function returns a truthy value on any of the items in the array, false otherwise
-	 * @static
 	 */
 	some: function(f, c)
 	{
