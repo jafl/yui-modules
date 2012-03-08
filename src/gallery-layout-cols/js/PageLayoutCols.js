@@ -56,10 +56,10 @@ function getHeight(
 
 Y.PageLayoutCols.resize = function(
 	/* PageLayout */	host,
+	/* enum */			mode,
 	/* int */			body_width,
 	/* int */			body_height)
 {
-	var mode          = host.get('mode');
 	var match_heights = host.get('matchColumnHeights');
 	var col_count     = host.body_info.outers.size();
 

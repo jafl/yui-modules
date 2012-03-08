@@ -1,11 +1,7 @@
-(function(){
 "use strict";
 
-/**********************************************************************
- * Manages the stacked rows on a page:
- *		header, body row, body row, ..., body row, footer
- *
- * This class must be used as a singleton.
+/**
+ * Allows rearranging Page Layout modules via Drag-and-Drop.
  */
 
 var Dom = YAHOO.util.Dom,
@@ -37,9 +33,6 @@ function hideBombSight()
 		Dom.setXY(this.getDragEl(), [-10000, -10000]);
 	}
 }
-
-if (YAHOO.util.DragDrop)
-{
 
 YAHOO.SATG.PageLayoutDDProxy = function(layout, module_id, nub_id, group, config)
 {
@@ -223,7 +216,3 @@ YAHOO.extend(PageLayoutDDProxy, YAHOO.util.DDProxy,
 		}
 	}
 });
-
-}
-
-})();

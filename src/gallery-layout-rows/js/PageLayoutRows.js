@@ -69,10 +69,10 @@ function getWidth(
 
 Y.PageLayoutRows.resize = function(
 	/* PageLayout */	host,
+	/* enum */			mode,
 	/* int */			body_width,
 	/* int */			body_height)
 {
-	var mode      = host.get('mode');
 	var row_count = host.body_info.outers.size();
 
 	// reset module heights
@@ -128,10 +128,32 @@ Y.PageLayoutRows.resize = function(
 		}
 	}
 
+	// smart fit:  if only one module, fit-to-content until it won't fit inside viewport
+
+	var module_info = {};
+	if (host.single_module)
+	{
+		var module   = host.body_info.modules[0].item(0);
+		var children = host._analyzeModule(module);
+		if (children.bd)
+		{
+			var w  = getWidth(row_widths[0], col_widths, 0, 0, module, module_info);
+			var w1 = Math.max(1, w - children.bd.horizMarginBorderPadding());
+			host.fire('beforeResizeModule', children.bd, 'auto', w1);
+			host._setWidth(children, w);
+			children.root.setStyle('height', 'auto');
+			children.bd.setStyle('height', 'auto');
+		}
+
+		var h = module.totalHeight();
+		mode  = (h > body_height ? Y.PageLayout.FIT_TO_VIEWPORT : Y.PageLayout.FIT_TO_CONTENT);
+
+		host.body_container.removeClass('FIT_TO_[A-Z_]+');
+	}
+
 	// fit-to-content:  compute height of each row; requires setting module widths
 	// fit-to-viewport: adjust for vertically collapsed modules
 
-	var module_info = {};
 	if (mode === Y.PageLayout.FIT_TO_CONTENT)
 	{
 		var row_heights = [];
