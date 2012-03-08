@@ -90,9 +90,11 @@ call clean().</p>
 <dt>store</dt>
 <dd>Data store which implements get,put,remove,clear,keys.  If not specified, a new instance of Y.InstanceManager is created.</dd>
 <dt>meta</dt>
-<dd>Function which attaches meta data to an item when it is added to the cache, receives the value as an argument.  If not specified, the default is to timestamp the item.</dd>
+<dd>Function which attaches meta data to an item when it is added to the cache.  It receives the value as an argument.  If not specified, the default is to timestamp the item.</dd>
 <dt>expire</dt>
-<dd>Function which returns true if the item has expired, receives the meta data and the value as arguments.  If a number is specified, it is assumed to be a duration in milliseconds.</dd>
+<dd>(Required) Function which returns true if the item has expired.  It receives the meta data and the value as arguments.  If a number is specified, it is assumed to be a duration in milliseconds.</dd>
+<dt>stats</dt>
+<dd>Pass true if you want to collect basic statistics.  Pass a function if you want to control what information is stored for each key.  The function receives the key, the value, and the stat object.</dd>
 </dl></span>
                                                 </dd>
                                         </dl>
@@ -171,6 +173,43 @@ call clean().</p>
                                     </div>
                                     <hr />
                                     </div>
+                                    <div class="" rel="yui:method" resource="#method_dumpStats">
+                                    <h4>
+                                        <a name="method_dumpStats">dumpStats</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Object
+                                            <strong property="yui:name">dumpStats</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            This resets all the values.
+                                        </div>
+
+                                        <div class="description">
+
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the current stats</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
                                     <div class="" rel="yui:method" resource="#method_get">
                                     <h4>
                                         <a name="method_get">get</a></h4>
@@ -184,7 +223,7 @@ call clean().</p>
                                            (
                                                 
                                                         
-                                                         id
+                                                         key
                                                     
                                                 
                                             )
@@ -199,10 +238,10 @@ call clean().</p>
                                                 <dl rel="yui:parameters">
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">id</span>
+                                                        <code><span property="yui:name">key</span>
                                                         &lt;<span property="yui:type">String</span>&gt;
                                                         </code>
-                                                        <span property="yui:description">  the id of the object to retrieve</span>
+                                                        <span property="yui:description">  the key of the object to retrieve</span>
                                                         </dd>
                                                 </dl>
 
@@ -235,7 +274,7 @@ call clean().</p>
                                            (
                                                 
                                                         
-                                                         id
+                                                         key
                                                     
                                                 
                                                         , 
@@ -254,10 +293,10 @@ call clean().</p>
                                                 <dl rel="yui:parameters">
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">id</span>
+                                                        <code><span property="yui:name">key</span>
                                                         &lt;<span property="yui:type">String</span>&gt;
                                                         </code>
-                                                        <span property="yui:description">  the id of the value</span>
+                                                        <span property="yui:description">  the key of the value</span>
                                                         </dd>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">value</span>
@@ -272,7 +311,7 @@ call clean().</p>
                                                     <code property="yui:return">
                                                             boolean
                                                     </code></dt>
-                                                    <dd property="yui:returnInfo">false if the id has already been used</dd>
+                                                    <dd property="yui:returnInfo">false if the key has already been used</dd>
                                                 </dl>
 
 
@@ -296,7 +335,7 @@ call clean().</p>
                                            (
                                                 
                                                         
-                                                         id
+                                                         key
                                                     
                                                 
                                             )
@@ -311,10 +350,10 @@ call clean().</p>
                                                 <dl rel="yui:parameters">
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">id</span>
+                                                        <code><span property="yui:name">key</span>
                                                         &lt;<span property="yui:type">String</span>&gt;
                                                         </code>
-                                                        <span property="yui:description">  the id of the value</span>
+                                                        <span property="yui:description">  the key of the value</span>
                                                         </dd>
                                                 </dl>
 
@@ -347,7 +386,7 @@ call clean().</p>
                                            (
                                                 
                                                         
-                                                         id
+                                                         key
                                                     
                                                 
                                                         , 
@@ -366,10 +405,10 @@ call clean().</p>
                                                 <dl rel="yui:parameters">
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">id</span>
+                                                        <code><span property="yui:name">key</span>
                                                         &lt;<span property="yui:type">String</span>&gt;
                                                         </code>
-                                                        <span property="yui:description">  the id of the value</span>
+                                                        <span property="yui:description">  the key of the value</span>
                                                         </dd>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">value</span>
@@ -439,6 +478,7 @@ call clean().</p>
                                 <li class=""><a href="module_gallery-linkedlist.html" title="gallery-linkedlist">gallery-linkedlist</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-mru-cache.html" title="gallery-mru-cache">gallery-mru-cache</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
                                 <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
@@ -473,6 +513,7 @@ call clean().</p>
                         <ul class="content">        
                                 <li class=""><a href="#method_clean" title="clean">clean</a></li>
                                 <li class=""><a href="#method_clear" title="clear">clear</a></li>
+                                <li class=""><a href="#method_dumpStats" title="dumpStats">dumpStats</a></li>
                                 <li class=""><a href="#method_get" title="get">get</a></li>
                                 <li class=""><a href="#method_put" title="put">put</a></li>
                                 <li class=""><a href="#method_remove" title="remove">remove</a></li>
@@ -492,7 +533,7 @@ call clean().</p>
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "ExpirationCache.html#method_clean", "access": "", "host": "ExpirationCache", "type": "method", "name": "clean"}, {"url": "ExpirationCache.html#method_clear", "access": "", "host": "ExpirationCache", "type": "method", "name": "clear"}, {"url": "ExpirationCache.html#method_get", "access": "", "host": "ExpirationCache", "type": "method", "name": "get"}, {"url": "ExpirationCache.html#method_put", "access": "", "host": "ExpirationCache", "type": "method", "name": "put"}, {"url": "ExpirationCache.html#method_remove", "access": "", "host": "ExpirationCache", "type": "method", "name": "remove"}, {"url": "ExpirationCache.html#method_replace", "access": "", "host": "ExpirationCache", "type": "method", "name": "replace"}];
+    var ALL_YUI_PROPS = [{"url": "ExpirationCache.html#method_clean", "access": "", "host": "ExpirationCache", "type": "method", "name": "clean"}, {"url": "ExpirationCache.html#method_clear", "access": "", "host": "ExpirationCache", "type": "method", "name": "clear"}, {"url": "ExpirationCache.html#method_dumpStats", "access": "", "host": "ExpirationCache", "type": "method", "name": "dumpStats"}, {"url": "ExpirationCache.html#method_get", "access": "", "host": "ExpirationCache", "type": "method", "name": "get"}, {"url": "ExpirationCache.html#method_put", "access": "", "host": "ExpirationCache", "type": "method", "name": "put"}, {"url": "ExpirationCache.html#method_remove", "access": "", "host": "ExpirationCache", "type": "method", "name": "remove"}, {"url": "ExpirationCache.html#method_replace", "access": "", "host": "ExpirationCache", "type": "method", "name": "replace"}];
 </script>
 </body>
 </html>

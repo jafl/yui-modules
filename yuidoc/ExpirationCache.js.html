@@ -61,9 +61,11 @@
 <span class="c"> *	&lt;dt&gt;store&lt;/dt&gt;</span>
 <span class="c"> *	&lt;dd&gt;Data store which implements get,put,remove,clear,keys.  If not specified, a new instance of Y.InstanceManager is created.&lt;/dd&gt;</span>
 <span class="c"> *	&lt;dt&gt;meta&lt;/dt&gt;</span>
-<span class="c"> *	&lt;dd&gt;Function which attaches meta data to an item when it is added to the cache, receives the value as an argument.  If not specified, the default is to timestamp the item.&lt;/dd&gt;</span>
+<span class="c"> *	&lt;dd&gt;Function which attaches meta data to an item when it is added to the cache.  It receives the value as an argument.  If not specified, the default is to timestamp the item.&lt;/dd&gt;</span>
 <span class="c"> *	&lt;dt&gt;expire&lt;/dt&gt;</span>
-<span class="c"> *	&lt;dd&gt;Function which returns true if the item has expired, receives the meta data and the value as arguments.  If a number is specified, it is assumed to be a duration in milliseconds.&lt;/dd&gt;</span>
+<span class="c"> *	&lt;dd&gt;(Required) Function which returns true if the item has expired.  It receives the meta data and the value as arguments.  If a number is specified, it is assumed to be a duration in milliseconds.&lt;/dd&gt;</span>
+<span class="c"> *	&lt;dt&gt;stats&lt;/dt&gt;</span>
+<span class="c"> *	&lt;dd&gt;Pass true if you want to collect basic statistics.  Pass a function if you want to control what information is stored for each key.  The function receives the key, the value, and the stat object.&lt;/dd&gt;</span>
 <span class="c"> *	&lt;/dl&gt;</span>
 <span class="c"> */</span>
 
@@ -72,6 +74,12 @@
 	<span class="k">this</span><span class="p">.</span><span class="nx">_store</span>  <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">store</span> <span class="o">||</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">InstanceManager</span><span class="p">();</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">_meta</span>   <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">meta</span>  <span class="o">||</span> <span class="nx">timestamp</span><span class="o">;</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">_expire</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">expire</span><span class="p">)</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">rbind</span><span class="p">(</span><span class="nx">expire</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="nx">config</span><span class="p">.</span><span class="nx">expire</span><span class="p">)</span> <span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">expire</span><span class="o">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span>  <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">stats</span> <span class="o">?</span> <span class="nx">initStats</span><span class="p">()</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">stats</span><span class="p">))</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_stats_key_meta</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">stats</span><span class="o">;</span>
+	<span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">timestamp</span><span class="p">()</span>
@@ -85,24 +93,45 @@
 	<span class="k">return</span> <span class="p">(</span><span class="nx">elapsed</span> <span class="o">&gt;</span> <span class="nx">delta</span><span class="p">);</span>
 <span class="p">}</span>
 
+<span class="kd">function</span> <span class="nx">initStats</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">return</span> <span class="p">{</span> <span class="nx">gets</span><span class="o">:</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">keys</span><span class="o">:</span> <span class="p">{}</span> <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">initKeyStats</span><span class="p">(</span><span class="nx">keys</span><span class="o">,</span> <span class="nx">key</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span>
+	<span class="p">{</span>
+		<span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">puts</span><span class="o">:</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">gets</span><span class="o">:</span> <span class="mi">0</span> <span class="p">};</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
 <span class="nx">ExpirationCache</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
 	<span class="c">/**</span>
 <span class="c">	 * Retrieve a value.</span>
 <span class="c">	 * </span>
-<span class="c">	 * @param id {String} the id of the object to retrieve</span>
+<span class="c">	 * @param key {String} the key of the object to retrieve</span>
 <span class="c">	 * @return {Mixed} the stored object, or undefined if the slot is empty</span>
 <span class="c">	 */</span>
 	<span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">key</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">obj</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_expire</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">meta</span><span class="o">,</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span>
 		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">gets</span><span class="o">++;</span>
+
+				<span class="nx">initKeyStats</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="o">,</span> <span class="nx">key</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">gets</span><span class="o">++;</span>
+			<span class="p">}</span>
+
 			<span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="o">;</span>
 		<span class="p">}</span>
 	<span class="p">}</span><span class="o">,</span>
@@ -110,12 +139,12 @@
 	<span class="c">/**</span>
 <span class="c">	 * Store a value.</span>
 <span class="c">	 * </span>
-<span class="c">	 * @param id {String} the id of the value</span>
+<span class="c">	 * @param key {String} the key of the value</span>
 <span class="c">	 * @param value {Object} the value to store</span>
-<span class="c">	 * @return {boolean} false if the id has already been used</span>
+<span class="c">	 * @return {boolean} false if the key has already been used</span>
 <span class="c">	 */</span>
 	<span class="nx">put</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">id</span><span class="o">,</span>
+		<span class="c">/* string */</span>	<span class="nx">key</span><span class="o">,</span>
 		<span class="c">/* obj/fn */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span>
@@ -123,38 +152,51 @@
 			<span class="nx">data</span><span class="o">:</span> <span class="nx">value</span><span class="o">,</span>
 			<span class="nx">meta</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">_meta</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">};</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">id</span><span class="o">,</span> <span class="nx">obj</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">key</span><span class="o">,</span> <span class="nx">obj</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="p">}</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">initKeyStats</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="o">,</span> <span class="nx">key</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">puts</span><span class="o">++;</span>
+
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats_key_meta</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_stats_key_meta</span><span class="p">(</span><span class="nx">key</span><span class="o">,</span> <span class="nx">value</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
 	<span class="p">}</span><span class="o">,</span>
 
 	<span class="c">/**</span>
 <span class="c">	 * Store a value.</span>
 <span class="c">	 * </span>
-<span class="c">	 * @param id {String} the id of the value</span>
+<span class="c">	 * @param key {String} the key of the value</span>
 <span class="c">	 * @param value {Object} the value to store</span>
 <span class="c">	 * @return {Mixed} the original value that was in the slot, or undefined if the slot is empty</span>
 <span class="c">	 */</span>
 	<span class="nx">replace</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">id</span><span class="o">,</span>
+		<span class="c">/* string */</span>	<span class="nx">key</span><span class="o">,</span>
 		<span class="c">/* obj/fn */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">orig</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">id</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">orig</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">orig</span><span class="p">.</span><span class="nx">data</span><span class="o">;</span>
-		<span class="p">}</span>
+		<span class="kd">var</span> <span class="nx">orig</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">key</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
+		<span class="k">return</span> <span class="nx">orig</span><span class="o">;</span>
 	<span class="p">}</span><span class="o">,</span>
 
 	<span class="c">/**</span>
 <span class="c">	 * Remove an value.</span>
 <span class="c">	 * </span>
-<span class="c">	 * @param id {String} the id of the value</span>
+<span class="c">	 * @param key {String} the key of the value</span>
 <span class="c">	 * @return {mixed} the value that was removed, or undefined if the slot was empty</span>
 <span class="c">	 */</span>
 	<span class="nx">remove</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">key</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">orig</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">orig</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">orig</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="nx">orig</span><span class="p">.</span><span class="nx">data</span><span class="o">;</span>
@@ -175,6 +217,18 @@
 	<span class="nx">clean</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">.</span><span class="nx">keys</span><span class="p">()</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * This resets all the values.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @return {Object} the current stats</span>
+<span class="c">	 */</span>
+	<span class="nx">dumpStats</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">stats</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span> <span class="o">=</span> <span class="nx">initStats</span><span class="p">();</span>
+		<span class="k">return</span> <span class="nx">stats</span><span class="o">;</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
@@ -212,6 +266,7 @@
                                 <li class=""><a href="module_gallery-linkedlist.html" title="gallery-linkedlist">gallery-linkedlist</a></li>
                                 <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
                                 <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-mru-cache.html" title="gallery-mru-cache">gallery-mru-cache</a></li>
                                 <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
                                 <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
                                 <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
@@ -254,7 +309,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "ExpirationCache.html#method_clean", "access": "", "host": "ExpirationCache", "type": "method", "name": "clean"}, {"url": "ExpirationCache.html#method_clear", "access": "", "host": "ExpirationCache", "type": "method", "name": "clear"}, {"url": "ExpirationCache.html#method_get", "access": "", "host": "ExpirationCache", "type": "method", "name": "get"}, {"url": "ExpirationCache.html#method_put", "access": "", "host": "ExpirationCache", "type": "method", "name": "put"}, {"url": "ExpirationCache.html#method_remove", "access": "", "host": "ExpirationCache", "type": "method", "name": "remove"}, {"url": "ExpirationCache.html#method_replace", "access": "", "host": "ExpirationCache", "type": "method", "name": "replace"}];
+    var ALL_YUI_PROPS = [{"url": "ExpirationCache.html#method_clean", "access": "", "host": "ExpirationCache", "type": "method", "name": "clean"}, {"url": "ExpirationCache.html#method_clear", "access": "", "host": "ExpirationCache", "type": "method", "name": "clear"}, {"url": "ExpirationCache.html#method_dumpStats", "access": "", "host": "ExpirationCache", "type": "method", "name": "dumpStats"}, {"url": "ExpirationCache.html#method_get", "access": "", "host": "ExpirationCache", "type": "method", "name": "get"}, {"url": "ExpirationCache.html#method_put", "access": "", "host": "ExpirationCache", "type": "method", "name": "put"}, {"url": "ExpirationCache.html#method_remove", "access": "", "host": "ExpirationCache", "type": "method", "name": "remove"}, {"url": "ExpirationCache.html#method_replace", "access": "", "host": "ExpirationCache", "type": "method", "name": "replace"}];
 </script>
 </body>
 </html>
