@@ -47,68 +47,68 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * A simple plugin for Y.Overlay which attaches a Y.FormManager to the</span>
-<span class="cm"> * &amp;lt;form&amp;gt; inside the overlay.  Before the overlay is shown,</span>
-<span class="cm"> * prepareForm() is called to insert the default values.  (If this returns</span>
-<span class="cm"> * false, the overlay is not shown.)  After the overlay is shown, focus is</span>
-<span class="cm"> * set to the first field.</span>
-<span class="cm"> *</span>
-<span class="cm"> * @module gallery-formmgr-overlay-plugin</span>
-<span class="cm"> * @namespace Plugin</span>
-<span class="cm"> * @class OverlayForm</span>
-<span class="cm"> * @extends Plugin.Base</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * A simple plugin for Y.Overlay which attaches a Y.FormManager to the</span>
+<span class="c"> * &amp;lt;form&amp;gt; inside the overlay.  Before the overlay is shown,</span>
+<span class="c"> * prepareForm() is called to insert the default values.  (If this returns</span>
+<span class="c"> * false, the overlay is not shown.)  After the overlay is shown, focus is</span>
+<span class="c"> * set to the first field.</span>
+<span class="c"> *</span>
+<span class="c"> * @module gallery-formmgr-overlay-plugin</span>
+<span class="c"> * @namespace Plugin</span>
+<span class="c"> * @class OverlayForm</span>
+<span class="c"> * @extends Plugin.Base</span>
+<span class="c"> */</span>
 <span class="kd">function</span> <span class="nx">OverlayFormPlugin</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="nx">OverlayFormPlugin</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="nx">OverlayFormPlugin</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">OverlayFormPlugin</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;OverlayFormPlugin&quot;</span><span class="p">;</span>
-<span class="nx">OverlayFormPlugin</span><span class="p">.</span><span class="nx">NS</span>   <span class="o">=</span> <span class="s2">&quot;form&quot;</span><span class="p">;</span>
+<span class="nx">OverlayFormPlugin</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;OverlayFormPlugin&quot;</span><span class="o">;</span>
+<span class="nx">OverlayFormPlugin</span><span class="p">.</span><span class="nx">NS</span>   <span class="o">=</span> <span class="s2">&quot;form&quot;</span><span class="o">;</span>
 
 <span class="nx">OverlayFormPlugin</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="cm">/**</span>
-<span class="cm">	 * @config formmgr</span>
-<span class="cm">	 * @type {Y.FormManager}</span>
-<span class="cm">	 * @writeonce</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @config formmgr</span>
+<span class="c">	 * @type {Y.FormManager}</span>
+<span class="c">	 * @writeonce</span>
+<span class="c">	 */</span>
 	<span class="nx">formmgr</span><span class="o">:</span>
 	<span class="p">{</span>
 		<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">OverlayFormPlugin</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">OverlayFormPlugin</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="o">,</span>
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;form&#39;</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">f</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="nx">f</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">guid</span><span class="p">(</span><span class="s1">&#39;form-overlay-&#39;</span><span class="p">));</span>
+			<span class="nx">f</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">guid</span><span class="p">(</span><span class="s1">&#39;form-overlay-&#39;</span><span class="p">));</span>
 		<span class="p">}</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;formmgr&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)));</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;formmgr&#39;</span><span class="o">,</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)));</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">onHostEvent</span><span class="p">(</span><span class="s1">&#39;visibleChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">onHostEvent</span><span class="p">(</span><span class="s1">&#39;visibleChange&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span> <span class="o">&amp;&amp;</span>		<span class="c1">// visible</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span> <span class="o">&amp;&amp;</span>		<span class="c">// visible</span>
 				<span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;formmgr&#39;</span><span class="p">).</span><span class="nx">prepareForm</span><span class="p">())</span>
 			<span class="p">{</span>
 				<span class="nx">e</span><span class="p">.</span><span class="nx">halt</span><span class="p">();</span>
 			<span class="p">}</span>
 		<span class="p">});</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">afterHostEvent</span><span class="p">(</span><span class="s1">&#39;visibleChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">afterHostEvent</span><span class="p">(</span><span class="s1">&#39;visibleChange&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span>	<span class="c1">// visible</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span>	<span class="c">// visible</span>
 			<span class="p">{</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;formmgr&#39;</span><span class="p">).</span><span class="nx">initFocus</span><span class="p">();</span>
 			<span class="p">}</span>
-			<span class="k">else</span>			<span class="c1">// hidden</span>
+			<span class="k">else</span>			<span class="c">// hidden</span>
 			<span class="p">{</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;formmgr&#39;</span><span class="p">).</span><span class="nx">clearForm</span><span class="p">();</span>
 			<span class="p">}</span>
@@ -117,7 +117,7 @@
 <span class="p">});</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Plugin&quot;</span><span class="p">);</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">OverlayForm</span> <span class="o">=</span> <span class="nx">OverlayFormPlugin</span><span class="p">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">OverlayForm</span> <span class="o">=</span> <span class="nx">OverlayFormPlugin</span><span class="o">;</span>
 </pre></div>
 
                     </div>
@@ -139,6 +139,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

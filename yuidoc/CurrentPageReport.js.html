@@ -47,160 +47,160 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="cm">/*</span>
-<span class="cm">Copyright (c) 2009, Yahoo! Inc. All rights reserved.</span>
-<span class="cm">Code licensed under the BSD License:</span>
-<span class="cm">http://developer.yahoo.net/yui/license.txt</span>
-<span class="cm">*/</span>
+                        <div class="highlight"><pre><span class="c">/*</span>
+<span class="c">Copyright (c) 2009, Yahoo! Inc. All rights reserved.</span>
+<span class="c">Code licensed under the BSD License:</span>
+<span class="c">http://developer.yahoo.net/yui/license.txt</span>
+<span class="c">*/</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * ui Component to generate the textual report of current pagination status.</span>
-<span class="cm"> * E.g. &quot;Now viewing page 1 of 13&quot;.</span>
-<span class="cm"> *</span>
-<span class="cm"> * @class Paginator.ui.CurrentPageReport</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> * @param p {Pagintor} Paginator instance to attach to</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * ui Component to generate the textual report of current pagination status.</span>
+<span class="c"> * E.g. &quot;Now viewing page 1 of 13&quot;.</span>
+<span class="c"> *</span>
+<span class="c"> * @class Paginator.ui.CurrentPageReport</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @param p {Pagintor} Paginator instance to attach to</span>
+<span class="c"> */</span>
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">CurrentPageReport</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span> <span class="o">=</span> <span class="nx">p</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span> <span class="o">=</span> <span class="nx">p</span><span class="o">;</span>
 
-    <span class="nx">p</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;destroy&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">destroy</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;recordOffsetChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;rowsPerPageChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;totalRecordsChange&#39;</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;destroy&#39;</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">destroy</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;recordOffsetChange&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;rowsPerPageChange&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;totalRecordsChange&#39;</span><span class="o">,</span><span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
 
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;pageReportClassChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;pageReportTemplateChange&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;pageReportClassChange&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
+    <span class="nx">p</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;pageReportTemplateChange&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="o">,</span><span class="k">this</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * CSS class assigned to the span containing the info.</span>
-<span class="cm"> * @attribute pageReportClass</span>
-<span class="cm"> * @default &#39;yui-paginator-current&#39;</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * CSS class assigned to the span containing the info.</span>
+<span class="c"> * @attribute pageReportClass</span>
+<span class="c"> * @default &#39;yui-paginator-current&#39;</span>
+<span class="c"> */</span>
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">pageReportClass</span> <span class="o">=</span>
 <span class="p">{</span>
-    <span class="nx">value</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">Paginator</span><span class="p">.</span><span class="nx">NAME</span><span class="p">,</span> <span class="s1">&#39;current&#39;</span><span class="p">),</span>
+    <span class="nx">value</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="nx">Paginator</span><span class="p">.</span><span class="nx">NAME</span><span class="o">,</span> <span class="s1">&#39;current&#39;</span><span class="p">)</span><span class="o">,</span>
     <span class="nx">validator</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * Used as innerHTML for the span.  Place holders in the form of {name}</span>
-<span class="cm"> * will be replaced with the so named value from the key:value map</span>
-<span class="cm"> * generated by the function held in the pageReportValueGenerator attribute.</span>
-<span class="cm"> * @attribute pageReportTemplate</span>
-<span class="cm"> * @default &#39;({currentPage} of {totalPages})&#39;</span>
-<span class="cm"> * @see pageReportValueGenerator attribute</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * Used as innerHTML for the span.  Place holders in the form of {name}</span>
+<span class="c"> * will be replaced with the so named value from the key:value map</span>
+<span class="c"> * generated by the function held in the pageReportValueGenerator attribute.</span>
+<span class="c"> * @attribute pageReportTemplate</span>
+<span class="c"> * @default &#39;({currentPage} of {totalPages})&#39;</span>
+<span class="c"> * @see pageReportValueGenerator attribute</span>
+<span class="c"> */</span>
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">pageReportTemplate</span> <span class="o">=</span>
 <span class="p">{</span>
-    <span class="nx">value</span> <span class="o">:</span> <span class="s1">&#39;({currentPage} of {totalPages})&#39;</span><span class="p">,</span>
+    <span class="nx">value</span> <span class="o">:</span> <span class="s1">&#39;({currentPage} of {totalPages})&#39;</span><span class="o">,</span>
     <span class="nx">validator</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * Function to generate the value map used to populate the</span>
-<span class="cm"> * pageReportTemplate.  The function is passed the Paginator instance as a</span>
-<span class="cm"> * parameter.  The default function returns a map with the following keys:</span>
-<span class="cm"> * &lt;ul&gt;</span>
-<span class="cm"> * &lt;li&gt;currentPage&lt;/li&gt;</span>
-<span class="cm"> * &lt;li&gt;totalPages&lt;/li&gt;</span>
-<span class="cm"> * &lt;li&gt;startIndex&lt;/li&gt;</span>
-<span class="cm"> * &lt;li&gt;endIndex&lt;/li&gt;</span>
-<span class="cm"> * &lt;li&gt;startRecord&lt;/li&gt;</span>
-<span class="cm"> * &lt;li&gt;endRecord&lt;/li&gt;</span>
-<span class="cm"> * &lt;li&gt;totalRecords&lt;/li&gt;</span>
-<span class="cm"> * &lt;/ul&gt;</span>
-<span class="cm"> * @attribute pageReportValueGenarator</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * Function to generate the value map used to populate the</span>
+<span class="c"> * pageReportTemplate.  The function is passed the Paginator instance as a</span>
+<span class="c"> * parameter.  The default function returns a map with the following keys:</span>
+<span class="c"> * &lt;ul&gt;</span>
+<span class="c"> * &lt;li&gt;currentPage&lt;/li&gt;</span>
+<span class="c"> * &lt;li&gt;totalPages&lt;/li&gt;</span>
+<span class="c"> * &lt;li&gt;startIndex&lt;/li&gt;</span>
+<span class="c"> * &lt;li&gt;endIndex&lt;/li&gt;</span>
+<span class="c"> * &lt;li&gt;startRecord&lt;/li&gt;</span>
+<span class="c"> * &lt;li&gt;endRecord&lt;/li&gt;</span>
+<span class="c"> * &lt;li&gt;totalRecords&lt;/li&gt;</span>
+<span class="c"> * &lt;/ul&gt;</span>
+<span class="c"> * @attribute pageReportValueGenarator</span>
+<span class="c"> */</span>
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ATTRS</span><span class="p">.</span><span class="nx">pageReportValueGenerator</span> <span class="o">=</span>
 <span class="p">{</span>
     <span class="nx">value</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">paginator</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">curPage</span> <span class="o">=</span> <span class="nx">paginator</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">(),</span>
+        <span class="kd">var</span> <span class="nx">curPage</span> <span class="o">=</span> <span class="nx">paginator</span><span class="p">.</span><span class="nx">getCurrentPage</span><span class="p">()</span><span class="o">,</span>
             <span class="nx">records</span> <span class="o">=</span> <span class="nx">paginator</span><span class="p">.</span><span class="nx">getPageRecords</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;currentPage&#39;</span> <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">curPage</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s1">&#39;totalPages&#39;</span>  <span class="o">:</span> <span class="nx">paginator</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">(),</span>
-            <span class="s1">&#39;startIndex&#39;</span>  <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s1">&#39;endIndex&#39;</span>    <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">records</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s1">&#39;startRecord&#39;</span> <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s1">&#39;endRecord&#39;</span>   <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">records</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s1">&#39;currentPage&#39;</span> <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">curPage</span> <span class="o">:</span> <span class="mi">0</span><span class="o">,</span>
+            <span class="s1">&#39;totalPages&#39;</span>  <span class="o">:</span> <span class="nx">paginator</span><span class="p">.</span><span class="nx">getTotalPages</span><span class="p">()</span><span class="o">,</span>
+            <span class="s1">&#39;startIndex&#39;</span>  <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">:</span> <span class="mi">0</span><span class="o">,</span>
+            <span class="s1">&#39;endIndex&#39;</span>    <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">records</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">:</span> <span class="mi">0</span><span class="o">,</span>
+            <span class="s1">&#39;startRecord&#39;</span> <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="o">,</span>
+            <span class="s1">&#39;endRecord&#39;</span>   <span class="o">:</span> <span class="nx">records</span> <span class="o">?</span> <span class="nx">records</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="o">,</span>
             <span class="s1">&#39;totalRecords&#39;</span><span class="o">:</span> <span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;totalRecords&#39;</span><span class="p">)</span>
         <span class="p">};</span>
-    <span class="p">},</span>
+    <span class="p">}</span><span class="o">,</span>
     <span class="nx">validator</span> <span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * Replace place holders in a string with the named values found in an</span>
-<span class="cm"> * object literal.</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @method sprintf</span>
-<span class="cm"> * @param template {string} The content string containing place holders</span>
-<span class="cm"> * @param values {object} The key:value pairs used to replace the place holders</span>
-<span class="cm"> * @return {string}</span>
-<span class="cm"> */</span>
-<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">CurrentPageReport</span><span class="p">.</span><span class="nx">sprintf</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">template</span><span class="p">,</span> <span class="nx">values</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">template</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\{([\w\s\-]+)\}/g</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">values</span><span class="p">)</span> <span class="o">?</span> <span class="nx">values</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * Replace place holders in a string with the named values found in an</span>
+<span class="c"> * object literal.</span>
+<span class="c"> * @static</span>
+<span class="c"> * @method sprintf</span>
+<span class="c"> * @param template {string} The content string containing place holders</span>
+<span class="c"> * @param values {object} The key:value pairs used to replace the place holders</span>
+<span class="c"> * @return {string}</span>
+<span class="c"> */</span>
+<span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">CurrentPageReport</span><span class="p">.</span><span class="nx">sprintf</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">template</span><span class="o">,</span> <span class="nx">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">template</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\{([\w\s\-]+)\}/g</span><span class="o">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="o">,</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="nx">values</span><span class="p">)</span> <span class="o">?</span> <span class="nx">values</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
         <span class="p">});</span>
 <span class="p">};</span>
 
 <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">CurrentPageReport</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
 
-    <span class="cm">/**</span>
-<span class="cm">     * Span node containing the formatted info</span>
-<span class="cm">     * @property span</span>
-<span class="cm">     * @type HTMLElement</span>
-<span class="cm">     * @private</span>
-<span class="cm">     */</span>
-    <span class="nx">span</span> <span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="c">/**</span>
+<span class="c">     * Span node containing the formatted info</span>
+<span class="c">     * @property span</span>
+<span class="c">     * @type HTMLElement</span>
+<span class="c">     * @private</span>
+<span class="c">     */</span>
+    <span class="nx">span</span> <span class="o">:</span> <span class="kc">null</span><span class="o">,</span>
 
 
-    <span class="cm">/**</span>
-<span class="cm">     * Removes the link/span node and clears event listeners</span>
-<span class="cm">     * removal.</span>
-<span class="cm">     * @method destroy</span>
-<span class="cm">     * @private</span>
-<span class="cm">     */</span>
+    <span class="c">/**</span>
+<span class="c">     * Removes the link/span node and clears event listeners</span>
+<span class="c">     * removal.</span>
+<span class="c">     * @method destroy</span>
+<span class="c">     * @private</span>
+<span class="c">     */</span>
     <span class="nx">destroy</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="p">},</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="p">}</span><span class="o">,</span>
 
-    <span class="cm">/**</span>
-<span class="cm">     * Generate the span containing info formatted per the pageReportTemplate</span>
-<span class="cm">     * attribute.</span>
-<span class="cm">     * @method render</span>
-<span class="cm">     * @param id_base {string} used to create unique ids for generated nodes</span>
-<span class="cm">     * @return {HTMLElement}</span>
-<span class="cm">     */</span>
+    <span class="c">/**</span>
+<span class="c">     * Generate the span containing info formatted per the pageReportTemplate</span>
+<span class="c">     * attribute.</span>
+<span class="c">     * @method render</span>
+<span class="c">     * @param id_base {string} used to create unique ids for generated nodes</span>
+<span class="c">     * @return {HTMLElement}</span>
+<span class="c">     */</span>
     <span class="nx">render</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">id_base</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">span</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
             <span class="s1">&#39;&lt;span id=&quot;&#39;</span><span class="o">+</span><span class="nx">id_base</span><span class="o">+</span><span class="s1">&#39;-page-report&quot;&gt;&lt;/span&gt;&#39;</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pageReportClass&#39;</span><span class="p">));</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pageReportClass&#39;</span><span class="p">));</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">update</span><span class="p">();</span>
 
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">;</span>
-    <span class="p">},</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="o">;</span>
+    <span class="p">}</span><span class="o">,</span>
     
-    <span class="cm">/**</span>
-<span class="cm">     * Regenerate the content of the span if appropriate. Calls</span>
-<span class="cm">     * CurrentPageReport.sprintf with the value of the pageReportTemplate</span>
-<span class="cm">     * attribute and the value map returned from pageReportValueGenerator</span>
-<span class="cm">     * function.</span>
-<span class="cm">     * @method update</span>
-<span class="cm">     * @param e {CustomEvent} The calling change event</span>
-<span class="cm">     */</span>
+    <span class="c">/**</span>
+<span class="c">     * Regenerate the content of the span if appropriate. Calls</span>
+<span class="c">     * CurrentPageReport.sprintf with the value of the pageReportTemplate</span>
+<span class="c">     * attribute and the value map returned from pageReportValueGenerator</span>
+<span class="c">     * function.</span>
+<span class="c">     * @method update</span>
+<span class="c">     * @param e {CustomEvent} The calling change event</span>
+<span class="c">     */</span>
     <span class="nx">update</span> <span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">e</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">prevVal</span> <span class="o">===</span> <span class="nx">e</span><span class="p">.</span><span class="nx">newVal</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span><span class="p">;</span>
+            <span class="k">return</span><span class="o">;</span>
         <span class="p">}</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pageReportClass&#39;</span><span class="p">));</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">CurrentPageReport</span><span class="p">.</span><span class="nx">sprintf</span><span class="p">(</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pageReportTemplate&#39;</span><span class="p">),</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pageReportClass&#39;</span><span class="p">));</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">span</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="o">,</span> <span class="nx">Paginator</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">CurrentPageReport</span><span class="p">.</span><span class="nx">sprintf</span><span class="p">(</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pageReportTemplate&#39;</span><span class="p">)</span><span class="o">,</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;pageReportValueGenerator&#39;</span><span class="p">)(</span><span class="k">this</span><span class="p">.</span><span class="nx">paginator</span><span class="p">)));</span>
     <span class="p">}</span>
 <span class="p">};</span>
@@ -225,6 +225,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

@@ -47,125 +47,125 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
-<span class="cm"> * Iterator for LinkedList.  Stable except when the next item is removed by</span>
-<span class="cm"> * calling list.remove() instead of iter.removeNext().  When items are</span>
-<span class="cm"> * inserted into an empty list, the pointer remains at the end, not the</span>
-<span class="cm"> * beginning.</span>
-<span class="cm"> *</span>
-<span class="cm"> * @class LinkedListIterator</span>
-<span class="cm"> */</span>
+                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
+<span class="c"> * Iterator for LinkedList.  Stable except when the next item is removed by</span>
+<span class="c"> * calling list.remove() instead of iter.removeNext().  When items are</span>
+<span class="c"> * inserted into an empty list, the pointer remains at the end, not the</span>
+<span class="c"> * beginning.</span>
+<span class="c"> *</span>
+<span class="c"> * @class LinkedListIterator</span>
+<span class="c"> */</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @method constructor</span>
-<span class="cm"> * @param list {LinkedList}</span>
-<span class="cm"> * @private</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @method constructor</span>
+<span class="c"> * @param list {LinkedList}</span>
+<span class="c"> * @private</span>
+<span class="c"> */</span>
 
 <span class="kd">function</span> <span class="nx">LinkedListIterator</span><span class="p">(</span>
-	<span class="cm">/* LinkedList */</span>    <span class="nx">list</span><span class="p">)</span>
+	<span class="c">/* LinkedList */</span>    <span class="nx">list</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">_list</span> <span class="o">=</span> <span class="nx">list</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_list</span> <span class="o">=</span> <span class="nx">list</span><span class="o">;</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">moveToBeginning</span><span class="p">();</span>
 <span class="p">}</span>
 
 <span class="nx">LinkedListIterator</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Boolean} true if at the beginning</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Boolean} true if at the beginning</span>
+<span class="c">	 */</span>
 	<span class="nx">atBeginning</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">||</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span><span class="p">));</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Boolean} true if at the end</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Boolean} true if at the end</span>
+<span class="c">	 */</span>
 	<span class="nx">atEnd</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span><span class="p">);</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Move to the beginning of the list.</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Move to the beginning of the list.</span>
+<span class="c">	 */</span>
 	<span class="nx">moveToBeginning</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_next</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_list</span><span class="p">.</span><span class="nx">_head</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_next</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_list</span><span class="p">.</span><span class="nx">_head</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Move to the end of the list.</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Move to the end of the list.</span>
+<span class="c">	 */</span>
 	<span class="nx">moveToEnd</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_next</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_list</span><span class="p">.</span><span class="nx">_tail</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_next</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_list</span><span class="p">.</span><span class="nx">_tail</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Mixed} next value in the list or undefined if at the end</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Mixed} next value in the list or undefined if at the end</span>
+<span class="c">	 */</span>
 	<span class="nx">next</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span><span class="p">;</span>
+			<span class="k">return</span><span class="o">;</span>
 		<span class="p">}</span>
 
-		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_next</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="o">;</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Mixed} previous value in the list or undefined if at the beginning</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Mixed} previous value in the list or undefined if at the beginning</span>
+<span class="c">	 */</span>
 	<span class="nx">prev</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">result</span><span class="o">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-			<span class="nx">result</span>       <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+			<span class="nx">result</span>       <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span><span class="p">;</span>
+			<span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span><span class="o">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">result</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">result</span><span class="o">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">result</span><span class="p">.</span><span class="nx">value</span><span class="o">;</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Insert the given value at the iteration position.  The inserted item</span>
-<span class="cm">	 * will be returned by next().</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param value {Mixed} value to insert</span>
-<span class="cm">	 * @return {LinkedListItem} inserted item</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Insert the given value at the iteration position.  The inserted item</span>
+<span class="c">	 * will be returned by next().</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param value {Mixed} value to insert</span>
+<span class="c">	 * @return {LinkedListItem} inserted item</span>
+<span class="c">	 */</span>
 	<span class="nx">insert</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* object */</span>	<span class="nx">value</span><span class="p">)</span>
+		<span class="c">/* object */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">||</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">)</span>
 		<span class="p">{</span>
@@ -173,66 +173,66 @@
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_list</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_list</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Remove the previous item from the list.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @return {LinkedListItem} removed item or undefined if at the end</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Remove the previous item from the list.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @return {LinkedListItem} removed item or undefined if at the end</span>
+<span class="c">	 */</span>
 	<span class="nx">removePrev</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">result</span><span class="o">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
+			<span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span><span class="o">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span><span class="p">;</span>
+			<span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span><span class="o">;</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">_list</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-			<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Remove the next item from the list.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @return {LinkedListItem} removed item or undefined if at the end</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Remove the next item from the list.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @return {LinkedListItem} removed item or undefined if at the end</span>
+<span class="c">	 */</span>
 	<span class="nx">removeNext</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">result</span><span class="o">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
+			<span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_next</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
 			<span class="p">}</span>
 			<span class="k">else</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_next</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_next</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_at_end</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">_list</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
-			<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 <span class="p">};</span>
@@ -257,6 +257,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

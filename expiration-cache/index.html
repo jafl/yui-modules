@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Expiration Cache Unit Tests</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
+	<script src="gallery-expiration-cache-debug.js"></script>
+	<script src="gallery-instancemanager-debug.js"></script>
+	<script src="gallery-test-extras-debug.js"></script>
+</head>
+
+<body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/expiration-cache">YUI 3 Expiration Cache</a> Unit Tests</h1>
+
+<p><a href="../yuidoc/module_gallery-expiration-cache.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<script type="text/javascript">
+YUI({
+//	filter: 'raw', combine: false,
+	logInclude: { TestRunner: true }
+}).use(
+	'gallery-expiration-cache', 'gallery-instancemanager', 'gallery-test-extras',
+	'console', 'console-filters', 'dd-plugin',
+function(Y)
+{
+	Y.Test.Runner.add(new Y.Test.Case(
+	{
+		name: 'Expiration Cache',
+
+		testDefault: function()
+		{
+			var cache = new Y.ExpirationCache(
+			{
+				expire: 1000
+			});
+
+			cache.put('foo', 'bar');
+
+			this.wait(function()
+			{
+				Y.Assert.areSame('bar', cache.get('foo'));
+
+				this.wait(function()
+				{
+					Y.Assert.isUndefined(cache.get('foo'));
+
+					Y.Assert.isTrue(cache.put('foo', 'bar'));
+					this.wait(function()
+					{
+						cache.clean();
+						Y.ObjectAssert.ownsNoKeys(cache._store._map);
+					},
+					1100);
+				},
+				600);
+			},
+			500);
+		},
+
+		testCustom: function()
+		{
+			var cache = new Y.ExpirationCache(
+			{
+				meta: function(value)
+				{
+					return {counter:0};
+				},
+				expire: function(meta, value)
+				{
+					meta.counter++;
+					return (meta.counter >= 3);
+				}
+			});
+
+			cache.put('foo', 'bar');
+			Y.Assert.areSame('bar', cache.get('foo'));
+			Y.Assert.areSame('bar', cache.get('foo'));
+			Y.Assert.isUndefined(cache.get('foo'));
+
+			Y.Assert.isTrue(cache.put('foo', 'bar'));
+			Y.Assert.isFalse(cache.put('foo', 'baz'));
+			Y.Assert.areSame('bar', cache.replace('foo', 'baz'));
+			cache.clear();
+			Y.Assert.isUndefined(cache.get('foo'));
+
+			Y.Assert.isTrue(cache.put('foo', 'bar'));
+			Y.Assert.areSame('bar', cache.remove('foo'));
+			Y.Assert.isUndefined(cache.get('foo'));
+		}
+	}));
+
+	new Y.Console(
+	{
+		newestOnTop: false,
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
+	})
+	.render();
+
+	Y.Test.Runner.run();
+});
+</script>
+
+</body>
+</html>

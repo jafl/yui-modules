@@ -47,296 +47,296 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
 
-<span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Manages all the bounding rectangles for an expression.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;Each item contains rect (top,left,bottom,right), midline,</span>
-<span class="cm"> * font_size(%), func.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @namespace MathCanvas</span>
-<span class="cm"> * @class RectList</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> */</span>
+<span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Manages all the bounding rectangles for an expression.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;Each item contains rect (top,left,bottom,right), midline,</span>
+<span class="c"> * font_size(%), func.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @namespace MathCanvas</span>
+<span class="c"> * @class RectList</span>
+<span class="c"> * @constructor</span>
+<span class="c"> */</span>
 
 <span class="kd">function</span> <span class="nx">RectList</span><span class="p">()</span>
 <span class="p">{</span>
 	<span class="k">this</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="p">[];</span>
 <span class="p">}</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param r {Rect} rectangle</span>
-<span class="cm"> * @return width</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param r {Rect} rectangle</span>
+<span class="c"> * @return width</span>
+<span class="c"> */</span>
 <span class="nx">RectList</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="p">;</span>
+	<span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">left</span><span class="o">;</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param r {Rect} rectangle</span>
-<span class="cm"> * @return height</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param r {Rect} rectangle</span>
+<span class="c"> * @return height</span>
+<span class="c"> */</span>
 <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="p">;</span>
+	<span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">-</span> <span class="nx">r</span><span class="p">.</span><span class="nx">top</span><span class="o">;</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param r {Rect} rectangle</span>
-<span class="cm"> * @return horizontal center</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param r {Rect} rectangle</span>
+<span class="c"> * @return horizontal center</span>
+<span class="c"> */</span>
 <span class="nx">RectList</span><span class="p">.</span><span class="nx">xcenter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">r</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param r {Rect} rectangle</span>
-<span class="cm"> * @return vertical center</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param r {Rect} rectangle</span>
+<span class="c"> * @return vertical center</span>
+<span class="c"> */</span>
 <span class="nx">RectList</span><span class="p">.</span><span class="nx">ycenter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">r</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param r {Rect} rectangle</span>
-<span class="cm"> * @return area</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param r {Rect} rectangle</span>
+<span class="c"> * @return area</span>
+<span class="c"> */</span>
 <span class="nx">RectList</span><span class="p">.</span><span class="nx">area</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">width</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="o">*</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param r {Rect} rectangle</span>
-<span class="cm"> * @param xy {point} point</span>
-<span class="cm"> * @return true if rectangle contains point</span>
-<span class="cm"> */</span>
-<span class="nx">RectList</span><span class="p">.</span><span class="nx">containsPt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">xy</span><span class="p">)</span>
+<span class="c">/**</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param r {Rect} rectangle</span>
+<span class="c"> * @param xy {point} point</span>
+<span class="c"> * @return true if rectangle contains point</span>
+<span class="c"> */</span>
+<span class="nx">RectList</span><span class="p">.</span><span class="nx">containsPt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="o">,</span> <span class="nx">xy</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">&lt;=</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">right</span> <span class="o">&amp;&amp;</span>
 			<span class="nx">r</span><span class="p">.</span><span class="nx">top</span>  <span class="o">&lt;=</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">bottom</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param r1 {Rect}</span>
-<span class="cm"> * @param r2 {Rect}</span>
-<span class="cm"> * @return true if r1 contains r2</span>
-<span class="cm"> */</span>
-<span class="nx">RectList</span><span class="p">.</span><span class="nx">containsRect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r1</span><span class="p">,</span> <span class="nx">r2</span><span class="p">)</span>
+<span class="c">/**</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param r1 {Rect}</span>
+<span class="c"> * @param r2 {Rect}</span>
+<span class="c"> * @return true if r1 contains r2</span>
+<span class="c"> */</span>
+<span class="nx">RectList</span><span class="p">.</span><span class="nx">containsRect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r1</span><span class="o">,</span> <span class="nx">r2</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">left</span> <span class="o">&lt;=</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">left</span> <span class="o">&amp;&amp;</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">left</span> <span class="o">&lt;=</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">right</span> <span class="o">&amp;&amp;</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">right</span> <span class="o">&lt;=</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">right</span> <span class="o">&amp;&amp;</span>
 			<span class="nx">r1</span><span class="p">.</span><span class="nx">top</span> <span class="o">&lt;=</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">top</span> <span class="o">&amp;&amp;</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">top</span> <span class="o">&lt;=</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">&amp;&amp;</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">&lt;=</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">bottom</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @static</span>
-<span class="cm"> * @param r1 {Rect} rectangle</span>
-<span class="cm"> * @param r2 {Rect} rectangle</span>
-<span class="cm"> * @return rectangle convering both input arguments</span>
-<span class="cm"> */</span>
-<span class="nx">RectList</span><span class="p">.</span><span class="nx">cover</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r1</span><span class="p">,</span> <span class="nx">r2</span><span class="p">)</span>
+<span class="c">/**</span>
+<span class="c"> * @static</span>
+<span class="c"> * @param r1 {Rect} rectangle</span>
+<span class="c"> * @param r2 {Rect} rectangle</span>
+<span class="c"> * @return rectangle convering both input arguments</span>
+<span class="c"> */</span>
+<span class="nx">RectList</span><span class="p">.</span><span class="nx">cover</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r1</span><span class="o">,</span> <span class="nx">r2</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span>
 	<span class="p">{</span>
-		<span class="nx">top</span><span class="o">:</span>    <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">top</span><span class="p">,</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">top</span><span class="p">),</span>
-		<span class="nx">left</span><span class="o">:</span>   <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">left</span><span class="p">),</span>
-		<span class="nx">bottom</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">bottom</span><span class="p">,</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">bottom</span><span class="p">),</span>
-		<span class="nx">right</span><span class="o">:</span>  <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+		<span class="nx">top</span><span class="o">:</span>    <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">top</span><span class="o">,</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">top</span><span class="p">)</span><span class="o">,</span>
+		<span class="nx">left</span><span class="o">:</span>   <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">left</span><span class="o">,</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">left</span><span class="p">)</span><span class="o">,</span>
+		<span class="nx">bottom</span><span class="o">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">bottom</span><span class="o">,</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">bottom</span><span class="p">)</span><span class="o">,</span>
+		<span class="nx">right</span><span class="o">:</span>  <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">right</span><span class="o">,</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
 	<span class="p">};</span>
-	<span class="k">return</span> <span class="nx">r</span><span class="p">;</span>
+	<span class="k">return</span> <span class="nx">r</span><span class="o">;</span>
 <span class="p">};</span>
 
 <span class="nx">RectList</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="cm">/**</span>
-<span class="cm">	 * @param r {Rect}</span>
-<span class="cm">	 * @param midline {int}</span>
-<span class="cm">	 * @param font_size {int} percentage</span>
-<span class="cm">	 * @param func {MathFunction}</span>
-<span class="cm">	 * @return index of inserted item</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param r {Rect}</span>
+<span class="c">	 * @param midline {int}</span>
+<span class="c">	 * @param font_size {int} percentage</span>
+<span class="c">	 * @param func {MathFunction}</span>
+<span class="c">	 * @return index of inserted item</span>
+<span class="c">	 */</span>
 	<span class="nx">add</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* rect */</span>			<span class="nx">r</span><span class="p">,</span>
-		<span class="cm">/* int */</span>			<span class="nx">midline</span><span class="p">,</span>
-		<span class="cm">/* percentage */</span>	<span class="nx">font_size</span><span class="p">,</span>
-		<span class="cm">/* MathFunction */</span>	<span class="nx">func</span><span class="p">)</span>
+		<span class="c">/* rect */</span>			<span class="nx">r</span><span class="o">,</span>
+		<span class="c">/* int */</span>			<span class="nx">midline</span><span class="o">,</span>
+		<span class="c">/* percentage */</span>	<span class="nx">font_size</span><span class="o">,</span>
+		<span class="c">/* MathFunction */</span>	<span class="nx">func</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span>
 		<span class="p">{</span>
-			<span class="nx">rect</span><span class="o">:</span>      <span class="nx">r</span><span class="p">,</span>
-			<span class="nx">midline</span><span class="o">:</span>   <span class="nx">midline</span><span class="p">,</span>
-			<span class="nx">font_size</span><span class="o">:</span> <span class="nx">font_size</span><span class="p">,</span>
+			<span class="nx">rect</span><span class="o">:</span>      <span class="nx">r</span><span class="o">,</span>
+			<span class="nx">midline</span><span class="o">:</span>   <span class="nx">midline</span><span class="o">,</span>
+			<span class="nx">font_size</span><span class="o">:</span> <span class="nx">font_size</span><span class="o">,</span>
 			<span class="nx">func</span><span class="o">:</span>      <span class="nx">func</span>
 		<span class="p">});</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param index {int}</span>
-<span class="cm">	 * @return item at index</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param index {int}</span>
+<span class="c">	 * @return item at index</span>
+<span class="c">	 */</span>
 	<span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+		<span class="c">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span> <span class="nx">index</span> <span class="p">];</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param f {MathFunction} search target</span>
-<span class="cm">	 * @return data for specified MathFunction, or null if not found</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param f {MathFunction} search target</span>
+<span class="c">	 * @return data for specified MathFunction, or null if not found</span>
+<span class="c">	 */</span>
 	<span class="nx">find</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
+		<span class="c">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">func</span> <span class="o">===</span> <span class="nx">f</span><span class="p">);</span>
 		<span class="p">});</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param f {MathFunction} search target</span>
-<span class="cm">	 * @return index of item for specified MathFunction, or -1 if not found</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param f {MathFunction} search target</span>
+<span class="c">	 * @return index of item for specified MathFunction, or -1 if not found</span>
+<span class="c">	 */</span>
 	<span class="nx">findIndex</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
+		<span class="c">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">f</span><span class="p">));</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">f</span><span class="p">));</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Shift the specified rect and all rects inside it.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param index {int}</span>
-<span class="cm">	 * @param dx {int} horizontal shift</span>
-<span class="cm">	 * @param dy {int} vertical shift</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Shift the specified rect and all rects inside it.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param index {int}</span>
+<span class="c">	 * @param dx {int} horizontal shift</span>
+<span class="c">	 * @param dy {int} vertical shift</span>
+<span class="c">	 */</span>
 	<span class="nx">shift</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">,</span>
-		<span class="cm">/* int */</span>	<span class="nx">dx</span><span class="p">,</span>
-		<span class="cm">/* int */</span>	<span class="nx">dy</span><span class="p">)</span>
+		<span class="c">/* int */</span>	<span class="nx">index</span><span class="o">,</span>
+		<span class="c">/* int */</span>	<span class="nx">dx</span><span class="o">,</span>
+		<span class="c">/* int */</span>	<span class="nx">dy</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">dx</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">dy</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span><span class="p">;</span>
+			<span class="k">return</span><span class="o">;</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span> <span class="nx">index</span> <span class="p">];</span>
-		<span class="kd">var</span> <span class="nx">orig</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-		<span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">top</span>    <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
-		<span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">left</span>   <span class="o">+=</span> <span class="nx">dx</span><span class="p">;</span>
-		<span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
-		<span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span>  <span class="o">+=</span> <span class="nx">dx</span><span class="p">;</span>
-		<span class="nx">info</span><span class="p">.</span><span class="nx">midline</span>     <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">orig</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">top</span>    <span class="o">+=</span> <span class="nx">dy</span><span class="o">;</span>
+		<span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">left</span>   <span class="o">+=</span> <span class="nx">dx</span><span class="o">;</span>
+		<span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">+=</span> <span class="nx">dy</span><span class="o">;</span>
+		<span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span>  <span class="o">+=</span> <span class="nx">dx</span><span class="o">;</span>
+		<span class="nx">info</span><span class="p">.</span><span class="nx">midline</span>     <span class="o">+=</span> <span class="nx">dy</span><span class="o">;</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">info1</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">info1</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">orig</span><span class="p">.</span><span class="nx">left</span> <span class="o">&lt;=</span> <span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">left</span> <span class="o">&amp;&amp;</span> <span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span> <span class="o">&lt;=</span> <span class="nx">orig</span><span class="p">.</span><span class="nx">right</span> <span class="o">&amp;&amp;</span>
 				<span class="nx">orig</span><span class="p">.</span><span class="nx">top</span> <span class="o">&lt;=</span> <span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">top</span> <span class="o">&amp;&amp;</span> <span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">&lt;=</span> <span class="nx">orig</span><span class="p">.</span><span class="nx">bottom</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">top</span>    <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
-				<span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">left</span>   <span class="o">+=</span> <span class="nx">dx</span><span class="p">;</span>
-				<span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
-				<span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span>  <span class="o">+=</span> <span class="nx">dx</span><span class="p">;</span>
-				<span class="nx">info1</span><span class="p">.</span><span class="nx">midline</span>     <span class="o">+=</span> <span class="nx">dy</span><span class="p">;</span>
+				<span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">top</span>    <span class="o">+=</span> <span class="nx">dy</span><span class="o">;</span>
+				<span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">left</span>   <span class="o">+=</span> <span class="nx">dx</span><span class="o">;</span>
+				<span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">bottom</span> <span class="o">+=</span> <span class="nx">dy</span><span class="o">;</span>
+				<span class="nx">info1</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span>  <span class="o">+=</span> <span class="nx">dx</span><span class="o">;</span>
+				<span class="nx">info1</span><span class="p">.</span><span class="nx">midline</span>     <span class="o">+=</span> <span class="nx">dy</span><span class="o">;</span>
 			<span class="p">}</span>
 		<span class="p">});</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Set the midline of the specified rectangle.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param index {int}</span>
-<span class="cm">	 * @param y {int} midline</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Set the midline of the specified rectangle.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param index {int}</span>
+<span class="c">	 * @param y {int} midline</span>
+<span class="c">	 */</span>
 	<span class="nx">setMidline</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">,</span>
-		<span class="cm">/* int */</span>	<span class="nx">y</span><span class="p">)</span>
+		<span class="c">/* int */</span>	<span class="nx">index</span><span class="o">,</span>
+		<span class="c">/* int */</span>	<span class="nx">y</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">shift</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">midline</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">shift</span><span class="p">(</span><span class="nx">index</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">y</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">midline</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return the bounding rect of all the rects in the list</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return the bounding rect of all the rects in the list</span>
+<span class="c">	 */</span>
 	<span class="nx">getBounds</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span> <span class="p">].</span><span class="nx">rect</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span> <span class="p">].</span><span class="nx">rect</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * 	Returns the index of the smallest rectangle that contains both</span>
-<span class="cm">	 * 	startPt and currPt.  Returns -1 if there is no such rectangle.  If</span>
-<span class="cm">	 * 	startPt is inside the bounding rectangle and currPt is outside, we</span>
-<span class="cm">	 * 	return the index of the bounding rectangle.</span>
-<span class="cm">	 * 	</span>
-<span class="cm">	 * 	@param start_pt {point} point where the drag started</span>
-<span class="cm">	 * 	@param curr_pt {point} current cursor location</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * 	Returns the index of the smallest rectangle that contains both</span>
+<span class="c">	 * 	startPt and currPt.  Returns -1 if there is no such rectangle.  If</span>
+<span class="c">	 * 	startPt is inside the bounding rectangle and currPt is outside, we</span>
+<span class="c">	 * 	return the index of the bounding rectangle.</span>
+<span class="c">	 * 	</span>
+<span class="c">	 * 	@param start_pt {point} point where the drag started</span>
+<span class="c">	 * 	@param curr_pt {point} current cursor location</span>
+<span class="c">	 */</span>
 	<span class="nx">getSelection</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* point */</span>	<span class="nx">start_pt</span><span class="p">,</span>
-		<span class="cm">/* point */</span>	<span class="nx">curr_pt</span><span class="p">)</span>
+		<span class="c">/* point */</span>	<span class="nx">start_pt</span><span class="o">,</span>
+		<span class="c">/* point */</span>	<span class="nx">curr_pt</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="c1">// Check if start_pt is in the bounding rect.</span>
+		<span class="c">// Check if start_pt is in the bounding rect.</span>
 
 		<span class="kd">var</span> <span class="nx">bounds</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getBounds</span><span class="p">();</span>
-		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">RectList</span><span class="p">.</span><span class="nx">containsPt</span><span class="p">(</span><span class="nx">bounds</span><span class="p">,</span> <span class="nx">start_pt</span><span class="p">))</span>
+		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">RectList</span><span class="p">.</span><span class="nx">containsPt</span><span class="p">(</span><span class="nx">bounds</span><span class="o">,</span> <span class="nx">start_pt</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+			<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
 		<span class="p">}</span>
 
-		<span class="c1">// The bounding rect is the last rect in the list.</span>
+		<span class="c">// The bounding rect is the last rect in the list.</span>
 
-		<span class="kd">var</span> <span class="nx">minArea</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-		<span class="kd">var</span> <span class="nx">result</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">info</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">minArea</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">result</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">info</span><span class="o">,</span> <span class="nx">i</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">area</span> <span class="o">=</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">area</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">);</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">RectList</span><span class="p">.</span><span class="nx">containsPt</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">,</span> <span class="nx">start_pt</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-				<span class="nx">RectList</span><span class="p">.</span><span class="nx">containsPt</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">,</span> <span class="nx">curr_pt</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">RectList</span><span class="p">.</span><span class="nx">containsPt</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="o">,</span> <span class="nx">start_pt</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+				<span class="nx">RectList</span><span class="p">.</span><span class="nx">containsPt</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="o">,</span> <span class="nx">curr_pt</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
 				<span class="p">(</span><span class="nx">minArea</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">area</span> <span class="o">&lt;</span> <span class="nx">minArea</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">result</span>  <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
-				<span class="nx">minArea</span> <span class="o">=</span> <span class="nx">area</span><span class="p">;</span>
+				<span class="nx">result</span>  <span class="o">=</span> <span class="nx">i</span><span class="o">;</span>
+				<span class="nx">minArea</span> <span class="o">=</span> <span class="nx">area</span><span class="o">;</span>
 			<span class="p">}</span>
 		<span class="p">});</span>
 
-		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Returns the index of the smallest rectangle enclosing the given one.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param index {int}</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Returns the index of the smallest rectangle enclosing the given one.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param index {int}</span>
+<span class="c">	 */</span>
 	<span class="nx">getParent</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+		<span class="c">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">small_rect</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">rect</span><span class="p">;</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">index</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">small_rect</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">rect</span><span class="o">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">index</span><span class="o">+</span><span class="mi">1</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 			<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">big_rect</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">rect</span><span class="p">;</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">RectList</span><span class="p">.</span><span class="nx">containsRect</span><span class="p">(</span><span class="nx">big_rect</span><span class="p">,</span> <span class="nx">small_rect</span><span class="p">))</span>
+			<span class="kd">var</span> <span class="nx">big_rect</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">rect</span><span class="o">;</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">RectList</span><span class="p">.</span><span class="nx">containsRect</span><span class="p">(</span><span class="nx">big_rect</span><span class="o">,</span> <span class="nx">small_rect</span><span class="p">))</span>
 				<span class="p">{</span>
-				<span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
+				<span class="k">return</span> <span class="nx">i</span><span class="o">;</span>
 				<span class="p">}</span>
 			<span class="p">}</span>
 
-		<span class="c1">// The last element is always the largest, and includes all others.</span>
+		<span class="c">// The last element is always the largest, and includes all others.</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 </pre></div>
@@ -360,6 +360,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

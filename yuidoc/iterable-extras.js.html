@@ -47,258 +47,258 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Functional programming support for iterable classes.  The class must</span>
-<span class="cm"> * implement the iterator() (which must return an object that implements</span>
-<span class="cm"> * next() and atEnd()) and newInstance() methods.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;Iterable classes must mix these functions:  &lt;code&gt;Y.mix(SomeClass,</span>
-<span class="cm"> * Y.Iterable, false, null, 4);&lt;/code&gt;  Passing false as the third argument</span>
-<span class="cm"> * allows your class to provide optimized implementations of individual</span>
-<span class="cm"> * functions.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @module gallery-iterable-extras</span>
-<span class="cm"> * @class Iterable</span>
-<span class="cm"> */</span>
+                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Functional programming support for iterable classes.  The class must</span>
+<span class="c"> * implement the iterator() (which must return an object that implements</span>
+<span class="c"> * next() and atEnd()) and newInstance() methods.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;Iterable classes must mix these functions:  &lt;code&gt;Y.mix(SomeClass,</span>
+<span class="c"> * Y.Iterable, false, null, 4);&lt;/code&gt;  Passing false as the third argument</span>
+<span class="c"> * allows your class to provide optimized implementations of individual</span>
+<span class="c"> * functions.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @module gallery-iterable-extras</span>
+<span class="c"> * @class Iterable</span>
+<span class="c"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">Iterable</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the list.  The</span>
-<span class="cm">	 * function receives the value, the index, and the list itself as</span>
-<span class="cm">	 * parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @method each</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 */</span>
-	<span class="nx">each</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the list.  The</span>
+<span class="c">	 * function receives the value, the index, and the list itself as</span>
+<span class="c">	 * parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * @method each</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 */</span>
+	<span class="nx">each</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
-			<span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">(),</span> <span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="o">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the list.  Iteration</span>
-<span class="cm">	 * stops if the supplied function does not return a truthy value.  The</span>
-<span class="cm">	 * function receives the value, the index, and the list itself as</span>
-<span class="cm">	 * parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @method every</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise</span>
-<span class="cm">	 */</span>
-	<span class="nx">every</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the list.  Iteration</span>
+<span class="c">	 * stops if the supplied function does not return a truthy value.  The</span>
+<span class="c">	 * function receives the value, the index, and the list itself as</span>
+<span class="c">	 * parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * @method every</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise</span>
+<span class="c">	 */</span>
+	<span class="nx">every</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">(),</span> <span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">))</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="o">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+				<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
 			<span class="p">}</span>
-			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the list.  Returns a</span>
-<span class="cm">	 * new list containing the items for which the supplied function</span>
-<span class="cm">	 * returned a truthy value.  The function receives the value, the</span>
-<span class="cm">	 * index, and the object itself as parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @method filter</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @return {Object} list of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)</span>
-<span class="cm">	 */</span>
-	<span class="nx">filter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the list.  Returns a</span>
+<span class="c">	 * new list containing the items for which the supplied function</span>
+<span class="c">	 * returned a truthy value.  The function receives the value, the</span>
+<span class="c">	 * index, and the object itself as parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * @method filter</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @return {Object} list of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)</span>
+<span class="c">	 */</span>
+	<span class="nx">filter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">();</span>
 
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">))</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="o">,</span> <span class="nx">item</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="nx">result</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
 			<span class="p">}</span>
-			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the list, searching</span>
-<span class="cm">	 * for the first item that matches the supplied function.  The function</span>
-<span class="cm">	 * receives the value, the index, and the object itself as parameters</span>
-<span class="cm">	 * (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @method find</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true</span>
-<span class="cm">	 */</span>
-	<span class="nx">find</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the list, searching</span>
+<span class="c">	 * for the first item that matches the supplied function.  The function</span>
+<span class="c">	 * receives the value, the index, and the object itself as parameters</span>
+<span class="c">	 * (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * @method find</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true</span>
+<span class="c">	 */</span>
+	<span class="nx">find</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">))</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="o">,</span> <span class="nx">item</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="nx">item</span><span class="p">;</span>
+				<span class="k">return</span> <span class="nx">item</span><span class="o">;</span>
 			<span class="p">}</span>
-			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the list and returns</span>
-<span class="cm">	 * a new list with the results.  The function receives the value, the</span>
-<span class="cm">	 * index, and the object itself as parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @method map</span>
-<span class="cm">	 * @param f {String} the function to invoke</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @return {Object} list of all return values</span>
-<span class="cm">	 */</span>
-	<span class="nx">map</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the list and returns</span>
+<span class="c">	 * a new list with the results.  The function receives the value, the</span>
+<span class="c">	 * index, and the object itself as parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * @method map</span>
+<span class="c">	 * @param f {String} the function to invoke</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @return {Object} list of all return values</span>
+<span class="c">	 */</span>
+	<span class="nx">map</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">();</span>
 
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
-			<span class="nx">result</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">(),</span> <span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">));</span>
-			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">result</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="o">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">));</span>
+			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Partitions an list into two new list, one with the items for which</span>
-<span class="cm">	 * the supplied function returns true, and one with the items for which</span>
-<span class="cm">	 * the function returns false.  The function receives the value, the</span>
-<span class="cm">	 * index, and the object itself as parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @method partition</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @return {Object} object with two properties: matches and rejects. Each is a list containing the items that were selected or rejected by the test function (or an empty object if none).</span>
-<span class="cm">	 */</span>
-	<span class="nx">partition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Partitions an list into two new list, one with the items for which</span>
+<span class="c">	 * the supplied function returns true, and one with the items for which</span>
+<span class="c">	 * the function returns false.  The function receives the value, the</span>
+<span class="c">	 * index, and the object itself as parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * @method partition</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @return {Object} object with two properties: matches and rejects. Each is a list containing the items that were selected or rejected by the test function (or an empty object if none).</span>
+<span class="c">	 */</span>
+	<span class="nx">partition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">matches</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">(),</span>
+			<span class="nx">matches</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">()</span><span class="o">,</span>
 			<span class="nx">rejects</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">()</span>
 		<span class="p">};</span>
 
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-			<span class="nx">result</span><span class="p">[</span> <span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;matches&#39;</span> <span class="o">:</span> <span class="s1">&#39;rejects&#39;</span> <span class="p">].</span><span class="nx">append</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
-			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">result</span><span class="p">[</span> <span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="o">,</span> <span class="nx">item</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;matches&#39;</span> <span class="o">:</span> <span class="s1">&#39;rejects&#39;</span> <span class="p">].</span><span class="nx">append</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
+			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the list, folding the</span>
-<span class="cm">	 * list into a single value.  The function receives the value returned</span>
-<span class="cm">	 * by the previous iteration (or the initial value if this is the first</span>
-<span class="cm">	 * iteration), the value being iterated, the index, and the list itself</span>
-<span class="cm">	 * as parameters (in that order).  The function must return the updated</span>
-<span class="cm">	 * value.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @method reduce</span>
-<span class="cm">	 * @param init {Mixed} the initial value</span>
-<span class="cm">	 * @param f {String} the function to invoke</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @return {Mixed} final result from iteratively applying the given function to each item in the list</span>
-<span class="cm">	 */</span>
-	<span class="nx">reduce</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">init</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the list, folding the</span>
+<span class="c">	 * list into a single value.  The function receives the value returned</span>
+<span class="c">	 * by the previous iteration (or the initial value if this is the first</span>
+<span class="c">	 * iteration), the value being iterated, the index, and the list itself</span>
+<span class="c">	 * as parameters (in that order).  The function must return the updated</span>
+<span class="c">	 * value.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @method reduce</span>
+<span class="c">	 * @param init {Mixed} the initial value</span>
+<span class="c">	 * @param f {String} the function to invoke</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @return {Mixed} final result from iteratively applying the given function to each item in the list</span>
+<span class="c">	 */</span>
+	<span class="nx">reduce</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">init</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">init</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">init</span><span class="o">;</span>
 
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
-			<span class="nx">result</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">(),</span> <span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">result</span> <span class="o">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="o">,</span> <span class="nx">result</span><span class="o">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the list.  Returns a</span>
-<span class="cm">	 * new list containing the items for which the supplied function</span>
-<span class="cm">	 * returned a falsey value.  The function receives the value, the</span>
-<span class="cm">	 * index, and the object itself as parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @method reject</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)</span>
-<span class="cm">	 */</span>
-	<span class="nx">reject</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the list.  Returns a</span>
+<span class="c">	 * new list containing the items for which the supplied function</span>
+<span class="c">	 * returned a falsey value.  The function receives the value, the</span>
+<span class="c">	 * index, and the object itself as parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * @method reject</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)</span>
+<span class="c">	 */</span>
+	<span class="nx">reject</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">newInstance</span><span class="p">();</span>
 
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">();</span>
-			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">))</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="o">,</span> <span class="nx">item</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="nx">result</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
 			<span class="p">}</span>
-			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the list.  Iteration</span>
-<span class="cm">	 * stops if the supplied function returns a truthy value.  The function</span>
-<span class="cm">	 * receives the value, the index, and the list itself as parameters</span>
-<span class="cm">	 * (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @method some</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @return {Boolean} true if the function returns a truthy value on any of the items in the array, false otherwise</span>
-<span class="cm">	 */</span>
-	<span class="nx">some</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the list.  Iteration</span>
+<span class="c">	 * stops if the supplied function returns a truthy value.  The function</span>
+<span class="c">	 * receives the value, the index, and the list itself as parameters</span>
+<span class="c">	 * (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * @method some</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @return {Boolean} true if the function returns a truthy value on any of the items in the array, false otherwise</span>
+<span class="c">	 */</span>
+	<span class="nx">some</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">(),</span> <span class="nx">i</span><span class="p">,</span> <span class="k">this</span><span class="p">))</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">c</span><span class="o">,</span> <span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="k">this</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
 			<span class="p">}</span>
-			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">i</span><span class="o">++;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+		<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 </pre></div>
@@ -322,6 +322,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

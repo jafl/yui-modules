@@ -47,21 +47,21 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
 
-<span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Stores instances of JavaScript components.  Allows a constructor or</span>
-<span class="cm"> * factory method to be passed in place of an instance.  This enables lazy</span>
-<span class="cm"> * construction on demand.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;One use is to create a global repository of JavaScript components</span>
-<span class="cm"> * attached to DOM id&#39;s, e.g., YUI Buttons built on top of HTML</span>
-<span class="cm"> * buttons.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @module gallery-instancemanager</span>
-<span class="cm"> * @class InstanceManager</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> */</span>
+<span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Stores instances of JavaScript components.  Allows a constructor or</span>
+<span class="c"> * factory method to be passed in place of an instance.  This enables lazy</span>
+<span class="c"> * construction on demand.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;One use is to create a global repository of JavaScript components</span>
+<span class="c"> * attached to DOM id&#39;s, e.g., YUI Buttons built on top of HTML</span>
+<span class="c"> * buttons.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @module gallery-instancemanager</span>
+<span class="c"> * @class InstanceManager</span>
+<span class="c"> * @constructor</span>
+<span class="c"> */</span>
 
 <span class="kd">function</span> <span class="nx">InstanceManager</span><span class="p">()</span>
 <span class="p">{</span>
@@ -71,121 +71,131 @@
 
 <span class="nx">InstanceManager</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="cm">/**</span>
-<span class="cm">	 * Retrieve an object.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param id {String} The id of the object to retrieve.</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Retrieve an object.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param id {String} the id of the object to retrieve</span>
+<span class="c">	 * @return {Mixed} the stored object, or false if the slot is empty</span>
+<span class="c">	 */</span>
 	<span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_constructors</span><span class="p">[</span> <span class="nx">id</span> <span class="p">])</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">c</span>           <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_constructors</span><span class="p">[</span> <span class="nx">id</span> <span class="p">];</span>
-			<span class="kd">var</span> <span class="nx">instance</span>    <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
-			<span class="kd">var</span> <span class="nx">obj</span>         <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">args</span><span class="p">);</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">?</span> <span class="nx">instance</span> <span class="o">:</span> <span class="nx">obj</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">instance</span>    <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">obj</span>         <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">instance</span><span class="o">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">args</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="o">?</span> <span class="nx">instance</span> <span class="o">:</span> <span class="nx">obj</span><span class="o">;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">||</span> <span class="kc">false</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">||</span> <span class="kc">false</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Retrieve an object only if it has already been constructed.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param id {String} The id of the object to retrieve.</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Retrieve an object only if it has already been constructed.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param id {String} the id of the object to retrieve</span>
+<span class="c">	 * @return {Mixed} the stored object, or false if the slot is empty</span>
+<span class="c">	 */</span>
 	<span class="nx">getIfConstructed</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">||</span> <span class="kc">false</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">||</span> <span class="kc">false</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Store an object or ctor+args.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param id {String} The id of the object.</span>
-<span class="cm">	 * @param objOrCtor {Object|Function} The object or the object&#39;s constructor or a factory method.</span>
-<span class="cm">	 * @param args {Array} The array of arguments to pass to the constructor.</span>
-<span class="cm">	 * @return {boolean} false if the id has already been used</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Store an object or ctor+args.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param id {String} the id of the object</span>
+<span class="c">	 * @param objOrCtor {Object|Function} the object or the object&#39;s constructor or a factory method</span>
+<span class="c">	 * @param args {Array} the array of arguments to pass to the constructor</span>
+<span class="c">	 * @return {Boolean} false if the id has already been used</span>
+<span class="c">	 */</span>
 	<span class="nx">put</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">,</span>
-		<span class="cm">/* obj/fn */</span>	<span class="nx">objOrCtor</span><span class="p">,</span>
-		<span class="cm">/* array */</span>		<span class="nx">args</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">id</span><span class="o">,</span>
+		<span class="c">/* obj/fn */</span>	<span class="nx">objOrCtor</span><span class="o">,</span>
+		<span class="c">/* array */</span>		<span class="nx">args</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">])</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">objOrCtor</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">_constructors</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">=</span>
 			<span class="p">{</span>
-				<span class="nx">fn</span><span class="o">:</span>   <span class="nx">objOrCtor</span><span class="p">,</span>
+				<span class="nx">fn</span><span class="o">:</span>   <span class="nx">objOrCtor</span><span class="o">,</span>
 				<span class="nx">args</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="o">?</span> <span class="nx">args</span> <span class="o">:</span> <span class="p">[</span><span class="nx">args</span><span class="p">]</span>
 			<span class="p">};</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">objOrCtor</span><span class="p">;</span>
-			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">objOrCtor</span><span class="o">;</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Remove an object.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param id {String} The id of the object.</span>
-<span class="cm">	 * @return {mixed} the object that was removed or &lt;code&gt;false&lt;/code&gt; if the slot was empty</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Remove an object.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param id {String} the id of the object</span>
+<span class="c">	 * @return {mixed} the object that was removed, or false if the slot was empty</span>
+<span class="c">	 */</span>
 	<span class="nx">remove</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">id</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">])</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">];</span>
-			<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">];</span>
-			<span class="k">return</span> <span class="nx">obj</span><span class="p">;</span>
+			<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">[</span> <span class="nx">id</span> <span class="p">];</span>
+			<span class="k">return</span> <span class="nx">obj</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Remove all objects.</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Remove all objects.</span>
+<span class="c">	 */</span>
 	<span class="nx">clear</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_map</span> <span class="o">=</span> <span class="p">{};</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Call a function on every object.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param behavior {Function|String|Object} The function to call or the name of the function or an object {fn:,scope:}</span>
-<span class="cm">	 * @param arguments {Array} The arguments to pass to the function.</span>
-<span class="cm">	 * @param skip_unconstructed {boolean} Optional.  Pass &lt;code&gt;true&lt;/code&gt; to skip unconstructed slots.</span>
-<span class="cm">	 */</span>
-	<span class="nx">applyToAll</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string/fn/object */</span>	<span class="nx">behavior</span><span class="p">,</span>
-		<span class="cm">/* array */</span>				<span class="nx">args</span><span class="p">,</span>
-		<span class="cm">/* bool */</span>				<span class="nx">skip_unconstructed</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Returns list of all stored keys.</span>
+<span class="c">	 */</span>
+	<span class="nx">keys</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">map</span>        <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">,</span>
-			<span class="nx">isFunction</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">behavior</span><span class="p">),</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
+
+	<span class="c">/**</span>
+<span class="c">	 * Call a function on every object.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param behavior {Function|String|Object} the function to call or the name of the function or an object {fn:,scope:}</span>
+<span class="c">	 * @param arguments {Array} the arguments to pass to the function</span>
+<span class="c">	 * @param skip_unconstructed {boolean} Optional.  Pass &lt;code&gt;true&lt;/code&gt; to skip unconstructed slots.</span>
+<span class="c">	 */</span>
+	<span class="nx">applyToAll</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
+		<span class="c">/* string/fn/object */</span>	<span class="nx">behavior</span><span class="o">,</span>
+		<span class="c">/* array */</span>				<span class="nx">args</span><span class="o">,</span>
+		<span class="c">/* bool */</span>				<span class="nx">skip_unconstructed</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">map</span>        <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_map</span><span class="o">,</span>
+			<span class="nx">isFunction</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">behavior</span><span class="p">)</span><span class="o">,</span>
 			<span class="nx">isObject</span>   <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">(</span><span class="nx">behavior</span><span class="p">);</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">map</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">map</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="o">,</span> <span class="nx">name</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span> <span class="o">&amp;&amp;</span> <span class="nx">skip_unconstructed</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">return</span><span class="p">;</span>
+				<span class="k">return</span><span class="o">;</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">item</span><span class="p">)</span>
 			<span class="p">{</span>
@@ -194,25 +204,25 @@
 
 			<span class="k">if</span> <span class="p">(</span><span class="nx">isFunction</span> <span class="o">||</span> <span class="nx">isObject</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="c1">// apply the function and pass the map item as an argument</span>
+				<span class="c">// apply the function and pass the map item as an argument</span>
 
-				<span class="kd">var</span> <span class="nx">fn</span>    <span class="o">=</span> <span class="nx">isFunction</span> <span class="o">?</span> <span class="nx">behavior</span> <span class="o">:</span> <span class="nx">behavior</span><span class="p">.</span><span class="nx">fn</span><span class="p">,</span>
-					<span class="nx">scope</span> <span class="o">=</span> <span class="nx">isFunction</span> <span class="o">?</span> <span class="nb">window</span> <span class="o">:</span> <span class="nx">behavior</span><span class="p">.</span><span class="nx">scope</span><span class="p">;</span>
+				<span class="kd">var</span> <span class="nx">fn</span>    <span class="o">=</span> <span class="nx">isFunction</span> <span class="o">?</span> <span class="nx">behavior</span> <span class="o">:</span> <span class="nx">behavior</span><span class="p">.</span><span class="nx">fn</span><span class="o">,</span>
+					<span class="nx">scope</span> <span class="o">=</span> <span class="nx">isFunction</span> <span class="o">?</span> <span class="nb">window</span> <span class="o">:</span> <span class="nx">behavior</span><span class="p">.</span><span class="nx">scope</span><span class="o">;</span>
 
-				<span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="p">[</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span><span class="nx">item</span> <span class="p">}</span> <span class="p">].</span><span class="nx">concat</span><span class="p">(</span> <span class="nx">args</span> <span class="p">)</span> <span class="p">);</span>
+				<span class="nx">fn</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">scope</span><span class="o">,</span> <span class="p">[</span> <span class="p">{</span> <span class="nx">key</span><span class="o">:</span><span class="nx">name</span><span class="o">,</span> <span class="nx">value</span><span class="o">:</span><span class="nx">item</span> <span class="p">}</span> <span class="p">].</span><span class="nx">concat</span><span class="p">(</span> <span class="nx">args</span> <span class="p">)</span> <span class="p">);</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">item</span><span class="p">[</span> <span class="nx">behavior</span> <span class="p">]))</span>
 			<span class="p">{</span>
-				<span class="c1">// the string is the name of a method</span>
+				<span class="c">// the string is the name of a method</span>
 
-				<span class="nx">item</span><span class="p">[</span> <span class="nx">behavior</span> <span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+				<span class="nx">item</span><span class="p">[</span> <span class="nx">behavior</span> <span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">item</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
 			<span class="p">}</span>
-		<span class="p">},</span>
+		<span class="p">}</span><span class="o">,</span>
 		<span class="k">this</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">InstanceManager</span> <span class="o">=</span> <span class="nx">InstanceManager</span><span class="p">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">InstanceManager</span> <span class="o">=</span> <span class="nx">InstanceManager</span><span class="o">;</span>
 </pre></div>
 
                     </div>
@@ -234,6 +244,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
@@ -287,7 +298,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "InstanceManager.html#method_applyToAll", "access": "", "host": "InstanceManager", "type": "method", "name": "applyToAll"}, {"url": "InstanceManager.html#method_clear", "access": "", "host": "InstanceManager", "type": "method", "name": "clear"}, {"url": "InstanceManager.html#method_get", "access": "", "host": "InstanceManager", "type": "method", "name": "get"}, {"url": "InstanceManager.html#method_getIfConstructed", "access": "", "host": "InstanceManager", "type": "method", "name": "getIfConstructed"}, {"url": "InstanceManager.html#method_put", "access": "", "host": "InstanceManager", "type": "method", "name": "put"}, {"url": "InstanceManager.html#method_remove", "access": "", "host": "InstanceManager", "type": "method", "name": "remove"}];
+    var ALL_YUI_PROPS = [{"url": "InstanceManager.html#method_applyToAll", "access": "", "host": "InstanceManager", "type": "method", "name": "applyToAll"}, {"url": "InstanceManager.html#method_clear", "access": "", "host": "InstanceManager", "type": "method", "name": "clear"}, {"url": "InstanceManager.html#method_get", "access": "", "host": "InstanceManager", "type": "method", "name": "get"}, {"url": "InstanceManager.html#method_getIfConstructed", "access": "", "host": "InstanceManager", "type": "method", "name": "getIfConstructed"}, {"url": "InstanceManager.html#method_keys", "access": "", "host": "InstanceManager", "type": "method", "name": "keys"}, {"url": "InstanceManager.html#method_put", "access": "", "host": "InstanceManager", "type": "method", "name": "put"}, {"url": "InstanceManager.html#method_remove", "access": "", "host": "InstanceManager", "type": "method", "name": "remove"}];
 </script>
 </body>
 </html>

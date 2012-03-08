@@ -47,40 +47,40 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
-<span class="cm"> * Enables the given list of nodes if any checkboxes are checked.</span>
-<span class="cm"> * </span>
-<span class="cm"> * @class EnableIfAnyCheckboxGroup</span>
-<span class="cm"> * @extends CheckboxGroup</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> * @param cb_list {String|Node|NodeList} The list of checkboxes to manage</span>
-<span class="cm"> * @param nodes {String|NodeList} The nodes to enable/disable</span>
-<span class="cm"> */</span>
+                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
+<span class="c"> * Enables the given list of nodes if any checkboxes are checked.</span>
+<span class="c"> * </span>
+<span class="c"> * @class EnableIfAnyCheckboxGroup</span>
+<span class="c"> * @extends CheckboxGroup</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @param cb_list {String|Node|NodeList} The list of checkboxes to manage</span>
+<span class="c"> * @param nodes {String|NodeList} The nodes to enable/disable</span>
+<span class="c"> */</span>
 
 <span class="kd">function</span> <span class="nx">EnableIfAnyCheckboxGroup</span><span class="p">(</span>
-	<span class="cm">/* string/Node/NodeList */</span>	<span class="nx">cb_list</span><span class="p">,</span>
-	<span class="cm">/* string/NodeList */</span>		<span class="nx">nodes</span><span class="p">)</span>
+	<span class="c">/* string/Node/NodeList */</span>	<span class="nx">cb_list</span><span class="o">,</span>
+	<span class="c">/* string/NodeList */</span>		<span class="nx">nodes</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">nodes</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">nodes</span><span class="p">)</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">nodes</span><span class="p">)</span> <span class="o">:</span> <span class="nx">nodes</span><span class="p">;</span>
-	<span class="nx">EnableIfAnyCheckboxGroup</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">cb_list</span><span class="p">);</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">enforceConstraints</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">nodes</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">nodes</span><span class="p">)</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">nodes</span><span class="p">)</span> <span class="o">:</span> <span class="nx">nodes</span><span class="o">;</span>
+	<span class="nx">EnableIfAnyCheckboxGroup</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">cb_list</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">enforceConstraints</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">cb_list</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">EnableIfAnyCheckboxGroup</span><span class="p">,</span> <span class="nx">CheckboxGroup</span><span class="p">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">EnableIfAnyCheckboxGroup</span><span class="o">,</span> <span class="nx">CheckboxGroup</span><span class="o">,</span>
 <span class="p">{</span>
 	<span class="nx">enforceConstraints</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* NodeList */</span>	<span class="nx">cb_list</span><span class="p">,</span>
-		<span class="cm">/* int */</span>		<span class="nx">index</span><span class="p">)</span>
+		<span class="c">/* NodeList */</span>	<span class="nx">cb_list</span><span class="o">,</span>
+		<span class="c">/* int */</span>		<span class="nx">index</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">disable</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">allUnchecked</span><span class="p">();</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">nodes</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">node</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="nx">disable</span><span class="p">);</span>
+			<span class="nx">node</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="o">,</span> <span class="nx">disable</span><span class="p">);</span>
 		<span class="p">});</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">EnableIfAnyCheckboxGroup</span> <span class="o">=</span> <span class="nx">EnableIfAnyCheckboxGroup</span><span class="p">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">EnableIfAnyCheckboxGroup</span> <span class="o">=</span> <span class="nx">EnableIfAnyCheckboxGroup</span><span class="o">;</span>
 </pre></div>
 
                     </div>
@@ -102,6 +102,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

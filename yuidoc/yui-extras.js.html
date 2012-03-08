@@ -47,187 +47,187 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
 
-<span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Augments global Y object with the same higher-order functions that</span>
-<span class="cm"> * array-extras adds to Y.Array.  Note that, unlike arrays and NodeLists,</span>
-<span class="cm"> * iteration order for an object is arbitrary!&lt;/p&gt;</span>
-<span class="cm"> *</span>
-<span class="cm"> * @module gallery-funcprog</span>
-<span class="cm"> */</span>
+<span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Augments global Y object with the same higher-order functions that</span>
+<span class="c"> * array-extras adds to Y.Array.  Note that, unlike arrays and NodeLists,</span>
+<span class="c"> * iteration order for an object is arbitrary!&lt;/p&gt;</span>
+<span class="c"> *</span>
+<span class="c"> * @module gallery-funcprog</span>
+<span class="c"> */</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @class YUI</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @class YUI</span>
+<span class="c"> */</span>
 
-<span class="c1">// adjusted from YUI&#39;s oop.js</span>
-<span class="kd">function</span> <span class="nx">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="nx">o</span><span class="p">)</span>
+<span class="c">// adjusted from YUI&#39;s oop.js</span>
+<span class="kd">function</span> <span class="nx">dispatch</span><span class="p">(</span><span class="nx">action</span><span class="o">,</span> <span class="nx">o</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
 
-	<span class="k">switch</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">o</span><span class="p">))</span>
+	<span class="nx">switch</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">o</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
-			<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
-		<span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
-			<span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-			<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
-		<span class="k">default</span><span class="o">:</span>
+		<span class="nx">case</span> <span class="mi">1</span><span class="o">:</span>
+			<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
+		<span class="nx">case</span> <span class="mi">2</span><span class="o">:</span>
+			<span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
+		<span class="nx">default</span><span class="o">:</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">o</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span><span class="p">[</span><span class="nx">action</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">o</span> <span class="o">!==</span> <span class="nx">Y</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="nx">args</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
-				<span class="k">return</span> <span class="nx">o</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+				<span class="k">return</span> <span class="nx">o</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
 			<span class="p">}</span>
 			<span class="k">else</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+				<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">[</span><span class="nx">action</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
 			<span class="p">}</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span>
 <span class="p">{</span>
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the object.</span>
-<span class="cm">	 * Iteration stops if the supplied function does not return a truthy</span>
-<span class="cm">	 * value.  The function receives the value, the key, and the object</span>
-<span class="cm">	 * itself as parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * Supports arrays, objects, and NodeLists.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @param o {Object} the object to iterate</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
-<span class="cm">	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise</span>
-<span class="cm">	 * @static</span>
-<span class="cm">	 */</span>
-	<span class="nx">every</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the object.</span>
+<span class="c">	 * Iteration stops if the supplied function does not return a truthy</span>
+<span class="c">	 * value.  The function receives the value, the key, and the object</span>
+<span class="c">	 * itself as parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * Supports arrays, objects, and NodeLists.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @param o {Object} the object to iterate</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
+<span class="c">	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise</span>
+<span class="c">	 * @static</span>
+<span class="c">	 */</span>
+	<span class="nx">every</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;every&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;every&#39;</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the object.  Returns</span>
-<span class="cm">	 * a new object containing the items for which the supplied function</span>
-<span class="cm">	 * returned a truthy value.  The function receives the value, the key,</span>
-<span class="cm">	 * and the object itself as parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * Supports arrays, objects, and NodeLists.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @param o {Object} the object to iterate</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
-<span class="cm">	 * @return {Object} array or object of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)</span>
-<span class="cm">	 * @static</span>
-<span class="cm">	 */</span>
-	<span class="nx">filter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the object.  Returns</span>
+<span class="c">	 * a new object containing the items for which the supplied function</span>
+<span class="c">	 * returned a truthy value.  The function receives the value, the key,</span>
+<span class="c">	 * and the object itself as parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * Supports arrays, objects, and NodeLists.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @param o {Object} the object to iterate</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
+<span class="c">	 * @return {Object} array or object of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)</span>
+<span class="c">	 * @static</span>
+<span class="c">	 */</span>
+	<span class="nx">filter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;filter&#39;</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the object, searching</span>
-<span class="cm">	 * for the first item that matches the supplied function.  The function</span>
-<span class="cm">	 * receives the value, the key, and the object itself as parameters (in</span>
-<span class="cm">	 * that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * Supports arrays, objects, and NodeLists.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @param o {Object} the object to iterate</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
-<span class="cm">	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true</span>
-<span class="cm">	 * @static</span>
-<span class="cm">	 */</span>
-	<span class="nx">find</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the object, searching</span>
+<span class="c">	 * for the first item that matches the supplied function.  The function</span>
+<span class="c">	 * receives the value, the key, and the object itself as parameters (in</span>
+<span class="c">	 * that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * Supports arrays, objects, and NodeLists.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @param o {Object} the object to iterate</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
+<span class="c">	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true</span>
+<span class="c">	 * @static</span>
+<span class="c">	 */</span>
+	<span class="nx">find</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;find&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;find&#39;</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the object and</span>
-<span class="cm">	 * returns a new object with the results.  The function receives the</span>
-<span class="cm">	 * value, the key, and the object itself as parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * Supports arrays, objects, and NodeLists.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @param o {Object} the object to iterate</span>
-<span class="cm">	 * @param f {String} the function to invoke</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
-<span class="cm">	 * @return {Object} array or object of all return values, mapped according to the item key</span>
-<span class="cm">	 * @static</span>
-<span class="cm">	 */</span>
-	<span class="nx">map</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the object and</span>
+<span class="c">	 * returns a new object with the results.  The function receives the</span>
+<span class="c">	 * value, the key, and the object itself as parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * Supports arrays, objects, and NodeLists.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @param o {Object} the object to iterate</span>
+<span class="c">	 * @param f {String} the function to invoke</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
+<span class="c">	 * @return {Object} array or object of all return values, mapped according to the item key</span>
+<span class="c">	 * @static</span>
+<span class="c">	 */</span>
+	<span class="nx">map</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Partitions an object into two new objects, one with the items for</span>
-<span class="cm">	 * which the supplied function returns true, and one with the items</span>
-<span class="cm">	 * for which the function returns false.  The function receives the</span>
-<span class="cm">	 * value, the key, and the object itself as parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * Supports arrays, objects, and NodeLists.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @param o {Object} the object to iterate</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
-<span class="cm">	 * @return {Object} object with two properties: matches and rejects. Each is an array or object containing the items that were selected or rejected by the test function (or an empty object if none).</span>
-<span class="cm">	 * @static</span>
-<span class="cm">	 */</span>
-	<span class="nx">partition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Partitions an object into two new objects, one with the items for</span>
+<span class="c">	 * which the supplied function returns true, and one with the items</span>
+<span class="c">	 * for which the function returns false.  The function receives the</span>
+<span class="c">	 * value, the key, and the object itself as parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * Supports arrays, objects, and NodeLists.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @param o {Object} the object to iterate</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
+<span class="c">	 * @return {Object} object with two properties: matches and rejects. Each is an array or object containing the items that were selected or rejected by the test function (or an empty object if none).</span>
+<span class="c">	 * @static</span>
+<span class="c">	 */</span>
+	<span class="nx">partition</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;partition&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;partition&#39;</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the object, folding</span>
-<span class="cm">	 * the object into a single value.  The function receives the value</span>
-<span class="cm">	 * returned by the previous iteration (or the initial value if this is</span>
-<span class="cm">	 * the first iteration), the value being iterated, the key, and the</span>
-<span class="cm">	 * object itself as parameters (in that order).  The function must</span>
-<span class="cm">	 * return the updated value.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * Supports arrays, objects, and NodeLists.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @param o {Object} the object to iterate</span>
-<span class="cm">	 * @param init {Mixed} the initial value</span>
-<span class="cm">	 * @param f {String} the function to invoke</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
-<span class="cm">	 * @return {Mixed} final result from iteratively applying the given function to each item in the object</span>
-<span class="cm">	 * @static</span>
-<span class="cm">	 */</span>
-	<span class="nx">reduce</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">init</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the object, folding</span>
+<span class="c">	 * the object into a single value.  The function receives the value</span>
+<span class="c">	 * returned by the previous iteration (or the initial value if this is</span>
+<span class="c">	 * the first iteration), the value being iterated, the key, and the</span>
+<span class="c">	 * object itself as parameters (in that order).  The function must</span>
+<span class="c">	 * return the updated value.</span>
+<span class="c">	 *</span>
+<span class="c">	 * Supports arrays, objects, and NodeLists.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @param o {Object} the object to iterate</span>
+<span class="c">	 * @param init {Mixed} the initial value</span>
+<span class="c">	 * @param f {String} the function to invoke</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
+<span class="c">	 * @return {Mixed} final result from iteratively applying the given function to each item in the object</span>
+<span class="c">	 * @static</span>
+<span class="c">	 */</span>
+	<span class="nx">reduce</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">init</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;reduce&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">init</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;reduce&#39;</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">init</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Executes the supplied function on each item in the object.  Returns</span>
-<span class="cm">	 * a new object containing the items for which the supplied function</span>
-<span class="cm">	 * returned a falsey value.  The function receives the value, the key,</span>
-<span class="cm">	 * and the object itself as parameters (in that order).</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * Supports arrays, objects, and NodeLists.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @param o {Object} the object to iterate</span>
-<span class="cm">	 * @param f {Function} the function to execute on each item</span>
-<span class="cm">	 * @param c {Object} optional context object</span>
-<span class="cm">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
-<span class="cm">	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)</span>
-<span class="cm">	 * @static</span>
-<span class="cm">	 */</span>
-	<span class="nx">reject</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Executes the supplied function on each item in the object.  Returns</span>
+<span class="c">	 * a new object containing the items for which the supplied function</span>
+<span class="c">	 * returned a falsey value.  The function receives the value, the key,</span>
+<span class="c">	 * and the object itself as parameters (in that order).</span>
+<span class="c">	 *</span>
+<span class="c">	 * Supports arrays, objects, and NodeLists.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @param o {Object} the object to iterate</span>
+<span class="c">	 * @param f {Function} the function to execute on each item</span>
+<span class="c">	 * @param c {Object} optional context object</span>
+<span class="c">	 * @param proto {Boolean} if true, prototype properties are iterated on objects</span>
+<span class="c">	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)</span>
+<span class="c">	 * @static</span>
+<span class="c">	 */</span>
+	<span class="nx">reject</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;reject&#39;</span><span class="p">,</span> <span class="nx">o</span><span class="p">,</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">proto</span><span class="p">);</span>
+		<span class="k">return</span> <span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;reject&#39;</span><span class="o">,</span> <span class="nx">o</span><span class="o">,</span> <span class="nx">f</span><span class="o">,</span> <span class="nx">c</span><span class="o">,</span> <span class="nx">proto</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 </pre></div>
@@ -251,6 +251,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

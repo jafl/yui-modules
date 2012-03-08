@@ -47,427 +47,429 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * &lt;p&gt;Manages header (layout-hd), body (layout-bd), footer (layout-ft)</span>
-<span class="cm"> * stacked vertically to either fit inside the viewport (fit-to-viewport)</span>
-<span class="cm"> * or adjust to the size of the body content (fit-to-content).&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;The body content is sub-divided into modules, arranged either in rows</span>
-<span class="cm"> * or columns.  The layout is automatically detected based on the marker</span>
-<span class="cm"> * classes attached to the two layers of divs inside layout-bd:  either</span>
-<span class="cm"> * layout-module-row &gt; layout-module or layout-module-col &gt; layout-module&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;Each module has an optional header (layout-m-hd), a body</span>
-<span class="cm"> * (layout-m-bd), and an optional footer (layout-m-ft).  You can have</span>
-<span class="cm"> * multiple layout-m-bd&#39;s, but only one can be visible at a time.  If you</span>
-<span class="cm"> * change the DOM in any way that affects the height of any module header,</span>
-<span class="cm"> * body, or footer, or if you switch bodies, you must call</span>
-<span class="cm"> * &lt;code&gt;elementResized()&lt;/code&gt; to reflow the layout.  (Technically, you</span>
-<span class="cm"> * do not have to call &lt;code&gt;elementResized()&lt;/code&gt; if you modify a module</span>
-<span class="cm"> * body in fit-to-viewport mode, but if you later decide to switch to</span>
-<span class="cm"> * fit-to-content, your optimization will cause trouble.)&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;If you want a row, column, or module to have a fixed size, add the</span>
-<span class="cm"> * class layout-not-managed to the layout-module-row, layout-module-column,</span>
-<span class="cm"> * or layout-module.  Then use CSS to set the width of layout-module (for a</span>
-<span class="cm"> * row) or layout-module-col (for a col), or the height of layout-m-bd.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;If the body content is a single module, it expands as the content</span>
-<span class="cm"> * expands (fit-to-content) until it would push the footer below the fold.</span>
-<span class="cm"> * Then it switches to fit-to-content so the scrollbar appears on the</span>
-<span class="cm"> * module instead of the entire viewport.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;Note that a non-zero margin-top on the top element or a non-zero</span>
-<span class="cm"> * margin-bottom on the bottom element inside any container will break the</span>
-<span class="cm"> * layout because browsers lie about the total height of the container in</span>
-<span class="cm"> * this case.  Use padding instead of margin on elements inside headers and</span>
-<span class="cm"> * footers.&lt;/p&gt;</span>
-<span class="cm"> *</span>
-<span class="cm"> * @module gallery-layout</span>
-<span class="cm"> * @class PageLayout</span>
-<span class="cm"> * @extends Base</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> * @param config {Object}</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * &lt;p&gt;Manages header (layout-hd), body (layout-bd), footer (layout-ft)</span>
+<span class="c"> * stacked vertically to either fit inside the viewport (fit-to-viewport)</span>
+<span class="c"> * or adjust to the size of the body content (fit-to-content).&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;The body content is sub-divided into modules, arranged either in rows</span>
+<span class="c"> * or columns.  The layout is automatically detected based on the marker</span>
+<span class="c"> * classes attached to the two layers of divs inside layout-bd:  either</span>
+<span class="c"> * layout-module-row &gt; layout-module or layout-module-col &gt; layout-module&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;Each module has an optional header (layout-m-hd), a body</span>
+<span class="c"> * (layout-m-bd), and an optional footer (layout-m-ft).  You can have</span>
+<span class="c"> * multiple layout-m-bd&#39;s, but only one can be visible at a time.  If you</span>
+<span class="c"> * change the DOM in any way that affects the height of any module header,</span>
+<span class="c"> * body, or footer, or if you switch bodies, you must call</span>
+<span class="c"> * &lt;code&gt;elementResized()&lt;/code&gt; to reflow the layout.  (Technically, you</span>
+<span class="c"> * do not have to call &lt;code&gt;elementResized()&lt;/code&gt; if you modify a module</span>
+<span class="c"> * body in fit-to-viewport mode, but if you later decide to switch to</span>
+<span class="c"> * fit-to-content, your optimization will cause trouble.)&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;If you want a row, column, or module to have a fixed size, add the</span>
+<span class="c"> * class layout-not-managed to the layout-module-row, layout-module-column,</span>
+<span class="c"> * or layout-module.  Then use CSS to set the width of layout-module (for a</span>
+<span class="c"> * row) or layout-module-col (for a col), or the height of layout-m-bd.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;If the body content is a single module, it expands as the content</span>
+<span class="c"> * expands (fit-to-content) until it would push the footer below the fold.</span>
+<span class="c"> * Then it switches to fit-to-viewport so the scrollbar appears on the</span>
+<span class="c"> * module instead of the entire viewport.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;Note that a non-zero margin-top on the top element or a non-zero</span>
+<span class="c"> * margin-bottom on the bottom element inside any container will break the</span>
+<span class="c"> * layout because browsers lie about the total height of the container in</span>
+<span class="c"> * this case.  Use padding instead of margin on elements inside headers and</span>
+<span class="c"> * footers.&lt;/p&gt;</span>
+<span class="c"> *</span>
+<span class="c"> * @module gallery-layout</span>
+<span class="c"> * @class PageLayout</span>
+<span class="c"> * @extends Base</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @param config {Object}</span>
+<span class="c"> */</span>
 
 <span class="kd">function</span> <span class="nx">PageLayout</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;pagelayout&quot;</span><span class="p">;</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;pagelayout&quot;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.FIT_TO_VIEWPORT</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.FIT_TO_VIEWPORT</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.FIT_TO_CONTENT</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.FIT_TO_CONTENT</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
 
 <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="cm">/**</span>
-<span class="cm">	 * FIT_TO_VIEWPORT sizes the rows to fit everything inside the</span>
-<span class="cm">	 * browser&#39;s viewport.  FIT_TO_CONTENT sizes the rows to eliminate all</span>
-<span class="cm">	 * scrollbars on module bodies.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @config mode</span>
-<span class="cm">	 * @type PageLayout.FIT_TO_VIEWPORT or PageLayout.FIT_TO_CONTENT</span>
-<span class="cm">	 * @default PageLayout.FIT_TO_VIEWPORT</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * FIT_TO_VIEWPORT sizes the rows to fit everything inside the</span>
+<span class="c">	 * browser&#39;s viewport.  FIT_TO_CONTENT sizes the rows to eliminate all</span>
+<span class="c">	 * scrollbars on module bodies.  Note that you can configure this</span>
+<span class="c">	 * property by putting the CSS class &quot;FIT_TO_VIEWPORT&quot; or</span>
+<span class="c">	 * &quot;FIT_TO_CONTENT&quot; on layout-bd.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @config mode</span>
+<span class="c">	 * @type PageLayout.FIT_TO_VIEWPORT or PageLayout.FIT_TO_CONTENT</span>
+<span class="c">	 * @default PageLayout.FIT_TO_VIEWPORT</span>
+<span class="c">	 */</span>
 	<span class="nx">mode</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="o">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="p">(</span><span class="nx">value</span> <span class="o">===</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">||</span> <span class="nx">value</span> <span class="o">===</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Minimum page width, measured in em&#39;s.  The page content will not</span>
-<span class="cm">	 * collapse narrower than this width.  If the viewport is smaller, the</span>
-<span class="cm">	 * brower&#39;s horizontal scrollbar will appear.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @config minWidth</span>
-<span class="cm">	 * @type {Number} em&#39;s</span>
-<span class="cm">	 * @default 73 (em) 950px @ 13px font</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Minimum page width, measured in em&#39;s.  The page content will not</span>
+<span class="c">	 * collapse narrower than this width.  If the viewport is smaller, the</span>
+<span class="c">	 * brower&#39;s horizontal scrollbar will appear.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @config minWidth</span>
+<span class="c">	 * @type {Number} em&#39;s</span>
+<span class="c">	 * @default 73 (em) 950px @ 13px font</span>
+<span class="c">	 */</span>
 	<span class="nx">minWidth</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="mi">73</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="mi">73</span><span class="o">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Minimum page height in FIT_TO_VIEWPORT mode, measured in em&#39;s.  The</span>
-<span class="cm">	 * page content will not collapse lower than this height.  If the</span>
-<span class="cm">	 * viewport is smaller, the brower&#39;s vertical scrollbar will appear.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @config minHeight</span>
-<span class="cm">	 * @type {Number} em&#39;s</span>
-<span class="cm">	 * @default 44 (em) 570px @ 13px font</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Minimum page height in FIT_TO_VIEWPORT mode, measured in em&#39;s.  The</span>
+<span class="c">	 * page content will not collapse lower than this height.  If the</span>
+<span class="c">	 * viewport is smaller, the brower&#39;s vertical scrollbar will appear.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @config minHeight</span>
+<span class="c">	 * @type {Number} em&#39;s</span>
+<span class="c">	 * @default 44 (em) 570px @ 13px font</span>
+<span class="c">	 */</span>
 	<span class="nx">minHeight</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="mi">44</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="mi">44</span><span class="o">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * In FIT_TO_CONTENT mode, set this to true to make the footer stick to</span>
-<span class="cm">	 * the bottom of the viewport.  The default is for the footer to scroll</span>
-<span class="cm">	 * along with the rest of the page content.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @config stickyFooter</span>
-<span class="cm">	 * @type {Boolean}</span>
-<span class="cm">	 * @default false</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * In FIT_TO_CONTENT mode, set this to true to make the footer stick to</span>
+<span class="c">	 * the bottom of the viewport.  The default is for the footer to scroll</span>
+<span class="c">	 * along with the rest of the page content.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @config stickyFooter</span>
+<span class="c">	 * @type {Boolean}</span>
+<span class="c">	 * @default false</span>
+<span class="c">	 */</span>
 	<span class="nx">stickyFooter</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="kc">false</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">false</span><span class="o">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * When organizing modules into columns in FIT_TO_CONTENT mode, set</span>
-<span class="cm">	 * this to false to allow each column to be a different height.</span>
-<span class="cm">	 *</span>
-<span class="cm">	 * @config matchColumnHeights</span>
-<span class="cm">	 * @type {Boolean}</span>
-<span class="cm">	 * @default true</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * When organizing modules into columns in FIT_TO_CONTENT mode, set</span>
+<span class="c">	 * this to false to allow each column to be a different height.</span>
+<span class="c">	 *</span>
+<span class="c">	 * @config matchColumnHeights</span>
+<span class="c">	 * @type {Boolean}</span>
+<span class="c">	 * @default true</span>
+<span class="c">	 */</span>
 	<span class="nx">matchColumnHeights</span><span class="o">:</span>
 	<span class="p">{</span>
-		<span class="nx">value</span><span class="o">:</span>     <span class="kc">true</span><span class="p">,</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="kc">true</span><span class="o">,</span>
 		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isBoolean</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @event beforeReflow</span>
-<span class="cm"> * @description Fires before the layout is reflowed.</span>
-<span class="cm"> */</span>
-<span class="cm">/**</span>
-<span class="cm"> * @event afterReflow</span>
-<span class="cm"> * @description Fires after the layout is completely reflowed, including viewport scrollbar changes.</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @event beforeReflow</span>
+<span class="c"> * @description Fires before the layout is reflowed.</span>
+<span class="c"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @event afterReflow</span>
+<span class="c"> * @description Fires after the layout is completely reflowed, including viewport scrollbar changes.</span>
+<span class="c"> */</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @event beforeExpandModule</span>
-<span class="cm"> * @description Fires before a module is expanded.</span>
-<span class="cm"> * @param bd {Node} the module body (layout-m-bd)</span>
-<span class="cm"> */</span>
-<span class="cm">/**</span>
-<span class="cm"> * @event afterExpandModule</span>
-<span class="cm"> * @description Fires after a module is expanded.</span>
-<span class="cm"> * @param bd {Node} the module body (layout-m-bd)</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @event beforeExpandModule</span>
+<span class="c"> * @description Fires before a module is expanded.</span>
+<span class="c"> * @param bd {Node} the module body (layout-m-bd)</span>
+<span class="c"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @event afterExpandModule</span>
+<span class="c"> * @description Fires after a module is expanded.</span>
+<span class="c"> * @param bd {Node} the module body (layout-m-bd)</span>
+<span class="c"> */</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @event beforeCollapseModule</span>
-<span class="cm"> * @description Fires before a module is collapsed.</span>
-<span class="cm"> * @param bd {Node} the module body (layout-m-bd)</span>
-<span class="cm"> */</span>
-<span class="cm">/**</span>
-<span class="cm"> * @event afterCollapseModule</span>
-<span class="cm"> * @description Fires after a module is collapsed.</span>
-<span class="cm"> * @param bd {Node} the module body (layout-m-bd)</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @event beforeCollapseModule</span>
+<span class="c"> * @description Fires before a module is collapsed.</span>
+<span class="c"> * @param bd {Node} the module body (layout-m-bd)</span>
+<span class="c"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @event afterCollapseModule</span>
+<span class="c"> * @description Fires after a module is collapsed.</span>
+<span class="c"> * @param bd {Node} the module body (layout-m-bd)</span>
+<span class="c"> */</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @event beforeResizeModule</span>
-<span class="cm"> * @description Fires before a module is resized.</span>
-<span class="cm"> * @param bd {Node} the module body (layout-m-bd)</span>
-<span class="cm"> * @param height {Number} new height in pixels or &quot;auto&quot;</span>
-<span class="cm"> * @param width {Number} new width in pixels or &quot;auto&quot;</span>
-<span class="cm"> */</span>
-<span class="cm">/**</span>
-<span class="cm"> * @event afterResizeModule</span>
-<span class="cm"> * @description Fires after a module is resized.</span>
-<span class="cm"> * @param bd {Node} the module body (layout-m-bd)</span>
-<span class="cm"> * @param height {Number} new height in pixels</span>
-<span class="cm"> * @param width {Number} new width in pixels</span>
-<span class="cm"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @event beforeResizeModule</span>
+<span class="c"> * @description Fires before a module is resized.</span>
+<span class="c"> * @param bd {Node} the module body (layout-m-bd)</span>
+<span class="c"> * @param height {Number} new height in pixels or &quot;auto&quot;</span>
+<span class="c"> * @param width {Number} new width in pixels or &quot;auto&quot;</span>
+<span class="c"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @event afterResizeModule</span>
+<span class="c"> * @description Fires after a module is resized.</span>
+<span class="c"> * @param bd {Node} the module body (layout-m-bd)</span>
+<span class="c"> * @param height {Number} new height in pixels</span>
+<span class="c"> * @param width {Number} new width in pixels</span>
+<span class="c"> */</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.page_header_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-hd&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">page_header_class</span> <span class="o">=</span> <span class="s1">&#39;layout-hd&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.page_header_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-hd&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">page_header_class</span> <span class="o">=</span> <span class="s1">&#39;layout-hd&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.page_body_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-bd&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">page_body_class</span> <span class="o">=</span> <span class="s1">&#39;layout-bd&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.page_body_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-bd&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">page_body_class</span> <span class="o">=</span> <span class="s1">&#39;layout-bd&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.page_footer_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-ft&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">page_footer_class</span> <span class="o">=</span> <span class="s1">&#39;layout-ft&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.page_footer_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-ft&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">page_footer_class</span> <span class="o">=</span> <span class="s1">&#39;layout-ft&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.module_rows_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @value &quot;layout-module-row&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span> <span class="o">=</span> <span class="s1">&#39;layout-module-row&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.module_rows_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @value &quot;layout-module-row&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span> <span class="o">=</span> <span class="s1">&#39;layout-module-row&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.module_cols_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @value &quot;layout-module-col&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_cols_class</span> <span class="o">=</span> <span class="s1">&#39;layout-module-col&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.module_cols_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @value &quot;layout-module-col&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_cols_class</span> <span class="o">=</span> <span class="s1">&#39;layout-module-col&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.module_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-module&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_class</span> <span class="o">=</span> <span class="s1">&#39;layout-module&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.module_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-module&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_class</span> <span class="o">=</span> <span class="s1">&#39;layout-module&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.module_header_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-m-hd&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_header_class</span> <span class="o">=</span> <span class="s1">&#39;layout-m-hd&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.module_header_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-m-hd&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_header_class</span> <span class="o">=</span> <span class="s1">&#39;layout-m-hd&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.module_body_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-m-bd&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_body_class</span> <span class="o">=</span> <span class="s1">&#39;layout-m-bd&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.module_body_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-m-bd&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_body_class</span> <span class="o">=</span> <span class="s1">&#39;layout-m-bd&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.module_footer_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-m-ft&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_footer_class</span> <span class="o">=</span> <span class="s1">&#39;layout-m-ft&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.module_footer_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-m-ft&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_footer_class</span> <span class="o">=</span> <span class="s1">&#39;layout-m-ft&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.not_managed_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-not-managed&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">not_managed_class</span> <span class="o">=</span> <span class="s1">&#39;layout-not-managed&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.not_managed_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-not-managed&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">not_managed_class</span> <span class="o">=</span> <span class="s1">&#39;layout-not-managed&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.collapse_vert_nub_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-vert-collapse-nub&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_vert_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-vert-collapse-nub&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.collapse_vert_nub_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-vert-collapse-nub&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_vert_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-vert-collapse-nub&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.collapse_left_nub_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-left-collapse-nub&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_left_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-left-collapse-nub&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.collapse_left_nub_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-left-collapse-nub&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_left_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-left-collapse-nub&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.collapse_right_nub_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-right-collapse-nub&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_right_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-right-collapse-nub&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.collapse_right_nub_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-right-collapse-nub&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_right_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-right-collapse-nub&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.expand_vert_nub_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-vert-expand-nub&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_vert_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-vert-expand-nub&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.expand_vert_nub_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-vert-expand-nub&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_vert_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-vert-expand-nub&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.expand_left_nub_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-left-expand-nub&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_left_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-left-expand-nub&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.expand_left_nub_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-left-expand-nub&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_left_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-left-expand-nub&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.expand_right_nub_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-right-expand-nub&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_right_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-right-expand-nub&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.expand_right_nub_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-right-expand-nub&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_right_nub_class</span> <span class="o">=</span> <span class="s1">&#39;layout-right-expand-nub&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.collapsed_vert_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-collapsed-vert&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_vert_class</span> <span class="o">=</span> <span class="s1">&#39;layout-collapsed-vert&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.collapsed_vert_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-collapsed-vert&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_vert_class</span> <span class="o">=</span> <span class="s1">&#39;layout-collapsed-vert&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.collapsed_horiz_class</span>
-<span class="cm"> * @type {String}</span>
-<span class="cm"> * @default &quot;layout-collapsed-horiz&quot;</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span> <span class="o">=</span> <span class="s1">&#39;layout-collapsed-horiz&#39;</span><span class="p">;</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.collapsed_horiz_class</span>
+<span class="c"> * @type {String}</span>
+<span class="c"> * @default &quot;layout-collapsed-horiz&quot;</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span> <span class="o">=</span> <span class="s1">&#39;layout-collapsed-horiz&#39;</span><span class="o">;</span>
 
-<span class="cm">/**</span>
-<span class="cm"> * @property Y.PageLayout.min_module_height</span>
-<span class="cm"> * @type {Number}</span>
-<span class="cm"> * @default 10 (px)</span>
-<span class="cm"> */</span>
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">min_module_height</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// px</span>
+<span class="c">/**</span>
+<span class="c"> * @property Y.PageLayout.min_module_height</span>
+<span class="c"> * @type {Number}</span>
+<span class="c"> * @default 10 (px)</span>
+<span class="c"> */</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">min_module_height</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span> <span class="c">// px</span>
 
-<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">unmanaged_size</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// smaller than any module size (collapsed size = - normal size)</span>
+<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">unmanaged_size</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span> <span class="c">// smaller than any module size (collapsed size = - normal size)</span>
 
-<span class="kd">var</span> <span class="nx">mode_regex</span>          <span class="o">=</span> <span class="sr">/\bFIT_TO_[A-Z_]+/</span><span class="p">,</span>
-	<span class="nx">row_height_class_re</span> <span class="o">=</span> <span class="sr">/(?:^|\s)height:([0-9]+)%/</span><span class="p">,</span>
-	<span class="nx">col_width_class_re</span>  <span class="o">=</span> <span class="sr">/(?:^|\s)width:([0-9]+)%/</span><span class="p">,</span>
+<span class="kd">var</span> <span class="nx">mode_regex</span>          <span class="o">=</span> <span class="sr">/\bFIT_TO_[A-Z_]+/</span><span class="o">,</span>
+	<span class="nx">row_height_class_re</span> <span class="o">=</span> <span class="sr">/(?:^|\s)height:([0-9]+)%/</span><span class="o">,</span>
+	<span class="nx">col_width_class_re</span>  <span class="o">=</span> <span class="sr">/(?:^|\s)width:([0-9]+)%/</span><span class="o">,</span>
 
-	<span class="nx">reflow_delay</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="c1">// ms</span>
+	<span class="nx">reflow_delay</span> <span class="o">=</span> <span class="mi">100</span><span class="o">,</span> <span class="c">// ms</span>
 
 	<span class="nx">plugin_info</span> <span class="o">=</span>
 	<span class="p">{</span>
 		<span class="nx">row</span><span class="o">:</span>
 		<span class="p">{</span>
-			<span class="nx">module</span><span class="o">:</span>     <span class="s1">&#39;gallery-layout-rows&#39;</span><span class="p">,</span>
-			<span class="nx">plugin</span><span class="o">:</span>     <span class="s1">&#39;PageLayoutRows&#39;</span><span class="p">,</span>
-			<span class="nx">outer_size</span><span class="o">:</span> <span class="nx">row_height_class_re</span><span class="p">,</span>
+			<span class="nx">module</span><span class="o">:</span>     <span class="s1">&#39;gallery-layout-rows&#39;</span><span class="o">,</span>
+			<span class="nx">plugin</span><span class="o">:</span>     <span class="s1">&#39;PageLayoutRows&#39;</span><span class="o">,</span>
+			<span class="nx">outer_size</span><span class="o">:</span> <span class="nx">row_height_class_re</span><span class="o">,</span>
 			<span class="nx">inner_size</span><span class="o">:</span> <span class="nx">col_width_class_re</span>
-		<span class="p">},</span>
+		<span class="p">}</span><span class="o">,</span>
 		<span class="nx">col</span><span class="o">:</span>
 		<span class="p">{</span>
-			<span class="nx">module</span><span class="o">:</span>     <span class="s1">&#39;gallery-layout-cols&#39;</span><span class="p">,</span>
-			<span class="nx">plugin</span><span class="o">:</span>     <span class="s1">&#39;PageLayoutCols&#39;</span><span class="p">,</span>
-			<span class="nx">outer_size</span><span class="o">:</span> <span class="nx">col_width_class_re</span><span class="p">,</span>
+			<span class="nx">module</span><span class="o">:</span>     <span class="s1">&#39;gallery-layout-cols&#39;</span><span class="o">,</span>
+			<span class="nx">plugin</span><span class="o">:</span>     <span class="s1">&#39;PageLayoutCols&#39;</span><span class="o">,</span>
+			<span class="nx">outer_size</span><span class="o">:</span> <span class="nx">col_width_class_re</span><span class="o">,</span>
 			<span class="nx">inner_size</span><span class="o">:</span> <span class="nx">row_height_class_re</span>
 		<span class="p">}</span>
 	<span class="p">};</span>
-<span class="cm">/*</span>
-<span class="cm">	dd_group_name:            &#39;satg-layout-dd-group&#39;,</span>
-<span class="cm">	drag_target_class:        &#39;satg-layout-dd-target&#39;,</span>
-<span class="cm">	drag_nub_class:           &#39;satg-layout-dragnub&#39;,</span>
-<span class="cm">	module_header_drag_class: &#39;satg-layout-draggable&#39;,</span>
-<span class="cm">	module_no_drag_class:     &#39;satg-layout-drag-disabled&#39;,</span>
-<span class="cm">	bomb_sight_class:         &#39;satg-layout-bomb-sight satg-layout-bomb-sight-rows&#39;,</span>
+<span class="c">/*</span>
+<span class="c">	dd_group_name:            &#39;satg-layout-dd-group&#39;,</span>
+<span class="c">	drag_target_class:        &#39;satg-layout-dd-target&#39;,</span>
+<span class="c">	drag_nub_class:           &#39;satg-layout-dragnub&#39;,</span>
+<span class="c">	module_header_drag_class: &#39;satg-layout-draggable&#39;,</span>
+<span class="c">	module_no_drag_class:     &#39;satg-layout-drag-disabled&#39;,</span>
+<span class="c">	bomb_sight_class:         &#39;satg-layout-bomb-sight satg-layout-bomb-sight-rows&#39;,</span>
 
-<span class="cm">	the_dd_targets = {};</span>
-<span class="cm">	the_dd_nubs    = {};</span>
-<span class="cm">*/</span>
+<span class="c">	the_dd_targets = {};</span>
+<span class="c">	the_dd_nubs    = {};</span>
+<span class="c">*/</span>
 
-<span class="cm">/*</span>
-<span class="cm"> * Normalize the list of sizes so they add up to 100%.</span>
-<span class="cm"> */</span>
+<span class="c">/*</span>
+<span class="c"> * Normalize the list of sizes so they add up to 100%.</span>
+<span class="c"> */</span>
 <span class="kd">function</span> <span class="nx">normalizeSizes</span><span class="p">(</span>
-	<span class="cm">/* array */</span>	<span class="nx">list</span><span class="p">,</span>
-	<span class="cm">/* regex */</span>	<span class="nx">pattern</span><span class="p">)</span>
+	<span class="c">/* array */</span>	<span class="nx">list</span><span class="o">,</span>
+	<span class="c">/* regex */</span>	<span class="nx">pattern</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="c1">// collect sizes</span>
+	<span class="c">// collect sizes</span>
 
-	<span class="kd">var</span> <span class="nx">sizes</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">module</span><span class="p">)</span>
+	<span class="kd">var</span> <span class="nx">sizes</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">list</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">module</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">not_managed_class</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">unmanaged_size</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">unmanaged_size</span><span class="o">;</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="nx">pattern</span><span class="p">);</span>
-		<span class="k">return</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="k">return</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
 	<span class="p">});</span>
 
-	<span class="c1">// analyze</span>
+	<span class="c">// analyze</span>
 
-	<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">sizes</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">size</span><span class="p">)</span>
+	<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">sizes</span><span class="o">,</span> <span class="p">[</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="p">]</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="nx">size</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">size</span><span class="p">;</span>
+			<span class="nx">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="nx">size</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">size</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">++;</span>
 		<span class="p">}</span>
-		<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+		<span class="k">return</span> <span class="nx">value</span><span class="o">;</span>
 	<span class="p">});</span>
 
-	<span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="nx">info</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">blank_count</span> <span class="o">=</span> <span class="nx">info</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+	<span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="nx">info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">,</span> <span class="nx">blank_count</span> <span class="o">=</span> <span class="nx">info</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
-	<span class="c1">// fill in blanks</span>
+	<span class="c">// fill in blanks</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">blank_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">blank_size</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">((</span><span class="mi">100</span> <span class="o">-</span> <span class="nx">sum</span><span class="p">)</span> <span class="o">/</span> <span class="nx">blank_count</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">blank_size</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">((</span><span class="mi">100</span> <span class="o">-</span> <span class="nx">sum</span><span class="p">)</span> <span class="o">/</span> <span class="nx">blank_count</span><span class="o">,</span> <span class="mi">10</span><span class="p">);</span>
 
-		<span class="nx">sizes</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">sizes</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">size</span><span class="p">)</span>
+		<span class="nx">sizes</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">sizes</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">size</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="p">(</span><span class="nx">size</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">blank_size</span> <span class="o">:</span> <span class="nx">size</span><span class="p">);</span>
 		<span class="p">});</span>
 
-		<span class="nx">sum</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">sizes</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="nx">size</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+		<span class="nx">sum</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">sizes</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sum</span><span class="o">,</span> <span class="nx">size</span><span class="o">,</span> <span class="nx">i</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="p">(</span><span class="nx">size</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">sum</span> <span class="o">:</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">size</span><span class="p">);</span>
 		<span class="p">});</span>
 	<span class="p">}</span>
 
-	<span class="c1">// normalize</span>
+	<span class="c">// normalize</span>
 
-	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">sizes</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">size</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">sizes</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">size</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="nx">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">size</span> <span class="o">*</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">/</span> <span class="nx">sum</span><span class="p">)</span> <span class="o">:</span> <span class="nx">size</span><span class="p">);</span>
 	<span class="p">});</span>
@@ -475,7 +477,7 @@
 
 <span class="kd">function</span> <span class="nx">updateFitClass</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="s1">&#39;FIT_TO_(VIEWPORT|CONTENT)&#39;</span><span class="p">,</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="s1">&#39;FIT_TO_(VIEWPORT|CONTENT)&#39;</span><span class="o">,</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">?</span> <span class="s1">&#39;FIT_TO_VIEWPORT&#39;</span> <span class="o">:</span> <span class="s1">&#39;FIT_TO_CONTENT&#39;</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -483,14 +485,14 @@
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span><span class="p">;</span>
+		<span class="k">return</span><span class="o">;</span>
 	<span class="p">}</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;stickyFooter&#39;</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">).</span><span class="nx">insertBefore</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;parentNode&#39;</span><span class="p">).</span><span class="nx">insertBefore</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">next</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;tagName&#39;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;script&#39;</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;tagName&#39;</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;script&#39;</span><span class="o">;</span>
 		<span class="p">}));</span>
 	<span class="p">}</span>
 	<span class="k">else</span>
@@ -503,64 +505,64 @@
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span> <span class="o">||</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span><span class="p">;</span>
+		<span class="k">return</span><span class="o">;</span>
 	<span class="p">}</span>
 
-	<span class="c1">// check if viewport changed</span>
+	<span class="c">// check if viewport changed</span>
 
-	<span class="kd">var</span> <span class="nx">mode</span>          <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">mode</span>          <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">single_module</span> <span class="o">?</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">);</span>
 	<span class="kd">var</span> <span class="nx">sticky_footer</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;stickyFooter&#39;</span><span class="p">);</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowX&#39;</span><span class="p">,</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowX&#39;</span><span class="o">,</span>
 		<span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span> <span class="o">?</span> <span class="s1">&#39;auto&#39;</span> <span class="o">:</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="p">,</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="o">,</span>
 		<span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span> <span class="o">?</span> <span class="s1">&#39;scroll&#39;</span> <span class="o">:</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
 
 	<span class="kd">var</span> <span class="nx">viewport</span> <span class="o">=</span>
 	<span class="p">{</span>
-		<span class="nx">w</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winWidth&#39;</span><span class="p">),</span>
+		<span class="nx">w</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winWidth&#39;</span><span class="p">)</span><span class="o">,</span>
 		<span class="nx">h</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winHeight&#39;</span><span class="p">)</span>
 	<span class="p">};</span>
 
-	<span class="kd">var</span> <span class="nx">resize_event</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;resize&#39;</span><span class="p">;</span>	<span class="c1">// IE7 generates no-op&#39;s</span>
+	<span class="kd">var</span> <span class="nx">resize_event</span> <span class="o">=</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;resize&#39;</span><span class="o">;</span>	<span class="c">// IE7 generates no-op&#39;s</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">resize_event</span> <span class="o">&amp;&amp;</span>
 		<span class="p">(</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">&amp;&amp;</span>
 		 <span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="k">return</span><span class="p">;</span>
+		<span class="k">return</span><span class="o">;</span>
 	<span class="p">}</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">viewport</span> <span class="o">=</span> <span class="nx">viewport</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">viewport</span> <span class="o">=</span> <span class="nx">viewport</span><span class="o">;</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeReflow&#39;</span><span class="p">);</span>	<span class="c1">// after confirming that viewport really has changed</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeReflow&#39;</span><span class="p">);</span>	<span class="c">// after confirming that viewport really has changed</span>
 
-	<span class="c1">// set width of hd,bd,ft and height of bd</span>
+	<span class="c">// set width of hd,bd,ft and height of bd</span>
 
 	<span class="kd">var</span> <span class="nx">min_width</span>  <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">emToPx</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;minWidth&#39;</span><span class="p">));</span>
-	<span class="kd">var</span> <span class="nx">body_width</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span><span class="p">,</span> <span class="nx">min_width</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">body_width</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span><span class="o">,</span> <span class="nx">min_width</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">body_width</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="nx">body_width</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">body_width</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_horiz_mbp</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="p">(</span><span class="nx">body_width</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_horiz_mbp</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">sticky_footer</span> <span class="o">?</span> <span class="nx">body_width</span><span class="o">+</span><span class="s1">&#39;px&#39;</span> <span class="o">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="nx">sticky_footer</span> <span class="o">?</span> <span class="nx">body_width</span><span class="o">+</span><span class="s1">&#39;px&#39;</span> <span class="o">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
-	<span class="nx">body_width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;clientWidth&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_horiz_mbp</span><span class="p">;</span>
+	<span class="nx">body_width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;clientWidth&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_horiz_mbp</span><span class="o">;</span>
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">bcw</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;clientWidth&#39;</span><span class="p">);</span>
 
-	<span class="kd">var</span> <span class="nx">h</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">h</span>     <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">h</span><span class="o">;</span>
 	<span class="kd">var</span> <span class="nx">h_min</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">emToPx</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;minHeight&#39;</span><span class="p">));</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span> <span class="o">&amp;&amp;</span> <span class="nx">h</span> <span class="o">&lt;</span> <span class="nx">h_min</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">h</span> <span class="o">=</span> <span class="nx">h_min</span><span class="p">;</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+		<span class="nx">h</span> <span class="o">=</span> <span class="nx">h_min</span><span class="o">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
-	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="o">||</span> <span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">layout_force_viewport_scrollbars</span><span class="p">)</span>	<span class="c1">// remove inactive vertical scrollbar in IE</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">console</span> <span class="o">||</span> <span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">layout_force_viewport_scrollbars</span><span class="p">)</span>	<span class="c">// remove inactive vertical scrollbar in IE</span>
 	<span class="p">{</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="p">,</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;overflowY&#39;</span><span class="o">,</span> <span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">)</span>
@@ -575,35 +577,35 @@
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">body_height</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_vert_mbp</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">body_height</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_vert_mbp</span><span class="o">;</span>
 	<span class="p">}</span>
-	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">h</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>						<span class="c1">// FIT_TO_CONTENT doesn&#39;t enforce min height</span>
+	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">h</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>						<span class="c">// FIT_TO_CONTENT doesn&#39;t enforce min height</span>
 	<span class="p">{</span>
-		<span class="nx">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_vert_mbp</span><span class="p">;</span>	<span class="c1">// arbitrary, positive number</span>
+		<span class="nx">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_vert_mbp</span><span class="o">;</span>	<span class="c">// arbitrary, positive number</span>
 	<span class="p">}</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">h</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_vert_mbp</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="p">(</span><span class="nx">h</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_vert_mbp</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 
-	<span class="c1">// resize modules</span>
+	<span class="c">// resize modules</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">body_width</span><span class="p">,</span> <span class="nx">body_height</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">mode</span><span class="o">,</span> <span class="nx">body_width</span><span class="o">,</span> <span class="nx">body_height</span><span class="p">);</span>
 
-	<span class="c1">// show body and footer</span>
+	<span class="c">// show body and footer</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;visibility&#39;</span><span class="p">,</span> <span class="s1">&#39;visible&#39;</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="s1">&#39;visible&#39;</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;visibility&#39;</span><span class="p">,</span> <span class="s1">&#39;visible&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;visibility&#39;</span><span class="o">,</span> <span class="s1">&#39;visible&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
 
-	<span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">checkViewportSize</span><span class="p">);</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">100</span><span class="o">,</span> <span class="k">this</span><span class="o">,</span> <span class="nx">checkViewportSize</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="cm">/*</span>
-<span class="cm"> * Check if the viewport size has changed, usually due to the browser</span>
-<span class="cm"> * removing no-longer-needed scrollbars.  If the viewport size is</span>
-<span class="cm"> * stable, fires the afterReflow event.</span>
-<span class="cm"> */</span>
+<span class="c">/*</span>
+<span class="c"> * Check if the viewport size has changed, usually due to the browser</span>
+<span class="c"> * removing no-longer-needed scrollbars.  If the viewport size is</span>
+<span class="c"> * stable, fires the afterReflow event.</span>
+<span class="c"> */</span>
 <span class="kd">function</span> <span class="nx">checkViewportSize</span><span class="p">()</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;winWidth&#39;</span><span class="p">)</span>    <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">w</span> <span class="o">||</span>
@@ -618,88 +620,88 @@
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="cm">/*</span>
-<span class="cm"> * Expand the module containing the event target.</span>
-<span class="cm"> */</span>
+<span class="c">/*</span>
+<span class="c"> * Expand the module containing the event target.</span>
+<span class="c"> */</span>
 <span class="kd">function</span> <span class="nx">expandModule</span><span class="p">(</span>
-	<span class="cm">/* event */</span>	<span class="nx">e</span><span class="p">)</span>
+	<span class="c">/* event */</span>	<span class="nx">e</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="o">;</span>
 
 	<span class="kd">function</span> <span class="nx">expand</span><span class="p">(</span>
-		<span class="cm">/* string */</span>	<span class="nx">parent_class_name</span><span class="p">,</span>
-		<span class="cm">/* string */</span>	<span class="nx">collapsed_class</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">parent_class_name</span><span class="o">,</span>
+		<span class="c">/* string */</span>	<span class="nx">collapsed_class</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">.</span><span class="nx">collapse_classes</span><span class="p">[</span><span class="nx">parent_class_name</span><span class="p">]);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">p</span> <span class="o">&amp;&amp;</span> <span class="nx">p</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">collapsed_class</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeExpandModule&#39;</span><span class="p">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeExpandModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
 
 			<span class="nx">p</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">collapsed_class</span><span class="p">);</span>
 			<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterExpandModule&#39;</span><span class="p">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterExpandModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_vert_nub_class</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="nx">expand</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;vert_parent_class&#39;</span><span class="p">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_vert_class</span><span class="p">);</span>
+		<span class="nx">expand</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s1">&#39;vert_parent_class&#39;</span><span class="o">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_vert_class</span><span class="p">);</span>
 	<span class="p">}</span>
 	<span class="k">else</span>
 	<span class="p">{</span>
-		<span class="nx">expand</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;horiz_parent_class&#39;</span><span class="p">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span><span class="p">);</span>
+		<span class="nx">expand</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s1">&#39;horiz_parent_class&#39;</span><span class="o">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="cm">/*</span>
-<span class="cm"> * Collapse the module containing the event target.</span>
-<span class="cm"> */</span>
+<span class="c">/*</span>
+<span class="c"> * Collapse the module containing the event target.</span>
+<span class="c"> */</span>
 <span class="kd">function</span> <span class="nx">collapseModule</span><span class="p">(</span>
-	<span class="cm">/* event */</span>	<span class="nx">e</span><span class="p">)</span>
+	<span class="c">/* event */</span>	<span class="nx">e</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="o">;</span>
 
 	<span class="kd">function</span> <span class="nx">collapse</span><span class="p">(</span>
-		<span class="cm">/* string */</span>	<span class="nx">parent_class_name</span><span class="p">,</span>
-		<span class="cm">/* string */</span>	<span class="nx">collapsed_class</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">parent_class_name</span><span class="o">,</span>
+		<span class="c">/* string */</span>	<span class="nx">collapsed_class</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getAncestorByClassName</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">.</span><span class="nx">collapse_classes</span><span class="p">[</span><span class="nx">parent_class_name</span><span class="p">]);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">p</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">p</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">collapsed_class</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeCollapseModule&#39;</span><span class="p">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeCollapseModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
 
 			<span class="nx">p</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">collapsed_class</span><span class="p">);</span>
 			<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
-			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterCollapseModule&#39;</span><span class="p">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterCollapseModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_vert_nub_class</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="nx">collapse</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;vert_parent_class&#39;</span><span class="p">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_vert_class</span><span class="p">);</span>
+		<span class="nx">collapse</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s1">&#39;vert_parent_class&#39;</span><span class="o">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_vert_class</span><span class="p">);</span>
 	<span class="p">}</span>
 	<span class="k">else</span>
 	<span class="p">{</span>
-		<span class="nx">collapse</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;horiz_parent_class&#39;</span><span class="p">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span><span class="p">);</span>
+		<span class="nx">collapse</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s1">&#39;horiz_parent_class&#39;</span><span class="o">,</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">PageLayout</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">PageLayout</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Base</span><span class="o">,</span>
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">viewport</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">w</span><span class="o">:</span>   <span class="mi">0</span><span class="p">,</span>
-			<span class="nx">h</span><span class="o">:</span>   <span class="mi">0</span><span class="p">,</span>
+			<span class="nx">w</span><span class="o">:</span>   <span class="mi">0</span><span class="o">,</span>
+			<span class="nx">h</span><span class="o">:</span>   <span class="mi">0</span><span class="o">,</span>
 			<span class="nx">bcw</span><span class="o">:</span> <span class="mi">0</span>
 		<span class="p">};</span>
 
-		<span class="c1">// find header, body, footer</span>
+		<span class="c">// find header, body, footer</span>
 
 		<span class="kd">var</span> <span class="nx">page_blocks</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">);</span>
 
@@ -723,7 +725,7 @@
 		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="nx">mode_regex</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="nx">PageLayout</span><span class="p">[</span> <span class="nx">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">]);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="o">,</span> <span class="nx">PageLayout</span><span class="p">[</span> <span class="nx">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">]);</span>
 		<span class="p">}</span>
 
 		<span class="nx">list</span> <span class="o">=</span> <span class="nx">page_blocks</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">page_footer_class</span><span class="p">);</span>
@@ -733,84 +735,84 @@
 		<span class="p">}</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span> <span class="o">=</span> <span class="p">(</span><span class="nx">list</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">()</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="nx">list</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">win</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="p">,</span> <span class="nx">resize</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-<span class="c1">//		SDom.textResizeEvent.subscribe(resize, null, this);</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">win</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;resize&#39;</span><span class="o">,</span> <span class="nx">resize</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+<span class="c">//		SDom.textResizeEvent.subscribe(resize, null, this);</span>
 
 		<span class="nx">updateFitClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 		<span class="nx">reparentFooter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">rescanBody</span><span class="p">();</span>
 
-		<span class="c1">// stay in sync</span>
+		<span class="c">// stay in sync</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;modeChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;modeChange&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span>
 		<span class="p">{</span>
 			<span class="nx">updateFitClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
 			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
 			<span class="p">}</span>
 
 			<span class="nx">reparentFooter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 			<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 		<span class="p">});</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;minWidthChange&#39;</span><span class="p">,</span> <span class="nx">resize</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;minHeightChange&#39;</span><span class="p">,</span> <span class="nx">resize</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;minWidthChange&#39;</span><span class="o">,</span> <span class="nx">resize</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;minHeightChange&#39;</span><span class="o">,</span> <span class="nx">resize</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;stickyFooterChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;stickyFooterChange&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span>
 		<span class="p">{</span>
 			<span class="nx">reparentFooter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 			<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 		<span class="p">});</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;matchColumnHeightsChange&#39;</span><span class="p">,</span> <span class="nx">resize</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;matchColumnHeightsChange&#39;</span><span class="o">,</span> <span class="nx">resize</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Call this after manually adding or removing modules on the page.</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Call this after manually adding or removing modules on the page.</span>
+<span class="c">	 */</span>
 	<span class="nx">rescanBody</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="nx">Y</span><span class="p">.</span><span class="nx">detach</span><span class="p">(</span><span class="s1">&#39;PageLayoutCollapse|click&#39;</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">outers</span><span class="o">:</span>      <span class="p">[],</span>
-			<span class="nx">modules</span><span class="o">:</span>     <span class="p">[],</span>	<span class="c1">// list of modules inside each row</span>
-			<span class="nx">outer_sizes</span><span class="o">:</span> <span class="p">[],</span>	<span class="c1">// list of percentages</span>
-			<span class="nx">inner_sizes</span><span class="o">:</span> <span class="p">[]</span>		<span class="c1">// list of lists of percentages</span>
+			<span class="nx">outers</span><span class="o">:</span>      <span class="p">[]</span><span class="o">,</span>
+			<span class="nx">modules</span><span class="o">:</span>     <span class="p">[]</span><span class="o">,</span>	<span class="c">// list of modules inside each row</span>
+			<span class="nx">outer_sizes</span><span class="o">:</span> <span class="p">[]</span><span class="o">,</span>	<span class="c">// list of percentages</span>
+			<span class="nx">inner_sizes</span><span class="o">:</span> <span class="p">[]</span>		<span class="c">// list of lists of percentages</span>
 		<span class="p">};</span>
 
 		<span class="kd">var</span> <span class="nx">outer_list</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;div.&#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">plugin_data</span> <span class="o">=</span> <span class="nx">plugin_info</span><span class="p">.</span><span class="nx">row</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">plugin_data</span> <span class="o">=</span> <span class="nx">plugin_info</span><span class="p">.</span><span class="nx">row</span><span class="o">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">outer_list</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span>
 		<span class="p">{</span>
 			<span class="nx">outer_list</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;div.&#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_cols_class</span><span class="p">);</span>
-			<span class="nx">plugin_data</span> <span class="o">=</span> <span class="nx">plugin_info</span><span class="p">.</span><span class="nx">col</span><span class="p">;</span>
+			<span class="nx">plugin_data</span> <span class="o">=</span> <span class="nx">plugin_info</span><span class="p">.</span><span class="nx">col</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">outer_list</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span>
 		<span class="p">{</span>
 			<span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;There must be at least one &#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span> <span class="o">+</span> <span class="s1">&#39; or &#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_cols_class</span> <span class="o">+</span> <span class="s1">&#39; inside &#39;</span> <span class="o">+</span> <span class="nx">PageLayout</span><span class="p">.</span><span class="nx">page_body_class</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span> <span class="o">=</span> <span class="nx">outer_list</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span> <span class="o">=</span> <span class="nx">outer_list</span><span class="o">;</span>
 
 		<span class="kd">var</span> <span class="nx">collapse_nub_pattern</span> <span class="o">=</span>
 			<span class="s1">&#39;(&#39;</span> <span class="o">+</span>
 			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_vert_nub_class</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span> <span class="o">+</span>
 			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_left_nub_class</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span> <span class="o">+</span>
 			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_right_nub_class</span> <span class="o">+</span>
-			<span class="s1">&#39;)&#39;</span><span class="p">;</span>
+			<span class="s1">&#39;)&#39;</span><span class="o">;</span>
 
 		<span class="kd">var</span> <span class="nx">expand_nub_pattern</span> <span class="o">=</span>
 			<span class="s1">&#39;(&#39;</span> <span class="o">+</span>
 			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_vert_nub_class</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span> <span class="o">+</span>
 			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_left_nub_class</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span> <span class="o">+</span>
 			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_right_nub_class</span> <span class="o">+</span>
-			<span class="s1">&#39;)&#39;</span><span class="p">;</span>
+			<span class="s1">&#39;)&#39;</span><span class="o">;</span>
 
 		<span class="kd">var</span> <span class="nx">row_count</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">row</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">row</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">row_id</span> <span class="o">=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">generateID</span><span class="p">();</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outer_sizes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mf">100.0</span><span class="o">/</span><span class="nx">row_count</span><span class="p">);</span>
@@ -825,146 +827,154 @@
 
 			<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">modules</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">list</span><span class="p">);</span>
 
-			<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">module</span><span class="p">)</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">list</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">module</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">nub</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">collapse_nub_pattern</span><span class="p">);</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">nub</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">Y</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;PageLayoutCollapse|click&#39;</span><span class="p">,</span> <span class="nx">collapseModule</span><span class="p">,</span> <span class="nx">nub</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+					<span class="nx">Y</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;PageLayoutCollapse|click&#39;</span><span class="o">,</span> <span class="nx">collapseModule</span><span class="o">,</span> <span class="nx">nub</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
 				<span class="p">}</span>
 
 				<span class="nx">nub</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">expand_nub_pattern</span><span class="p">);</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">nub</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">Y</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;PageLayoutCollapse|click&#39;</span><span class="p">,</span> <span class="nx">expandModule</span><span class="p">,</span> <span class="nx">nub</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+					<span class="nx">Y</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;PageLayoutCollapse|click&#39;</span><span class="o">,</span> <span class="nx">expandModule</span><span class="o">,</span> <span class="nx">nub</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
 				<span class="p">}</span>
-			<span class="p">},</span>
+			<span class="p">}</span><span class="o">,</span>
 			<span class="k">this</span><span class="p">);</span>
-<span class="cm">/*</span>
-<span class="cm">			if (PageLayoutDDProxy)</span>
-<span class="cm">			{</span>
-<span class="cm">				var has_nubs = false;</span>
-<span class="cm">				Y.each(list, function(module)</span>
-<span class="cm">				{</span>
-<span class="cm">					var id = module.generateID();</span>
-<span class="cm">					module.removeClass(PageLayout.module_no_drag_class);</span>
+<span class="c">/*</span>
+<span class="c">			if (PageLayoutDDProxy)</span>
+<span class="c">			{</span>
+<span class="c">				var has_nubs = false;</span>
+<span class="c">				Y.each(list, function(module)</span>
+<span class="c">				{</span>
+<span class="c">					var id = module.generateID();</span>
+<span class="c">					module.removeClass(PageLayout.module_no_drag_class);</span>
 
-<span class="cm">					if (the_dd_nubs[id])</span>
-<span class="cm">					{</span>
-<span class="cm">						has_nubs = (the_dd_nubs[id] != &#39;none&#39;);</span>
-<span class="cm">					}</span>
-<span class="cm">					else</span>
-<span class="cm">					{</span>
-<span class="cm">						var nub = module.getFirstElementByClassName(PageLayout.drag_nub_class);</span>
-<span class="cm">						if (nub)</span>
-<span class="cm">						{</span>
-<span class="cm">							var children = this._analyzeModule(module);</span>
-<span class="cm">							if (children.hd)</span>
-<span class="cm">							{</span>
-<span class="cm">								children.hd.addClass(PageLayout.module_header_drag_class);</span>
-<span class="cm">								the_dd_nubs[id] =</span>
-<span class="cm">									new PageLayoutDDProxy(this, id, children.hd, PageLayout.dd_group_name);</span>
-<span class="cm">								has_nubs = true;</span>
-<span class="cm">							}</span>
-<span class="cm">						}</span>
+<span class="c">					if (the_dd_nubs[id])</span>
+<span class="c">					{</span>
+<span class="c">						has_nubs = (the_dd_nubs[id] != &#39;none&#39;);</span>
+<span class="c">					}</span>
+<span class="c">					else</span>
+<span class="c">					{</span>
+<span class="c">						var nub = module.getFirstElementByClassName(PageLayout.drag_nub_class);</span>
+<span class="c">						if (nub)</span>
+<span class="c">						{</span>
+<span class="c">							var children = this._analyzeModule(module);</span>
+<span class="c">							if (children.hd)</span>
+<span class="c">							{</span>
+<span class="c">								children.hd.addClass(PageLayout.module_header_drag_class);</span>
+<span class="c">								the_dd_nubs[id] =</span>
+<span class="c">									new PageLayoutDDProxy(this, id, children.hd, PageLayout.dd_group_name);</span>
+<span class="c">								has_nubs = true;</span>
+<span class="c">							}</span>
+<span class="c">						}</span>
 
-<span class="cm">						if (!the_dd_nubs[id])</span>
-<span class="cm">						{</span>
-<span class="cm">							the_dd_nubs[id] = &#39;none&#39;;</span>
-<span class="cm">						}</span>
-<span class="cm">					}</span>
-<span class="cm">				},</span>
-<span class="cm">				this);</span>
+<span class="c">						if (!the_dd_nubs[id])</span>
+<span class="c">						{</span>
+<span class="c">							the_dd_nubs[id] = &#39;none&#39;;</span>
+<span class="c">						}</span>
+<span class="c">					}</span>
+<span class="c">				},</span>
+<span class="c">				this);</span>
 
-<span class="cm">				if (!the_dd_targets[ row_id ] &amp;&amp;</span>
-<span class="cm">					(has_nubs || row.hasClass(PageLayout.drag_target_class)))</span>
-<span class="cm">				{</span>
-<span class="cm">					the_dd_targets[ row_id ] = new DDTarget(row_id, PageLayout.dd_group_name);</span>
-<span class="cm">				}</span>
+<span class="c">				if (!the_dd_targets[ row_id ] &amp;&amp;</span>
+<span class="c">					(has_nubs || row.hasClass(PageLayout.drag_target_class)))</span>
+<span class="c">				{</span>
+<span class="c">					the_dd_targets[ row_id ] = new DDTarget(row_id, PageLayout.dd_group_name);</span>
+<span class="c">				}</span>
 
-<span class="cm">				if (list.size() == 1)</span>
-<span class="cm">				{</span>
-<span class="cm">					list.item(0).addClass(PageLayout.module_no_drag_class);</span>
-<span class="cm">				}</span>
-<span class="cm">			}</span>
-<span class="cm">*/</span>
+<span class="c">				if (list.size() == 1)</span>
+<span class="c">				{</span>
+<span class="c">					list.item(0).addClass(PageLayout.module_no_drag_class);</span>
+<span class="c">				}</span>
+<span class="c">			}</span>
+<span class="c">*/</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">inner_sizes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span>
-				<span class="nx">normalizeSizes</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">inner_size</span><span class="p">));</span>
-		<span class="p">},</span>
+				<span class="nx">normalizeSizes</span><span class="p">(</span><span class="nx">list</span><span class="o">,</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">inner_size</span><span class="p">));</span>
+		<span class="p">}</span><span class="o">,</span>
 		<span class="k">this</span><span class="p">);</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outer_sizes</span> <span class="o">=</span>
-			<span class="nx">normalizeSizes</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">,</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">outer_size</span><span class="p">);</span>
+			<span class="nx">normalizeSizes</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="o">,</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">outer_size</span><span class="p">);</span>
 
-		<span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">plugin_data</span><span class="p">.</span><span class="nx">module</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">single_module</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">plugin_data</span>        <span class="o">=</span> <span class="nx">plugin_info</span><span class="p">.</span><span class="nx">row</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">single_module</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">plugin_data</span><span class="p">.</span><span class="nx">module</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="nx">self</span><span class="p">.</span><span class="nx">layout_plugin</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">[</span> <span class="nx">plugin_data</span><span class="p">.</span><span class="nx">plugin</span> <span class="p">];</span>
+			<span class="nx">updateFitClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>	<span class="c">// plugin may modify it</span>
 			<span class="nx">resize</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>
 		<span class="p">});</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Number} the height of the sticky header in pixels</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Number} the height of the sticky header in pixels</span>
+<span class="c">	 */</span>
 	<span class="nx">getHeaderHeight</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">header_container</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Node} the header container (layout-hd) or null if there is no header</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Node} the header container (layout-hd) or null if there is no header</span>
+<span class="c">	 */</span>
 	<span class="nx">getHeaderContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">header_container</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Number} the height of the scrolling body in pixels</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Number} the height of the scrolling body in pixels</span>
+<span class="c">	 */</span>
 	<span class="nx">getBodyHeight</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">);</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Node} the body container (layout-bd)</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Node} the body container (layout-bd)</span>
+<span class="c">	 */</span>
 	<span class="nx">getBodyContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Number} the height of the sticky footer in pixels or zero if the footer is not sticky</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Number} the height of the sticky footer in pixels or zero if the footer is not sticky</span>
+<span class="c">	 */</span>
 	<span class="nx">getFooterHeight</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;stickyFooter&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span> <span class="o">?</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @return {Node} the footer container (layout-ft), or null if there is no footer</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @return {Node} the footer container (layout-ft), or null if there is no footer</span>
+<span class="c">	 */</span>
 	<span class="nx">getFooterContainer</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * @param node {String|Node} .layout-module</span>
-<span class="cm">	 * @return {Boolean} true if module is collapsed</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * @param node {String|Node} .layout-module</span>
+<span class="c">	 * @return {Boolean} true if module is collapsed</span>
+<span class="c">	 */</span>
 	<span class="nx">moduleIsCollapsed</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string/Node */</span>	<span class="nx">node</span><span class="p">)</span>
+		<span class="c">/* string/Node */</span>	<span class="nx">node</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">collapsed_pattern</span> <span class="o">=</span>
 			<span class="s1">&#39;(&#39;</span> <span class="o">+</span>
 			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span> <span class="o">+</span>
 			<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapses_vert_class</span> <span class="o">+</span>
-			<span class="s1">&#39;)&#39;</span><span class="p">;</span>
+			<span class="s1">&#39;)&#39;</span><span class="o">;</span>
 
 		<span class="nx">node</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">layout_plugin</span><span class="p">.</span><span class="nx">collapse_classes</span><span class="p">.</span><span class="nx">collapse_parent_pattern</span><span class="p">))</span>
@@ -973,15 +983,15 @@
 		<span class="p">}</span>
 
 		<span class="k">return</span> <span class="nx">node</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">collapsed_pattern</span><span class="p">);</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Expand the specified module.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param node {String|Node} .layout-module</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Expand the specified module.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param node {String|Node} .layout-module</span>
+<span class="c">	 */</span>
 	<span class="nx">expandModule</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string/Node */</span>	<span class="nx">node</span><span class="p">)</span>
+		<span class="c">/* string/Node */</span>	<span class="nx">node</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">node</span>    <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">nub</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_vert_nub_class</span><span class="p">);</span>
@@ -991,24 +1001,24 @@
 				<span class="s1">&#39;(&#39;</span> <span class="o">+</span>
 				<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_left_nub_class</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span> <span class="o">+</span>
 				<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_right_nub_class</span> <span class="o">+</span>
-				<span class="s1">&#39;)&#39;</span><span class="p">;</span>
+				<span class="s1">&#39;)&#39;</span><span class="o">;</span>
 
 			<span class="nx">nub</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">expand_horiz_nub_pattern</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">nub</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">expandModule</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">{</span> <span class="nx">currentTarget</span><span class="o">:</span> <span class="nx">nub</span> <span class="p">});</span>
+			<span class="nx">expandModule</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="p">{</span> <span class="nx">currentTarget</span><span class="o">:</span> <span class="nx">nub</span> <span class="p">});</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Collapse the specified module.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param node {String|Node} .layout-module</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Collapse the specified module.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param node {String|Node} .layout-module</span>
+<span class="c">	 */</span>
 	<span class="nx">collapseModule</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string/Node */</span>	<span class="nx">node</span><span class="p">)</span>
+		<span class="c">/* string/Node */</span>	<span class="nx">node</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">node</span>    <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">nub</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_vert_nub_class</span><span class="p">);</span>
@@ -1018,26 +1028,26 @@
 				<span class="s1">&#39;(&#39;</span> <span class="o">+</span>
 				<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_left_nub_class</span> <span class="o">+</span> <span class="s1">&#39;|&#39;</span> <span class="o">+</span>
 				<span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapse_right_nub_class</span> <span class="o">+</span>
-				<span class="s1">&#39;)&#39;</span><span class="p">;</span>
+				<span class="s1">&#39;)&#39;</span><span class="o">;</span>
 
 			<span class="nx">nub</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">collapse_horiz_nub_pattern</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">nub</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">collapseModule</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">{</span> <span class="nx">currentTarget</span><span class="o">:</span> <span class="nx">nub</span> <span class="p">});</span>
+			<span class="nx">collapseModule</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="p">{</span> <span class="nx">currentTarget</span><span class="o">:</span> <span class="nx">nub</span> <span class="p">});</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Toggle the collapsed state of the specified layout-module.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param module {String|Node} .layout-module</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Toggle the collapsed state of the specified layout-module.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param module {String|Node} .layout-module</span>
+<span class="c">	 */</span>
 	<span class="nx">toggleModule</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string/Node */</span>	<span class="nx">module</span><span class="p">)</span>
+		<span class="c">/* string/Node */</span>	<span class="nx">module</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">module</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>	<span class="c1">// optimization</span>
+		<span class="nx">module</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>	<span class="c">// optimization</span>
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">moduleIsCollapsed</span><span class="p">(</span><span class="nx">module</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">expandModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
@@ -1046,17 +1056,17 @@
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">collapseModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Call this when something changes size, to request a reflow of the</span>
-<span class="cm">	 * layout.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param el {String|Node} element that changed size</span>
-<span class="cm">	 * @return {Boolean} true if the element is inside the managed containers</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Call this when something changes size, to request a reflow of the</span>
+<span class="c">	 * layout.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param el {String|Node} element that changed size</span>
+<span class="c">	 * @return {Boolean} true if the element is inside the managed containers</span>
+<span class="c">	 */</span>
 	<span class="nx">elementResized</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string/Node */</span>	<span class="nx">el</span><span class="p">)</span>
+		<span class="c">/* string/Node */</span>	<span class="nx">el</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">el</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
 
@@ -1064,22 +1074,22 @@
 			<span class="k">this</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="o">||</span>
 			<span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">footer_container</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">el</span><span class="p">)))</span>
 		<span class="p">{</span>
-			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
 			<span class="p">}</span>
 
 			<span class="kd">var</span> <span class="nx">t1</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTime</span><span class="p">();</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="nx">reflow_delay</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="nx">reflow_delay</span><span class="o">,</span> <span class="k">this</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">refresh_timer</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
 
-				<span class="c1">// if JS is really busy, wait a bit longer</span>
+				<span class="c">// if JS is really busy, wait a bit longer</span>
 
 				<span class="kd">var</span> <span class="nx">t2</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTime</span><span class="p">();</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">t2</span> <span class="o">&gt;</span> <span class="nx">t1</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="nx">reflow_delay</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;deferred reflow: &#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">t2</span><span class="o">-</span><span class="nx">t1</span><span class="p">),</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;layout&#39;</span><span class="p">);</span>
+					<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;deferred reflow: &#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">t2</span><span class="o">-</span><span class="nx">t1</span><span class="p">)</span><span class="o">,</span> <span class="s1">&#39;info&#39;</span><span class="o">,</span> <span class="s1">&#39;layout&#39;</span><span class="p">);</span>
 					<span class="k">this</span><span class="p">.</span><span class="nx">elementResized</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
 				<span class="p">}</span>
 				<span class="k">else</span>
@@ -1088,38 +1098,38 @@
 				<span class="p">}</span>
 			<span class="p">});</span>
 
-			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Returns the components of the module.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param root {Node} .layout-module</span>
-<span class="cm">	 * @return {Object} root,hd,bd,ft</span>
-<span class="cm">	 * @private</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Returns the components of the module.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param root {Node} .layout-module</span>
+<span class="c">	 * @return {Object} root,hd,bd,ft</span>
+<span class="c">	 * @private</span>
+<span class="c">	 */</span>
 	<span class="nx">_analyzeModule</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* node */</span>	<span class="nx">root</span><span class="p">)</span>
+		<span class="c">/* node */</span>	<span class="nx">root</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">root</span><span class="o">:</span> <span class="nx">root</span><span class="p">,</span>
-			<span class="nx">hd</span><span class="o">:</span>   <span class="kc">null</span><span class="p">,</span>
-			<span class="nx">bd</span><span class="o">:</span>   <span class="kc">null</span><span class="p">,</span>
+			<span class="nx">root</span><span class="o">:</span> <span class="nx">root</span><span class="o">,</span>
+			<span class="nx">hd</span><span class="o">:</span>   <span class="kc">null</span><span class="o">,</span>
+			<span class="nx">bd</span><span class="o">:</span>   <span class="kc">null</span><span class="o">,</span>
 			<span class="nx">ft</span><span class="o">:</span>   <span class="kc">null</span>
 		<span class="p">};</span>
 
-		<span class="c1">// two step process avoid scanning into the module body</span>
+		<span class="c">// two step process avoid scanning into the module body</span>
 
 		<span class="kd">var</span> <span class="nx">bd</span> <span class="o">=</span> <span class="nx">root</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_body_class</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">bd</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+			<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">bd</span><span class="p">.</span><span class="nx">siblings</span><span class="p">().</span><span class="nx">filter</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_body_class</span><span class="p">);</span>
@@ -1130,7 +1140,7 @@
 		<span class="p">});</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
 		<span class="p">{</span>	
-			<span class="nx">result</span><span class="p">.</span><span class="nx">bd</span> <span class="o">=</span> <span class="nx">bd</span><span class="p">;</span>
+			<span class="nx">result</span><span class="p">.</span><span class="nx">bd</span> <span class="o">=</span> <span class="nx">bd</span><span class="o">;</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
@@ -1139,25 +1149,25 @@
 			<span class="nx">result</span><span class="p">.</span><span class="nx">ft</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">siblings</span><span class="p">().</span><span class="nx">filter</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="o">+</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_footer_class</span><span class="p">).</span><span class="nx">item</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Set the width of a module.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param children {Object} root,hd,bd,ft</span>
-<span class="cm">	 * @param w {Number} width in pixels</span>
-<span class="cm">	 * @private</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Set the width of a module.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param children {Object} root,hd,bd,ft</span>
+<span class="c">	 * @param w {Number} width in pixels</span>
+<span class="c">	 * @private</span>
+<span class="c">	 */</span>
 	<span class="nx">_setWidth</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* object */</span>	<span class="nx">children</span><span class="p">,</span>
-		<span class="cm">/* int */</span>		<span class="nx">w</span><span class="p">)</span>
+		<span class="c">/* object */</span>	<span class="nx">children</span><span class="o">,</span>
+		<span class="c">/* int */</span>		<span class="nx">w</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+		<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="nx">w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span> <span class="o">=</span> <span class="nx">PageLayout</span><span class="p">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span> <span class="o">=</span> <span class="nx">PageLayout</span><span class="o">;</span>
 </pre></div>
 
                     </div>
@@ -1179,6 +1189,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

@@ -1,0 +1,498 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-expiration-cache  ExpirationCache   (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-expiration-cache&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a>
+                 &gt; ExpirationCache 
+                
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <h2>
+                        
+
+                        
+                        
+                            Class <b property="yui:name">ExpirationCache</b>
+                        <span class="extends">
+                        </span>
+
+                    </h2>
+                    <!-- class tree goes here -->
+                    
+                
+  
+
+                    <div class="summary description" property="yui:description">
+                        <p>Cache which drops items based on a user-defined expiration criterion,
+e.g., age.  By default, expired items are only removed when they are
+requested.  If you want to "stop the world" and clean out the cache,
+call clean().</p>
+                    </div>
+
+                        <div class="section constructor details" rel="yui:constructor" resource="#constructor">
+                        <h3 id="constructor">Constructor</h3>
+                        <div class="content">
+                            <div class="detail">
+                                <strong property="yui:name">ExpirationCache</strong>
+                                <code>
+                                    (
+  
+                                        
+                                                
+                                                config
+                                    )
+                                </code>
+                                <div class="description">
+                                        <dl rel="yui:parameters">
+                                            <dt>Parameters:</dt>
+                                                <dd rel="yui:parameter">
+                                                    <code><span property="yui:name">config</span>
+                                                    &lt;<span property="yui:type">Object</span>&gt;
+                                                    </code>
+                                                    <span property="yui:description"> 
+<dl>
+<dt>store</dt>
+<dd>Data store which implements get,put,remove,clear,keys.  If not specified, a new instance of Y.InstanceManager is created.</dd>
+<dt>meta</dt>
+<dd>Function which attaches meta data to an item when it is added to the cache, receives the value as an argument.  If not specified, the default is to timestamp the item.</dd>
+<dt>expire</dt>
+<dd>Function which returns true if the item has expired, receives the meta data and the value as arguments.  If a number is specified, it is assumed to be a duration in milliseconds.</dd>
+</dl></span>
+                                                </dd>
+                                        </dl>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div rel="yui:properties" resource="#properties">
+
+                    </div>
+
+                    <div rel="yui:methods" resource="#methods">
+                        <div class="section method details">
+                            <h3 id="methods">Methods</h3>
+                            <div class="content">
+                                    <div class="" rel="yui:method" resource="#method_clean">
+                                    <h4>
+                                        <a name="method_clean">clean</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">clean</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Remove all expired values.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_clear">
+                                    <h4>
+                                        <a name="method_clear">clear</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">clear</strong>
+                                           (
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Remove all values.
+                                        </div>
+
+                                        <div class="description">
+
+
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_get">
+                                    <h4>
+                                        <a name="method_get">get</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Mixed
+                                            <strong property="yui:name">get</strong>
+                                           (
+                                                
+                                                        
+                                                         id
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Retrieve a value.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the id of the object to retrieve</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Mixed
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the stored object, or undefined if the slot is empty</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_put">
+                                    <h4>
+                                        <a name="method_put">put</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        boolean
+                                            <strong property="yui:name">put</strong>
+                                           (
+                                                
+                                                        
+                                                         id
+                                                    
+                                                
+                                                        , 
+                                                         value
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Store a value.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the id of the value</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">value</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the value to store</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            boolean
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">false if the id has already been used</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_remove">
+                                    <h4>
+                                        <a name="method_remove">remove</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        mixed
+                                            <strong property="yui:name">remove</strong>
+                                           (
+                                                
+                                                        
+                                                         id
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Remove an value.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the id of the value</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            mixed
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the value that was removed, or undefined if the slot was empty</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_replace">
+                                    <h4>
+                                        <a name="method_replace">replace</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        Mixed
+                                            <strong property="yui:name">replace</strong>
+                                           (
+                                                
+                                                        
+                                                         id
+                                                    
+                                                
+                                                        , 
+                                                         value
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Store a value.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">id</span>
+                                                        &lt;<span property="yui:type">String</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the id of the value</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">value</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the value to store</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                            Mixed
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">the original value that was in the slot, or undefined if the slot is empty</dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div rel="yui:events" resource="#events">
+
+
+                    </div>
+
+                    <div rel="yui:attributes" resource="#configattributes">
+
+                    </div>
+
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-anim-class.html" title="gallery-anim-class">gallery-anim-class</a></li>
+                                <li class=""><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class="selected"><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-iterable-extras.html" title="gallery-iterable-extras">gallery-iterable-extras</a></li>
+                                <li class=""><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
+                                <li class=""><a href="module_gallery-linkedlist.html" title="gallery-linkedlist">gallery-linkedlist</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="ExpirationCache.html" title="ExpirationCache">ExpirationCache</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="ExpirationCache.js.html" title="ExpirationCache.js">ExpirationCache.js</a></li>
+                        </ul>
+                    </div>
+
+
+                    <div id="methodsList" class="module">
+                        <h4>Methods</h4>
+                        <ul class="content">        
+                                <li class=""><a href="#method_clean" title="clean">clean</a></li>
+                                <li class=""><a href="#method_clear" title="clear">clear</a></li>
+                                <li class=""><a href="#method_get" title="get">get</a></li>
+                                <li class=""><a href="#method_put" title="put">put</a></li>
+                                <li class=""><a href="#method_remove" title="remove">remove</a></li>
+                                <li class=""><a href="#method_replace" title="replace">replace</a></li>
+                        </ul>
+                    </div>
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "ExpirationCache.html#method_clean", "access": "", "host": "ExpirationCache", "type": "method", "name": "clean"}, {"url": "ExpirationCache.html#method_clear", "access": "", "host": "ExpirationCache", "type": "method", "name": "clear"}, {"url": "ExpirationCache.html#method_get", "access": "", "host": "ExpirationCache", "type": "method", "name": "get"}, {"url": "ExpirationCache.html#method_put", "access": "", "host": "ExpirationCache", "type": "method", "name": "put"}, {"url": "ExpirationCache.html#method_remove", "access": "", "host": "ExpirationCache", "type": "method", "name": "remove"}, {"url": "ExpirationCache.html#method_replace", "access": "", "host": "ExpirationCache", "type": "method", "name": "replace"}];
+</script>
+</body>
+</html>

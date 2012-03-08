@@ -47,220 +47,220 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
 
-<span class="kd">function</span> <span class="nx">mirror</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">s</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
+<span class="kd">function</span> <span class="nx">mirror</span><span class="p">(</span><span class="nx">r</span><span class="o">,</span> <span class="nx">s</span><span class="o">,</span> <span class="nx">name</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="nx">r</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">s</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+		<span class="k">return</span> <span class="nx">s</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">s</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
 	<span class="p">};</span>
 <span class="p">}</span>
 
-<span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Wrapper for a canvas 2d context.  It exposes the exact same api as</span>
-<span class="cm"> * the native 2d context, plus some extras, documented below.  Just like</span>
-<span class="cm"> * Y.Node, use get() and set() to modify attributes.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @module gallery-canvas</span>
-<span class="cm"> * @namespace Canvas</span>
-<span class="cm"> * @class Context2d</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> * @param node {Y.Node} the canvas element</span>
-<span class="cm"> * @param config {Object} configuration</span>
-<span class="cm"> *		&lt;dl&gt;</span>
-<span class="cm"> *		&lt;dt&gt;pixelAlign&lt;dt&gt;</span>
-<span class="cm"> *		&lt;dd&gt;Optional. Default: true. Pass true to get thinner, cleaner strokes.</span>
-<span class="cm"> *			Pass false to get the default rendering.&lt;/dd&gt;</span>
-<span class="cm"> *		&lt;/dl&gt;</span>
-<span class="cm"> */</span>
+<span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Wrapper for a canvas 2d context.  It exposes the exact same api as</span>
+<span class="c"> * the native 2d context, plus some extras, documented below.  Just like</span>
+<span class="c"> * Y.Node, use get() and set() to modify attributes.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @module gallery-canvas</span>
+<span class="c"> * @namespace Canvas</span>
+<span class="c"> * @class Context2d</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @param node {Y.Node} the canvas element</span>
+<span class="c"> * @param config {Object} configuration</span>
+<span class="c"> *		&lt;dl&gt;</span>
+<span class="c"> *		&lt;dt&gt;pixelAlign&lt;dt&gt;</span>
+<span class="c"> *		&lt;dd&gt;Optional. Default: true. Pass true to get thinner, cleaner strokes.</span>
+<span class="c"> *			Pass false to get the default rendering.&lt;/dd&gt;</span>
+<span class="c"> *		&lt;/dl&gt;</span>
+<span class="c"> */</span>
 
-<span class="kd">function</span> <span class="nx">Context2d</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">config</span><span class="p">)</span>
+<span class="kd">function</span> <span class="nx">Context2d</span><span class="p">(</span><span class="nx">node</span><span class="o">,</span> <span class="nx">config</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">invoke</span><span class="p">(</span><span class="s1">&#39;getContext&#39;</span><span class="p">,</span> <span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">invoke</span><span class="p">(</span><span class="s1">&#39;getContext&#39;</span><span class="o">,</span> <span class="s1">&#39;2d&#39;</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Canvas requires a canvas element.&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
 
 	<span class="nx">config</span> <span class="o">=</span> <span class="nx">config</span> <span class="o">||</span> <span class="p">{};</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;pixelAlign&#39;</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">pixelAlign</span><span class="p">)</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">pixelAlign</span><span class="p">);</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;pixelAlign&#39;</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">pixelAlign</span><span class="p">)</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">pixelAlign</span><span class="p">);</span>
 
-	<span class="c1">// expose all context functions on context</span>
+	<span class="c">// expose all context functions on context</span>
 
 	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">f</span> <span class="k">in</span> <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">[</span><span class="nx">f</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">[</span><span class="nx">f</span><span class="p">])</span>
 		<span class="p">{</span>
-			<span class="nx">mirror</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">,</span> <span class="nx">f</span><span class="p">);</span>
+			<span class="nx">mirror</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="o">,</span> <span class="nx">f</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
-<span class="nx">Context2d</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;canvas2dcontext&quot;</span><span class="p">;</span>
+<span class="nx">Context2d</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;canvas2dcontext&quot;</span><span class="o">;</span>
 
 <span class="nx">Context2d</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="cm">/**</span>
-<span class="cm">	 * Get an attribute.  This accepts all attributes of the context and</span>
-<span class="cm">	 * the special name &quot;pixelAlign&quot;.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param name {String} the attribute name</span>
-<span class="cm">	 * @return {Mixed} the attribute value</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Get an attribute.  This accepts all attributes of the context and</span>
+<span class="c">	 * the special name &quot;pixelAlign&quot;.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param name {String} the attribute name</span>
+<span class="c">	 * @return {Mixed} the attribute value</span>
+<span class="c">	 */</span>
 	<span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string */</span> <span class="nx">name</span><span class="p">)</span>
+		<span class="c">/* string */</span> <span class="nx">name</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">==</span> <span class="s1">&#39;pixelAlign&#39;</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_align</span><span class="p">;</span>
+			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_align</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
 			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Set an attribute.  This accepts all attributes of the context and</span>
-<span class="cm">	 * the special name &quot;pixelAlign&quot;.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param name {String} the attribute name</span>
-<span class="cm">	 * @param value {Mixed} the attribute value</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Set an attribute.  This accepts all attributes of the context and</span>
+<span class="c">	 * the special name &quot;pixelAlign&quot;.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param name {String} the attribute name</span>
+<span class="c">	 * @param value {Mixed} the attribute value</span>
+<span class="c">	 */</span>
 	<span class="nx">set</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string */</span>	<span class="nx">name</span><span class="p">,</span>
-		<span class="cm">/* mixed */</span>		<span class="nx">value</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">name</span><span class="o">,</span>
+		<span class="c">/* mixed */</span>		<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">==</span> <span class="s1">&#39;pixelAlign&#39;</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">pixel_align</span>  <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span> <span class="o">=</span> <span class="nx">value</span> <span class="o">?</span> <span class="mf">0.5</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">pixel_align</span>  <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span> <span class="o">=</span> <span class="nx">value</span> <span class="o">?</span> <span class="mf">0.5</span> <span class="o">:</span> <span class="mi">0</span><span class="o">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="nx">moveTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span>
+	<span class="nx">moveTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="o">,</span><span class="nx">y</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_y</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_x</span> <span class="o">=</span> <span class="nx">x</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_y</span> <span class="o">=</span> <span class="nx">y</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Move relative to the current pen location (set via moveTo or move).</span>
-<span class="cm">	 * This only works when the transformation matrix is constant!</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param dx {int}</span>
-<span class="cm">	 * @param dy {int}</span>
-<span class="cm">	 */</span>
-	<span class="nx">move</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dx</span><span class="p">,</span><span class="nx">dy</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Move relative to the current pen location (set via moveTo or move).</span>
+<span class="c">	 * This only works when the transformation matrix is constant!</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param dx {int}</span>
+<span class="c">	 * @param dy {int}</span>
+<span class="c">	 */</span>
+	<span class="nx">move</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dx</span><span class="o">,</span><span class="nx">dy</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_x</span> <span class="o">+</span> <span class="nx">dx</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_y</span> <span class="o">+</span> <span class="nx">dy</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_x</span> <span class="o">+</span> <span class="nx">dx</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_y</span> <span class="o">+</span> <span class="nx">dy</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="nx">lineTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span>
+	<span class="nx">lineTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="o">,</span><span class="nx">y</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_y</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_x</span> <span class="o">=</span> <span class="nx">x</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_y</span> <span class="o">=</span> <span class="nx">y</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Move relative to the current pen location.</span>
-<span class="cm">	 * This only works when the transformation matrix is constant!</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param dx {int}</span>
-<span class="cm">	 * @param dy {int}</span>
-<span class="cm">	 */</span>
-	<span class="nx">line</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dx</span><span class="p">,</span><span class="nx">dy</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Move relative to the current pen location.</span>
+<span class="c">	 * This only works when the transformation matrix is constant!</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param dx {int}</span>
+<span class="c">	 * @param dy {int}</span>
+<span class="c">	 */</span>
+	<span class="nx">line</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">dx</span><span class="o">,</span><span class="nx">dy</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_x</span> <span class="o">+</span> <span class="nx">dx</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_y</span> <span class="o">+</span> <span class="nx">dy</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_x</span> <span class="o">+</span> <span class="nx">dx</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_y</span> <span class="o">+</span> <span class="nx">dy</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="nx">arc</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span>
+	<span class="nx">arc</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="o">,</span><span class="nx">y</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">x</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">;</span>
-		<span class="nx">y</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">arc</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="nx">x</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">;</span>
+		<span class="nx">y</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">arc</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="nx">arcTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x1</span><span class="p">,</span><span class="nx">y1</span><span class="p">,</span> <span class="nx">x2</span><span class="p">,</span><span class="nx">y2</span><span class="p">,</span> <span class="nx">radius</span><span class="p">)</span>
+	<span class="nx">arcTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x1</span><span class="o">,</span><span class="nx">y1</span><span class="o">,</span> <span class="nx">x2</span><span class="o">,</span><span class="nx">y2</span><span class="o">,</span> <span class="nx">radius</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">x1</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">,</span> <span class="nx">y1</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">,</span> <span class="nx">x2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">,</span> <span class="nx">y2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">,</span> <span class="nx">radius</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">x1</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">,</span> <span class="nx">y1</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">,</span> <span class="nx">x2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">,</span> <span class="nx">y2</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">,</span> <span class="nx">radius</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="nx">bezierCurveTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cp1x</span><span class="p">,</span><span class="nx">cp1y</span><span class="p">,</span> <span class="nx">cp2x</span><span class="p">,</span><span class="nx">cp2y</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span>
+	<span class="nx">bezierCurveTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cp1x</span><span class="o">,</span><span class="nx">cp1y</span><span class="o">,</span> <span class="nx">cp2x</span><span class="o">,</span><span class="nx">cp2y</span><span class="o">,</span> <span class="nx">x</span><span class="o">,</span><span class="nx">y</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">x</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">;</span>
-		<span class="nx">y</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">bezierCurveTo</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="nx">x</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">;</span>
+		<span class="nx">y</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">bezierCurveTo</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="nx">quadraticCurveTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cp1x</span><span class="p">,</span><span class="nx">cp1y</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span>
+	<span class="nx">quadraticCurveTo</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cp1x</span><span class="o">,</span><span class="nx">cp1y</span><span class="o">,</span> <span class="nx">x</span><span class="o">,</span><span class="nx">y</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">x</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">;</span>
-		<span class="nx">y</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">quadraticCurveTo</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="nx">x</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">;</span>
+		<span class="nx">y</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">quadraticCurveTo</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Define a rectangle with rounded corners.  You must call stroke(),</span>
-<span class="cm">	 * fill(), etc. afterwards.</span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param top {int}</span>
-<span class="cm">	 * @param left {int}</span>
-<span class="cm">	 * @param bottom {int}</span>
-<span class="cm">	 * @param right {int}</span>
-<span class="cm">	 * @param radius {int} radius of rounded corners</span>
-<span class="cm">	 */</span>
-	<span class="nx">roundedRect</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">top</span><span class="p">,</span><span class="nx">left</span><span class="p">,</span><span class="nx">bottom</span><span class="p">,</span><span class="nx">right</span><span class="p">,</span><span class="nx">radius</span><span class="p">)</span>
+	<span class="c">/**</span>
+<span class="c">	 * Define a rectangle with rounded corners.  You must call stroke(),</span>
+<span class="c">	 * fill(), etc. afterwards.</span>
+<span class="c">	 * </span>
+<span class="c">	 * @param top {int}</span>
+<span class="c">	 * @param left {int}</span>
+<span class="c">	 * @param bottom {int}</span>
+<span class="c">	 * @param right {int}</span>
+<span class="c">	 * @param radius {int} radius of rounded corners</span>
+<span class="c">	 */</span>
+	<span class="nx">roundedRect</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">top</span><span class="o">,</span><span class="nx">left</span><span class="o">,</span><span class="nx">bottom</span><span class="o">,</span><span class="nx">right</span><span class="o">,</span><span class="nx">radius</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
 
-		<span class="kd">var</span> <span class="nx">delta</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">delta</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">pixel_offset</span><span class="o">;</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">top</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">top</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">radius</span><span class="o">,</span> <span class="nx">top</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">radius</span><span class="o">,</span> <span class="nx">top</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">right</span><span class="p">,</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">right</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">,</span> <span class="nx">radius</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">right</span><span class="o">,</span> <span class="nx">top</span><span class="o">,</span> <span class="nx">right</span><span class="o">,</span> <span class="nx">bottom</span><span class="o">,</span> <span class="nx">radius</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">right</span><span class="p">,</span> <span class="nx">top</span> <span class="o">+</span> <span class="nx">radius</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">right</span><span class="p">,</span> <span class="nx">bottom</span> <span class="o">-</span> <span class="nx">radius</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">right</span><span class="o">,</span> <span class="nx">top</span> <span class="o">+</span> <span class="nx">radius</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">right</span><span class="o">,</span> <span class="nx">bottom</span> <span class="o">-</span> <span class="nx">radius</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">right</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">,</span> <span class="nx">left</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">,</span> <span class="nx">radius</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">right</span><span class="o">,</span> <span class="nx">bottom</span><span class="o">,</span> <span class="nx">left</span><span class="o">,</span> <span class="nx">bottom</span><span class="o">,</span> <span class="nx">radius</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">radius</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">radius</span><span class="o">,</span> <span class="nx">bottom</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">radius</span><span class="o">,</span> <span class="nx">bottom</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">left</span><span class="p">,</span> <span class="nx">bottom</span><span class="p">,</span> <span class="nx">left</span><span class="p">,</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">radius</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">left</span><span class="o">,</span> <span class="nx">bottom</span><span class="o">,</span> <span class="nx">left</span><span class="o">,</span> <span class="nx">top</span><span class="o">,</span> <span class="nx">radius</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">left</span><span class="p">,</span> <span class="nx">bottom</span> <span class="o">-</span> <span class="nx">radius</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">left</span><span class="p">,</span> <span class="nx">top</span> <span class="o">+</span> <span class="nx">radius</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">moveTo</span><span class="p">(</span><span class="nx">left</span><span class="o">,</span> <span class="nx">bottom</span> <span class="o">-</span> <span class="nx">radius</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">lineTo</span><span class="p">(</span><span class="nx">left</span><span class="o">,</span> <span class="nx">top</span> <span class="o">+</span> <span class="nx">radius</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">left</span><span class="p">,</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">right</span><span class="p">,</span> <span class="nx">top</span><span class="p">,</span> <span class="nx">radius</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">arcTo</span><span class="p">(</span><span class="nx">left</span><span class="o">,</span> <span class="nx">top</span><span class="o">,</span> <span class="nx">right</span><span class="o">,</span> <span class="nx">top</span><span class="o">,</span> <span class="nx">radius</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/**</span>
-<span class="cm">	 * Draw a polygon from a set of deltas.  </span>
-<span class="cm">	 * </span>
-<span class="cm">	 * @param list {Array} List of deltas (dx,dy).  You can omit values that are zero.</span>
-<span class="cm">	 */</span>
+	<span class="c">/**</span>
+<span class="c">	 * Draw a polygon from a set of deltas.  </span>
+<span class="c">	 * </span>
+<span class="c">	 * @param list {Array} List of deltas (dx,dy).  You can omit values that are zero.</span>
+<span class="c">	 */</span>
 	<span class="nx">poly</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">pt</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">list</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">pt</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="nx">pt</span><span class="p">.</span><span class="nx">dx</span> <span class="o">||</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">pt</span><span class="p">.</span><span class="nx">dy</span> <span class="o">||</span> <span class="mi">0</span><span class="p">);</span>
-		<span class="p">},</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">line</span><span class="p">(</span><span class="nx">pt</span><span class="p">.</span><span class="nx">dx</span> <span class="o">||</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">pt</span><span class="p">.</span><span class="nx">dy</span> <span class="o">||</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="p">}</span><span class="o">,</span>
 		<span class="k">this</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;Canvas&#39;</span><span class="p">);</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">Context2d</span> <span class="o">=</span> <span class="nx">Context2d</span><span class="p">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Canvas</span><span class="p">.</span><span class="nx">Context2d</span> <span class="o">=</span> <span class="nx">Context2d</span><span class="o">;</span>
 </pre></div>
 
                     </div>
@@ -282,6 +282,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

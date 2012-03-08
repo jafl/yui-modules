@@ -47,71 +47,71 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Magnitude (absolute value) of a number.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @namespace MathFunction</span>
-<span class="cm"> * @class Magnitude</span>
-<span class="cm"> * @extends MathFunction.FunctionWithArgs</span>
-<span class="cm"> * @constructor</span>
-<span class="cm"> * @param f {MathFunction}</span>
-<span class="cm"> */</span>
+                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Magnitude (absolute value) of a number.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @namespace MathFunction</span>
+<span class="c"> * @class Magnitude</span>
+<span class="c"> * @extends MathFunction.FunctionWithArgs</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @param f {MathFunction}</span>
+<span class="c"> */</span>
 
 <span class="kd">function</span> <span class="nx">MathMagnitude</span><span class="p">(</span>
-	<span class="cm">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
+	<span class="c">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">MathMagnitude</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&quot;abs&quot;</span><span class="p">,</span> <span class="nx">f</span><span class="p">);</span>
+	<span class="nx">MathMagnitude</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s2">&quot;abs&quot;</span><span class="o">,</span> <span class="nx">f</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathMagnitude</span><span class="p">,</span> <span class="nx">MathFunctionWithArgs</span><span class="p">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathMagnitude</span><span class="o">,</span> <span class="nx">MathFunctionWithArgs</span><span class="o">,</span>
 <span class="p">{</span>
 	<span class="nx">evaluate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* map */</span>	<span class="nx">var_list</span><span class="p">)</span>
+		<span class="c">/* map */</span>	<span class="nx">var_list</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">evaluate</span><span class="p">(</span><span class="nx">var_list</span><span class="p">));</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
 	<span class="nx">prepareToRender</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* Context2d */</span>		<span class="nx">context</span><span class="p">,</span>
-		<span class="cm">/* point */</span>			<span class="nx">top_left</span><span class="p">,</span>
-		<span class="cm">/* percentage */</span>	<span class="nx">font_size</span><span class="p">,</span>
-		<span class="cm">/* RectList */</span>		<span class="nx">rect_list</span><span class="p">)</span>
+		<span class="c">/* Context2d */</span>		<span class="nx">context</span><span class="o">,</span>
+		<span class="c">/* point */</span>			<span class="nx">top_left</span><span class="o">,</span>
+		<span class="c">/* percentage */</span>	<span class="nx">font_size</span><span class="o">,</span>
+		<span class="c">/* RectList */</span>		<span class="nx">rect_list</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">bar_width</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getVerticalBarWidth</span><span class="p">();</span>
 
 		<span class="kd">var</span> <span class="nx">arg</span>       <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-		<span class="kd">var</span> <span class="nx">arg_index</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">prepareToRender</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">top_left</span><span class="p">,</span> <span class="nx">font_size</span><span class="p">,</span> <span class="nx">rect_list</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">arg_index</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">prepareToRender</span><span class="p">(</span><span class="nx">context</span><span class="o">,</span> <span class="nx">top_left</span><span class="o">,</span> <span class="nx">font_size</span><span class="o">,</span> <span class="nx">rect_list</span><span class="p">);</span>
 		<span class="kd">var</span> <span class="nx">arg_info</span>  <span class="o">=</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">arg_index</span><span class="p">);</span>
 
-		<span class="nx">rect_list</span><span class="p">.</span><span class="nx">shift</span><span class="p">(</span><span class="nx">arg_index</span><span class="p">,</span> <span class="nx">bar_width</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>		<span class="c1">// make space for leading bar</span>
+		<span class="nx">rect_list</span><span class="p">.</span><span class="nx">shift</span><span class="p">(</span><span class="nx">arg_index</span><span class="o">,</span> <span class="nx">bar_width</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>		<span class="c">// make space for leading bar</span>
 
 		<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">top</span><span class="o">:</span>    <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span>
-			<span class="nx">left</span><span class="o">:</span>   <span class="nx">top_left</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span>
-			<span class="nx">bottom</span><span class="o">:</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">bottom</span><span class="p">,</span>
+			<span class="nx">top</span><span class="o">:</span>    <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span><span class="o">,</span>
+			<span class="nx">left</span><span class="o">:</span>   <span class="nx">top_left</span><span class="p">.</span><span class="nx">x</span><span class="o">,</span>
+			<span class="nx">bottom</span><span class="o">:</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">bottom</span><span class="o">,</span>
 			<span class="nx">right</span><span class="o">:</span>  <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span> <span class="o">+</span> <span class="nx">bar_width</span>
 		<span class="p">};</span>
 
-		<span class="k">return</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">midline</span><span class="p">,</span> <span class="nx">font_size</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">r</span><span class="o">,</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">midline</span><span class="o">,</span> <span class="nx">font_size</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+	<span class="p">}</span><span class="o">,</span>
 
 	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* Context2d */</span>	<span class="nx">context</span><span class="p">,</span>
-		<span class="cm">/* RectList */</span>	<span class="nx">rect_list</span><span class="p">)</span>
+		<span class="c">/* Context2d */</span>	<span class="nx">context</span><span class="o">,</span>
+		<span class="c">/* RectList */</span>	<span class="nx">rect_list</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 		<span class="nx">context</span><span class="p">.</span><span class="nx">drawVerticalBar</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">render</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">rect_list</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">render</span><span class="p">(</span><span class="nx">context</span><span class="o">,</span> <span class="nx">rect_list</span><span class="p">);</span>
 
-		<span class="kd">var</span> <span class="nx">r</span>  <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">r</span>  <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
 		<span class="nx">r</span><span class="p">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">right</span> <span class="o">-</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getVerticalBarWidth</span><span class="p">();</span>
 		<span class="nx">context</span><span class="p">.</span><span class="nx">drawVerticalBar</span><span class="p">(</span><span class="nx">r</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Magnitude</span> <span class="o">=</span> <span class="nx">MathMagnitude</span><span class="p">;</span>
+<span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Magnitude</span> <span class="o">=</span> <span class="nx">MathMagnitude</span><span class="o">;</span>
 </pre></div>
 
                     </div>
@@ -133,6 +133,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>

@@ -47,75 +47,75 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="cm">/**</span>
-<span class="cm"> * @module gallery-querybuilder</span>
-<span class="cm"> * @namespace QueryBuilder</span>
-<span class="cm"> */</span>
+                        <div class="highlight"><pre><span class="c">/**</span>
+<span class="c"> * @module gallery-querybuilder</span>
+<span class="c"> * @namespace QueryBuilder</span>
+<span class="c"> */</span>
 
-<span class="cm">/**********************************************************************</span>
-<span class="cm"> * &lt;p&gt;Plugin for choosing from a list of values.  In the</span>
-<span class="cm"> * &lt;code&gt;var_list&lt;/code&gt; configuration, specify &lt;code&gt;value_list&lt;/code&gt; as</span>
-<span class="cm"> * a list of objects, each defining &lt;code&gt;value&lt;/code&gt; and</span>
-<span class="cm"> * &lt;code&gt;text&lt;/code&gt;.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;There must be exactly one operator specified for this plugin.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * &lt;p&gt;The &lt;code&gt;value&lt;/code&gt; argument passed to</span>
-<span class="cm"> * &lt;code&gt;QueryBuilder.appendNew()&lt;/code&gt; must be a string: the value of the</span>
-<span class="cm"> * menu item to select.&lt;/p&gt;</span>
-<span class="cm"> * </span>
-<span class="cm"> * @class Select</span>
-<span class="cm"> */</span>
+<span class="c">/**********************************************************************</span>
+<span class="c"> * &lt;p&gt;Plugin for choosing from a list of values.  In the</span>
+<span class="c"> * &lt;code&gt;var_list&lt;/code&gt; configuration, specify &lt;code&gt;value_list&lt;/code&gt; as</span>
+<span class="c"> * a list of objects, each defining &lt;code&gt;value&lt;/code&gt; and</span>
+<span class="c"> * &lt;code&gt;text&lt;/code&gt;.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;There must be exactly one operator specified for this plugin.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * &lt;p&gt;The &lt;code&gt;value&lt;/code&gt; argument passed to</span>
+<span class="c"> * &lt;code&gt;QueryBuilder.appendNew()&lt;/code&gt; must be a string: the value of the</span>
+<span class="c"> * menu item to select.&lt;/p&gt;</span>
+<span class="c"> * </span>
+<span class="c"> * @class Select</span>
+<span class="c"> */</span>
 
 <span class="nx">QueryBuilder</span><span class="p">.</span><span class="nx">Select</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="cm">/* object */</span>	<span class="nx">query_builder</span><span class="p">,</span>
-	<span class="cm">/* object */</span>	<span class="nx">config</span><span class="p">)</span>
+	<span class="c">/* object */</span>	<span class="nx">query_builder</span><span class="o">,</span>
+	<span class="c">/* object */</span>	<span class="nx">config</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">qb</span> <span class="o">=</span> <span class="nx">query_builder</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">qb</span> <span class="o">=</span> <span class="nx">query_builder</span><span class="o">;</span>
 
-	<span class="k">this</span><span class="p">.</span><span class="nx">val_input_name_pattern</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">field_prefix</span> <span class="o">+</span> <span class="s1">&#39;query_val_{i}&#39;</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">val_input_name_pattern</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">field_prefix</span> <span class="o">+</span> <span class="s1">&#39;query_val_{i}&#39;</span><span class="o">;</span>
 <span class="p">};</span>
 
 <span class="nx">QueryBuilder</span><span class="p">.</span><span class="nx">Select</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
 	<span class="nx">create</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>		<span class="nx">query_index</span><span class="p">,</span>
-		<span class="cm">/* object */</span>	<span class="nx">var_config</span><span class="p">,</span>
-		<span class="cm">/* array */</span>		<span class="nx">op_list</span><span class="p">,</span>
-		<span class="cm">/* string */</span>	<span class="nx">value</span><span class="p">)</span>
+		<span class="c">/* int */</span>		<span class="nx">query_index</span><span class="o">,</span>
+		<span class="c">/* object */</span>	<span class="nx">var_config</span><span class="o">,</span>
+		<span class="c">/* array */</span>		<span class="nx">op_list</span><span class="o">,</span>
+		<span class="c">/* string */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">value_cell</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">qb</span><span class="p">.</span><span class="nx">_createContainer</span><span class="p">();</span>
-		<span class="nx">value_cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">qb</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">));</span>
-		<span class="nx">value_cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_valuesMenu</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">valueName</span><span class="p">(</span><span class="nx">query_index</span><span class="p">)));</span>
+		<span class="nx">value_cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">qb</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">));</span>
+		<span class="nx">value_cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_valuesMenu</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">valueName</span><span class="p">(</span><span class="nx">query_index</span><span class="p">)));</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span> <span class="o">=</span> <span class="nx">value_cell</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;select&#39;</span><span class="p">);</span>
 
-		<span class="kd">var</span> <span class="nx">options</span>    <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">).</span><span class="nx">options</span><span class="p">;</span>
-		<span class="kd">var</span> <span class="nx">value_list</span> <span class="o">=</span> <span class="nx">var_config</span><span class="p">.</span><span class="nx">value_list</span><span class="p">;</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">value_list</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">options</span>    <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">).</span><span class="nx">options</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">value_list</span> <span class="o">=</span> <span class="nx">var_config</span><span class="p">.</span><span class="nx">value_list</span><span class="o">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">value_list</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">options</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Option</span><span class="p">(</span><span class="nx">value_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">text</span><span class="p">,</span> <span class="nx">value_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">value</span><span class="p">);</span>
+			<span class="nx">options</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Option</span><span class="p">(</span><span class="nx">value_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">text</span><span class="o">,</span> <span class="nx">value_list</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">value</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">has_bubble_problem</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">qb</span><span class="p">.</span><span class="nx">_notifyChanged</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">qb</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">qb</span><span class="p">.</span><span class="nx">_notifyChanged</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">qb</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">db_query_equals</span> <span class="o">=</span> <span class="nx">op_list</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
 
 		<span class="k">return</span> <span class="p">[</span> <span class="nx">value_cell</span> <span class="p">];</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
 	<span class="nx">postCreate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>		<span class="nx">query_index</span><span class="p">,</span>
-		<span class="cm">/* object */</span>	<span class="nx">var_config</span><span class="p">,</span>
-		<span class="cm">/* array */</span>		<span class="nx">op_list</span><span class="p">,</span>
-		<span class="cm">/* array */</span>		<span class="nx">value</span><span class="p">)</span>
+		<span class="c">/* int */</span>		<span class="nx">query_index</span><span class="o">,</span>
+		<span class="c">/* object */</span>	<span class="nx">var_config</span><span class="o">,</span>
+		<span class="c">/* array */</span>		<span class="nx">op_list</span><span class="o">,</span>
+		<span class="c">/* array */</span>		<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">try</span>
 		<span class="p">{</span>
@@ -123,58 +123,58 @@
 		<span class="p">}</span>
 		<span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="c1">// IE will complain if field is invisible, instead of just ignoring it</span>
+			<span class="c">// IE will complain if field is invisible, instead of just ignoring it</span>
 		<span class="p">}</span>
-	<span class="p">},</span>
+	<span class="p">}</span><span class="o">,</span>
 
 	<span class="nx">destroy</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
 
 	<span class="nx">updateName</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>	<span class="nx">new_index</span><span class="p">)</span>
+		<span class="c">/* int */</span>	<span class="nx">new_index</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">valueName</span><span class="p">(</span><span class="nx">new_index</span><span class="p">));</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">valueName</span><span class="p">(</span><span class="nx">new_index</span><span class="p">));</span>
+	<span class="p">}</span><span class="o">,</span>
 
 	<span class="nx">set</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>	<span class="nx">query_index</span><span class="p">,</span>
-		<span class="cm">/* map */</span>	<span class="nx">data</span><span class="p">)</span>
+		<span class="c">/* int */</span>	<span class="nx">query_index</span><span class="o">,</span>
+		<span class="c">/* map */</span>	<span class="nx">data</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">valueName</span><span class="p">(</span><span class="nx">query_index</span><span class="p">)</span> <span class="p">]);</span>
-	<span class="p">},</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="o">,</span> <span class="nx">data</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">valueName</span><span class="p">(</span><span class="nx">query_index</span><span class="p">)</span> <span class="p">]);</span>
+	<span class="p">}</span><span class="o">,</span>
 
 	<span class="nx">toDatabaseQuery</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="p">[</span> <span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">db_query_equals</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="p">];</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="p">[</span> <span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">db_query_equals</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">value_menu</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span> <span class="p">]</span> <span class="p">];</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="cm">/* *********************************************************************</span>
-<span class="cm">	 * Form element names.</span>
-<span class="cm">	 */</span>
+	<span class="c">/* *********************************************************************</span>
+<span class="c">	 * Form element names.</span>
+<span class="c">	 */</span>
 
 	<span class="nx">valueName</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* int */</span>	<span class="nx">i</span><span class="p">)</span>
+		<span class="c">/* int */</span>	<span class="nx">i</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">val_input_name_pattern</span><span class="p">,</span> <span class="p">{</span><span class="nx">i</span><span class="o">:</span><span class="nx">i</span><span class="p">});</span>
-	<span class="p">},</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">val_input_name_pattern</span><span class="o">,</span> <span class="p">{</span><span class="nx">i</span><span class="o">:</span><span class="nx">i</span><span class="p">});</span>
+	<span class="p">}</span><span class="o">,</span>
 
-	<span class="c1">//</span>
-	<span class="c1">// Markup</span>
-	<span class="c1">//</span>
+	<span class="c">//</span>
+	<span class="c">// Markup</span>
+	<span class="c">//</span>
 
 	<span class="nx">_valuesMenu</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="cm">/* string */</span>	<span class="nx">menu_name</span><span class="p">)</span>
+		<span class="c">/* string */</span>	<span class="nx">menu_name</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="c1">// This must use a select tag!</span>
+		<span class="c">// This must use a select tag!</span>
 
-		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;select name=&quot;{n}&quot; class=&quot;{f} {c}&quot; /&gt;&#39;</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;select name=&quot;{n}&quot; class=&quot;{f} {c}&quot; /&gt;&#39;</span><span class="o">;</span>
 
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">markup</span><span class="p">,</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">markup</span><span class="o">,</span>
 		<span class="p">{</span>
-			<span class="nx">n</span><span class="o">:</span> <span class="nx">menu_name</span><span class="p">,</span>
-			<span class="nx">f</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="p">,</span>
+			<span class="nx">n</span><span class="o">:</span> <span class="nx">menu_name</span><span class="o">,</span>
+			<span class="nx">f</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">field_marker_class</span><span class="o">,</span>
 			<span class="nx">c</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">qb</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">(</span><span class="s1">&#39;field&#39;</span><span class="p">)</span>
 		<span class="p">});</span>
 	<span class="p">}</span>
@@ -200,6 +200,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
                                 <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
