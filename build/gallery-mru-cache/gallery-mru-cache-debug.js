@@ -1,47 +1,44 @@
+YUI.add('gallery-mru-cache', function(Y) {
+
 /**********************************************************************
- * <p>Cache which drops items based on a user-defined expiration criterion,
- * e.g., age.  By default, expired items are only removed when they are
- * requested.  If you want to "stop the world" and clean out the cache,
- * call clean().</p>
+ * <p>Cache which drops items based on "most recently used."  Items are
+ * dropped when a user-defined criterion is exceeded, e.g., total size or
+ * number of items.</p>
  * 
- * @module gallery-expiration-cache
- * @class ExpirationCache
+ * <p>The items are stored in a map of {data,mru_item_ref}.  The MRU items
+ * are stored in a doubly linked list (which stores the map keys) to allow
+ * easy re-ordering and dropping of items.  Every cache hit moves the
+ * associated MRU item to the front of the list.</p>
+ * 
+ * @module gallery-mru-cache
+ * @class MRUCache
  * @constructor
  * @param config {Object}
  *	<dl>
- *	<dt>store</dt>
- *	<dd>Data store which implements get,put,remove,clear,keys.  If not specified, a new instance of Y.InstanceManager is created.</dd>
+ *	<dt>metric</dt>
+ *	<dd>(Required) Function which computes the metric for an item.  It receives the value as an argument and must return a positive number.</dd>
+ *	<dt>limit</dt>
+ *	<dd>(Required) Maximum allowed value of the metric.  Items are dropped off the end of the MRU list until the metric is less than or equal to the limit.</dd>
  *	<dt>meta</dt>
- *	<dd>Function which attaches meta data to an item when it is added to the cache.  It receives the value as an argument.  If not specified, the default is to timestamp the item.</dd>
- *	<dt>expire</dt>
- *	<dd>(Required) Function which returns true if the item has expired.  It receives the meta data and the value as arguments.  If a number is specified, it is assumed to be a duration in milliseconds.</dd>
+ *	<dd>Function which attaches meta data to an item when it is added to the cache.  It receives the value as an argument.</dd>
  *	<dt>stats</dt>
  *	<dd>Pass true if you want to collect basic statistics.  Pass a function if you want to control what information is stored for each key.  The function receives the key, the value, and the stat object.</dd>
  *	</dl>
  */
 
-function ExpirationCache(config)
+function MRUCache(config)
 {
-	this._store  = config.store || new Y.InstanceManager();
-	this._meta   = config.meta  || timestamp;
-	this._expire = Y.Lang.isNumber(config.expire) ? Y.rbind(expire, null, config.expire) : config.expire;
-	this._stats  = config.stats ? initStats() : null;
+	this._metric_fn = config.metric;
+	this._limit     = config.limit;
+	this._meta      = config.meta;
+	this._stats     = config.stats ? initStats() : null;
 
 	if (Y.Lang.isFunction(config.stats))
 	{
 		this._stats_key_meta = config.stats;
 	}
-}
 
-function timestamp()
-{
-	return new Date().getTime();
-}
-
-function expire(timestamp, value, delta)
-{
-	var elapsed = new Date().getTime() - timestamp;
-	return (elapsed > delta);
+	this.clear();
 }
 
 function initStats()
@@ -57,7 +54,7 @@ function initKeyStats(keys, key)
 	}
 }
 
-ExpirationCache.prototype =
+MRUCache.prototype =
 {
 	/**
 	 * Retrieve a value.
@@ -68,13 +65,11 @@ ExpirationCache.prototype =
 	get: function(
 		/* string */	key)
 	{
-		var obj = this._store.get(key);
-		if (obj && this._expire(obj.meta, obj.data))
+		var obj = this._store[key];
+		if (obj)
 		{
-			this._store.remove(key);
-		}
-		else if (obj)
-		{
+			this._mru.prepend(obj.mru);
+
 			if (this._stats)
 			{
 				this._stats.gets++;
@@ -98,15 +93,29 @@ ExpirationCache.prototype =
 		/* string */	key,
 		/* obj/fn */	value)
 	{
+		var exists = !Y.Lang.isUndefined(this._store[key]);
+		if (exists)
+		{
+			return false;
+		}
+
 		var obj =
 		{
 			data: value,
-			meta: this._meta(value)
+			mru:  this._mru.prepend(key)
 		};
 
-		if (!this._store.put(key, obj))
+		if (this._meta)
 		{
-			return false;
+			obj.meta = this._meta(value);
+		}
+
+		this._store[key] = obj;
+
+		this._metric += this._metric_fn(value);
+		while (this._metric > this._limit)
+		{
+			this.remove(this._mru.tail().value);
 		}
 
 		if (this._stats)
@@ -119,6 +128,7 @@ ExpirationCache.prototype =
 				this._stats_key_meta(key, value, this._stats.keys[key]);
 			}
 		}
+
 		return true;
 	},
 
@@ -147,9 +157,12 @@ ExpirationCache.prototype =
 	remove: function(
 		/* string */	key)
 	{
-		var orig = this._store.remove(key);
+		var orig = this._store[key];
+		delete this._store[key];
 		if (orig)
 		{
+			this._mru.remove(orig.mru);
+			this._metric -= this._metric_fn(orig.data);
 			return orig.data;
 		}
 	},
@@ -159,15 +172,9 @@ ExpirationCache.prototype =
 	 */
 	clear: function()
 	{
-		this._store.clear();
-	},
-
-	/**
-	 * Remove all expired values.
-	 */
-	clean: function()
-	{
-		Y.each(this._store.keys(), this.get, this);
+		this._store  = {};
+		this._mru    = new Y.LinkedList();
+		this._metric = 0;
 	},
 
 	/**
@@ -183,4 +190,7 @@ ExpirationCache.prototype =
 	}
 };
 
-Y.ExpirationCache = ExpirationCache;
+Y.MRUCache = MRUCache;
+
+
+}, '@VERSION@' ,{requires:['gallery-linkedlist']});

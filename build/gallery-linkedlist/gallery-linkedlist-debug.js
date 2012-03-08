@@ -331,6 +331,22 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @return {LinkedListItem} the first item in the list, or null if the list is empty
+	 */
+	head: function()
+	{
+		return this._head;
+	},
+
+	/**
+	 * @return {LinkedListItem} the last item in the list, or null if the list is empty
+	 */
+	tail: function()
+	{
+		return this._tail;
+	},
+
+	/**
 	 * @param needle {Mixed} the item to search for
 	 * @return {Number} first index of the needle, or -1 if not found
 	 */
