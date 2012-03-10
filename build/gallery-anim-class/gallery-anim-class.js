@@ -24,15 +24,14 @@ var css_attribute =
 	"backgroundColor","backgroundPosition","backgroundOrigin","backgroundSize",
 	"outlineColor","outlineWidth",
 
-	"borderColor","borderSpacing",
-	"borderTop","borderRight","borderBottom","borderLeft",
+	"marginTop","marginRight","marginBottom","marginLeft",
+
+	"borderTopWidth","borderRightWidth","borderBottomWidth","borderLeftWidth",
+	"borderTopLeftRadius","borderTopRightRadius","borderBottomLeftRadius","borderBottomRightRadius",
 	"borderTopColor","borderRightColor","borderBottomColor","borderLeftColor",
-	"borderTopWidth","borderRightWidth","borderBottomWidth","borderLeftWidth","borderWidth",
-	"borderRadius","borderTopLeftRadius","borderTopRightRadius","borderBottomLeftRadius","borderBottomRightRadius",
+	"borderSpacing",
 
-	"margin","marginTop","marginRight","marginBottom","marginLeft",
-
-	"padding","paddingTop","paddingRight","paddingBottom","paddingLeft",
+	"paddingTop","paddingRight","paddingBottom","paddingLeft",
 
 	"zIndex","opacity",
 
@@ -47,6 +46,14 @@ var css_attribute =
 	"floodColor","floodOpacity","lightingColor","stopColor","stopOpacity",
 	"stroke","strokeDashoffset","strokeMiterlimit","strokeOpacity","strokeWidth"
 ];
+
+function updateBehaviors()
+{
+	if (!Y.Anim.behaviors.outlineColor)
+	{
+		Y.Anim.behaviors.outlineColor = Y.Anim.behaviors.color;
+	}
+}
 
 function getStyles(node)
 {
@@ -91,6 +98,8 @@ Y.Anim.prototype._start = function()
 	var node = this.get('node'),
 		from = this.get('from') || {},
 		to   = this.get('to')   || {};
+
+	updateBehaviors();	// patch after anim extensions are loaded
 
 	delete this._class_diff_attr;
 	if (from.cssClass || to.cssClass)
