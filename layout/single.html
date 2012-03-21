@@ -257,8 +257,8 @@ function(Y) {
 
 	page_layout.on('beforeResizeModule', function(e)
 	{
-		var node = e.details[0];
-		if (node.get('id') == 'table-bd' && e.details[1] == 'auto')
+		var node = e.bd;
+		if (node.get('id') == 'table-bd' && e.height == 'auto')
 		{
 			node.one('.yui3-datatable-bd').setStyle('height', 'auto');
 		}
@@ -266,10 +266,10 @@ function(Y) {
 
 	page_layout.on('afterResizeModule', function(e)
 	{
-		var node = e.details[0];
+		var node = e.bd;
 		if (node.get('id') == 'table-bd')
 		{
-			var h = e.details[1] - node.one('.yui3-datatable-hd').totalHeight();
+			var h = e.height - node.one('.yui3-datatable-hd').totalHeight();
 			Y.one('.yui3-datatable-bd').setStyle('height', h+'px');
 		}
 	});
