@@ -184,14 +184,14 @@ Y.PageLayoutCols.resize = function(
 				{
 					var h1 = adjustHeight(h, children);
 					var w1 = children.bd.insideWidth();
-					host.fire('beforeResizeModule', children.bd, h1, w1);
+					host.fire('beforeResizeModule', { bd: children.bd, height: h1, width: w1 });
 					children.bd.setStyle('height', h1+'px');
-					host.fire('afterResizeModule', children.bd, h1, w1);
+					host.fire('afterResizeModule', { bd: children.bd, height: h1, width: w1 });
 				}
 			}
 			else if (children.bd)
 			{
-				host.fire('beforeResizeModule', children.bd, 'auto', 'auto');
+				host.fire('beforeResizeModule', { bd: children.bd, height: 'auto', width: 'auto' });
 
 				children.root.setStyle('height', 'auto');
 				children.bd.setStyle('height', 'auto');
@@ -203,9 +203,11 @@ Y.PageLayoutCols.resize = function(
 				else
 				{
 					host.fire('afterResizeModule',
-						children.bd,
-						children.bd.insideHeight(),
-						children.bd.insideWidth());
+					{
+						bd:     children.bd,
+						height: children.bd.insideHeight(),
+						width:  children.bd.insideWidth()
+					});
 				}
 			}
 			continue;
@@ -253,9 +255,9 @@ Y.PageLayoutCols.resize = function(
 					var h1 = children.bd.insideHeight();
 					var w1 = w - children.root.horizMarginBorderPadding() -
 							 children.bd.horizMarginBorderPadding();
-					host.fire('beforeResizeModule', children.bd, h1, w1);
+					host.fire('beforeResizeModule', { bd: children.bd, height: h1, width: w1 });
 					module.setStyle('width', w+'px');
-					host.fire('afterResizeModule', children.bd, h1, w1);
+					host.fire('afterResizeModule', { bd: children.bd, height: h1, width: w1 });
 					continue;
 				}
 				k++;
@@ -272,10 +274,10 @@ Y.PageLayoutCols.resize = function(
 					}
 
 					var w1 = Math.max(1, w - children.bd.horizMarginBorderPadding());
-					host.fire('beforeResizeModule', children.bd, h1, w1);
+					host.fire('beforeResizeModule', { bd: children.bd, height: h1, width: w1 });
 					host._setWidth(children, w);
 					children.bd.setStyle('height', h1+'px');
-					host.fire('afterResizeModule', children.bd, h1, w1);
+					host.fire('afterResizeModule', { bd: children.bd, height: h1, width: w1 });
 				}
 			}
 		}
@@ -292,7 +294,7 @@ Y.PageLayoutCols.resize = function(
 				if (children.bd)
 				{
 					var w1 = Math.max(1, w - children.bd.horizMarginBorderPadding());
-					host.fire('beforeResizeModule', children.bd, 'auto', w1);
+					host.fire('beforeResizeModule', { bd: children.bd, height: 'auto', width: w1 });
 					host._setWidth(children, w);
 					children.root.setStyle('height', 'auto');
 					children.bd.setStyle('height', 'auto');
@@ -303,7 +305,12 @@ Y.PageLayoutCols.resize = function(
 					}
 					else
 					{
-						host.fire('afterResizeModule', children.bd, children.bd.insideHeight(), w1);
+						host.fire('afterResizeModule',
+						{
+							bd:     children.bd,
+							height: children.bd.insideHeight(),
+							width:  w1
+						});
 					}
 				}
 			}
@@ -340,7 +347,12 @@ Y.PageLayoutCols.resize = function(
 				else
 				{
 					var bd = ftc_size[i][j][0];
-					host.fire('afterResizeModule', bd, bd.insideHeight(), ftc_size[i][j][1]);
+					host.fire('afterResizeModule',
+					{
+						bd:     bd,
+						height: bd.insideHeight(),
+						width:  ftc_size[i][j][1]
+					});
 				}
 			}
 
@@ -359,7 +371,7 @@ Y.PageLayoutCols.resize = function(
 						var h1 = children.bd.insideHeight() + delta;
 						module.setStyle('height', 'auto');
 						children.bd.setStyle('height', h1+'px');
-						host.fire('afterResizeModule', children.bd, h1, w1);
+						host.fire('afterResizeModule', { bd: children.bd, height: h1, width: w1 });
 					}
 				}
 			}

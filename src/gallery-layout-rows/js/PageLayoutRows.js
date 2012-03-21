@@ -139,7 +139,7 @@ Y.PageLayoutRows.resize = function(
 		{
 			var w  = getWidth(row_widths[0], col_widths, 0, 0, module, module_info);
 			var w1 = Math.max(1, w - children.bd.horizMarginBorderPadding());
-			host.fire('beforeResizeModule', children.bd, 'auto', w1);
+			host.fire('beforeResizeModule', { bd: children.bd, height: 'auto', width: w1 });
 			host._setWidth(children, w);
 			children.root.setStyle('height', 'auto');
 			children.bd.setStyle('height', 'auto');
@@ -228,7 +228,7 @@ Y.PageLayoutRows.resize = function(
 					}
 
 					var w1 = Math.max(1, w - children.bd.horizMarginBorderPadding());
-					host.fire('beforeResizeModule', children.bd, 'auto', w1);
+					host.fire('beforeResizeModule', { bd: children.bd, height: 'auto', width: w1 });
 					host._setWidth(children, w);
 					children.root.setStyle('height', 'auto');
 					children.bd.setStyle('height', 'auto');
@@ -299,9 +299,9 @@ Y.PageLayoutRows.resize = function(
 					var h1 = children.bd.insideHeight();
 					var w  = getWidth(row_widths[i], col_widths, i, 0, module, module_info);
 					var w1 = Math.max(1, w - children.bd.horizMarginBorderPadding());
-					host.fire('beforeResizeModule', children.bd, h1, w1);
+					host.fire('beforeResizeModule', { bd: children.bd, height: h1, width: w1 });
 					host._setWidth(children, w);
-					host.fire('afterResizeModule', children.bd, h1, w1);
+					host.fire('afterResizeModule', { bd: children.bd, height: h1, width: w1 });
 				}
 				continue;
 			}
@@ -330,7 +330,7 @@ Y.PageLayoutRows.resize = function(
 					{
 						var h1 = adjustHeight(h, children);
 						var w1 = children.bd.insideWidth();
-						host.fire('beforeResizeModule', children.bd, h1, w1);
+						host.fire('beforeResizeModule', { bd: children.bd, height: h1, width: w1 });
 						children.bd.setStyle('height', h1+'px');
 
 						if (has_explosive_modules_bug)
@@ -342,7 +342,7 @@ Y.PageLayoutRows.resize = function(
 							children.root.setStyle('width', bd_w+'px');
 						}
 
-						host.fire('afterResizeModule', children.bd, h1, w1);
+						host.fire('afterResizeModule', { bd: children.bd, height: h1, width: w1 });
 					}
 				}
 				else
@@ -385,13 +385,13 @@ Y.PageLayoutRows.resize = function(
 				var w1 = Math.max(1, w - children.bd.horizMarginBorderPadding());
 				if (mode === Y.PageLayout.FIT_TO_VIEWPORT)
 				{
-					host.fire('beforeResizeModule', children.bd, h1, w1);
+					host.fire('beforeResizeModule', { bd: children.bd, height: h1, width: w1 });
 					host._setWidth(children, w);
 				}
 
 				children.bd.setStyle('height', h1+'px');
 
-				host.fire('afterResizeModule', children.bd, h1, w1);
+				host.fire('afterResizeModule', { bd: children.bd, height: h1, width: w1 });
 			}
 		}
 	}

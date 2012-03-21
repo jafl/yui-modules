@@ -51,13 +51,13 @@ Y.Node.prototype.ancestor = function(
 		var m = class_name_re.exec(fn);
 		if (m && m.length)
 		{
-			Y.log('ancestor() calling getAncestorByClassName() with ' + m[1], 'info', 'Node');
+			Y.log('ancestor() calling getAncestorByClassName() with ' + m[1], 'debug', 'Node');
 			return this.getAncestorByClassName(m[1], test_self);
 		}
 
 		if (tag_name_re.test(fn))
 		{
-			Y.log('ancestor() calling getAncestorByTagName() with ' + fn, 'info', 'Node');
+			Y.log('ancestor() calling getAncestorByTagName() with ' + fn, 'debug', 'Node');
 			return this.getAncestorByTagName(fn, test_self);
 		}
 	}
@@ -147,20 +147,20 @@ Y.Node.prototype.one = function(
 	{
 		if (selector == '*')
 		{
-			Y.log('one() returning children[0]', 'info', 'Node');
+			Y.log('one() returning children[0]', 'debug', 'Node');
 			return Y.one(Y.Node.getDOMNode(this).children[0]);
 		}
 
 		var m = tag_class_name_re.exec(selector);
 		if (m && m.length)
 		{
-			Y.log('one() calling getElementsByClassName() with ' + m[2] + ',' + m[1], 'info', 'Node');
+			Y.log('one() calling getElementsByClassName() with ' + m[2] + ',' + m[1], 'debug', 'Node');
 			return this.getFirstElementByClassName(m[2], m[1]);
 		}
 
 		if (tag_name_re.test(selector))
 		{
-			Y.log('one() calling getElementsByTagName() with ' + selector, 'info', 'Node');
+			Y.log('one() calling getElementsByTagName() with ' + selector, 'debug', 'Node');
 			return this.getElementsByTagName(selector).item(0);
 		}
 	}
@@ -187,13 +187,13 @@ Y.Node.prototype.all = function(
 		var m = tag_class_name_re.exec(selector);
 		if (m && m.length)
 		{
-			Y.log('all() calling getElementsByClassName() with ' + m[2] + ',' + m[1], 'info', 'Node');
+			Y.log('all() calling getElementsByClassName() with ' + m[2] + ',' + m[1], 'debug', 'Node');
 			return this.getElementsByClassName(m[2], m[1]);
 		}
 
 		if (tag_name_re.test(selector))
 		{
-			Y.log('all() calling getElementsByTagName() with ' + selector, 'info', 'Node');
+			Y.log('all() calling getElementsByTagName() with ' + selector, 'debug', 'Node');
 			return this.getElementsByTagName(selector);
 		}
 	}

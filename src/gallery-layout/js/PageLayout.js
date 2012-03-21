@@ -587,12 +587,12 @@ function expandModule(
 		if (p && p.hasClass(collapsed_class))
 		{
 			var children = this._analyzeModule(p);
-			this.fire('beforeExpandModule', children.bd);
+			this.fire('beforeExpandModule', { bd: children.bd });
 
 			p.removeClass(collapsed_class);
 			resize.call(this);
 
-			this.fire('afterExpandModule', children.bd);
+			this.fire('afterExpandModule', { bd: children.bd });
 		}
 	}
 
@@ -622,12 +622,12 @@ function collapseModule(
 		if (p && !p.hasClass(collapsed_class))
 		{
 			var children = this._analyzeModule(p);
-			this.fire('beforeCollapseModule', children.bd);
+			this.fire('beforeCollapseModule', { bd: children.bd });
 
 			p.addClass(collapsed_class);
 			resize.call(this);
 
-			this.fire('afterCollapseModule', children.bd);
+			this.fire('afterCollapseModule', { bd: children.bd });
 		}
 	}
 
