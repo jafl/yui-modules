@@ -326,7 +326,7 @@ function copyDown(e)
  */
 QuickEdit.copyDownFormatter = function(o, td)
 {
-	if (o.column.quickEdit.copyDown && o.rowindex === 0)
+	if (o.column.quickEdit.copyDown && o.rowIndex === 0)
 	{
 		return Y.Lang.sub('<button title="Copy down" class="{c}">&darr;</button>',
 		{
