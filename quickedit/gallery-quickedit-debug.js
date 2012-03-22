@@ -90,19 +90,16 @@ YUI.add('gallery-quickedit', function(Y) {
  * <pre>
  * function myQuickEditFormatter(o) {
  * &nbsp;&nbsp;var markup =
- * &nbsp;&nbsp;&nbsp;&nbsp;'&lt;input type="text" class="{yiv} quickedit-field quickedit-key:{key}"/&gt;' +
- * &nbsp;&nbsp;&nbsp;&nbsp;Y.Plugin.DataTableQuickEdit.error_display_markup;
+ * &nbsp;&nbsp;&nbsp;&nbsp;'&lt;input type="text" class="{yiv} quickedit-field quickedit-key:{key}" value="{value}"/&gt;' +
+ * &nbsp;&nbsp;&nbsp;&nbsp;'{cd}' + Y.Plugin.DataTableQuickEdit.error_display_markup;
  *
- * &nbsp;&nbsp;var qe = o.column.get('quickEdit');
- * &nbsp;&nbsp;var td = this.createCell(o);
- * &nbsp;&nbsp;td.set('innerHTML', Y.Lang.sub(markup, {
- * &nbsp;&nbsp;&nbsp;&nbsp;key: o.column.get('key'),
- * &nbsp;&nbsp;&nbsp;&nbsp;yiv: qe.validation ? (qe.validation.css || '') : ''
- * &nbsp;&nbsp;}));
- *
- * &nbsp;&nbsp;td.get('firstChild').set('value', extractMyEditableValue(o));
- *
- * &nbsp;&nbsp;Y.Plugin.DataTableQuickEdit.copyDownFormatter.call(this, o, td);
+ * &nbsp;&nbsp;var qe = o.column.quickEdit;
+ * &nbsp;&nbsp;return Y.Lang.sub(markup, {
+ * &nbsp;&nbsp;&nbsp;&nbsp;key: o.column.key,
+ * &nbsp;&nbsp;&nbsp;&nbsp;value: o.value.toString().replace(/"/g, '&quot;'),
+ * &nbsp;&nbsp;&nbsp;&nbsp;yiv: qe.validation ? (qe.validation.css || '') : '',
+ * &nbsp;&nbsp;&nbsp;&nbsp;cd: QuickEdit.copyDownFormatter.call(this, o)
+ * &nbsp;&nbsp;});
  * };
  * </pre>
  *
@@ -142,15 +139,13 @@ QuickEdit.ATTRS =
 	}
 };
 
-var class_re_prefix        = '(?:^|\\s)(?:',
-	class_re_suffix        = ')(?:\\s|$)',
-	quick_edit_re          = /quickedit-key:([^\s]+)/,
+var quick_edit_re          = /quickedit-key:([^\s]+)/,
 	qe_row_status_prefix   = 'quickedit-has',
 	qe_row_status_pattern  = qe_row_status_prefix + '([a-z]+)',
-	qe_row_status_re       = new RegExp(class_re_prefix + qe_row_status_pattern + class_re_suffix),
+	qe_row_status_re       = new RegExp(Y.Node.class_re_prefix + qe_row_status_pattern + Y.Node.class_re_suffix),
 	qe_cell_status_prefix  = 'quickedit-has',
 	qe_cell_status_pattern = qe_cell_status_prefix + '([a-z]+)',
-	qe_cell_status_re      = new RegExp(class_re_prefix + qe_cell_status_pattern + class_re_suffix);
+	qe_cell_status_re      = new RegExp(Y.Node.class_re_prefix + qe_cell_status_pattern + Y.Node.class_re_suffix);
 
 /**
  * The CSS class that marks the container for the error message inside a cell.
@@ -333,7 +328,7 @@ function copyDown(e)
  */
 QuickEdit.copyDownFormatter = function(o, td)
 {
-	if (o.column.quickEdit.copyDown && o.rowindex === 0)
+	if (o.column.quickEdit.copyDown && o.rowIndex === 0)
 	{
 		return Y.Lang.sub('<button title="Copy down" class="{c}">&darr;</button>',
 		{
