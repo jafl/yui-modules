@@ -3458,4 +3458,4 @@ Y.MathCanvas.Parser   = MathParser;
  */
 
 
-}, '@VERSION@' ,{skinnable:true, requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas','gallery-node-optimizations','anim-base','array-extras']});
+}, '@VERSION@' ,{requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas','gallery-node-optimizations','anim-base','array-extras'], skinnable:true});
