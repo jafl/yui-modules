@@ -252,14 +252,13 @@ function(Y)
 	});
 	pg.render('#pg');
 
-	function updatePaginator(state)
+	pg.on('changeRequest', function(state)
 	{
 		this.setPage(state.page, true);
 		this.setRowsPerPage(state.rowsPerPage, true);
 		this.setTotalRecords(state.totalRecords, true);
 		sendRequest();
-	}
-	pg.on('changeRequest', updatePaginator, pg);
+	});
 
 	ds.on('response', function(e)
 	{

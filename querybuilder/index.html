@@ -346,14 +346,6 @@ function(Y)
 
 // Paginator
 
-	function updatePaginator(
-		/* object */	state)
-	{
-		this.setPage(state.page, true);
-		this.setRowsPerPage(state.rowsPerPage, true);
-		sendRequest();
-	}
-
 	var pg = new Y.Paginator(
 	{
 		totalRecords: 5,
@@ -365,8 +357,14 @@ function(Y)
 		nextPageLinkLabel:     '&gt;',
 		lastPageLinkLabel:     '&gt;|'
 	});
-	pg.on('changeRequest', updatePaginator);
 	pg.render('#pg');
+
+	pg.on('changeRequest', function(state)
+	{
+		this.setPage(state.page, true);
+		this.setRowsPerPage(state.rowsPerPage, true);
+		sendRequest();
+	});
 
 	ds.on('response', function(e)
 	{
