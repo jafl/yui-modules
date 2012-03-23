@@ -16,8 +16,10 @@ window.onbeforeunload = function(ev) {
     var facade = new Y.DOMEventFacade(e), retVal;
     Y.fire(INTERNAL_EVENT_NAME, facade);
     retVal = facade.returnValue;
-    e.returnValue = retVal;
-    return retVal;
+    if (retVal) {
+        e.returnValue = retVal;
+        return retVal;
+    }
 };
 
 /**
@@ -60,4 +62,4 @@ Y.Env.evt.plugins.beforeunload = {
 };
 
 
-}, 'gallery-2009.11.02-20' ,{requires:['event-base']});
+}, '@VERSION@' ,{requires:['event-base']});
