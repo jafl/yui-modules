@@ -625,7 +625,7 @@ function resize()
 		this.footer_container.setStyle('visibility', 'visible');
 	}
 
-	Y.Lang.later(100, this, checkViewportSize);
+	Y.later(100, this, checkViewportSize);
 }
 
 /*
@@ -1026,7 +1026,7 @@ Y.extend(PageLayout, Y.Base,
 		el = Y.one(el);
 
 		if ((this.header_container && this.header_container.contains(el)) ||
-			this.body_container.contains(el) ||
+			(this.body_container && this.body_container.contains(el)) ||
 			(this.footer_container && this.footer_container.contains(el)))
 		{
 			if (this.refresh_timer)
