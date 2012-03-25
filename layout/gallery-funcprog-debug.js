@@ -185,4 +185,4 @@ Y.mix(Y,
 });
 
 
-}, '@VERSION@' ,{requires:['array-extras','gallery-object-extras'], optional:['gallery-nodelist-extras2']});
+}, '@VERSION@' ,{requires:['oop','array-extras','gallery-object-extras'], optional:['gallery-nodelist-extras2']});
