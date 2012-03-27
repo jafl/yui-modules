@@ -47,93 +47,93 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;Sum of values.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @namespace MathFunction</span>
-<span class="c"> * @class Sum</span>
-<span class="c"> * @extends MathFunction.FunctionWithArgs</span>
-<span class="c"> * @constructor</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Sum of values.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @namespace MathFunction</span>
+<span class="cm"> * @class Sum</span>
+<span class="cm"> * @extends MathFunction.FunctionWithArgs</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">MathSum</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="nx">MathMax</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="s2">&quot;+&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">));</span>
+	<span class="nx">MathMax</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">(</span><span class="nx">arguments</span><span class="p">));</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathSum</span><span class="o">,</span> <span class="nx">MathFunctionWithArgs</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">MathSum</span><span class="p">,</span> <span class="nx">MathFunctionWithArgs</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">evaluate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* map */</span>	<span class="nx">var_list</span><span class="p">)</span>
+		<span class="cm">/* map */</span>	<span class="nx">var_list</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ComplexMath</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">evaluateArgs</span><span class="p">(</span><span class="nx">var_list</span><span class="p">));</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">prepareToRender</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* Context2d */</span>		<span class="nx">context</span><span class="o">,</span>
-		<span class="c">/* point */</span>			<span class="nx">top_left</span><span class="o">,</span>
-		<span class="c">/* percentage */</span>	<span class="nx">font_size</span><span class="o">,</span>
-		<span class="c">/* RectList */</span>		<span class="nx">rect_list</span><span class="p">)</span>
+		<span class="cm">/* Context2d */</span>		<span class="nx">context</span><span class="p">,</span>
+		<span class="cm">/* point */</span>			<span class="nx">top_left</span><span class="p">,</span>
+		<span class="cm">/* percentage */</span>	<span class="nx">font_size</span><span class="p">,</span>
+		<span class="cm">/* RectList */</span>		<span class="nx">rect_list</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">arg_top_left</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">top_left</span><span class="o">,</span> <span class="kc">true</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">arg_top_left</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="nx">top_left</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
 		<span class="kd">var</span> <span class="nx">total_rect</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">top</span><span class="o">:</span>    <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span><span class="o">,</span>
-			<span class="nx">left</span><span class="o">:</span>   <span class="nx">top_left</span><span class="p">.</span><span class="nx">x</span><span class="o">,</span>
-			<span class="nx">bottom</span><span class="o">:</span> <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getLineHeight</span><span class="p">(</span><span class="nx">font_size</span><span class="p">)</span><span class="o">,</span>
+			<span class="nx">top</span><span class="o">:</span>    <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span>
+			<span class="nx">left</span><span class="o">:</span>   <span class="nx">top_left</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span>
+			<span class="nx">bottom</span><span class="o">:</span> <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getLineHeight</span><span class="p">(</span><span class="nx">font_size</span><span class="p">),</span>
 			<span class="nx">right</span><span class="o">:</span>  <span class="nx">top_left</span><span class="p">.</span><span class="nx">x</span>
 		<span class="p">};</span>
 
 		<span class="kd">var</span> <span class="nx">total_midline</span> <span class="o">=</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">ycenter</span><span class="p">(</span><span class="nx">total_rect</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">orig_midline</span>  <span class="o">=</span> <span class="nx">total_midline</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">orig_midline</span>  <span class="o">=</span> <span class="nx">total_midline</span><span class="p">;</span>
 
-		<span class="kd">var</span> <span class="nx">space_width</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">font_size</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">plus_width</span>  <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">font_size</span><span class="o">,</span> <span class="s1">&#39;+&#39;</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">minus_width</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">font_size</span><span class="o">,</span> <span class="s1">&#39;-&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">space_width</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">font_size</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">plus_width</span>  <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">font_size</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">minus_width</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">font_size</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">);</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="o">,</span> <span class="nx">index</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">arg</span> <span class="k">instanceof</span> <span class="nx">MathNegate</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">space_width</span><span class="o">;</span>
+					<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">space_width</span><span class="p">;</span>
 				<span class="p">}</span>
-				<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">minus_width</span> <span class="o">+</span> <span class="nx">space_width</span><span class="o">;</span>
+				<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">minus_width</span> <span class="o">+</span> <span class="nx">space_width</span><span class="p">;</span>
 
-				<span class="nx">f</span>   <span class="o">=</span> <span class="nx">arg</span><span class="o">;</span>
+				<span class="nx">f</span>   <span class="o">=</span> <span class="nx">arg</span><span class="p">;</span>
 				<span class="nx">arg</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">plus_width</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="nx">space_width</span><span class="o">;</span>
+				<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="nx">plus_width</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="nx">space_width</span><span class="p">;</span>
 			<span class="p">}</span>
 
-			<span class="kd">var</span> <span class="nx">arg_index</span>  <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">prepareToRender</span><span class="p">(</span><span class="nx">context</span><span class="o">,</span> <span class="nx">arg_top_left</span><span class="o">,</span> <span class="nx">font_size</span><span class="o">,</span> <span class="nx">rect_list</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">arg_index</span>  <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">prepareToRender</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">arg_top_left</span><span class="p">,</span> <span class="nx">font_size</span><span class="p">,</span> <span class="nx">rect_list</span><span class="p">);</span>
 			<span class="kd">var</span> <span class="nx">arg_info</span>   <span class="o">=</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">arg_index</span><span class="p">);</span>
-			<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span><span class="o">;</span>
+			<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span><span class="p">;</span>
 
 			<span class="k">if</span> <span class="p">(</span><span class="nx">arg</span><span class="p">.</span><span class="nx">parenthesizeForRender</span><span class="p">(</span><span class="nx">f</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">paren_width</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getParenthesisWidth</span><span class="p">(</span><span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">);</span>
-				<span class="nx">rect_list</span><span class="p">.</span><span class="nx">shift</span><span class="p">(</span><span class="nx">arg_index</span><span class="o">,</span> <span class="nx">paren_width</span><span class="o">,</span> <span class="mi">0</span><span class="p">);</span>
-				<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span>  <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="nx">paren_width</span><span class="o">;</span>
-				<span class="nx">total_rect</span><span class="p">.</span><span class="nx">right</span> <span class="o">=</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span> <span class="o">+</span> <span class="nx">paren_width</span><span class="o">;</span>
+				<span class="nx">rect_list</span><span class="p">.</span><span class="nx">shift</span><span class="p">(</span><span class="nx">arg_index</span><span class="p">,</span> <span class="nx">paren_width</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+				<span class="nx">arg_top_left</span><span class="p">.</span><span class="nx">x</span>  <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="nx">paren_width</span><span class="p">;</span>
+				<span class="nx">total_rect</span><span class="p">.</span><span class="nx">right</span> <span class="o">=</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span> <span class="o">+</span> <span class="nx">paren_width</span><span class="p">;</span>
 			<span class="p">}</span>
 
-			<span class="nx">total_rect</span>    <span class="o">=</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">cover</span><span class="p">(</span><span class="nx">total_rect</span><span class="o">,</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">);</span>
-			<span class="nx">total_midline</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">total_midline</span><span class="o">,</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">midline</span><span class="p">);</span>
-		<span class="p">}</span><span class="o">,</span>
+			<span class="nx">total_rect</span>    <span class="o">=</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">cover</span><span class="p">(</span><span class="nx">total_rect</span><span class="p">,</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">);</span>
+			<span class="nx">total_midline</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">total_midline</span><span class="p">,</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">midline</span><span class="p">);</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 
-		<span class="c">// adjust the argument rectangles so all the midlines are the same</span>
-		<span class="c">// (ourMidline is guaranteed to stay constant)</span>
+		<span class="c1">// adjust the argument rectangles so all the midlines are the same</span>
+		<span class="c1">// (ourMidline is guaranteed to stay constant)</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">total_midline</span> <span class="o">&gt;</span> <span class="nx">orig_midline</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">arg</span> <span class="k">instanceof</span> <span class="nx">MathNegate</span><span class="p">)</span>
 				<span class="p">{</span>
@@ -141,40 +141,40 @@
 				<span class="p">}</span>
 
 				<span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
-				<span class="nx">rect_list</span><span class="p">.</span><span class="nx">setMidline</span><span class="p">(</span><span class="nx">index</span><span class="o">,</span> <span class="nx">total_midline</span><span class="p">);</span>
-				<span class="nx">total_rect</span> <span class="o">=</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">cover</span><span class="p">(</span><span class="nx">total_rect</span><span class="o">,</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">index</span><span class="p">).</span><span class="nx">rect</span><span class="p">);</span>
+				<span class="nx">rect_list</span><span class="p">.</span><span class="nx">setMidline</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">total_midline</span><span class="p">);</span>
+				<span class="nx">total_rect</span> <span class="o">=</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">cover</span><span class="p">(</span><span class="nx">total_rect</span><span class="p">,</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">index</span><span class="p">).</span><span class="nx">rect</span><span class="p">);</span>
 			<span class="p">});</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">total_rect</span><span class="o">,</span> <span class="nx">total_midline</span><span class="o">,</span> <span class="nx">font_size</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">total_rect</span><span class="p">,</span> <span class="nx">total_midline</span><span class="p">,</span> <span class="nx">font_size</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
 
 	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* Context2d */</span>	<span class="nx">context</span><span class="o">,</span>
-		<span class="c">/* RectList */</span>	<span class="nx">rect_list</span><span class="p">)</span>
+		<span class="cm">/* Context2d */</span>	<span class="nx">context</span><span class="p">,</span>
+		<span class="cm">/* RectList */</span>	<span class="nx">rect_list</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">info</span>        <span class="o">=</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-		<span class="kd">var</span> <span class="nx">x</span>           <span class="o">=</span> <span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">left</span><span class="o">;</span>
-		<span class="kd">var</span> <span class="nx">space_width</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">font_size</span><span class="o">,</span> <span class="s1">&#39; &#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">x</span>           <span class="o">=</span> <span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">left</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">space_width</span> <span class="o">=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">font_size</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">);</span>
 
-		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="o">,</span> <span class="nx">index</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">arg</span> <span class="k">instanceof</span> <span class="nx">MathNegate</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">context</span><span class="p">.</span><span class="nx">drawString</span><span class="p">(</span><span class="nx">x</span><span class="o">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">midline</span><span class="o">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">font_size</span><span class="o">,</span> <span class="s1">&#39;-&#39;</span><span class="p">);</span>
-				<span class="nx">f</span>   <span class="o">=</span> <span class="nx">arg</span><span class="o">;</span>
+				<span class="nx">context</span><span class="p">.</span><span class="nx">drawString</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">midline</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">font_size</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">);</span>
+				<span class="nx">f</span>   <span class="o">=</span> <span class="nx">arg</span><span class="p">;</span>
 				<span class="nx">arg</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">context</span><span class="p">.</span><span class="nx">drawString</span><span class="p">(</span><span class="nx">x</span><span class="o">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">midline</span><span class="o">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">font_size</span><span class="o">,</span> <span class="s1">&#39;+&#39;</span><span class="p">);</span>
+				<span class="nx">context</span><span class="p">.</span><span class="nx">drawString</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">midline</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">font_size</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="nx">arg</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">context</span><span class="o">,</span> <span class="nx">rect_list</span><span class="p">);</span>
+			<span class="nx">arg</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">rect_list</span><span class="p">);</span>
 
 			<span class="kd">var</span> <span class="nx">arg_info</span> <span class="o">=</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
-			<span class="nx">x</span>            <span class="o">=</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span><span class="o">;</span>
+			<span class="nx">x</span>            <span class="o">=</span> <span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">right</span><span class="p">;</span>
 
 			<span class="k">if</span> <span class="p">(</span><span class="nx">arg</span><span class="p">.</span><span class="nx">parenthesizeForRender</span><span class="p">(</span><span class="nx">f</span><span class="p">))</span>
 			<span class="p">{</span>
@@ -182,32 +182,32 @@
 				<span class="nx">x</span> <span class="o">+=</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getParenthesisWidth</span><span class="p">(</span><span class="nx">arg_info</span><span class="p">.</span><span class="nx">rect</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="nx">x</span> <span class="o">+=</span> <span class="nx">space_width</span><span class="o">;</span>
-		<span class="p">}</span><span class="o">,</span>
+			<span class="nx">x</span> <span class="o">+=</span> <span class="nx">space_width</span><span class="p">;</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
 	<span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="o">,</span> <span class="nx">arg</span><span class="o">,</span> <span class="nx">index</span><span class="p">)</span>
+		<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">args</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">arg</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">arg</span> <span class="k">instanceof</span> <span class="nx">MathNegate</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">s</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span><span class="o">;</span>
+				<span class="nx">s</span> <span class="o">+=</span> <span class="s1">&#39;-&#39;</span><span class="p">;</span>
 				<span class="nx">arg</span> <span class="o">=</span> <span class="nx">arg</span><span class="p">.</span><span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">s</span> <span class="o">+=</span> <span class="s1">&#39;+&#39;</span><span class="o">;</span>
+				<span class="nx">s</span> <span class="o">+=</span> <span class="s1">&#39;+&#39;</span><span class="p">;</span>
 			<span class="p">}</span>
 
 			<span class="k">return</span> <span class="nx">s</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_printArg</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Sum</span> <span class="o">=</span> <span class="nx">MathSum</span><span class="o">;</span>
+<span class="nx">MathFunction</span><span class="p">.</span><span class="nx">Sum</span> <span class="o">=</span> <span class="nx">MathSum</span><span class="p">;</span>
 </pre></div>
 
                     </div>

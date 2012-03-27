@@ -47,24 +47,24 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;Doubly linked list for storing items.  Supports iteration via</span>
-<span class="c"> * LinkedListIterator (returned by this.iterator()) or Y.each().  Also</span>
-<span class="c"> * supports all the other operations defined in gallery-funcprog.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * &lt;p&gt;Direct indexing into the list is not supported, as a reminder that it</span>
-<span class="c"> * is an expensive operation.  Instead, use find() with a function that</span>
-<span class="c"> * checks the index.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @module gallery-linkedlist</span>
-<span class="c"> * @class LinkedList</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param list {Mixed} (Optional) any scalar or iterable list</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Doubly linked list for storing items.  Supports iteration via</span>
+<span class="cm"> * LinkedListIterator (returned by this.iterator()) or Y.each().  Also</span>
+<span class="cm"> * supports all the other operations defined in gallery-funcprog.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;Direct indexing into the list is not supported, as a reminder that it</span>
+<span class="cm"> * is an expensive operation.  Instead, use find() with a function that</span>
+<span class="cm"> * checks the index.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-linkedlist</span>
+<span class="cm"> * @class LinkedList</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param list {Mixed} (Optional) any scalar or iterable list</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">LinkedList</span><span class="p">(</span><span class="nx">list</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -77,10 +77,10 @@
 
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">list</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">list</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
-		<span class="p">}</span><span class="o">,</span>
+		<span class="p">},</span>
 		<span class="k">this</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
@@ -96,254 +96,254 @@
 		<span class="nx">value</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedListItem</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 	<span class="p">}</span>
 
-	<span class="k">return</span> <span class="nx">value</span><span class="o">;</span>
+	<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nx">LinkedList</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * @return {Boolean} true if the list is empty</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Boolean} true if the list is empty</span>
+<span class="cm">	 */</span>
 	<span class="nx">isEmpty</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">_tail</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Warning:  This requires traversing the list!  Use isEmpty() whenever</span>
-<span class="c">	 * possible.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @return {Number} the number of items in the list</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Warning:  This requires traversing the list!  Use isEmpty() whenever</span>
+<span class="cm">	 * possible.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @return {Number} the number of items in the list</span>
+<span class="cm">	 */</span>
 	<span class="nx">size</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span>
-			<span class="nx">item</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+			<span class="nx">item</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="p">;</span>
 
 		<span class="k">while</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">count</span><span class="o">++;</span>
-			<span class="nx">item</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
+			<span class="nx">count</span><span class="o">++</span><span class="p">;</span>
+			<span class="nx">item</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">count</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">count</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {LinkedListIterator}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {LinkedListIterator}</span>
+<span class="cm">	 */</span>
 	<span class="nx">iterator</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="k">new</span> <span class="nx">LinkedListIterator</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Creates a new, empty LinkedList.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @return {LinkedList}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Creates a new, empty LinkedList.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @return {LinkedList}</span>
+<span class="cm">	 */</span>
 	<span class="nx">newInstance</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">return</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {LinkedListItem} the first item in the list, or null if the list is empty</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {LinkedListItem} the first item in the list, or null if the list is empty</span>
+<span class="cm">	 */</span>
 	<span class="nx">head</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {LinkedListItem} the last item in the list, or null if the list is empty</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {LinkedListItem} the last item in the list, or null if the list is empty</span>
+<span class="cm">	 */</span>
 	<span class="nx">tail</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param needle {Mixed} the item to search for</span>
-<span class="c">	 * @return {Number} first index of the needle, or -1 if not found</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param needle {Mixed} the item to search for</span>
+<span class="cm">	 * @return {Number} first index of the needle, or -1 if not found</span>
+<span class="cm">	 */</span>
 	<span class="nx">indexOf</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atEnd</span><span class="p">())</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">iter</span><span class="p">.</span><span class="nx">next</span><span class="p">()</span> <span class="o">===</span> <span class="nx">needle</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="nx">i</span><span class="o">;</span>
+				<span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
 			<span class="p">}</span>
-			<span class="nx">i</span><span class="o">++;</span>
+			<span class="nx">i</span><span class="o">++</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param needle {Mixed} the item to search for</span>
-<span class="c">	 * @return {Number} last index of the needle, or -1 if not found</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param needle {Mixed} the item to search for</span>
+<span class="cm">	 * @return {Number} last index of the needle, or -1 if not found</span>
+<span class="cm">	 */</span>
 	<span class="nx">lastIndexOf</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">needle</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">()</span><span class="o">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">iter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">iterator</span><span class="p">(),</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
 		<span class="nx">iter</span><span class="p">.</span><span class="nx">moveToEnd</span><span class="p">();</span>
 		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="nx">iter</span><span class="p">.</span><span class="nx">atBeginning</span><span class="p">())</span>
 		<span class="p">{</span>
-			<span class="nx">i</span><span class="o">--;</span>
+			<span class="nx">i</span><span class="o">--</span><span class="p">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">iter</span><span class="p">.</span><span class="nx">prev</span><span class="p">()</span> <span class="o">===</span> <span class="nx">needle</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">return</span> <span class="nx">i</span><span class="o">;</span>
+				<span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Clear the list.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Clear the list.</span>
+<span class="cm">	 */</span>
 	<span class="nx">clear</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param value {Mixed} value to insert</span>
-<span class="c">	 * @param item {LinkedListItem} existing item</span>
-<span class="c">	 * @return {LinkedListItem} inserted item</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param value {Mixed} value to insert</span>
+<span class="cm">	 * @param item {LinkedListItem} existing item</span>
+<span class="cm">	 * @return {LinkedListItem} inserted item</span>
+<span class="cm">	 */</span>
 	<span class="nx">insertBefore</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* object */</span>	<span class="nx">value</span><span class="o">,</span>
-		<span class="c">/* item */</span>		<span class="nx">item</span><span class="p">)</span>
+		<span class="cm">/* object */</span>	<span class="nx">value</span><span class="p">,</span>
+		<span class="cm">/* item */</span>		<span class="nx">item</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">value</span> <span class="o">=</span> <span class="nx">wrap</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
+		<span class="nx">value</span> <span class="o">=</span> <span class="nx">wrap</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
 
-		<span class="nx">value</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="o">;</span>
-		<span class="nx">value</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">item</span><span class="o">;</span>
+		<span class="nx">value</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">;</span>
+		<span class="nx">value</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">item</span><span class="p">;</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+			<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 		<span class="p">}</span>
-		<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+		<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 
-		<span class="k">return</span> <span class="nx">value</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param item {LinkedListItem} existing item</span>
-<span class="c">	 * @param value {Mixed} value to insert</span>
-<span class="c">	 * @return {LinkedListItem} inserted item</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param item {LinkedListItem} existing item</span>
+<span class="cm">	 * @param value {Mixed} value to insert</span>
+<span class="cm">	 * @return {LinkedListItem} inserted item</span>
+<span class="cm">	 */</span>
 	<span class="nx">insertAfter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* item */</span>		<span class="nx">item</span><span class="o">,</span>
-		<span class="c">/* object */</span>	<span class="nx">value</span><span class="p">)</span>
+		<span class="cm">/* item */</span>		<span class="nx">item</span><span class="p">,</span>
+		<span class="cm">/* object */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">value</span> <span class="o">=</span> <span class="nx">wrap</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
+		<span class="nx">value</span> <span class="o">=</span> <span class="nx">wrap</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
 
-		<span class="nx">value</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">item</span><span class="o">;</span>
-		<span class="nx">value</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
+		<span class="nx">value</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">item</span><span class="p">;</span>
+		<span class="nx">value</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+			<span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 		<span class="p">}</span>
-		<span class="nx">item</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+		<span class="nx">item</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 
-		<span class="k">return</span> <span class="nx">value</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param value {Mixed} value to prepend</span>
-<span class="c">	 * @return {LinkedListItem} prepended item</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param value {Mixed} value to prepend</span>
+<span class="cm">	 * @return {LinkedListItem} prepended item</span>
+<span class="cm">	 */</span>
 	<span class="nx">prepend</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* object */</span>	<span class="nx">value</span><span class="p">)</span>
+		<span class="cm">/* object */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">value</span> <span class="o">=</span> <span class="nx">wrap</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
+		<span class="nx">value</span> <span class="o">=</span> <span class="nx">wrap</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">value</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">value</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param value {Mixed} value to append</span>
-<span class="c">	 * @return {LinkedListItem} appended item</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param value {Mixed} value to append</span>
+<span class="cm">	 * @return {LinkedListItem} appended item</span>
+<span class="cm">	 */</span>
 	<span class="nx">append</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* object */</span>	<span class="nx">value</span><span class="p">)</span>
+		<span class="cm">/* object */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">value</span> <span class="o">=</span> <span class="nx">wrap</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
+		<span class="nx">value</span> <span class="o">=</span> <span class="nx">wrap</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">value</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">insertAfter</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_tail</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">insertAfter</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_tail</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">value</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Remove the item from the list.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Remove the item from the list.</span>
+<span class="cm">	 */</span>
 	<span class="nx">remove</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* item */</span>	<span class="nx">item</span><span class="p">)</span>
+		<span class="cm">/* item */</span>	<span class="nx">item</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
+			<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+				<span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="o">;</span>
+			<span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">_tail</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="o">;</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">;</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+				<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="nx">item</span><span class="p">.</span><span class="nx">_prev</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Reverses the items in place.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Reverses the items in place.</span>
+<span class="cm">	 */</span>
 	<span class="nx">reverse</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedList</span><span class="p">();</span>
@@ -354,139 +354,139 @@
 			<span class="nx">list</span><span class="p">.</span><span class="nx">prepend</span><span class="p">(</span><span class="nx">item</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">_head</span><span class="o">;</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">_tail</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_head</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">_head</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_tail</span> <span class="o">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">_tail</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @return {Array}</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Array}</span>
+<span class="cm">	 */</span>
 	<span class="nx">toArray</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[]</span><span class="o">,</span>
-			<span class="nx">item</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[],</span>
+			<span class="nx">item</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_head</span><span class="p">;</span>
 
 		<span class="k">while</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
-			<span class="nx">item</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="o">;</span>
+			<span class="nx">item</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_next</span><span class="p">;</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
+		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">LinkedList</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Iterable</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="mi">4</span><span class="p">);</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">LinkedList</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Iterable</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Executes the supplied function on each item in the list.  The</span>
-<span class="c">	 * function receives the value, the index, and the list itself as</span>
-<span class="c">	 * parameters (in that order).</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method each</span>
-<span class="c">	 * @param f {Function} the function to execute on each item</span>
-<span class="c">	 * @param c {Object} optional context object</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Executes the supplied function on each item in the list.  The</span>
+<span class="cm">	 * function receives the value, the index, and the list itself as</span>
+<span class="cm">	 * parameters (in that order).</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method each</span>
+<span class="cm">	 * @param f {Function} the function to execute on each item</span>
+<span class="cm">	 * @param c {Object} optional context object</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Executes the supplied function on each item in the list.  Iteration</span>
-<span class="c">	 * stops if the supplied function does not return a truthy value.  The</span>
-<span class="c">	 * function receives the value, the index, and the list itself as</span>
-<span class="c">	 * parameters (in that order).</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method every</span>
-<span class="c">	 * @param f {Function} the function to execute on each item</span>
-<span class="c">	 * @param c {Object} optional context object</span>
-<span class="c">	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Executes the supplied function on each item in the list.  Iteration</span>
+<span class="cm">	 * stops if the supplied function does not return a truthy value.  The</span>
+<span class="cm">	 * function receives the value, the index, and the list itself as</span>
+<span class="cm">	 * parameters (in that order).</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method every</span>
+<span class="cm">	 * @param f {Function} the function to execute on each item</span>
+<span class="cm">	 * @param c {Object} optional context object</span>
+<span class="cm">	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Executes the supplied function on each item in the list.  Returns a</span>
-<span class="c">	 * new list containing the items for which the supplied function</span>
-<span class="c">	 * returned a truthy value.  The function receives the value, the</span>
-<span class="c">	 * index, and the object itself as parameters (in that order).</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method filter</span>
-<span class="c">	 * @param f {Function} the function to execute on each item</span>
-<span class="c">	 * @param c {Object} optional context object</span>
-<span class="c">	 * @return {Object} list of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Executes the supplied function on each item in the list.  Returns a</span>
+<span class="cm">	 * new list containing the items for which the supplied function</span>
+<span class="cm">	 * returned a truthy value.  The function receives the value, the</span>
+<span class="cm">	 * index, and the object itself as parameters (in that order).</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method filter</span>
+<span class="cm">	 * @param f {Function} the function to execute on each item</span>
+<span class="cm">	 * @param c {Object} optional context object</span>
+<span class="cm">	 * @return {Object} list of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Executes the supplied function on each item in the list, searching</span>
-<span class="c">	 * for the first item that matches the supplied function.  The function</span>
-<span class="c">	 * receives the value, the index, and the object itself as parameters</span>
-<span class="c">	 * (in that order).</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method find</span>
-<span class="c">	 * @param f {Function} the function to execute on each item</span>
-<span class="c">	 * @param c {Object} optional context object</span>
-<span class="c">	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Executes the supplied function on each item in the list, searching</span>
+<span class="cm">	 * for the first item that matches the supplied function.  The function</span>
+<span class="cm">	 * receives the value, the index, and the object itself as parameters</span>
+<span class="cm">	 * (in that order).</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method find</span>
+<span class="cm">	 * @param f {Function} the function to execute on each item</span>
+<span class="cm">	 * @param c {Object} optional context object</span>
+<span class="cm">	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Executes the supplied function on each item in the list and returns</span>
-<span class="c">	 * a new list with the results.  The function receives the value, the</span>
-<span class="c">	 * index, and the object itself as parameters (in that order).</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method map</span>
-<span class="c">	 * @param f {String} the function to invoke</span>
-<span class="c">	 * @param c {Object} optional context object</span>
-<span class="c">	 * @return {Object} list of all return values</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Executes the supplied function on each item in the list and returns</span>
+<span class="cm">	 * a new list with the results.  The function receives the value, the</span>
+<span class="cm">	 * index, and the object itself as parameters (in that order).</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method map</span>
+<span class="cm">	 * @param f {String} the function to invoke</span>
+<span class="cm">	 * @param c {Object} optional context object</span>
+<span class="cm">	 * @return {Object} list of all return values</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Partitions an list into two new list, one with the items for which</span>
-<span class="c">	 * the supplied function returns true, and one with the items for which</span>
-<span class="c">	 * the function returns false.  The function receives the value, the</span>
-<span class="c">	 * index, and the object itself as parameters (in that order).</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method partition</span>
-<span class="c">	 * @param f {Function} the function to execute on each item</span>
-<span class="c">	 * @param c {Object} optional context object</span>
-<span class="c">	 * @return {Object} object with two properties: matches and rejects. Each is a list containing the items that were selected or rejected by the test function (or an empty object if none).</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Partitions an list into two new list, one with the items for which</span>
+<span class="cm">	 * the supplied function returns true, and one with the items for which</span>
+<span class="cm">	 * the function returns false.  The function receives the value, the</span>
+<span class="cm">	 * index, and the object itself as parameters (in that order).</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method partition</span>
+<span class="cm">	 * @param f {Function} the function to execute on each item</span>
+<span class="cm">	 * @param c {Object} optional context object</span>
+<span class="cm">	 * @return {Object} object with two properties: matches and rejects. Each is a list containing the items that were selected or rejected by the test function (or an empty object if none).</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Executes the supplied function on each item in the list, folding the</span>
-<span class="c">	 * list into a single value.  The function receives the value returned</span>
-<span class="c">	 * by the previous iteration (or the initial value if this is the first</span>
-<span class="c">	 * iteration), the value being iterated, the index, and the list itself</span>
-<span class="c">	 * as parameters (in that order).  The function must return the updated</span>
-<span class="c">	 * value.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method reduce</span>
-<span class="c">	 * @param init {Mixed} the initial value</span>
-<span class="c">	 * @param f {String} the function to invoke</span>
-<span class="c">	 * @param c {Object} optional context object</span>
-<span class="c">	 * @return {Mixed} final result from iteratively applying the given function to each item in the list</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Executes the supplied function on each item in the list, folding the</span>
+<span class="cm">	 * list into a single value.  The function receives the value returned</span>
+<span class="cm">	 * by the previous iteration (or the initial value if this is the first</span>
+<span class="cm">	 * iteration), the value being iterated, the index, and the list itself</span>
+<span class="cm">	 * as parameters (in that order).  The function must return the updated</span>
+<span class="cm">	 * value.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method reduce</span>
+<span class="cm">	 * @param init {Mixed} the initial value</span>
+<span class="cm">	 * @param f {String} the function to invoke</span>
+<span class="cm">	 * @param c {Object} optional context object</span>
+<span class="cm">	 * @return {Mixed} final result from iteratively applying the given function to each item in the list</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Executes the supplied function on each item in the list.  Returns a</span>
-<span class="c">	 * new list containing the items for which the supplied function</span>
-<span class="c">	 * returned a falsey value.  The function receives the value, the</span>
-<span class="c">	 * index, and the object itself as parameters (in that order).</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method reject</span>
-<span class="c">	 * @param f {Function} the function to execute on each item</span>
-<span class="c">	 * @param c {Object} optional context object</span>
-<span class="c">	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Executes the supplied function on each item in the list.  Returns a</span>
+<span class="cm">	 * new list containing the items for which the supplied function</span>
+<span class="cm">	 * returned a falsey value.  The function receives the value, the</span>
+<span class="cm">	 * index, and the object itself as parameters (in that order).</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method reject</span>
+<span class="cm">	 * @param f {Function} the function to execute on each item</span>
+<span class="cm">	 * @param c {Object} optional context object</span>
+<span class="cm">	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Executes the supplied function on each item in the list.  Iteration</span>
-<span class="c">	 * stops if the supplied function returns a truthy value.  The function</span>
-<span class="c">	 * receives the value, the index, and the list itself as parameters</span>
-<span class="c">	 * (in that order).</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method some</span>
-<span class="c">	 * @param f {Function} the function to execute on each item</span>
-<span class="c">	 * @param c {Object} optional context object</span>
-<span class="c">	 * @return {Boolean} true if the function returns a truthy value on any of the items in the array, false otherwise</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Executes the supplied function on each item in the list.  Iteration</span>
+<span class="cm">	 * stops if the supplied function returns a truthy value.  The function</span>
+<span class="cm">	 * receives the value, the index, and the list itself as parameters</span>
+<span class="cm">	 * (in that order).</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method some</span>
+<span class="cm">	 * @param f {Function} the function to execute on each item</span>
+<span class="cm">	 * @param c {Object} optional context object</span>
+<span class="cm">	 * @return {Boolean} true if the function returns a truthy value on any of the items in the array, false otherwise</span>
+<span class="cm">	 */</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">LinkedList</span> <span class="o">=</span> <span class="nx">LinkedList</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">LinkedList</span> <span class="o">=</span> <span class="nx">LinkedList</span><span class="p">;</span>
 </pre></div>
 
                     </div>

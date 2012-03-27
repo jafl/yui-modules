@@ -47,37 +47,37 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="kd">var</span> <span class="nx">has_no_recalc_auto_bug</span>    <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">)</span><span class="o">,</span>
-	<span class="nx">has_explosive_modules_bug</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">)</span><span class="o">,</span>
+<span class="kd">var</span> <span class="nx">has_no_recalc_auto_bug</span>    <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">),</span>
+	<span class="nx">has_explosive_modules_bug</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">),</span>
 	<span class="nx">is_borked_dom_access</span>      <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&amp;&amp;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">UA</span><span class="p">.</span><span class="nx">ie</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">);</span>
 
-<span class="c">/**</span>
-<span class="c"> * PageLayout plugin for managing vertically stacked rows on a page,</span>
-<span class="c"> * sandwiched vertically between header and footer.  Each row contains one</span>
-<span class="c"> * or more modules.</span>
-<span class="c"> * </span>
-<span class="c"> * @module gallery-layout</span>
-<span class="c"> * @submodule gallery-layout-rows</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * PageLayout plugin for managing vertically stacked rows on a page,</span>
+<span class="cm"> * sandwiched vertically between header and footer.  Each row contains one</span>
+<span class="cm"> * or more modules.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-layout</span>
+<span class="cm"> * @submodule gallery-layout-rows</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;PageLayoutRows&#39;</span><span class="p">);</span>
 
-<span class="c">// must be done after defining Y.PageLayoutRows</span>
+<span class="c1">// must be done after defining Y.PageLayoutRows</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayoutRows</span><span class="p">.</span><span class="nx">collapse_classes</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="nx">vert_parent_class</span><span class="o">:</span>       <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span><span class="o">,</span>
-	<span class="nx">horiz_parent_class</span><span class="o">:</span>      <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_class</span><span class="o">,</span>
+	<span class="nx">vert_parent_class</span><span class="o">:</span>       <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_rows_class</span><span class="p">,</span>
+	<span class="nx">horiz_parent_class</span><span class="o">:</span>      <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">module_class</span><span class="p">,</span>
 	<span class="nx">collapse_parent_pattern</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">expand_vert_nub_class</span>
 <span class="p">};</span>
 
 <span class="kd">function</span> <span class="nx">adjustHeight</span><span class="p">(</span>
-	<span class="c">/* int */</span>		<span class="nx">total_height</span><span class="o">,</span>
-	<span class="c">/* object */</span>	<span class="nx">children</span><span class="p">)</span>
+	<span class="cm">/* int */</span>		<span class="nx">total_height</span><span class="p">,</span>
+	<span class="cm">/* object */</span>	<span class="nx">children</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">total_height</span><span class="o">;</span>
+	<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">total_height</span><span class="p">;</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">is_borked_dom_access</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -97,77 +97,77 @@
 		<span class="nx">b</span> <span class="o">-=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">ft</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
 
-	<span class="nx">h</span> <span class="o">-=</span> <span class="nx">b</span><span class="o">;</span>
+	<span class="nx">h</span> <span class="o">-=</span> <span class="nx">b</span><span class="p">;</span>
 
 	<span class="nx">h</span> <span class="o">-=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span><span class="p">();</span>
 
-	<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">h</span><span class="o">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">min_module_height</span><span class="p">);</span>
+	<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">min_module_height</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kd">function</span> <span class="nx">getWidth</span><span class="p">(</span>
-	<span class="c">/* int */</span>		<span class="nx">body_width</span><span class="o">,</span>
-	<span class="c">/* array */</span>		<span class="nx">col_widths</span><span class="o">,</span>
-	<span class="c">/* int */</span>		<span class="nx">row_index</span><span class="o">,</span>
-	<span class="c">/* int */</span>		<span class="nx">col_index</span><span class="o">,</span>
-	<span class="c">/* object */</span>	<span class="nx">module</span><span class="o">,</span>
-	<span class="c">/* object */</span>	<span class="nx">module_info</span><span class="p">)</span>
+	<span class="cm">/* int */</span>		<span class="nx">body_width</span><span class="p">,</span>
+	<span class="cm">/* array */</span>		<span class="nx">col_widths</span><span class="p">,</span>
+	<span class="cm">/* int */</span>		<span class="nx">row_index</span><span class="p">,</span>
+	<span class="cm">/* int */</span>		<span class="nx">col_index</span><span class="p">,</span>
+	<span class="cm">/* object */</span>	<span class="nx">module</span><span class="p">,</span>
+	<span class="cm">/* object */</span>	<span class="nx">module_info</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">();</span>
-	<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">body_width</span> <span class="o">*</span> <span class="nx">col_widths</span><span class="p">[</span> <span class="nx">row_index</span> <span class="p">][</span> <span class="nx">col_index</span> <span class="p">]</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">-</span> <span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span><span class="p">);</span>
+	<span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">body_width</span> <span class="o">*</span> <span class="nx">col_widths</span><span class="p">[</span> <span class="nx">row_index</span> <span class="p">][</span> <span class="nx">col_index</span> <span class="p">]</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">-</span> <span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayoutRows</span><span class="p">.</span><span class="nx">resize</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="c">/* PageLayout */</span>	<span class="nx">host</span><span class="o">,</span>
-	<span class="c">/* enum */</span>			<span class="nx">mode</span><span class="o">,</span>
-	<span class="c">/* int */</span>			<span class="nx">body_width</span><span class="o">,</span>
-	<span class="c">/* int */</span>			<span class="nx">body_height</span><span class="p">)</span>
+	<span class="cm">/* PageLayout */</span>	<span class="nx">host</span><span class="p">,</span>
+	<span class="cm">/* enum */</span>			<span class="nx">mode</span><span class="p">,</span>
+	<span class="cm">/* int */</span>			<span class="nx">body_width</span><span class="p">,</span>
+	<span class="cm">/* int */</span>			<span class="nx">body_height</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">row_count</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
 
-	<span class="c">// reset module heights</span>
-	<span class="c">// adjust for horizontally collapsed or fixed width modules</span>
+	<span class="c1">// reset module heights</span>
+	<span class="c1">// adjust for horizontally collapsed or fixed width modules</span>
 
-	<span class="kd">var</span> <span class="nx">col_widths</span> <span class="o">=</span> <span class="p">[]</span><span class="o">,</span>
+	<span class="kd">var</span> <span class="nx">col_widths</span> <span class="o">=</span> <span class="p">[],</span>
 		<span class="nx">row_widths</span> <span class="o">=</span> <span class="p">[];</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">widths</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">inner_sizes</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 		<span class="nx">col_widths</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">widths</span><span class="p">);</span>
 		<span class="nx">row_widths</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">body_width</span><span class="p">);</span>
 
-		<span class="kd">var</span> <span class="nx">uncollapsed_count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span>
-			<span class="nx">sum</span>               <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">uncollapsed_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+			<span class="nx">sum</span>               <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
 		<span class="kd">var</span> <span class="nx">modules</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 		<span class="kd">var</span> <span class="nx">count</span>   <span class="o">=</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="o">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
-			<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+			<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">module</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_horiz_class</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">has_no_recalc_auto_bug</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="o">,</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
+					<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">);</span>
 				<span class="p">}</span>
-				<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+				<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">has_no_recalc_auto_bug</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="o">,</span> <span class="s1">&#39;block&#39;</span><span class="p">);</span>
+					<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;display&#39;</span><span class="p">,</span> <span class="s1">&#39;block&#39;</span><span class="p">);</span>
 				<span class="p">}</span>
 				<span class="nx">widths</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span>      <span class="o">=</span> <span class="o">-</span> <span class="nx">module</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetWidth&#39;</span><span class="p">);</span>
 				<span class="nx">row_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">-=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">totalWidth</span><span class="p">();</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">widths</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">uncollapsed_count</span><span class="o">++;</span>
+				<span class="nx">uncollapsed_count</span><span class="o">++</span><span class="p">;</span>
 				<span class="nx">sum</span> <span class="o">+=</span> <span class="nx">widths</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">uncollapsed_count</span> <span class="o">&lt;</span> <span class="nx">count</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="o">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">widths</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
 				<span class="p">{</span>
@@ -177,7 +177,7 @@
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="c">// smart fit:  if only one module, fit-to-content until it won&#39;t fit inside viewport</span>
+	<span class="c1">// smart fit:  if only one module, fit-to-content until it won&#39;t fit inside viewport</span>
 
 	<span class="kd">var</span> <span class="nx">module_info</span> <span class="o">=</span> <span class="p">{};</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">host</span><span class="p">.</span><span class="nx">single_module</span><span class="p">)</span>
@@ -186,12 +186,12 @@
 		<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="kd">var</span> <span class="nx">w</span>  <span class="o">=</span> <span class="nx">getWidth</span><span class="p">(</span><span class="nx">row_widths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">,</span> <span class="nx">col_widths</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">module</span><span class="o">,</span> <span class="nx">module_info</span><span class="p">);</span>
-			<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">());</span>
-			<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="o">,</span> <span class="nx">w1</span><span class="p">);</span>
-			<span class="nx">host</span><span class="p">.</span><span class="nx">_setWidth</span><span class="p">(</span><span class="nx">children</span><span class="o">,</span> <span class="nx">w</span><span class="p">);</span>
-			<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
-			<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">w</span>  <span class="o">=</span> <span class="nx">getWidth</span><span class="p">(</span><span class="nx">row_widths</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">col_widths</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">module</span><span class="p">,</span> <span class="nx">module_info</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">());</span>
+			<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">bd</span><span class="o">:</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">w1</span> <span class="p">});</span>
+			<span class="nx">host</span><span class="p">.</span><span class="nx">_setWidth</span><span class="p">(</span><span class="nx">children</span><span class="p">,</span> <span class="nx">w</span><span class="p">);</span>
+			<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+			<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">totalHeight</span><span class="p">();</span>
@@ -200,28 +200,28 @@
 		<span class="nx">host</span><span class="p">.</span><span class="nx">body_container</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;FIT_TO_[A-Z_]+&#39;</span><span class="p">);</span>
 	<span class="p">}</span>
 
-	<span class="c">// fit-to-content:  compute height of each row; requires setting module widths</span>
-	<span class="c">// fit-to-viewport: adjust for vertically collapsed modules</span>
+	<span class="c1">// fit-to-content:  compute height of each row; requires setting module widths</span>
+	<span class="c1">// fit-to-viewport: adjust for vertically collapsed modules</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">row_heights</span> <span class="o">=</span> <span class="p">[];</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+			<span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
 
 			<span class="kd">var</span> <span class="nx">modules</span>    <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-			<span class="kd">var</span> <span class="nx">h</span>          <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-			<span class="kd">var</span> <span class="nx">total_w</span>    <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">h</span>          <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="kd">var</span> <span class="nx">total_w</span>    <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 			<span class="kd">var</span> <span class="nx">open_count</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
-			<span class="kd">var</span> <span class="nx">count</span>      <span class="o">=</span> <span class="nx">open_count</span><span class="o">;</span>
-			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="o">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+			<span class="kd">var</span> <span class="nx">count</span>      <span class="o">=</span> <span class="nx">open_count</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">w</span>      <span class="o">=</span> <span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">];</span>
 				<span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">w</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="kd">var</span> <span class="nx">total_w_hacked</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+					<span class="kd">var</span> <span class="nx">total_w_hacked</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 					<span class="k">if</span> <span class="p">(</span><span class="nx">w</span> <span class="o">==</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">unmanaged_size</span> <span class="o">&amp;&amp;</span> <span class="nx">has_explosive_modules_bug</span><span class="p">)</span>
 					<span class="p">{</span>
 						<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
@@ -229,9 +229,9 @@
 						<span class="p">{</span>
 							<span class="kd">var</span> <span class="nx">bd_w</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">totalWidth</span><span class="p">();</span>
 							<span class="nx">total_w</span> <span class="o">+=</span> <span class="nx">bd_w</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">();</span>
-							<span class="nx">total_w_hacked</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+							<span class="nx">total_w_hacked</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
-							<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="nx">bd_w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+							<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">bd_w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 						<span class="p">}</span>
 					<span class="p">}</span>
 
@@ -239,12 +239,12 @@
 					<span class="p">{</span>
 						<span class="nx">total_w</span> <span class="o">+=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">totalWidth</span><span class="p">();</span>
 					<span class="p">}</span>
-					<span class="nx">open_count</span><span class="o">--;</span>
+					<span class="nx">open_count</span><span class="o">--</span><span class="p">;</span>
 				<span class="p">}</span>
 			<span class="p">}</span>
 
-			<span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="o">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+			<span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="kd">var</span> <span class="nx">w</span>      <span class="o">=</span> <span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">];</span>
 				<span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
@@ -255,35 +255,35 @@
 						<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
 						<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
 						<span class="p">{</span>
-							<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
-							<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+							<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+							<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
 						<span class="p">}</span>
 
-						<span class="nx">h</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">h</span><span class="o">,</span> <span class="nx">module</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">));</span>
+						<span class="nx">h</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span> <span class="nx">module</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">));</span>
 					<span class="p">}</span>
-					<span class="k">continue</span><span class="o">;</span>
+					<span class="k">continue</span><span class="p">;</span>
 				<span class="p">}</span>
-				<span class="nx">k</span><span class="o">++;</span>
+				<span class="nx">k</span><span class="o">++</span><span class="p">;</span>
 
 				<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="kd">var</span> <span class="nx">w</span>    <span class="o">=</span> <span class="nx">getWidth</span><span class="p">(</span><span class="nx">row_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">,</span> <span class="nx">col_widths</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="nx">j</span><span class="o">,</span> <span class="nx">module</span><span class="o">,</span> <span class="nx">module_info</span><span class="p">);</span>
-					<span class="nx">total_w</span> <span class="o">+=</span> <span class="nx">w</span> <span class="o">+</span> <span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span><span class="o">;</span>
+					<span class="kd">var</span> <span class="nx">w</span>    <span class="o">=</span> <span class="nx">getWidth</span><span class="p">(</span><span class="nx">row_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">col_widths</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">module</span><span class="p">,</span> <span class="nx">module_info</span><span class="p">);</span>
+					<span class="nx">total_w</span> <span class="o">+=</span> <span class="nx">w</span> <span class="o">+</span> <span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span><span class="p">;</span>
 
 					<span class="k">if</span> <span class="p">(</span><span class="nx">k</span> <span class="o">==</span> <span class="nx">open_count</span><span class="p">)</span>
 					<span class="p">{</span>
-						<span class="nx">w</span> <span class="o">+=</span> <span class="nx">body_width</span> <span class="o">-</span> <span class="nx">total_w</span><span class="o">;</span>
+						<span class="nx">w</span> <span class="o">+=</span> <span class="nx">body_width</span> <span class="o">-</span> <span class="nx">total_w</span><span class="p">;</span>
 					<span class="p">}</span>
 
-					<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">());</span>
-					<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="o">,</span> <span class="nx">w1</span><span class="p">);</span>
-					<span class="nx">host</span><span class="p">.</span><span class="nx">_setWidth</span><span class="p">(</span><span class="nx">children</span><span class="o">,</span> <span class="nx">w</span><span class="p">);</span>
-					<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
-					<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+					<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">());</span>
+					<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">bd</span><span class="o">:</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">w1</span> <span class="p">});</span>
+					<span class="nx">host</span><span class="p">.</span><span class="nx">_setWidth</span><span class="p">(</span><span class="nx">children</span><span class="p">,</span> <span class="nx">w</span><span class="p">);</span>
+					<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+					<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
 				<span class="p">}</span>
 
-				<span class="nx">h</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">h</span><span class="o">,</span> <span class="nx">module</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">));</span>
+				<span class="nx">h</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span> <span class="nx">module</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;offsetHeight&#39;</span><span class="p">));</span>
 			<span class="p">}</span>
 
 			<span class="nx">row_heights</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">h</span><span class="p">);</span>
@@ -293,45 +293,45 @@
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">row_heights</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outer_sizes</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 
-		<span class="kd">var</span> <span class="nx">uncollapsed_count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span>
-			<span class="nx">sum</span>               <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">uncollapsed_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+			<span class="nx">sum</span>               <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">row</span>       <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
 			<span class="kd">var</span> <span class="nx">collapsed</span> <span class="o">=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">collapsed_vert_class</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">collapsed</span> <span class="o">||</span> <span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+				<span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">collapsed</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">row</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+					<span class="nx">row</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
 				<span class="p">}</span>
 
-				<span class="c">// We cannot compute the height of row directly</span>
-				<span class="c">// because the row above might be wrapping.</span>
+				<span class="c1">// We cannot compute the height of row directly</span>
+				<span class="c1">// because the row above might be wrapping.</span>
 
 				<span class="nx">body_height</span> <span class="o">-=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">).</span><span class="nx">totalHeight</span><span class="p">();</span>
 				<span class="nx">body_height</span> <span class="o">-=</span> <span class="nx">row</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span><span class="p">();</span>
 			<span class="p">}</span>
 			<span class="k">else</span>
 			<span class="p">{</span>
-				<span class="nx">uncollapsed_count</span><span class="o">++;</span>
+				<span class="nx">uncollapsed_count</span><span class="o">++</span><span class="p">;</span>
 				<span class="nx">sum</span> <span class="o">+=</span> <span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
 		<span class="k">if</span> <span class="p">(</span><span class="nx">uncollapsed_count</span> <span class="o">&lt;</span> <span class="nx">row_count</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 			<span class="p">{</span>
 				<span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">/</span> <span class="nx">sum</span><span class="p">);</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="c">// set height of each row and size of each module</span>
+	<span class="c1">// set height of each row and size of each module</span>
 
-	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">row_count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_CONTENT</span><span class="p">)</span>
 		<span class="p">{</span>
@@ -346,101 +346,101 @@
 				<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
 				<span class="p">{</span>
 					<span class="kd">var</span> <span class="nx">h1</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">insideHeight</span><span class="p">();</span>
-					<span class="kd">var</span> <span class="nx">w</span>  <span class="o">=</span> <span class="nx">getWidth</span><span class="p">(</span><span class="nx">row_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">,</span> <span class="nx">col_widths</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">module</span><span class="o">,</span> <span class="nx">module_info</span><span class="p">);</span>
-					<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">());</span>
-					<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="o">,</span> <span class="nx">h1</span><span class="o">,</span> <span class="nx">w1</span><span class="p">);</span>
-					<span class="nx">host</span><span class="p">.</span><span class="nx">_setWidth</span><span class="p">(</span><span class="nx">children</span><span class="o">,</span> <span class="nx">w</span><span class="p">);</span>
-					<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterResizeModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="o">,</span> <span class="nx">h1</span><span class="o">,</span> <span class="nx">w1</span><span class="p">);</span>
+					<span class="kd">var</span> <span class="nx">w</span>  <span class="o">=</span> <span class="nx">getWidth</span><span class="p">(</span><span class="nx">row_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">col_widths</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">module</span><span class="p">,</span> <span class="nx">module_info</span><span class="p">);</span>
+					<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">());</span>
+					<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">bd</span><span class="o">:</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">w1</span> <span class="p">});</span>
+					<span class="nx">host</span><span class="p">.</span><span class="nx">_setWidth</span><span class="p">(</span><span class="nx">children</span><span class="p">,</span> <span class="nx">w</span><span class="p">);</span>
+					<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterResizeModule&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">bd</span><span class="o">:</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">w1</span> <span class="p">});</span>
 				<span class="p">}</span>
-				<span class="k">continue</span><span class="o">;</span>
+				<span class="k">continue</span><span class="p">;</span>
 			<span class="p">}</span>
 
-			<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">body_height</span> <span class="o">*</span> <span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">-</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">vertMarginBorderPadding</span><span class="p">());</span>
+			<span class="kd">var</span> <span class="nx">h</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">body_height</span> <span class="o">*</span> <span class="nx">row_heights</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span> <span class="o">-</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">vertMarginBorderPadding</span><span class="p">());</span>
 		<span class="p">}</span>
-		<span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="nx">h</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+		<span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">outers</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">h</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 
-		<span class="c">// adjust for horizontally collapsed or fixed width modules</span>
+		<span class="c1">// adjust for horizontally collapsed or fixed width modules</span>
 
 		<span class="kd">var</span> <span class="nx">modules</span>    <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">body_info</span><span class="p">.</span><span class="nx">modules</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-		<span class="kd">var</span> <span class="nx">total_w</span>    <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">total_w</span>    <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 		<span class="kd">var</span> <span class="nx">open_count</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
-		<span class="kd">var</span> <span class="nx">count</span>      <span class="o">=</span> <span class="nx">open_count</span><span class="o">;</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="o">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">count</span>      <span class="o">=</span> <span class="nx">open_count</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="kd">var</span> <span class="nx">w</span>      <span class="o">=</span> <span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">];</span>
 			<span class="kd">var</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">w</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="kd">var</span> <span class="nx">total_w_hacked</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+				<span class="kd">var</span> <span class="nx">total_w_hacked</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">w</span> <span class="o">==</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">unmanaged_size</span><span class="p">)</span>
 				<span class="p">{</span>
 					<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
 					<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
 					<span class="p">{</span>
-						<span class="kd">var</span> <span class="nx">h1</span> <span class="o">=</span> <span class="nx">adjustHeight</span><span class="p">(</span><span class="nx">h</span><span class="o">,</span> <span class="nx">children</span><span class="p">);</span>
+						<span class="kd">var</span> <span class="nx">h1</span> <span class="o">=</span> <span class="nx">adjustHeight</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span> <span class="nx">children</span><span class="p">);</span>
 						<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">insideWidth</span><span class="p">();</span>
-						<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="o">,</span> <span class="nx">h1</span><span class="o">,</span> <span class="nx">w1</span><span class="p">);</span>
-						<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="nx">h1</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+						<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">bd</span><span class="o">:</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">w1</span> <span class="p">});</span>
+						<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">h1</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 
 						<span class="k">if</span> <span class="p">(</span><span class="nx">has_explosive_modules_bug</span><span class="p">)</span>
 						<span class="p">{</span>
 							<span class="kd">var</span> <span class="nx">bd_w</span> <span class="o">=</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">totalWidth</span><span class="p">();</span>
 							<span class="nx">total_w</span> <span class="o">+=</span> <span class="nx">bd_w</span> <span class="o">+</span> <span class="nx">module</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">();</span>
-							<span class="nx">total_w_hacked</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+							<span class="nx">total_w_hacked</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 
-							<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="o">,</span> <span class="nx">bd_w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+							<span class="nx">children</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">bd_w</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 						<span class="p">}</span>
 
-						<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterResizeModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="o">,</span> <span class="nx">h1</span><span class="o">,</span> <span class="nx">w1</span><span class="p">);</span>
+						<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterResizeModule&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">bd</span><span class="o">:</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">w1</span> <span class="p">});</span>
 					<span class="p">}</span>
 				<span class="p">}</span>
 				<span class="k">else</span>
 				<span class="p">{</span>
-					<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="nx">h</span> <span class="o">-</span> <span class="nx">module</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span><span class="p">())</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+					<span class="nx">module</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">h</span> <span class="o">-</span> <span class="nx">module</span><span class="p">.</span><span class="nx">vertMarginBorderPadding</span><span class="p">())</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 				<span class="p">}</span>
 
 				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">total_w_hacked</span><span class="p">)</span>
 				<span class="p">{</span>
 					<span class="nx">total_w</span> <span class="o">+=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">totalWidth</span><span class="p">();</span>
 				<span class="p">}</span>
-				<span class="nx">open_count</span><span class="o">--;</span>
+				<span class="nx">open_count</span><span class="o">--</span><span class="p">;</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="c">// set the size of each module</span>
+		<span class="c1">// set the size of each module</span>
 
-		<span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="o">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
+		<span class="kd">var</span> <span class="nx">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">col_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">continue</span><span class="o">;</span>
+				<span class="k">continue</span><span class="p">;</span>
 			<span class="p">}</span>
-			<span class="nx">k</span><span class="o">++;</span>
+			<span class="nx">k</span><span class="o">++</span><span class="p">;</span>
 
 			<span class="kd">var</span> <span class="nx">module</span>   <span class="o">=</span> <span class="nx">modules</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
 			<span class="kd">var</span> <span class="nx">children</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">_analyzeModule</span><span class="p">(</span><span class="nx">module</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="kd">var</span> <span class="nx">h1</span>   <span class="o">=</span> <span class="nx">adjustHeight</span><span class="p">(</span><span class="nx">h</span><span class="o">,</span> <span class="nx">children</span><span class="p">);</span>
-				<span class="kd">var</span> <span class="nx">w</span>    <span class="o">=</span> <span class="nx">getWidth</span><span class="p">(</span><span class="nx">row_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">,</span> <span class="nx">col_widths</span><span class="o">,</span> <span class="nx">i</span><span class="o">,</span> <span class="nx">j</span><span class="o">,</span> <span class="nx">module</span><span class="o">,</span> <span class="nx">module_info</span><span class="p">);</span>
-				<span class="nx">total_w</span> <span class="o">+=</span> <span class="nx">w</span> <span class="o">+</span> <span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span><span class="o">;</span>
+				<span class="kd">var</span> <span class="nx">h1</span>   <span class="o">=</span> <span class="nx">adjustHeight</span><span class="p">(</span><span class="nx">h</span><span class="p">,</span> <span class="nx">children</span><span class="p">);</span>
+				<span class="kd">var</span> <span class="nx">w</span>    <span class="o">=</span> <span class="nx">getWidth</span><span class="p">(</span><span class="nx">row_widths</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">col_widths</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">,</span> <span class="nx">module</span><span class="p">,</span> <span class="nx">module_info</span><span class="p">);</span>
+				<span class="nx">total_w</span> <span class="o">+=</span> <span class="nx">w</span> <span class="o">+</span> <span class="nx">module_info</span><span class="p">.</span><span class="nx">mbp</span><span class="p">;</span>
 
 				<span class="k">if</span> <span class="p">(</span><span class="nx">k</span> <span class="o">==</span> <span class="nx">open_count</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">w</span> <span class="o">+=</span> <span class="nx">body_width</span> <span class="o">-</span> <span class="nx">total_w</span><span class="o">;</span>
+					<span class="nx">w</span> <span class="o">+=</span> <span class="nx">body_width</span> <span class="o">-</span> <span class="nx">total_w</span><span class="p">;</span>
 				<span class="p">}</span>
 
-				<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="o">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">());</span>
+				<span class="kd">var</span> <span class="nx">w1</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">w</span> <span class="o">-</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">horizMarginBorderPadding</span><span class="p">());</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">mode</span> <span class="o">===</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">PageLayout</span><span class="p">.</span><span class="nx">FIT_TO_VIEWPORT</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="o">,</span> <span class="nx">h1</span><span class="o">,</span> <span class="nx">w1</span><span class="p">);</span>
-					<span class="nx">host</span><span class="p">.</span><span class="nx">_setWidth</span><span class="p">(</span><span class="nx">children</span><span class="o">,</span> <span class="nx">w</span><span class="p">);</span>
+					<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;beforeResizeModule&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">bd</span><span class="o">:</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">w1</span> <span class="p">});</span>
+					<span class="nx">host</span><span class="p">.</span><span class="nx">_setWidth</span><span class="p">(</span><span class="nx">children</span><span class="p">,</span> <span class="nx">w</span><span class="p">);</span>
 				<span class="p">}</span>
 
-				<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">,</span> <span class="nx">h1</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
+				<span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">h1</span><span class="o">+</span><span class="s1">&#39;px&#39;</span><span class="p">);</span>
 
-				<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterResizeModule&#39;</span><span class="o">,</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="o">,</span> <span class="nx">h1</span><span class="o">,</span> <span class="nx">w1</span><span class="p">);</span>
+				<span class="nx">host</span><span class="p">.</span><span class="nx">fire</span><span class="p">(</span><span class="s1">&#39;afterResizeModule&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">bd</span><span class="o">:</span> <span class="nx">children</span><span class="p">.</span><span class="nx">bd</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="nx">h1</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">w1</span> <span class="p">});</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 	<span class="p">}</span>

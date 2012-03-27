@@ -47,42 +47,42 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;Cache which drops items based on &quot;most recently used.&quot;  Items are</span>
-<span class="c"> * dropped when a user-defined criterion is exceeded, e.g., total size or</span>
-<span class="c"> * number of items.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * &lt;p&gt;The items are stored in a map of {data,mru_item_ref}.  The MRU items</span>
-<span class="c"> * are stored in a doubly linked list (which stores the map keys) to allow</span>
-<span class="c"> * easy re-ordering and dropping of items.  Every cache hit moves the</span>
-<span class="c"> * associated MRU item to the front of the list.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @module gallery-mru-cache</span>
-<span class="c"> * @class MRUCache</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param config {Object}</span>
-<span class="c"> *	&lt;dl&gt;</span>
-<span class="c"> *	&lt;dt&gt;metric&lt;/dt&gt;</span>
-<span class="c"> *	&lt;dd&gt;(Required) Function which computes the metric for an item.  It receives the value as an argument and must return a positive number.&lt;/dd&gt;</span>
-<span class="c"> *	&lt;dt&gt;limit&lt;/dt&gt;</span>
-<span class="c"> *	&lt;dd&gt;(Required) Maximum allowed value of the metric.  Items are dropped off the end of the MRU list until the metric is less than or equal to the limit.&lt;/dd&gt;</span>
-<span class="c"> *	&lt;dt&gt;meta&lt;/dt&gt;</span>
-<span class="c"> *	&lt;dd&gt;Function which attaches meta data to an item when it is added to the cache.  It receives the value as an argument.&lt;/dd&gt;</span>
-<span class="c"> *	&lt;dt&gt;stats&lt;/dt&gt;</span>
-<span class="c"> *	&lt;dd&gt;Pass true if you want to collect basic statistics.  Pass a function if you want to control what information is stored for each key.  The function receives the key, the value, and the stat object.&lt;/dd&gt;</span>
-<span class="c"> *	&lt;/dl&gt;</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Cache which drops items based on &quot;most recently used.&quot;  Items are</span>
+<span class="cm"> * dropped when a user-defined criterion is exceeded, e.g., total size or</span>
+<span class="cm"> * number of items.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;The items are stored in a map of {data,mru_item_ref}.  The MRU items</span>
+<span class="cm"> * are stored in a doubly linked list (which stores the map keys) to allow</span>
+<span class="cm"> * easy re-ordering and dropping of items.  Every cache hit moves the</span>
+<span class="cm"> * associated MRU item to the front of the list.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-mru-cache</span>
+<span class="cm"> * @class MRUCache</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object}</span>
+<span class="cm"> *	&lt;dl&gt;</span>
+<span class="cm"> *	&lt;dt&gt;metric&lt;/dt&gt;</span>
+<span class="cm"> *	&lt;dd&gt;(Required) Function which computes the metric for an item.  It receives the value as an argument and must return a positive number.&lt;/dd&gt;</span>
+<span class="cm"> *	&lt;dt&gt;limit&lt;/dt&gt;</span>
+<span class="cm"> *	&lt;dd&gt;(Required) Maximum allowed value of the metric.  Items are dropped off the end of the MRU list until the metric is less than or equal to the limit.&lt;/dd&gt;</span>
+<span class="cm"> *	&lt;dt&gt;meta&lt;/dt&gt;</span>
+<span class="cm"> *	&lt;dd&gt;Function which attaches meta data to an item when it is added to the cache.  It receives the value as an argument.&lt;/dd&gt;</span>
+<span class="cm"> *	&lt;dt&gt;stats&lt;/dt&gt;</span>
+<span class="cm"> *	&lt;dd&gt;Pass true if you want to collect basic statistics.  Pass a function if you want to control what information is stored for each key.  The function receives the key, the value, and the stat object.&lt;/dd&gt;</span>
+<span class="cm"> *	&lt;/dl&gt;</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">MRUCache</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">_metric_fn</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">metric</span><span class="o">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">_limit</span>     <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">limit</span><span class="o">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">_meta</span>      <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">meta</span><span class="o">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span>     <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">stats</span> <span class="o">?</span> <span class="nx">initStats</span><span class="p">()</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_metric_fn</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">metric</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_limit</span>     <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">limit</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_meta</span>      <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">meta</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span>     <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">stats</span> <span class="o">?</span> <span class="nx">initStats</span><span class="p">()</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">stats</span><span class="p">))</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_stats_key_meta</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">stats</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_stats_key_meta</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">stats</span><span class="p">;</span>
 	<span class="p">}</span>
 
 	<span class="k">this</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
@@ -90,27 +90,27 @@
 
 <span class="kd">function</span> <span class="nx">initStats</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="k">return</span> <span class="p">{</span> <span class="nx">gets</span><span class="o">:</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">keys</span><span class="o">:</span> <span class="p">{}</span> <span class="p">};</span>
+	<span class="k">return</span> <span class="p">{</span> <span class="nx">gets</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">keys</span><span class="o">:</span> <span class="p">{}</span> <span class="p">};</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">initKeyStats</span><span class="p">(</span><span class="nx">keys</span><span class="o">,</span> <span class="nx">key</span><span class="p">)</span>
+<span class="kd">function</span> <span class="nx">initKeyStats</span><span class="p">(</span><span class="nx">keys</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span>
 	<span class="p">{</span>
-		<span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">puts</span><span class="o">:</span> <span class="mi">0</span><span class="o">,</span> <span class="nx">gets</span><span class="o">:</span> <span class="mi">0</span> <span class="p">};</span>
+		<span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">puts</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">gets</span><span class="o">:</span> <span class="mi">0</span> <span class="p">};</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
 <span class="nx">MRUCache</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * Retrieve a value.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param key {String} the key of the object to retrieve</span>
-<span class="c">	 * @return {Mixed} the stored object, or undefined if the slot is empty</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Retrieve a value.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param key {String} the key of the object to retrieve</span>
+<span class="cm">	 * @return {Mixed} the stored object, or undefined if the slot is empty</span>
+<span class="cm">	 */</span>
 	<span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">key</span><span class="p">)</span>
+		<span class="cm">/* string */</span>	<span class="nx">key</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span>
@@ -119,36 +119,36 @@
 
 			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">gets</span><span class="o">++;</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">gets</span><span class="o">++</span><span class="p">;</span>
 
-				<span class="nx">initKeyStats</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="o">,</span> <span class="nx">key</span><span class="p">);</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">gets</span><span class="o">++;</span>
+				<span class="nx">initKeyStats</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">gets</span><span class="o">++</span><span class="p">;</span>
 			<span class="p">}</span>
 
-			<span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="o">;</span>
+			<span class="k">return</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Store a value.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param key {String} the key of the value</span>
-<span class="c">	 * @param value {Object} the value to store</span>
-<span class="c">	 * @return {boolean} false if the key has already been used</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Store a value.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param key {String} the key of the value</span>
+<span class="cm">	 * @param value {Object} the value to store</span>
+<span class="cm">	 * @return {boolean} false if the key has already been used</span>
+<span class="cm">	 */</span>
 	<span class="nx">put</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">key</span><span class="o">,</span>
-		<span class="c">/* obj/fn */</span>	<span class="nx">value</span><span class="p">)</span>
+		<span class="cm">/* string */</span>	<span class="nx">key</span><span class="p">,</span>
+		<span class="cm">/* obj/fn */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">exists</span> <span class="o">=</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">exists</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">data</span><span class="o">:</span> <span class="nx">value</span><span class="o">,</span>
+			<span class="nx">data</span><span class="o">:</span> <span class="nx">value</span><span class="p">,</span>
 			<span class="nx">mru</span><span class="o">:</span>  <span class="k">this</span><span class="p">.</span><span class="nx">_mru</span><span class="p">.</span><span class="nx">prepend</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
 		<span class="p">};</span>
 
@@ -157,7 +157,7 @@
 			<span class="nx">obj</span><span class="p">.</span><span class="nx">meta</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_meta</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 		<span class="p">}</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span>
 
 		<span class="k">this</span><span class="p">.</span><span class="nx">_metric</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_metric_fn</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 		<span class="k">while</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_metric</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">_limit</span><span class="p">)</span>
@@ -167,77 +167,77 @@
 
 		<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">initKeyStats</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="o">,</span> <span class="nx">key</span><span class="p">);</span>
-			<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">puts</span><span class="o">++;</span>
+			<span class="nx">initKeyStats</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">,</span> <span class="nx">key</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">puts</span><span class="o">++</span><span class="p">;</span>
 
 			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_stats_key_meta</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="k">this</span><span class="p">.</span><span class="nx">_stats_key_meta</span><span class="p">(</span><span class="nx">key</span><span class="o">,</span> <span class="nx">value</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_stats_key_meta</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
-		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Store a value.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param key {String} the key of the value</span>
-<span class="c">	 * @param value {Object} the value to store</span>
-<span class="c">	 * @return {Mixed} the original value that was in the slot, or undefined if the slot is empty</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Store a value.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param key {String} the key of the value</span>
+<span class="cm">	 * @param value {Object} the value to store</span>
+<span class="cm">	 * @return {Mixed} the original value that was in the slot, or undefined if the slot is empty</span>
+<span class="cm">	 */</span>
 	<span class="nx">replace</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">key</span><span class="o">,</span>
-		<span class="c">/* obj/fn */</span>	<span class="nx">value</span><span class="p">)</span>
+		<span class="cm">/* string */</span>	<span class="nx">key</span><span class="p">,</span>
+		<span class="cm">/* obj/fn */</span>	<span class="nx">value</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">orig</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">key</span><span class="o">,</span> <span class="nx">value</span><span class="p">);</span>
-		<span class="k">return</span> <span class="nx">orig</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+		<span class="k">return</span> <span class="nx">orig</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Remove an value.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param key {String} the key of the value</span>
-<span class="c">	 * @return {mixed} the value that was removed, or undefined if the slot was empty</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Remove an value.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param key {String} the key of the value</span>
+<span class="cm">	 * @return {mixed} the value that was removed, or undefined if the slot was empty</span>
+<span class="cm">	 */</span>
 	<span class="nx">remove</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* string */</span>	<span class="nx">key</span><span class="p">)</span>
+		<span class="cm">/* string */</span>	<span class="nx">key</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">orig</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
-		<span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+		<span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">_store</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">orig</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">_mru</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">orig</span><span class="p">.</span><span class="nx">mru</span><span class="p">);</span>
 			<span class="k">this</span><span class="p">.</span><span class="nx">_metric</span> <span class="o">-=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_metric_fn</span><span class="p">(</span><span class="nx">orig</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
-			<span class="k">return</span> <span class="nx">orig</span><span class="p">.</span><span class="nx">data</span><span class="o">;</span>
+			<span class="k">return</span> <span class="nx">orig</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
 		<span class="p">}</span>
-	<span class="p">}</span><span class="o">,</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Remove all values.</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Remove all values.</span>
+<span class="cm">	 */</span>
 	<span class="nx">clear</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_store</span>  <span class="o">=</span> <span class="p">{};</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_mru</span>    <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">LinkedList</span><span class="p">();</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">_metric</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_metric</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * This resets all the values.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @return {Object} the current stats</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * This resets all the values.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @return {Object} the current stats</span>
+<span class="cm">	 */</span>
 	<span class="nx">dumpStats</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">stats</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">stats</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_stats</span><span class="p">;</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">_stats</span> <span class="o">=</span> <span class="nx">initStats</span><span class="p">();</span>
-		<span class="k">return</span> <span class="nx">stats</span><span class="o">;</span>
+		<span class="k">return</span> <span class="nx">stats</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">MRUCache</span> <span class="o">=</span> <span class="nx">MRUCache</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">MRUCache</span> <span class="o">=</span> <span class="nx">MRUCache</span><span class="p">;</span>
 </pre></div>
 
                     </div>

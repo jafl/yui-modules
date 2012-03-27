@@ -47,147 +47,147 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;Base class for all functions rendered by MathCanvas.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * &lt;p&gt;Derived classes must implement toString() and evaluate().  To override</span>
-<span class="c"> * the default rendering which displays the output from toString(), implement</span>
-<span class="c"> * prepareToRender() and render().&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @namespace</span>
-<span class="c"> * @class MathFunction</span>
-<span class="c"> * @constructor</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Base class for all functions rendered by MathCanvas.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;Derived classes must implement toString() and evaluate().  To override</span>
+<span class="cm"> * the default rendering which displays the output from toString(), implement</span>
+<span class="cm"> * prepareToRender() and render().&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @namespace</span>
+<span class="cm"> * @class MathFunction</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">MathFunction</span><span class="p">()</span>
 <span class="p">{</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">parent</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">parent</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nx">MathFunction</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="c">/**</span>
-<span class="c">	 * @return {MathFunction} parent function or null</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {MathFunction} parent function or null</span>
+<span class="cm">	 */</span>
 	<span class="nx">getParent</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">parent</span><span class="o">;</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">parent</span><span class="p">;</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Add the layout information for this object and its descendants to</span>
-<span class="c">	 * rect_list.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @param canvas {MathCanvas} the drawing canvas</span>
-<span class="c">	 * @param top_left {point} x,y coordinates of the top left of the bounding box</span>
-<span class="c">	 * @param font_size {float} percentage of the base font size</span>
-<span class="c">	 * @param rect_list {RectList} layout information</span>
-<span class="c">	 * @return {int} index of this items info in rect_list</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Add the layout information for this object and its descendants to</span>
+<span class="cm">	 * rect_list.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @param canvas {MathCanvas} the drawing canvas</span>
+<span class="cm">	 * @param top_left {point} x,y coordinates of the top left of the bounding box</span>
+<span class="cm">	 * @param font_size {float} percentage of the base font size</span>
+<span class="cm">	 * @param rect_list {RectList} layout information</span>
+<span class="cm">	 * @return {int} index of this items info in rect_list</span>
+<span class="cm">	 */</span>
 	<span class="nx">prepareToRender</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* Context2d */</span>		<span class="nx">context</span><span class="o">,</span>
-		<span class="c">/* point */</span>			<span class="nx">top_left</span><span class="o">,</span>
-		<span class="c">/* percentage */</span>	<span class="nx">font_size</span><span class="o">,</span>
-		<span class="c">/* RectList */</span>		<span class="nx">rect_list</span><span class="p">)</span>
+		<span class="cm">/* Context2d */</span>		<span class="nx">context</span><span class="p">,</span>
+		<span class="cm">/* point */</span>			<span class="nx">top_left</span><span class="p">,</span>
+		<span class="cm">/* percentage */</span>	<span class="nx">font_size</span><span class="p">,</span>
+		<span class="cm">/* RectList */</span>		<span class="nx">rect_list</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
 
 		<span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span>
 		<span class="p">{</span>
-			<span class="nx">top</span><span class="o">:</span>    <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span><span class="o">,</span>
-			<span class="nx">left</span><span class="o">:</span>   <span class="nx">top_left</span><span class="p">.</span><span class="nx">x</span><span class="o">,</span>
-			<span class="nx">bottom</span><span class="o">:</span> <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getLineHeight</span><span class="p">(</span><span class="nx">font_size</span><span class="p">)</span><span class="o">,</span>
-			<span class="nx">right</span><span class="o">:</span>  <span class="nx">top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">font_size</span><span class="o">,</span> <span class="nx">s</span><span class="p">)</span>
+			<span class="nx">top</span><span class="o">:</span>    <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span>
+			<span class="nx">left</span><span class="o">:</span>   <span class="nx">top_left</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span>
+			<span class="nx">bottom</span><span class="o">:</span> <span class="nx">top_left</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getLineHeight</span><span class="p">(</span><span class="nx">font_size</span><span class="p">),</span>
+			<span class="nx">right</span><span class="o">:</span>  <span class="nx">top_left</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">context</span><span class="p">.</span><span class="nx">getStringWidth</span><span class="p">(</span><span class="nx">font_size</span><span class="p">,</span> <span class="nx">s</span><span class="p">)</span>
 		<span class="p">};</span>
 
-		<span class="k">return</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">r</span><span class="o">,</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">ycenter</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span><span class="o">,</span> <span class="nx">font_size</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">RectList</span><span class="p">.</span><span class="nx">ycenter</span><span class="p">(</span><span class="nx">r</span><span class="p">),</span> <span class="nx">font_size</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Draw this object and its descendants.</span>
-<span class="c">	 * </span>
-<span class="c">	 * @param canvas {MathCanvas} the drawing canvas</span>
-<span class="c">	 * @param rect_list {RectList} layout information</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Draw this object and its descendants.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @param canvas {MathCanvas} the drawing canvas</span>
+<span class="cm">	 * @param rect_list {RectList} layout information</span>
+<span class="cm">	 */</span>
 	<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* Context2d */</span>	<span class="nx">context</span><span class="o">,</span>
-		<span class="c">/* RectList */</span>	<span class="nx">rect_list</span><span class="p">)</span>
+		<span class="cm">/* Context2d */</span>	<span class="nx">context</span><span class="p">,</span>
+		<span class="cm">/* RectList */</span>	<span class="nx">rect_list</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">rect_list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-		<span class="nx">context</span><span class="p">.</span><span class="nx">drawString</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">left</span><span class="o">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">midline</span><span class="o">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">font_size</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="nx">context</span><span class="p">.</span><span class="nx">drawString</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">rect</span><span class="p">.</span><span class="nx">left</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">midline</span><span class="p">,</span> <span class="nx">info</span><span class="p">.</span><span class="nx">font_size</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Must be implemented by derived classes.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method evaluate</span>
-<span class="c">	 * @param var_list {Object} map of variable names to values or MathFunctions</span>
-<span class="c">	 * @return the value of the function</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Must be implemented by derived classes.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method evaluate</span>
+<span class="cm">	 * @param var_list {Object} map of variable names to values or MathFunctions</span>
+<span class="cm">	 * @return the value of the function</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * Must be implemented by derived classes.</span>
-<span class="c">	 *</span>
-<span class="c">	 * @method toString</span>
-<span class="c">	 * @return text representation of the function</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * Must be implemented by derived classes.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @method toString</span>
+<span class="cm">	 * @return text representation of the function</span>
+<span class="cm">	 */</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param f {MathFunction}</span>
-<span class="c">	 * @return {boolean} true if f needs to parenthesize us</span>
-<span class="c">	 * @protected</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param f {MathFunction}</span>
+<span class="cm">	 * @return {boolean} true if f needs to parenthesize us</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
 	<span class="nx">parenthesizeForPrint</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
+		<span class="cm">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">MathFunctionWithArgs</span><span class="p">);</span>	<span class="c">// replace with JFunctionData.cpp</span>
-	<span class="p">}</span><span class="o">,</span>
+		<span class="k">return</span> <span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">MathFunctionWithArgs</span><span class="p">);</span>	<span class="c1">// replace with JFunctionData.cpp</span>
+	<span class="p">},</span>
 
-	<span class="c">/**</span>
-<span class="c">	 * @param f {MathFunction}</span>
-<span class="c">	 * @return {boolean} true if f needs to parenthesize us</span>
-<span class="c">	 * @protected</span>
-<span class="c">	 */</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * @param f {MathFunction}</span>
+<span class="cm">	 * @return {boolean} true if f needs to parenthesize us</span>
+<span class="cm">	 * @protected</span>
+<span class="cm">	 */</span>
 	<span class="nx">parenthesizeForRender</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
+		<span class="cm">/* MathFunction */</span>	<span class="nx">f</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">MathFunctionWithArgs</span><span class="p">);</span>	<span class="c">// replace with JFunctionData.cpp</span>
+		<span class="k">return</span> <span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">MathFunctionWithArgs</span><span class="p">);</span>	<span class="c1">// replace with JFunctionData.cpp</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="c">// jison utility functions</span>
+<span class="c1">// jison utility functions</span>
 
 <span class="nx">MathFunction</span><span class="p">.</span><span class="nx">updateSum</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="c">/* MathFunction */</span>	<span class="nx">f1</span><span class="o">,</span>
-	<span class="c">/* MathFunction */</span>	<span class="nx">f2</span><span class="p">)</span>
+	<span class="cm">/* MathFunction */</span>	<span class="nx">f1</span><span class="p">,</span>
+	<span class="cm">/* MathFunction */</span>	<span class="nx">f2</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">f1</span> <span class="k">instanceof</span> <span class="nx">MathSum</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">f1</span><span class="p">.</span><span class="nx">appendArg</span><span class="p">(</span><span class="nx">f2</span><span class="p">);</span>
-		<span class="k">return</span> <span class="nx">f1</span><span class="o">;</span>
+		<span class="k">return</span> <span class="nx">f1</span><span class="p">;</span>
 	<span class="p">}</span>
 	<span class="k">else</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">new</span> <span class="nx">MathSum</span><span class="p">(</span><span class="nx">f1</span><span class="o">,</span> <span class="nx">f2</span><span class="p">);</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nx">MathSum</span><span class="p">(</span><span class="nx">f1</span><span class="p">,</span> <span class="nx">f2</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
 <span class="nx">MathFunction</span><span class="p">.</span><span class="nx">updateProduct</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="c">/* MathFunction */</span>	<span class="nx">f1</span><span class="o">,</span>
-	<span class="c">/* MathFunction */</span>	<span class="nx">f2</span><span class="p">)</span>
+	<span class="cm">/* MathFunction */</span>	<span class="nx">f1</span><span class="p">,</span>
+	<span class="cm">/* MathFunction */</span>	<span class="nx">f2</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">f1</span> <span class="k">instanceof</span> <span class="nx">MathProduct</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">f1</span><span class="p">.</span><span class="nx">appendArg</span><span class="p">(</span><span class="nx">f2</span><span class="p">);</span>
-		<span class="k">return</span> <span class="nx">f1</span><span class="o">;</span>
+		<span class="k">return</span> <span class="nx">f1</span><span class="p">;</span>
 	<span class="p">}</span>
 	<span class="k">else</span>
 	<span class="p">{</span>
-		<span class="k">return</span> <span class="k">new</span> <span class="nx">MathProduct</span><span class="p">(</span><span class="nx">f1</span><span class="o">,</span> <span class="nx">f2</span><span class="p">);</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nx">MathProduct</span><span class="p">(</span><span class="nx">f1</span><span class="p">,</span> <span class="nx">f2</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">};</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">MathFunction</span> <span class="o">=</span> <span class="nx">MathFunction</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">MathFunction</span> <span class="o">=</span> <span class="nx">MathFunction</span><span class="p">;</span>
 </pre></div>
 
                     </div>

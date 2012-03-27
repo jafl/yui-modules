@@ -47,160 +47,160 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="o">;</span>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
 
-<span class="c">/**********************************************************************</span>
-<span class="c"> * &lt;p&gt;FormManager CSS Validation provides basic functionality for</span>
-<span class="c"> * pre-validating user input based on CSS classes set on form elements.&lt;/p&gt;</span>
-<span class="c"> *</span>
-<span class="c"> * &lt;p&gt;The following classes can be applied to a form element for</span>
-<span class="c"> * pre-validation:&lt;/p&gt;</span>
-<span class="c"> *</span>
-<span class="c"> *	&lt;dl&gt;</span>
-<span class="c"> *	&lt;dt&gt;&lt;code&gt;yiv-required&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="c"> *		&lt;dd&gt;Value must not be empty.&lt;/dd&gt;</span>
-<span class="c"> *</span>
-<span class="c"> *	&lt;dt&gt;&lt;code&gt;yiv-length:[x,y]&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="c"> *		&lt;dd&gt;String must be at least x characters and at most y characters.</span>
-<span class="c"> *		At least one of x and y must be specified.&lt;/dd&gt;</span>
-<span class="c"> *</span>
-<span class="c"> *	&lt;dt&gt;&lt;code&gt;yiv-integer:[x,y]&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="c"> *		&lt;dd&gt;The integer value must be at least x and at most y.</span>
-<span class="c"> *		x and y are both optional.&lt;/dd&gt;</span>
-<span class="c"> *</span>
-<span class="c"> *	&lt;dt&gt;&lt;code&gt;yiv-decimal:[x,y]&lt;/code&gt;&lt;/dt&gt;</span>
-<span class="c"> *		&lt;dd&gt;The decimal value must be at least x and at most y.  Exponents are</span>
-<span class="c"> *		not allowed.  x and y are both optional.&lt;/dd&gt;</span>
-<span class="c"> *	&lt;/dl&gt;</span>
-<span class="c"> *</span>
-<span class="c"> * &lt;p&gt;If we ever need to allow exponents, we can use yiv-float.&lt;/p&gt;</span>
-<span class="c"> *</span>
-<span class="c"> * @module gallery-formmgr-css-validation</span>
-<span class="c"> * @class FormManager</span>
-<span class="c"> */</span>
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;FormManager CSS Validation provides basic functionality for</span>
+<span class="cm"> * pre-validating user input based on CSS classes set on form elements.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * &lt;p&gt;The following classes can be applied to a form element for</span>
+<span class="cm"> * pre-validation:&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> *	&lt;dl&gt;</span>
+<span class="cm"> *	&lt;dt&gt;&lt;code&gt;yiv-required&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm"> *		&lt;dd&gt;Value must not be empty.&lt;/dd&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> *	&lt;dt&gt;&lt;code&gt;yiv-length:[x,y]&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm"> *		&lt;dd&gt;String must be at least x characters and at most y characters.</span>
+<span class="cm"> *		At least one of x and y must be specified.&lt;/dd&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> *	&lt;dt&gt;&lt;code&gt;yiv-integer:[x,y]&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm"> *		&lt;dd&gt;The integer value must be at least x and at most y.</span>
+<span class="cm"> *		x and y are both optional.&lt;/dd&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> *	&lt;dt&gt;&lt;code&gt;yiv-decimal:[x,y]&lt;/code&gt;&lt;/dt&gt;</span>
+<span class="cm"> *		&lt;dd&gt;The decimal value must be at least x and at most y.  Exponents are</span>
+<span class="cm"> *		not allowed.  x and y are both optional.&lt;/dd&gt;</span>
+<span class="cm"> *	&lt;/dl&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * &lt;p&gt;If we ever need to allow exponents, we can use yiv-float.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module gallery-formmgr-css-validation</span>
+<span class="cm"> * @class FormManager</span>
+<span class="cm"> */</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
 
-<span class="c">// pre-validation classes</span>
+<span class="c1">// pre-validation classes</span>
 
-<span class="kd">var</span> <span class="nx">required_class</span>    <span class="o">=</span> <span class="s1">&#39;yiv-required&#39;</span><span class="o">;</span>
-<span class="kd">var</span> <span class="nx">length_class_re</span>   <span class="o">=</span> <span class="sr">/(?:^|\s+)yiv-length:\[([0-9]+)?,([1-9][0-9]*)?\](?:\s+|$)/</span><span class="o">;</span>
-<span class="kd">var</span> <span class="nx">integer_class_re</span>  <span class="o">=</span> <span class="sr">/(?:^|\s+)yiv-integer(?::\[([-+]?[0-9]+)?,([-+]?[0-9]+)?\])?(?:\s+|$)/</span><span class="o">;</span>
-<span class="kd">var</span> <span class="nx">decimal_class_re</span>  <span class="o">=</span> <span class="sr">/(?:^|\s+)yiv-decimal(?::\[([-+]?(?:[0-9]+\.?|[0-9]+\.[0-9]+|\.[0-9]+))?,([-+]?(?:[0-9]+\.?|[0-9]+\.[0-9]+|\.[0-9]+))?\])?(?:\s+|$)/</span><span class="o">;</span>
+<span class="kd">var</span> <span class="nx">required_class</span>    <span class="o">=</span> <span class="s1">&#39;yiv-required&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">length_class_re</span>   <span class="o">=</span> <span class="sr">/(?:^|\s+)yiv-length:\[([0-9]+)?,([1-9][0-9]*)?\](?:\s+|$)/</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">integer_class_re</span>  <span class="o">=</span> <span class="sr">/(?:^|\s+)yiv-integer(?::\[([-+]?[0-9]+)?,([-+]?[0-9]+)?\])?(?:\s+|$)/</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">decimal_class_re</span>  <span class="o">=</span> <span class="sr">/(?:^|\s+)yiv-decimal(?::\[([-+]?(?:[0-9]+\.?|[0-9]+\.[0-9]+|\.[0-9]+))?,([-+]?(?:[0-9]+\.?|[0-9]+\.[0-9]+|\.[0-9]+))?\])?(?:\s+|$)/</span><span class="p">;</span>
 
-<span class="c">/**</span>
-<span class="c"> * Regular expression used to determine if a value is an integer.</span>
-<span class="c"> * This can be localized, e.g., allow for thousands separator.</span>
-<span class="c"> * </span>
-<span class="c"> * @property Y.FormManager.integer_value_re</span>
-<span class="c"> * @type {RegExp}</span>
-<span class="c"> * @static</span>
-<span class="c"> */</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">integer_value_re</span> <span class="o">=</span> <span class="sr">/^[-+]?[0-9]+$/</span><span class="o">;</span>
+<span class="cm">/**</span>
+<span class="cm"> * Regular expression used to determine if a value is an integer.</span>
+<span class="cm"> * This can be localized, e.g., allow for thousands separator.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @property Y.FormManager.integer_value_re</span>
+<span class="cm"> * @type {RegExp}</span>
+<span class="cm"> * @static</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">integer_value_re</span> <span class="o">=</span> <span class="sr">/^[-+]?[0-9]+$/</span><span class="p">;</span>
 
-<span class="c">/**</span>
-<span class="c"> * Regular expression used to determine if a value is a decimal number.</span>
-<span class="c"> * This can be localized, e.g., use the correct decimal separator.</span>
-<span class="c"> * </span>
-<span class="c"> * @property Y.FormManager.decimal_value_re</span>
-<span class="c"> * @type {RegExp}</span>
-<span class="c"> * @static</span>
-<span class="c"> */</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">decimal_value_re</span> <span class="o">=</span> <span class="sr">/^[-+]?(?:[0-9]+\.?|[0-9]*\.[0-9]+)$/</span><span class="o">;</span>
+<span class="cm">/**</span>
+<span class="cm"> * Regular expression used to determine if a value is a decimal number.</span>
+<span class="cm"> * This can be localized, e.g., use the correct decimal separator.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @property Y.FormManager.decimal_value_re</span>
+<span class="cm"> * @type {RegExp}</span>
+<span class="cm"> * @static</span>
+<span class="cm"> */</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">decimal_value_re</span> <span class="o">=</span> <span class="sr">/^[-+]?(?:[0-9]+\.?|[0-9]*\.[0-9]+)$/</span><span class="p">;</span>
 
-<span class="c">/**</span>
-<span class="c"> * &lt;p&gt;Map of localizable strings used by pre-validation.&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * &lt;dl&gt;</span>
-<span class="c"> * &lt;dt&gt;validation_error&lt;/dt&gt;</span>
-<span class="c"> * &lt;dd&gt;Displayed in &lt;code&gt;status_node&lt;/code&gt; by &lt;code&gt;notifyErrors()&lt;/code&gt; when pre-validation fails.&lt;/dd&gt;</span>
-<span class="c"> * &lt;dt&gt;required_string&lt;/dt&gt;</span>
-<span class="c"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-required&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
-<span class="c"> * &lt;dt&gt;required_menu&lt;/dt&gt;</span>
-<span class="c"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-required&lt;/code&gt; fails on a select element.&lt;/dd&gt;</span>
-<span class="c"> * &lt;dt&gt;length_too_short, length_too_long, length_out_of_range&lt;/dt&gt;</span>
-<span class="c"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-length&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
-<span class="c"> * &lt;dt&gt;integer, integer_too_small, integer_too_large, integer_out_of_range&lt;/dt&gt;</span>
-<span class="c"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-integer&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
-<span class="c"> * &lt;dt&gt;decimal, decimal_too_small, decimal_too_large, decimal_out_of_range&lt;/dt&gt;</span>
-<span class="c"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-decimal&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
-<span class="c"> * &lt;/dl&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @property Y.FormManager.Strings</span>
-<span class="c"> * @type {Object}</span>
-<span class="c"> * @static</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * &lt;p&gt;Map of localizable strings used by pre-validation.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;dl&gt;</span>
+<span class="cm"> * &lt;dt&gt;validation_error&lt;/dt&gt;</span>
+<span class="cm"> * &lt;dd&gt;Displayed in &lt;code&gt;status_node&lt;/code&gt; by &lt;code&gt;notifyErrors()&lt;/code&gt; when pre-validation fails.&lt;/dd&gt;</span>
+<span class="cm"> * &lt;dt&gt;required_string&lt;/dt&gt;</span>
+<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-required&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
+<span class="cm"> * &lt;dt&gt;required_menu&lt;/dt&gt;</span>
+<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-required&lt;/code&gt; fails on a select element.&lt;/dd&gt;</span>
+<span class="cm"> * &lt;dt&gt;length_too_short, length_too_long, length_out_of_range&lt;/dt&gt;</span>
+<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-length&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
+<span class="cm"> * &lt;dt&gt;integer, integer_too_small, integer_too_large, integer_out_of_range&lt;/dt&gt;</span>
+<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-integer&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
+<span class="cm"> * &lt;dt&gt;decimal, decimal_too_small, decimal_too_large, decimal_out_of_range&lt;/dt&gt;</span>
+<span class="cm"> * &lt;dd&gt;Displayed when &lt;code&gt;yiv-decimal&lt;/code&gt; fails on an input field.&lt;/dd&gt;</span>
+<span class="cm"> * &lt;/dl&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @property Y.FormManager.Strings</span>
+<span class="cm"> * @type {Object}</span>
+<span class="cm"> * @static</span>
+<span class="cm"> */</span>
 <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span> <span class="o">=</span>
 <span class="p">{</span>
-	<span class="nx">validation_error</span><span class="o">:</span>     <span class="s1">&#39;Correct errors in the highlighted fields before continuing.&#39;</span><span class="o">,</span>
+	<span class="nx">validation_error</span><span class="o">:</span>     <span class="s1">&#39;Correct errors in the highlighted fields before continuing.&#39;</span><span class="p">,</span>
 
-	<span class="nx">required_string</span><span class="o">:</span>      <span class="s1">&#39;This field requires a value.&#39;</span><span class="o">,</span>
-	<span class="nx">required_menu</span><span class="o">:</span>        <span class="s1">&#39;This field is required. Choose a value from the pull-down list.&#39;</span><span class="o">,</span>
+	<span class="nx">required_string</span><span class="o">:</span>      <span class="s1">&#39;This field requires a value.&#39;</span><span class="p">,</span>
+	<span class="nx">required_menu</span><span class="o">:</span>        <span class="s1">&#39;This field is required. Choose a value from the pull-down list.&#39;</span><span class="p">,</span>
 
-	<span class="nx">length_too_short</span><span class="o">:</span>     <span class="s1">&#39;Enter text that is at least {min} characters or longer.&#39;</span><span class="o">,</span>
-	<span class="nx">length_too_long</span><span class="o">:</span>      <span class="s1">&#39;Enter text that is up to {max} characters long.&#39;</span><span class="o">,</span>
-	<span class="nx">length_out_of_range</span><span class="o">:</span>  <span class="s1">&#39;Enter text that is {min} to {max} characters long.&#39;</span><span class="o">,</span>
+	<span class="nx">length_too_short</span><span class="o">:</span>     <span class="s1">&#39;Enter text that is at least {min} characters or longer.&#39;</span><span class="p">,</span>
+	<span class="nx">length_too_long</span><span class="o">:</span>      <span class="s1">&#39;Enter text that is up to {max} characters long.&#39;</span><span class="p">,</span>
+	<span class="nx">length_out_of_range</span><span class="o">:</span>  <span class="s1">&#39;Enter text that is {min} to {max} characters long.&#39;</span><span class="p">,</span>
 
-	<span class="nx">integer</span><span class="o">:</span>              <span class="s1">&#39;Enter a whole number (no decimal point).&#39;</span><span class="o">,</span>
-	<span class="nx">integer_too_small</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {min} or higher (no decimal point).&#39;</span><span class="o">,</span>
-	<span class="nx">integer_too_large</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {max} or lower (no decimal point).&#39;</span><span class="o">,</span>
-	<span class="nx">integer_out_of_range</span><span class="o">:</span> <span class="s1">&#39;Enter a number between or including {min} and {max} (no decimal point).&#39;</span><span class="o">,</span>
+	<span class="nx">integer</span><span class="o">:</span>              <span class="s1">&#39;Enter a whole number (no decimal point).&#39;</span><span class="p">,</span>
+	<span class="nx">integer_too_small</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {min} or higher (no decimal point).&#39;</span><span class="p">,</span>
+	<span class="nx">integer_too_large</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {max} or lower (no decimal point).&#39;</span><span class="p">,</span>
+	<span class="nx">integer_out_of_range</span><span class="o">:</span> <span class="s1">&#39;Enter a number between or including {min} and {max} (no decimal point).&#39;</span><span class="p">,</span>
 
-	<span class="nx">decimal</span><span class="o">:</span>              <span class="s1">&#39;Enter a number.&#39;</span><span class="o">,</span>
-	<span class="nx">decimal_too_small</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {min} or higher.&#39;</span><span class="o">,</span>
-	<span class="nx">decimal_too_large</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {max} or lower.&#39;</span><span class="o">,</span>
+	<span class="nx">decimal</span><span class="o">:</span>              <span class="s1">&#39;Enter a number.&#39;</span><span class="p">,</span>
+	<span class="nx">decimal_too_small</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {min} or higher.&#39;</span><span class="p">,</span>
+	<span class="nx">decimal_too_large</span><span class="o">:</span>    <span class="s1">&#39;Enter a number that is {max} or lower.&#39;</span><span class="p">,</span>
 	<span class="nx">decimal_out_of_range</span><span class="o">:</span> <span class="s1">&#39;Enter a number between or including {min} and {max}.&#39;</span>
 <span class="p">};</span>
 
 <span class="kd">function</span> <span class="nx">hasLimit</span><span class="p">(</span>
-	<span class="c">/* string */</span>	<span class="nx">s</span><span class="p">)</span>
+	<span class="cm">/* string */</span>	<span class="nx">s</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="c">/**</span>
-<span class="c"> * Validate an input based on its CSS data.</span>
-<span class="c"> * </span>
-<span class="c"> * @method validateFromCSSData</span>
-<span class="c"> * @static</span>
-<span class="c"> * @param e {Element|Node} The field to validate.</span>
-<span class="c"> * @param msg_list {Map} (Optional) Map of message types to custom messages.</span>
-<span class="c"> * @return {Object} Status:</span>
-<span class="c"> *		&lt;dl&gt;</span>
-<span class="c"> *		&lt;dt&gt;keepGoing&lt;/dt&gt;</span>
-<span class="c"> *		&lt;dd&gt;(Boolean) &lt;code&gt;true&lt;/code&gt; if further validation should be done.&lt;/dd&gt;</span>
-<span class="c"> *		&lt;dt&gt;error&lt;/dt&gt;</span>
-<span class="c"> *		&lt;dd&gt;(String) The error message, if any.&lt;/dd&gt;</span>
-<span class="c"> *		&lt;/dl&gt;</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * Validate an input based on its CSS data.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method validateFromCSSData</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param e {Element|Node} The field to validate.</span>
+<span class="cm"> * @param msg_list {Map} (Optional) Map of message types to custom messages.</span>
+<span class="cm"> * @return {Object} Status:</span>
+<span class="cm"> *		&lt;dl&gt;</span>
+<span class="cm"> *		&lt;dt&gt;keepGoing&lt;/dt&gt;</span>
+<span class="cm"> *		&lt;dd&gt;(Boolean) &lt;code&gt;true&lt;/code&gt; if further validation should be done.&lt;/dd&gt;</span>
+<span class="cm"> *		&lt;dt&gt;error&lt;/dt&gt;</span>
+<span class="cm"> *		&lt;dd&gt;(String) The error message, if any.&lt;/dd&gt;</span>
+<span class="cm"> *		&lt;/dl&gt;</span>
+<span class="cm"> */</span>
 <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">validateFromCSSData</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="c">/* element */</span>	<span class="nx">e</span><span class="o">,</span>
-	<span class="c">/* map */</span>		<span class="nx">msg_list</span><span class="p">)</span>
+	<span class="cm">/* element */</span>	<span class="nx">e</span><span class="p">,</span>
+	<span class="cm">/* map */</span>		<span class="nx">msg_list</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">Strings</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="o">;</span>
+	<span class="kd">var</span> <span class="nx">Strings</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">Strings</span><span class="p">;</span>
 
 	<span class="k">if</span> <span class="p">(</span><span class="nx">e</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="nx">e</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 	<span class="p">}</span>
 
-	<span class="kd">var</span> <span class="nx">required</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">e</span><span class="o">,</span> <span class="nx">required_class</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">required</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">required_class</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">required</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+		<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">required</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">required</span><span class="o">;</span>
+			<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">required</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">tagName</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;select&#39;</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">required_menu</span><span class="o">;</span>
+			<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">required_menu</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span>
 		<span class="p">{</span>
-			<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">required_string</span><span class="o">;</span>
+			<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">required_string</span><span class="p">;</span>
 		<span class="p">}</span>
-		<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="o">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
+		<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
 	<span class="p">}</span>
 	<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">required</span> <span class="o">&amp;&amp;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -213,45 +213,45 @@
 		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-				<span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">))</span>
+				<span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_length &gt; max_length&#39;</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_length &gt; max_length&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="kd">var</span> <span class="nx">msg</span>     <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+			<span class="kd">var</span> <span class="nx">msg</span>     <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 			<span class="kd">var</span> <span class="nx">has_min</span> <span class="o">=</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!==</span> <span class="s1">&#39;0&#39;</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">has_min</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
 			<span class="p">{</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">length_out_of_range</span><span class="o">;</span>
+				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">length_out_of_range</span><span class="p">;</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">has_min</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">length_too_short</span><span class="o">;</span>
+				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">length_too_short</span><span class="p">;</span>
 			<span class="p">}</span>
 			<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
 			<span class="p">{</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">length_too_long</span><span class="o">;</span>
+				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">length_too_long</span><span class="p">;</span>
 			<span class="p">}</span>
 
 			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-				<span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">))</span>
+				<span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">min_length</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">min_length</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">min_length</span><span class="p">;</span>
 				<span class="p">}</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="o">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">,</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)});</span>
-				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="o">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
+				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">)});</span>
+				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
 			<span class="p">}</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-				<span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">))</span>
+				<span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 			<span class="p">{</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">max_length</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">max_length</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">max_length</span><span class="p">;</span>
 				<span class="p">}</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="o">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">,</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)});</span>
-				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="o">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
+				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">)});</span>
+				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
@@ -259,40 +259,40 @@
 		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
-				<span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">))</span>
+				<span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
 			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
 			<span class="p">}</span>
 
-			<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="o">,</span> <span class="mi">10</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span>
 				<span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">integer_value_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="o">||</span>
-				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&lt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">))</span> <span class="o">||</span>
-				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">))))</span>
+				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&lt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span> <span class="o">||</span>
+				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&gt;</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">))))</span>
 			<span class="p">{</span>
-				<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+				<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">integer</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">integer</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">integer</span><span class="p">;</span>
 				<span class="p">}</span>
 				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">integer_out_of_range</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">integer_out_of_range</span><span class="p">;</span>
 				<span class="p">}</span>
 				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">integer_too_small</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">integer_too_small</span><span class="p">;</span>
 				<span class="p">}</span>
 				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">integer_too_large</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">integer_too_large</span><span class="p">;</span>
 				<span class="p">}</span>
 				<span class="k">else</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">integer</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">integer</span><span class="p">;</span>
 				<span class="p">}</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="o">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">,</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)});</span>
-				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="o">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
+				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">)});</span>
+				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 
@@ -302,7 +302,7 @@
 			<span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
 				<span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
 			<span class="p">{</span>
-				<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39; has min_value &gt; max_value&#39;</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s1">&#39;FormManager&#39;</span><span class="p">);</span>
 			<span class="p">}</span>
 
 			<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
@@ -311,30 +311,30 @@
 				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&lt;</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">||</span>
 				 <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span> <span class="o">&gt;</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))))</span>
 			<span class="p">{</span>
-				<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+				<span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 				<span class="k">if</span> <span class="p">(</span><span class="nx">msg_list</span> <span class="o">&amp;&amp;</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">decimal</span><span class="p">)</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">decimal</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg_list</span><span class="p">.</span><span class="nx">decimal</span><span class="p">;</span>
 				<span class="p">}</span>
 				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;&amp;</span>
 						 <span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal_out_of_range</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal_out_of_range</span><span class="p">;</span>
 				<span class="p">}</span>
 				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal_too_small</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal_too_small</span><span class="p">;</span>
 				<span class="p">}</span>
 				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hasLimit</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal_too_large</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal_too_large</span><span class="p">;</span>
 				<span class="p">}</span>
 				<span class="k">else</span>
 				<span class="p">{</span>
-					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal</span><span class="o">;</span>
+					<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Strings</span><span class="p">.</span><span class="nx">decimal</span><span class="p">;</span>
 				<span class="p">}</span>
-				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="o">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)</span><span class="o">,</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">,</span> <span class="mi">10</span><span class="p">)});</span>
-				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="o">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
+				<span class="nx">msg</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">substitute</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span> <span class="p">{</span><span class="nx">min</span><span class="o">:</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">),</span> <span class="nx">max</span><span class="o">:</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">)});</span>
+				<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">error</span><span class="o">:</span> <span class="nx">msg</span> <span class="p">};</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
@@ -342,93 +342,93 @@
 	<span class="k">return</span> <span class="p">{</span> <span class="nx">keepGoing</span><span class="o">:</span> <span class="kc">true</span> <span class="p">};</span>
 <span class="p">};</span>
 
-<span class="c">/**</span>
-<span class="c"> * Trim leading and trailing whitespace from the specified fields, except</span>
-<span class="c"> * when a field has the CSS class yiv-no-trim.</span>
-<span class="c"> * </span>
-<span class="c"> * @method cleanValues</span>
-<span class="c"> * @static</span>
-<span class="c"> * @param e {Array} The fields to clean.</span>
-<span class="c"> * @return {boolean} &lt;code&gt;true&lt;/code&gt; if there are any file inputs.</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * Trim leading and trailing whitespace from the specified fields, except</span>
+<span class="cm"> * when a field has the CSS class yiv-no-trim.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method cleanValues</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param e {Array} The fields to clean.</span>
+<span class="cm"> * @return {boolean} &lt;code&gt;true&lt;/code&gt; if there are any file inputs.</span>
+<span class="cm"> */</span>
 <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">cleanValues</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="c">/* array */</span>	<span class="nx">e</span><span class="p">)</span>
+	<span class="cm">/* array */</span>	<span class="nx">e</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">has_file_inputs</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="kd">var</span> <span class="nx">has_file_inputs</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">e</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="nx">e</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 		<span class="kd">var</span> <span class="nx">type</span>  <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">type</span> <span class="o">&amp;&amp;</span> <span class="nx">input</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;file&#39;</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="nx">has_file_inputs</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+			<span class="nx">has_file_inputs</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
 		<span class="p">}</span>
 		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;select-multiple&#39;</span><span class="p">)</span>
 		<span class="p">{</span>
-			<span class="c">// don&#39;t change the value</span>
+			<span class="c1">// don&#39;t change the value</span>
 		<span class="p">}</span>
-		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">input</span><span class="o">,</span> <span class="s1">&#39;yiv-no-trim&#39;</span><span class="p">))</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">DOM</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="s1">&#39;yiv-no-trim&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
 			<span class="nx">input</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="k">return</span> <span class="nx">has_file_inputs</span><span class="o">;</span>
+	<span class="k">return</span> <span class="nx">has_file_inputs</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="c">/**</span>
-<span class="c"> * &lt;p&gt;Names of supported status values, highest precedence first.  Default:</span>
-<span class="c"> * &lt;code&gt;[ &#39;error&#39;, &#39;warn&#39;, &#39;success&#39;, &#39;info&#39; ]&lt;/code&gt;&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * &lt;p&gt;This is static because it links to CSS rules that define the</span>
-<span class="c"> * appearance of each status type:  .formmgr-has{status}&lt;/p&gt;</span>
-<span class="c"> * </span>
-<span class="c"> * @property Y.FormManager.status_order</span>
-<span class="c"> * @type {Array}</span>
-<span class="c"> * @static</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * &lt;p&gt;Names of supported status values, highest precedence first.  Default:</span>
+<span class="cm"> * &lt;code&gt;[ &#39;error&#39;, &#39;warn&#39;, &#39;success&#39;, &#39;info&#39; ]&lt;/code&gt;&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * &lt;p&gt;This is static because it links to CSS rules that define the</span>
+<span class="cm"> * appearance of each status type:  .formmgr-has{status}&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @property Y.FormManager.status_order</span>
+<span class="cm"> * @type {Array}</span>
+<span class="cm"> * @static</span>
+<span class="cm"> */</span>
 <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span> <span class="o">=</span>
 <span class="p">[</span>
-	<span class="s1">&#39;error&#39;</span><span class="o">,</span>
-	<span class="s1">&#39;warn&#39;</span><span class="o">,</span>
-	<span class="s1">&#39;success&#39;</span><span class="o">,</span>
+	<span class="s1">&#39;error&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;warn&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;success&#39;</span><span class="p">,</span>
 	<span class="s1">&#39;info&#39;</span>
 <span class="p">];</span>
 
-<span class="c">/**</span>
-<span class="c"> * Get the precedence of the given status name.</span>
-<span class="c"> * </span>
-<span class="c"> * @method getStatusPrecedence</span>
-<span class="c"> * @static</span>
-<span class="c"> * @param status {String} The name of the status value.</span>
-<span class="c"> * @return {int} The position in the &lt;code&gt;status_order&lt;/code&gt; array.</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * Get the precedence of the given status name.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method getStatusPrecedence</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param status {String} The name of the status value.</span>
+<span class="cm"> * @return {int} The position in the &lt;code&gt;status_order&lt;/code&gt; array.</span>
+<span class="cm"> */</span>
 <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">getStatusPrecedence</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="c">/* string */</span>	<span class="nx">status</span><span class="p">)</span>
+	<span class="cm">/* string */</span>	<span class="nx">status</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="nx">status</span> <span class="o">==</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
 		<span class="p">{</span>
-			<span class="k">return</span> <span class="nx">i</span><span class="o">;</span>
+			<span class="k">return</span> <span class="nx">i</span><span class="p">;</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 
-	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span>
+	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">status_order</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="c">/**</span>
-<span class="c"> * Compare two status values.</span>
-<span class="c"> * </span>
-<span class="c"> * @method statusTakesPrecedence</span>
-<span class="c"> * @static</span>
-<span class="c"> * @param orig_status {String} The name of the original status value.</span>
-<span class="c"> * @param new_status {String} The name of the new status value.</span>
-<span class="c"> * @return {boolean} &lt;code&gt;true&lt;/code&gt; if &lt;code&gt;new_status&lt;/code&gt; takes precedence over &lt;code&gt;orig_status&lt;/code&gt;</span>
-<span class="c"> */</span>
+<span class="cm">/**</span>
+<span class="cm"> * Compare two status values.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @method statusTakesPrecedence</span>
+<span class="cm"> * @static</span>
+<span class="cm"> * @param orig_status {String} The name of the original status value.</span>
+<span class="cm"> * @param new_status {String} The name of the new status value.</span>
+<span class="cm"> * @return {boolean} &lt;code&gt;true&lt;/code&gt; if &lt;code&gt;new_status&lt;/code&gt; takes precedence over &lt;code&gt;orig_status&lt;/code&gt;</span>
+<span class="cm"> */</span>
 <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">statusTakesPrecedence</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="c">/* string */</span>	<span class="nx">orig_status</span><span class="o">,</span>
-	<span class="c">/* string */</span>	<span class="nx">new_status</span><span class="p">)</span>
+	<span class="cm">/* string */</span>	<span class="nx">orig_status</span><span class="p">,</span>
+	<span class="cm">/* string */</span>	<span class="nx">new_status</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">orig_status</span> <span class="o">||</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">getStatusPrecedence</span><span class="p">(</span><span class="nx">new_status</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">FormManager</span><span class="p">.</span><span class="nx">getStatusPrecedence</span><span class="p">(</span><span class="nx">orig_status</span><span class="p">));</span>
 <span class="p">};</span>

@@ -47,45 +47,45 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">/**********************************************************************</span>
-<span class="c"> * At most one checkbox can be selected.  If one is turned on, the active</span>
-<span class="c"> * one is turned off.</span>
-<span class="c"> * </span>
-<span class="c"> * @class AtMostOneCheckboxGroup</span>
-<span class="c"> * @extends CheckboxGroup</span>
-<span class="c"> * @constructor</span>
-<span class="c"> * @param cb_list {String|Node|NodeList} The list of checkboxes to manage</span>
-<span class="c"> */</span>
+                        <div class="highlight"><pre><span class="cm">/**********************************************************************</span>
+<span class="cm"> * At most one checkbox can be selected.  If one is turned on, the active</span>
+<span class="cm"> * one is turned off.</span>
+<span class="cm"> * </span>
+<span class="cm"> * @class AtMostOneCheckboxGroup</span>
+<span class="cm"> * @extends CheckboxGroup</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param cb_list {String|Node|NodeList} The list of checkboxes to manage</span>
+<span class="cm"> */</span>
 
 <span class="kd">function</span> <span class="nx">AtMostOneCheckboxGroup</span><span class="p">(</span>
-	<span class="c">/* string/Node/NodeList */</span>	<span class="nx">cb_list</span><span class="p">)</span>
+	<span class="cm">/* string/Node/NodeList */</span>	<span class="nx">cb_list</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="nx">AtMostOneCheckboxGroup</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">cb_list</span><span class="p">);</span>
+	<span class="nx">AtMostOneCheckboxGroup</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">cb_list</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">AtMostOneCheckboxGroup</span><span class="o">,</span> <span class="nx">CheckboxGroup</span><span class="o">,</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">AtMostOneCheckboxGroup</span><span class="p">,</span> <span class="nx">CheckboxGroup</span><span class="p">,</span>
 <span class="p">{</span>
 	<span class="nx">enforceConstraints</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span>
-		<span class="c">/* NodeList */</span>	<span class="nx">cb_list</span><span class="o">,</span>
-		<span class="c">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
+		<span class="cm">/* NodeList */</span>	<span class="nx">cb_list</span><span class="p">,</span>
+		<span class="cm">/* int */</span>	<span class="nx">index</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">cb_list</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">index</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;checked&#39;</span><span class="p">))</span>
 		<span class="p">{</span>
-			<span class="k">return</span><span class="o">;</span>
+			<span class="k">return</span><span class="p">;</span>
 		<span class="p">}</span>
 
 		<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="nx">cb_list</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
-		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">!=</span> <span class="nx">index</span><span class="p">)</span>
 			<span class="p">{</span>
-				<span class="nx">cb_list</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;checked&#39;</span><span class="o">,</span> <span class="kc">false</span><span class="p">);</span>
+				<span class="nx">cb_list</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="nx">i</span><span class="p">).</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;checked&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">AtMostOneCheckboxGroup</span> <span class="o">=</span> <span class="nx">AtMostOneCheckboxGroup</span><span class="o">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">AtMostOneCheckboxGroup</span> <span class="o">=</span> <span class="nx">AtMostOneCheckboxGroup</span><span class="p">;</span>
 </pre></div>
 
                     </div>
