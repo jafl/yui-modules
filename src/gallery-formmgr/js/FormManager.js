@@ -836,7 +836,7 @@ Y.extend(FormManager, Y.Plugin.Host,
 	},
 
 	/**
-	 * Validate the form.
+	 * @return {Boolean} true if all validation checks passed
 	 */
 	validateForm: function()
 	{

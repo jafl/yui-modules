@@ -168,11 +168,6 @@ function FormManager(
 	this.has_file_inputs = false;
 }
 
-// CSS class pattern bookends
-
-var class_re_prefix = '(?:^|\\s)(?:';
-var class_re_suffix = ')(?:\\s|$)';
-
 /**
  * The CSS class which marks each row of the form.  Typically, each field
  * (or a very tightly coupled set of fields) is placed in a separate row.
@@ -267,7 +262,7 @@ function rowStatusRegex()
 {
 	if (!cached_row_status_regex)
 	{
-		cached_row_status_regex = new RegExp(class_re_prefix + rowStatusPattern() + class_re_suffix);
+		cached_row_status_regex = new RegExp(Y.Node.class_re_prefix + rowStatusPattern() + Y.Node.class_re_suffix);
 	}
 	return cached_row_status_regex;
 }
@@ -442,7 +437,7 @@ FormManager.displayMessage = function(
 {
 	if (Y.Lang.isUndefined(scroll))
 	{
-		scroll = true;
+		scroll = !had_messages;
 	}
 
 	e     = Y.one(e);
@@ -476,7 +471,7 @@ FormManager.displayMessage = function(
 			fieldset.addClass(FormManager.row_status_prefix + type);
 		}
 
-		if (!had_messages && scroll)
+		if (scroll && e.get('offsetHeight') !== 0)
 		{
 			p.scrollIntoView();
 			try
@@ -843,7 +838,7 @@ Y.extend(FormManager, Y.Plugin.Host,
 	},
 
 	/**
-	 * Validate the form.
+	 * @return {Boolean} true if all validation checks passed
 	 */
 	validateForm: function()
 	{
@@ -1149,4 +1144,4 @@ Y.aggregate(FormManager, Y.FormManager);
 Y.FormManager = FormManager;
 
 
-}, '@VERSION@' ,{optional:['gallery-scrollintoview'], requires:['pluginhost-base','gallery-node-optimizations','gallery-formmgr-css-validation']});
+}, '@VERSION@' ,{requires:['pluginhost-base','gallery-node-optimizations','gallery-formmgr-css-validation'], optional:['gallery-scrollintoview']});
