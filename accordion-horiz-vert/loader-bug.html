@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>YUI 3 Accordion Fixed size Examples</title>
+	<title>YUI 3 Accordion Examples</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-	<script src="http://yui.yahooapis.com/3.5.0pr4/build/yui/yui-min.js"></script>
+	<script src="http://yui.yahooapis.com/3.5.0pr4/build/yui/yui-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0pr4/build/cssreset/reset-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0pr4/build/cssfonts/fonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0pr4/build/cssbase/base-min.css" />
-
+<!--
 	<script src="gallery-accordion-horiz-vert-debug.js"></script>
 	<script src="gallery-dimensions-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-accordion-horiz-vert.css" />
-
+-->
 	<style type="text/css">
 	.yui3-js-enabled .yui3-widget-loading { display: none; }
 
@@ -44,6 +44,7 @@
 	.my-title-horiz a:hover {background-color:#eee;}
 	.my-section-vert,
 	.my-section-horiz {margin:1px;padding:10px;}
+	.my-section-vert-constrained {height: 50px;}
 	</style>
 </head>
 <body class="yui3-skin-sam">
@@ -54,14 +55,24 @@
 	<p>Controls</p>
 	<input type="checkbox" id="allow-multiple">
 	<label for="allow-multiple">Allow multiple open sections</label>
+	<br>
+	<input type="checkbox" id="allow-all-closed">
+	<label for="allow-all-closed">Allow all sections to be closed</label>
+	<br>
+	<input type="checkbox" id="animate-insert">
+	<label for="animate-insert">Animate insert/remove</label>
+	<br>
+	<input type="checkbox" id="animate-open">
+	<label for="animate-open">Animate open/close</label>
 	<br><br>
 	<input type="button" value="Insert a section" id="insert-section">
+	<input type="button" value="Append a section" id="append-section">
 	<br><br>
 	<p>Notes</p>
 	<ul>
 		<li><a href="/yui3-gallery/">Back to project list</a></li>
 		<li><a href="../yuidoc/module_gallery-accordion-horiz-vert.html">Click here</a> to see documentation.</li>
-		<li><a href="index.html">Click here</a> to see basic examples.</li>
+		<li><a href="fixed_size.html">Click here</a> to see fixed height/width examples.</li>
 		<li><a href="variable_width.html">Click here</a> to see variable height/width examples.</li>
 		<li>For the horizontal accordion:
 			<ul>
@@ -78,6 +89,12 @@
 
 <div id="accordions">
 	<h4>Vertical</h4>
+	<div id="accordion-test-vert-js" class="accordion-test-vert"></div>
+
+	<h4>Horizontal</h4>
+	<div id="accordion-test-horiz-js" class="accordion-test-horiz"></div>
+
+	<h4>Vertical (from markup)</h4>
 	<div id="accordion-test-vert-markup" class="accordion-test-vert"></div>
 	<ul id="accordion-test-vert-markup-content" class="yui3-widget-loading">
 		<li>
@@ -90,14 +107,11 @@
 		</li>
 		<li>
 			<div class="my-title-vert"><a href="javascript:void(0);">#3</a></div>
-			<div class="my-section-vert">
-				<p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p>
-				<p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p>
-			</div>
+			<div class="my-section-vert my-section-vert-constrained"><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p></div>
 		</li>
 	</ul>
 
-	<h4>Horizontal</h4>
+	<h4>Horizontal (from markup)</h4>
 	<div id="accordion-test-horiz-markup" class="accordion-test-horiz"></div>
 	<ul id="accordion-test-horiz-markup-content" class="yui3-widget-loading">
 		<li>
@@ -117,7 +131,7 @@
 
 <script type="text/javascript">
 YUI({
-//	filter: 'debug', combine: false,
+	filter: 'raw', combine: false,
 	gallery: 'gallery-2012.03.23-18-00'
 }).use(
 	'gallery-accordion-horiz-vert',
@@ -125,6 +139,12 @@ YUI({
 	'node-focusmanager',
 function(Y)
 {
+	if (!Y.Anim)
+	{
+		Y.one('#animate-insert').set('disabled', true);
+		Y.one('#animate-open').set('disabled', true);
+	}
+
 	function onTitleClicked(e, a)
 	{
 		var t = e.target;
@@ -162,43 +182,93 @@ function(Y)
 
 	// create accordions
 
+	var vjs = new Y.Accordion(
+	{
+		boundingBox:   '#accordion-test-vert-js',
+		animateRender: true,
+		titles:
+		[
+			'<div class="my-title-vert"><a href="javascript:void(0);">#1</a></div>',
+			'<div class="my-title-vert"><a href="javascript:void(0);">#2</a></div>',
+			'<div class="my-title-vert"><a href="javascript:void(0);">#3</a></div>'
+		],
+		sections:
+		[
+			'<div class="my-section-vert"><p>testing</p></div>',
+			'<div class="my-section-vert"><p>testing testing</p></div>',
+			'<div class="my-section-vert my-section-vert-constrained"><p>testing</p><p>testing</p><p>testing</p></div>'
+		]
+	});
+
+	vjs.after('render', function()
+	{
+		Y.on('click', onTitleClicked, '#accordion-test-vert-js .my-title-vert', null, vjs);
+	});
+
+	var hjs = new Y.Accordion(
+	{
+		boundingBox: '#accordion-test-horiz-js',
+		horizontal:  true,
+		titles:
+		[
+			'<a href="javascript:void(0);">#1</a>',
+			'<a href="javascript:void(0);">#2</a>',
+			'<a href="javascript:void(0);">#3</a>'
+		],
+		sections:
+		[
+			'<p>testing</p>',
+			'<p>testing testing</p>',
+			'<p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p>'
+		]
+	});
+
+	hjs.after('render', function()
+	{
+		var box = this.get('contentBox');
+		box.all('.yui3-accordion-title').addClass('my-title-horiz');
+		box.all('.yui3-accordion-section').addClass('my-section-horiz');
+
+		Y.on('click', onTitleClicked, '#accordion-test-horiz-js .my-title-horiz', null, hjs);
+	});
+
 	var vm = new Y.Accordion(
 	{
 		srcNode: '#accordion-test-vert-markup-content',
 		replaceTitleContainer:   false,
-		replaceSectionContainer: false,
-		allowMultipleOpen:       true
+		replaceSectionContainer: false
 	});
 
-	vm.plug(Y.Plugin.FixedSizeAccordion);
-	vm.set('height', 300);
+	vm.after('render', function()
+	{
+		Y.on('click', onTitleClicked, '#accordion-test-vert-markup .my-title-vert', null, vm);
+	});
 
 	var hm = new Y.Accordion(
 	{
-		srcNode:           '#accordion-test-horiz-markup-content',
-		horizontal:        true,
-		allowMultipleOpen: true
+		srcNode:       '#accordion-test-horiz-markup-content',
+		horizontal:    true,
+		animateRender: true
 	});
 
-	hm.plug(Y.Plugin.FixedSizeAccordion);
+	hm.after('render', function()
+	{
+		Y.on('click', onTitleClicked, '#accordion-test-horiz-markup .my-title-horiz', null, hm);
+	});
 
-	var accordions = [ vm, hm ];
+	var accordions = [ vjs, hjs, vm, hm ];
 
 	Y.on('domready', function()
 	{
-		document.getElementById('allow-multiple').checked = vm.get('allowMultipleOpen');
+		document.getElementById('allow-multiple').checked   = vjs.get('allowMultipleOpen');
+		document.getElementById('allow-all-closed').checked = vjs.get('allowAllClosed');
+		document.getElementById('animate-insert').checked   = vjs.get('animateInsertRemove');
+		document.getElementById('animate-open').checked     = vjs.get('animateOpenClose');
 
+		vjs.render();
+		hjs.render();
 		vm.render('#accordion-test-vert-markup');
-		Y.on('click', onTitleClicked, '#accordion-test-vert-markup .my-title-vert', null, vm);
-
 		hm.render('#accordion-test-horiz-markup');
-		Y.on('click', onTitleClicked, '#accordion-test-horiz-markup .my-title-horiz', null, hm);
-
-		hm.set('width', Y.one('#accordion-test-horiz-markup').get('offsetWidth'));
-		Y.after('windowresize', function()
-		{
-			hm.set('width', Y.one('#accordion-test-horiz-markup').get('offsetWidth'));
-		});
 
 		Y.each(accordions, function(a)
 		{
@@ -222,6 +292,33 @@ function(Y)
 		});
 	},
 	'#allow-multiple');
+
+	Y.on('change', function(e)
+	{
+		Y.each(accordions, function(a)
+		{
+			a.set('allowAllClosed', e.target.get('checked'));
+		});
+	},
+	'#allow-all-closed');
+
+	Y.on('change', function(e)
+	{
+		Y.each(accordions, function(a)
+		{
+			a.set('animateInsertRemove', e.target.get('checked'));
+		});
+	},
+	'#animate-insert');
+
+	Y.on('change', function(e)
+	{
+		Y.each(accordions, function(a)
+		{
+			a.set('animateOpenClose', e.target.get('checked'));
+		});
+	},
+	'#animate-open');
 
 	// test inserting sections
 
@@ -252,7 +349,8 @@ function(Y)
 		count++;
 
 		var s = obj.insertSection(1, '<div class="'+c1+'"><a href="javascript:void(0);">#'+count+'</a></div>',
-								  '<div class="'+c2+'"><p>inserted content #'+count+'<br>click to delete</p></div>');
+								  '<p>inserted content #'+count+'<br>click to delete</p>');
+		s.content.addClass(c2);
 		addSectionHandlers(obj, s);
 	};
 
@@ -272,10 +370,48 @@ function(Y)
 
 	Y.on('click', function()
 	{
+		insertVertSection(vjs, 'my-title-vert', 'my-section-vert');
 		insertVertSection(vm, 'my-title-vert', 'my-section-vert');
+		insertHorizSection(hjs, 'my-title-horiz', 'my-section-horiz');
 		insertHorizSection(hm, 'my-title-horiz', 'my-section-horiz');
 	},
 	'#insert-section');
+
+	function appendVertSection(
+		/* accordion */	obj,
+		/* string */	c1,
+		/* string */	c2)
+	{
+		count++;
+
+		var s = obj.appendSection('<div class="'+c1+'"><a href="javascript:void(0);">#'+count+'</a></div>',
+								  '<p>appended content #'+count+'<br>click to delete</p>');
+		s.content.addClass(c2);
+		addSectionHandlers(obj, s);
+	};
+
+	function appendHorizSection(
+		/* accordion */	obj,
+		/* string */	c1,
+		/* string */	c2)
+	{
+		count++;
+
+		var s = obj.appendSection('<a href="javascript:void(0);">#'+count+'</a>',
+								  '<p>appended content #'+count+'<br>click to delete</p>');
+		s.title.addClass(c1);
+		s.content.addClass(c2);
+		addSectionHandlers(obj, s);
+	};
+
+	Y.on('click', function()
+	{
+		appendVertSection(vjs, 'my-title-vert', 'my-section-vert');
+		appendVertSection(vm, 'my-title-vert', 'my-section-vert');
+		appendHorizSection(hjs, 'my-title-horiz', 'my-section-horiz');
+		appendHorizSection(hm, 'my-title-horiz', 'my-section-horiz');
+	},
+	'#append-section');
 });
 </script>
 
