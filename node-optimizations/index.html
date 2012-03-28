@@ -5,11 +5,13 @@
 	<title>Node Optimizations Unit Tests</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-debug.js"></script>
-	<script src="gallery-node-optimizations-debug.js"></script>
+	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
+	<script src="gallery-node-optimizations-min.js"></script>
 
 	<style type="text/css">
-	#root { display: none; }
+	#root, #performance-tests { display:none; }
+	table { border-collapse:collapse; }
+	th, td { border:1px solid black; margin:0; }
 	</style>
 </head>
 
@@ -58,6 +60,137 @@
 		</li>
 	</ul>
 </div>
+
+<p>Performance comparison (milliseconds for 1000 iterations):</p>
+<table id="perf">
+<tr><th>Test</th><th>Default</th><th>Optimized</th></tr>
+</table>
+
+<form id="performance-tests">
+
+	<fieldset id="strings">
+		<h2>Strings</h2>
+		<div class="formmgr-row">
+			<label for="s1">String (required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="s1" name="s1" class="formmgr-field yiv-required">
+		</div>
+		<div class="formmgr-row">
+			<label for="s2">String (not required, 6-10 characters)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="s2" name="s2" class="formmgr-field yiv-length:[6,10]" value="abcdef">
+		</div>
+		<div class="formmgr-row">
+			<label for="s3">String (required, max 10 characters)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="s3" name="s3" class="formmgr-field yiv-required yiv-length:[,10]" value="abcdef">
+		</div>
+		<div class="formmgr-row">
+			<label for="s4">String (required, not trimmed)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="s4" name="s4" class="formmgr-field yiv-required yiv-no-trim">
+		</div>
+	</fieldset>
+
+	<fieldset id="integers">
+		<h2>Integers</h2>
+		<div class="formmgr-row">
+			<label for="i1">Integer (not required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="i1" name="i1" class="formmgr-field yiv-integer">
+		</div>
+		<div class="formmgr-row">
+			<label for="i2">Integer (required, min 10)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="i2" name="i2" class="formmgr-field yiv-required yiv-integer:[10,]" value="20">
+		</div>
+		<div class="formmgr-row">
+			<label for="i2">Range (required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="r1" name="r1" class="formmgr-field yiv-required yiv-integer:[-10,]" value="-5">
+			<input type="text" id="r2" name="r2" class="formmgr-field yiv-required yiv-integer:[,10]" value="5">
+		</div>
+	</fieldset>
+
+	<fieldset id="decimals">
+		<h2>Numbers</h2>
+		<div class="formmgr-row">
+			<label for="d1">Decimal (not required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="d1" name="d1" class="formmgr-field yiv-decimal">
+		</div>
+		<div class="formmgr-row">
+			<label for="d2">Decimal (not required, max 3.14)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="d2" name="d2" class="formmgr-field yiv-decimal:[,3.14]">
+		</div>
+	</fieldset>
+
+	<br clear="all">
+
+	<fieldset id="misc">
+		<h2>Miscellaneous</h2>
+		<div class="formmgr-row">
+			<label for="m1">Menu (required)</label>
+			<p class="formmgr-message-text"></p>
+			<select id="m1" name="m1" class="formmgr-field yiv-required">
+				<option value="">[Select a value]</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+			</select>
+		</div>
+		<div class="formmgr-row">
+			<label for="m2">Menu (required)</label>
+			<p class="formmgr-message-text"></p>
+			<select id="m2" name="m2" size="3" class="formmgr-field yiv-required">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+			</select>
+		</div>
+		<div class="formmgr-row">
+			<p class="formmgr-message-text"></p>
+			<div>
+				<input type="checkbox" id="b1" name="b1" value="1">
+				<label for="b1" class="checkbox-label">Checkbox #1</label>
+			</div>
+			<div>
+				<input type="checkbox" id="b2" name="b2" value="2" checked>
+				<label for="b2" class="checkbox-label">Checkbox #2</label>
+			</div>
+			<div>
+				<input type="checkbox" id="b3" name="b3" value="3">
+				<label for="b3" class="checkbox-label">Checkbox #3</label>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset id="info">
+		<h2>Personal Info</h2>
+		<div class="formmgr-row">
+			<label for="email">Email (required)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="email" name="email" class="formmgr-field yiv-required">
+		</div>
+		<div class="formmgr-row">
+			<label for="pw">Password (not required, 6-10 characters)</label>
+			<p class="formmgr-message-text"></p>
+			<input type="password" id="pw" name="pw" class="formmgr-field yiv-length:[6,10]">
+		</div>
+		<div class="formmgr-row">
+			<label for="pw2">Confirm password</label>
+			<p class="formmgr-message-text"></p>
+			<input type="password" id="pw2" name="pw2" class="formmgr-field">
+		</div>
+		<div class="formmgr-row">
+			<label for="zip">United States ZIP Code</label>
+			<p class="formmgr-message-text"></p>
+			<input type="text" id="zip" name="zip" class="formmgr-field yiv-required">
+		</div>
+	</fieldset>
+
+</form>
 
 <script type="text/javascript">
 YUI({
@@ -178,6 +311,130 @@ function(Y)
 	.render();
 
 	Y.Test.Runner.run();
+});
+
+function testPerformance(Y)
+{
+	var results = {};
+
+	// ancestor class
+
+	var n = Y.one('#b2');
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000; i++)
+	{
+		n.ancestor('.formmgr-row');
+	}
+	var t2 = new Date().getTime();
+
+	results.ancestor_class = t2-t1;
+
+	// ancestor tag
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000; i++)
+	{
+		n.ancestor('fieldset');
+	}
+	var t2 = new Date().getTime();
+
+	results.ancestor_tag = t2-t1;
+/*
+	// child class
+
+	n = Y.one('#info');
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000; i++)
+	{
+		n.one('.yiv-required');
+	}
+	var t2 = new Date().getTime();
+
+	results.child_class = t2-t1;
+
+	// child tag
+
+	n = Y.one('#info');
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000; i++)
+	{
+		n.one('input');
+	}
+	var t2 = new Date().getTime();
+
+	results.child_tag = t2-t1;
+
+	// children class
+
+	n = Y.one('#info');
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000; i++)
+	{
+		n.all('.yiv-required');
+	}
+	var t2 = new Date().getTime();
+
+	results.children_class = t2-t1;
+
+	// children tag
+
+	n = Y.one('#info');
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000; i++)
+	{
+		n.all('input');
+	}
+	var t2 = new Date().getTime();
+
+	results.children_tag = t2-t1;
+
+	// first child
+
+	n = Y.one('#info');
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000; i++)
+	{
+		n.one('*');
+	}
+	var t2 = new Date().getTime();
+
+	results.first_child = t2-t1;
+*/
+	return results;
+}
+
+YUI().use('node', function(Y)
+{
+	var results = testPerformance(Y);
+
+	var table = Y.one('#perf');
+	table.append('<tr><td>ancestor() class</td><td>' + results.ancestor_class + '</td><td id="perf-ancestor-class"></td></tr>');
+	table.append('<tr><td>ancestor() tag</td><td>' + results.ancestor_tag + '</td><td id="perf-ancestor-tag"></td></tr>');
+//	table.append('<tr><td>one() class</td><td>' + results.child_class + '</td><td id="perf-child-class"></td></tr>');
+//	table.append('<tr><td>one() tag</td><td>' + results.child_tag + '</td><td id="perf-child-tag"></td></tr>');
+//	table.append('<tr><td>all() class</td><td>' + results.children_class + '</td><td id="perf-children-class"></td></tr>');
+//	table.append('<tr><td>all() tag</td><td>' + results.children_tag + '</td><td id="perf-children-tag"></td></tr>');
+//	table.append('<tr><td>first child</td><td>' + results.first_child + '</td><td id="perf-first-child"></td></tr>');
+});
+
+YUI().use('gallery-node-optimizations', function(Y)
+{
+	var results = testPerformance(Y);
+
+	var table = Y.one('#perf');
+	Y.one('#perf-ancestor-class').set('innerHTML', results.ancestor_class);
+	Y.one('#perf-ancestor-tag').set('innerHTML', results.ancestor_tag);
+//	Y.one('#perf-child-class').set('innerHTML', results.child_class);
+//	Y.one('#perf-child-tag').set('innerHTML', results.child_tag);
+//	Y.one('#perf-children-class').set('innerHTML', results.children_class);
+//	Y.one('#perf-children-tag').set('innerHTML', results.children_tag);
+//	Y.one('#perf-first-child').set('innerHTML', results.first_child);
 });
 </script>
 
