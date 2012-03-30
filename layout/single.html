@@ -18,6 +18,7 @@
 	<script src="gallery-object-extras-debug.js"></script>
 	<script src="gallery-nodelist-extras2-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
+	<script src="gallery-layout-datatable-debug.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="assets/gallery-layout.css">
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
@@ -96,8 +97,8 @@ YUI({
 	filter: 'raw', combine: false,
 	gallery: 'gallery-2012.03.23-18-00'
 }).use(
-	'gallery-layout',
-	'datatable-datasource', 'datatable-scroll',
+	'gallery-layout', 'gallery-layout-datatable',
+	'datatable-datasource',
 	'gallery-paginator',
 function(Y) {
 "use strict";
@@ -249,28 +250,8 @@ function(Y) {
 		height:     '10px'	// force scrollbar on .yui3-datatable-data
 	});
 	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
-
+	table.plug(Y.Plugin.PageLayoutDataTableModule, {layout: page_layout});
 	table.render('#table');
-
-	page_layout.on('beforeResizeModule', function(e)
-	{
-		var node = e.bd;
-		if (node.get('id') == 'table-bd' && e.height == 'auto')
-		{
-			table.set('height', 'auto');
-			table.set('scrollable', 'x');
-		}
-	});
-
-	page_layout.on('afterResizeModule', function(e)
-	{
-		var node = e.bd;
-		if (node.get('id') == 'table-bd')
-		{
-			table.set('height', e.height+'px');
-			table.set('scrollable', true);
-		}
-	});
 
 	var first_request = true;
 	sendRequest();
