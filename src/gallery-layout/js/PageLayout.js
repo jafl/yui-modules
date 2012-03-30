@@ -810,13 +810,13 @@ Y.extend(PageLayout, Y.Base,
 				var nub = module.getFirstElementByClassName(collapse_nub_pattern);
 				if (nub)
 				{
-					Y.on('PageLayoutCollapse|click', collapseModule, nub, this);
+					nub.on('PageLayoutCollapse|click', collapseModule, this);
 				}
 
 				nub = module.getFirstElementByClassName(expand_nub_pattern);
 				if (nub)
 				{
-					Y.on('PageLayoutCollapse|click', expandModule, nub, this);
+					nub.on('PageLayoutCollapse|click', expandModule, this);
 				}
 			},
 			this);
