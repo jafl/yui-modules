@@ -1,1 +1,0 @@
-../../yui3/yui3/build/datatable-column-widths/datatable-column-widths.js
