@@ -178,7 +178,7 @@
 	<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 <span class="p">};</span>
 
-<span class="cm">/**********************************************************************</span>
+<span class="cm">/*</span>
 <span class="cm"> * &lt;p&gt;Patch to speed up search for a single class name or single tag name.</span>
 <span class="cm"> * To use a regular expression, call getElementsByClassName().&lt;/p&gt;</span>
 <span class="cm"> * </span>
@@ -186,38 +186,37 @@
 <span class="cm"> * @param fn {String|Function} selector string or boolean method for testing elements</span>
 <span class="cm"> * @return {Node}</span>
 <span class="cm"> */</span>
+<span class="cm">/*</span>
+<span class="cm">var orig_one = Y.Node.prototype.one;</span>
 
-<span class="kd">var</span> <span class="nx">orig_one</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">one</span><span class="p">;</span>
+<span class="cm">Y.Node.prototype.one = function(selector)</span>
+<span class="cm">{</span>
+<span class="cm">	if (Y.Lang.isString(selector))</span>
+<span class="cm">	{</span>
+<span class="cm">		if (selector == &#39;*&#39;)</span>
+<span class="cm">		{</span>
+<span class="cm">			Y.log(&#39;one() returning children[0]&#39;, &#39;debug&#39;, &#39;Node&#39;);</span>
+<span class="cm">			return Y.one(Y.Node.getDOMNode(this).children[0]);</span>
+<span class="cm">		}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">one</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="cm">/* string */</span> <span class="nx">selector</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
-	<span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">selector</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;one() returning children[0]&#39;</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
-			<span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">getDOMNode</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-		<span class="p">}</span>
+<span class="cm">		var m = tag_class_name_re.exec(selector);</span>
+<span class="cm">		if (m &amp;&amp; m.length)</span>
+<span class="cm">		{</span>
+<span class="cm">			Y.log(&#39;one() calling getElementsByClassName() with &#39; + m[2] + &#39;,&#39; + m[1], &#39;debug&#39;, &#39;Node&#39;);</span>
+<span class="cm">			return this.getFirstElementByClassName(m[2], m[1]);</span>
+<span class="cm">		}</span>
 
-		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">tag_class_name_re</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;one() calling getElementsByClassName() with &#39;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
-			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFirstElementByClassName</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-		<span class="p">}</span>
+<span class="cm">		if (tag_name_re.test(selector))</span>
+<span class="cm">		{</span>
+<span class="cm">			Y.log(&#39;one() calling getElementsByTagName() with &#39; + selector, &#39;debug&#39;, &#39;Node&#39;);</span>
+<span class="cm">			return this.getElementsByTagName(selector).item(0);</span>
+<span class="cm">		}</span>
+<span class="cm">	}</span>
 
-		<span class="k">if</span> <span class="p">(</span><span class="nx">tag_name_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
-		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;one() calling getElementsByTagName() with &#39;</span> <span class="o">+</span> <span class="nx">selector</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
-			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="nx">selector</span><span class="p">).</span><span class="nx">item</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-
-	<span class="k">return</span> <span class="nx">orig_one</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
-<span class="p">};</span>
-
-<span class="cm">/**********************************************************************</span>
+<span class="cm">	return orig_one.apply(this, arguments);</span>
+<span class="cm">};</span>
+<span class="cm">*/</span>
+<span class="cm">/*</span>
 <span class="cm"> * &lt;p&gt;Patch to speed up search for a single class name or single tag name.</span>
 <span class="cm"> * To use a regular expression, call getElementsByClassName().&lt;/p&gt;</span>
 <span class="cm"> * </span>
@@ -225,31 +224,30 @@
 <span class="cm"> * @param fn {String|Function} selector string or boolean method for testing elements</span>
 <span class="cm"> * @return {Node}</span>
 <span class="cm"> */</span>
+<span class="cm">/*</span>
+<span class="cm">var orig_all = Y.Node.prototype.all;</span>
 
-<span class="kd">var</span> <span class="nx">orig_all</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">all</span><span class="p">;</span>
+<span class="cm">Y.Node.prototype.all = function(selector)</span>
+<span class="cm">{</span>
+<span class="cm">	if (Y.Lang.isString(selector))</span>
+<span class="cm">	{</span>
+<span class="cm">		var m = tag_class_name_re.exec(selector);</span>
+<span class="cm">		if (m &amp;&amp; m.length)</span>
+<span class="cm">		{</span>
+<span class="cm">			Y.log(&#39;all() calling getElementsByClassName() with &#39; + m[2] + &#39;,&#39; + m[1], &#39;debug&#39;, &#39;Node&#39;);</span>
+<span class="cm">			return this.getElementsByClassName(m[2], m[1]);</span>
+<span class="cm">		}</span>
 
-<span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">all</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span>
-	<span class="cm">/* string */</span> <span class="nx">selector</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
-	<span class="p">{</span>
-		<span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">tag_class_name_re</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">m</span> <span class="o">&amp;&amp;</span> <span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;all() calling getElementsByClassName() with &#39;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
-			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-		<span class="p">}</span>
+<span class="cm">		if (tag_name_re.test(selector))</span>
+<span class="cm">		{</span>
+<span class="cm">			Y.log(&#39;all() calling getElementsByTagName() with &#39; + selector, &#39;debug&#39;, &#39;Node&#39;);</span>
+<span class="cm">			return this.getElementsByTagName(selector);</span>
+<span class="cm">		}</span>
+<span class="cm">	}</span>
 
-		<span class="k">if</span> <span class="p">(</span><span class="nx">tag_name_re</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">selector</span><span class="p">))</span>
-		<span class="p">{</span>
-			<span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;all() calling getElementsByTagName() with &#39;</span> <span class="o">+</span> <span class="nx">selector</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="s1">&#39;Node&#39;</span><span class="p">);</span>
-			<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="nx">selector</span><span class="p">);</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-
-	<span class="k">return</span> <span class="nx">orig_all</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
-<span class="p">};</span>
-
+<span class="cm">	return orig_all.apply(this, arguments);</span>
+<span class="cm">};</span>
+<span class="cm">*/</span>
 <span class="cm">/**********************************************************************</span>
 <span class="cm"> * &lt;p&gt;Searches for descendants by class name.  Unlike Y.all(), this</span>
 <span class="cm"> * function accepts a regular expression.&lt;/p&gt;</span>
@@ -415,7 +413,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Node~optimizations.html#method_all", "access": "", "host": "Node~optimizations", "type": "method", "name": "all"}, {"url": "Node~optimizations.html#method_ancestor", "access": "", "host": "Node~optimizations", "type": "method", "name": "ancestor"}, {"url": "Node~dimensions.html#method_emToPx", "access": "", "host": "Node~dimensions", "type": "method", "name": "emToPx"}, {"url": "Node~optimizations.html#method_getAncestorByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByClassName"}, {"url": "Node~optimizations.html#method_getAncestorByTagName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByTagName"}, {"url": "Node~optimizations.html#method_getElementsByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getElementsByClassName"}, {"url": "Node~optimizations.html#method_getFirstElementByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getFirstElementByClassName"}, {"url": "Node~dimensions.html#method_horizMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "horizMarginBorderPadding"}, {"url": "Node~dimensions.html#method_insideHeight", "access": "", "host": "Node~dimensions", "type": "method", "name": "insideHeight"}, {"url": "Node~dimensions.html#method_insideWidth", "access": "", "host": "Node~dimensions", "type": "method", "name": "insideWidth"}, {"url": "Node~optimizations.html#method_one", "access": "", "host": "Node~optimizations", "type": "method", "name": "one"}, {"url": "Node~dimensions.html#method_parseDimensionStyle", "access": "", "host": "Node~dimensions", "type": "method", "name": "parseDimensionStyle"}, {"url": "Node~dimensions.html#method_totalHeight", "access": "", "host": "Node~dimensions", "type": "method", "name": "totalHeight"}, {"url": "Node~dimensions.html#method_totalWidth", "access": "", "host": "Node~dimensions", "type": "method", "name": "totalWidth"}, {"url": "Node~dimensions.html#method_vertMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "vertMarginBorderPadding"}, {"url": "Node~optimizations.html#property_Y.Node.class_re_prefix", "access": "", "host": "Node~optimizations", "type": "property", "name": "Y.Node.class_re_prefix"}, {"url": "Node~optimizations.html#property_Y.Node.class_re_suffix", "access": "", "host": "Node~optimizations", "type": "property", "name": "Y.Node.class_re_suffix"}];
+    var ALL_YUI_PROPS = [{"url": "Node~optimizations.html#method_ancestor", "access": "", "host": "Node~optimizations", "type": "method", "name": "ancestor"}, {"url": "Node~dimensions.html#method_emToPx", "access": "", "host": "Node~dimensions", "type": "method", "name": "emToPx"}, {"url": "Node~optimizations.html#method_getAncestorByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByClassName"}, {"url": "Node~optimizations.html#method_getAncestorByTagName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getAncestorByTagName"}, {"url": "Node~optimizations.html#method_getElementsByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getElementsByClassName"}, {"url": "Node~optimizations.html#method_getFirstElementByClassName", "access": "", "host": "Node~optimizations", "type": "method", "name": "getFirstElementByClassName"}, {"url": "Node~dimensions.html#method_horizMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "horizMarginBorderPadding"}, {"url": "Node~dimensions.html#method_insideHeight", "access": "", "host": "Node~dimensions", "type": "method", "name": "insideHeight"}, {"url": "Node~dimensions.html#method_insideWidth", "access": "", "host": "Node~dimensions", "type": "method", "name": "insideWidth"}, {"url": "Node~dimensions.html#method_parseDimensionStyle", "access": "", "host": "Node~dimensions", "type": "method", "name": "parseDimensionStyle"}, {"url": "Node~dimensions.html#method_totalHeight", "access": "", "host": "Node~dimensions", "type": "method", "name": "totalHeight"}, {"url": "Node~dimensions.html#method_totalWidth", "access": "", "host": "Node~dimensions", "type": "method", "name": "totalWidth"}, {"url": "Node~dimensions.html#method_vertMarginBorderPadding", "access": "", "host": "Node~dimensions", "type": "method", "name": "vertMarginBorderPadding"}, {"url": "Node~optimizations.html#property_Y.Node.class_re_prefix", "access": "", "host": "Node~optimizations", "type": "property", "name": "Y.Node.class_re_prefix"}, {"url": "Node~optimizations.html#property_Y.Node.class_re_suffix", "access": "", "host": "Node~optimizations", "type": "property", "name": "Y.Node.class_re_suffix"}];
 </script>
 </body>
 </html>
