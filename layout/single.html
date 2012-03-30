@@ -5,14 +5,10 @@
 	<title>Layout Manager Example</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-	<script src="http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js"></script>
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/reset-min.css">
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssfonts/fonts-min.css">
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssbase/base-min.css">
-
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.4.1/build/oop/oop-min.js&amp;3.4.1/build/event-custom-base/event-custom-base-min.js&amp;3.4.1/build/event-custom-complex/event-custom-complex-min.js&amp;3.4.1/build/attribute-base/attribute-base-min.js&amp;3.4.1/build/attribute-complex/attribute-complex-min.js&amp;3.4.1/build/base-base/base-base-min.js&amp;3.4.1/build/pluginhost-base/pluginhost-base-min.js&amp;3.4.1/build/pluginhost-config/pluginhost-config-min.js&amp;3.4.1/build/base-pluginhost/base-pluginhost-min.js&amp;3.4.1/build/base-build/base-build-min.js&amp;3.4.1/build/array-extras/array-extras-min.js&amp;3.4.1/build/dom-core/dom-core-min.js&amp;3.4.1/build/dom-base/dom-base-min.js&amp;3.4.1/build/selector-native/selector-native-min.js&amp;3.4.1/build/selector/selector-min.js&amp;3.4.1/build/node-core/node-core-min.js&amp;3.4.1/build/node-base/node-base-min.js&amp;3.4.1/build/event-base/event-base-min.js&amp;3.4.1/build/dom-style/dom-style-min.js&amp;3.4.1/build/node-style/node-style-min.js&amp;3.4.1/build/arraylist/arraylist-min.js&amp;3.4.1/build/recordset-base/recordset-base-min.js&amp;3.4.1/build/event-synthetic/event-synthetic-min.js&amp;3.4.1/build/event-focus/event-focus-min.js&amp;3.4.1/build/classnamemanager/classnamemanager-min.js&amp;3.4.1/build/widget-base/widget-base-min.js&amp;3.4.1/build/widget-htmlparser/widget-htmlparser-min.js&amp;3.4.1/build/event-delegate/event-delegate-min.js&amp;3.4.1/build/node-event-delegate/node-event-delegate-min.js&amp;3.4.1/build/widget-uievents/widget-uievents-min.js&amp;3.4.1/build/widget-skin/widget-skin-min.js&amp;3.4.1/build/substitute/substitute-min.js&amp;3.4.1/build/event-mouseenter/event-mouseenter-min.js&amp;3.4.1/build/datatable-base/datatable-base-min.js&amp;3.4.1/build/plugin/plugin-min.js&amp;3.4.1/build/datasource-local/datasource-local-min.js&amp;3.4.1/build/datatable-datasource/datatable-datasource-min.js&amp;3.4.1/build/datatable-scroll/datatable-scroll-min.js&amp;3.4.1/build/event-key/event-key-min.js&amp;3.4.1/build/intl/intl-min.js" charset="utf-8"></script>
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?gallery-2012.01.11-21-03/build/gallery-nodelist-extras/gallery-nodelist-extras-min.js" charset="utf-8"></script>
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.4.1/build/node-pluginhost/node-pluginhost-min.js&amp;3.4.1/build/dom-screen/dom-screen-min.js&amp;3.4.1/build/node-screen/node-screen-min.js" charset="utf-8"></script>
+	<script src="http://yui.yahooapis.com/3.5.0pr4/build/yui/yui-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0pr4/build/cssreset/reset-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0pr4/build/cssfonts/fonts-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0pr4/build/cssbase/base-min.css">
 
 	<script src="gallery-layout-debug.js"></script>
 	<script src="gallery-layout-rows-debug.js"></script>
@@ -22,7 +18,14 @@
 	<script src="gallery-object-extras-debug.js"></script>
 	<script src="gallery-nodelist-extras2-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.4.1/build/widget-base/assets/skins/sam/widget-base.css&3.4.1/build/datatable-base/assets/skins/sam/datatable-base.css" />
+
+	<script src="datatable-base.js"></script>
+	<script src="datatable-core.js"></script>
+	<script src="datatable-head.js"></script>
+	<script src="datatable-body.js"></script>
+	<script src="datatable-scroll.js"></script>
+	<script src="datatable-column-widths.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="assets/gallery-layout.css">
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
 
@@ -53,7 +56,7 @@
 	.yui3-skin-sam .layout-bd .yui3-datatable-bd {border:0;}
 	</style>
 </head>
-<!--  .yui3-datatable-scrollable .yui3-datatable-bd -->
+
 <body class="yui3-skin-sam">
 
 <div class="layout-hd">
@@ -97,8 +100,8 @@
 
 <script type="text/javascript">
 YUI({
-//	filter: 'raw', combine: false,
-	gallery: 'gallery-2012.01.11-21-03'
+	filter: 'raw', combine: false,
+	gallery: 'gallery-2012.03.23-18-00'
 }).use(
 	'gallery-layout',
 	'datatable-datasource', 'datatable-scroll',
@@ -245,13 +248,14 @@ function(Y) {
 		}
 	];
 
-	var table = new Y.DataTable.Base({columnset: cols});
-	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
-	table.plug(Y.Plugin.DataTableScroll,
+	var table = new Y.DataTable(
 	{
-		width:  '100%',
-		height: '10px'	// force scrollbar on .yui3-datatable-bd
+		columns:    cols,
+		scrollable: true,
+		width:      '100%',
+		height:     '10px'	// force scrollbar on .yui3-datatable-data
 	});
+	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
 
 	table.render('#table');
 
@@ -260,7 +264,8 @@ function(Y) {
 		var node = e.bd;
 		if (node.get('id') == 'table-bd' && e.height == 'auto')
 		{
-			node.one('.yui3-datatable-bd').setStyle('height', 'auto');
+			table.set('height', 'auto');
+			table.set('scrollable', 'x');
 		}
 	});
 
@@ -269,8 +274,8 @@ function(Y) {
 		var node = e.bd;
 		if (node.get('id') == 'table-bd')
 		{
-			var h = e.height - node.one('.yui3-datatable-hd').totalHeight();
-			Y.one('.yui3-datatable-bd').setStyle('height', h+'px');
+			table.set('height', e.height+'px');
+			table.set('scrollable', true);
 		}
 	});
 
