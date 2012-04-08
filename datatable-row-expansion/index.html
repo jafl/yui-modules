@@ -174,22 +174,13 @@ function(Y) {
 			}
 		},
 		{ key: Y.Plugin.RowExpansion.column_key, label: '&nbsp;' },
-		{ key: 'title', label: 'Title', quickEdit: true },
+		{ key: 'title', label: 'Title' },
 		{ key: 'year', label: 'Year' },
-		{ key: 'quantity', label: 'Quantity',
-			quickEdit:
-			{
-				copyDown:   true,
-				validation: { css: 'yiv-required yiv-integer:[0,]' }
-			}
-		}
+		{ key: 'quantity', label: 'Quantity' }
 	];
 
-	var table = new Y.DataTable(
-	{
-		columns: cols
-	});
-	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
+	var table = new Y.DataTable({ columns: cols });
+	table.plug(Y.Plugin.DataTableDataSource, { datasource: ds });
 	table.plug(Y.Plugin.RowExpansion,
 	{
 		uniqueIdKey: 'id',
