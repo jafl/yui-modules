@@ -38,12 +38,11 @@ Treeble.buildTwistdownFormatter = function(sendRequest)
 
 		if (o.data[key])
 		{
-			var path  = o.data._yui_node_path;
-			var open  = ds.isOpen(path);
-			var clazz = open ? 'row-open' : 'row-closed';
+			var path = o.data._yui_node_path;
 
 			o.td.addClass('row-toggle');
-			o.td.replaceClass(/row-(open|closed)/, clazz);
+			o.td.replaceClass('row-(open|closed)',
+				ds.isOpen(path) ? 'row-open' : 'row-closed');
 
 			o.td.on('click', function()
 			{
