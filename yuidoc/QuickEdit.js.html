@@ -292,41 +292,6 @@
 	<span class="k">return</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">value</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>		<span class="c1">// don&#39;t need to check for zero</span>
 <span class="p">};</span>
 
-<span class="kd">function</span> <span class="nx">getSiblingTdEl</span><span class="p">(</span>
-	<span class="cm">/* Node */</span>	<span class="nx">el</span><span class="p">,</span>
-	<span class="cm">/* int */</span>	<span class="nx">dir</span><span class="p">)</span>
-<span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">tr</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="k">this</span><span class="p">.</span><span class="nx">_tbodyNode</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">).</span><span class="nx">some</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">el</span><span class="p">))</span>
-		<span class="p">{</span>
-			<span class="nx">tr</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
-			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-		<span class="p">}</span>
-	<span class="p">});</span>
-
-	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">tr</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
-	<span class="p">}</span>
-
-	<span class="kd">var</span> <span class="nx">cell</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">getAncestorByTagName</span><span class="p">(</span><span class="s1">&#39;td&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-
-	<span class="kd">var</span> <span class="nx">col_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-	<span class="nx">tr</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">).</span><span class="nx">some</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
-	<span class="p">{</span>
-		<span class="k">if</span> <span class="p">(</span><span class="nx">node</span> <span class="o">===</span> <span class="nx">cell</span><span class="p">)</span>
-		<span class="p">{</span>
-			<span class="nx">col_index</span> <span class="o">=</span> <span class="nx">index</span><span class="p">;</span>
-			<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-		<span class="p">}</span>
-	<span class="p">});</span>
-
-	<span class="nx">tr</span> <span class="o">=</span> <span class="p">(</span><span class="nx">dir</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">tr</span><span class="p">.</span><span class="nx">previous</span><span class="p">()</span> <span class="o">:</span> <span class="nx">tr</span><span class="p">.</span><span class="nx">next</span><span class="p">());</span>
-	<span class="k">return</span> <span class="nx">tr</span> <span class="o">?</span> <span class="nx">tr</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">).</span><span class="nx">item</span><span class="p">(</span><span class="nx">col_index</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
-<span class="p">}</span>
-
 <span class="cm">/**</span>
 <span class="cm"> * Copy value from first cell to all other cells in the column.</span>
 <span class="cm"> *</span>
@@ -350,7 +315,7 @@
 
 	<span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="nx">cell</span> <span class="o">=</span> <span class="nx">getSiblingTdEl</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">cell</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+		<span class="nx">cell</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getCell</span><span class="p">(</span><span class="nx">cell</span><span class="p">,</span> <span class="s1">&#39;below&#39;</span><span class="p">);</span>
 		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">cell</span><span class="p">)</span>
 		<span class="p">{</span>
 			<span class="k">break</span><span class="p">;</span>
@@ -410,7 +375,7 @@
 <span class="cm"> */</span>
 <span class="kd">function</span> <span class="nx">moveFocus</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">cell</span> <span class="o">=</span> <span class="nx">getSiblingTdEl</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">charCode</span> <span class="o">==</span> <span class="mi">38</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">cell</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getCell</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">charCode</span> <span class="o">==</span> <span class="mi">38</span> <span class="o">?</span> <span class="s1">&#39;above&#39;</span> <span class="o">:</span> <span class="s1">&#39;below&#39;</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nx">cell</span><span class="p">)</span>
 	<span class="p">{</span>
 		<span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="nx">cell</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.quickedit-field&#39;</span><span class="p">);</span>
@@ -837,6 +802,7 @@
                                 <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-datatable-row-expansion.html" title="gallery-datatable-row-expansion">gallery-datatable-row-expansion</a></li>
                                 <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>

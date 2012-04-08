@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-datatable-row-expansion   row-expansion.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-datatable-row-expansion&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-datatable-row-expansion.html" title="gallery-datatable-row-expansion">gallery-datatable-row-expansion</a>
+                
+                 &gt; row-expansion.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Plugin for DataTable to show additional information for each row via</span>
+<span class="cm"> * a twistdown.  The result of the template is displayed across all the</span>
+<span class="cm"> * columns following the twistdown column.&lt;/p&gt;</span>
+<span class="cm"> * </span>
+<span class="cm"> * @module gallery-datatable-row-expansion</span>
+<span class="cm"> * @namespace Plugin</span>
+<span class="cm"> * @class RowExpansion</span>
+<span class="cm"> * @extends Plugin.Base</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object} configuration</span>
+<span class="cm"> */</span>
+
+<span class="kd">function</span> <span class="nx">RowExpansion</span><span class="p">(</span>
+	<span class="cm">/* object */</span> <span class="nx">config</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">RowExpansion</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">RowExpansion</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;DataTableRowExpansionPlugin&quot;</span><span class="p">;</span>
+<span class="nx">RowExpansion</span><span class="p">.</span><span class="nx">NS</span>   <span class="o">=</span> <span class="s2">&quot;rowexpander&quot;</span><span class="p">;</span>
+
+<span class="nx">RowExpansion</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * (Required) String template or function that returns a string.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config template</span>
+<span class="cm">	 * @type {String|Function}</span>
+<span class="cm">	 */</span>
+	<span class="nx">template</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="o">||</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">value</span><span class="p">));</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * (Required) Id of a column (usually not displayed) that yields a</span>
+<span class="cm">	 * unique value for each record.  Used to maintain the twistdown state</span>
+<span class="cm">	 * when paginating.</span>
+<span class="cm">	 * </span>
+<span class="cm">	 * @config uniqueIdKey</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 */</span>
+	<span class="nx">uniqueIdKey</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="s1">&#39;&#39;</span><span class="p">,</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * The key used to indicate which column contains the twistdown.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @property Y.RowExpansion.column_key</span>
+<span class="cm"> * @type {String}</span>
+<span class="cm"> * @value &quot;row-expander&quot;</span>
+<span class="cm"> */</span>
+<span class="nx">RowExpansion</span><span class="p">.</span><span class="nx">column_key</span> <span class="o">=</span> <span class="s1">&#39;row-expander&#39;</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">formatTwistdown</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">plugin</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">rowexpander</span><span class="p">;</span>
+	<span class="kd">var</span> <span class="nx">row_id</span> <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span> <span class="nx">plugin</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">)</span> <span class="p">];</span>
+	<span class="kd">var</span> <span class="nx">open</span>   <span class="o">=</span> <span class="nx">plugin</span><span class="p">.</span><span class="nx">open_rows</span><span class="p">[</span> <span class="nx">row_id</span> <span class="p">];</span>
+
+	<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;row-toggle&#39;</span><span class="p">);</span>
+	<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">replaceClass</span><span class="p">(</span><span class="s1">&#39;row-(open|closed)&#39;</span><span class="p">,</span> <span class="nx">open</span> <span class="o">?</span> <span class="s1">&#39;row-open&#39;</span> <span class="o">:</span> <span class="s1">&#39;row-closed&#39;</span><span class="p">);</span>
+
+	<span class="nx">o</span><span class="p">.</span><span class="nx">td</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="nx">plugin</span><span class="p">.</span><span class="nx">open_rows</span><span class="p">[</span> <span class="nx">row_id</span> <span class="p">]</span> <span class="o">=</span> <span class="o">!</span> <span class="nx">plugin</span><span class="p">.</span><span class="nx">open_rows</span><span class="p">[</span> <span class="nx">row_id</span> <span class="p">];</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">syncUI</span><span class="p">();</span>
+		<span class="p">});</span>
+	<span class="p">},</span>
+	<span class="k">this</span><span class="p">);</span>
+
+	<span class="nx">o</span><span class="p">.</span><span class="nx">cell</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;a class=&quot;row-expand-nub&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;/a&gt;&#39;</span><span class="p">);</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">open</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">pre_cells</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;=</span><span class="nx">plugin</span><span class="p">.</span><span class="nx">col_count</span><span class="p">.</span><span class="nx">pre</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">pre_cells</span> <span class="o">+=</span> <span class="s1">&#39;&lt;td class=&quot;yui3-datatable-cell pre-row-expansion&quot;&gt;&amp;nbsp;&lt;/td&gt;&#39;</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">tmpl</span> <span class="o">=</span> <span class="nx">plugin</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;template&#39;</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">))</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">tmpl</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">,</span> <span class="nx">o</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="kd">var</span> <span class="nx">row</span>       <span class="o">=</span> <span class="nx">o</span><span class="p">.</span><span class="nx">cell</span><span class="p">.</span><span class="nx">ancestor</span><span class="p">();</span>
+		<span class="kd">var</span> <span class="nx">extra_row</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">sub</span><span class="p">(</span>
+			<span class="s1">&#39;&lt;tr class=&quot;{c}&quot;&gt;&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;{pre}&#39;</span> <span class="o">+</span>
+				<span class="s1">&#39;&lt;td colspan=&quot;{post}&quot; class=&quot;yui3-datatable-cell post-row-expansion&quot;&gt;{tmpl}&lt;/td&gt;&#39;</span> <span class="o">+</span>
+			<span class="s1">&#39;&lt;/tr&gt;&#39;</span><span class="p">,</span>
+			<span class="p">{</span>
+				<span class="nx">c</span><span class="o">:</span>    <span class="nx">row</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;className&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; row-expansion&#39;</span><span class="p">,</span>
+				<span class="nx">pre</span><span class="o">:</span>  <span class="nx">pre_cells</span><span class="p">,</span>
+				<span class="nx">post</span><span class="o">:</span> <span class="nx">plugin</span><span class="p">.</span><span class="nx">col_count</span><span class="p">.</span><span class="nx">post</span><span class="p">,</span>
+				<span class="nx">tmpl</span><span class="o">:</span> <span class="nx">s</span>
+			<span class="p">});</span>
+
+		<span class="nx">row</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">extra_row</span><span class="p">,</span> <span class="s1">&#39;after&#39;</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">analyzeColumns</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kd">function</span> <span class="nx">countColumns</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="nx">col</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">col</span><span class="p">.</span><span class="nx">key</span> <span class="o">==</span> <span class="nx">RowExpansion</span><span class="p">.</span><span class="nx">column_key</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">col</span><span class="p">.</span><span class="nx">nodeFormatter</span> <span class="o">=</span> <span class="nx">formatTwistdown</span><span class="p">;</span>
+			<span class="nx">result</span><span class="p">.</span><span class="nx">found</span>      <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">col</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">result</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">col</span><span class="p">.</span><span class="nx">children</span><span class="p">,</span> <span class="nx">result</span><span class="p">,</span> <span class="nx">countColumns</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="nx">result</span><span class="p">[</span> <span class="nx">result</span><span class="p">.</span><span class="nx">found</span> <span class="o">?</span> <span class="s1">&#39;post&#39;</span> <span class="o">:</span> <span class="s1">&#39;pre&#39;</span> <span class="p">]</span><span class="o">++</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">this</span><span class="p">.</span><span class="nx">col_count</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;columns&#39;</span><span class="p">),</span>
+		<span class="p">{</span> <span class="nx">pre</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span> <span class="nx">post</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span> <span class="nx">found</span><span class="o">:</span><span class="kc">false</span> <span class="p">},</span>
+		<span class="nx">countColumns</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">RowExpansion</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span>
+<span class="p">{</span>
+	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">open_rows</span> <span class="o">=</span> <span class="p">{};</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;uniqueIdKeyChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">open_rows</span> <span class="o">=</span> <span class="p">{};</span>
+		<span class="p">});</span>
+
+		<span class="nx">analyzeColumns</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">afterHostEvent</span><span class="p">(</span><span class="s1">&#39;columnsChange&#39;</span><span class="p">,</span> <span class="nx">analyzeColumns</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Plugin&quot;</span><span class="p">);</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">RowExpansion</span> <span class="o">=</span> <span class="nx">RowExpansion</span><span class="p">;</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-anim-class.html" title="gallery-anim-class">gallery-anim-class</a></li>
+                                <li class=""><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class="selected"><a href="module_gallery-datatable-row-expansion.html" title="gallery-datatable-row-expansion">gallery-datatable-row-expansion</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-iterable-extras.html" title="gallery-iterable-extras">gallery-iterable-extras</a></li>
+                                <li class=""><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
+                                <li class=""><a href="module_gallery-layout-datatable.html" title="gallery-layout-datatable">gallery-layout-datatable</a></li>
+                                <li class=""><a href="module_gallery-linkedlist.html" title="gallery-linkedlist">gallery-linkedlist</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-mru-cache.html" title="gallery-mru-cache">gallery-mru-cache</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Plugin.RowExpansion.html" title="Plugin.RowExpansion">Plugin.RowExpansion</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="row-expansion.js.html" title="row-expansion.js">row-expansion.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "Plugin.RowExpansion.html#config_template", "access": "", "host": "Plugin.RowExpansion", "type": "config", "name": "template"}, {"url": "Plugin.RowExpansion.html#config_uniqueIdKey", "access": "", "host": "Plugin.RowExpansion", "type": "config", "name": "uniqueIdKey"}, {"url": "Plugin.RowExpansion.html#property_Y.RowExpansion.column_key", "access": "", "host": "Plugin.RowExpansion", "type": "property", "name": "Y.RowExpansion.column_key"}];
+</script>
+</body>
+</html>
