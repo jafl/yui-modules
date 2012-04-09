@@ -14,9 +14,13 @@
 	<script src="gallery-paginator-debug.js"></script>
 	<script src="gallery-funcprog-debug.js"></script>
 	<script src="gallery-object-extras-debug.js"></script>
+	<script src="gallery-node-optimizations-debug.js"></script>
+	<script src="gallery-math-debug.js"></script>
+	<script src="gallery-console-test-debug.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="assets/gallery-datatable-row-expansion.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-console-test.css" />
 </head>
 
 <body class="yui3-skin-sam">
@@ -28,6 +32,8 @@
 
 <div id="table"></div>
 
+<p>Expand rows and re-run the tests to check that <code>getCell</code> works correctly.</p>
+
 <hr>
 <p><a href="../yuidoc/module_gallery-datatable-row-expansion.html">Show me the documentation</a></p>
 <p><a href="/yui3-gallery/">Back to project list</a></p>
@@ -35,11 +41,13 @@
 <script type="text/javascript">
 YUI({
 //	filter: 'raw', combine: false,
-	gallery: 'gallery-2012.03.23-18-00'
+	gallery: 'gallery-2012.03.23-18-00',
+	logInclude: { TestRunner: true }
 }).use(
 	'gallery-datatable-row-expansion',
 	'datatable-datasource',
 	'gallery-paginator',
+	'test', 'console', 'console-filters', 'gallery-console-test', 'dd-plugin',
 function(Y) {
 "use strict";
 
@@ -155,12 +163,6 @@ function(Y) {
 	{
 		pg.setTotalRecords(e.response.meta.totalRecords, true);
 		pg.render();
-
-		if (first_request)	// hack to force data table to render correctly
-		{
-			first_request = false;
-			Y.later(100, null, sendRequest);
-		}
 	});
 
 // DataTable
@@ -197,6 +199,48 @@ function(Y) {
 
 	var first_request = true;
 	sendRequest();
+
+	// executed after first load
+
+	Y.Test.Runner.add(new Y.Test.Case(
+	{
+		name: 'RowExpansion',
+
+		testGetCell: function()
+		{
+			// absolute indexing
+			var td = table.getCell([2,3]);
+			Y.Assert.areEqual(data[2].year, td.get('innerHTML'));
+
+			// string offsets
+			Y.Assert.areEqual(data[2].title, table.getCell(td, 'prev').get('innerHTML'));
+			Y.Assert.areEqual(data[2].quantity, table.getCell(td, 'next').get('innerHTML'));
+			Y.Assert.areEqual(data[1].year, table.getCell(td, 'above').get('innerHTML'));
+			Y.Assert.areEqual(data[3].year, table.getCell(td, 'below').get('innerHTML'));
+
+			// numeric offset
+			Y.Assert.areEqual(data[1].title, table.getCell(td, [-1,-1]).get('innerHTML'));
+			Y.Assert.areEqual(data[1].quantity, table.getCell(td, [-1,1]).get('innerHTML'));
+			Y.Assert.areEqual(data[3].title, table.getCell(td, [1,-1]).get('innerHTML'));
+			Y.Assert.areEqual(data[3].quantity, table.getCell(td, [1,1]).get('innerHTML'));
+
+			// way off the edge
+			Y.Assert.isNull(table.getCell(td, [-20,0]));
+			Y.Assert.isNull(table.getCell(td, [+20,0]));
+		}
+	}));
+
+	new Y.Console(
+	{
+		newestOnTop: false,
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters, Y.Plugin.ConsoleTest ]
+	})
+	.render();
+
+	table.after('renderTable', function(e)
+	{
+		Y.Test.Runner.run();
+	});
 });
 </script>
 

@@ -30,6 +30,13 @@ function(Y)
 	{
 		name: 'Math extensions',
 
+		testSign: function()
+		{
+			Y.Assert.areSame(-1, Math.sign(-2));
+			Y.Assert.areSame(+1, Math.sign(+2));
+			Y.Assert.areSame( 0, Math.sign( 0));
+		},
+
 		testAdd: function()
 		{
 			Y.Assert.areSame(1, Math.add(1));
