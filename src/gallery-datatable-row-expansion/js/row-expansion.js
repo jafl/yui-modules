@@ -7,7 +7,7 @@
  *
  * @module gallery-datatable-row-expansion
  * @namespace Plugin
- * @class RowExpansion
+ * @class DataTableRowExpansion
  * @extends Plugin.Base
  * @constructor
  * @param config {Object} configuration
@@ -183,9 +183,9 @@ var cell = table.getCell(e.taregt, [0, 1];</pre></code>
 
 @method getCell
 @param {Number[]|Node} seed Array of row and column indexes, or a Node that
-    is either the cell itself or a descendant of one.
+   is either the cell itself or a descendant of one.
 @param {Number[]|String} [shift] Offset by which to identify the returned
-    cell Node
+   cell Node
 @return {Node}
 @since 3.5.0
 **/
@@ -314,4 +314,4 @@ Y.extend(RowExpansion, Y.Plugin.Base,
 });
 
 Y.namespace("Plugin");
-Y.Plugin.RowExpansion = RowExpansion;
+Y.Plugin.DataTableRowExpansion = RowExpansion;
