@@ -32,7 +32,7 @@
 
 <div id="table"></div>
 
-<p>Expand rows and re-run the tests to check that <code>getCell</code> works correctly.</p>
+<p>Expand rows and re-run the tests to check that <code>getCell</code> and  <code>getRow</code> work correctly.</p>
 
 <hr>
 <p><a href="../yuidoc/module_gallery-datatable-row-expansion.html">Show me the documentation</a></p>
@@ -227,6 +227,28 @@ function(Y) {
 			// way off the edge
 			Y.Assert.isNull(table.getCell(td, [-120,0]));
 			Y.Assert.isNull(table.getCell(td, [+120,0]));
+		},
+
+		testGetRow: function()
+		{
+			Y.Assert.areSame(table.getRow(0), table.getRow(table.getRecord(0)));
+			Y.Assert.areSame(table.getRow(1), table.getRow(table.getRecord(1)));
+			Y.Assert.areSame(table.getRow(2), table.getRow(table.getRecord(2)));
+		},
+
+		testGetRecord: function()
+		{
+			var r = table.getRecord(table.getCell([0,0]));
+			Y.Assert.areEqual('n1', r.get('id'));
+
+			var r = table.getRecord(table.getCell([1,0]));
+			Y.Assert.areEqual('n2', r.get('id'));
+
+			var r = table.getRecord(table.getCell([2,0]));
+			Y.Assert.areEqual('n3', r.get('id'));
+
+			var r = table.getRecord(1);
+			Y.Assert.areEqual('n2', r.get('id'));
 		}
 	}));
 
