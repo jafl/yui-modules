@@ -272,4 +272,4 @@ Y.namespace("Plugin");
 Y.Plugin.RowExpansion = RowExpansion;
 
 
-}, '@VERSION@' ,{requires:['datatable','plugin','gallery-funcprog','gallery-node-optimizations','gallery-math']});
+}, '@VERSION@' ,{requires:['datatable','plugin','gallery-funcprog','gallery-node-optimizations','gallery-math'], skinnable:true});
