@@ -219,12 +219,6 @@ function(Y) {
 		pg.render();
 
 		page_layout.elementResized('#table');
-
-		if (first_request)	// hack to force data table to render correctly
-		{
-			first_request = false;
-			Y.later(100, null, sendRequest);
-		}
 	});
 
 // DataTable
@@ -253,7 +247,6 @@ function(Y) {
 	table.plug(Y.Plugin.PageLayoutDataTableModule, {layout: page_layout});
 	table.render('#table');
 
-	var first_request = true;
 	sendRequest();
 });
 </script>
