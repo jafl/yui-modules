@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>DataTable State Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.5.0/build/yui/yui-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0/build/cssreset/reset-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0/build/cssfonts/fonts-min.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0/build/cssbase/base-min.css">
+
+	<script src="gallery-datatable-state-debug.js"></script>
+	<script src="gallery-paginator-debug.js"></script>
+	<script src="gallery-funcprog-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
+	<script src="gallery-node-optimizations-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
+
+</head>
+
+<body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/datatable-state">YUI 3 DataTable State</a> Example</h1>
+<hr>
+
+<div id="pg"></div>
+
+<div id="table"></div>
+
+<hr>
+<p><a href="../yuidoc/module_gallery-datatable-state.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<script type="text/javascript">
+YUI({
+	filter: 'raw', combine: false,
+	gallery: 'gallery-2012.04.10-14-57'
+}).use(
+	'gallery-datatable-state',
+	'datatable-datasource',
+	'gallery-paginator',
+	'dial',
+function(Y) {
+"use strict";
+
+// show something interesting in the module
+
+	function sendRequest()
+	{
+		table.datasource.load(
+		{
+			request: pg.getState()
+		});
+	}
+
+// Raw data
+
+	var data =
+	[
+		{id:'n1', year:1950, quantity:10, title:"The Lion, the Witch and the Wardrobe", author:"C.S. Lewis"},
+		{id:'n2', year:1951, quantity:5, title:"Prince Caspian: The Return to Narnia", author:"C.S. Lewis"},
+		{id:'n3', year:1952, quantity:2, title:"The Voyage of the Dawn Treader", author:"C.S. Lewis"},
+		{id:'n4', year:1953, quantity:6, title:"The Silver Chair", author:"C.S. Lewis"},
+		{id:'n5', year:1954, quantity:9, title:"The Horse and His Boy", author:"C.S. Lewis"},
+		{id:'n6', year:1955, quantity:4, title:"The Magician's Nephew", author:"C.S. Lewis"},
+		{id:'n7', year:1956, quantity:8, title:"The Last Battle", author:"C.S. Lewis"},
+		{id:'lsf1', year:1938, quantity:10, title:"Out of the Silent Planet", author:"C.S. Lewis"},
+		{id:'lsf2', year:1943, quantity:5, title:"Perelandra", author:"C.S. Lewis"},
+		{id:'lsf3', year:1945, quantity:2, title:"That Hideous Strength", author:"C.S. Lewis"},
+		{id:'p1', year:1995, quantity:7, title:"Northern Lights", author:"Philip Pullman"},
+		{id:'p2', year:1997, quantity:5, title:"The Subtle Knife", author:"Philip Pullman"},
+		{id:'p3', year:2000, quantity:8, title:"The Amber Spyglass", author:"Philip Pullman"},
+		{id:'t0', year:1937, quantity:5, title:"The Hobbit", author:"J. R. R. Tolkien"},
+		{id:'t1', year:1955, quantity:12, title:"The Fellowship of the Ring", author:"J. R. R. Tolkien"},
+		{id:'t2', year:1955, quantity:0, title:"The Two Towers", author:"J. R. R. Tolkien"},
+		{id:'t3', year:1955, quantity:8, title:"The Return of the King", author:"J. R. R. Tolkien"},
+		{id:'pd', year:1966, quantity:5, title:"Do Androids Dream of Electric Sheep?", author:"Philip K. Dick"},
+		{id:'h1', year:1959, quantity:4, title:"Starship Troopers", author:"Robert A. Heinlein"},
+		{id:'h2', year:1961, quantity:7, title:"Stranger in a Strange Land", author:"Robert A. Heinlein"},
+		{id:'h3', year:1966, quantity:3, title:"The Moon Is a Harsh Mistress", author:"Robert A. Heinlein"},
+		{id:'v1', year:1946, quantity:3, title:"Slan", author:"A. E. van Vogt"},
+		{id:'v2', year:1950, quantity:5, title:"The Voyage of the Space Beagle", author:"A. E. van Vogt"},
+		{id:'v3', year:1970, quantity:8, title:"Quest for the Future", author:"A. E. van Vogt"},
+		{id:'d1', year:1859, quantity:5, title:"On the Origin of Species by Means of Natural Selection, or the Preservation of Favoured Races in the Struggle for Life", author:"Charles Robert Darwin"},
+		{id:'d2', year:1881, quantity:2, title:"The Formation of Vegetable Mould through the Action of Worms", author:"Charles Robert Darwin"},
+		{id:'e1', year:1905, quantity:8, title:"On a Heuristic Viewpoint Concerning the Production and Transformation of Light", author:"Albert Einstein"},
+		{id:'e2', year:1905, quantity:5, title:"On the Electrodynamics of Moving Bodies", author:"Albert Einstein"},
+		{id:'e3', year:1917, quantity:7, title:"Kosmologische Betrachtungen zur allgemeinen Relativit&auml;tstheorie", author:"Albert Einstein"},
+		{id:'e4', year:1935, quantity:3, title:"Can Quantum-Mechanical Description of Physical Reality Be Considered Complete?", author:"Albert Einstein"},
+		{id:'g1', year:1610, quantity:5, title:"Sidereus Nuncius", author:"Galileo Galilei"},
+		{id:'g2', year:1615, quantity:2, title:"Letter to the Grand Duchess Christina", author:"Galileo Galilei"},
+		{id:'g3', year:1632, quantity:6, title:"Dialogo sopra i due massimi sistemi del mondo", author:"Galileo Galilei"},
+		{id:'i1', year:1671, quantity:7, title:"Method of Fluxions", author:"Isaac Newton"},
+		{id:'i2', year:1687, quantity:4, title:"Philosophi&aelig; Naturalis Principia Mathematica", author:"Isaac Newton"},
+		{id:'i3', year:1704, quantity:3, title:"Opticks", author:"Isaac Newton"}
+	];
+
+// Data Source
+
+	// extend local data source to understand pagination
+
+	function CustomDataSource()
+	{
+		CustomDataSource.superclass.constructor.apply(this, arguments);
+	}
+
+	CustomDataSource.NAME = "customdatasource";
+
+	Y.extend(CustomDataSource, Y.DataSource.Local,
+	{
+		_defDataFn: function(e)
+		{
+			var response =
+			{
+				results: e.data.slice(e.request.recordOffset, e.request.recordOffset + e.request.rowsPerPage),
+				meta:
+				{
+					totalRecords: data.length
+				}
+			};
+
+			this.fire("response", Y.mix({response: response}, e));
+		}
+	});
+
+	// create data source
+
+	var ds = new CustomDataSource({source: data});
+
+// Paginator
+
+	function updatePaginator(
+		/* object */	state)
+	{
+		this.setPage(state.page, true);
+		this.setRowsPerPage(state.rowsPerPage, true);
+		sendRequest();
+	}
+
+	var pg = new Y.Paginator(
+	{
+		totalRecords: 2,
+		rowsPerPage: 2,
+		template: '{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} <span class="rpp">Rows per page:</span> {RowsPerPageDropdown}',
+		rowsPerPageOptions:    [2,5,10,50],
+		firstPageLinkLabel:    '|&lt;',
+		previousPageLinkLabel: '&lt;',
+		nextPageLinkLabel:     '&gt;',
+		lastPageLinkLabel:     '&gt;|'
+	});
+	pg.on('changeRequest', updatePaginator);
+	pg.render('#pg');
+
+	ds.on('response', function(e)
+	{
+		pg.setTotalRecords(e.response.meta.totalRecords, true);
+		pg.render();
+	});
+
+// DataTable
+
+	var cols =
+	[
+		{ key: 'select', label: '&nbsp;',
+			nodeFormatter: function(o)
+			{
+				o.cell.set('innerHTML', '<input type="checkbox" />');
+			}
+		},
+		{ key: 'title', label: 'Title' },
+		{ key: 'year', label: 'Year' },
+		{ key: 'quantity', label: 'Quantity',
+			nodeFormatter: function(o)
+			{
+				new Y.Dial(
+				{
+					min:                0,
+					max:                50,
+					stepsPerRevolution: 50,
+					value:              o.value
+				})
+				.set('strings',
+				{
+					'label':         'In stock:',
+					'resetStr':      'Reset',
+					'tooltipHandle': 'Drag to change quantity in stock.'
+				})
+				.render(o.cell);
+			}
+		},
+		{ key: 'notes', label: 'Notes',
+			nodeFormatter: function(o)
+			{
+				o.cell.set('innerHTML', '<textarea></textarea>');
+			}
+		}
+	];
+
+	var table = new Y.DataTable({ columns: cols });
+	table.plug(Y.Plugin.DataTableDataSource, { datasource: ds });
+	table.plug(Y.Plugin.DataTableState,
+	{
+		uniqueIdKey: 'id',
+		save:
+		[
+			{
+				column: 'select',
+				node:   'input',
+				key:    'checked',
+				temp:   true 
+			},
+			{
+				column: 'quantity',
+				widget: '.yui3-dial',
+				key:    'value'
+			},
+			{
+				column: 'notes',
+				node:   'textarea',
+				key:    'value'
+			}
+		]
+	});
+	table.render('#table');
+
+	sendRequest();
+});
+</script>
+
+</body>
+</html>

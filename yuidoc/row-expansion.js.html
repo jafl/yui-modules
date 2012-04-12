@@ -56,7 +56,7 @@
 <span class="cm"> *</span>
 <span class="cm"> * @module gallery-datatable-row-expansion</span>
 <span class="cm"> * @namespace Plugin</span>
-<span class="cm"> * @class RowExpansion</span>
+<span class="cm"> * @class DataTableRowExpansion</span>
 <span class="cm"> * @extends Plugin.Base</span>
 <span class="cm"> * @constructor</span>
 <span class="cm"> * @param config {Object} configuration</span>
@@ -212,6 +212,32 @@
 	<span class="nx">previous</span><span class="o">:</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="p">};</span>
 
+<span class="cm">/*</span>
+<span class="cm">Returns the `&lt;td&gt;` Node from the given row and column index.  Alternately,</span>
+<span class="cm">the `seed` can be a Node.  If so, the nearest ancestor cell is returned.</span>
+<span class="cm">If the `seed` is a cell, it is returned.  If there is no cell at the given</span>
+<span class="cm">coordinates, `null` is returned.</span>
+
+<span class="cm">Optionally, include an offset array or string to return a cell near the</span>
+<span class="cm">cell identified by the `seed`.  The offset can be an array containing the</span>
+<span class="cm">number of rows to shift followed by the number of columns to shift, or one</span>
+<span class="cm">of &quot;above&quot;, &quot;below&quot;, &quot;next&quot;, or &quot;previous&quot;.</span>
+
+<span class="cm">&lt;pre&gt;&lt;code&gt;// Previous cell in the previous row</span>
+<span class="cm">var cell = table.getCell(e.target, [-1, -1]);</span>
+
+<span class="cm">// Next cell</span>
+<span class="cm">var cell = table.getCell(e.target, &#39;next&#39;);</span>
+<span class="cm">var cell = table.getCell(e.taregt, [0, 1];&lt;/pre&gt;&lt;/code&gt;</span>
+
+<span class="cm">@method getCell</span>
+<span class="cm">@param {Number[]|Node} seed Array of row and column indexes, or a Node that</span>
+<span class="cm">   is either the cell itself or a descendant of one.</span>
+<span class="cm">@param {Number[]|String} [shift] Offset by which to identify the returned</span>
+<span class="cm">   cell Node</span>
+<span class="cm">@return {Node}</span>
+<span class="cm">@since 3.5.0</span>
+<span class="cm">**/</span>
 <span class="kd">function</span> <span class="nx">getCell</span><span class="p">(</span><span class="nx">seed</span><span class="p">,</span> <span class="nx">shift</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="kd">var</span> <span class="nx">tbody</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;container&#39;</span><span class="p">),</span>
@@ -286,16 +312,54 @@
 	<span class="k">return</span> <span class="p">(</span><span class="nx">cell</span> <span class="o">||</span> <span class="kc">null</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">replaceGetCell</span><span class="p">()</span>
+<span class="cm">/*</span>
+<span class="cm">Returns the `&lt;tr&gt;` Node from the given row index, Model, or Model&#39;s</span>
+<span class="cm">`clientId`.  If the rows haven&#39;t been rendered yet, or if the row can&#39;t be</span>
+<span class="cm">found by the input, `null` is returned.</span>
+
+<span class="cm">@method getRow</span>
+<span class="cm">@param {Number|String|Model} id Row index, Model instance, or clientId</span>
+<span class="cm">@return {Node}</span>
+<span class="cm">@since 3.5.0</span>
+<span class="cm">**/</span>
+<span class="kd">function</span> <span class="nx">getRow</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span>
 <span class="p">{</span>
-	<span class="kd">var</span> <span class="nx">table</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">);</span>
-	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">table</span><span class="p">.</span><span class="nx">body</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DataTable</span><span class="p">.</span><span class="nx">BodyView</span><span class="p">)</span> <span class="o">||</span>
-		<span class="nx">table</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">getCell</span> <span class="o">===</span> <span class="nx">getCell</span><span class="p">)</span>
+	<span class="kd">var</span> <span class="nx">tbody</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;container&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="kc">null</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">return</span><span class="p">;</span>
+		<span class="nx">id</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_idMap</span><span class="p">[</span><span class="nx">id</span><span class="p">.</span><span class="nx">get</span> <span class="o">?</span> <span class="nx">id</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;clientId&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="nx">id</span><span class="p">]</span> <span class="o">||</span> <span class="nx">id</span><span class="p">;</span>
 	<span class="p">}</span>
 
-	<span class="nx">table</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">getCell</span> <span class="o">=</span> <span class="nx">getCell</span><span class="p">;</span>
+	<span class="k">return</span> <span class="nx">tbody</span> <span class="o">&amp;&amp;</span>
+		<span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">getCell</span><span class="p">([</span><span class="nx">id</span><span class="p">,</span><span class="mi">0</span><span class="p">]).</span><span class="nx">ancestor</span><span class="p">()</span> <span class="o">:</span> <span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="nx">id</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">replaceGetters</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">body</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">body</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="nx">body</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">DataTable</span><span class="p">.</span><span class="nx">BodyView</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">orig_getCell</span> <span class="o">=</span> <span class="nx">body</span><span class="p">.</span><span class="nx">getCell</span><span class="p">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">orig_getRow</span>  <span class="o">=</span> <span class="nx">body</span><span class="p">.</span><span class="nx">getRow</span><span class="p">;</span>
+
+		<span class="nx">body</span><span class="p">.</span><span class="nx">getCell</span> <span class="o">=</span> <span class="nx">getCell</span><span class="p">;</span>
+		<span class="nx">body</span><span class="p">.</span><span class="nx">getRow</span>  <span class="o">=</span> <span class="nx">getRow</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">restoreGetters</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">body</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">body</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">orig_getCell</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">body</span><span class="p">.</span><span class="nx">getCell</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">orig_getCell</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">orig_getRow</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">body</span><span class="p">.</span><span class="nx">getRow</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">orig_getRow</span><span class="p">;</span>
+	<span class="p">}</span>
 <span class="p">}</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">RowExpansion</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span>
@@ -311,12 +375,17 @@
 		<span class="nx">analyzeColumns</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 		<span class="k">this</span><span class="p">.</span><span class="nx">afterHostEvent</span><span class="p">(</span><span class="s1">&#39;columnsChange&#39;</span><span class="p">,</span> <span class="nx">analyzeColumns</span><span class="p">);</span>
 
-		<span class="k">this</span><span class="p">.</span><span class="nx">afterHostEvent</span><span class="p">(</span><span class="s1">&#39;renderTable&#39;</span><span class="p">,</span> <span class="nx">replaceGetCell</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">afterHostEvent</span><span class="p">(</span><span class="s1">&#39;renderTable&#39;</span><span class="p">,</span> <span class="nx">replaceGetters</span><span class="p">);</span>
+	<span class="p">},</span>
+
+	<span class="nx">destructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="nx">restoreGetters</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
 <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Plugin&quot;</span><span class="p">);</span>
-<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">RowExpansion</span> <span class="o">=</span> <span class="nx">RowExpansion</span><span class="p">;</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">DataTableRowExpansion</span> <span class="o">=</span> <span class="nx">RowExpansion</span><span class="p">;</span>
 </pre></div>
 
                     </div>
@@ -339,6 +408,7 @@
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
                                 <li class="selected"><a href="module_gallery-datatable-row-expansion.html" title="gallery-datatable-row-expansion">gallery-datatable-row-expansion</a></li>
+                                <li class=""><a href="module_gallery-datatable-state.html" title="gallery-datatable-state">gallery-datatable-state</a></li>
                                 <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
@@ -370,7 +440,7 @@
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
-                                <li class=""><a href="Plugin.RowExpansion.html" title="Plugin.RowExpansion">Plugin.RowExpansion</a></li>
+                                <li class=""><a href="Plugin.DataTableRowExpansion.html" title="Plugin.DataTableRowExpansion">Plugin.DataTableRowExpansion</a></li>
                         </ul>
                     </div>
 
@@ -395,7 +465,7 @@
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Plugin.RowExpansion.html#config_template", "access": "", "host": "Plugin.RowExpansion", "type": "config", "name": "template"}, {"url": "Plugin.RowExpansion.html#config_uniqueIdKey", "access": "", "host": "Plugin.RowExpansion", "type": "config", "name": "uniqueIdKey"}, {"url": "Plugin.RowExpansion.html#property_Y.RowExpansion.column_key", "access": "", "host": "Plugin.RowExpansion", "type": "property", "name": "Y.RowExpansion.column_key"}, {"url": "Plugin.RowExpansion.html#property_Y.RowExpansion.row_class", "access": "", "host": "Plugin.RowExpansion", "type": "property", "name": "Y.RowExpansion.row_class"}];
+    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableRowExpansion.html#config_template", "access": "", "host": "Plugin.DataTableRowExpansion", "type": "config", "name": "template"}, {"url": "Plugin.DataTableRowExpansion.html#config_uniqueIdKey", "access": "", "host": "Plugin.DataTableRowExpansion", "type": "config", "name": "uniqueIdKey"}, {"url": "Plugin.DataTableRowExpansion.html#property_Y.RowExpansion.column_key", "access": "", "host": "Plugin.DataTableRowExpansion", "type": "property", "name": "Y.RowExpansion.column_key"}, {"url": "Plugin.DataTableRowExpansion.html#property_Y.RowExpansion.row_class", "access": "", "host": "Plugin.DataTableRowExpansion", "type": "property", "name": "Y.RowExpansion.row_class"}];
 </script>
 </body>
 </html>

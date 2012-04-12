@@ -203,7 +203,14 @@
 <span class="p">{</span>
 	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
 	<span class="p">{</span>
-		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">show</span> <span class="o">=</span> <span class="nx">show</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">host</span>       <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">orig_show</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">show</span><span class="p">;</span>
+		<span class="nx">host</span><span class="p">.</span><span class="nx">show</span>      <span class="o">=</span> <span class="nx">show</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="nx">destructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">show</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">orig_show</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">});</span>
 
@@ -231,6 +238,7 @@
                                 <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
                                 <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
                                 <li class=""><a href="module_gallery-datatable-row-expansion.html" title="gallery-datatable-row-expansion">gallery-datatable-row-expansion</a></li>
+                                <li class=""><a href="module_gallery-datatable-state.html" title="gallery-datatable-state">gallery-datatable-state</a></li>
                                 <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
                                 <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
                                 <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>

@@ -1,0 +1,364 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-datatable-state   state.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-datatable-state&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-datatable-state.html" title="gallery-datatable-state">gallery-datatable-state</a>
+                
+                 &gt; state.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+
+<span class="cm">/**********************************************************************</span>
+<span class="cm"> * &lt;p&gt;Plugin for DataTable to preserve state, either on a single page or</span>
+<span class="cm"> * across pages.&lt;/p&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module gallery-datatable-state</span>
+<span class="cm"> * @namespace Plugin</span>
+<span class="cm"> * @class DataTableState</span>
+<span class="cm"> * @extends Plugin.Base</span>
+<span class="cm"> * @constructor</span>
+<span class="cm"> * @param config {Object} configuration</span>
+<span class="cm"> */</span>
+
+<span class="kd">function</span> <span class="nx">State</span><span class="p">(</span>
+	<span class="cm">/* object */</span> <span class="nx">config</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">State</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">config</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">State</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s2">&quot;DataTableStatePlugin&quot;</span><span class="p">;</span>
+<span class="nx">State</span><span class="p">.</span><span class="nx">NS</span>   <span class="o">=</span> <span class="s2">&quot;state&quot;</span><span class="p">;</span>
+
+<span class="nx">State</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span>
+<span class="p">{</span>
+	<span class="cm">/**</span>
+<span class="cm">	 * (Required) Id of a column (usually not displayed) that yields a</span>
+<span class="cm">	 * unique value for each record.  The saved state is index by the value</span>
+<span class="cm">	 * of this column.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @config uniqueIdKey</span>
+<span class="cm">	 * @type {String}</span>
+<span class="cm">	 */</span>
+	<span class="nx">uniqueIdKey</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * (Required) List of objects specifying the values to be saved before</span>
+<span class="cm">	 * the table is re-rendered.  Each object must define:</span>
+<span class="cm">	 * &lt;dl&gt;</span>
+<span class="cm">	 * &lt;dt&gt;column&lt;/dt&gt;</span>
+<span class="cm">	 * &lt;dd&gt;the column key&lt;/dd&gt;</span>
+<span class="cm">	 * &lt;dt&gt;node or widget&lt;/dt&gt;</span>
+<span class="cm">	 * &lt;dd&gt;CSS selector to find either the node or the widget&#39;s container inside a cell&lt;/dd&gt;</span>
+<span class="cm">	 * &lt;dt&gt;key&lt;/dt&gt;</span>
+<span class="cm">	 * &lt;dd&gt;the value to pass to get/set&lt;/dd&gt;</span>
+<span class="cm">	 * &lt;/dl&gt;</span>
+<span class="cm">	 * If a value should not be maintained when paginating, specify temp:true.</span>
+<span class="cm">	 *</span>
+<span class="cm">	 * @config save</span>
+<span class="cm">	 * @type {Array}</span>
+<span class="cm">	 */</span>
+	<span class="nx">save</span><span class="o">:</span>
+	<span class="p">{</span>
+		<span class="nx">value</span><span class="o">:</span>     <span class="p">[],</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">removeKey</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">obj</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">delete</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">clearState</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">removeKey</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">key</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">analyzeColumns</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">_displayColumns</span><span class="p">;</span>
+
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;save&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="nx">item</span><span class="p">.</span><span class="nx">column_index</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">findIndexOf</span><span class="p">(</span><span class="nx">list</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="nx">item</span><span class="p">.</span><span class="nx">column</span><span class="p">;</span>
+		<span class="p">});</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">column_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">clearState</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">item</span><span class="p">.</span><span class="nx">column</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+	<span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">saveState</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">host</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">count</span>  <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
+	<span class="kd">var</span> <span class="nx">id_key</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">);</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;save&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">column_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+			<span class="kd">var</span> <span class="nx">cell</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">getCell</span><span class="p">([</span><span class="nx">i</span><span class="p">,</span> <span class="nx">item</span><span class="p">.</span><span class="nx">column_index</span><span class="p">]);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">cell</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">node</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">cell</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">node</span><span class="p">);</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+					<span class="p">{</span>
+						<span class="nx">value</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">widget</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">widget</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">getByNode</span><span class="p">(</span><span class="nx">cell</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">widget</span><span class="p">));</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">widget</span><span class="p">)</span>
+					<span class="p">{</span>
+						<span class="nx">value</span> <span class="o">=</span> <span class="nx">widget</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+
+			<span class="kd">var</span> <span class="nx">rec</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">getRecord</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">id</span>  <span class="o">=</span> <span class="nx">rec</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">id_key</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">[</span><span class="nx">id</span><span class="p">])</span>
+			<span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{};</span>
+			<span class="p">}</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">[</span> <span class="nx">id</span> <span class="p">][</span> <span class="nx">item</span><span class="p">.</span><span class="nx">column</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+	<span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">restoreState</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">host</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">);</span>
+	<span class="kd">var</span> <span class="nx">count</span>  <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
+	<span class="kd">var</span> <span class="nx">id_key</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;uniqueIdKey&#39;</span><span class="p">);</span>
+	<span class="nx">Y</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;save&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">column_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">rec</span>   <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">getRecord</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nx">state</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">[</span> <span class="nx">rec</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">id_key</span><span class="p">)</span> <span class="p">];</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">state</span><span class="p">[</span> <span class="nx">item</span><span class="p">.</span><span class="nx">column</span> <span class="p">];</span>
+				<span class="kd">var</span> <span class="nx">cell</span>  <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">getCell</span><span class="p">([</span><span class="nx">i</span><span class="p">,</span> <span class="nx">item</span><span class="p">.</span><span class="nx">column_index</span><span class="p">]);</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">cell</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">node</span><span class="p">)</span>
+					<span class="p">{</span>
+						<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">cell</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">node</span><span class="p">);</span>
+						<span class="k">if</span> <span class="p">(</span><span class="nx">node</span><span class="p">)</span>
+						<span class="p">{</span>
+							<span class="nx">node</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+						<span class="p">}</span>
+					<span class="p">}</span>
+					<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">widget</span><span class="p">)</span>
+					<span class="p">{</span>
+						<span class="kd">var</span> <span class="nx">widget</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="p">.</span><span class="nx">getByNode</span><span class="p">(</span><span class="nx">cell</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">widget</span><span class="p">));</span>
+						<span class="k">if</span> <span class="p">(</span><span class="nx">widget</span><span class="p">)</span>
+						<span class="p">{</span>
+							<span class="nx">widget</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+						<span class="p">}</span>
+					<span class="p">}</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">},</span>
+	<span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">State</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span>
+<span class="p">{</span>
+	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{};</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;uniqueIdKeyChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+		<span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{};</span>
+		<span class="p">});</span>
+
+		<span class="nx">analyzeColumns</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;saveChange&#39;</span><span class="p">,</span> <span class="nx">analyzeColumns</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">afterHostEvent</span><span class="p">(</span><span class="s1">&#39;columnsChange&#39;</span><span class="p">,</span> <span class="nx">analyzeColumns</span><span class="p">);</span>
+
+		<span class="kd">var</span> <span class="nx">host</span>        <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">);</span>
+		<span class="kd">var</span> <span class="nx">self</span>        <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+		<span class="kd">var</span> <span class="nx">orig_syncUI</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">orig_syncUI</span> <span class="o">=</span> <span class="nx">host</span><span class="p">.</span><span class="nx">syncUI</span><span class="p">;</span>
+		<span class="nx">host</span><span class="p">.</span><span class="nx">syncUI</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span>
+		<span class="p">{</span>
+			<span class="nx">saveState</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>
+			<span class="nx">orig_syncUI</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">host</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+			<span class="nx">restoreState</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>
+		<span class="p">}</span>
+
+		<span class="k">this</span><span class="p">.</span><span class="nx">onHostEvent</span><span class="p">(</span><span class="s1">&#39;dataChange&#39;</span><span class="p">,</span> <span class="nx">saveState</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">afterHostEvent</span><span class="p">(</span><span class="s1">&#39;dataChange&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span>
+		<span class="p">{</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nx">restoreState</span><span class="p">);</span>
+		<span class="p">});</span>
+	<span class="p">},</span>
+
+	<span class="nx">destructor</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">syncUI</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">orig_syncUI</span><span class="p">;</span>
+	<span class="p">},</span>
+
+	<span class="cm">/**</span>
+<span class="cm">	 * @return {Object} state for each row, indexed by uniqueIdKey and column key</span>
+<span class="cm">	 */</span>
+	<span class="nx">getState</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="nx">saveState</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+		<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s2">&quot;Plugin&quot;</span><span class="p">);</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">DataTableState</span> <span class="o">=</span> <span class="nx">State</span><span class="p">;</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_gallery-accordion-horiz-vert.html" title="gallery-accordion-horiz-vert">gallery-accordion-horiz-vert</a></li>
+                                <li class=""><a href="module_gallery-algorithms.html" title="gallery-algorithms">gallery-algorithms</a></li>
+                                <li class=""><a href="module_gallery-anim-class.html" title="gallery-anim-class">gallery-anim-class</a></li>
+                                <li class=""><a href="module_gallery-bulkedit.html" title="gallery-bulkedit">gallery-bulkedit</a></li>
+                                <li class=""><a href="module_gallery-busyoverlay.html" title="gallery-busyoverlay">gallery-busyoverlay</a></li>
+                                <li class=""><a href="module_gallery-canvas.html" title="gallery-canvas">gallery-canvas</a></li>
+                                <li class=""><a href="module_gallery-checkboxgroups.html" title="gallery-checkboxgroups">gallery-checkboxgroups</a></li>
+                                <li class=""><a href="module_gallery-chipper.html" title="gallery-chipper">gallery-chipper</a></li>
+                                <li class=""><a href="module_gallery-complexnumber.html" title="gallery-complexnumber">gallery-complexnumber</a></li>
+                                <li class=""><a href="module_gallery-console-test.html" title="gallery-console-test">gallery-console-test</a></li>
+                                <li class=""><a href="module_gallery-datatable-row-expansion.html" title="gallery-datatable-row-expansion">gallery-datatable-row-expansion</a></li>
+                                <li class="selected"><a href="module_gallery-datatable-state.html" title="gallery-datatable-state">gallery-datatable-state</a></li>
+                                <li class=""><a href="module_gallery-expiration-cache.html" title="gallery-expiration-cache">gallery-expiration-cache</a></li>
+                                <li class=""><a href="module_gallery-exprbuilder.html" title="gallery-exprbuilder">gallery-exprbuilder</a></li>
+                                <li class=""><a href="module_gallery-formmgr.html" title="gallery-formmgr">gallery-formmgr</a></li>
+                                <li class=""><a href="module_gallery-formmgr-css-validation.html" title="gallery-formmgr-css-validation">gallery-formmgr-css-validation</a></li>
+                                <li class=""><a href="module_gallery-formmgr-overlay-plugin.html" title="gallery-formmgr-overlay-plugin">gallery-formmgr-overlay-plugin</a></li>
+                                <li class=""><a href="module_gallery-funcprog.html" title="gallery-funcprog">gallery-funcprog</a></li>
+                                <li class=""><a href="module_gallery-instancemanager.html" title="gallery-instancemanager">gallery-instancemanager</a></li>
+                                <li class=""><a href="module_gallery-iterable-extras.html" title="gallery-iterable-extras">gallery-iterable-extras</a></li>
+                                <li class=""><a href="module_gallery-layout.html" title="gallery-layout">gallery-layout</a></li>
+                                <li class=""><a href="module_gallery-layout-datatable.html" title="gallery-layout-datatable">gallery-layout-datatable</a></li>
+                                <li class=""><a href="module_gallery-linkedlist.html" title="gallery-linkedlist">gallery-linkedlist</a></li>
+                                <li class=""><a href="module_gallery-math.html" title="gallery-math">gallery-math</a></li>
+                                <li class=""><a href="module_gallery-mathcanvas.html" title="gallery-mathcanvas">gallery-mathcanvas</a></li>
+                                <li class=""><a href="module_gallery-mru-cache.html" title="gallery-mru-cache">gallery-mru-cache</a></li>
+                                <li class=""><a href="module_gallery-multiobject.html" title="gallery-multiobject">gallery-multiobject</a></li>
+                                <li class=""><a href="module_gallery-neon.html" title="gallery-neon">gallery-neon</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras2.html" title="gallery-nodelist-extras2">gallery-nodelist-extras2</a></li>
+                                <li class=""><a href="module_gallery-object-extras.html" title="gallery-object-extras">gallery-object-extras</a></li>
+                                <li class=""><a href="module_gallery-paginator.html" title="gallery-paginator">gallery-paginator</a></li>
+                                <li class=""><a href="module_gallery-querybuilder.html" title="gallery-querybuilder">gallery-querybuilder</a></li>
+                                <li class=""><a href="module_gallery-quickedit.html" title="gallery-quickedit">gallery-quickedit</a></li>
+                                <li class=""><a href="module_gallery-test-extras.html" title="gallery-test-extras">gallery-test-extras</a></li>
+                                <li class=""><a href="module_gallery-treeble.html" title="gallery-treeble">gallery-treeble</a></li>
+                                <li class=""><a href="module_io.html" title="io">io</a></li>
+                                <li class=""><a href="module_node.html" title="node">node</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Plugin.DataTableState.html" title="Plugin.DataTableState">Plugin.DataTableState</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="state.js.html" title="state.js">state.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableState.html#method_getState", "access": "", "host": "Plugin.DataTableState", "type": "method", "name": "getState"}, {"url": "Plugin.DataTableState.html#config_save", "access": "", "host": "Plugin.DataTableState", "type": "config", "name": "save"}, {"url": "Plugin.DataTableState.html#config_uniqueIdKey", "access": "", "host": "Plugin.DataTableState", "type": "config", "name": "uniqueIdKey"}];
+</script>
+</body>
+</html>
