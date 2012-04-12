@@ -291,8 +291,25 @@ function replaceGetters()
 	var body = this.get('host').body;
 	if (body instanceof Y.DataTable.BodyView)
 	{
+		this.orig_getCell = body.getCell;
+		this.orig_getRow  = body.getRow;
+
 		body.getCell = getCell;
 		body.getRow  = getRow;
+	}
+}
+
+function restoreGetters()
+{
+	var body = this.get('host').body;
+	if (this.orig_getCell)
+	{
+		body.getCell = this.orig_getCell;
+	}
+
+	if (this.orig_getRow)
+	{
+		body.getRow = this.orig_getRow;
 	}
 }
 
@@ -310,6 +327,11 @@ Y.extend(RowExpansion, Y.Plugin.Base,
 		this.afterHostEvent('columnsChange', analyzeColumns);
 
 		this.afterHostEvent('renderTable', replaceGetters);
+	},
+
+	destructor: function()
+	{
+		restoreGetters.call(this);
 	}
 });
 
