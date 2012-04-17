@@ -3,7 +3,8 @@
 /**********************************************************************
  * <p>Augments Y.Object with the same higher-order functions that
  * array-extras adds to Y.Array.  Note that, unlike Y.Array, iteration
- * order in Y.Object is not guaranteed!</p>
+ * order for objects is arbitrary, so be careful when applying
+ * non-commutative operations!</p>
  * 
  * @module gallery-object-extras
  */
