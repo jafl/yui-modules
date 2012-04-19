@@ -3,7 +3,7 @@
 /**********************************************************************
  * <p>Utilities for sorting.</p>
  * 
- * @module gallery-sort-util
+ * @module gallery-sort-extras
  * @class Sort
  */
 
