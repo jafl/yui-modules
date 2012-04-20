@@ -158,14 +158,16 @@ function(Y) {
 		pg.render();
 	});
 
+	pg.on(['changeRequest','pageChange'], console.log);
+
 // DataTable
 
 	var cols =
 	[
-		{ key: 'select', label: '&nbsp;',
-			nodeFormatter: function(o)
+		{ key: 'select', label: '&nbsp;', allowHTML: true,
+			formatter: function(o)
 			{
-				o.cell.set('innerHTML', '<input type="checkbox" />');
+				return '<input type="checkbox" />';
 			}
 		},
 		{ key: 'title', label: 'Title' },
@@ -189,10 +191,10 @@ function(Y) {
 				.render(o.cell);
 			}
 		},
-		{ key: 'notes', label: 'Notes',
-			nodeFormatter: function(o)
+		{ key: 'notes', label: 'Notes', allowHTML: true,
+			formatter: function(o)
 			{
-				o.cell.set('innerHTML', '<textarea></textarea>');
+				return '<textarea></textarea>';
 			}
 		}
 	];
