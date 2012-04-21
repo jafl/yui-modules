@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0/build/cssbase/base-min.css">
 
 	<script src="gallery-datatable-row-expansion-debug.js"></script>
+	<script src="gallery-datatable-state-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
 	<script src="gallery-funcprog-debug.js"></script>
 	<script src="gallery-object-extras-debug.js"></script>
@@ -32,7 +33,8 @@
 
 <div id="table"></div>
 
-<p>Expand rows and re-run the tests to check that <code>getCell</code> and  <code>getRow</code> work correctly.</p>
+<p>Expand rows and re-run the tests (on page 1) to check that <code>getCell</code> and  <code>getRow</code> work correctly.</p>
+<p>Checkbox state is preserved during expand/collapse courtesy of <a href="http://yuilibrary.com/gallery/show/datatable-state">gallery-datatable-state</a></p>
 
 <hr>
 <p><a href="../yuidoc/module_gallery-datatable-row-expansion.html">Show me the documentation</a></p>
@@ -45,6 +47,7 @@ YUI({
 	logInclude: { TestRunner: true }
 }).use(
 	'gallery-datatable-row-expansion',
+	'gallery-datatable-state',
 	'datatable-datasource',
 	'gallery-paginator',
 	'test', 'console', 'console-filters', 'gallery-console-test', 'dd-plugin',
@@ -169,13 +172,13 @@ function(Y) {
 
 	var cols =
 	[
-		{ key: 'checkbox', label: '&nbsp;',
-			nodeFormatter: function(o)
+		{ key: 'checkbox', label: '&nbsp;', allowHTML: true,
+			formatter: function(o)
 			{
-				o.cell.set('innerHTML', '<input type="checkbox" />');
+				return '<input type="checkbox" />';
 			}
 		},
-		{ key: Y.Plugin.RowExpansion.column_key, label: '&nbsp;' },
+		{ key: Y.Plugin.DataTableRowExpansion.column_key, label: '&nbsp;' },
 		{ key: 'title', label: 'Title' },
 		{ key: 'year', label: 'Year' },
 		{ key: 'quantity', label: 'Quantity' }
@@ -194,6 +197,19 @@ function(Y) {
 				len:    data.title.length
 			});
 		}
+	});
+	table.plug(Y.Plugin.DataTableState,
+	{
+		uniqueIdKey: 'id',
+		save:
+		[
+			{
+				column: 'checkbox',
+				node:   'input',
+				key:    'checked',
+				temp:   true 
+			}
+		]
 	});
 	table.render('#table');
 
