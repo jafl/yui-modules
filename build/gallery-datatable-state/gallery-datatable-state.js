@@ -40,11 +40,18 @@ State.ATTRS =
 
 	/**
 	 * (Required) List of objects specifying the values to be saved before
-	 * the table is re-rendered.  Each object must define column (the
-	 * column key), either node (CSS selector to find the node inside a
-	 * cell) or widget (CSS selector to find the node's container inside a
-	 * cell), and key (the value to pass to get/set).  If a value should
-	 * not be maintained when paginating, specify temp:true.
+	 * the table is re-rendered.  Each object must define:
+	 * <dl>
+	 * <dt>column</dt>
+	 * <dd>the column key</dd>
+	 * <dt>node or widget</dt>
+	 * <dd>CSS selector to find either the node or the widget container inside a cell</dd>
+	 * <dt>key</dt>
+	 * <dd>the value to pass to get/set</dd>
+	 * <dt>temp</dt>
+	 * <dd>true if the state should be cleared on paginator:changeRequest</dd>
+	 * </dl>
+	 * If a value should not be maintained when paginating, specify temp:true.
 	 *
 	 * @config save
 	 * @type {Array}
@@ -179,6 +186,18 @@ function restoreState()
 	this);
 }
 
+function clearTempState()
+{
+	Y.each(this.get('save'), function(item)
+	{
+		if (item.column_index < 0 || item.temp)
+		{
+			clearState.call(this, item.column);
+		}
+	},
+	this);
+}
+
 Y.extend(State, Y.Plugin.Base,
 {
 	initializer: function(config)
@@ -208,6 +227,10 @@ Y.extend(State, Y.Plugin.Base,
 		{
 			Y.later(0, this, restoreState);
 		});
+
+		// clear temp state when page changes
+
+		Y.Global.on('paginator:changeRequest', clearTempState, this);
 	},
 
 	destructor: function()
@@ -215,6 +238,9 @@ Y.extend(State, Y.Plugin.Base,
 		this.get('host').syncUI = this.orig_syncUI;
 	},
 
+	/**
+	 * @return {Object} state for each row, indexed by uniqueIdKey and column key
+	 */
 	getState: function()
 	{
 		saveState.call(this);
