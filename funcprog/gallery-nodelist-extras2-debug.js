@@ -128,4 +128,4 @@ Y.mix(Y.NodeList.prototype,
 });
 
 
-}, '@VERSION@' ,{optional:['gallery-funcprog'], requires:['gallery-nodelist-extras','array-extras']});
+}, '@VERSION@' ,{requires:['gallery-nodelist-extras','array-extras'], optional:['gallery-funcprog']});
