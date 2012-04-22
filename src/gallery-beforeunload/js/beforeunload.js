@@ -24,7 +24,7 @@ window.onbeforeunload = function(ev) {
  * <p>
  * The beforeunload event is not standard, yet it is useful enough that
  * most browsers support it to some degree.  But they are not consistent
- * about how it operates.  This module supplants any existing DOM0 
+ * about how it operates.  This module supplants any existing DOM0
  * onbeforelistener because DOM2 style listeners won't work across
  * the A grade at this time.
  * </p>

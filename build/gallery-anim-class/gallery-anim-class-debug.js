@@ -21,7 +21,7 @@ var css_attribute =
 	"color","fontSize","fontSizeAdjust","fontWeight",
 	"textIndent","textShadow","wordSpacing",
 
-	"backgroundColor","backgroundPosition","backgroundOrigin","backgroundSize",
+	"backgroundColor","backgroundPosition","backgroundSize",
 	"outlineColor","outlineWidth",
 
 	"marginTop","marginRight","marginBottom","marginLeft",
