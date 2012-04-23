@@ -153,6 +153,22 @@ across pages.</p>
                         <div class="section field details">
                             <h3 id="configattributes">Configuration Attributes</h3>
                             <div class="content">
+                                    <div class="" rel="yui:attribute" resource="#config_paginator">
+                                    <h4><a name="config_paginator">paginator</a>
+                                        <code>- <span property="yui:type">{Paginator}</span></code>
+                                    </h4>
+                                    <div class="detail">
+                                        <div class="description" property="yui:description">
+                                            (Optional) Paginator that triggers clearing of temporary state.  If
+this is not specified, temp:true will have no effect in the "save"
+configuration.
+                                        </div>
+                                    </div>
+ 
+     
+
+                                    <hr />
+                                    </div>        
                                     <div class="" rel="yui:attribute" resource="#config_save">
                                     <h4><a name="config_save">save</a>
                                         <code>- <span property="yui:type">{Array}</span></code>
@@ -168,6 +184,8 @@ the table is re-rendered.  Each object must define:
 <dd>CSS selector to find either the node or the widget container inside a cell</dd>
 <dt>key</dt>
 <dd>the value to pass to get/set</dd>
+<dt>temp</dt>
+<dd>true if the state should be cleared when paginating</dd>
 </dl>
 If a value should not be maintained when paginating, specify temp:true.
                                         </div>
@@ -275,6 +293,7 @@ of this column.
                     <div id="configList" class="module">
                         <h4>Configuration Attributes</h4>
                         <ul class="content">        
+                                <li class=""><a href="#config_paginator" title="paginator">paginator</a></li>
                                 <li class=""><a href="#config_save" title="save">save</a></li>
                                 <li class=""><a href="#config_uniqueIdKey" title="uniqueIdKey">uniqueIdKey</a></li>
                         </ul>
@@ -290,7 +309,7 @@ of this column.
 </div>
 <script type="text/javascript">
 
-    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableState.html#method_getState", "access": "", "host": "Plugin.DataTableState", "type": "method", "name": "getState"}, {"url": "Plugin.DataTableState.html#config_save", "access": "", "host": "Plugin.DataTableState", "type": "config", "name": "save"}, {"url": "Plugin.DataTableState.html#config_uniqueIdKey", "access": "", "host": "Plugin.DataTableState", "type": "config", "name": "uniqueIdKey"}];
+    var ALL_YUI_PROPS = [{"url": "Plugin.DataTableState.html#method_getState", "access": "", "host": "Plugin.DataTableState", "type": "method", "name": "getState"}, {"url": "Plugin.DataTableState.html#config_paginator", "access": "", "host": "Plugin.DataTableState", "type": "config", "name": "paginator"}, {"url": "Plugin.DataTableState.html#config_save", "access": "", "host": "Plugin.DataTableState", "type": "config", "name": "save"}, {"url": "Plugin.DataTableState.html#config_uniqueIdKey", "access": "", "host": "Plugin.DataTableState", "type": "config", "name": "uniqueIdKey"}];
 </script>
 </body>
 </html>
