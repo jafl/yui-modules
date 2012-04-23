@@ -1,3 +1,5 @@
+"use strict";
+
 /**********************************************************************
  * <p>Functional programming support for iterable classes.  The class must
  * implement the iterator() (which must return an object that implements

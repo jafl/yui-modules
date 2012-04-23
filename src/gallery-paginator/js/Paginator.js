@@ -276,8 +276,6 @@ Y.extend(Paginator, Y.Widget,
         var UNLIMITED = Paginator.VALUE_UNLIMITED,
             initialPage, records, perPage, startIndex;
 
-        this.publish('changeRequest', { broadcast: 2 });
-
         this._selfSubscribe();
 
         // Calculate the initial record offset

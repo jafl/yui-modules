@@ -47,7 +47,7 @@ State.ATTRS =
 	 * <dt>key</dt>
 	 * <dd>the value to pass to get/set</dd>
 	 * <dt>temp</dt>
-	 * <dd>true if the state should be cleared on paginator:changeRequest</dd>
+	 * <dd>true if the state should be cleared when paginating</dd>
 	 * </dl>
 	 * If a value should not be maintained when paginating, specify temp:true.
 	 *
@@ -58,6 +58,22 @@ State.ATTRS =
 	{
 		value:     [],
 		validator: Y.Lang.isArray
+	},
+
+	/**
+	 * (Optional) Paginator that triggers clearing of temporary state.  If
+	 * this is not specified, temp:true will have no effect in the "save"
+	 * configuration.
+	 * 
+	 * @config paginator
+	 * @type {Paginator}
+	 */
+	paginator:
+	{
+		validator: function(value)
+		{
+			return (!value || Y.Lang.isObject(value));
+		}
 	}
 };
 
@@ -196,6 +212,11 @@ function clearTempState()
 	this);
 }
 
+function listenToPaginator(pg)
+{
+	pg.on('datatable-state-paginator|changeRequest', clearTempState, this);
+}
+
 Y.extend(State, Y.Plugin.Base,
 {
 	initializer: function(config)
@@ -204,6 +225,21 @@ Y.extend(State, Y.Plugin.Base,
 		this.on('uniqueIdKeyChange', function()
 		{
 			this.state = {};
+		});
+
+		if (config.paginator)
+		{
+			listenToPaginator.call(this, config.paginator)
+		}
+
+		this.on('paginatorChange', function(e)
+		{
+			Y.detach('datatable-state-paginator|*');
+
+			if (e.newVal)
+			{
+				listenToPaginator.call(this, e.newVal);
+			}
 		});
 
 		analyzeColumns.call(this);
@@ -225,10 +261,6 @@ Y.extend(State, Y.Plugin.Base,
 		{
 			Y.later(0, this, restoreState);
 		});
-
-		// clear temp state when page changes
-
-		Y.Global.on('paginator:changeRequest', clearTempState, this);
 	},
 
 	destructor: function()
