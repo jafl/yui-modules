@@ -19,7 +19,7 @@ YUI.add('gallery-mojito-rpc', function(Y) {
  *	<dt>url</dt>
  *	<dd>the mojit proxy (parameter named to match Y.jsonrpc)</dd>
  *	<dt>methods</dt>
- *	<dd>(optional) array of method names</dd>
+ *	<dd>(optional) array of method names, so you don't have to use <code>exec</code></dd>
  *	</dl>
  */
 
