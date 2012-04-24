@@ -82,13 +82,25 @@ MojitoRPC.prototype =
 
 		this._mojit_proxy.invoke(method, p, function(error, response)
 		{
+			var result =
+			{
+				id:     null,
+				error:  null,
+				result: response
+			};
+
 			if (error && callback.on.failure)
 			{
-				callback.on.failure.call(callback.context, error);
+				result.error =
+				{
+					code:    -32000,
+					message: error.message
+				};
+				callback.on.failure.call(callback.context, result);
 			}
 			else if (!error && callback)
 			{
-				callback.on.success.call(callback.context, response);
+				callback.on.success.call(callback.context, result);
 			}
 		});
 	}
