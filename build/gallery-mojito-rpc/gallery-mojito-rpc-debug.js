@@ -54,7 +54,7 @@ MojitoRPC.addMethod = function(rpc, name, force)
 			callback;
 
 		if (Y.Lang.isFunction(last) ||
-			(Y.Lang.isObject(last) && last.on && (last.on.success || last.on.failure)))
+			(last && last.on && (last.on.success || last.on.failure)))
 		{
 			callback = args.pop();
 		}
