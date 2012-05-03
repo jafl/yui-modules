@@ -48,7 +48,7 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
-	 * @param o {Object} the object to iterate
+	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
@@ -68,7 +68,7 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
-	 * @param o {Object} the object to iterate
+	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
@@ -88,7 +88,7 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
-	 * @param o {Object} the object to iterate
+	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
@@ -107,7 +107,7 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
-	 * @param o {Object} the object to iterate
+	 * @param o {Mixed} the object to iterate
 	 * @param f {String} the function to invoke
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
@@ -127,7 +127,7 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
-	 * @param o {Object} the object to iterate
+	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
@@ -149,7 +149,7 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
-	 * @param o {Object} the object to iterate
+	 * @param o {Mixed} the object to iterate
 	 * @param init {Mixed} the initial value
 	 * @param f {String} the function to invoke
 	 * @param c {Object} optional context object
@@ -170,7 +170,7 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
-	 * @param o {Object} the object to iterate
+	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
