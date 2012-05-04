@@ -258,16 +258,17 @@ function(Y)
 
 	function getSelectedItems()
 	{
-		return editor.get('contentBox')
+		var list = editor.get('contentBox')
 			.all('input.record-select')
-			.filter(function(node)
-			{
-				return node.get('checked');
-			})
 			.map(function(node, i)
 			{
 				return { n: node, i: i };
 			});
+
+		return Y.Array.filter(list, function(item)
+		{
+			return item.n.get('checked');
+		})
 	}
 
 	Y.on('click', function()
