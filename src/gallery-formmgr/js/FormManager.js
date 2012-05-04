@@ -287,7 +287,7 @@ function getId(
 	{
 		return e.replace(/^#/, '');
 	}
-	else if (e instanceof Y.Node)
+	else if (e._node)
 	{
 		return e.get('id');
 	}
