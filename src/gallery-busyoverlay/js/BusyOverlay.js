@@ -65,7 +65,7 @@ Y.extend(BusyOverlayPlugin, Y.Plugin.Base,
 
 	destructor: function()
 	{
-		this.o.remove();
+		this.o.remove(true);
 	},
 
 	/**

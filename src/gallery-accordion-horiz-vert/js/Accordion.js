@@ -417,7 +417,7 @@ Y.extend(Accordion, Y.Widget,
 			Y.log('ignoring titles & sections', 'info', 'Accordion');
 		}
 
-		this.get('contentBox').all('> li').remove();
+		this.get('contentBox').all('> li').remove(true);
 	},
 
 	/**

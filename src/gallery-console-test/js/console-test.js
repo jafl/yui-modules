@@ -44,7 +44,7 @@ Y.extend(ConsoleTest, Y.Plugin.Base,
 
 	destructor: function()
 	{
-		this.container.remove();
+		this.container.remove(true);
 	},
 
 	renderUI: function()

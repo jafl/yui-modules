@@ -2532,7 +2532,7 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 		{
 			while (this.table.get('children').size() > 1)
 			{
-				this.table.get('lastChild').remove();
+				this.table.get('lastChild').remove(true);
 			}
 		}
 	},

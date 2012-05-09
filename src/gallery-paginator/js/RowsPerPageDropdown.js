@@ -137,7 +137,7 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
         }
 
         while (opts.length > options.length) {
-            sel.get('lastChild').remove();
+            sel.get('lastChild').remove(true);
         }
 
         this.update();
