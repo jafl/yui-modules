@@ -1,13 +1,20 @@
 YUI.add('gallery-busyoverlay', function(Y) {
 
+"use strict";
+
 /**********************************************************************
  * A plugin for Y.Node or Y.Widget that creates an overlaying div.
  * Especially useful for a widget that is waiting for an AJAX response.
  * 
  * @module gallery-busyoverlay
  * @namespace Plugin
+ */
+
+/**
  * @class BusyOverlay
  * @extends Plugin.Base
+ * @constructor
+ * @param config {Object} configuration
  */
 function BusyOverlayPlugin(config)
 {
@@ -71,6 +78,7 @@ Y.extend(BusyOverlayPlugin, Y.Plugin.Base,
 	},
 
 	/**
+	 * @method isVisible
 	 * @return {Boolean} true if the overlay is visible
 	 */
 	isVisible: function()
@@ -80,6 +88,8 @@ Y.extend(BusyOverlayPlugin, Y.Plugin.Base,
 
 	/**
 	 * Show the overlay.
+	 * 
+	 * @method show
 	 */
 	show: function()
 	{
@@ -88,6 +98,8 @@ Y.extend(BusyOverlayPlugin, Y.Plugin.Base,
 
 	/**
 	 * Hide the overlay.
+	 * 
+	 * @method hide
 	 */
 	hide: function()
 	{
@@ -96,6 +108,8 @@ Y.extend(BusyOverlayPlugin, Y.Plugin.Base,
 
 	/**
 	 * Toggle the visibility of the overlay.
+	 * 
+	 * @method toggleVisible
 	 */
 	toggleVisible: function()
 	{
@@ -105,6 +119,7 @@ Y.extend(BusyOverlayPlugin, Y.Plugin.Base,
 	/**
 	 * Set the visibility of the overlay.
 	 * 
+	 * @method setVisible
 	 * @param visible {Boolean}
 	 */
 	setVisible: function(
@@ -138,6 +153,7 @@ Y.extend(BusyOverlayPlugin, Y.Plugin.Base,
 	},
 
 	/**
+	 * @method getTargetNode
 	 * @return {Node} node to overlay
 	 */
 	getTargetNode: function()
