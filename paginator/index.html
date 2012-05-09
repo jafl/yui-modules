@@ -8,10 +8,9 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.1/build/cssreset/reset-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.1/build/cssfonts/fonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.1/build/cssbase/base-min.css" />
-<!--
+
 	<script src="gallery-paginator-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
--->
 </head>
 <body class="yui3-skin-sam">
 
@@ -30,10 +29,12 @@
 <div id="pg3"></div>
 <hr>
 <div id="pg4"></div>
+<button id="disable">Disable</button>
+<button id="enable">Enable</button>
 
 <script type="text/javascript">
 YUI({
-//	filter: 'raw', combine: false,
+	filter: 'raw', combine: false,
 	gallery: 'gallery-2012.04.26-15-49'
 }).use('gallery-paginator', function(Y)
 {
@@ -98,6 +99,12 @@ YUI({
 	});
 	p.on('changeRequest', update);
 	p.render('#pg4');
+
+	Y.on('click', function(e)
+	{
+		p[ e.target.get('id') ]();
+	},
+	'#disable,#enable');
 });
 </script>
 
