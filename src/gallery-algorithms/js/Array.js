@@ -4,7 +4,10 @@
  * <p>Useful algorithms not provided by browsers.</p>
  *
  * @module gallery-algorithms
- * @class Array
+ */
+
+/**
+ * @class Array~algorithms
  */
 
 /**********************************************************************

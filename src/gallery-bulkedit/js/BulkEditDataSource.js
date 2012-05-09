@@ -420,8 +420,9 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
-	 * @return {boolean} true if the raw data is stored locally
+	 * @method _dataIsLocal
 	 * @protected
+	 * @return {boolean} true if the raw data is stored locally
 	 */
 	_dataIsLocal: function()
 	{
@@ -431,6 +432,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * Flush the underlying datasource's cache.
 	 * 
+	 * @method _flushCache
 	 * @protected
 	 */
 	_flushCache: function()
@@ -445,6 +447,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * Use this instead of any meta information in response.
 	 * 
+	 * @method getRecordCount
 	 * @return {Number} the total number of records
 	 */
 	getRecordCount: function()
@@ -453,6 +456,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method getCurrentRecords
 	 * @return {Number} the records returned by the latest request
 	 */
 	getCurrentRecords: function()
@@ -461,6 +465,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method getCurrentRecordMap
 	 * @return {Object} the records returned by the latest request, keyed by record id
 	 */
 	getCurrentRecordMap: function()
@@ -469,6 +474,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method getValue
 	 * @param record_index {Number}
 	 * @param key {String} field key
 	 * @return {mixed} the value of the specified field in the specified record
@@ -515,6 +521,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * When using a remote datasource, this will include changes made to
 	 * deleted records.
 	 * 
+	 * @method getChanges
 	 * @return {Object} map of all changed values, keyed by record id
 	 */
 	getChanges: function()
@@ -523,6 +530,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method getRemovedRecordIndexes
 	 * @return {Array} list of removed record indices, based on initial ordering
 	 */
 	getRemovedRecordIndexes: function()
@@ -542,10 +550,11 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * You must reload() the widget after calling this function!
 	 * 
+	 * @method insertRecord
+	 * @protected
 	 * @param index {Number} insertion index
 	 * @param record {Object|String} record to insert or id of record to clone
 	 * @return {String} id of newly inserted record
-	 * @protected
 	 */
 	insertRecord: function(
 		/* int */		index,
@@ -595,9 +604,10 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * You must reload() the widget after calling this function!
 	 * 
+	 * @method removeRecord
+	 * @protected
 	 * @param index {Number} index of record to remove
 	 * @return {boolean} true if record was removed
-	 * @protected
 	 */
 	removeRecord: function(
 		/* int */ index)
@@ -637,10 +647,11 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * Update a value in a record.
 	 *
+	 * @method updateValue
+	 * @protected
 	 * @param record_id {String}
 	 * @param key {String} field key
 	 * @param value {String} new item value
-	 * @protected
 	 */
 	updateValue: function(
 		/* string */	record_id,
@@ -673,9 +684,10 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method _getComparator
+	 * @protected
 	 * @param key {String} field key
 	 * @return {Function} comparator function for the given field
-	 * @protected
 	 */
 	_getComparator: function(
 		/* string */ key)
@@ -700,6 +712,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * Only usable with DataSource.Local.  When using best-effort save on
 	 * the server, call this for each record that was successfully saved.
 	 *
+	 * @method mergeChanges
 	 * @param record_id {String}
 	 */
 	mergeChanges: function(
@@ -761,6 +774,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * 
 	 * <p>You must reload() the widget after calling this function!</p>
 	 * 
+	 * @method killRecord
 	 * @param record_id {String}
 	 */
 	killRecord: function(
@@ -842,6 +856,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * 
 	 * <p>You must reload() the widget after calling this function!</p>
 	 * 
+	 * @method updateRecordId
 	 * @param orig_record_id {String}
 	 * @param new_record_id {String}
 	 */
@@ -912,6 +927,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * Find the index of the given record id.  Only usable with
 	 * DataSource.Local.
 	 * 
+	 * @method recordIdToIndex
 	 * @param record_id {String}
 	 * @return {Number} index or record or -1 if not found
 	 */
@@ -957,6 +973,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * Merges edits into data and returns result.
 	 * 
+	 * @method _defRequestFn
 	 * @protected
 	 */
 	_defRequestFn: function(e)

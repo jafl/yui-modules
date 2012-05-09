@@ -1,10 +1,9 @@
 "use strict";
 
 /**********************************************************************
-* <p>Only scrolls the browser if the object is not currently visible.</p>
+ * <p>Only scrolls the browser if the object is not currently visible.</p>
  * 
- * @module node
-  * @submodule gallery-scrollintoview
+ * @module gallery-scrollintoview
  */
 
 /**********************************************************************
@@ -15,6 +14,9 @@
  * results.</p>
  * 
  * @class Node~scrollIntoView
+ */
+
+/**
  * @method scrollIntoView
  * @chainable
  */

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+DEBUG=$1
+
 # The location of your yuidoc install
 yuidoc_home=~/open-source/yui3/yuidoc
 
@@ -30,7 +32,11 @@ yuiversion=3
 ##############################################################################
 # add -s to the end of the line to show items marked private
 
-rm -rf $parser_out $generator_out
+if [[ -z $DEBUG ]]; then
+	rm -rf $parser_out $generator_out
+else
+	server="--server 3000";
+fi
 
 parser_in=""
 for f in ~/open-source/jafl.github-yui3/*; do
@@ -42,4 +48,8 @@ for f in ~/open-source/jafl.github-yui3/*; do
 	rm -rf $d1/build_tmp
 done
 
-$yuidoc_home/bin/yuidoc.py $parser_in -p $parser_out -o $generator_out -t $template -v $version -Y $yuiversion
+#$yuidoc_home/bin/yuidoc.py $parser_in -p $parser_out -o $generator_out -t $template -v $version -Y $yuiversion
+
+pushd ~/open-source/yui3/yui3-gallery/sandbox/jafl
+yuidoc $server --project-version $version -o $generator_out $parser_in
+popd

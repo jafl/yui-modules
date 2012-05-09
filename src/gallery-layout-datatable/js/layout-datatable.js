@@ -6,6 +6,9 @@
  * module, so you don't have to do anything.</p>
  * 
  * @module gallery-layout-datatable
+ */
+
+/**
  * @namespace Plugin
  * @class PageLayoutDataTableModule
  * @extends Plugin.Base

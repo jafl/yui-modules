@@ -5,12 +5,9 @@
  * beginning.
  *
  * @class LinkedListIterator
- */
-
-/**
  * @method constructor
- * @param list {LinkedList}
  * @private
+ * @param list {LinkedList}
  */
 
 function LinkedListIterator(
@@ -23,6 +20,7 @@ function LinkedListIterator(
 LinkedListIterator.prototype =
 {
 	/**
+	 * @method atBeginning
 	 * @return {Boolean} true if at the beginning
 	 */
 	atBeginning: function()
@@ -31,6 +29,7 @@ LinkedListIterator.prototype =
 	},
 
 	/**
+	 * @method atEnd
 	 * @return {Boolean} true if at the end
 	 */
 	atEnd: function()
@@ -40,6 +39,8 @@ LinkedListIterator.prototype =
 
 	/**
 	 * Move to the beginning of the list.
+	 * 
+	 * @method moveToBeginning
 	 */
 	moveToBeginning: function()
 	{
@@ -49,6 +50,8 @@ LinkedListIterator.prototype =
 
 	/**
 	 * Move to the end of the list.
+	 * 
+	 * @method moveToEnd
 	 */
 	moveToEnd: function()
 	{
@@ -57,6 +60,7 @@ LinkedListIterator.prototype =
 	},
 
 	/**
+	 * @method next
 	 * @return {Mixed} next value in the list or undefined if at the end
 	 */
 	next: function()
@@ -83,6 +87,7 @@ LinkedListIterator.prototype =
 	},
 
 	/**
+	 * @method prev
 	 * @return {Mixed} previous value in the list or undefined if at the beginning
 	 */
 	prev: function()
@@ -112,6 +117,7 @@ LinkedListIterator.prototype =
 	 * Insert the given value at the iteration position.  The inserted item
 	 * will be returned by next().
 	 * 
+	 * @method insert
 	 * @param value {Mixed} value to insert
 	 * @return {LinkedListItem} inserted item
 	 */
@@ -133,6 +139,7 @@ LinkedListIterator.prototype =
 	/**
 	 * Remove the previous item from the list.
 	 * 
+	 * @method removePrev
 	 * @return {LinkedListItem} removed item or undefined if at the end
 	 */
 	removePrev: function()
@@ -161,6 +168,7 @@ LinkedListIterator.prototype =
 	/**
 	 * Remove the next item from the list.
 	 * 
+	 * @method removeNext
 	 * @return {LinkedListItem} removed item or undefined if at the end
 	 */
 	removeNext: function()

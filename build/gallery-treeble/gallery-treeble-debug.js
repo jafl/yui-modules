@@ -19,7 +19,8 @@ YUI.add('gallery-treeble', function(Y) {
  * is that filtering and sorting are allowed.  This is done by detecting
  * that the request parameters have changed.)</p>
  * 
- * @class TreebleDataSource
+ * @namespace DataSource
+ * @class Treeble
  * @extends DataSource.Local
  * @constructor
  * @param config {Object}
@@ -948,13 +949,20 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 });
 
 Y.TreebleDataSource = TreebleDataSource;
+Y.namespace('DataSource').Treeble = TreebleDataSource;
+/**
+ * @module gallery-treeble
+ */
 
 /**
  * <p>Converts data to a DataSource.  Data can be an object containing both
  * <code>dataType</code> and <code>liveData</code>, or it can be <q>free
  * form</q>, e.g., an array of records or an XHR URL.</p>
  *
- * @namespace Parsers
+ * @class Parsers
+ */
+
+/**
  * @method treebledatasource
  * @param oData {mixed} Data to convert.
  * @return {DataSource} The new data source.
@@ -1022,7 +1030,6 @@ Y.namespace("Parsers").treebledatasource = function(oData)
 /**
  * Extension to DataTable for displaying tree data.
  *
- * @namespace
  * @class Treeble
  * @extends DataTable
  * @constructor

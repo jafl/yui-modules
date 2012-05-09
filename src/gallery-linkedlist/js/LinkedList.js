@@ -8,6 +8,9 @@
  * checks the index.</p>
  * 
  * @module gallery-linkedlist
+ */
+
+/**
  * @class LinkedList
  * @constructor
  * @param list {Mixed} (Optional) any scalar or iterable list
@@ -53,6 +56,7 @@ function wrap(value)
 LinkedList.prototype =
 {
 	/**
+	 * @method isEmpty
 	 * @return {Boolean} true if the list is empty
 	 */
 	isEmpty: function()
@@ -64,6 +68,7 @@ LinkedList.prototype =
 	 * Warning:  This requires traversing the list!  Use isEmpty() whenever
 	 * possible.
 	 *
+	 * @method size
 	 * @return {Number} the number of items in the list
 	 */
 	size: function()
@@ -81,6 +86,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method iterator
 	 * @return {LinkedListIterator}
 	 */
 	iterator: function()
@@ -91,6 +97,7 @@ LinkedList.prototype =
 	/**
 	 * Creates a new, empty LinkedList.
 	 *
+	 * @method newInstance
 	 * @return {LinkedList}
 	 */
 	newInstance: function()
@@ -99,6 +106,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method head
 	 * @return {LinkedListItem} the first item in the list, or null if the list is empty
 	 */
 	head: function()
@@ -107,6 +115,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method tail
 	 * @return {LinkedListItem} the last item in the list, or null if the list is empty
 	 */
 	tail: function()
@@ -115,6 +124,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method indexOf
 	 * @param needle {Mixed} the item to search for
 	 * @return {Number} first index of the needle, or -1 if not found
 	 */
@@ -134,6 +144,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method lastIndexOf
 	 * @param needle {Mixed} the item to search for
 	 * @return {Number} last index of the needle, or -1 if not found
 	 */
@@ -155,6 +166,8 @@ LinkedList.prototype =
 
 	/**
 	 * Clear the list.
+	 * 
+	 * @method clear
 	 */
 	clear: function()
 	{
@@ -162,6 +175,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method insertBefore
 	 * @param value {Mixed} value to insert
 	 * @param item {LinkedListItem} existing item
 	 * @return {LinkedListItem} inserted item
@@ -189,6 +203,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method insertAfter
 	 * @param item {LinkedListItem} existing item
 	 * @param value {Mixed} value to insert
 	 * @return {LinkedListItem} inserted item
@@ -216,6 +231,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method prepend
 	 * @param value {Mixed} value to prepend
 	 * @return {LinkedListItem} prepended item
 	 */
@@ -237,6 +253,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method append
 	 * @param value {Mixed} value to append
 	 * @return {LinkedListItem} appended item
 	 */
@@ -259,6 +276,8 @@ LinkedList.prototype =
 
 	/**
 	 * Remove the item from the list.
+	 * 
+	 * @method remove
 	 */
 	remove: function(
 		/* item */	item)
@@ -294,6 +313,8 @@ LinkedList.prototype =
 
 	/**
 	 * Reverses the items in place.
+	 * 
+	 * @method reverse
 	 */
 	reverse: function()
 	{
@@ -310,6 +331,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method toArray
 	 * @return {Array}
 	 */
 	toArray: function()

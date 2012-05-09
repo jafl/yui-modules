@@ -8,6 +8,9 @@
  * set to the first field.
  *
  * @module gallery-formmgr-overlay-plugin
+ */
+
+/**
  * @namespace Plugin
  * @class OverlayForm
  * @extends Plugin.Base

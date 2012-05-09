@@ -1,5 +1,5 @@
 /**********************************************************************
- * @class Array
+ * @class Array~funcprog-extras
  */
 
 Y.mix(Y.Array,
@@ -10,11 +10,12 @@ Y.mix(Y.Array,
 	 * receives the value, the index, and the array itself as parameters
 	 * (in that order).
 	 *
+	 * @method findIndexOf
+	 * @static
 	 * @param a {Array} the array to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @return {Number} index of the first item for which the supplied function returns true, or -1 if it never returns true
-	 * @static
 	 */
 	findIndexOf: function(a, f, c)
 	{

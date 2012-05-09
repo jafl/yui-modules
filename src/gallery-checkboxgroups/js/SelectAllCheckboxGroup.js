@@ -22,6 +22,10 @@ function SelectAllCheckboxGroup(
 
 Y.extend(SelectAllCheckboxGroup, CheckboxGroup,
 {
+	/**
+	 * @method getSelectAllCheckbox
+	 * @return {Node} checkbox that controls "select all"
+	 */
 	getSelectAllCheckbox: function()
 	{
 		return this.select_all_cb;

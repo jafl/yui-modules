@@ -3,8 +3,10 @@
 /**
  * Optimizations for searching DOM tree.
  *
- * @module node
- * @submodule gallery-node-optimizations
+ * @module gallery-node-optimizations
+ */
+
+/**
  * @class Node~optimizations
  */
 
@@ -15,7 +17,8 @@ var tag_name_re       = /^[a-z]+$/i;
 /**
  * Useful when constructing regular expressions that match CSS classes.
  *
- * @property Y.Node.class_re_prefix
+ * @property class_re_prefix
+ * @static
  * @type {String}
  * @value "(?:^|\\s)(?:"
  */
@@ -24,7 +27,8 @@ Y.Node.class_re_prefix = '(?:^|\\s)(?:';
 /**
  * Useful when constructing regular expressions that match CSS classes.
  *
- * @property Y.Node.class_re_suffix
+ * @property class_re_suffix
+ * @static
  * @type {String}
  * @value ")(?:\\s|$)"
  */

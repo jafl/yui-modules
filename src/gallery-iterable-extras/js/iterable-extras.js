@@ -11,6 +11,9 @@
  * functions.</p>
  * 
  * @module gallery-iterable-extras
+ */
+
+/**
  * @class Iterable
  */
 

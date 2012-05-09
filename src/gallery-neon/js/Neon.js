@@ -6,12 +6,14 @@
  * 
  * @module gallery-neon
  * @namespace Plugin
+ */
+
+/**
  * @class Neon
  * @extends Plugin.Base
  * @constructor
  * @param config {Object} configuration
  */
-
 function Neon(
 	/* object */ config)
 {

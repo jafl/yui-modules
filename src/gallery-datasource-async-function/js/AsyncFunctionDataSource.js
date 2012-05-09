@@ -4,12 +4,15 @@
  * <p>Data source that calls an asynchronous function.</p>
  *
  * @module gallery-datasource-async-function
- * @class AsyncFunctionDataSource
+ */
+
+/**
+ * @namespace DataSource
+ * @class AsyncFunction
  * @extends DataSource.Local
  * @constructor
  * @param config {Object}
  */
-
 function AsyncFunctionDataSource()
 {
 	AsyncFunctionDataSource.superclass.constructor.apply(this, arguments);

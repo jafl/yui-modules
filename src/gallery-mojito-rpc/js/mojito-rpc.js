@@ -9,16 +9,15 @@
  * ac.params.getFromBody().params)</code></p>
  *
  * @module gallery-mojito-rpc
+ */
+
+/**
  * @namespace RPC
  * @class Mojito
  * @constructor
  * @param config {Object}
- *	<dl>
- *	<dt>url</dt>
- *	<dd>the mojit proxy (parameter named to match Y.jsonrpc)</dd>
- *	<dt>methods</dt>
- *	<dd>(optional) array of method names, so you don't have to use <code>exec</code></dd>
- *	</dl>
+ * @param config.url {Object} the mojit proxy (parameter named to match Y.jsonrpc)
+ * @param config.methods {Array} (optional) method names, so you don't have to use `exec`
  */
 
 function MojitoRPC(config)
@@ -34,6 +33,8 @@ function MojitoRPC(config)
 /**
  * Adds the named method to the given rpc object.
  * 
+ * @method addMethod
+ * @static
  * @param rpc {RPC.Mojito} rpc object
  * @param name {String} name of method
  * @param force {Boolean} pass true to override existing method
@@ -67,7 +68,8 @@ MojitoRPC.prototype =
 	 * Executes the named method via the mojitProxy and invokes the callback
 	 * when the result is received.
 	 *
-	 * @param method {Function} the name of the function to execute via the mojitProxy
+	 * @method exec
+	 * @param method {String} the name of the function to execute via the mojitProxy
 	 * @param params {Array} array of arguments for the method
 	 * @param callback {Function|Object} (optional) function to call on success or object specifying {context,on:{success,failure}}
 	 */
@@ -109,6 +111,15 @@ MojitoRPC.prototype =
 var RPC    = Y.namespace('RPC');
 RPC.Mojito = MojitoRPC;
 
+/**
+ * @method mojito
+ * @static
+ * @param proxy {Object} the mojit proxy
+ * @param method {String} the name of the function to execute via the mojitProxy
+ * @param params {Array} array of arguments for the method
+ * @param callback {Function|Object} (optional) function to call on success or object specifying {context,on:{success,failure}}
+ * @param config {Object} config object passed to Y.RPC.Mojito constructo
+ */
 RPC.mojito = function(proxy, method, params, callback, config)
 {
 	if (proxy && method)

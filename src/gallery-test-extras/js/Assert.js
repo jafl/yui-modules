@@ -4,6 +4,9 @@
  * <p>Additional assertions for unit tests.</p>
  * 
  * @module gallery-test-extras
+ */
+
+/**
  * @class Assert
  */
 
@@ -15,6 +18,8 @@ Y.mix(Y.Assert,
 	 * Asserts that the mantissas of two values are with epsilon of each
 	 * other.  (The test automatically fails if the exponents are different.)
 	 * 
+	 * @method areWithinEpsilon
+	 * @static
 	 * @param expected {Number} the expected value
 	 * @param actual {Number} the actual value to test
 	 * @param epsilon {Number} the maximum allowed difference in the mantissas
@@ -41,6 +46,8 @@ Y.mix(Y.Assert,
 	 * with epsilon of each other.  (The test automatically fails if the
 	 * exponents are different.)
 	 * 
+	 * @method complexWithinEpsilon
+	 * @static
 	 * @param expected {ComplexNumber} the expected value
 	 * @param actual {ComplexNumber} the actual value to test
 	 * @param epsilon {ComplexNumber} the maximum allowed difference in the mantissas

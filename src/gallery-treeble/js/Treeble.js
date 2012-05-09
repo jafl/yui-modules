@@ -7,7 +7,6 @@
 /**
  * Extension to DataTable for displaying tree data.
  *
- * @namespace
  * @class Treeble
  * @extends DataTable
  * @constructor

@@ -1,5 +1,6 @@
 /**
  * @module gallery-accordion-horiz-vert
+ * @namespace Plugin
  */
 
 /**********************************************************************
@@ -10,8 +11,8 @@
  * <p>If/when the widget is given a fixed size, all animations are turned
  * off.</p>
  * 
- * @namespace Plugin
  * @class FixedSizeAccordion
+ * @constructor
  */
 function FixedSizeAccordionPlugin()
 {

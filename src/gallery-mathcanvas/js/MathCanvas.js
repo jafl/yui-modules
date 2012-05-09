@@ -2,7 +2,6 @@
  * Displays an arithmetical expression the way you would write it on paper.
  * 
  * @module gallery-mathcanvas
- * @namespace
  * @class MathCanvas
  * @extends Widget
  * @constructor

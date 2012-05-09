@@ -24,15 +24,25 @@ var ComplexMath =
 {
 	/**
 	 * Zero.
+	 * 
+	 * @property ZERO
+	 * @type {ComplexNumber}
+	 * @static
 	 */
 	ZERO: new ComplexNumber(),
 
 	/**
 	 * Square root of -1.
+	 * 
+	 * @property I
+	 * @type {ComplexNumber}
+	 * @static
 	 */
 	I: new ComplexNumber(0,1),
 
 	/**
+	 * @method isComplexNumber
+	 * @static
 	 * @return {boolean} true if the argument is a ComplexNumber
 	 */
 	isComplexNumber: function(v)
@@ -42,6 +52,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method add
+	 * @static
 	 * @return {number} sum of all the arguments (either passed separately or as an array)
 	 */
 	add: function()
@@ -61,6 +73,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method addReciprocals
+	 * @static
 	 * @return {number} sum of the reciprocals of all the arguments (either passed separately or as an array)
 	 */
 	addReciprocals: function()
@@ -82,6 +96,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method parallel
+	 * @static
 	 * @return {number} net value of N impedances in parallel (either passed separately or as an array)
 	 */
 	parallel: function()
@@ -90,6 +106,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method subtract
+	 * @static
 	 * @param v1 {number}
 	 * @param v2 {number}
 	 * @return {number} v1-v2
@@ -117,6 +135,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method multiply
+	 * @static
 	 * @return {number} product of all the arguments (either passed separately or as an array)
 	 */
 	multiply: function()
@@ -136,6 +156,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method divide
+	 * @static
 	 * @param v1 {number}
 	 * @param v2 {number}
 	 * @return {number} v1/v2
@@ -167,6 +189,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method negative
+	 * @static
 	 * @param v {number}
 	 * @return {number} negative of the argument
 	 */
@@ -183,6 +207,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method abs
+	 * @static
 	 * @param v {number}
 	 * @return {number} absolute value (magnitude) of the argument
 	 */
@@ -199,6 +225,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method phase
+	 * @static
 	 * @param v {number}
 	 * @return {number} phase of the argument
 	 */
@@ -215,6 +243,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method conjugate
+	 * @static
 	 * @param v {number}
 	 * @return {number} complex conjugate of the argument
 	 */
@@ -231,6 +261,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method rotate
+	 * @static
 	 * @param v {number}
 	 * @param a {number} angle in radians
 	 * @return {number} phase of the argument
@@ -241,6 +273,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method acosh
+	 * @static
 	 * @param v {number}
 	 * @return {number} inverse hyperbolic cosine of the argument
 	 */
@@ -261,6 +295,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method asinh
+	 * @static
 	 * @param v {number}
 	 * @return {number} inverse hyperbolic sine of the argument
 	 */
@@ -280,6 +316,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method atanh
+	 * @static
 	 * @param v {number}
 	 * @return {number} inverse hyperbolic tangent of the argument
 	 */
@@ -299,6 +337,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method cos
+	 * @static
 	 * @param v {number}
 	 * @return {number} cosine of the argument
 	 */
@@ -317,6 +357,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method cosh
+	 * @static
 	 * @param v {number}
 	 * @return {number} hyperbolic cosine of the argument
 	 */
@@ -336,6 +378,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method exp
+	 * @static
 	 * @param v {number}
 	 * @return {number} e raised to the argument
 	 */
@@ -354,6 +398,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method log
+	 * @static
 	 * @param v {number}
 	 * @return {number} natural logarithm of the argument
 	 */
@@ -370,6 +416,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method pow
+	 * @static
 	 * @param v {number} value
 	 * @param e {number} exponent
 	 * @return {number} value raised to the exponent
@@ -396,6 +444,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method sin
+	 * @static
 	 * @param v {number}
 	 * @return {number} sine of the argument
 	 */
@@ -414,6 +464,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method sinh
+	 * @static
 	 * @param v {number}
 	 * @return {number} hyperbolic sine of the argument
 	 */
@@ -433,6 +485,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method sqrt
+	 * @static
 	 * @param v {number}
 	 * @return {number} square root of the argument
 	 */
@@ -445,6 +499,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method tan
+	 * @static
 	 * @param v {number}
 	 * @return {number} tangent of the argument
 	 */
@@ -461,6 +517,8 @@ var ComplexMath =
 	},
 
 	/**
+	 * @method tanh
+	 * @static
 	 * @param v {number}
 	 * @return {number} hyperbolic tangent of the argument
 	 */
