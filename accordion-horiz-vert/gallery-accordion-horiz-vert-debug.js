@@ -419,7 +419,7 @@ Y.extend(Accordion, Y.Widget,
 			Y.log('ignoring titles & sections', 'info', 'Accordion');
 		}
 
-		this.get('contentBox').all('> li').remove();
+		this.get('contentBox').all('> li').remove(true);
 	},
 
 	/**
@@ -1245,4 +1245,4 @@ Y.namespace("Plugin");
 Y.Plugin.FixedSizeAccordion = FixedSizeAccordionPlugin;
 
 
-}, '@VERSION@' ,{requires:['widget','selector-css3','plugin','gallery-dimensions'], optional:['anim-base'], skinnable:true});
+}, '@VERSION@' ,{skinnable:true, optional:['anim-base'], requires:['widget','selector-css3','plugin','gallery-dimensions']});
