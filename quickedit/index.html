@@ -6,7 +6,7 @@
 
 	<script src="http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.1/build/cssreset/reset-min.css">
-<!--
+
 	<script src="gallery-quickedit-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
@@ -15,7 +15,7 @@
 	<script src="gallery-object-extras-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-quickedit.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
--->
+
 	<style type="text/css">
 	#controls
 	{
@@ -59,7 +59,7 @@
 
 <script type="text/javascript">
 YUI({
-//	filter: 'raw', combine: false,
+	filter: 'raw', combine: false,
 	gallery: 'gallery-2012.04.26-15-49'
 }).use(
 	'datatable-datasource',
@@ -156,7 +156,7 @@ function(Y) {
 	{
 		totalRecords: 5,
 		rowsPerPage: 5,
-		template: '{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} <span class="rpp">Rows per page:</span> {RowsPerPageDropdown}',
+		template: '{FirstPageLink}{PreviousPageLink}{PageLinks}{NextPageLink}{LastPageLink} <span class="rpp">Rows per page:</span> {RowsPerPageDropdown}',
 		rowsPerPageOptions:    [5,10],
 		firstPageLinkLabel:    '|&lt;',
 		previousPageLinkLabel: '&lt;',
@@ -213,7 +213,7 @@ function(Y) {
 		start.set('disabled', true);
 		save.show();
 		cancel.show();
-		pg.hide();
+		pg.disable();
 	});
 
 	function finish()
@@ -222,7 +222,7 @@ function(Y) {
 		start.set('disabled', false);
 		save.hide();
 		cancel.hide();
-		pg.show();
+		pg.enable();
 	}
 
 	save.on('click', function()
