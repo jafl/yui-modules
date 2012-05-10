@@ -2,6 +2,10 @@ YUI.add('gallery-instancemanager', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-instancemanager
+ */
+
 /**********************************************************************
  * <p>Stores instances of JavaScript components.  Allows a constructor or
  * factory method to be passed in place of an instance.  This enables lazy
@@ -11,10 +15,7 @@ YUI.add('gallery-instancemanager', function(Y) {
  * attached to DOM id's, e.g., YUI Buttons built on top of HTML
  * buttons.</p>
  * 
- * @module gallery-instancemanager
- */
-
-/**
+ * @main gallery-instancemanager
  * @class InstanceManager
  * @constructor
  */

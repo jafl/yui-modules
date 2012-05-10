@@ -2,13 +2,17 @@ YUI.add('gallery-complexnumber', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-complexnumber
+ */
+
 /**********************************************************************
  * Class for representing a complex number.
  * 
  * @class ComplexNumber
  * @constructor
- * @param real {number} the real component (default: 0)
- * @param imag {number} the imaginary component (default: 0)
+ * @param real=0 {number} the real component
+ * @param imag=0 {number} the imaginary component
  */
 function ComplexNumber(real, imag)
 {
@@ -249,6 +253,7 @@ Y.ComplexNumber = ComplexNumber;
  * Support for complex numbers.
  *
  * @module gallery-complexnumber
+ * @main gallery-complexnumber
  */
 
 /**
@@ -275,6 +280,7 @@ var ComplexMath =
 	 * @property ZERO
 	 * @type {ComplexNumber}
 	 * @static
+	 * @final
 	 */
 	ZERO: new ComplexNumber(),
 
@@ -284,6 +290,7 @@ var ComplexMath =
 	 * @property I
 	 * @type {ComplexNumber}
 	 * @static
+	 * @final
 	 */
 	I: new ComplexNumber(0,1),
 

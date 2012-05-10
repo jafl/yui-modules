@@ -2,13 +2,14 @@ YUI.add('gallery-test-extras', function(Y) {
 
 "use strict";
 
-/**********************************************************************
- * <p>Additional assertions for unit tests.</p>
- * 
+/**
  * @module gallery-test-extras
  */
 
 /**
+ * <p>Additional assertions for unit tests.</p>
+ * 
+ * @main gallery-test-extras
  * @class Assert
  */
 

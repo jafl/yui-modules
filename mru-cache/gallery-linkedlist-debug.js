@@ -2,6 +2,10 @@ YUI.add('gallery-linkedlist', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-linkedlist
+ */
+
 /**********************************************************************
  * Item stored by LinkedList.
  * 
@@ -40,6 +44,10 @@ LinkedListItem.prototype =
 };
 
 Y.LinkedListItem = LinkedListItem;
+/**
+ * @module gallery-linkedlist
+ */
+
 /**********************************************************************
  * Iterator for LinkedList.  Stable except when the next item is removed by
  * calling list.remove() instead of iter.removeNext().  When items are
@@ -237,6 +245,10 @@ LinkedListIterator.prototype =
 		}
 	}
 };
+/**
+ * @module gallery-linkedlist
+ */
+
 /**********************************************************************
  * <p>Doubly linked list for storing items.  Supports iteration via
  * LinkedListIterator (returned by this.iterator()) or Y.each().  Also
@@ -246,10 +258,7 @@ LinkedListIterator.prototype =
  * is an expensive operation.  Instead, use find() with a function that
  * checks the index.</p>
  * 
- * @module gallery-linkedlist
- */
-
-/**
+ * @main gallery-linkedlist
  * @class LinkedList
  * @constructor
  * @param list {Mixed} (Optional) any scalar or iterable list
