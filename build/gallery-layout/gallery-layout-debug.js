@@ -41,6 +41,9 @@ YUI.add('gallery-layout', function(Y) {
  * footers.</p>
  *
  * @module gallery-layout
+ */
+
+/**
  * @class PageLayout
  * @extends Base
  * @constructor
@@ -55,12 +58,14 @@ function PageLayout()
 PageLayout.NAME = "pagelayout";
 
 /**
- * @property Y.PageLayout.FIT_TO_VIEWPORT
+ * @property FIT_TO_VIEWPORT
+ * @static
  */
 PageLayout.FIT_TO_VIEWPORT = 0;
 
 /**
- * @property Y.PageLayout.FIT_TO_CONTENT
+ * @property FIT_TO_CONTENT
+ * @static
  */
 PageLayout.FIT_TO_CONTENT = 1;
 
@@ -199,156 +204,178 @@ PageLayout.ATTRS =
  */
 
 /**
- * @property Y.PageLayout.fit_to_viewport_class
+ * @property fit_to_viewport_class
  * @type {String}
  * @default "FIT_TO_VIEWPORT"
+ * @static
  */
 PageLayout.fit_to_viewport_class = 'FIT_TO_VIEWPORT';
 
 /**
- * @property Y.PageLayout.fit_to_content_class
+ * @property fit_to_content_class
  * @type {String}
  * @default "FIT_TO_CONTENT"
+ * @static
  */
 PageLayout.fit_to_content_class = 'FIT_TO_CONTENT';
 
 /**
- * @property Y.PageLayout.force_fit_class
+ * @property force_fit_class
  * @type {String}
  * @default "FORCE_FIT"
+ * @static
  */
 PageLayout.force_fit_class = 'FORCE_FIT';
 
 /**
- * @property Y.PageLayout.page_header_class
+ * @property page_header_class
  * @type {String}
  * @default "layout-hd"
+ * @static
  */
 PageLayout.page_header_class = 'layout-hd';
 
 /**
- * @property Y.PageLayout.page_body_class
+ * @property page_body_class
  * @type {String}
  * @default "layout-bd"
+ * @static
  */
 PageLayout.page_body_class = 'layout-bd';
 
 /**
- * @property Y.PageLayout.page_footer_class
+ * @property page_footer_class
  * @type {String}
  * @default "layout-ft"
+ * @static
  */
 PageLayout.page_footer_class = 'layout-ft';
 
 /**
- * @property Y.PageLayout.module_rows_class
+ * @property module_rows_class
  * @type {String}
  * @value "layout-module-row"
+ * @static
  */
 PageLayout.module_rows_class = 'layout-module-row';
 
 /**
- * @property Y.PageLayout.module_cols_class
+ * @property module_cols_class
  * @type {String}
  * @value "layout-module-col"
+ * @static
  */
 PageLayout.module_cols_class = 'layout-module-col';
 
 /**
- * @property Y.PageLayout.module_class
+ * @property module_class
  * @type {String}
  * @default "layout-module"
+ * @static
  */
 PageLayout.module_class = 'layout-module';
 
 /**
- * @property Y.PageLayout.module_header_class
+ * @property module_header_class
  * @type {String}
  * @default "layout-m-hd"
+ * @static
  */
 PageLayout.module_header_class = 'layout-m-hd';
 
 /**
- * @property Y.PageLayout.module_body_class
+ * @property module_body_class
  * @type {String}
  * @default "layout-m-bd"
+ * @static
  */
 PageLayout.module_body_class = 'layout-m-bd';
 
 /**
- * @property Y.PageLayout.module_footer_class
+ * @property module_footer_class
  * @type {String}
  * @default "layout-m-ft"
+ * @static
  */
 PageLayout.module_footer_class = 'layout-m-ft';
 
 /**
- * @property Y.PageLayout.not_managed_class
+ * @property not_managed_class
  * @type {String}
  * @default "layout-not-managed"
+ * @static
  */
 PageLayout.not_managed_class = 'layout-not-managed';
 
 /**
- * @property Y.PageLayout.collapse_vert_nub_class
+ * @property collapse_vert_nub_class
  * @type {String}
  * @default "layout-vert-collapse-nub"
+ * @static
  */
 PageLayout.collapse_vert_nub_class = 'layout-vert-collapse-nub';
 
 /**
- * @property Y.PageLayout.collapse_left_nub_class
+ * @property collapse_left_nub_class
  * @type {String}
  * @default "layout-left-collapse-nub"
+ * @static
  */
 PageLayout.collapse_left_nub_class = 'layout-left-collapse-nub';
 
 /**
- * @property Y.PageLayout.collapse_right_nub_class
+ * @property collapse_right_nub_class
  * @type {String}
  * @default "layout-right-collapse-nub"
+ * @static
  */
 PageLayout.collapse_right_nub_class = 'layout-right-collapse-nub';
 
 /**
- * @property Y.PageLayout.expand_vert_nub_class
+ * @property expand_vert_nub_class
  * @type {String}
  * @default "layout-vert-expand-nub"
+ * @static
  */
 PageLayout.expand_vert_nub_class = 'layout-vert-expand-nub';
 
 /**
- * @property Y.PageLayout.expand_left_nub_class
+ * @property expand_left_nub_class
  * @type {String}
  * @default "layout-left-expand-nub"
+ * @static
  */
 PageLayout.expand_left_nub_class = 'layout-left-expand-nub';
 
 /**
- * @property Y.PageLayout.expand_right_nub_class
+ * @property expand_right_nub_class
  * @type {String}
  * @default "layout-right-expand-nub"
+ * @static
  */
 PageLayout.expand_right_nub_class = 'layout-right-expand-nub';
 
 /**
- * @property Y.PageLayout.collapsed_vert_class
+ * @property collapsed_vert_class
  * @type {String}
  * @default "layout-collapsed-vert"
+ * @static
  */
 PageLayout.collapsed_vert_class = 'layout-collapsed-vert';
 
 /**
- * @property Y.PageLayout.collapsed_horiz_class
+ * @property collapsed_horiz_class
  * @type {String}
  * @default "layout-collapsed-horiz"
+ * @static
  */
 PageLayout.collapsed_horiz_class = 'layout-collapsed-horiz';
 
 /**
- * @property Y.PageLayout.min_module_height
+ * @property min_module_height
  * @type {Number}
  * @default 10 (px)
+ * @static
  */
 PageLayout.min_module_height = 10; // px
 
@@ -751,6 +778,8 @@ Y.extend(PageLayout, Y.Base,
 
 	/**
 	 * Call this after manually adding or removing modules on the page.
+	 * 
+	 * @method rescanBody
 	 */
 	rescanBody: function()
 	{
@@ -896,6 +925,7 @@ Y.extend(PageLayout, Y.Base,
 	},
 
 	/**
+	 * @method getHeaderHeight
 	 * @return {Number} the height of the sticky header in pixels
 	 */
 	getHeaderHeight: function()
@@ -904,6 +934,7 @@ Y.extend(PageLayout, Y.Base,
 	},
 
 	/**
+	 * @method getHeaderContainer
 	 * @return {Node} the header container (layout-hd) or null if there is no header
 	 */
 	getHeaderContainer: function()
@@ -912,6 +943,7 @@ Y.extend(PageLayout, Y.Base,
 	},
 
 	/**
+	 * @method getBodyHeight
 	 * @return {Number} the height of the scrolling body in pixels
 	 */
 	getBodyHeight: function()
@@ -920,6 +952,7 @@ Y.extend(PageLayout, Y.Base,
 	},
 
 	/**
+	 * @method getBodyContainer
 	 * @return {Node} the body container (layout-bd)
 	 */
 	getBodyContainer: function()
@@ -928,6 +961,7 @@ Y.extend(PageLayout, Y.Base,
 	},
 
 	/**
+	 * @method getFooterHeight
 	 * @return {Number} the height of the sticky footer in pixels or zero if the footer is not sticky
 	 */
 	getFooterHeight: function()
@@ -937,6 +971,7 @@ Y.extend(PageLayout, Y.Base,
 	},
 
 	/**
+	 * @method getFooterContainer
 	 * @return {Node} the footer container (layout-ft), or null if there is no footer
 	 */
 	getFooterContainer: function()
@@ -945,6 +980,7 @@ Y.extend(PageLayout, Y.Base,
 	},
 
 	/**
+	 * @method moduleIsCollapsed
 	 * @param node {String|Node} .layout-module
 	 * @return {Boolean} true if module is collapsed
 	 */
@@ -969,6 +1005,7 @@ Y.extend(PageLayout, Y.Base,
 	/**
 	 * Expand the specified module.
 	 * 
+	 * @method expandModule
 	 * @param node {String|Node} .layout-module
 	 */
 	expandModule: function(
@@ -996,6 +1033,7 @@ Y.extend(PageLayout, Y.Base,
 	/**
 	 * Collapse the specified module.
 	 * 
+	 * @method collapseModule
 	 * @param node {String|Node} .layout-module
 	 */
 	collapseModule: function(
@@ -1023,6 +1061,7 @@ Y.extend(PageLayout, Y.Base,
 	/**
 	 * Toggle the collapsed state of the specified layout-module.
 	 * 
+	 * @method toggleModule
 	 * @param module {String|Node} .layout-module
 	 */
 	toggleModule: function(
@@ -1043,6 +1082,7 @@ Y.extend(PageLayout, Y.Base,
 	 * Call this when something changes size, to request a reflow of the
 	 * layout.
 	 * 
+	 * @method elementResized
 	 * @param el {String|Node} element that changed size
 	 * @return {Boolean} true if the element is inside the managed containers
 	 */
@@ -1090,9 +1130,10 @@ Y.extend(PageLayout, Y.Base,
 	/**
 	 * Returns the components of the module.
 	 * 
+	 * @method _analyzeModule
+	 * @private
 	 * @param root {Node} .layout-module
 	 * @return {Object} root,hd,bd,ft
-	 * @private
 	 */
 	_analyzeModule: function(
 		/* node */	root)
@@ -1136,9 +1177,10 @@ Y.extend(PageLayout, Y.Base,
 	/**
 	 * Set the width of a module.
 	 * 
+	 * @method _setWidth
+	 * @private
 	 * @param children {Object} root,hd,bd,ft
 	 * @param w {Number} width in pixels
-	 * @private
 	 */
 	_setWidth: function(
 		/* object */	children,

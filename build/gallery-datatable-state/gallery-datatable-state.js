@@ -7,13 +7,15 @@ YUI.add('gallery-datatable-state', function(Y) {
  * across pages.</p>
  *
  * @module gallery-datatable-state
+ */
+
+/**
  * @namespace Plugin
  * @class DataTableState
  * @extends Plugin.Base
  * @constructor
  * @param config {Object} configuration
  */
-
 function State(
 	/* object */ config)
 {
@@ -271,6 +273,7 @@ Y.extend(State, Y.Plugin.Base,
 	},
 
 	/**
+	 * @method getState
 	 * @return {Object} state for each row, indexed by uniqueIdKey and column key
 	 */
 	getState: function()

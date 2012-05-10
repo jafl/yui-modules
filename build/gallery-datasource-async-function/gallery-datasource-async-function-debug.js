@@ -2,19 +2,19 @@ YUI.add('gallery-datasource-async-function', function(Y) {
 
 "use strict";
 
-/**
- * @module gallery-async-function-datasource
- */
-
 /**********************************************************************
  * <p>Data source that calls an asynchronous function.</p>
  *
- * @class AsyncFunctionDataSource
+ * @module gallery-datasource-async-function
+ */
+
+/**
+ * @namespace DataSource
+ * @class AsyncFunction
  * @extends DataSource.Local
  * @constructor
  * @param config {Object}
  */
-
 function AsyncFunctionDataSource()
 {
 	AsyncFunctionDataSource.superclass.constructor.apply(this, arguments);

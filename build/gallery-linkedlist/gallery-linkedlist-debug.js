@@ -6,12 +6,9 @@ YUI.add('gallery-linkedlist', function(Y) {
  * Item stored by LinkedList.
  * 
  * @class LinkedListItem
- */
-
-/**
  * @method constructor
- * @param value {Mixed} value to store
  * @private
+ * @param value {Mixed} value to store
  */
 
 function LinkedListItem(
@@ -24,6 +21,7 @@ function LinkedListItem(
 LinkedListItem.prototype =
 {
 	/**
+	 * @method prev
 	 * @return {LinkedListItem} previous item or null
 	 */
 	prev: function()
@@ -32,6 +30,7 @@ LinkedListItem.prototype =
 	},
 
 	/**
+	 * @method next
 	 * @return {LinkedListItem} next item or null
 	 */
 	next: function()
@@ -48,12 +47,9 @@ Y.LinkedListItem = LinkedListItem;
  * beginning.
  *
  * @class LinkedListIterator
- */
-
-/**
  * @method constructor
- * @param list {LinkedList}
  * @private
+ * @param list {LinkedList}
  */
 
 function LinkedListIterator(
@@ -66,6 +62,7 @@ function LinkedListIterator(
 LinkedListIterator.prototype =
 {
 	/**
+	 * @method atBeginning
 	 * @return {Boolean} true if at the beginning
 	 */
 	atBeginning: function()
@@ -74,6 +71,7 @@ LinkedListIterator.prototype =
 	},
 
 	/**
+	 * @method atEnd
 	 * @return {Boolean} true if at the end
 	 */
 	atEnd: function()
@@ -83,6 +81,8 @@ LinkedListIterator.prototype =
 
 	/**
 	 * Move to the beginning of the list.
+	 * 
+	 * @method moveToBeginning
 	 */
 	moveToBeginning: function()
 	{
@@ -92,6 +92,8 @@ LinkedListIterator.prototype =
 
 	/**
 	 * Move to the end of the list.
+	 * 
+	 * @method moveToEnd
 	 */
 	moveToEnd: function()
 	{
@@ -100,6 +102,7 @@ LinkedListIterator.prototype =
 	},
 
 	/**
+	 * @method next
 	 * @return {Mixed} next value in the list or undefined if at the end
 	 */
 	next: function()
@@ -126,6 +129,7 @@ LinkedListIterator.prototype =
 	},
 
 	/**
+	 * @method prev
 	 * @return {Mixed} previous value in the list or undefined if at the beginning
 	 */
 	prev: function()
@@ -155,6 +159,7 @@ LinkedListIterator.prototype =
 	 * Insert the given value at the iteration position.  The inserted item
 	 * will be returned by next().
 	 * 
+	 * @method insert
 	 * @param value {Mixed} value to insert
 	 * @return {LinkedListItem} inserted item
 	 */
@@ -176,6 +181,7 @@ LinkedListIterator.prototype =
 	/**
 	 * Remove the previous item from the list.
 	 * 
+	 * @method removePrev
 	 * @return {LinkedListItem} removed item or undefined if at the end
 	 */
 	removePrev: function()
@@ -204,6 +210,7 @@ LinkedListIterator.prototype =
 	/**
 	 * Remove the next item from the list.
 	 * 
+	 * @method removeNext
 	 * @return {LinkedListItem} removed item or undefined if at the end
 	 */
 	removeNext: function()
@@ -240,6 +247,9 @@ LinkedListIterator.prototype =
  * checks the index.</p>
  * 
  * @module gallery-linkedlist
+ */
+
+/**
  * @class LinkedList
  * @constructor
  * @param list {Mixed} (Optional) any scalar or iterable list
@@ -285,6 +295,7 @@ function wrap(value)
 LinkedList.prototype =
 {
 	/**
+	 * @method isEmpty
 	 * @return {Boolean} true if the list is empty
 	 */
 	isEmpty: function()
@@ -296,6 +307,7 @@ LinkedList.prototype =
 	 * Warning:  This requires traversing the list!  Use isEmpty() whenever
 	 * possible.
 	 *
+	 * @method size
 	 * @return {Number} the number of items in the list
 	 */
 	size: function()
@@ -313,6 +325,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method iterator
 	 * @return {LinkedListIterator}
 	 */
 	iterator: function()
@@ -323,6 +336,7 @@ LinkedList.prototype =
 	/**
 	 * Creates a new, empty LinkedList.
 	 *
+	 * @method newInstance
 	 * @return {LinkedList}
 	 */
 	newInstance: function()
@@ -331,6 +345,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method head
 	 * @return {LinkedListItem} the first item in the list, or null if the list is empty
 	 */
 	head: function()
@@ -339,6 +354,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method tail
 	 * @return {LinkedListItem} the last item in the list, or null if the list is empty
 	 */
 	tail: function()
@@ -347,6 +363,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method indexOf
 	 * @param needle {Mixed} the item to search for
 	 * @return {Number} first index of the needle, or -1 if not found
 	 */
@@ -366,6 +383,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method lastIndexOf
 	 * @param needle {Mixed} the item to search for
 	 * @return {Number} last index of the needle, or -1 if not found
 	 */
@@ -387,6 +405,8 @@ LinkedList.prototype =
 
 	/**
 	 * Clear the list.
+	 * 
+	 * @method clear
 	 */
 	clear: function()
 	{
@@ -394,6 +414,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method insertBefore
 	 * @param value {Mixed} value to insert
 	 * @param item {LinkedListItem} existing item
 	 * @return {LinkedListItem} inserted item
@@ -421,6 +442,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method insertAfter
 	 * @param item {LinkedListItem} existing item
 	 * @param value {Mixed} value to insert
 	 * @return {LinkedListItem} inserted item
@@ -448,6 +470,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method prepend
 	 * @param value {Mixed} value to prepend
 	 * @return {LinkedListItem} prepended item
 	 */
@@ -469,6 +492,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method append
 	 * @param value {Mixed} value to append
 	 * @return {LinkedListItem} appended item
 	 */
@@ -491,6 +515,8 @@ LinkedList.prototype =
 
 	/**
 	 * Remove the item from the list.
+	 * 
+	 * @method remove
 	 */
 	remove: function(
 		/* item */	item)
@@ -526,6 +552,8 @@ LinkedList.prototype =
 
 	/**
 	 * Reverses the items in place.
+	 * 
+	 * @method reverse
 	 */
 	reverse: function()
 	{
@@ -542,6 +570,7 @@ LinkedList.prototype =
 	},
 
 	/**
+	 * @method toArray
 	 * @return {Array}
 	 */
 	toArray: function()

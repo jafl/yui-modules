@@ -422,8 +422,9 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
-	 * @return {boolean} true if the raw data is stored locally
+	 * @method _dataIsLocal
 	 * @protected
+	 * @return {boolean} true if the raw data is stored locally
 	 */
 	_dataIsLocal: function()
 	{
@@ -433,6 +434,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * Flush the underlying datasource's cache.
 	 * 
+	 * @method _flushCache
 	 * @protected
 	 */
 	_flushCache: function()
@@ -447,6 +449,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * Use this instead of any meta information in response.
 	 * 
+	 * @method getRecordCount
 	 * @return {Number} the total number of records
 	 */
 	getRecordCount: function()
@@ -455,6 +458,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method getCurrentRecords
 	 * @return {Number} the records returned by the latest request
 	 */
 	getCurrentRecords: function()
@@ -463,6 +467,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method getCurrentRecordMap
 	 * @return {Object} the records returned by the latest request, keyed by record id
 	 */
 	getCurrentRecordMap: function()
@@ -471,6 +476,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method getValue
 	 * @param record_index {Number}
 	 * @param key {String} field key
 	 * @return {mixed} the value of the specified field in the specified record
@@ -517,6 +523,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * When using a remote datasource, this will include changes made to
 	 * deleted records.
 	 * 
+	 * @method getChanges
 	 * @return {Object} map of all changed values, keyed by record id
 	 */
 	getChanges: function()
@@ -525,6 +532,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method getRemovedRecordIndexes
 	 * @return {Array} list of removed record indices, based on initial ordering
 	 */
 	getRemovedRecordIndexes: function()
@@ -544,10 +552,11 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * You must reload() the widget after calling this function!
 	 * 
+	 * @method insertRecord
+	 * @protected
 	 * @param index {Number} insertion index
 	 * @param record {Object|String} record to insert or id of record to clone
 	 * @return {String} id of newly inserted record
-	 * @protected
 	 */
 	insertRecord: function(
 		/* int */		index,
@@ -597,9 +606,10 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * You must reload() the widget after calling this function!
 	 * 
+	 * @method removeRecord
+	 * @protected
 	 * @param index {Number} index of record to remove
 	 * @return {boolean} true if record was removed
-	 * @protected
 	 */
 	removeRecord: function(
 		/* int */ index)
@@ -639,10 +649,11 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * Update a value in a record.
 	 *
+	 * @method updateValue
+	 * @protected
 	 * @param record_id {String}
 	 * @param key {String} field key
 	 * @param value {String} new item value
-	 * @protected
 	 */
 	updateValue: function(
 		/* string */	record_id,
@@ -675,9 +686,10 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method _getComparator
+	 * @protected
 	 * @param key {String} field key
 	 * @return {Function} comparator function for the given field
-	 * @protected
 	 */
 	_getComparator: function(
 		/* string */ key)
@@ -702,6 +714,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * Only usable with DataSource.Local.  When using best-effort save on
 	 * the server, call this for each record that was successfully saved.
 	 *
+	 * @method mergeChanges
 	 * @param record_id {String}
 	 */
 	mergeChanges: function(
@@ -763,6 +776,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * 
 	 * <p>You must reload() the widget after calling this function!</p>
 	 * 
+	 * @method killRecord
 	 * @param record_id {String}
 	 */
 	killRecord: function(
@@ -844,6 +858,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * 
 	 * <p>You must reload() the widget after calling this function!</p>
 	 * 
+	 * @method updateRecordId
 	 * @param orig_record_id {String}
 	 * @param new_record_id {String}
 	 */
@@ -914,6 +929,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * Find the index of the given record id.  Only usable with
 	 * DataSource.Local.
 	 * 
+	 * @method recordIdToIndex
 	 * @param record_id {String}
 	 * @return {Number} index or record or -1 if not found
 	 */
@@ -959,6 +975,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * Merges edits into data and returns result.
 	 * 
+	 * @method _defRequestFn
 	 * @protected
 	 */
 	_defRequestFn: function(e)
@@ -1175,6 +1192,8 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Reloads the current page of records.  This will erase any changes
 	 * unsaved changes!
+	 * 
+	 * @method reload
 	 */
 	reload: function()
 	{
@@ -1226,6 +1245,8 @@ Y.extend(BulkEditor, Y.Widget,
 
 	/**
 	 * Save the modified values from the current page of records.
+	 * 
+	 * @method saveChanges
 	 */
 	saveChanges: function()
 	{
@@ -1248,6 +1269,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Retrieve *all* the data.  Do not call this if you use server-side
 	 * pagination.
 	 * 
+	 * @method getAllValues
 	 * @param callback {Object} callback object which will be invoked by DataSource
 	 */
 	getAllValues: function(callback)
@@ -1267,6 +1289,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getChanges
 	 * @return {Object} map of all changed values, keyed by record id
 	 */
 	getChanges: function()
@@ -1279,6 +1302,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * 
 	 * <p>You must reload() the widget after calling this function!</p>
 	 * 
+	 * @method insertRecord
 	 * @param index {Number} insertion index
 	 * @param record {Object|String} record to insert or id of record to clone
 	 * @return {String} the new record's id
@@ -1305,6 +1329,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * 
 	 * <p>You must reload() the widget after calling this function!</p>
 	 * 
+	 * @method removeRecord
 	 * @param index {Number}
 	 * @return {Boolean} true if the record was successfully removed
 	 */
@@ -1329,6 +1354,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getFieldConfig
 	 * @param key {String} field key
 	 * @return {Object} field configuration
 	 */
@@ -1339,6 +1365,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getRecordContainerId
 	 * @param record {String|Object} record id or record object
 	 * @return {String} id of DOM element containing the record's input elements
 	 */
@@ -1356,6 +1383,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getFieldId
 	 * @param record {String|Object} record id or record object
 	 * @param key {String} field key
 	 * @return {String} id of DOM element containing the field's input element
@@ -1368,6 +1396,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getRecordAndFieldKey
 	 * @param key {String|Node} field key or field input element
 	 * @return {Object} object containing record and field_key
 	 */
@@ -1382,6 +1411,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getRecordId
 	 * @param obj {Object|Node} record object, record container, or any node inside record container
 	 * @return {String} record id
 	 */
@@ -1405,6 +1435,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getRecordContainer
 	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
 	 * @return {Node} node containing rendered record
 	 */
@@ -1428,6 +1459,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getFieldContainer
 	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
 	 * @param key {String} field key
 	 * @return {Node} node containing rendered field
@@ -1441,6 +1473,7 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method getFieldElement
 	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
 	 * @param key {String} field key
 	 * @return {Node} field's input element
@@ -1460,6 +1493,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Paginate and/or scroll to make the specified record visible.  Record
 	 * is pinged to help the user find it.
 	 * 
+	 * @method showRecordIndex
 	 * @param index {Number} record index
 	 */
 	showRecordIndex: function(
@@ -1490,6 +1524,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Paginate and/or scroll to make the specified record visible.  Record
 	 * is pinged to help the user find it.
 	 * 
+	 * @method showRecordId
 	 * @param id {Number} record id
 	 */
 	showRecordId: function(
@@ -1507,6 +1542,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * while.  Your CSS can use this class to highlight the record in some
 	 * way.
 	 * 
+	 * @method pingRecord
 	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
 	 */
 	pingRecord: function(
@@ -1527,8 +1563,9 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Render the current page of records.
 	 *
-	 * @param response {Object} response from data source
+	 * @method _render
 	 * @protected
+	 * @param response {Object} response from data source
 	 */
 	_render: function(response)
 	{
@@ -1561,8 +1598,9 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Derived class should override to create a structure for the records.
 	 *
-	 * @param container {Node}
+	 * @method _renderContainer
 	 * @protected
+	 * @param container {Node}
 	 */
 	_renderContainer: function(
 		/* element */	container)
@@ -1573,9 +1611,10 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Derived class must override to create a container for the record.
 	 * 
+	 * @method _renderRecordContainer
+	 * @protected
 	 * @param container {Node}
 	 * @param record {Object} record data
-	 * @protected
 	 */
 	_renderRecordContainer: function(
 		/* element */	container,
@@ -1588,9 +1627,10 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Derived class can override if it needs to do more than just call
 	 * _renderField() for each field.
 	 * 
+	 * @method _renderRecord
+	 * @protected
 	 * @param container {Node} record container
 	 * @param record {Object} record data
-	 * @protected
 	 */
 	_renderRecord: function(
 		/* element */	container,
@@ -1614,13 +1654,14 @@ Y.extend(BulkEditor, Y.Widget,
 	 * If _renderRecord is not overridden, derived class must override this
 	 * function to render the field.
 	 * 
+	 * @method _renderField
+	 * @protected
 	 * @param o {Object}
 	 *	container {Node} record container,
 	 *	key {String} field key,
 	 *	value {Mixed} field value,
 	 *	field {Object} field configuration,
 	 *	record {Object} record data
-	 * @protected
 	 */
 	_renderField: function(
 		/* object */ o)
@@ -1630,8 +1671,9 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Update the paginator to match the data source meta information.
 	 * 
-	 * @param response {Object} response from DataSource
+	 * @method _updatePaginator
 	 * @protected
+	 * @param response {Object} response from DataSource
 	 */
 	_updatePaginator: function(response)
 	{
@@ -1645,6 +1687,8 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Clear errors received from the server.  This clears all displayed
 	 * messages.
+	 * 
+	 * @method clearServerErrors
 	 */
 	clearServerErrors: function()
 	{
@@ -1677,6 +1721,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * error) or an object providing msg and type, where type can be
 	 * 'error', 'warn', 'info', or 'success'.
 	 * 
+	 * @method setServerErrors
 	 * @param page_errors {Array} list of page-level error messages
 	 * @param record_field_errors {Array} list of objects *in record display order*,
 	 *		each of which defines id (String), recordError (message),
@@ -1716,6 +1761,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Update paginator to show which pages have errors.
 	 *
+	 * @method _updatePageStatus
 	 * @protected
 	 */
 	_updatePageStatus: function()
@@ -1752,6 +1798,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 * Validate the visible values (if using server-side pagination) or all
 	 * the values (if using client-side pagination or no pagination).
 	 * 
+	 * @method validate
 	 * @return {Boolean} true if all checked values are acceptable
 	 */
 	validate: function()
@@ -1797,9 +1844,10 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Validate the visible values.
 	 * 
+	 * @method _validateVisibleFields
+	 * @protected
 	 * @param container {Node} if null, uses contentBox
 	 * @return {Boolean} true if all checked values are acceptable
-	 * @protected
 	 */
 	_validateVisibleFields: function(
 		/* object */ container)
@@ -1855,9 +1903,10 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Validate the given elements.
 	 * 
+	 * @method _validateElements
+	 * @protected
 	 * @param nodes {NodeList}
 	 * @return {Boolean} true if all checked values are acceptable
-	 * @protected
 	 */
 	_validateElements: function(
 		/* array */ nodes)
@@ -1945,8 +1994,9 @@ Y.extend(BulkEditor, Y.Widget,
 	 * If the data is stored locally and we paginate, validate all of it
 	 * and mark the pages that have invalid values.
 	 * 
-	 * @return {Boolean} true if all checked values are acceptable
+	 * @method _validateAllPages
 	 * @protected
+	 * @return {Boolean} true if all checked values are acceptable
 	 */
 	_validateAllPages: function()
 	{
@@ -2021,6 +2071,8 @@ Y.extend(BulkEditor, Y.Widget,
 
 	/**
 	 * Clear all displayed messages.
+	 * 
+	 * @method _clearValidationMessages
 	 */
 	_clearValidationMessages: function()
 	{
@@ -2040,6 +2092,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Display a message for the specified field.
 	 * 
+	 * @method displayFieldMessage
 	 * @param e {Node} field input element
 	 * @param msg {String} message to display
 	 * @param type {String} message type:  error, warn, info, success
@@ -2084,6 +2137,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Display a message for the specified record.
 	 * 
+	 * @method displayRecordMessage
 	 * @param id {String} record id
 	 * @param msg {String} message to display
 	 * @param type {String} message type:  error, warn, info, success
@@ -2123,10 +2177,11 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
+	 * @method _getElementStatus
+	 * @protected
 	 * @param n {Node}
 	 * @param r {RegExp}
 	 * @return {Mixed} status or false
-	 * @protected
 	 */
 	_getElementStatus: function(
 		/* Node */	n,
@@ -2139,6 +2194,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * Update the status of the node, if the new status has higher precedence.
 	 *
+	 * @method _updateRecordStatus
 	 * @param bd {Node}
 	 * @param type {String} new status
 	 * @param p {String} pattern for extracting status
@@ -2173,6 +2229,11 @@ function cleanHTML(s)
 	return (s ? Y.Escape.html(s) : '');
 }
 
+/**
+ * @property Y.BulkEditor.error_msg_markup
+ * @type {String}
+ * @static
+ */
 BulkEditor.error_msg_markup = Y.Lang.sub('<div class="{c}"></div>',
 {
 	c: message_container_class
@@ -2629,4 +2690,4 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 Y.HTMLTableBulkEditor = HTMLTableBulkEditor;
 
 
-}, '@VERSION@' ,{skinnable:true, optional:['datasource','dataschema','gallery-paginator'], requires:['widget','datasource-local','gallery-busyoverlay','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-scrollintoview','array-extras','gallery-funcprog','escape']});
+}, '@VERSION@' ,{requires:['widget','datasource-local','gallery-busyoverlay','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-scrollintoview','array-extras','gallery-funcprog','escape'], optional:['datasource','dataschema','gallery-paginator'], skinnable:true});

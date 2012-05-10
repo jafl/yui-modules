@@ -10,6 +10,9 @@ YUI.add('gallery-formmgr-overlay-plugin', function(Y) {
  * set to the first field.
  *
  * @module gallery-formmgr-overlay-plugin
+ */
+
+/**
  * @namespace Plugin
  * @class OverlayForm
  * @extends Plugin.Base

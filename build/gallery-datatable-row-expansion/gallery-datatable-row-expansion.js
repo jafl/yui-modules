@@ -4,17 +4,22 @@ YUI.add('gallery-datatable-row-expansion', function(Y) {
 
 /**********************************************************************
  * <p>Plugin for DataTable to show additional information for each row via
- * a twistdown.  The result of the template is displayed across all the
- * columns following the twistdown column.</p>
+ * a twistdown.  The result of the template is displayed spanning all the
+ * columns beyond the twistdown column.</p>
+ * 
+ * <p>This class patches `getCell` and `getRow` to ignore the additional
+ * rows created by this plugin.</p>
  *
  * @module gallery-datatable-row-expansion
+ */
+
+/**
  * @namespace Plugin
  * @class DataTableRowExpansion
  * @extends Plugin.Base
  * @constructor
  * @param config {Object} configuration
  */
-
 function RowExpansion(
 	/* object */ config)
 {
@@ -190,7 +195,7 @@ var cell = table.getCell(e.taregt, [0, 1];</pre></code>
    cell Node
 @return {Node}
 @since 3.5.0
-**/
+*/
 function getCell(seed, shift)
 {
 	var tbody = this.get('container'),
@@ -274,7 +279,7 @@ found by the input, `null` is returned.
 @param {Number|String|Model} id Row index, Model instance, or clientId
 @return {Node}
 @since 3.5.0
-**/
+*/
 function getRow(id)
 {
 	var tbody = this.get('container') || null;

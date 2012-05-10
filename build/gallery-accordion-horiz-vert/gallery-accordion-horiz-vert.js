@@ -17,13 +17,13 @@ var use_nonzero_empty_div = (0 < Y.UA.ie && Y.UA.ie < 8),
 /**
  * <p>An accordion can be constructed from existing markup or from strings
  * containing HTML.  Existing markup can be provided either by setting
- * <code>contentBox</code> or by specifying CSS selectors.  See the
- * <code>titles</code> and <code>sections</code> attributes.</p>
+ * `contentBox` or by specifying CSS selectors.  See the `titles` and
+ * `sections` attributes.</p>
  * 
- * <p>When constructing from existing markup via <code>contentBox</code>,
- * use an unordered list (&lt;ul&gt;).  Each item must contain two
- * &lt;div&gt;'s.  The first one is used as the section title, and the
- * second one is used as the section content.</p>
+ * <p>When constructing from existing markup via `contentBox`, use an
+ * unordered list (&lt;ul&gt;).  Each item must contain two &lt;div&gt;'s.
+ * The first one is used as the section title, and the second one is used
+ * as the section content.</p>
  * 
  * <p>Animation is optional.  If the anim module is not available,
  * animation is automatically turned off.</p>
@@ -43,7 +43,6 @@ var use_nonzero_empty_div = (0 < Y.UA.ie && Y.UA.ie < 8),
  * @constructor
  * @param config {Object} Widget configuration
  */
-
 function Accordion(config)
 {
 	config = config || {};
@@ -422,6 +421,7 @@ Y.extend(Accordion, Y.Widget,
 	},
 
 	/**
+	 * @method getSectionCount
 	 * @return {int} total number of sections
 	 */
 	getSectionCount: function()
@@ -430,6 +430,7 @@ Y.extend(Accordion, Y.Widget,
 	},
 
 	/**
+	 * @method getTitle
 	 * @param index {int} the section index
 	 * @return {Node} the container for the section title
 	 */
@@ -442,6 +443,7 @@ Y.extend(Accordion, Y.Widget,
 	/**
 	 * Sets the contents of the specified section title.
 	 * 
+	 * @method setTitle
 	 * @param index {int} the section index
 	 * @param title {String|Node} the title content
 	 */
@@ -497,6 +499,7 @@ Y.extend(Accordion, Y.Widget,
 	},
 
 	/**
+	 * @method getSection
 	 * @param index {int} the section index
 	 * @return {Node} the container for the section content
 	 */
@@ -509,6 +512,7 @@ Y.extend(Accordion, Y.Widget,
 	/**
 	 * Sets the contents of the specified section.
 	 * 
+	 * @method setSection
 	 * @param index {int} the section index
 	 * @param content {String|Node} the section content
 	 */
@@ -562,6 +566,7 @@ Y.extend(Accordion, Y.Widget,
 	},
 
 	/**
+	 * @method _getClip
 	 * @protected
 	 * @param index {int} the section index
 	 * @return {Node} the clipping container for the section content
@@ -575,6 +580,7 @@ Y.extend(Accordion, Y.Widget,
 	/**
 	 * Prepends the section to the accordion.
 	 * 
+	 * @method prependSection
 	 * @param title {String|Node} the section title content
 	 * @param content {String|Node} the section content
 	 */
@@ -588,6 +594,7 @@ Y.extend(Accordion, Y.Widget,
 	/**
 	 * Appends the section to the accordion.
 	 * 
+	 * @method appendSection
 	 * @param title {String|Node} the section title content
 	 * @param content {String|Node} the section content
 	 */
@@ -601,6 +608,7 @@ Y.extend(Accordion, Y.Widget,
 	/**
 	 * Inserts the section into the accordion at the specified location.
 	 * 
+	 * @method insertSection
 	 * @param index {int} the insertion index
 	 * @param title {String|Node} the section title content
 	 * @param content {String|Node} the section content
@@ -726,6 +734,7 @@ Y.extend(Accordion, Y.Widget,
 	/**
 	 * Removes the specified section.
 	 * 
+	 * @method removeSection
 	 * @param index {int} the section index
 	 */
 	removeSection: function(
@@ -799,6 +808,7 @@ Y.extend(Accordion, Y.Widget,
 	},
 
 	/**
+	 * @method findSection
 	 * @param {String|Node} any element inside the section or title
 	 * @return {int} the index of the containing section, or -1 if not found
 	 */
@@ -823,6 +833,7 @@ Y.extend(Accordion, Y.Widget,
 	},
 
 	/**
+	 * @method isSectionOpen
 	 * @return {boolean} <code>true</code> if the section is open
 	 */
 	isSectionOpen: function(
@@ -834,6 +845,7 @@ Y.extend(Accordion, Y.Widget,
 	/**
 	 * Open the specified section.
 	 * 
+	 * @method openSection
 	 * @param index {int} the section index
 	 */
 	openSection: function(
@@ -848,6 +860,7 @@ Y.extend(Accordion, Y.Widget,
 	/**
 	 * Close the specified section.
 	 * 
+	 * @method closeSection
 	 * @param index {int} the section index
 	 */
 	closeSection: function(
@@ -860,6 +873,7 @@ Y.extend(Accordion, Y.Widget,
 	},
 
 	/**
+	 * @method allSectionsOpen
 	 * @return {boolean} <code>true</code> if all sections are open
 	 */
 	allSectionsOpen: function()
@@ -877,6 +891,7 @@ Y.extend(Accordion, Y.Widget,
 	},
 
 	/**
+	 * @method allSectionsClosed
 	 * @return {boolean} <code>true</code> if all sections are closed
 	 */
 	allSectionsClosed: function()
@@ -896,6 +911,7 @@ Y.extend(Accordion, Y.Widget,
 	/**
 	 * Show/hide the section content.
 	 * 
+	 * @method toggleSection
 	 * @param index {int} the section index
 	 */
 	toggleSection: function(
@@ -1010,6 +1026,8 @@ Y.extend(Accordion, Y.Widget,
 
 	/**
 	 * Open all sections, if possible.
+	 * 
+	 * @method openAllSections
 	 */
 	openAllSections: function()
 	{
@@ -1028,6 +1046,8 @@ Y.extend(Accordion, Y.Widget,
 
 	/**
 	 * Close all sections, if possible.
+	 * 
+	 * @method closeAllSections
 	 */
 	closeAllSections: function()
 	{
@@ -1107,6 +1127,7 @@ Y.extend(Accordion, Y.Widget,
 Y.Accordion = Accordion;
 /**
  * @module gallery-accordion-horiz-vert
+ * @namespace Plugin
  */
 
 /**********************************************************************
@@ -1117,8 +1138,8 @@ Y.Accordion = Accordion;
  * <p>If/when the widget is given a fixed size, all animations are turned
  * off.</p>
  * 
- * @namespace Plugin
  * @class FixedSizeAccordion
+ * @constructor
  */
 function FixedSizeAccordionPlugin()
 {

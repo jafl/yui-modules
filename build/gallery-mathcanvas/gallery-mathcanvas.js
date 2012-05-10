@@ -19,6 +19,7 @@ function RectList()
 }
 
 /**
+ * @method width
  * @static
  * @param r {Rect} rectangle
  * @return width
@@ -29,6 +30,7 @@ RectList.width = function(r)
 };
 
 /**
+ * @method height
  * @static
  * @param r {Rect} rectangle
  * @return height
@@ -39,6 +41,7 @@ RectList.height = function(r)
 };
 
 /**
+ * @method xcenter
  * @static
  * @param r {Rect} rectangle
  * @return horizontal center
@@ -49,6 +52,7 @@ RectList.xcenter = function(r)
 };
 
 /**
+ * @method ycenter
  * @static
  * @param r {Rect} rectangle
  * @return vertical center
@@ -59,6 +63,7 @@ RectList.ycenter = function(r)
 };
 
 /**
+ * @method area
  * @static
  * @param r {Rect} rectangle
  * @return area
@@ -69,6 +74,7 @@ RectList.area = function(r)
 };
 
 /**
+ * @method containsPt
  * @static
  * @param r {Rect} rectangle
  * @param xy {point} point
@@ -81,6 +87,7 @@ RectList.containsPt = function(r, xy)
 };
 
 /**
+ * @method containsRect
  * @static
  * @param r1 {Rect}
  * @param r2 {Rect}
@@ -93,6 +100,7 @@ RectList.containsRect = function(r1, r2)
 };
 
 /**
+ * @method cover
  * @static
  * @param r1 {Rect} rectangle
  * @param r2 {Rect} rectangle
@@ -113,6 +121,7 @@ RectList.cover = function(r1, r2)
 RectList.prototype =
 {
 	/**
+	 * @method add
 	 * @param r {Rect}
 	 * @param midline {int}
 	 * @param font_size {int} percentage
@@ -137,6 +146,7 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method get
 	 * @param index {int}
 	 * @return item at index
 	 */
@@ -147,6 +157,7 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method find
 	 * @param f {MathFunction} search target
 	 * @return data for specified MathFunction, or null if not found
 	 */
@@ -160,6 +171,7 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method findIndex
 	 * @param f {MathFunction} search target
 	 * @return index of item for specified MathFunction, or -1 if not found
 	 */
@@ -172,6 +184,7 @@ RectList.prototype =
 	/**
 	 * Shift the specified rect and all rects inside it.
 	 * 
+	 * @method shift
 	 * @param index {int}
 	 * @param dx {int} horizontal shift
 	 * @param dy {int} vertical shift
@@ -211,6 +224,7 @@ RectList.prototype =
 	/**
 	 * Set the midline of the specified rectangle.
 	 * 
+	 * @method setMidline
 	 * @param index {int}
 	 * @param y {int} midline
 	 */
@@ -222,6 +236,7 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method getBounds
 	 * @return the bounding rect of all the rects in the list
 	 */
 	getBounds: function()
@@ -230,13 +245,14 @@ RectList.prototype =
 	},
 
 	/**
-	 * 	Returns the index of the smallest rectangle that contains both
-	 * 	startPt and currPt.  Returns -1 if there is no such rectangle.  If
-	 * 	startPt is inside the bounding rectangle and currPt is outside, we
-	 * 	return the index of the bounding rectangle.
+	 * Returns the index of the smallest rectangle that contains both
+	 * startPt and currPt.  Returns -1 if there is no such rectangle.  If
+	 * startPt is inside the bounding rectangle and currPt is outside, we
+	 * return the index of the bounding rectangle.
 	 * 	
-	 * 	@param start_pt {point} point where the drag started
-	 * 	@param curr_pt {point} current cursor location
+	 * @method getSelection
+	 * @param start_pt {point} point where the drag started
+	 * @param curr_pt {point} current cursor location
 	 */
 	getSelection: function(
 		/* point */	start_pt,
@@ -272,6 +288,7 @@ RectList.prototype =
 	/**
 	 * Returns the index of the smallest rectangle enclosing the given one.
 	 * 
+	 * @method getParent
 	 * @param index {int}
 	 */
 	getParent: function(
@@ -292,6 +309,10 @@ RectList.prototype =
 		return this.list.length-1;
 	}
 };
+/**
+ * @module gallery-mathcanvas
+ */
+
 /**********************************************************************
  * <p>Base class for all functions rendered by MathCanvas.</p>
  * 
@@ -299,7 +320,6 @@ RectList.prototype =
  * the default rendering which displays the output from toString(), implement
  * prepareToRender() and render().</p>
  * 
- * @namespace
  * @class MathFunction
  * @constructor
  */
@@ -312,6 +332,7 @@ function MathFunction()
 MathFunction.prototype =
 {
 	/**
+	 * @method getParent
 	 * @return {MathFunction} parent function or null
 	 */
 	getParent: function()
@@ -323,6 +344,7 @@ MathFunction.prototype =
 	 * Add the layout information for this object and its descendants to
 	 * rect_list.
 	 *
+	 * @method prepareToRender
 	 * @param canvas {MathCanvas} the drawing canvas
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
@@ -351,6 +373,7 @@ MathFunction.prototype =
 	/**
 	 * Draw this object and its descendants.
 	 * 
+	 * @method render
 	 * @param canvas {MathCanvas} the drawing canvas
 	 * @param rect_list {RectList} layout information
 	 */
@@ -378,9 +401,10 @@ MathFunction.prototype =
 	 */
 
 	/**
+	 * @method parenthesizeForPrint
+	 * @protected
 	 * @param f {MathFunction}
 	 * @return {boolean} true if f needs to parenthesize us
-	 * @protected
 	 */
 	parenthesizeForPrint: function(
 		/* MathFunction */	f)
@@ -389,9 +413,10 @@ MathFunction.prototype =
 	},
 
 	/**
+	 * @method parenthesizeForRender
+	 * @protected
 	 * @param f {MathFunction}
 	 * @return {boolean} true if f needs to parenthesize us
-	 * @protected
 	 */
 	parenthesizeForRender: function(
 		/* MathFunction */	f)
@@ -2781,13 +2806,14 @@ if (typeof module !== 'undefined' && require.main === module) {
  * Displays an arithmetical expression the way you would write it on paper.
  * 
  * @module gallery-mathcanvas
- * @namespace
+ */
+
+/**
  * @class MathCanvas
  * @extends Widget
  * @constructor
  * @param config {Object} Widget configuration
  */
-
 function MathCanvas(
 	/* object */	config)
 {
@@ -3122,6 +3148,8 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Shows touch keyboard.
+	 * 
+	 * @method showKeyboard
 	 */
 	showKeyboard: function()
 	{
@@ -3150,6 +3178,8 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Hides touch keyboard.
+	 * 
+	 * @method hideKeyboard
 	 */
 	hideKeyboard: function()
 	{
@@ -3178,6 +3208,8 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Expands the selection up one level of the parse tree.
+	 * 
+	 * @method expandSelection
 	 */
 	expandSelection: function()
 	{
@@ -3194,6 +3226,8 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Deletes the selected sub-expression.
+	 * 
+	 * @method deleteSelection
 	 */
 	deleteSelection: function()
 	{
@@ -3204,6 +3238,7 @@ Y.extend(MathCanvas, Y.Widget,
 	},
 
 	/**
+	 * @method deleteFunction
 	 * @param f {MathFunction} function to remove from the overall expression
 	 */
 	deleteFunction: function(
@@ -3248,8 +3283,11 @@ Y.extend(MathCanvas, Y.Widget,
 		this._renderExpression();
 	},
 
-	/*
+	/**
 	 * Renders the expression.
+	 * 
+	 * @method _renderExpression
+	 * @protected
 	 */
 	_renderExpression: function()
 	{

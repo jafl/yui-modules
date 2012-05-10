@@ -6,7 +6,10 @@ YUI.add('gallery-algorithms', function(Y) {
  * <p>Useful algorithms not provided by browsers.</p>
  *
  * @module gallery-algorithms
- * @class Array
+ */
+
+/**
+ * @class Array~algorithms
  */
 
 /**********************************************************************
@@ -240,7 +243,7 @@ if (Y.ArrayList)
 	 * Useful algorithms that are not provided by browsers.  Available if
 	 * Y.ArrayList (collection) is loaded.
 	 * 
-	 * @class ArrayList
+	 * @class ArrayList~extras
 	 */
 
 	Y.mix(Y.ArrayList,
