@@ -1,6 +1,5 @@
 /**
  * @module gallery-accordion-horiz-vert
- * @namespace Plugin
  */
 
 /**********************************************************************
@@ -12,6 +11,7 @@
  * off.</p>
  * 
  * @class FixedSizeAccordion
+ * @namespace Plugin
  * @constructor
  */
 function FixedSizeAccordionPlugin()

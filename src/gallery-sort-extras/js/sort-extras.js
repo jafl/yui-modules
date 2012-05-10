@@ -1,12 +1,13 @@
 "use strict";
 
-/**********************************************************************
- * <p>Utilities for sorting.</p>
- * 
+/**
  * @module gallery-sort-extras
  */
 
 /**
+ * <p>Utilities for sorting.</p>
+ * 
+ * @main gallery-sort-extras
  * @class Sort
  */
 

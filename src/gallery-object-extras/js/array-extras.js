@@ -1,4 +1,8 @@
-/**********************************************************************
+/**
+ * @module gallery-object-extras
+ */
+
+/**
  * @class Array~object-extras
  */
 

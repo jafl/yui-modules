@@ -2,16 +2,17 @@ YUI.add('gallery-busyoverlay', function(Y) {
 
 "use strict";
 
-/**********************************************************************
- * A plugin for Y.Node or Y.Widget that creates an overlaying div.
- * Especially useful for a widget that is waiting for an AJAX response.
- * 
+/**
  * @module gallery-busyoverlay
- * @namespace Plugin
  */
 
 /**
+ * A plugin for Y.Node or Y.Widget that creates an overlaying div.
+ * Especially useful for a widget that is waiting for an AJAX response.
+ * 
+ * @main gallery-busyoverlay
  * @class BusyOverlay
+ * @namespace Plugin
  * @extends Plugin.Base
  * @constructor
  * @param config {Object} configuration
@@ -29,7 +30,7 @@ BusyOverlayPlugin.ATTRS =
 	/**
 	 * CSS class to apply to the overlay.
 	 *
-	 * @config css
+	 * @attribute css
 	 * @type {String}
 	 * @default "yui3-component-busy"
 	 */

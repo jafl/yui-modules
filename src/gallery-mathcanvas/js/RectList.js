@@ -1,13 +1,17 @@
 "use strict";
 
+/**
+ * @module gallery-mathcanvas
+ */
+
 /**********************************************************************
  * <p>Manages all the bounding rectangles for an expression.</p>
  * 
  * <p>Each item contains rect (top,left,bottom,right), midline,
  * font_size(%), func.</p>
  * 
- * @namespace MathCanvas
  * @class RectList
+ * @namespace MathCanvas
  * @constructor
  */
 

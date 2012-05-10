@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * @module gallery-linkedlist
+ */
+
 /**********************************************************************
  * Item stored by LinkedList.
  * 

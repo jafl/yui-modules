@@ -2,15 +2,16 @@ YUI.add('gallery-console-test', function(Y) {
 
 "use strict";
 
-/**********************************************************************
- * <p>Adds a menu of registered unit test suites to the YUI 3 Console.</p>
- *
+/**
  * @module gallery-console-test
  */
 
-/**
- * @namespace Plugin
+/**********************************************************************
+ * <p>Adds a menu of registered unit test suites to the YUI 3 Console.</p>
+ *
+ * @main gallery-console-test
  * @class ConsoleTest
+ * @namespace Plugin
  * @extends Plugin.Base
  */
 

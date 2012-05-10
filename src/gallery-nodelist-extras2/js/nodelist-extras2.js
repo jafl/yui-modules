@@ -1,13 +1,14 @@
 "use strict";
 
-/**********************************************************************
- * <p>Augments Y.NodeList with the same higher-order functions that
- * array-extras adds to Y.Array.</p>
- * 
+/**
  * @module gallery-nodelist-extras2
  */
 
 /**
+ * <p>Augments Y.NodeList with the same higher-order functions that
+ * array-extras adds to Y.Array.</p>
+ * 
+ * @main gallery-nodelist-extras2
  * @class NodeList~extras2
  */
 

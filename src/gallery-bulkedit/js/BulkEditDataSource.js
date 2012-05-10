@@ -25,7 +25,8 @@
  * This comparator can either be 'integer', 'decimal', or a function which
  * takes two arguments.</p>
  *
- * @class BulkEditDataSource
+ * @class BulkEdit
+ * @namespace DataSource
  * @extends DataSource.Local 
  * @constructor
  * @param config {Object}
@@ -43,7 +44,7 @@ BulkEditDataSource.ATTRS =
 	 * REQUIRED. The original data.  This must be immutable, i.e., the
 	 * values must not change.
 	 * 
-	 * @config ds
+	 * @attribute ds
 	 * @type {DataSource}
 	 * @writeonce
 	 */
@@ -57,7 +58,7 @@ BulkEditDataSource.ATTRS =
 	 * request usable by the underlying DataSource.  This function takes
 	 * one argument: state (startIndex,resultCount,...).
 	 * 
-	 * @config generateRequest
+	 * @attribute generateRequest
 	 * @type {Function}
 	 * @writeonce
 	 */
@@ -71,7 +72,7 @@ BulkEditDataSource.ATTRS =
 	 * REQUIRED. The name of the key in each record that stores an
 	 * identifier which is unique across the entire data set.
 	 * 
-	 * @config uniqueIdKey
+	 * @attribute uniqueIdKey
 	 * @type {String}
 	 * @writeonce
 	 */
@@ -85,7 +86,7 @@ BulkEditDataSource.ATTRS =
 	 * The function to call to generate a unique id for a new record.  The
 	 * default generates "bulk-edit-new-id-#".
 	 * 
-	 * @config generateUniqueId
+	 * @attribute generateUniqueId
 	 * @type {Function}
 	 * @writeonce
 	 */
@@ -105,7 +106,7 @@ BulkEditDataSource.ATTRS =
 	 * received data, e.g., <code>.meta.startIndex</code>.  If it is not
 	 * provided, startIndex is always assumed to be zero.
 	 * 
-	 * @config startIndexExpr
+	 * @attribute startIndexExpr
 	 * @type {String}
 	 * @writeonce
 	 */
@@ -121,7 +122,7 @@ BulkEditDataSource.ATTRS =
 	 * only appropriate for DataSources that always return the entire data
 	 * set.
 	 * 
-	 * @config totalRecordsReturnExpr
+	 * @attribute totalRecordsReturnExpr
 	 * @type {String}
 	 * @writeonce
 	 */
@@ -135,7 +136,7 @@ BulkEditDataSource.ATTRS =
 	 * REQUIRED. The function to call to extract the total number of
 	 * records from the response.
 	 * 
-	 * @config extractTotalRecords
+	 * @attribute extractTotalRecords
 	 * @type {Function}
 	 * @writeonce
 	 */
@@ -999,3 +1000,4 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 });
 
 Y.BulkEditDataSource = BulkEditDataSource;
+Y.namespace('DataSource').BulkEdit = BulkEditDataSource;

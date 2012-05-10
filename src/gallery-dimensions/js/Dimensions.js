@@ -1,12 +1,13 @@
 "use strict";
 
-/**********************************************************************
- * Functions for measuring the size of a node.
- * 
+/**
  * @module gallery-dimensions
  */
 
 /**
+ * Functions for measuring the size of a node.
+ * 
+ * @main gallery-dimensions
  * @class Node~dimensions
  */
 

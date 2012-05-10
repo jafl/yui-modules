@@ -1,5 +1,9 @@
 YUI.add('gallery-mru-cache', function(Y) {
 
+/**
+ * @module gallery-mru-cache
+ */
+
 /**********************************************************************
  * <p>Cache which drops items based on "most recently used."  Items are
  * dropped when a user-defined criterion is exceeded, e.g., total size or
@@ -10,10 +14,7 @@ YUI.add('gallery-mru-cache', function(Y) {
  * easy re-ordering and dropping of items.  Every cache hit moves the
  * associated MRU item to the front of the list.</p>
  * 
- * @module gallery-mru-cache
- */
-
-/**
+ * @main gallery-mru-cache
  * @class MRUCache
  * @constructor
  * @param config {Object}

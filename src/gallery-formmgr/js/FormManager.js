@@ -7,6 +7,7 @@
  * <p>Also see the documentation for gallery-formmgr-css-validation.</p>
  * 
  * @module gallery-formmgr
+ * @main gallery-formmgr
  */
 
 /**

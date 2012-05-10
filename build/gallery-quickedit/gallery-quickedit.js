@@ -3,6 +3,10 @@ YUI.add('gallery-quickedit', function(Y) {
 "use strict";
 
 /**
+ * @module gallery-quickedit
+ */
+
+/**
  * <p>The QuickEdit plugin provides a new mode for DataTable where all
  * values in the table can be edited simultaneously, controlled by the
  * column configuration.  Each editable cell contains an input field.  If
@@ -110,12 +114,9 @@ YUI.add('gallery-quickedit', function(Y) {
  * function. The work should normally be done inline in the formatter
  * function, but the name of the sample function makes the point clear.</p>
  *
- * @module gallery-quickedit
- */
-
-/**
- * @namespace Plugin
+ * @main gallery-quickedit
  * @class DataTableQuickEdit
+ * @namespace Plugin
  * @extends Plugin.Base
  * @constructor
  * @param config {Object} Object literal to set component configuration.

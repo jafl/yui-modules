@@ -27,7 +27,8 @@ YUI.add('gallery-bulkedit', function(Y) {
  * This comparator can either be 'integer', 'decimal', or a function which
  * takes two arguments.</p>
  *
- * @class BulkEditDataSource
+ * @class BulkEdit
+ * @namespace DataSource
  * @extends DataSource.Local 
  * @constructor
  * @param config {Object}
@@ -45,7 +46,7 @@ BulkEditDataSource.ATTRS =
 	 * REQUIRED. The original data.  This must be immutable, i.e., the
 	 * values must not change.
 	 * 
-	 * @config ds
+	 * @attribute ds
 	 * @type {DataSource}
 	 * @writeonce
 	 */
@@ -59,7 +60,7 @@ BulkEditDataSource.ATTRS =
 	 * request usable by the underlying DataSource.  This function takes
 	 * one argument: state (startIndex,resultCount,...).
 	 * 
-	 * @config generateRequest
+	 * @attribute generateRequest
 	 * @type {Function}
 	 * @writeonce
 	 */
@@ -73,7 +74,7 @@ BulkEditDataSource.ATTRS =
 	 * REQUIRED. The name of the key in each record that stores an
 	 * identifier which is unique across the entire data set.
 	 * 
-	 * @config uniqueIdKey
+	 * @attribute uniqueIdKey
 	 * @type {String}
 	 * @writeonce
 	 */
@@ -87,7 +88,7 @@ BulkEditDataSource.ATTRS =
 	 * The function to call to generate a unique id for a new record.  The
 	 * default generates "bulk-edit-new-id-#".
 	 * 
-	 * @config generateUniqueId
+	 * @attribute generateUniqueId
 	 * @type {Function}
 	 * @writeonce
 	 */
@@ -107,7 +108,7 @@ BulkEditDataSource.ATTRS =
 	 * received data, e.g., <code>.meta.startIndex</code>.  If it is not
 	 * provided, startIndex is always assumed to be zero.
 	 * 
-	 * @config startIndexExpr
+	 * @attribute startIndexExpr
 	 * @type {String}
 	 * @writeonce
 	 */
@@ -123,7 +124,7 @@ BulkEditDataSource.ATTRS =
 	 * only appropriate for DataSources that always return the entire data
 	 * set.
 	 * 
-	 * @config totalRecordsReturnExpr
+	 * @attribute totalRecordsReturnExpr
 	 * @type {String}
 	 * @writeonce
 	 */
@@ -137,7 +138,7 @@ BulkEditDataSource.ATTRS =
 	 * REQUIRED. The function to call to extract the total number of
 	 * records from the response.
 	 * 
-	 * @config extractTotalRecords
+	 * @attribute extractTotalRecords
 	 * @type {Function}
 	 * @writeonce
 	 */
@@ -1001,10 +1002,12 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 });
 
 Y.BulkEditDataSource = BulkEditDataSource;
+Y.namespace('DataSource').BulkEdit = BulkEditDataSource;
 /**********************************************************************
  * A widget for editing many records at once.
  *
  * @module gallery-bulkedit
+ * @main gallery-bulkedit
  */
 
 /**
@@ -1037,8 +1040,8 @@ BulkEditor.NAME = "bulkedit";
 BulkEditor.ATTRS =
 {
 	/**
-	 * @config ds
-	 * @type {BulkEditDataSource}
+	 * @attribute ds
+	 * @type {DataSource.BulkEdit}
 	 * @writeonce
 	 */
 	ds:
@@ -1056,7 +1059,7 @@ BulkEditor.ATTRS =
 	 * gallery-formmgr-css-validation).  Derived classes can require
 	 * additional keys.
 	 *
-	 * @config fields
+	 * @attribute fields
 	 * @type {Object}
 	 * @writeonce
 	 */
@@ -1071,7 +1074,7 @@ BulkEditor.ATTRS =
 	 * expects it to be configured to display ValidationPageLinks, so the
 	 * user can see which pages have errors that need to be fixed.
 	 *
-	 * @config paginator
+	 * @attribute paginator
 	 * @type {Paginator}
 	 * @writeonce
 	 */
@@ -1087,7 +1090,7 @@ BulkEditor.ATTRS =
 	/**
 	 * Extra key/value pairs to pass in the DataSource request.
 	 * 
-	 * @config requestExtra
+	 * @attribute requestExtra
 	 * @type {Object}
 	 * @writeonce
 	 */
@@ -1101,7 +1104,7 @@ BulkEditor.ATTRS =
 	/**
 	 * CSS class used to temporarily highlight a record.
 	 *
-	 * @config pingClass
+	 * @attribute pingClass
 	 * @type {String}
 	 * @default "yui3-bulkedit-ping"
 	 */
@@ -1114,7 +1117,7 @@ BulkEditor.ATTRS =
 	/**
 	 * Duration in seconds that pingClass is applied to a record.
 	 *
-	 * @config pingTimeout
+	 * @attribute pingTimeout
 	 * @type {Number}
 	 * @default 2
 	 */
@@ -2410,7 +2413,7 @@ HTMLTableBulkEditor.ATTRS =
 	/**
 	 * Configuration for each column: key, label, formatter.
 	 *
-	 * @config columns
+	 * @attribute columns
 	 * @type {Array}
 	 * @writeonce
 	 */
@@ -2429,7 +2432,7 @@ HTMLTableBulkEditor.ATTRS =
 	 * <p>Attaching events to the container before the table is created does
 	 * not work in all browsers.</p>
 	 *
-	 * @config events
+	 * @attribute events
 	 * @type {Array}
 	 * @writeonce
 	 */

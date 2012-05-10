@@ -2,6 +2,10 @@ YUI.add('gallery-canvas', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-canvas
+ */
+
 function mirror(r, s, name)
 {
 	r[name] = function()
@@ -11,26 +15,17 @@ function mirror(r, s, name)
 }
 
 /**********************************************************************
- * <p>Wrapper for a canvas 2d context.</p>
- * 
- * @module gallery-canvas
- */
-
-/**
  * <p>Wrapper for a canvas 2d context.  It exposes the exact same api as
  * the native 2d context, plus some extras, documented below.  Just like
  * Y.Node, use get() and set() to modify attributes.</p>
  * 
- * @namespace Canvas
+ * @main gallery-canvas
  * @class Context2d
+ * @namespace Canvas
  * @constructor
  * @param node {Y.Node} the canvas element
- * @param config {Object} configuration
- *		<dl>
- *		<dt>pixelAlign<dt>
- *		<dd>Optional. Default: true. Pass true to get thinner, cleaner strokes.
- *			Pass false to get the default rendering.</dd>
- *		</dl>
+ * @param config {Object}
+ * @param config.pixelAlign=true {Boolean} Pass true to get thinner, cleaner strokes. Pass false to get the default rendering.
  */
 function Context2d(node, config)
 {

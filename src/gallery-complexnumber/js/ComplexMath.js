@@ -2,6 +2,7 @@
  * Support for complex numbers.
  *
  * @module gallery-complexnumber
+ * @main gallery-complexnumber
  */
 
 /**
@@ -28,6 +29,7 @@ var ComplexMath =
 	 * @property ZERO
 	 * @type {ComplexNumber}
 	 * @static
+	 * @final
 	 */
 	ZERO: new ComplexNumber(),
 
@@ -37,6 +39,7 @@ var ComplexMath =
 	 * @property I
 	 * @type {ComplexNumber}
 	 * @static
+	 * @final
 	 */
 	I: new ComplexNumber(0,1),
 

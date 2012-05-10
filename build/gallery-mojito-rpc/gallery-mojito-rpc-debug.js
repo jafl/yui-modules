@@ -2,6 +2,10 @@ YUI.add('gallery-mojito-rpc', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-mojito-rpc
+ */
+
 /**********************************************************************
  * <p>RPC wrapper for Mojit proxy.  This allows you to use either
  * Y.RPC.JSON or Y.RPC.Mojito interchangeably.  The method in the Mojit
@@ -10,12 +14,9 @@ YUI.add('gallery-mojito-rpc', function(Y) {
  * <code>model.getItems.apply(model,
  * ac.params.getFromBody().params)</code></p>
  *
- * @module gallery-mojito-rpc
- */
-
-/**
- * @namespace RPC
+ * @main gallery-mojito-rpc
  * @class Mojito
+ * @namespace RPC
  * @constructor
  * @param config {Object}
  * @param config.url {Object} the mojit proxy (parameter named to match Y.jsonrpc)
@@ -71,6 +72,7 @@ MojitoRPC.prototype =
 	 * when the result is received.
 	 *
 	 * @method exec
+	 * @async
 	 * @param method {String} the name of the function to execute via the mojitProxy
 	 * @param params {Array} array of arguments for the method
 	 * @param callback {Function|Object} (optional) function to call on success or object specifying {context,on:{success,failure}}
@@ -116,6 +118,7 @@ RPC.Mojito = MojitoRPC;
 /**
  * @method mojito
  * @static
+ * @async
  * @param proxy {Object} the mojit proxy
  * @param method {String} the name of the function to execute via the mojitProxy
  * @param params {Array} array of arguments for the method

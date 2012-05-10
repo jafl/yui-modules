@@ -1,9 +1,13 @@
 "use strict";
 
+/**
+ * @module gallery-chipper
+ */
+
 /**********************************************************************
  * <p>Destroys objects asynchronously.</p>
  * 
- * @module gallery-chipper
+ * @main gallery-chipper
  * @class Chipper
  */
 

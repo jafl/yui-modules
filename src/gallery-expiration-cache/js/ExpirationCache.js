@@ -1,13 +1,14 @@
-/**********************************************************************
+/**
+ * @module gallery-expiration-cache
+ */
+
+/**
  * <p>Cache which drops items based on a user-defined expiration criterion,
  * e.g., age.  By default, expired items are only removed when they are
  * requested.  If you want to "stop the world" and clean out the cache,
  * call clean().</p>
  * 
- * @module gallery-expiration-cache
- */
-
-/**
+ * @main gallery-expiration-cache
  * @class ExpirationCache
  * @constructor
  * @param config {Object}

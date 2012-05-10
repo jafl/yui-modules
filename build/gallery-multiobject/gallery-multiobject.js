@@ -2,6 +2,10 @@ YUI.add('gallery-multiobject', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-multiobject
+ */
+
 /**********************************************************************
  * <p>MultiObject exposes exactly the same API as each individual object,
  * both functions and events, and the state of all the objects is kept in
@@ -23,24 +27,21 @@ YUI.add('gallery-multiobject', function(Y) {
  *
  * <p>To avoid shadowing potential function names, we inherit from
  * Y.EventTarget and use multi_ as the prefix for our own functions.</p>
- *
- * @module gallery-multiobject
- */
-
-/**
+ * 
+ * @main gallery-multiobject
  * @class MultiObject
  * @extends EventTarget
  * @constructor
  * @param items {Array} initial set of items
  * @param config {Object} configuration
- * @param config.return_all_results {Boolean}
- * Default: `false`.  If this is true, then all delegated functions
+ * @param config.return_all_results=false {Boolean}
+ * If this is true, then all delegated functions
  * will return an array of results instead of the result from the
  * primary item.  Note that functions which return `undefined` or
  * the item itself always cause the MultiObject to be returned,
  * to support chaining.
- * @param config.primary_item_index {Number}
- * Default: 0.  When `return_all_results=false`, this is the index of
+ * @param config.primary_item_index=0 {Number}
+ * When `return_all_results=false`, this is the index of
  * the item which generates the return result for all delegated
  * functions.
  */

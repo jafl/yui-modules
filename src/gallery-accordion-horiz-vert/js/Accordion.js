@@ -10,6 +10,7 @@ var use_nonzero_empty_div = (0 < Y.UA.ie && Y.UA.ie < 8),
  * Provides option to always force at least one item to be open.</p>
  * 
  * @module gallery-accordion-horiz-vert
+ * @main gallery-accordion-horiz-vert
  */
 
 /**
@@ -73,7 +74,7 @@ Accordion.ATTRS =
 	/**
 	 * Whether or not the accordion is horizontal.
 	 * 
-	 * @config horizontal
+	 * @attribute horizontal
 	 * @type {boolean}
 	 * @default false
 	 * @writeonce
@@ -89,7 +90,7 @@ Accordion.ATTRS =
 	 * of strings containing markup.  This is used to define the initial
 	 * set of section titles.
 	 * 
-	 * @config titles
+	 * @attribute titles
 	 * @type {String|Array}
 	 * @writeonce
 	 */
@@ -103,7 +104,7 @@ Accordion.ATTRS =
 	 * supplied title is a node.  (If the supplied title is markup, it is
 	 * always inserted inside the default title container.)
 	 * 
-	 * @config replaceTitleContainer
+	 * @attribute replaceTitleContainer
 	 * @type {boolean}
 	 * @default true
 	 */
@@ -118,7 +119,7 @@ Accordion.ATTRS =
 	 * of strings containing markup.  This is used to define the initial
 	 * set of section contents.
 	 * 
-	 * @config sections
+	 * @attribute sections
 	 * @type {String|Array}
 	 * @writeonce
 	 */
@@ -132,7 +133,7 @@ Accordion.ATTRS =
 	 * the supplied title is a node.  (If the supplied content is markup,
 	 * it is always inserted inside the default section container.)
 	 * 
-	 * @config replaceSectionContainer
+	 * @attribute replaceSectionContainer
 	 * @type {boolean}
 	 * @default true
 	 */
@@ -146,7 +147,7 @@ Accordion.ATTRS =
 	 * Whether or not to allow all sections to be closed at the same time.
 	 * If not, at least one section will always be open.
 	 * 
-	 * @config allowAllClosed
+	 * @attribute allowAllClosed
 	 * @type {boolean}
 	 * @default false
 	 */
@@ -166,7 +167,7 @@ Accordion.ATTRS =
 	 * Whether or not to allow multiple sections to be open at the same
 	 * time.  If not, at most one section at a time will be open.
 	 * 
-	 * @config allowMultipleOpen
+	 * @attribute allowMultipleOpen
 	 * @type {boolean}
 	 * @default false
 	 */
@@ -179,7 +180,7 @@ Accordion.ATTRS =
 	/**
 	 * Whether or not to animate the initial rendering of the widget.
 	 * 
-	 * @config animateRender
+	 * @attribute animateRender
 	 * @type {boolean}
 	 * @default false
 	 */
@@ -194,7 +195,7 @@ Accordion.ATTRS =
 	/**
 	 * Whether or not to animate insertion and removal of sections.
 	 * 
-	 * @config animateInsertRemove
+	 * @attribute animateInsertRemove
 	 * @type {boolean}
 	 * @default true
 	 */
@@ -208,7 +209,7 @@ Accordion.ATTRS =
 	/**
 	 * Whether or not to animate opening and closing of sections.
 	 * 
-	 * @config animateOpenClose
+	 * @attribute animateOpenClose
 	 * @type {boolean}
 	 * @default true
 	 */
@@ -222,7 +223,7 @@ Accordion.ATTRS =
 	/**
 	 * Duration of all animations.
 	 * 
-	 * @config animateDuration
+	 * @attribute animateDuration
 	 * @type {int}
 	 * @default whatever Y.Anim default is
 	 */
@@ -238,7 +239,7 @@ Accordion.ATTRS =
 	/**
 	 * Easing applied to all animations.
 	 * 
-	 * @config animateEasing
+	 * @attribute animateEasing
 	 * @type {function}
 	 * @default whatever Y.Anim default is
 	 */

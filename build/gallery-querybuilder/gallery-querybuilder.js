@@ -111,7 +111,7 @@ QueryBuilder.ATTRS =
 	/**
 	 * The prompt displayed when a new item is added to the query.
 	 *
-	 * @config chooseVarPrompt
+	 * @attribute chooseVarPrompt
 	 * @type {String}
 	 * @default "Choose a variable"
 	 * @writeonce
@@ -127,7 +127,7 @@ QueryBuilder.ATTRS =
 	 * All generated form field names start with this prefix.  This avoids
 	 * conflicts if you have more than one QueryBuilder on a page.
 	 *
-	 * @config fieldPrefix
+	 * @attribute fieldPrefix
 	 * @type {String}
 	 * @default ""
 	 * @writeonce
@@ -142,7 +142,7 @@ QueryBuilder.ATTRS =
 	/**
 	 * Configuration passed to plugins when they are constructed.
 	 *
-	 * @config pluginConfig
+	 * @attribute pluginConfig
 	 * @type {Object}
 	 * @default {}
 	 * @writeonce

@@ -3,6 +3,12 @@ YUI.add('gallery-layout', function(Y) {
 "use strict";
 
 /**
+ * Provides fluid layout for the content on a page.
+ *
+ * @module gallery-layout
+ */
+
+/**
  * <p>Manages header (layout-hd), body (layout-bd), footer (layout-ft)
  * stacked vertically to either fit inside the viewport (fit-to-viewport)
  * or adjust to the size of the body content (fit-to-content).</p>
@@ -40,10 +46,6 @@ YUI.add('gallery-layout', function(Y) {
  * this case.  Use padding instead of margin on elements inside headers and
  * footers.</p>
  *
- * @module gallery-layout
- */
-
-/**
  * @class PageLayout
  * @extends Base
  * @constructor
@@ -78,7 +80,7 @@ PageLayout.ATTRS =
 	 * property by putting the CSS class "FIT_TO_VIEWPORT" or
 	 * "FIT_TO_CONTENT" on layout-bd.
 	 *
-	 * @config mode
+	 * @attribute mode
 	 * @type PageLayout.FIT_TO_VIEWPORT or PageLayout.FIT_TO_CONTENT
 	 * @default PageLayout.FIT_TO_VIEWPORT
 	 */
@@ -96,7 +98,7 @@ PageLayout.ATTRS =
 	 * collapse narrower than this width.  If the viewport is smaller, the
 	 * brower's horizontal scrollbar will appear.
 	 * 
-	 * @config minWidth
+	 * @attribute minWidth
 	 * @type {Number} em's
 	 * @default 73 (em) 950px @ 13px font
 	 */
@@ -114,7 +116,7 @@ PageLayout.ATTRS =
 	 * page content will not collapse lower than this height.  If the
 	 * viewport is smaller, the brower's vertical scrollbar will appear.
 	 * 
-	 * @config minHeight
+	 * @attribute minHeight
 	 * @type {Number} em's
 	 * @default 44 (em) 570px @ 13px font
 	 */
@@ -132,7 +134,7 @@ PageLayout.ATTRS =
 	 * the bottom of the viewport.  The default is for the footer to scroll
 	 * along with the rest of the page content.
 	 *
-	 * @config stickyFooter
+	 * @attribute stickyFooter
 	 * @type {Boolean}
 	 * @default false
 	 */
@@ -146,7 +148,7 @@ PageLayout.ATTRS =
 	 * When organizing modules into columns in FIT_TO_CONTENT mode, set
 	 * this to false to allow each column to be a different height.
 	 *
-	 * @config matchColumnHeights
+	 * @attribute matchColumnHeights
 	 * @type {Boolean}
 	 * @default true
 	 */

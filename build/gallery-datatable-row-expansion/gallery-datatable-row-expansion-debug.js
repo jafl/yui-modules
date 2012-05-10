@@ -2,6 +2,10 @@ YUI.add('gallery-datatable-row-expansion', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-datatable-row-expansion
+ */
+
 /**********************************************************************
  * <p>Plugin for DataTable to show additional information for each row via
  * a twistdown.  The result of the template is displayed spanning all the
@@ -10,12 +14,9 @@ YUI.add('gallery-datatable-row-expansion', function(Y) {
  * <p>This class patches `getCell` and `getRow` to ignore the additional
  * rows created by this plugin.</p>
  *
- * @module gallery-datatable-row-expansion
- */
-
-/**
- * @namespace Plugin
+ * @main gallery-datatable-row-expansion
  * @class DataTableRowExpansion
+ * @namespace Plugin
  * @extends Plugin.Base
  * @constructor
  * @param config {Object} configuration
@@ -34,7 +35,7 @@ RowExpansion.ATTRS =
 	/**
 	 * (Required) String template or function that returns a string.
 	 *
-	 * @config template
+	 * @attribute template
 	 * @type {String|Function}
 	 */
 	template:
@@ -51,7 +52,7 @@ RowExpansion.ATTRS =
 	 * unique value for each record.  Used to maintain the twistdown state
 	 * when paginating.
 	 *
-	 * @config uniqueIdKey
+	 * @attribute uniqueIdKey
 	 * @type {String}
 	 */
 	uniqueIdKey:

@@ -1,14 +1,15 @@
 "use strict";
 
-/**********************************************************************
- * <p>Data source that calls an asynchronous function.</p>
- *
+/**
  * @module gallery-datasource-async-function
  */
 
-/**
- * @namespace DataSource
+/**********************************************************************
+ * <p>Data source that calls an asynchronous function.</p>
+ *
+ * @main gallery-datasource-async-function
  * @class AsyncFunction
+ * @namespace DataSource
  * @extends DataSource.Local
  * @constructor
  * @param config {Object}
@@ -28,7 +29,7 @@ AsyncFunctionDataSource.ATTRS =
 	 * (callback,request,ds,e).  The function must invoke callback, passing
 	 * (error,response).</p>
 	 *
-	 * @config source
+	 * @attribute source
 	 * @type {Function}
 	 */
 	source:

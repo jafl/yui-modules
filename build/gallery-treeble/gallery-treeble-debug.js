@@ -84,7 +84,7 @@ TreebleDataSource.ATTRS =
 	 *		<code>totalRecordsExpr</code> takes priority.</dd>
 	 * </dl>
 	 * 
-	 * @config root
+	 * @attribute root
 	 * @type {DataSource}
 	 * @writeonce
 	 */
@@ -98,7 +98,7 @@ TreebleDataSource.ATTRS =
 	 * nodes into the list.  The default (<code>false</code>) is to
 	 * paginate only root nodes, so all children are visible.
 	 * 
-	 * @config paginateChildren
+	 * @attribute paginateChildren
 	 * @type {boolean}
 	 * @default false
 	 * @writeonce
@@ -115,7 +115,7 @@ TreebleDataSource.ATTRS =
 	 * across the entire tree.  If this is not specified, then all nodes
 	 * will close when the data is sorted.
 	 * 
-	 * @config uniqueIdKey
+	 * @attribute uniqueIdKey
 	 * @type {String}
 	 */
 	uniqueIdKey:
@@ -1027,6 +1027,7 @@ Y.namespace("Parsers").treebledatasource = function(oData)
  * Treeble displays a tree of data in a table.
  *
  * @module gallery-treeble
+ * @main gallery-treeble
  */
 
 /**

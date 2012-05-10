@@ -1,12 +1,13 @@
 "use strict";
 
 /**
- * Optimizations for searching DOM tree.
- *
  * @module gallery-node-optimizations
  */
 
 /**
+ * Optimizations for searching DOM tree.
+ *
+ * @main gallery-node-optimizations
  * @class Node~optimizations
  */
 

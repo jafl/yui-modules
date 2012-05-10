@@ -1,3 +1,7 @@
+/**
+ * @module gallery-linkedlist
+ */
+
 /**********************************************************************
  * Iterator for LinkedList.  Stable except when the next item is removed by
  * calling list.remove() instead of iter.removeNext().  When items are

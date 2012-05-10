@@ -2,14 +2,15 @@ YUI.add('gallery-math', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-math
+ */
+
 /**********************************************************************
  * <p>Augments built-in JavaScript Math namespace with additional
  * mathematical functions.</p>
  * 
- * @module gallery-math
- */
-
-/**
+ * @main gallery-math
  * @class Math
  */
 

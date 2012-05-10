@@ -2,6 +2,7 @@
  * Treeble displays a tree of data in a table.
  *
  * @module gallery-treeble
+ * @main gallery-treeble
  */
 
 /**

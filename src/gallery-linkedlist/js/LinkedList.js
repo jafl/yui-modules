@@ -1,3 +1,7 @@
+/**
+ * @module gallery-linkedlist
+ */
+
 /**********************************************************************
  * <p>Doubly linked list for storing items.  Supports iteration via
  * LinkedListIterator (returned by this.iterator()) or Y.each().  Also
@@ -7,10 +11,7 @@
  * is an expensive operation.  Instead, use find() with a function that
  * checks the index.</p>
  * 
- * @module gallery-linkedlist
- */
-
-/**
+ * @main gallery-linkedlist
  * @class LinkedList
  * @constructor
  * @param list {Mixed} (Optional) any scalar or iterable list

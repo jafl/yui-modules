@@ -1,10 +1,11 @@
-/**********************************************************************
- * Displays an arithmetical expression the way you would write it on paper.
- * 
+/**
  * @module gallery-mathcanvas
  */
 
-/**
+/**********************************************************************
+ * Displays an arithmetical expression the way you would write it on paper.
+ * 
+ * @main gallery-mathcanvas
  * @class MathCanvas
  * @extends Widget
  * @constructor
@@ -23,7 +24,7 @@ MathCanvas.ATTRS =
 	/**
 	 * The function to display.
 	 * 
-	 * @config func
+	 * @attribute func
 	 * @type {Y.MathFunction|String}
 	 */
 	func:
@@ -39,7 +40,7 @@ MathCanvas.ATTRS =
 	/**
 	 * The font name to use.
 	 * 
-	 * @config fontName
+	 * @attribute fontName
 	 * @type {String}
 	 */
 	fontName:
@@ -51,7 +52,7 @@ MathCanvas.ATTRS =
 	/**
 	 * The font size to use, in em's.
 	 * 
-	 * @config fontSize
+	 * @attribute fontSize
 	 * @type {number}
 	 */
 	fontSize:
@@ -64,7 +65,7 @@ MathCanvas.ATTRS =
 	 * The minimum width of the canvas.  If the expression is wider, the
 	 * width will increase to fit.
 	 * 
-	 * @config minWidth
+	 * @attribute minWidth
 	 * @type {Integer}
 	 */
 	minWidth:
@@ -77,7 +78,7 @@ MathCanvas.ATTRS =
 	 * The minimum height of the canvas.  If the expression is taller, the
 	 * height will increase to fit.
 	 * 
-	 * @config minHeight
+	 * @attribute minHeight
 	 * @type {Integer}
 	 */
 	minHeight:
@@ -678,8 +679,8 @@ Y.MathCanvas.Parser   = MathParser;
 /**********************************************************************
  * Parser used to convert a string expression into Y.MathFunction
  * 
- * @namespace MathCanvas
  * @class Parser
+ * @namespace MathCanvas
  */
 
 /**

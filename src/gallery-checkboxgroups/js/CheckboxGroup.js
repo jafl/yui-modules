@@ -4,6 +4,7 @@
  * Various behaviors that can be attached to a group of checkboxes.
  *
  * @module gallery-checkboxgroups
+ * @main gallery-checkboxgroups
  */
 
 /**
@@ -90,6 +91,13 @@ CheckboxGroup.prototype =
 		}
 	},
 
+	/**
+	 * Call this if you modify the checkbox programmatically, since that
+	 * will not fire a click event.
+	 * 
+	 * @method checkboxChanged
+	 * @param cb {Node|String} checkbox that was modified
+	 */
 	checkboxChanged: function(
 		/* checkbox */	cb)
 	{

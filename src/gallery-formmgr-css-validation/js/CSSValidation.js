@@ -26,7 +26,8 @@
  *
  * <p>If we ever need to allow exponents, we can use yiv-float.</p>
  *
- * @module gallery-formmgr-css-validation
+ * @module gallery-formmgr
+ * @submodule gallery-formmgr-css-validation
  */
 
 /**
@@ -331,14 +332,14 @@ Y.FormManager.cleanValues = function(
 };
 
 /**
- * <p>Names of supported status values, highest precedence first.  Default:
- * <code>[ 'error', 'warn', 'success', 'info' ]</code></p>
+ * <p>Names of supported status values, highest precedence first.</p>
  * 
  * <p>This is static because it links to CSS rules that define the
  * appearance of each status type:  .formmgr-has{status}</p>
  * 
  * @property status_order
  * @type {Array}
+ * @default [ 'error', 'warn', 'success', 'info' ]
  * @static
  */
 Y.FormManager.status_order =

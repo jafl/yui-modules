@@ -2,16 +2,17 @@ YUI.add('gallery-funcprog', function(Y) {
 
 "use strict";
 
+/**
+ * @module gallery-funcprog
+ */
+
 /**********************************************************************
  * <p>Augments global Y object with the same higher-order functions that
  * array-extras adds to Y.Array.  Note that, unlike arrays and NodeLists,
  * iteration order for an object is arbitrary, so be careful when applying
  * non-commutative operations!</p>
  *
- * @module gallery-funcprog
- */
-
-/**
+ * @main gallery-funcprog
  * @class YUI~funcprog
  */
 
@@ -191,7 +192,11 @@ Y.mix(Y,
 		return dispatch('reject', o, f, c, proto);
 	}
 });
-/**********************************************************************
+/**
+ * @module gallery-funcprog
+ */
+
+/**
  * @class Array~funcprog-extras
  */
 

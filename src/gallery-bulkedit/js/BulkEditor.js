@@ -2,6 +2,7 @@
  * A widget for editing many records at once.
  *
  * @module gallery-bulkedit
+ * @main gallery-bulkedit
  */
 
 /**
@@ -34,8 +35,8 @@ BulkEditor.NAME = "bulkedit";
 BulkEditor.ATTRS =
 {
 	/**
-	 * @config ds
-	 * @type {BulkEditDataSource}
+	 * @attribute ds
+	 * @type {DataSource.BulkEdit}
 	 * @writeonce
 	 */
 	ds:
@@ -53,7 +54,7 @@ BulkEditor.ATTRS =
 	 * gallery-formmgr-css-validation).  Derived classes can require
 	 * additional keys.
 	 *
-	 * @config fields
+	 * @attribute fields
 	 * @type {Object}
 	 * @writeonce
 	 */
@@ -68,7 +69,7 @@ BulkEditor.ATTRS =
 	 * expects it to be configured to display ValidationPageLinks, so the
 	 * user can see which pages have errors that need to be fixed.
 	 *
-	 * @config paginator
+	 * @attribute paginator
 	 * @type {Paginator}
 	 * @writeonce
 	 */
@@ -84,7 +85,7 @@ BulkEditor.ATTRS =
 	/**
 	 * Extra key/value pairs to pass in the DataSource request.
 	 * 
-	 * @config requestExtra
+	 * @attribute requestExtra
 	 * @type {Object}
 	 * @writeonce
 	 */
@@ -98,7 +99,7 @@ BulkEditor.ATTRS =
 	/**
 	 * CSS class used to temporarily highlight a record.
 	 *
-	 * @config pingClass
+	 * @attribute pingClass
 	 * @type {String}
 	 * @default "yui3-bulkedit-ping"
 	 */
@@ -111,7 +112,7 @@ BulkEditor.ATTRS =
 	/**
 	 * Duration in seconds that pingClass is applied to a record.
 	 *
-	 * @config pingTimeout
+	 * @attribute pingTimeout
 	 * @type {Number}
 	 * @default 2
 	 */
