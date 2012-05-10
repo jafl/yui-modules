@@ -12,7 +12,7 @@ YUI.add('gallery-object-extras', function(Y) {
  */
 
 /**
- * @class Object
+ * @class Object~extras
  */
 
 Y.mix(Y.Object,
@@ -26,12 +26,13 @@ Y.mix(Y.Object,
 	 * By default, only properties owned by obj are enumerated. To include
 	 * prototype properties, set the proto parameter to true.
 	 *
+	 * @method every
+	 * @static
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} include prototype properties
 	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise
-	 * @static
 	 */
 	every: function(o, f, c, proto)
 	{
@@ -55,12 +56,13 @@ Y.mix(Y.Object,
 	 * By default, only properties owned by obj are enumerated. To include
 	 * prototype properties, set the proto parameter to true.
 	 *
+	 * @method filter
+	 * @static
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} include prototype properties
 	 * @return {Object} object of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)
-	 * @static
 	 */
 	filter: function(o, f, c, proto)
 	{
@@ -87,12 +89,13 @@ Y.mix(Y.Object,
 	 * By default, only properties owned by obj are enumerated. To include
 	 * prototype properties, set the proto parameter to true.
 	 *
+	 * @method find
+	 * @static
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} include prototype properties
 	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true
-	 * @static
 	 */
 	find: function(o, f, c, proto)
 	{
@@ -115,11 +118,12 @@ Y.mix(Y.Object,
 	 * By default, only properties owned by obj are enumerated. To include
 	 * prototype properties, set the proto parameter to true.
 	 *
+	 * @method keyOf
+	 * @static
 	 * @param o {Object} the object to iterate
 	 * @param v {Mixed} the value to search for
 	 * @param proto {Boolean} include prototype properties
 	 * @return {String} key of an item strictly equal to v, or null if not found
-	 * @static
 	 */
 	keyOf: function(o, v, proto)
 	{
@@ -138,11 +142,12 @@ Y.mix(Y.Object,
 	 * Executes a named method on each item in the object. Items that do
 	 * not have a function by that name will be skipped.
 	 *
+	 * @method invoke
+	 * @static
 	 * @param o {Object} the object to iterate
 	 * @param f {String} the function to invoke
 	 * @param args* {Any} any number of additional args are passed as parameters to the execution of the named method
 	 * @return {Object} all return values, mapped according to the item key
-	 * @static
 	 */
 	invoke: function(o, f)
 	{
@@ -169,12 +174,13 @@ Y.mix(Y.Object,
 	 * By default, only properties owned by obj are enumerated. To include
 	 * prototype properties, set the proto parameter to true.
 	 *
+	 * @method map
+	 * @static
 	 * @param o {Object} the object to iterate
 	 * @param f {String} the function to invoke
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} include prototype properties
 	 * @return {Object} all return values, mapped according to the item key
-	 * @static
 	 */
 	map: function(o, f, c, proto)
 	{
@@ -200,12 +206,13 @@ Y.mix(Y.Object,
 	 * By default, only properties owned by obj are enumerated. To include
 	 * prototype properties, set the proto parameter to true.
 	 *
+	 * @method partition
+	 * @static
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} include prototype properties
 	 * @return {Object} object with two properties: matches and rejects. Each is an object containing the items that were selected or rejected by the test function (or an empty object if none).
-	 * @static
 	 */
 	partition: function(o, f, c, proto)
 	{
@@ -239,13 +246,14 @@ Y.mix(Y.Object,
 	 * By default, only properties owned by obj are enumerated. To include
 	 * prototype properties, set the proto parameter to true.
 	 *
+	 * @method reduce
+	 * @static
 	 * @param o {Object} the object to iterate
 	 * @param init {Mixed} the initial value
 	 * @param f {String} the function to invoke
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} include prototype properties
 	 * @return {Mixed} final result from iteratively applying the given function to each item in the object
-	 * @static
 	 */
 	reduce: function(o, init, f, c, proto)
 	{
@@ -271,12 +279,13 @@ Y.mix(Y.Object,
 	 * By default, only properties owned by obj are enumerated. To include
 	 * prototype properties, set the proto parameter to true.
 	 *
+	 * @method reject
+	 * @static
 	 * @param o {Object} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} include prototype properties
 	 * @return {Object} object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)
-	 * @static
 	 */
 	reject: function(o, f, c, proto)
 	{
@@ -290,10 +299,11 @@ Y.mix(Y.Object,
 	/**
 	 * Creates an object by pairing the corresponding elements of two arrays.
 	 *
+	 * @method zip
+	 * @static
 	 * @param a1 {Array} the keys which must be strings
 	 * @param a2 {Array} the values
 	 * @return {Object} object formed by pairing each element of the first array with an item in the second array having the corresponding index
-	 * @static
 	 */
 	zip: function(a1, a2)
 	{
@@ -308,7 +318,7 @@ Y.mix(Y.Object,
 	}
 });
 /**********************************************************************
- * @class Array
+ * @class Array~object-extras
  */
 
 Y.mix(Y.Array,
@@ -317,10 +327,11 @@ Y.mix(Y.Array,
 	 * Converts the array of objects into a map of the same objects, keyed
 	 * off a particular attribute.
 	 *
+	 * @method toObject
+	 * @static
 	 * @param a {Array} the array to iterate
 	 * @param k {String} the attribute to key off
 	 * @return {Object} map of the objects
-	 * @static
 	 */
 	toObject: function(a, k)
 	{

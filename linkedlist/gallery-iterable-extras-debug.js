@@ -13,6 +13,9 @@ YUI.add('gallery-iterable-extras', function(Y) {
  * functions.</p>
  * 
  * @module gallery-iterable-extras
+ */
+
+/**
  * @class Iterable
  */
 

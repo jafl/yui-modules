@@ -849,6 +849,7 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method isOpen
 	 * @param path {Array} Path to node
 	 * @return {boolean} true if the node is open
 	 */
@@ -874,6 +875,7 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 	 * DataSource.  Any code that assumes the node has been opened must be
 	 * passed in as a completion function.
 	 * 
+	 * @method toggle
 	 * @param path {Array} Path to the node
 	 * @param request {Object} {sort,dir,startIndex,resultCount}
 	 * @param completion {Function|Object} Function to call when the operation completes.  Can be object: {fn,scope,args}
@@ -964,9 +966,9 @@ Y.namespace('DataSource').Treeble = TreebleDataSource;
 
 /**
  * @method treebledatasource
+ * @static
  * @param oData {mixed} Data to convert.
  * @return {DataSource} The new data source.
- * @static
  */
 Y.namespace("Parsers").treebledatasource = function(oData)
 {
@@ -1046,8 +1048,8 @@ Treeble.NAME = "datatable";		// same styling
  * <p>Formatter for open/close twistdown.</p>
  *
  * @method twistdownFormatter
- * @param sendRequest {Function} Function that reloads DataTable
  * @static
+ * @param sendRequest {Function} Function that reloads DataTable
  */
 Treeble.buildTwistdownFormatter = function(sendRequest)
 {

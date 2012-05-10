@@ -11,21 +11,17 @@ YUI.add('gallery-mru-cache', function(Y) {
  * associated MRU item to the front of the list.</p>
  * 
  * @module gallery-mru-cache
+ */
+
+/**
  * @class MRUCache
  * @constructor
  * @param config {Object}
- *	<dl>
- *	<dt>metric</dt>
- *	<dd>(Required) Function which computes the metric for an item.  It receives the value as an argument and must return a positive number.</dd>
- *	<dt>limit</dt>
- *	<dd>(Required) Maximum allowed value of the metric.  Items are dropped off the end of the MRU list until the metric is less than or equal to the limit.</dd>
- *	<dt>meta</dt>
- *	<dd>Function which attaches meta data to an item when it is added to the cache.  It receives the value as an argument.</dd>
- *	<dt>stats</dt>
- *	<dd>Pass true if you want to collect basic statistics.  Pass a function if you want to control what information is stored for each key.  The function receives the key, the value, and the stat object.</dd>
- *	</dl>
+ * @param config.metric {Function} (Required) Computes the metric for an item.  It receives the value as an argument and must return a positive number.
+ * @param config.limit {Number} (Required) Maximum allowed value of the metric.  Items are dropped off the end of the MRU list until the metric is less than or equal to the limit.
+ * @param config.meta {Function} Attaches meta data to an item when it is added to the cache.  It receives the value as an argument.
+ * @param config.stats {Boolean} Pass true if you want to collect basic statistics.  Pass a function if you want to control what information is stored for each key.  The function receives the key, the value, and the stat object.
  */
-
 function MRUCache(config)
 {
 	this._metric_fn = config.metric;
@@ -59,6 +55,7 @@ MRUCache.prototype =
 	/**
 	 * Retrieve a value.
 	 * 
+	 * @method get
 	 * @param key {String} the key of the object to retrieve
 	 * @return {Mixed} the stored object, or undefined if the slot is empty
 	 */
@@ -85,6 +82,7 @@ MRUCache.prototype =
 	/**
 	 * Store a value.
 	 * 
+	 * @method put
 	 * @param key {String} the key of the value
 	 * @param value {Object} the value to store
 	 * @return {boolean} false if the key has already been used
@@ -135,6 +133,7 @@ MRUCache.prototype =
 	/**
 	 * Store a value.
 	 * 
+	 * @method replace
 	 * @param key {String} the key of the value
 	 * @param value {Object} the value to store
 	 * @return {Mixed} the original value that was in the slot, or undefined if the slot is empty
@@ -151,6 +150,7 @@ MRUCache.prototype =
 	/**
 	 * Remove an value.
 	 * 
+	 * @method remove
 	 * @param key {String} the key of the value
 	 * @return {mixed} the value that was removed, or undefined if the slot was empty
 	 */
@@ -169,6 +169,8 @@ MRUCache.prototype =
 
 	/**
 	 * Remove all values.
+	 * 
+	 * @method clear
 	 */
 	clear: function()
 	{
@@ -180,6 +182,7 @@ MRUCache.prototype =
 	/**
 	 * This resets all the values.
 	 *
+	 * @method dumpStats
 	 * @return {Object} the current stats
 	 */
 	dumpStats: function()
