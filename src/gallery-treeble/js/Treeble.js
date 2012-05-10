@@ -23,8 +23,8 @@ Treeble.NAME = "datatable";		// same styling
  * <p>Formatter for open/close twistdown.</p>
  *
  * @method twistdownFormatter
- * @param sendRequest {Function} Function that reloads DataTable
  * @static
+ * @param sendRequest {Function} Function that reloads DataTable
  */
 Treeble.buildTwistdownFormatter = function(sendRequest)
 {

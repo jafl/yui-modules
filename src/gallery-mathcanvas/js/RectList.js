@@ -17,6 +17,7 @@ function RectList()
 }
 
 /**
+ * @method width
  * @static
  * @param r {Rect} rectangle
  * @return width
@@ -27,6 +28,7 @@ RectList.width = function(r)
 };
 
 /**
+ * @method height
  * @static
  * @param r {Rect} rectangle
  * @return height
@@ -37,6 +39,7 @@ RectList.height = function(r)
 };
 
 /**
+ * @method xcenter
  * @static
  * @param r {Rect} rectangle
  * @return horizontal center
@@ -47,6 +50,7 @@ RectList.xcenter = function(r)
 };
 
 /**
+ * @method ycenter
  * @static
  * @param r {Rect} rectangle
  * @return vertical center
@@ -57,6 +61,7 @@ RectList.ycenter = function(r)
 };
 
 /**
+ * @method area
  * @static
  * @param r {Rect} rectangle
  * @return area
@@ -67,6 +72,7 @@ RectList.area = function(r)
 };
 
 /**
+ * @method containsPt
  * @static
  * @param r {Rect} rectangle
  * @param xy {point} point
@@ -79,6 +85,7 @@ RectList.containsPt = function(r, xy)
 };
 
 /**
+ * @method containsRect
  * @static
  * @param r1 {Rect}
  * @param r2 {Rect}
@@ -91,6 +98,7 @@ RectList.containsRect = function(r1, r2)
 };
 
 /**
+ * @method cover
  * @static
  * @param r1 {Rect} rectangle
  * @param r2 {Rect} rectangle
@@ -111,6 +119,7 @@ RectList.cover = function(r1, r2)
 RectList.prototype =
 {
 	/**
+	 * @method add
 	 * @param r {Rect}
 	 * @param midline {int}
 	 * @param font_size {int} percentage
@@ -135,6 +144,7 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method get
 	 * @param index {int}
 	 * @return item at index
 	 */
@@ -145,6 +155,7 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method find
 	 * @param f {MathFunction} search target
 	 * @return data for specified MathFunction, or null if not found
 	 */
@@ -158,6 +169,7 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method findIndex
 	 * @param f {MathFunction} search target
 	 * @return index of item for specified MathFunction, or -1 if not found
 	 */
@@ -170,6 +182,7 @@ RectList.prototype =
 	/**
 	 * Shift the specified rect and all rects inside it.
 	 * 
+	 * @method shift
 	 * @param index {int}
 	 * @param dx {int} horizontal shift
 	 * @param dy {int} vertical shift
@@ -209,6 +222,7 @@ RectList.prototype =
 	/**
 	 * Set the midline of the specified rectangle.
 	 * 
+	 * @method setMidline
 	 * @param index {int}
 	 * @param y {int} midline
 	 */
@@ -220,6 +234,7 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method getBounds
 	 * @return the bounding rect of all the rects in the list
 	 */
 	getBounds: function()
@@ -228,13 +243,14 @@ RectList.prototype =
 	},
 
 	/**
-	 * 	Returns the index of the smallest rectangle that contains both
-	 * 	startPt and currPt.  Returns -1 if there is no such rectangle.  If
-	 * 	startPt is inside the bounding rectangle and currPt is outside, we
-	 * 	return the index of the bounding rectangle.
+	 * Returns the index of the smallest rectangle that contains both
+	 * startPt and currPt.  Returns -1 if there is no such rectangle.  If
+	 * startPt is inside the bounding rectangle and currPt is outside, we
+	 * return the index of the bounding rectangle.
 	 * 	
-	 * 	@param start_pt {point} point where the drag started
-	 * 	@param curr_pt {point} current cursor location
+	 * @method getSelection
+	 * @param start_pt {point} point where the drag started
+	 * @param curr_pt {point} current cursor location
 	 */
 	getSelection: function(
 		/* point */	start_pt,
@@ -270,6 +286,7 @@ RectList.prototype =
 	/**
 	 * Returns the index of the smallest rectangle enclosing the given one.
 	 * 
+	 * @method getParent
 	 * @param index {int}
 	 */
 	getParent: function(

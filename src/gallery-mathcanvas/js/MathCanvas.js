@@ -2,12 +2,14 @@
  * Displays an arithmetical expression the way you would write it on paper.
  * 
  * @module gallery-mathcanvas
+ */
+
+/**
  * @class MathCanvas
  * @extends Widget
  * @constructor
  * @param config {Object} Widget configuration
  */
-
 function MathCanvas(
 	/* object */	config)
 {
@@ -342,6 +344,8 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Shows touch keyboard.
+	 * 
+	 * @method showKeyboard
 	 */
 	showKeyboard: function()
 	{
@@ -370,6 +374,8 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Hides touch keyboard.
+	 * 
+	 * @method hideKeyboard
 	 */
 	hideKeyboard: function()
 	{
@@ -398,6 +404,8 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Expands the selection up one level of the parse tree.
+	 * 
+	 * @method expandSelection
 	 */
 	expandSelection: function()
 	{
@@ -414,6 +422,8 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Deletes the selected sub-expression.
+	 * 
+	 * @method deleteSelection
 	 */
 	deleteSelection: function()
 	{
@@ -424,6 +434,7 @@ Y.extend(MathCanvas, Y.Widget,
 	},
 
 	/**
+	 * @method deleteFunction
 	 * @param f {MathFunction} function to remove from the overall expression
 	 */
 	deleteFunction: function(
@@ -468,8 +479,11 @@ Y.extend(MathCanvas, Y.Widget,
 		this._renderExpression();
 	},
 
-	/*
+	/**
 	 * Renders the expression.
+	 * 
+	 * @method _renderExpression
+	 * @protected
 	 */
 	_renderExpression: function()
 	{

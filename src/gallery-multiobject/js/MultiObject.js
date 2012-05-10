@@ -23,25 +23,25 @@
  * Y.EventTarget and use multi_ as the prefix for our own functions.</p>
  *
  * @module gallery-multiobject
+ */
+
+/**
  * @class MultiObject
  * @extends EventTarget
  * @constructor
  * @param items {Array} initial set of items
  * @param config {Object} configuration
- *		<dl>
- *		<dt>return_all_results</dt>
- *		<dd>Default: false.  If this is true, then all delegated functions
- *			will return an array of results instead of the result from the
- *			primary item.  Note that functions which return "undefined" or
- *			the item itself always cause the MultiObject to be returned,
- *			to support chaining.</dd>
- *		<dt>primary_item_index</dt>
- *		<dd>Default: 0.  When return_all_results=false, this is the index of
- *			the item which generates the return result for all delegated
- *			functions.</dd>
- *		</dl>
+ * @param config.return_all_results {Boolean}
+ * Default: `false`.  If this is true, then all delegated functions
+ * will return an array of results instead of the result from the
+ * primary item.  Note that functions which return `undefined` or
+ * the item itself always cause the MultiObject to be returned,
+ * to support chaining.
+ * @param config.primary_item_index {Number}
+ * Default: 0.  When `return_all_results=false`, this is the index of
+ * the item which generates the return result for all delegated
+ * functions.
  */
-
 function MultiObject(
 	/* array */		items,
 	/* object */	config)
@@ -161,6 +161,8 @@ Y.extend(MultiObject, Y.EventTarget,
 	/**
 	 * Destroys the MultiObject, but not the individual objects.
 	 * <code>destroy()</code> is, of course, delegated.
+	 * 
+	 * @method multi_destroy
 	 */
 	multi_destroy: function()
 	{
@@ -168,6 +170,7 @@ Y.extend(MultiObject, Y.EventTarget,
 	},
 
 	/**
+	 * @method multi_get_primary_item_index
 	 * @return the index of the primary item
 	 */
 	multi_get_primary_item_index: function()
@@ -176,6 +179,7 @@ Y.extend(MultiObject, Y.EventTarget,
 	},
 
 	/**
+	 * @method multi_set_primary_item_index
 	 * @param index {int} the index of the primary item
 	 */
 	multi_set_primary_item_index: function(
@@ -185,6 +189,7 @@ Y.extend(MultiObject, Y.EventTarget,
 	},
 
 	/**
+	 * @method multi_get_return_all_results
 	 * @return true if all results will be returned by delegated functions
 	 */
 	multi_get_return_all_results: function()
@@ -193,6 +198,7 @@ Y.extend(MultiObject, Y.EventTarget,
 	},
 
 	/**
+	 * @method multi_set_return_all_results
 	 * @param all {boolean} true if delegated functions should return all results
 	 */
 	multi_set_return_all_results: function(
@@ -205,6 +211,7 @@ Y.extend(MultiObject, Y.EventTarget,
 	 * Return an array of all the individual results from calling the
 	 * specified function.  This is only useful if return_all_results=false.
 	 *
+	 * @method multi_get_all
 	 * @param f {String} name of the function to invoke
 	 * @param arg* {mixed} 0..n arguments to pass to the function
 	 * @return {Array} results from delegating the named function

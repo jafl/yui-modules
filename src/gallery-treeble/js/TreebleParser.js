@@ -12,9 +12,9 @@
 
 /**
  * @method treebledatasource
+ * @static
  * @param oData {mixed} Data to convert.
  * @return {DataSource} The new data source.
- * @static
  */
 Y.namespace("Parsers").treebledatasource = function(oData)
 {

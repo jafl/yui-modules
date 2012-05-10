@@ -4,11 +4,13 @@
  * Widget which helps user to build a query expression.
  * 
  * @module gallery-exprbuilder
+ */
+
+/**
  * @class ExpressionBuilder
  * @constructor
  * @param config {Object} Widget configuration
  */
-
 function ExpressionBuilder(config)
 {
 	ExpressionBuilder.superclass.constructor.call(this, config);
@@ -471,6 +473,8 @@ Y.extend(ExpressionBuilder, Y.Widget,
 
 	/**
 	 * Clears the expression.
+	 * 
+	 * @method clear
 	 */
 	clear: function()
 	{
@@ -481,8 +485,9 @@ Y.extend(ExpressionBuilder, Y.Widget,
 	/**
 	 * Validate the expression.
 	 * 
+	 * @method _validateExpression
 	 * @protected
-	 * @return {boolean} <code>true</code> if the expression has balanced parens and single quotes
+	 * @return {Boolean} <code>true</code> if the expression has balanced parens and single quotes
 	 */
 	_validateExpression: function(form, e, form_mgr)
 	{
@@ -552,6 +557,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 	//
 
 	/**
+	 * @method _field
 	 * @protected
 	 * @return {String} markup for the textarea and basic buttons
 	 */
@@ -591,6 +597,7 @@ Y.extend(ExpressionBuilder, Y.Widget,
 	},
 
 	/**
+	 * @method _query
 	 * @protected
 	 * @return {String} markup for the QueryBuilder
 	 */

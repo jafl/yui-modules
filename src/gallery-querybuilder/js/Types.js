@@ -1,5 +1,8 @@
 /**
  * @module gallery-querybuilder
+ */
+
+/**
  * @class QueryBuilder
  */
 
