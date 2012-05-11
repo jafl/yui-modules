@@ -1,0 +1,16 @@
+#!/bin/sh
+
+cd ~/open-source/yui3/yui3-gallery/src
+
+for f in ~/open-source/jafl.github-yui3/*; do
+	d=${f##*/}
+
+	if [[ ! -d $f || "$d" == "yuidoc" ]]; then continue; fi
+
+	pushd gallery-$d
+	ant all
+	popd
+done
+
+cd ../sandbox/jafl
+./update_gh_pages

@@ -1,16 +1,17 @@
 "use strict";
 
+/**
+ * @module gallery-funcprog
+ */
+
 /**********************************************************************
  * <p>Augments global Y object with the same higher-order functions that
  * array-extras adds to Y.Array.  Note that, unlike arrays and NodeLists,
  * iteration order for an object is arbitrary, so be careful when applying
  * non-commutative operations!</p>
  *
- * @module gallery-funcprog
- */
-
-/**
- * @class YUI
+ * @main gallery-funcprog
+ * @class YUI~funcprog
  */
 
 // adjusted from YUI's oop.js
@@ -48,12 +49,13 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
+	 * @method every
+	 * @static
 	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Boolean} true if every item in the array returns true from the supplied function, false otherwise
-	 * @static
 	 */
 	every: function(o, f, c, proto)
 	{
@@ -68,12 +70,13 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
+	 * @method filter
+	 * @static
 	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Object} array or object of items for which the supplied function returned a truthy value (empty if it never returned a truthy value)
-	 * @static
 	 */
 	filter: function(o, f, c, proto)
 	{
@@ -88,12 +91,13 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
+	 * @method find
+	 * @static
 	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Mixed} the first item for which the supplied function returns true, or null if it never returns true
-	 * @static
 	 */
 	find: function(o, f, c, proto)
 	{
@@ -107,12 +111,13 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
+	 * @method map
+	 * @static
 	 * @param o {Mixed} the object to iterate
 	 * @param f {String} the function to invoke
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Object} array or object of all return values, mapped according to the item key
-	 * @static
 	 */
 	map: function(o, f, c, proto)
 	{
@@ -127,12 +132,13 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
+	 * @method partition
+	 * @static
 	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Object} object with two properties: matches and rejects. Each is an array or object containing the items that were selected or rejected by the test function (or an empty object if none).
-	 * @static
 	 */
 	partition: function(o, f, c, proto)
 	{
@@ -149,13 +155,14 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
+	 * @method reduce
+	 * @static
 	 * @param o {Mixed} the object to iterate
 	 * @param init {Mixed} the initial value
 	 * @param f {String} the function to invoke
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Mixed} final result from iteratively applying the given function to each item in the object
-	 * @static
 	 */
 	reduce: function(o, init, f, c, proto)
 	{
@@ -170,12 +177,13 @@ Y.mix(Y,
 	 *
 	 * Supports arrays, objects, and NodeLists.
 	 *
+	 * @method reject
+	 * @static
 	 * @param o {Mixed} the object to iterate
 	 * @param f {Function} the function to execute on each item
 	 * @param c {Object} optional context object
 	 * @param proto {Boolean} if true, prototype properties are iterated on objects
 	 * @return {Object} array or object of items for which the supplied function returned a falsey value (empty if it never returned a falsey value)
-	 * @static
 	 */
 	reject: function(o, f, c, proto)
 	{

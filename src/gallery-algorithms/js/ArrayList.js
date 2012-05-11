@@ -8,7 +8,7 @@ if (Y.ArrayList)
 	 * Useful algorithms that are not provided by browsers.  Available if
 	 * Y.ArrayList (collection) is loaded.
 	 * 
-	 * @class ArrayList
+	 * @class ArrayList~extras
 	 */
 
 	Y.mix(Y.ArrayList,

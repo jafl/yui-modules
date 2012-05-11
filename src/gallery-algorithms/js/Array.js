@@ -1,10 +1,14 @@
 "use strict";
 
 /**
+ * @module gallery-algorithms
+ */
+
+/**
  * <p>Useful algorithms not provided by browsers.</p>
  *
- * @module gallery-algorithms
- * @class Array
+ * @main gallery-algorithms
+ * @class Array~algorithms
  */
 
 /**********************************************************************
@@ -161,7 +165,7 @@ function qsortRange(list,first,last,compare)
  * @method quickSort
  * @static
  * @param list {Array} the list to search (sorted on the compare function)
- * @param compare {Function} the comparison function (default: Y.Array.compareStringsCaseSensitive)
+ * @param compare=Y.Array.compareStringsCaseSensitive {Function} the comparison function
  */
 Y.Array.quickSort = function(list,compare)
 {
@@ -182,7 +186,7 @@ binary search history:
  * @static
  * @param list {Array} the list to search (sorted on the compare function)
  * @param target {Mixed} the object to search for
- * @param compare {Function} the comparison function (default: Y.Array.compareStringsCaseSensitive)
+ * @param compare=Y.Array.compareStringsCaseSensitive {Function} the comparison function
  * @return {int} index of matched item or -1 if no match
  */
 Y.Array.binarySearch = function(list, target, compare)
