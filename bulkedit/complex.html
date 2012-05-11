@@ -8,7 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.1/build/cssreset/reset-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.1/build/cssfonts/fonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.1/build/cssbase/base-min.css" />
-<!--
+
 	<script src="gallery-bulkedit-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
@@ -20,7 +20,7 @@
 	<link rel="stylesheet" type="text/css" href="assets/gallery-bulkedit.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-busyoverlay.css" />
--->
+
 	<style type="text/css">
 	.yui3-js-enabled .yui3-widget-loading { display: none; }
 
@@ -42,7 +42,7 @@
 
 <h1><a href="http://yuilibrary.com/gallery/show/bulkedit">YUI 3 Bulk Editor</a> Example</h1>
 <p><a href="index.html">Show me a simpler example</a></p>
-<p><a href="../yuidoc/module_gallery-bulkedit.html">Show me the documentation</a></p>
+<p><a href="../yuidoc/modules/gallery-bulkedit.html">Show me the documentation</a></p>
 <p><a href="/yui3-gallery/">Back to project list</a></p>
 <hr>
 
@@ -64,8 +64,8 @@
 
 <script type="text/javascript">
 YUI({
-//	filter: 'raw', combine: false,
-	gallery: 'gallery-2012.04.26-15-49'
+	filter: 'raw', combine: false,
+	gallery: 'gallery-2012.05.09-20-27'
 }).use(
 	'gallery-bulkedit', 'datasource-arrayschema',
 	'gallery-checkboxgroups', 'gallery-paginator',
@@ -201,7 +201,7 @@ function(Y)
 		cfg: {schema:schema}
 	});
 
-	var ds = new Y.BulkEditDataSource(
+	var ds = new Y.DataSource.BulkEdit(
 	{
 		ds:                     raw_ds,
 		uniqueIdKey:            'id',
