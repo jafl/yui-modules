@@ -2417,22 +2417,25 @@
                         {
                             "name": "store",
                             "description": "Data store which implements get,put,remove,clear,keys.  If not specified, a new instance of `Y.InstanceManager` is created.",
-                            "type": "Object"
+                            "type": "Object",
+                            "optional": true
                         },
                         {
                             "name": "meta",
                             "description": "Attaches meta data to an item when it is added to the cache.  It receives the value as an argument.  If not specified, the default is to timestamp the item.",
-                            "type": "Function"
+                            "type": "Function",
+                            "optional": true
                         },
                         {
                             "name": "expire",
-                            "description": "(Required) Returns true if the item has expired.  It receives the meta data and the value as arguments.  If a number is specified, it is assumed to be a duration in milliseconds.",
+                            "description": "Returns true if the item has expired.  It receives the meta data and the value as arguments.  If a number is specified, it is assumed to be a duration in milliseconds.",
                             "type": "Function"
                         },
                         {
                             "name": "stats",
                             "description": "Pass true if you want to collect basic statistics.  Pass a function if you want to control what information is stored for each key.  The function receives the key, the value, and the stat object.",
-                            "type": "Boolean"
+                            "type": "Boolean",
+                            "optional": true
                         }
                     ]
                 }
@@ -2665,8 +2668,9 @@
             "params": [
                 {
                     "name": "list",
-                    "description": "(Optional) any scalar or iterable list",
-                    "type": "Mixed"
+                    "description": "any scalar or iterable list",
+                    "type": "Mixed",
+                    "optional": true
                 }
             ]
         },
@@ -3652,23 +3656,25 @@
                     "props": [
                         {
                             "name": "metric",
-                            "description": "(Required) Computes the metric for an item.  It receives the value as an argument and must return a positive number.",
+                            "description": "Computes the metric for an item.  It receives the value as an argument and must return a positive number.",
                             "type": "Function"
                         },
                         {
                             "name": "limit",
-                            "description": "(Required) Maximum allowed value of the metric.  Items are dropped off the end of the MRU list until the metric is less than or equal to the limit.",
+                            "description": "Maximum allowed value of the metric.  Items are dropped off the end of the MRU list until the metric is less than or equal to the limit.",
                             "type": "Number"
                         },
                         {
                             "name": "meta",
                             "description": "Attaches meta data to an item when it is added to the cache.  It receives the value as an argument.",
-                            "type": "Function"
+                            "type": "Function",
+                            "optional": true
                         },
                         {
                             "name": "stats",
                             "description": "Pass true if you want to collect basic statistics.  Pass a function if you want to control what information is stored for each key.  The function receives the key, the value, and the stat object.",
-                            "type": "Boolean"
+                            "type": "Boolean",
+                            "optional": true
                         }
                     ]
                 }
@@ -8259,13 +8265,15 @@
                 },
                 {
                     "name": "had_messages",
-                    "description": "(Optional) <code>true</code> if the form already has messages displayed",
-                    "type": "Boolean"
+                    "description": "`true` if the form already has messages displayed",
+                    "type": "Boolean",
+                    "optional": true
                 },
                 {
                     "name": "scroll",
-                    "description": "(Optional) <code>true</code> if the form row should be scrolled into view",
-                    "type": "Boolean"
+                    "description": "`true` if the form row should be scrolled into view",
+                    "type": "Boolean",
+                    "optional": true
                 }
             ],
             "return": {
@@ -8706,8 +8714,9 @@
                 },
                 {
                     "name": "scroll",
-                    "description": "(Optional) <code>true</code> if the form row should be scrolled into view",
-                    "type": "Boolean"
+                    "description": "`true` if the form row should be scrolled into view",
+                    "type": "Boolean",
+                    "optional": true
                 }
             ],
             "return": {
@@ -8803,12 +8812,13 @@
                 },
                 {
                     "name": "msg_list",
-                    "description": "(Optional) Map of message types to custom messages.",
-                    "type": "Map"
+                    "description": "Map of message types to custom messages.",
+                    "type": "Map",
+                    "optional": true
                 }
             ],
             "return": {
-                "description": "Status:\n\t\t<dl>\n\t\t<dt>keepGoing</dt>\n\t\t<dd>(Boolean) <code>true</code> if further validation should be done.</dd>\n\t\t<dt>error</dt>\n\t\t<dd>(String) The error message, if any.</dd>\n\t\t</dl>",
+                "description": "Status\n<dl>\n<dt>keepGoing</dt>\n<dd>(Boolean) <code>true</code> if further validation should be done.</dd>\n<dt>error</dt>\n<dd>(String) The error message, if any.</dd>\n</dl>",
                 "type": "Object"
             },
             "class": "FormManager",
@@ -15150,13 +15160,15 @@
                 },
                 {
                     "name": "totalPages",
-                    "description": "(optional) Maximum number of pages",
-                    "type": "Int"
+                    "description": "Maximum number of pages",
+                    "type": "Int",
+                    "optional": true
                 },
                 {
                     "name": "numPages",
-                    "description": "(optional) Preferred number of pages in range",
-                    "type": "Int"
+                    "description": "Preferred number of pages in range",
+                    "type": "Int",
+                    "optional": true
                 }
             ],
             "return": {
@@ -15681,8 +15693,9 @@
             "params": [
                 {
                     "name": "page",
-                    "description": "(optional) The page (current page if not specified)",
-                    "type": "Number"
+                    "description": "The page (current page if not specified)",
+                    "type": "Number",
+                    "optional": true
                 }
             ],
             "return": {
@@ -16361,8 +16374,9 @@
                 },
                 {
                     "name": "scroll",
-                    "description": "(Optional) `true` if the form row should be scrolled into view",
-                    "type": "Boolean"
+                    "description": "`true` if the form row should be scrolled into view",
+                    "type": "Boolean",
+                    "optional": true
                 }
             ],
             "return": {
@@ -17071,7 +17085,7 @@
         },
         {
             "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-treeble/js/TreebleDataSource.js",
-            "line": 849,
+            "line": 872,
             "itemtype": "method",
             "name": "isOpen",
             "params": [
@@ -17091,7 +17105,7 @@
         },
         {
             "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-treeble/js/TreebleDataSource.js",
-            "line": 870,
+            "line": 893,
             "description": "Toggle the specified node between open and closed.  When a node is\nopened for the first time, this requires a request to the\nDataSource.  Any code that assumes the node has been opened must be\npassed in as a completion function.",
             "itemtype": "method",
             "name": "toggle",

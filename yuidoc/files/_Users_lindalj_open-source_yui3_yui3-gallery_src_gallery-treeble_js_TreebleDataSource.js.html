@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-treeble&#x2F;js&#x2F;TreebleDataSource.js - YUI 3 Gallery Modules</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -581,6 +582,8 @@ function populateOpen(
 					item.childTotal = cached_item.childTotal;
 					this._redo      = this._redo || item.open;
 				}
+
+				this._open_cache[ data[k][ uniqueIdKey ] ] = item;
 			}
 
 			if (!cached_item &amp;&amp; nodeOpenKey &amp;&amp; data[k][ nodeOpenKey ])
@@ -589,7 +592,6 @@ function populateOpen(
 			}
 
 			open.splice(j, 0, item);
-			this._open_cache[ data[k][ uniqueIdKey ] ] = item;
 		}
 
 		j++;
@@ -1176,6 +1178,28 @@ function complete(f)
 	}
 }
 
+function compareRequests(r1, r2)
+{
+	var k1 = Y.Object.keys(r1),
+		k2 = Y.Object.keys(r2);
+
+	if (k1.length != k2.length)
+	{
+		return false;
+	}
+
+	for (var i=0; i&lt;k1.length; i++)
+	{
+		var k = k1[i];
+		if (k != &#x27;startIndex&#x27; &amp;&amp; k != &#x27;resultCount&#x27; &amp;&amp; r1[k] !== r2[k])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 Y.extend(TreebleDataSource, Y.DataSource.Local,
 {
 	initializer: function(config)
@@ -1295,23 +1319,11 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 
 	_defRequestFn: function(e)
 	{
-		if (this._callback)
+		&#x2F;&#x2F; wipe out all state if the request parameters change
+
+		if (this._callback &amp;&amp; !compareRequests(this._callback.request, e.request))
 		{
-			&#x2F;&#x2F; wipe out all state if the request parameters change
-
-			Y.Object.some(this._callback.request, function(value, key)
-			{
-				if (key == &#x27;startIndex&#x27; || key == &#x27;resultCount&#x27;)
-				{
-					return false;
-				}
-
-				if (value !== e.request[key])
-				{
-					this._open = [];
-					return true;
-				}
-			});
+			this._open = [];
 		}
 
 		this._callback = e;
