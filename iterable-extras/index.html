@@ -1,1 +1,131 @@
-<meta http-equiv="refresh" content="0; url=../yuidoc/modules/gallery-iterable-extras.html">
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Array Iterator Unit Tests</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js"></script>
+	<script src="gallery-iterable-extras-debug.js"></script>
+
+	<style type="text/css">
+	#perf { border-collapse: collapse; }
+	#perf th, #perf td { border:1px solid black; padding: 4px; }
+	</style>
+</head>
+
+<body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/iterable-extras">YUI 3 Array Iterator</a> Unit Tests</h1>
+
+<p><a href="../yuidoc/modules/gallery-iterable-extras.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<p>Performance results:</p>
+<table id="perf">
+<tr>
+	<th>Method</th><th>Duration (ms)</th>
+</tr>
+</table>
+
+<script type="text/javascript">
+YUI({
+//	filter: 'raw', combine: false,
+	logInclude: { TestRunner: true }
+}).use(
+	'gallery-iterable-extras', 'oop', 'test',
+	'console', 'console-filters', 'dd-plugin',
+function(Y)
+{
+	Y.Test.Runner.add(new Y.Test.Case(
+	{
+		name: 'Array Iterator',
+
+		testForward: function()
+		{
+			var iter = new Y.ArrayIterator([1,2,3]);
+			var list = [];
+			while (!iter.atEnd())
+			{
+				list.push(iter.next());
+			}
+
+			Y.ArrayAssert.itemsAreSame([1,2,3], list);
+		},
+
+		testBackward: function()
+		{
+			var iter = new Y.ArrayIterator([1,2,3]);
+			var list = [];
+
+			iter.moveToEnd();
+			while (!iter.atBeginning())
+			{
+				list.push(iter.prev());
+			}
+
+			Y.ArrayAssert.itemsAreSame([3,2,1], list);
+		}
+	}));
+
+	new Y.Console(
+	{
+		newestOnTop: false,
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
+	})
+	.render();
+
+	Y.Test.Runner.run();
+
+// performance
+
+	var list = [];
+	for (var i=0; i<1000000; i++)
+	{
+		list.push(i);
+	}
+
+	var table = Y.one('#perf');
+
+	// for loop
+
+	var t0 = new Date().getTime(), count = 0;
+
+	var size = list.length;
+	for (i=0; i<size; i++)
+	{
+		count += list[i];
+	}
+
+	var t1 = new Date().getTime();
+	table.append('<tr><td>for loop</td><td>' + (t1-t0) + '</td></tr>');
+
+	// Y.each
+
+	var t0 = new Date().getTime(), count = 0;
+
+	Y.each(list, function(value)
+	{
+		count += value;
+	});
+
+	var t1 = new Date().getTime();
+	table.append('<tr><td>Y.each</td><td>' + (t1-t0) + '</td></tr>');
+
+	// Y.ArrayIterator
+
+	var t0 = new Date().getTime(), count = 0;
+
+	var iter = new Y.ArrayIterator(list);
+	while (!iter.atEnd())
+	{
+		count += iter.next();
+	}
+
+	var t1 = new Date().getTime();
+	table.append('<tr><td>Y.ArrayIterator</td><td>' + (t1-t0) + '</td></tr>');
+});
+</script>
+
+</body>
+</html>
