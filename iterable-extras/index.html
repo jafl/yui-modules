@@ -21,7 +21,7 @@
 <p><a href="../yuidoc/modules/gallery-iterable-extras.html">Show me the documentation</a></p>
 <p><a href="/yui3-gallery/">Back to project list</a></p>
 
-<p>Performance results:</p>
+<p>Performance results (Turn of Firebug!):</p>
 <table id="perf">
 <tr>
 	<th>Method</th><th>Duration (ms)</th>
@@ -124,6 +124,35 @@ function(Y)
 
 	var t1 = new Date().getTime();
 	table.append('<tr><td>Y.ArrayIterator</td><td>' + (t1-t0) + '</td></tr>');
+
+	// class using Y.ArrayIterator to implement each
+
+	function ArrayList(list)
+	{
+		this._list = list;
+	}
+
+	ArrayList.prototype =
+	{
+		iterator: function()
+		{
+			return new Y.ArrayIterator(this._list);
+		}
+
+		// don't need newInstance() for this example
+	};
+
+	Y.mix(ArrayList, Y.Iterable, false, null, 4);
+
+	var t0 = new Date().getTime(), count = 0;
+
+	new ArrayList(list).each(function(value)
+	{
+		count += value;
+	});
+
+	var t1 = new Date().getTime();
+	table.append('<tr><td>each using Y.ArrayIterator</td><td>' + (t1-t0) + '</td></tr>');
 });
 </script>
 
