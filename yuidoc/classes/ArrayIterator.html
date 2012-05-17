@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>gallery-formmgr-css-validation - YUI 3 Gallery Modules</title>
+    <title>ArrayIterator - YUI 3 Gallery Modules</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -380,14 +380,22 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>gallery-formmgr-css-validation Module</h1>
-<div class="box clearfix meta">
+                        <h1>ArrayIterator Class</h1>
+<div class="box meta">
+    
+
     
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;_Users_lindalj_open-source_yui3_yui3-gallery_src_gallery-formmgr-css-validation_js_CSSValidation.js.html#l33"><code>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-formmgr-css-validation&#x2F;js&#x2F;CSSValidation.js:33</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;_Users_lindalj_open-source_yui3_yui3-gallery_src_gallery-iterable-extras_js_array-iterator.js.html#l5"><code>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-iterable-extras&#x2F;js&#x2F;array-iterator.js:5</code></a>
         </div>
+    
+
+    
+        
+            Module: <a href="../modules/gallery-iterable-extras.html">gallery-iterable-extras</a>
+        
     
 
     
@@ -396,50 +404,492 @@
 
 
 <div class="box intro">
-    <p>FormManager CSS Validation provides basic functionality for
-pre-validating user input based on CSS classes set on form elements.</p>
-
-<p>The following classes can be applied to a form element for
-pre-validation:</p>
-
-<dl>
-<dt><code>yiv-required</code></dt>
-<dd>Value must not be empty.</dd>
-
-<dt><code>yiv-length:[x,y]</code></dt>
-<dd>String must be at least x characters and at most y characters.
-At least one of x and y must be specified.</dd>
-
-<dt><code>yiv-integer:[x,y]</code></dt>
-<dd>The integer value must be at least x and at most y.
-x and y are both optional.</dd>
-
-<dt><code>yiv-decimal:[x,y]</code></dt>
-<dd>The decimal value must be at least x and at most y.  Exponents are
-not allowed.  x and y are both optional.</dd>
-</dl>
-
-<p>If we ever need to allow exponents, we can use yiv-float.</p>
+    <p>Iterator for an array.  Useful for any class that manages an array and
+wants to mix in <code>Y.Iterable</code>.  Safe, but not stable, when the array is
+modified during iteration.</p>
 </div>
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-            <p>This module provides the following classes:</p>
 
-            <ul class="module-classes">
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+        
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+        
+        
+        
+        
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
             
-                <li class="module-class">
-                    <a href="..&#x2F;classes/FormManager.html">
-                        FormManager
-                    </a>
-                </li>
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                        
+                            <li class="index-item method">
+                                <a href="#method_atBeginning">atBeginning</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_atEnd">atEnd</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_moveToBeginning">moveToBeginning</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_moveToEnd">moveToEnd</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_next">next</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_prev">prev</a>
+
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
             
-            </ul>
+
+            
+
+            
+
+            
+        </div>
+
+        
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_atBeginning" class="method item">
+    <h3 class="name"><code>atBeginning</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;_Users_lindalj_open-source_yui3_yui3-gallery_src_gallery-iterable-extras_js_array-iterator.js.html#l24"><code>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-iterable-extras&#x2F;js&#x2F;array-iterator.js:24</code></a>
+        
+        </p>
+
+
+        
+
         
     </div>
 
-    <div class="yui3-u-1-2">
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Boolean</span>:
+                    
+                    true if at the beginning
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_atEnd" class="method item">
+    <h3 class="name"><code>atEnd</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;_Users_lindalj_open-source_yui3_yui3-gallery_src_gallery-iterable-extras_js_array-iterator.js.html#l33"><code>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-iterable-extras&#x2F;js&#x2F;array-iterator.js:33</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Boolean</span>:
+                    
+                    true if at the end
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_moveToBeginning" class="method item">
+    <h3 class="name"><code>moveToBeginning</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;_Users_lindalj_open-source_yui3_yui3-gallery_src_gallery-iterable-extras_js_array-iterator.js.html#l42"><code>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-iterable-extras&#x2F;js&#x2F;array-iterator.js:42</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Move to the beginning of the list.</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_moveToEnd" class="method item">
+    <h3 class="name"><code>moveToEnd</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;_Users_lindalj_open-source_yui3_yui3-gallery_src_gallery-iterable-extras_js_array-iterator.js.html#l52"><code>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-iterable-extras&#x2F;js&#x2F;array-iterator.js:52</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Move to the end of the list.</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_next" class="method item">
+    <h3 class="name"><code>next</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Mixed</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;_Users_lindalj_open-source_yui3_yui3-gallery_src_gallery-iterable-extras_js_array-iterator.js.html#l62"><code>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-iterable-extras&#x2F;js&#x2F;array-iterator.js:62</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Mixed</span>:
+                    
+                    next value in the list or undefined if at the end
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_prev" class="method item">
+    <h3 class="name"><code>prev</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Mixed</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;_Users_lindalj_open-source_yui3_yui3-gallery_src_gallery-iterable-extras_js_array-iterator.js.html#l74"><code>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-iterable-extras&#x2F;js&#x2F;array-iterator.js:74</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Mixed</span>:
+                    
+                    previous value in the list or undefined if at the beginning
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+            </div>
+        
+
+        
+
+        
+
         
     </div>
 </div>

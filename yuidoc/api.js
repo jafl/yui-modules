@@ -2,6 +2,7 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "Accordion",
+        "ArrayIterator",
         "ArrayList~extras",
         "Array~algorithms",
         "Array~funcprog-extras",

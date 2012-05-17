@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>gallery-formmgr-css-validation - YUI 3 Gallery Modules</title>
+    <title>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-iterable-extras&#x2F;js&#x2F;array-iterator.js - YUI 3 Gallery Modules</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -380,68 +380,99 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>gallery-formmgr-css-validation Module</h1>
-<div class="box clearfix meta">
-    
+                        <h1 class="file-heading">File: &#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-iterable-extras&#x2F;js&#x2F;array-iterator.js</h1>
 
-    
-        <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;_Users_lindalj_open-source_yui3_yui3-gallery_src_gallery-formmgr-css-validation_js_CSSValidation.js.html#l33"><code>&#x2F;Users&#x2F;lindalj&#x2F;open-source&#x2F;yui3&#x2F;yui3-gallery&#x2F;src&#x2F;gallery-formmgr-css-validation&#x2F;js&#x2F;CSSValidation.js:33</code></a>
-        </div>
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+ * @module gallery-iterable-extras
+ *&#x2F;
 
-    
-</div>
+&#x2F;**********************************************************************
+ * Iterator for an array.  Useful for any class that manages an array and
+ * wants to mix in &#x60;Y.Iterable&#x60;.  Safe, but not stable, when the array is
+ * modified during iteration.
+ *
+ * @class ArrayIterator
+ * @method constructor
+ * @param list {Array}
+ *&#x2F;
 
+function ArrayIterator(
+	&#x2F;* array *&#x2F;    list)
+{
+	this._list = list;
+	this.moveToBeginning();
+}
 
+ArrayIterator.prototype =
+{
+	&#x2F;**
+	 * @method atBeginning
+	 * @return {Boolean} true if at the beginning
+	 *&#x2F;
+	atBeginning: function()
+	{
+		return (this._next &lt;= 0);
+	},
 
-<div class="box intro">
-    <p>FormManager CSS Validation provides basic functionality for
-pre-validating user input based on CSS classes set on form elements.</p>
+	&#x2F;**
+	 * @method atEnd
+	 * @return {Boolean} true if at the end
+	 *&#x2F;
+	atEnd: function()
+	{
+		return (this._next &gt;= this._list.length);
+	},
 
-<p>The following classes can be applied to a form element for
-pre-validation:</p>
+	&#x2F;**
+	 * Move to the beginning of the list.
+	 * 
+	 * @method moveToBeginning
+	 *&#x2F;
+	moveToBeginning: function()
+	{
+		this._next = 0;
+	},
 
-<dl>
-<dt><code>yiv-required</code></dt>
-<dd>Value must not be empty.</dd>
+	&#x2F;**
+	 * Move to the end of the list.
+	 * 
+	 * @method moveToEnd
+	 *&#x2F;
+	moveToEnd: function()
+	{
+		this._next = this._list.length;
+	},
 
-<dt><code>yiv-length:[x,y]</code></dt>
-<dd>String must be at least x characters and at most y characters.
-At least one of x and y must be specified.</dd>
+	&#x2F;**
+	 * @method next
+	 * @return {Mixed} next value in the list or undefined if at the end
+	 *&#x2F;
+	next: function()
+	{
+		if (this._next &lt; this._list.length)
+		{
+			return this._list[ this._next++ ];
+		}
+	},
 
-<dt><code>yiv-integer:[x,y]</code></dt>
-<dd>The integer value must be at least x and at most y.
-x and y are both optional.</dd>
+	&#x2F;**
+	 * @method prev
+	 * @return {Mixed} previous value in the list or undefined if at the beginning
+	 *&#x2F;
+	prev: function()
+	{
+		if (this._next &gt; 0)
+		{
+			return this._list[ --this._next ];
+		}
+	}
+};
 
-<dt><code>yiv-decimal:[x,y]</code></dt>
-<dd>The decimal value must be at least x and at most y.  Exponents are
-not allowed.  x and y are both optional.</dd>
-</dl>
+Y.ArrayIterator = ArrayIterator;
 
-<p>If we ever need to allow exponents, we can use yiv-float.</p>
-</div>
-
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-            <p>This module provides the following classes:</p>
-
-            <ul class="module-classes">
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/FormManager.html">
-                        FormManager
-                    </a>
-                </li>
-            
-            </ul>
-        
-    </div>
-
-    <div class="yui3-u-1-2">
-        
-    </div>
+    </pre>
 </div>
 
                     </div>

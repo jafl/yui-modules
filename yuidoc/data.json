@@ -352,6 +352,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/array-iterator.js": {
+            "name": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/array-iterator.js",
+            "modules": {},
+            "classes": {
+                "ArrayIterator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/iterable-extras.js": {
             "name": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/iterable-extras.js",
             "modules": {
@@ -1513,6 +1522,7 @@
             "name": "gallery-iterable-extras",
             "submodules": {},
             "classes": {
+                "ArrayIterator": 1,
                 "Iterable": 1
             },
             "fors": {},
@@ -2578,6 +2588,28 @@
             "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-io-multiresponse/js/multi-response.js",
             "line": 8,
             "description": "<p>Extends the IO base class to enable multiple responses using an\niframe as the transport medium.  Each response fires the response event.\nThe only events that are fired are the start and end events.</p>\n\n<p>All the YUI 3 IO features are supported, so the request can be sent\nas either GET (for simple query args) or POST (for anything, even file\nuploads).  The module uses an iframe to send the request and includes a\ncallback parameter.  (So you cannot include a parameter named\n<q>callback</q>.)  For each response, the server must send a script\nblock invoking the callback, similar to JSONP.  Unlike JSONP, however,\nrequests can only be made to your own server because the callback will\nreference <code>window.parent</code>.  In order to trigger script\nparsing in all browsers, the first chunk of data that the server writes\nto the connection must be at least 1024 bytes, and it must be part of\nthe body, so you will need to explicitly send an empty head.</p>\n\n<p>Due to the way that the request data is parsed, it is not safe to\nsend JSON-encoded data using the standard YUI 3 IO methods.  However, if\nyou define <code>json</code> in the configuration passed to\n<code>Y.io()</code>, then the data will be passed to the server under\nthe <code>json</code> parameter.  (If you pass an object, it will be\nserialized with <code>Y.JSON.stringify()</code>.)\n\n<p>To keep the iframe after it has finished loading, set\n<code>debug:true</code> in the configuration passed to\n<code>Y.io()</code>.</p>"
+        },
+        "ArrayIterator": {
+            "name": "ArrayIterator",
+            "shortname": "ArrayIterator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-iterable-extras",
+            "namespace": "",
+            "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/array-iterator.js",
+            "line": 5,
+            "description": "Iterator for an array.  Useful for any class that manages an array and\nwants to mix in `Y.Iterable`.  Safe, but not stable, when the array is\nmodified during iteration.",
+            "itemtype": "method",
+            "params": [
+                {
+                    "name": "list",
+                    "description": "",
+                    "type": "Array"
+                }
+            ]
         },
         "Iterable": {
             "name": "Iterable",
@@ -9579,6 +9611,72 @@
             },
             "class": "io~multiresponse",
             "module": "gallery-io-multiresponse"
+        },
+        {
+            "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/array-iterator.js",
+            "line": 24,
+            "itemtype": "method",
+            "name": "atBeginning",
+            "return": {
+                "description": "true if at the beginning",
+                "type": "Boolean"
+            },
+            "class": "ArrayIterator",
+            "module": "gallery-iterable-extras"
+        },
+        {
+            "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/array-iterator.js",
+            "line": 33,
+            "itemtype": "method",
+            "name": "atEnd",
+            "return": {
+                "description": "true if at the end",
+                "type": "Boolean"
+            },
+            "class": "ArrayIterator",
+            "module": "gallery-iterable-extras"
+        },
+        {
+            "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/array-iterator.js",
+            "line": 42,
+            "description": "Move to the beginning of the list.",
+            "itemtype": "method",
+            "name": "moveToBeginning",
+            "class": "ArrayIterator",
+            "module": "gallery-iterable-extras"
+        },
+        {
+            "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/array-iterator.js",
+            "line": 52,
+            "description": "Move to the end of the list.",
+            "itemtype": "method",
+            "name": "moveToEnd",
+            "class": "ArrayIterator",
+            "module": "gallery-iterable-extras"
+        },
+        {
+            "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/array-iterator.js",
+            "line": 62,
+            "itemtype": "method",
+            "name": "next",
+            "return": {
+                "description": "next value in the list or undefined if at the end",
+                "type": "Mixed"
+            },
+            "class": "ArrayIterator",
+            "module": "gallery-iterable-extras"
+        },
+        {
+            "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/array-iterator.js",
+            "line": 74,
+            "itemtype": "method",
+            "name": "prev",
+            "return": {
+                "description": "previous value in the list or undefined if at the beginning",
+                "type": "Mixed"
+            },
+            "class": "ArrayIterator",
+            "module": "gallery-iterable-extras"
         },
         {
             "file": "/Users/lindalj/open-source/yui3/yui3-gallery/src/gallery-iterable-extras/js/iterable-extras.js",
