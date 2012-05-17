@@ -367,6 +367,11 @@
             <input type="checkbox" id="api-show-private">
             Private
         </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
     </div>
 
 
@@ -406,12 +411,13 @@ State.NS   = &quot;state&quot;;
 State.ATTRS =
 {
 	&#x2F;**
-	 * (Required) Id of a column (usually not displayed) that yields a
+	 * Id of a column (usually not displayed) that yields a
 	 * unique value for each record.  The saved state is index by the value
 	 * of this column.
 	 *
 	 * @attribute uniqueIdKey
 	 * @type {String}
+	 * @required
 	 *&#x2F;
 	uniqueIdKey:
 	{
@@ -419,7 +425,7 @@ State.ATTRS =
 	},
 
 	&#x2F;**
-	 * (Required) List of objects specifying the values to be saved before
+	 * List of objects specifying the values to be saved before
 	 * the table is re-rendered.  Each object must define:
 	 * &lt;dl&gt;
 	 * &lt;dt&gt;column&lt;&#x2F;dt&gt;
@@ -435,6 +441,7 @@ State.ATTRS =
 	 *
 	 * @attribute save
 	 * @type {Array}
+	 * @required
 	 *&#x2F;
 	save:
 	{
@@ -443,7 +450,7 @@ State.ATTRS =
 	},
 
 	&#x2F;**
-	 * (Optional) Paginator that triggers clearing of temporary state.  If
+	 * Paginator that triggers clearing of temporary state.  If
 	 * this is not specified, temp:true will have no effect in the &quot;save&quot;
 	 * configuration.
 	 * 

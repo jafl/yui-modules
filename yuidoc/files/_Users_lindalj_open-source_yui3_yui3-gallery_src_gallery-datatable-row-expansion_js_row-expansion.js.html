@@ -367,6 +367,11 @@
             <input type="checkbox" id="api-show-private">
             Private
         </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
     </div>
 
 
@@ -410,10 +415,11 @@ RowExpansion.NS   = &quot;rowexpander&quot;;
 RowExpansion.ATTRS =
 {
 	&#x2F;**
-	 * (Required) String template or function that returns a string.
+	 * String template or function that returns a string.
 	 *
 	 * @attribute template
 	 * @type {String|Function}
+	 * @required
 	 *&#x2F;
 	template:
 	{
@@ -425,12 +431,13 @@ RowExpansion.ATTRS =
 	},
 
 	&#x2F;**
-	 * (Required) Id of a column (usually not displayed) that yields a
+	 * Id of a column (usually not displayed) that yields a
 	 * unique value for each record.  Used to maintain the twistdown state
 	 * when paginating.
 	 *
 	 * @attribute uniqueIdKey
 	 * @type {String}
+	 * @required
 	 *&#x2F;
 	uniqueIdKey:
 	{
