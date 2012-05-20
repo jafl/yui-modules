@@ -259,12 +259,12 @@ Accordion.HTML_PARSER =
 {
 	titles: function(content_box)
 	{
-		return content_box.all('li > div:nth-child(1)');
+		return content_box.all('> li > div:nth-child(1)');
 	},
 
 	sections: function(content_box)
 	{
-		return content_box.all('li > div:nth-child(2)');
+		return content_box.all('> li > div:nth-child(2)');
 	}
 };
 
@@ -1267,4 +1267,4 @@ Y.namespace("Plugin");
 Y.Plugin.FixedSizeAccordion = FixedSizeAccordionPlugin;
 
 
-}, '@VERSION@' ,{skinnable:true, optional:['anim-base'], requires:['widget','selector-css3','plugin','gallery-dimensions']});
+}, '@VERSION@' ,{requires:['widget','selector-css3','plugin','gallery-dimensions'], optional:['anim-base'], skinnable:true});
