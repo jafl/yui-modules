@@ -268,7 +268,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "gallery-iterable-extras",
             "name": "gallery-iterable-extras",
-            "description": "<p>Functional programming support for iterable classes.  The class must\nimplement the iterator() (which must return an object that implements\nnext() and atEnd()) and newInstance() methods.</p>\n\n<p>Iterable classes must mix these functions:  `Y.mix(SomeClass,\nY.Iterable, false, null, 4);`  Passing false as the third argument\nallows your class to provide optimized implementations of individual\nfunctions.</p>"
+            "description": "<p>Functional programming support for iterable classes.  The class must\nimplement the `iterator` and `newInstance` methods.</p>\n\n<p>For most methods, the iterator only needs to implement `next` and\n`atEnd`.  Backwards iterators like `reduceRight` require `prev` and\n`atBeginning`.</p>\n\n<p>Iterable classes must mix these functions:  `Y.mix(SomeClass,\nY.Iterable, false, null, 4);`  Passing false as the third argument\nallows your class to provide optimized implementations of individual\nfunctions.</p>"
         },
         {
             "displayName": "gallery-layout",

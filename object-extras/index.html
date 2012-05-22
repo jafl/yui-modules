@@ -143,6 +143,14 @@ function(Y)
 			}));
 		},
 
+		testReduceRight: function()
+		{
+			Y.Assert.areEqual(10, Y.Object.reduceRight({a:1,b:2,c:3,d:4}, 0, function(s,v)
+			{
+				return s+v;
+			}));
+		},
+
 		testReject: function()
 		{
 			var o = Y.Object.reject({a:1,b:2,c:3,d:4}, function(v,k)

@@ -6,6 +6,7 @@
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
 	<script src="http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js"></script>
+	<script src="gallery-funcprog-debug.js"></script>
 	<script src="gallery-nodelist-extras2-debug.js"></script>
 </head>
 
@@ -92,6 +93,15 @@ function(Y)
 		testReduce: function()
 		{
 			Y.Assert.areEqual('abc', list.reduce('',
+				function(s,n)
+				{
+					return s + n.get('id');
+				}));
+		},
+
+		testReduceRight: function()
+		{
+			Y.Assert.areEqual('cba', list.reduceRight('',
 				function(s,n)
 				{
 					return s + n.get('id');

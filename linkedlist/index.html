@@ -552,6 +552,54 @@ function(Y)
 			});
 
 			Y.Assert.areSame(7, value);
+
+			list  = new Y.LinkedList('a','b','c');
+			var value = list.reduce('x', function(sum, value)
+			{
+				return sum + value;
+			});
+
+			Y.Assert.areSame('xabc', value);
+
+			value = Y.reduce(list, 'x', function(sum, value)
+			{
+				return sum + value;
+			});
+
+			Y.Assert.areSame('xabc', value);
+		},
+
+		testReduceRight: function()
+		{
+			var list  = new Y.LinkedList(1,2,3);
+			var value = list.reduceRight(1, function(sum, value)
+			{
+				return sum + value;
+			});
+
+			Y.Assert.areSame(7, value);
+
+			value = Y.reduceRight(list, 1, function(sum, value)
+			{
+				return sum + value;
+			});
+
+			Y.Assert.areSame(7, value);
+
+			list  = new Y.LinkedList('a','b','c');
+			var value = list.reduceRight('x', function(sum, value)
+			{
+				return sum + value;
+			});
+
+			Y.Assert.areSame('xcba', value);
+
+			value = Y.reduceRight(list, 'x', function(sum, value)
+			{
+				return sum + value;
+			});
+
+			Y.Assert.areSame('xcba', value);
 		},
 
 		testReject: function()

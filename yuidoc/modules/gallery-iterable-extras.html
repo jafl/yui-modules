@@ -397,8 +397,11 @@
 
 <div class="box intro">
     <p>Functional programming support for iterable classes.  The class must
-implement the iterator() (which must return an object that implements
-next() and atEnd()) and newInstance() methods.</p>
+implement the <code>iterator</code> and <code>newInstance</code> methods.</p>
+
+<p>For most methods, the iterator only needs to implement <code>next</code> and
+<code>atEnd</code>.  Backwards iterators like <code>reduceRight</code> require <code>prev</code> and
+<code>atBeginning</code>.</p>
 
 <p>Iterable classes must mix these functions:  `Y.mix(SomeClass,
 Y.Iterable, false, null, 4);`  Passing false as the third argument

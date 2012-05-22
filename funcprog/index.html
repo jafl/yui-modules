@@ -248,6 +248,11 @@ function(Y)
 				return s+v;
 			}));
 
+			Y.Assert.areEqual('abc', Y.reduce(['a','b','c'], '', function(s,v)
+			{
+				return s+v;
+			}));
+
 			// object
 
 			Y.Assert.areEqual(10, Y.reduce({a:1,b:2,c:3,d:4}, 0, function(s,v)
@@ -258,6 +263,36 @@ function(Y)
 			// NodeList
 
 			Y.Assert.areEqual('abc', Y.reduce(list, '',
+				function(s,n)
+				{
+					return s + n.get('id');
+				}));
+		},
+
+		testReduceRight: function()
+		{
+			// array
+
+			Y.Assert.areEqual(10, Y.reduceRight([1,2,3,4], 0, function(s,v)
+			{
+				return s+v;
+			}));
+
+			Y.Assert.areEqual('cba', Y.reduceRight(['a','b','c'], '', function(s,v)
+			{
+				return s+v;
+			}));
+
+			// object
+
+			Y.Assert.areEqual(10, Y.reduceRight({a:1,b:2,c:3,d:4}, 0, function(s,v)
+			{
+				return s+v;
+			}));
+
+			// NodeList
+
+			Y.Assert.areEqual('cba', Y.reduceRight(list, '',
 				function(s,n)
 				{
 					return s + n.get('id');
