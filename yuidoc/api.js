@@ -70,6 +70,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "MathFunction.Tangent",
         "MathFunction.Value",
         "MathFunction.Variable",
+        "MatrixBackground",
+        "MatrixCredits",
         "MultiObject",
         "NodeList~extras2",
         "Node~dimensions",
@@ -139,6 +141,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-linkedlist",
         "gallery-math",
         "gallery-mathcanvas",
+        "gallery-matrix-background",
+        "gallery-matrix-credits",
         "gallery-mojito-rpc",
         "gallery-mru-cache",
         "gallery-multiobject",
@@ -158,7 +162,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "gallery-accordion-horiz-vert",
             "name": "gallery-accordion-horiz-vert",
-            "description": "<p>Widget to manage an accordion, either horizontally or vertically.\nAllows either multiple open sections or only a single open section.\nProvides option to always force at least one item to be open.</p>"
+            "description": "Widget to manage an accordion, either horizontally or vertically.\nAllows either multiple open sections or only a single open section.\nProvides option to always force at least one item to be open."
         },
         {
             "displayName": "gallery-algorithms",
@@ -306,6 +310,16 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "Displays an arithmetical expression the way you would write it on paper."
         },
         {
+            "displayName": "gallery-matrix-background",
+            "name": "gallery-matrix-background",
+            "description": "Node plugin to display falling text similar to what was used in the\ncredits for The Matrix.  If you plug into the body element, then it will\nfill the viewport.  Otherwise, you must set a width and height for the\nnode."
+        },
+        {
+            "displayName": "gallery-matrix-credits",
+            "name": "gallery-matrix-credits",
+            "description": "Widget to display text similar to what was used in the credits for The\nMatrix.  If you render the widget into the body, then it will fill the\nviewport.  Otherwise, you must specify a width and height for the\nwidget."
+        },
+        {
             "displayName": "gallery-mojito-rpc",
             "name": "gallery-mojito-rpc",
             "description": "<p>RPC wrapper for Mojit proxy.  This allows you to use either\nY.RPC.JSON or Y.RPC.Mojito interchangeably.  The method in the Mojit\nproxy receives the parameters as an array in <code>body.params</code>.\nYou can pass this to the model as follows:\n<code>model.getItems.apply(model,\nac.params.getFromBody().params)</code></p>"
@@ -323,7 +337,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "gallery-neon",
             "name": "gallery-neon",
-            "description": "<p>Overrides Y.Node.show() to make it look like a flickering neon\nsign.</p>"
+            "description": "Overrides Y.Node.show() to make it look like a flickering neon sign."
         },
         {
             "displayName": "gallery-node-optimizations",
