@@ -4,54 +4,35 @@
 
 DEBUG=$1
 
-# The location of your yuidoc install
-yuidoc_home=~/open-source/yui3/yuidoc
-
-# The location of the files to parse.  Parses subdirectories, but will fail if
-# there are duplicate file names in these directories.  You can specify multiple
-# source trees:
-#     parser_in="%HOME/www/yui/src %HOME/www/event/src"
 parser_in_prefix=~/open-source/yui3/yui3-gallery/src/gallery
 
-# The location to output the parser data.  This output is a file containing a 
-# json string, and copies of the parsed files.
-parser_out=~/open-source/yui3/yui3-gallery/doc/parser
-
-# The directory to put the html file outputted by the generator
 generator_out=~/open-source/jafl.github-yui3/yuidoc
-
-# The location of the template files.  Any subdirectories here will be copied
-# verbatim to the destination directory.
-template=$yuidoc_home/template
 
 # The version of your project to display within the documentation.
 version=1.0.0
 
-# The version of YUI the project is using.  This effects the output for
-# YUI configuration attributes.  This should start with '2' or '3'.
-yuiversion=3
-
-##############################################################################
-# add -s to the end of the line to show items marked private
-
 if [[ -z $DEBUG ]]; then
-	rm -rf $parser_out $generator_out
+	rm -rf $generator_out
 else
 	server="--server 3000";
 fi
 
-parser_in=""
+pushd ~/open-source/yui3/yui3-gallery/sandbox/jafl
+
+rm -rf src
+mkdir src
+
 for f in ~/open-source/jafl.github-yui3/*; do
 	d=${f##*/}
 	if [[ ! -d $f || "$d" == "yuidoc" ]]; then continue; fi
 
-	d1=${parser_in_prefix}-$d
-	parser_in="$parser_in $d1"
-	rm -rf $d1/build_tmp
+	d=${parser_in_prefix}-$d
+	rm -rf $d/build_tmp
+	cp -R $d src/
 done
 
-#$yuidoc_home/bin/yuidoc.py $parser_in -p $parser_out -o $generator_out -t $template -v $version -Y $yuiversion
+yuidoc $server --project-version $version -o $generator_out .
 
-pushd ~/open-source/yui3/yui3-gallery/sandbox/jafl
-yuidoc $server --project-version $version -o $generator_out $parser_in
+rm -rf src
+
 popd
