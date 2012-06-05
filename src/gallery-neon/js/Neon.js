@@ -5,8 +5,7 @@
  */
 
 /**********************************************************************
- * <p>Overrides Y.Node.show() to make it look like a flickering neon
- * sign.</p>
+ * Overrides Y.Node.show() to make it look like a flickering neon sign.
  * 
  * @main gallery-neon
  * @class Neon

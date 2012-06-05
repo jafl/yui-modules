@@ -599,8 +599,8 @@ function resize()
 
 	var viewport =
 	{
-		w: this.body_container.get('winWidth'),
-		h: this.body_container.get('winHeight')
+		w: Y.DOM.winWidth(),
+		h: Y.DOM.winHeight()
 	};
 
 	var resize_event = arguments[0] && arguments[0].type == 'resize';	// IE7 generates no-op's
@@ -687,8 +687,8 @@ function resize()
  */
 function checkViewportSize()
 {
-	if (this.body_container.get('winWidth')    != this.viewport.w ||
-		this.body_container.get('winHeight')   != this.viewport.h ||
+	if (Y.DOM.winWidth()                       != this.viewport.w ||
+		Y.DOM.winHeight()                      != this.viewport.h ||
 		this.body_container.get('clientWidth') != this.viewport.bcw)
 	{
 		resize.call(this);
