@@ -64,6 +64,23 @@ MatrixBackground.ATTRS =
 	},
 
 	/**
+	 * If you do not have a monospace font for the charRange, set this to
+	 * the widest character in the range.
+	 *
+	 * @attribute widestChar
+	 * @type {String}
+	 * @default null
+	 */
+	widestChar:
+	{
+		value: null,
+		validator: function(value)
+		{
+			return value === null || (Y.Lang.isString(value) && value.length == 1);
+		}
+	},
+
+	/**
 	 * Fraction of total columns that have a spinning character.
 	 * 
 	 * @attribute spinFraction
@@ -135,7 +152,7 @@ function renderTable()
 	}
 
 	var c_range = getCharacterRange.call(this),
-		c       = String.fromCharCode(c_range[0]);
+		c       = this.get('widestChar') || String.fromCharCode(c_range[0]);
 	this.container.set('innerHTML',
 		'<table><tr><td>' + c + '</td></tr></table>');
 
@@ -445,3 +462,12 @@ Y.extend(MatrixBackground, Y.Plugin.Base,
 
 Y.namespace("Plugin");
 Y.Plugin.MatrixBackground = MatrixBackground;
+
+// for use by gallery-matrix-credits
+
+Y.mix(Y.Plugin.MatrixBackground,
+{
+	rnd:        rnd,
+	startTimer: startTimer,
+	stopTimer:  stopTimer
+});

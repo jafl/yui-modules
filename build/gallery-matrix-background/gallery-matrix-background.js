@@ -6,13 +6,13 @@ YUI.add('gallery-matrix-background', function(Y) {
  * @module gallery-matrix-background
  */
 
+// Based on my ancient JMatrixCtrl MFC widget
+
 /**
  * Node plugin to display falling text similar to what was used in the
  * credits for The Matrix.  If you plug into the body element, then it will
  * fill the viewport.  Otherwise, you must set a width and height for the
  * node.
- * 
- * Based on my ancient JMatrixCtrl MFC widget.
  * 
  * @main gallery-matrix-background
  * @class MatrixBackground
@@ -51,6 +51,10 @@ MatrixBackground.ATTRS =
 	},
 
 	/**
+	 * Set to `true` to force a monospace font.  This only works if the
+	 * browser can find a monospace version of the character range which
+	 * you are using.
+	 *
 	 * @attribute monospace
 	 * @type {Boolean}
 	 * @default false
@@ -59,6 +63,23 @@ MatrixBackground.ATTRS =
 	{
 		value:     false,
 		validator: Y.Lang.isBoolean
+	},
+
+	/**
+	 * If you do not have a monospace font for the charRange, set this to
+	 * the widest character in the range.
+	 *
+	 * @attribute widestChar
+	 * @type {String}
+	 * @default null
+	 */
+	widestChar:
+	{
+		value: null,
+		validator: function(value)
+		{
+			return value === null || (Y.Lang.isString(value) && value.length == 1);
+		}
 	},
 
 	/**
@@ -133,7 +154,7 @@ function renderTable()
 	}
 
 	var c_range = getCharacterRange.call(this),
-		c       = String.fromCharCode(c_range[0]);
+		c       = this.get('widestChar') || String.fromCharCode(c_range[0]);
 	this.container.set('innerHTML',
 		'<table><tr><td>' + c + '</td></tr></table>');
 
@@ -443,6 +464,15 @@ Y.extend(MatrixBackground, Y.Plugin.Base,
 
 Y.namespace("Plugin");
 Y.Plugin.MatrixBackground = MatrixBackground;
+
+// for use by gallery-matrix-credits
+
+Y.mix(Y.Plugin.MatrixBackground,
+{
+	rnd:        rnd,
+	startTimer: startTimer,
+	stopTimer:  stopTimer
+});
 
 
 }, '@VERSION@' ,{requires:['node-pluginhost','plugin','gallery-dimensions','node-screen','event-resize'], skinnable:true});
