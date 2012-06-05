@@ -14,10 +14,15 @@
 	<script src="gallery-matrix-credits-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-matrix-credits.css" />
 
+	<style type="text/css">
+	</style>
+
 	<meta name="MSSmartTagsPreventParsing" content="TRUE" />
 	<meta http-equiv="X-UI-Compatible" content="IE=edge,chrome=1" />
 </head>
 <body class="yui3-skin-sam">
+
+<div id="matrix"></div>
 
 <script type="text/javascript">
 YUI({
@@ -27,8 +32,8 @@ YUI({
 "use strict";
 
 	Y.later(10, null, function() {
-	var mc = new Y.MatrixCredits();
-	mc.render('body');
+	var mc = new Y.MatrixCredits({ width: 400, height: 395 });
+	mc.render('#matrix');
 	});
 });
 </script>

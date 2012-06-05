@@ -103,11 +103,12 @@ MatrixCredits.ATTRS =
 
 var interval =
 	{
-		text:   10,
-		spin:   10,	// same as text
+		spin:   10,	// also used for text
 		cursor: 30,
 		bkgd:   80
 	},
+
+	bkgd_bottom_offset = 3,		// minimum number of rows affected by column drop
 
 	min_spin_count = 300,
 	max_spin_count = 800;
@@ -121,6 +122,11 @@ function getBackgroundRange()
 {
 	var bg_range = this.get('backgroundRange');
 	return [ bg_range[0].charCodeAt(0), bg_range[1].charCodeAt(0) ];
+}
+
+function getBackgroundCell(x,y)
+{
+	return Y.Node.getDOMNode(this.bkgd_table).firstChild.childNodes[y].childNodes[x];
 }
 
 function startTimer(id)
@@ -139,7 +145,7 @@ function stopTimer(id)
 	if (this.timer[id])
 	{
 		this.timer[id].cancel();
-		this.timer[id] = null;
+		delete this.timer[id];
 	}
 }
 
@@ -152,30 +158,51 @@ function renderBackground()
 		this.bkgd_table.destroy();
 	}
 
-	var bg_range = getBackgroundRange.call(this);
+	var bg_range = getBackgroundRange.call(this),
+		c        = String.fromCharCode(bg_range[0]);
 	container.set('innerHTML',
-		'<table class="background"><tr><td>' + String.fromCharCode(bg_range[0]) + '</td></tr></table>');
+		'<table class="background"><tr><td>' + c + '</td></tr></table>');
 
 	var table = container.one('table'),
 		w     = Math.ceil(container.totalWidth() / table.totalWidth()),
 		h     = Math.ceil(this.get('height') / table.totalHeight());
 
+	var row = '<tr>';
+	for (var x=0; x<w; x++)
+	{
+		row += '<td>&nbsp;</td>';
+	}
+	row += '</tr>';
+
 	var s = '';
 	for (var y=0; y<h; y++)
 	{
-		s += '<tr>';
-		for (var x=0; x<w; x++)
-		{
-			s += '<td>' + String.fromCharCode(rnd(bg_range[0], bg_range[1])) + '</td>';
-		}
-		s += '</tr>';
+		s += row;
 	}
+
+	// force column widths with row outside bounds (&nbsp; forces row heights)
+
+	s += '<tr>';
+	for (var x=0; x<w; x++)
+	{
+		s += '<td>' + c + '</td>';
+	}
+	s += '</tr>';
 
 	table.set('innerHTML', s);
 
 	this.bkgd_table = table;
 	this.row_count  = h;
 	this.col_count  = w;
+
+	this.bkgd_active = 0;
+	this.bkgd_col    = [];
+	for (var i=0; i<w; i++)
+	{
+		this.bkgd_col.push({ active: false });
+	}
+
+	startTimer.call(this, 'bkgd');
 
 	this.spin_count  = Math.floor(w * this.get('spinFraction'));
 	this.spin_active = 0;
@@ -188,8 +215,82 @@ function renderBackground()
 	startTimer.call(this, 'spin');
 }
 
+function initBackgroundColumn(x)
+{
+	var col    = this.bkgd_col[x];
+	col.active = true;
+	col.y      = Math.random() < 0.5 ? rnd(0, this.row_count - bkgd_bottom_offset) : 0;
+
+	if (Math.random() < 0.5)
+	{
+		col.y_max = col.y + rnd(bkgd_bottom_offset, this.row_count - col.y - 1)
+	}
+	else
+	{
+		col.y_max = this.row_count - 1;
+	}
+
+	if (Math.random() < 0.2)
+	{
+		col.c = '&nbsp;';
+	}
+	else
+	{
+		var bg_range = getBackgroundRange.call(this);
+		col.c        = String.fromCharCode(rnd(bg_range[0], bg_range[1]+1));
+	}
+}
+
+function updateBackground()
+{
+	// increment all active columns
+
+	var count    = this.col_count,
+		bg_range = getBackgroundRange.call(this);
+	for (var i=0; i<count; i++)
+	{
+		var col = this.bkgd_col[i];
+		if (col.active && col.y >= col.y_max)
+		{
+			col.active = false;
+			this.bkgd_active--;
+		}
+		else
+		{
+			if (col.c != '&nbsp;')
+			{
+				col.c = String.fromCharCode(rnd(bg_range[0], bg_range[1]+1));
+			}
+			col.y++;
+		}
+	}
+
+	// activate another column
+
+	if (this.bkgd_active < this.col_count)
+	{
+		var safety = 0;
+		do
+		{
+			var i = rnd(0, this.col_count);
+			safety++;
+		}
+			while (this.bkgd_col[i].active && safety < this.col_count);
+
+		if (!this.bkgd_col[i].active)
+		{
+			initBackgroundColumn.call(this, i);
+			this.bkgd_active++;
+		}
+	}
+
+	update.call(this);
+}
+
 function updateSpin()
 {
+	// activate another spinner
+
 	if (this.spin_active < this.spin_count && rnd(0,100) === 0)
 	{
 		var safety = 0;
@@ -202,17 +303,21 @@ function updateSpin()
 
 		if (!this.spin[i].active)
 		{
+			var x = rnd(0, this.col_count),
+				y = rnd(0, this.row_count);
+
 			this.spin[i] =
 			{
 				active:  true,
 				counter: rnd(min_spin_count, max_spin_count),
-				x:       rnd(0, this.col_count),
-				y:       rnd(0, this.row_count)
+				cell:    getBackgroundCell.call(this, x, y)
 			};
 
 			this.spin_active++;
 		}
 	}
+
+	// increment all active spinners
 
 	var count    = this.spin_count,
 		bg_range = getBackgroundRange.call(this);
@@ -222,11 +327,12 @@ function updateSpin()
 		if (spin.active && spin.counter <= 0)
 		{
 			spin.active = false;
+			spin.cell   = null;
 			this.spin_active--;
 		}
 		else if (spin.active)
 		{
-			spin.c = String.fromCharCode(rnd(bg_range[0], bg_range[1]));
+			spin.c = String.fromCharCode(rnd(bg_range[0], bg_range[1]+1));
 			spin.counter--;
 		}
 	}
@@ -243,41 +349,62 @@ function update()
 	}
 	this.bkgd_on = [];
 
+	var count = this.col_count;
+	for (var i=0; i<count; i++)
+	{
+		var col = this.bkgd_col[i];
+		if (col.active)
+		{
+			var cell = getBackgroundCell.call(this, i, col.y);
+			Y.DOM.addClass(cell, 'on');
+			this.bkgd_on.push(cell);
+			cell.innerHTML = col.c;
+		}
+	}
+
 	var count = this.spin_count;
 	for (var i=0; i<count; i++)
 	{
 		var spin = this.spin[i];
 		if (spin.active)
 		{
-			var cell = Y.Node.getDOMNode(this.bkgd_table).firstChild.childNodes[spin.y].childNodes[spin.x];
-			Y.DOM.addClass(cell, 'on');
-			this.bkgd_on.push(cell);
-			cell.innerHTML = spin.c;
+			Y.DOM.addClass(spin.cell, 'on');
+			this.bkgd_on.push(spin.cell);
+			spin.cell.innerHTML = spin.c;
 		}
 	}
+}
+
+function resize()
+{
+	this.set('width', Y.DOM.winWidth());
+	this.set('height', Y.DOM.winHeight());
 }
 
 Y.extend(MatrixCredits, Y.Widget,
 {
 	initializer: function(config)
 	{
+		this.on('bkgd', updateBackground);
 		this.on('spin', updateSpin);
 	},
 
-	renderUI: function()
+	destructor: function()
 	{
+		stopTimer.call(this, 'bkgd');
+		stopTimer.call(this, 'spin');
 	},
 
 	bindUI: function()
 	{
 		if (this.get('boundingBox').ancestor() == Y.one('body'))
 		{
+			resize.call(this);
+			Y.one(Y.config.win).on('resize', resize, this);
 		}
-		else
-		{
-			this.on('widthChange', renderBackground);
-			this.on('heightChange', renderBackground);
-		}
+
+		this.on('widthChange', renderBackground);
+		this.on('heightChange', renderBackground);
 	},
 
 	syncUI: function()
@@ -289,4 +416,4 @@ Y.extend(MatrixCredits, Y.Widget,
 Y.MatrixCredits = MatrixCredits;
 
 
-}, '@VERSION@' ,{requires:['widget','gallery-dimensions'], skinnable:true});
+}, '@VERSION@' ,{requires:['widget','gallery-dimensions','node-screen'], skinnable:true});
