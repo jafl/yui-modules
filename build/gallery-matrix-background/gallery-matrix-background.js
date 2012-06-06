@@ -67,19 +67,17 @@ MatrixBackground.ATTRS =
 
 	/**
 	 * If you do not have a monospace font for the charRange, set this to
-	 * the widest character in the range.
+	 * `true` to computer the widest character in the range.  Note that
+	 * this can take a long time if you have a large charRange!
 	 *
-	 * @attribute widestChar
-	 * @type {String}
-	 * @default null
+	 * @attribute computeWidestChar
+	 * @type {Boolean}
+	 * @default false
 	 */
-	widestChar:
+	computeWidestChar:
 	{
-		value: null,
-		validator: function(value)
-		{
-			return value === null || (Y.Lang.isString(value) && value.length == 1);
-		}
+		value:     false,
+		validator: Y.Lang.isBoolean
 	},
 
 	/**
@@ -154,13 +152,33 @@ function renderTable()
 	}
 
 	var c_range = getCharacterRange.call(this),
-		c       = this.get('widestChar') || String.fromCharCode(c_range[0]);
+		c       = String.fromCharCode(c_range[0]);
 	this.container.set('innerHTML',
 		'<table><tr><td>' + c + '</td></tr></table>');
 
-	var table = this.container.one('table'),
-		w     = Math.ceil(this.container.totalWidth() / table.totalWidth()),
-		h     = Math.ceil(this.container.totalHeight() / table.totalHeight());
+	var table = this.container.one('table');
+	if (this.get('computeWidestChar'))
+	{
+		var c_max = c_range[0],
+			w_max = table.totalWidth(),
+			c_end = c_range[1],
+			cell  = Y.Node.getDOMNode(this.container).getElementsByTagName('td')[0];
+		for (c=c_max+1; c<=c_end; c++)
+		{
+			cell.innerHTML = String.fromCharCode(c);
+			var w          = table.totalWidth();
+			if (w > w_max)
+			{
+				w_max = w;
+				c_max = c;
+			}
+		}
+
+		cell.innerHTML = c = String.fromCharCode(c_max);
+	}
+
+	var w = Math.ceil(this.container.totalWidth() / table.totalWidth()),
+		h = Math.ceil(this.container.totalHeight() / table.totalHeight());
 
 	var row = '<tr>';
 	for (var x=0; x<w; x++)
