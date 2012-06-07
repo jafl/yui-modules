@@ -52,6 +52,7 @@ YUI({
 
 	var node = Y.one('#matrix');
 	node.plug(Y.Plugin.MatrixBackground);
+	node.matrix.set('monospace', !!Y.UA.ie);
 
 	Y.on('click', function()
 	{
@@ -67,7 +68,7 @@ YUI({
 
 	Y.on('click', function()
 	{
-		node.matrix.set('monospace', false);
+		node.matrix.set('monospace', !!Y.UA.ie);
 		node.matrix.set('computeWidestChar', false);
 		node.matrix.set('charRange', ['\u30A1', '\u30FA']);
 	},

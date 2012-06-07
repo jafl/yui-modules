@@ -40,7 +40,8 @@ YUI({
 }).use('gallery-matrix-background', function(Y) {
 "use strict";
 
-	Y.one('body').plug(Y.Plugin.MatrixBackground);
+	var node = Y.one('body');
+	node.plug(Y.Plugin.MatrixBackground, { monospace: !!Y.UA.ie });
 });
 </script>
 
