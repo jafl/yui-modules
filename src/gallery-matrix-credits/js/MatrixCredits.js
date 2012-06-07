@@ -19,8 +19,7 @@
  */
 function MatrixCredits(config)
 {
-	this.timer   = {};
-	this.bkgd_on = [];
+	this.timer = {};
 
 	MatrixCredits.superclass.constructor.call(this, config);
 }
@@ -61,11 +60,11 @@ MatrixCredits.ATTRS =
 	/**
 	 * Overridden by `pause` values in `textSequence`.
 	 *
-	 * @attribute framePause
+	 * @attribute pagePause
 	 * @type {Number}
 	 * @default 2000
 	 */
-	framePause:
+	pagePause:
 	{
 		value:     2000,
 		validator: Y.Lang.isNumber
@@ -141,6 +140,22 @@ MatrixCredits.ATTRS =
 	},
 
 	/**
+	 * @attribute background
+	 * @type {Plugin.Base}
+	 * @default {MatrixBackground}
+	 * @writeonce
+	 */
+	background:
+	{
+		value:     Y.Plugin.MatrixBackground,
+		writeOnce: true,
+		validator: function(value)
+		{
+			return (value === null || (value instanceof Y.Plugin.Base));
+		}
+	},
+
+	/**
 	 * Configuration for Y.MatrixBackground
 	 *
 	 * @attribute backgroundConfig
@@ -155,101 +170,206 @@ MatrixCredits.ATTRS =
 
 var interval =
 	{
-		cursor: 30
-		// background's spin interval is used for text
+		cursor: 30,
+		spin:   10	// if possible, background's spin interval is used instead
 	};
 
 var rnd        = Y.Plugin.MatrixBackground.rnd;
 var startTimer = Y.Plugin.MatrixBackground.startTimer;
 var stopTimer  = Y.Plugin.MatrixBackground.stopTimer;
 
-function scheduleNextFrame()
+var getCharacterRange = Y.Plugin.MatrixBackground.getCharacterRange;
+
+function scheduleNextPage()
 {
-	var frames = this.get('textSequence');
-	var frame  = frames[ this.frame_index ];
-	var key    = (this.frame_index == frames.length - 1) ? 'restartDelay' : 'framePause';
-	Y.later(frame.pause || this.get(key), this, nextFrame);
+	var pages = this.get('textSequence');
+	var page  = pages[ this.page_index ];
+	var key   = (this.page_index == pages.length - 1) ? 'restartDelay' : 'pagePause';
+	Y.later(page.pause || this.get(key), this, nextPage);
 }
 
-function nextFrame()
+function nextPage()
 {
-	var frames = this.get('textSequence');
+	var pages = this.get('textSequence');
 
-	this.frame_index++;
-	if (this.frame_index >= frames.length)
+	this.page_index++;
+	if (this.page_index >= pages.length)
 	{
-		this.frame_index = 0;
+		this.page_index = 0;
 	}
 
-	var frame = frames[ this.frame_index ];
+	var page = pages[ this.page_index ];
 
-	var intro = Y.reduce(frame.intro || [], '', function(s, line)
+	var intro = Y.reduce(page.intro || [], '', function(s, line)
 	{
 		return s + '<p>' + (line || '&nbsp;') + '</p>';
 	});
 
-	var lines = Y.reduce(frame.lines || [], '', function(s, line)
+	var lines = Y.reduce(page.lines || [], '', function(s, line)
 	{
-		s += '<p><span>x';
+		s += '<p><span>';
 		for (var i=0; i<line.length; i++)
 		{
 			s += '&nbsp;';
 		}
-		return s + 'x</span></p>';
+		return s + '</span></p>';
 	});
 
 	this.frame.setContent(intro + lines);
 	this.frame_top = Math.floor((this.get('height') - this.frame.totalHeight())/2);
 	this.frame.setStyle('top', this.frame_top + 'px')
 
-	if (frame.lines)
+	if (page.lines)
 	{
-		this.frame_lines      = this.frame.all('span');
-		this.frame_line_index = { row: 0, col: -1 };
+		this.frame_lines = this.frame.all('span');
+		this.cursor_pt   = { row: -1, col: -1 };
 
-		this.cursor.removeClass('hidden');
 		this.cursor_top = this.frame_top - this.frame.totalHeight();
-		startTimer.call(this, 'cursor');
-		this.spin_handle = this.bkgd.on('spin', updateSpin, this);
+		startCursor.call(this);
+		startSpin.call(this);
 	}
 	else
 	{
-		scheduleNextFrame.call(this);
+		scheduleNextPage.call(this);
 	}
+}
+
+function startCursor()
+{
+	this.cursor.removeClass('hidden');
+	startTimer.call(this, 'cursor');
+
+	var lines = this.get('textSequence')[ this.page_index ].lines;
+	do
+		{
+		this.cursor_pt.row++;
+		}
+		while (lines[ this.cursor_pt.row ] == '&nbsp;');
+
+	this.cursor_pt.col = -1;
+	this.spin_index    = 0;
+	this.spin_count    = 0;
+}
+
+function stopCursor()
+{
+	this.cursor.addClass('hidden');
+	this.cursor.setStyles({ top: 0, left: 0 });
+	stopTimer.call(this, 'cursor');
 }
 
 function updateCursor()
 {
-	this.frame_line_index.col++;
+	this.cursor_pt.col++;
 	if (parseInt(this.cursor.getStyle('left'), 10) > this.get('width'))
 	{
-		this.frame_line_index.col = 0;
-		this.frame_line_index.row++;
-		if (this.frame_line_index.row >= this.frame_lines.size())
-		{
-			this.cursor.addClass('hidden');
-			this.cursor.setStyles({ top: 0, left: 0 });
-			stopTimer.call(this, 'cursor');
-			scheduleNextFrame.call(this);
-			return;
-		}
+		stopCursor.call(this);
+		checkLineFinished.call(this);
+		return;
 	}
 
+	var left       = this.cursor_width * this.cursor_pt.col,
+		frame_line = this.frame_lines.item(this.cursor_pt.row);
 	this.cursor.setStyles(
 	{
-		top:  (this.cursor_top + this.frame_lines.item(this.frame_line_index.row).get('offsetTop'))+'px',
-		left: (this.cursor_width * this.frame_line_index.col) + 'px'
+		top:  (this.cursor_top + frame_line.get('offsetTop'))+'px',
+		left: left + 'px'
 	});
 
-	
+	if (this.spin_index === 0 && left > frame_line.get('offsetLeft'))
+	{
+		this.spin_index++;
+		this.spin_text = frame_line.get('innerHTML').replace(/&nbsp;/g, ' ').split('');
+		this.end_text  = this.get('textSequence')[ this.page_index ].lines[ this.cursor_pt.row ].split('');
+	}
+	else if (0 < this.spin_index && this.spin_index < this.spin_text.length)
+	{
+		this.spin_index++;
+	}
+}
+
+function startSpin()
+{
+	if (this.bkgd)
+	{
+		this.spin_handle = this.bkgd.on('spin', updateSpin, this);
+	}
+	else
+	{
+		startTimer.call(this, 'spin');
+	}
+}
+
+function stopSpin()
+{
+	if (this.spin_handle)
+	{
+		this.spin_handle.detach();
+		this.spin_handle = null;
+	}
+	else
+	{
+		stopTimer.call(this, 'spin');
+	}
 }
 
 function updateSpin()
 {
 	if (this.timer.cursor && this.get('cursor') == 'char')
 	{
-		var c_range = Y.Plugin.MatrixBackground.getCharacterRange.call(this.bkgd);
+		var c_range = getCharacterRange.call(this.bkgd || this);
 		this.cursor.set('innerHTML', String.fromCharCode(rnd(c_range[0], c_range[1]+1)));
+	}
+
+	if (this.spin_index > 0)
+	{
+		var frame_line = this.frame_lines.item(this.cursor_pt.row),
+			c_range    = getCharacterRange.call(this),
+			done       = 0;
+
+		for (var i=0; i<this.spin_index; i++)
+		{
+			if (this.spin_text[i] === this.end_text[i])
+			{
+				done++;
+				continue;
+			}
+
+			this.spin_text[i] = String.fromCharCode(rnd(c_range[0], c_range[1]+1));
+		}
+
+		this.spin_count++;
+		if (this.spin_count > this.get('maxPhaseCount'))
+		{
+			this.spin_text = this.end_text.slice(0);
+			done           = this.spin_text.length;
+		}
+
+		frame_line.set('innerHTML', this.spin_text.join('').replace(/\s/g, '&nbsp;'));
+
+		if (done >= this.spin_text.length)
+		{
+			stopSpin.call(this);
+			checkLineFinished.call(this);
+		}
+	}
+}
+
+function checkLineFinished()
+{
+	if (this.timer.cursor || this.spin_handle || this.timer.spin)
+	{
+		return;
+	}
+
+	if (this.cursor_pt.row >= this.frame_lines.size() - 1)
+	{
+		scheduleNextPage.call(this);
+	}
+	else
+	{
+		startCursor.call(this);
+		startSpin.call(this);
 	}
 }
 
@@ -278,13 +398,8 @@ Y.extend(MatrixCredits, Y.Widget,
 {
 	initializer: function(config)
 	{
-		if (this.get('boundingBox').ancestor() == Y.one('body'))
-		{
-			resize.call(this);
-			Y.on('windowresize', resize, this);
-		}
-
 		this.on('cursor', updateCursor);
+		this.on('spin', updateSpin);
 	},
 
 	destructor: function()
@@ -292,13 +407,28 @@ Y.extend(MatrixCredits, Y.Widget,
 		stopTimer.call(this, 'cursor');
 	},
 
+	bindUI: function()
+	{
+		// now widget has been inserted into the DOM
+
+		if (this.get('boundingBox').ancestor() == Y.one('body'))
+		{
+			resize.call(this);
+			Y.on('windowresize', resize, this);
+		}
+	},
+
 	syncUI: function()
 	{
 		// now the size has been applied to bounding box
 
-		var container = this.get('boundingBox');
-		container.plug(Y.Plugin.MatrixBackground, this.get('backgroundConfig'));
-		this.bkgd = container.matrix;
+		var bkgd = this.get('background');
+		if (bkgd)
+		{
+			var container = this.get('boundingBox');
+			container.plug(bkgd, this.get('backgroundConfig'));
+			this.bkgd = container.matrix;
+		}
 
 		this.frame = Y.Node.create('<div class="frame"></div>');
 		this.get('contentBox').append(this.frame);
@@ -308,8 +438,8 @@ Y.extend(MatrixCredits, Y.Widget,
 		updateCursorAppearance.call(this);
 		this.after('cursorChange', updateCursorAppearance);
 
-		this.frame_index = -1;	// incremented by nextFrame
-		Y.later(this.get('introDelay'), this, nextFrame);
+		this.page_index = -1;	// incremented by nextPage
+		Y.later(this.get('introDelay'), this, nextPage);
 	}
 });
 
