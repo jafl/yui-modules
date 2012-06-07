@@ -29,7 +29,25 @@ YUI({
 }).use('gallery-matrix-credits', function(Y) {
 "use strict";
 
-	var mc = new Y.MatrixCredits();
+	var mc = new Y.MatrixCredits(
+	{
+		textSequence:
+		[
+			{
+				lines: [ 'What is the Matrix?' ]
+			},
+			{
+				lines: [ 'You cannot be told', '', 'You have to see for yourself...' ]
+			},
+			{
+				lines: [ 'Signal lock achieved', '', 'Hold on to your chair!' ],
+				pause: 10000
+			},
+			{
+				lines: [ 'Just kidding!' ]
+			}
+		]
+	});
 	mc.render('body');
 });
 </script>

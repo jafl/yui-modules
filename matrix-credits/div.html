@@ -40,7 +40,57 @@ YUI({
 }).use('gallery-matrix-credits', function(Y) {
 "use strict";
 
-	var mc = new Y.MatrixCredits({ width: 400, height: 395 });
+	var mc = new Y.MatrixCredits(
+	{
+		introDelay: 0,
+		width:  400,
+		height: 395,
+//		cursor: 'char',
+		textSequence:
+		[
+			{ lines: [ 'KEANU REEVES' ] },
+			{ lines: [ 'LAURENCE FISHBURNE' ] },
+			{ lines: [ '"THE MATRIX"' ] },
+			{ lines: [ 'CARRIE-ANNE MOSS' ] },
+			{ lines: [ 'HUGO WEAVING' ] },
+			{
+				intro: [ 'and' ],
+				lines: [ 'JOE PANTOLIANO' ]
+			},
+			{
+				intro: [ 'Written and Directed by' ],
+				lines: [ 'THE WACHOWSKI BROTHERS' ]
+			},
+			{
+				intro: [ 'Produced by' ],
+				lines: [ 'JOEL SILVER' ]
+			},
+			{
+				intro: [ 'Executive Producers' ],
+				lines: [ 'BARRIE OSBORNE', 'ANDREW MASON', 'ANDY WACHOWSKI', 'LARRY WACHOWSKI', 'ERWIN STOFF', 'and BRUCE BERMAN' ]
+			},
+			{
+				intro: [ 'Co-Producer' ],
+				lines: [ 'DAN CRACCHIOLO' ]
+			},
+			{
+				intro: [ 'Director of Photography' ],
+				lines: [ 'BILL POPE' ]
+			},
+			{
+				intro: [ 'Production Designer' ],
+				lines: [ 'OWEN PATERSON' ]
+			},
+			{
+				intro: [ 'Editor' ],
+				lines: [ 'ZACH STAENBERG' ]
+			},
+			{
+				intro: [ 'Music by' ],
+				lines: [ 'DON DAVIS' ]
+			},
+		]
+	});
 	mc.render('#matrix');
 });
 </script>
