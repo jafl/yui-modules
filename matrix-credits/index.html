@@ -17,10 +17,21 @@
 	<link rel="stylesheet" type="text/css" href="assets/gallery-matrix-background.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-matrix-credits.css" />
 
+	<style type="text/css">
+	</style>
+
 	<meta name="MSSmartTagsPreventParsing" content="TRUE" />
 	<meta http-equiv="X-UI-Compatible" content="IE=edge,chrome=1" />
 </head>
 <body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/matrix-credits">YUI 3 Matrix Credits</a> Example</h1>
+
+<p><a href="full.html">Show me an example covering the whole page</a></p>
+<p><a href="../yuidoc/modules/gallery-matrix-credits.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<div id="matrix"></div>
 
 <script type="text/javascript">
 YUI({
@@ -31,24 +42,55 @@ YUI({
 
 	var mc = new Y.MatrixCredits(
 	{
+		width:     400,
+		height:    395,
+		charRange: [ 'A', 'Z' ],
 		textSequence:
 		[
+			{ lines: [ 'KEANU REEVES' ] },
+			{ lines: [ 'LAURENCE FISHBURNE' ] },
+			{ lines: [ '"THE MATRIX"' ] },
+			{ lines: [ 'CARRIE-ANNE MOSS' ] },
+			{ lines: [ 'HUGO WEAVING' ] },
 			{
-				lines: [ 'What is the Matrix?' ]
+				intro: [ 'and' ],
+				lines: [ 'JOE PANTOLIANO' ]
 			},
 			{
-				lines: [ 'You cannot be told', '', 'You have to see for yourself...' ]
+				intro: [ 'Written and Directed by' ],
+				lines: [ 'THE WACHOWSKI BROTHERS' ]
 			},
 			{
-				lines: [ 'Signal lock achieved', '', 'Hold on to your chair!' ],
-				pause: 10000
+				intro: [ 'Produced by' ],
+				lines: [ 'JOEL SILVER' ]
 			},
 			{
-				lines: [ 'Just kidding!' ]
-			}
+				intro: [ 'Executive Producers' ],
+				lines: [ 'BARRIE OSBORNE', 'ANDREW MASON', 'ANDY WACHOWSKI', 'LARRY WACHOWSKI', 'ERWIN STOFF', 'and BRUCE BERMAN' ]
+			},
+			{
+				intro: [ 'Co-Producer' ],
+				lines: [ 'DAN CRACCHIOLO' ]
+			},
+			{
+				intro: [ 'Director of Photography' ],
+				lines: [ 'BILL POPE' ]
+			},
+			{
+				intro: [ 'Production Designer' ],
+				lines: [ 'OWEN PATERSON' ]
+			},
+			{
+				intro: [ 'Editor' ],
+				lines: [ 'ZACH STAENBERG' ]
+			},
+			{
+				intro: [ 'Music by' ],
+				lines: [ 'DON DAVIS' ]
+			},
 		]
 	});
-	mc.render('body');
+	mc.render('#matrix');
 });
 </script>
 
