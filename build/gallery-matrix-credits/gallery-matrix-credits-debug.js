@@ -39,6 +39,7 @@ MatrixCredits.ATTRS =
 	 *
 	 * @attribute textSequence
 	 * @type {Array}
+	 * @required
 	 */
 	textSequence:
 	{
