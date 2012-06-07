@@ -202,7 +202,7 @@ function renderTable()
 	}
 	s += '</tr>';
 
-	table.set('innerHTML', s);
+	table.setContent('<tbody>' + s + '</tbody>');
 
 	this.table     = table;
 	this.row_count = h;
