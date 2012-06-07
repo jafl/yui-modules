@@ -459,19 +459,17 @@ MatrixBackground.ATTRS =
 
 	&#x2F;**
 	 * If you do not have a monospace font for the charRange, set this to
-	 * the widest character in the range.
+	 * &#x60;true&#x60; to computer the widest character in the range.  Note that
+	 * this can take a long time if you have a large charRange!
 	 *
-	 * @attribute widestChar
-	 * @type {String}
-	 * @default null
+	 * @attribute computeWidestChar
+	 * @type {Boolean}
+	 * @default false
 	 *&#x2F;
-	widestChar:
+	computeWidestChar:
 	{
-		value: null,
-		validator: function(value)
-		{
-			return value === null || (Y.Lang.isString(value) &amp;&amp; value.length == 1);
-		}
+		value:     false,
+		validator: Y.Lang.isBoolean
 	},
 
 	&#x2F;**
@@ -546,13 +544,33 @@ function renderTable()
 	}
 
 	var c_range = getCharacterRange.call(this),
-		c       = this.get(&#x27;widestChar&#x27;) || String.fromCharCode(c_range[0]);
+		c       = String.fromCharCode(c_range[0]);
 	this.container.set(&#x27;innerHTML&#x27;,
 		&#x27;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&#x27; + c + &#x27;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;table&gt;&#x27;);
 
-	var table = this.container.one(&#x27;table&#x27;),
-		w     = Math.ceil(this.container.totalWidth() &#x2F; table.totalWidth()),
-		h     = Math.ceil(this.container.totalHeight() &#x2F; table.totalHeight());
+	var table = this.container.one(&#x27;table&#x27;);
+	if (this.get(&#x27;computeWidestChar&#x27;))
+	{
+		var c_max = c_range[0],
+			w_max = table.totalWidth(),
+			c_end = c_range[1],
+			cell  = Y.Node.getDOMNode(this.container).getElementsByTagName(&#x27;td&#x27;)[0];
+		for (c=c_max+1; c&lt;=c_end; c++)
+		{
+			cell.innerHTML = String.fromCharCode(c);
+			var w          = table.totalWidth();
+			if (w &gt; w_max)
+			{
+				w_max = w;
+				c_max = c;
+			}
+		}
+
+		cell.innerHTML = c = String.fromCharCode(c_max);
+	}
+
+	var w = Math.ceil(this.container.totalWidth() &#x2F; table.totalWidth()),
+		h = Math.ceil(this.container.totalHeight() &#x2F; table.totalHeight());
 
 	var row = &#x27;&lt;tr&gt;&#x27;;
 	for (var x=0; x&lt;w; x++)
@@ -782,14 +800,20 @@ function resize()
 {
 	if (this.is_body)
 	{
-		this.container.setStyle(&#x27;width&#x27;, Y.DOM.winWidth() + &#x27;px&#x27;);
-		this.container.setStyle(&#x27;height&#x27;, Y.DOM.winHeight() + &#x27;px&#x27;);
+		this.container.setStyles(
+		{
+			width:  Y.DOM.winWidth() + &#x27;px&#x27;,
+			height: Y.DOM.winHeight() + &#x27;px&#x27;
+		});
 	}
 	else
 	{
 		var host = this.get(&#x27;host&#x27;);
-		this.container.setStyle(&#x27;width&#x27;, host.getStyle(&#x27;width&#x27;));
-		this.container.setStyle(&#x27;height&#x27;, host.getStyle(&#x27;height&#x27;));
+		this.container.setStyles(
+		{
+			width:  host.getStyle(&#x27;width&#x27;),
+			height: host.getStyle(&#x27;height&#x27;)
+		});
 	}
 
 	renderTable.call(this);
@@ -800,7 +824,7 @@ Y.extend(MatrixBackground, Y.Plugin.Base,
 	initializer: function(config)
 	{
 		var host = this.get(&#x27;host&#x27;);
-		host.removeClass(&#x27;yui3-widgetbkgd-loading&#x27;);
+		host.removeClass(&#x27;yui3-matrixbkgd-loading&#x27;);
 
 		this.container = Y.Node.create(&#x27;&lt;div class=&quot;yui3-matrixbkgd&quot;&gt;&lt;&#x2F;div&gt;&#x27;);
 		host.append(this.container);
@@ -863,7 +887,9 @@ Y.mix(Y.Plugin.MatrixBackground,
 {
 	rnd:        rnd,
 	startTimer: startTimer,
-	stopTimer:  stopTimer
+	stopTimer:  stopTimer,
+
+	getCharacterRange: getCharacterRange
 });
 
     </pre>

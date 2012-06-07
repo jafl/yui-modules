@@ -413,8 +413,7 @@
  *&#x2F;
 function MatrixCredits(config)
 {
-	this.timer   = {};
-	this.bkgd_on = [];
+	this.timer = {};
 
 	MatrixCredits.superclass.constructor.call(this, config);
 }
@@ -424,9 +423,65 @@ MatrixCredits.NAME = &#x27;matrixcredits&#x27;;
 MatrixCredits.ATTRS =
 {
 	&#x2F;**
+	 * The sequence of messages to display.  Each item defines &#x60;intro&#x60;, a
+	 * list of strings to display immediately, &#x60;lines&#x60;, a list of strings
+	 * to phase in one at a time, and (optional) &#x60;pause&#x60;, the number of
+	 * milliseconds to wait before continuing to the next item in the
+	 * sequence.
+	 *
+	 * @attribute textSequence
+	 * @type {Array}
+	 *&#x2F;
+	textSequence:
+	{
+		value:     [],
+		validator: Y.Lang.isArray
+	},
+
+	&#x2F;**
+	 * Milliseconds to wait before starting the text sequence.
+	 *
+	 * @attribute introDelay
+	 * @type {Number}
+	 * @default 5000
+	 *&#x2F;
+	introDelay:
+	{
+		value:     5000,
+		validator: Y.Lang.isNumber
+	},
+
+	&#x2F;**
+	 * Overridden by &#x60;pause&#x60; values in &#x60;textSequence&#x60;.
+	 *
+	 * @attribute pagePause
+	 * @type {Number}
+	 * @default 2000
+	 *&#x2F;
+	pagePause:
+	{
+		value:     2000,
+		validator: Y.Lang.isNumber
+	},
+
+	&#x2F;**
+	 * Milliseconds to wait before restarting the text sequence.
+	 * Overridden by &#x60;pause&#x60; value of last item in &#x60;textSequence&#x60;.
+	 *
+	 * @attribute restartDelay
+	 * @type {Number}
+	 * @default 5000
+	 *&#x2F;
+	restartDelay:
+	{
+		value:     5000,
+		validator: Y.Lang.isNumber
+	},
+
+	&#x2F;**
 	 * &lt;dl&gt;
 	 * &lt;dt&gt;none&lt;&#x2F;dt&gt;&lt;dd&gt;Each line is drawn all at once and then begins to phase in.&lt;&#x2F;dd&gt;
-	 * &lt;dt&gt;block&lt;&#x2F;dt&gt;&lt;dd&gt;The text appears as a block cursor scans across the container.&lt;&#x2F;dd&gt;
+	 * &lt;dt&gt;block&lt;&#x2F;dt&gt;&lt;dd&gt;The text appears as a block cursor (\u2588) scans across the container.&lt;&#x2F;dd&gt;
 	 * &lt;dt&gt;char&lt;&#x2F;dt&gt;&lt;dd&gt;The text appears as a randomly changing character scans across the container.&lt;&#x2F;dd&gt;
 	 * &lt;&#x2F;dl&gt;
 	 *
@@ -456,18 +511,276 @@ MatrixCredits.ATTRS =
 	{
 		value:     20,
 		validator: Y.Lang.isNumber
+	},
+
+	&#x2F;**
+	 * The range of Unicode characters to use for spinning characters.  For
+	 * most interesting results, all the characters in textSequence should
+	 * be in this range.
+	 * 
+	 * @attribute charRange
+	 * @type {Array}
+	 * @default [&#x27;!&#x27;, &#x27;~&#x27;]
+	 *&#x2F;
+	charRange:
+	{
+		value: [&#x27;!&#x27;, &#x27;~&#x27;],
+		validator: function(value)
+		{
+			return (Y.Lang.isArray(value) &amp;&amp; value.length == 2 &amp;&amp;
+					value[0].length == 1 &amp;&amp; value[1].length == 1 &amp;&amp;
+					value[0] &lt; value[1]);
+		}
+	},
+
+	&#x2F;**
+	 * @attribute background
+	 * @type {Plugin.Base}
+	 * @default {MatrixBackground}
+	 * @writeonce
+	 *&#x2F;
+	background:
+	{
+		value:     Y.Plugin.MatrixBackground,
+		writeOnce: true,
+		validator: function(value)
+		{
+			return (value === null || (value instanceof Y.Plugin.Base));
+		}
+	},
+
+	&#x2F;**
+	 * Configuration for Y.MatrixBackground
+	 *
+	 * @attribute backgroundConfig
+	 * @type {Object}
+	 * @writeonce
+	 *&#x2F;
+	backgroundConfig:
+	{
+		writeOnce: true
 	}
 };
 
 var interval =
 	{
-		cursor: 30
-		&#x2F;&#x2F; background&#x27;s spin interval is used for text
+		cursor: 30,
+		spin:   10	&#x2F;&#x2F; if possible, background&#x27;s spin interval is used instead
 	};
 
 var rnd        = Y.Plugin.MatrixBackground.rnd;
 var startTimer = Y.Plugin.MatrixBackground.startTimer;
 var stopTimer  = Y.Plugin.MatrixBackground.stopTimer;
+
+var getCharacterRange = Y.Plugin.MatrixBackground.getCharacterRange;
+
+function scheduleNextPage()
+{
+	var pages = this.get(&#x27;textSequence&#x27;);
+	var page  = pages[ this.page_index ];
+	var key   = (this.page_index == pages.length - 1) ? &#x27;restartDelay&#x27; : &#x27;pagePause&#x27;;
+	Y.later(page.pause || this.get(key), this, nextPage);
+}
+
+function nextPage()
+{
+	var pages = this.get(&#x27;textSequence&#x27;);
+
+	this.page_index++;
+	if (this.page_index &gt;= pages.length)
+	{
+		this.page_index = 0;
+	}
+
+	var page = pages[ this.page_index ];
+
+	var intro = Y.reduce(page.intro || [], &#x27;&#x27;, function(s, line)
+	{
+		return s + &#x27;&lt;p&gt;&#x27; + (line || &#x27;&amp;nbsp;&#x27;) + &#x27;&lt;&#x2F;p&gt;&#x27;;
+	});
+
+	var lines = Y.reduce(page.lines || [], &#x27;&#x27;, function(s, line)
+	{
+		s += &#x27;&lt;p&gt;&lt;span&gt;&#x27;;
+		for (var i=0; i&lt;line.length; i++)
+		{
+			s += &#x27;&amp;nbsp;&#x27;;
+		}
+		return s + &#x27;&lt;&#x2F;span&gt;&lt;&#x2F;p&gt;&#x27;;
+	});
+
+	this.frame.setContent(intro + lines);
+	this.frame_top = Math.floor((this.get(&#x27;height&#x27;) - this.frame.totalHeight())&#x2F;2);
+	this.frame.setStyle(&#x27;top&#x27;, this.frame_top + &#x27;px&#x27;)
+
+	if (page.lines)
+	{
+		this.frame_lines = this.frame.all(&#x27;span&#x27;);
+		this.cursor_pt   = { row: -1, col: -1 };
+
+		this.cursor_top = this.frame_top - this.frame.totalHeight();
+		startCursor.call(this);
+		startSpin.call(this);
+	}
+	else
+	{
+		scheduleNextPage.call(this);
+	}
+}
+
+function startCursor()
+{
+	this.cursor.removeClass(&#x27;hidden&#x27;);
+	startTimer.call(this, &#x27;cursor&#x27;);
+
+	var lines = this.get(&#x27;textSequence&#x27;)[ this.page_index ].lines;
+	do
+		{
+		this.cursor_pt.row++;
+		}
+		while (lines[ this.cursor_pt.row ] == &#x27;&amp;nbsp;&#x27;);
+
+	this.cursor_pt.col = -1;
+	this.spin_index    = 0;
+	this.spin_count    = 0;
+}
+
+function stopCursor()
+{
+	this.cursor.addClass(&#x27;hidden&#x27;);
+	this.cursor.setStyles({ top: 0, left: 0 });
+	stopTimer.call(this, &#x27;cursor&#x27;);
+}
+
+function updateCursor()
+{
+	this.cursor_pt.col++;
+	if (parseInt(this.cursor.getStyle(&#x27;left&#x27;), 10) &gt; this.get(&#x27;width&#x27;))
+	{
+		stopCursor.call(this);
+		checkLineFinished.call(this);
+		return;
+	}
+
+	var left       = this.cursor_width * this.cursor_pt.col,
+		frame_line = this.frame_lines.item(this.cursor_pt.row);
+	this.cursor.setStyles(
+	{
+		top:  (this.cursor_top + frame_line.get(&#x27;offsetTop&#x27;))+&#x27;px&#x27;,
+		left: left + &#x27;px&#x27;
+	});
+
+	if (this.spin_index === 0 &amp;&amp; left &gt; frame_line.get(&#x27;offsetLeft&#x27;))
+	{
+		this.spin_index++;
+		this.spin_text = frame_line.get(&#x27;innerHTML&#x27;).replace(&#x2F;&amp;nbsp;&#x2F;g, &#x27; &#x27;).split(&#x27;&#x27;);
+		this.end_text  = this.get(&#x27;textSequence&#x27;)[ this.page_index ].lines[ this.cursor_pt.row ].split(&#x27;&#x27;);
+	}
+	else if (0 &lt; this.spin_index &amp;&amp; this.spin_index &lt; this.spin_text.length)
+	{
+		this.spin_index++;
+	}
+}
+
+function startSpin()
+{
+	if (this.bkgd)
+	{
+		this.spin_handle = this.bkgd.on(&#x27;spin&#x27;, updateSpin, this);
+	}
+	else
+	{
+		startTimer.call(this, &#x27;spin&#x27;);
+	}
+}
+
+function stopSpin()
+{
+	if (this.spin_handle)
+	{
+		this.spin_handle.detach();
+		this.spin_handle = null;
+	}
+	else
+	{
+		stopTimer.call(this, &#x27;spin&#x27;);
+	}
+}
+
+function updateSpin()
+{
+	if (this.timer.cursor &amp;&amp; this.get(&#x27;cursor&#x27;) == &#x27;char&#x27;)
+	{
+		var c_range = getCharacterRange.call(this.bkgd || this);
+		this.cursor.set(&#x27;innerHTML&#x27;, String.fromCharCode(rnd(c_range[0], c_range[1]+1)));
+	}
+
+	if (this.spin_index &gt; 0)
+	{
+		var frame_line = this.frame_lines.item(this.cursor_pt.row),
+			c_range    = getCharacterRange.call(this),
+			done       = 0;
+
+		for (var i=0; i&lt;this.spin_index; i++)
+		{
+			if (this.spin_text[i] === this.end_text[i])
+			{
+				done++;
+				continue;
+			}
+
+			this.spin_text[i] = String.fromCharCode(rnd(c_range[0], c_range[1]+1));
+		}
+
+		this.spin_count++;
+		if (this.spin_count &gt; this.get(&#x27;maxPhaseCount&#x27;))
+		{
+			this.spin_text = this.end_text.slice(0);
+			done           = this.spin_text.length;
+		}
+
+		frame_line.set(&#x27;innerHTML&#x27;, this.spin_text.join(&#x27;&#x27;).replace(&#x2F;\s&#x2F;g, &#x27;&amp;nbsp;&#x27;));
+
+		if (done &gt;= this.spin_text.length)
+		{
+			stopSpin.call(this);
+			checkLineFinished.call(this);
+		}
+	}
+}
+
+function checkLineFinished()
+{
+	if (this.timer.cursor || this.spin_handle || this.timer.spin)
+	{
+		return;
+	}
+
+	if (this.cursor_pt.row &gt;= this.frame_lines.size() - 1)
+	{
+		scheduleNextPage.call(this);
+	}
+	else
+	{
+		startCursor.call(this);
+		startSpin.call(this);
+	}
+}
+
+function updateCursorAppearance()
+{
+	var type = this.get(&#x27;cursor&#x27;);
+	if (type == &#x27;block&#x27;)
+	{
+		this.cursor.set(&#x27;innerHTML&#x27;, &#x27;\u2588&#x27;);
+	}
+	else
+	{
+		this.cursor.set(&#x27;innerHTML&#x27;, &#x27;&amp;nbsp;&#x27;);
+	}
+
+	this.cursor_width = this.cursor.get(&#x27;offsetWidth&#x27;);
+}
 
 function resize()
 {
@@ -479,6 +792,8 @@ Y.extend(MatrixCredits, Y.Widget,
 {
 	initializer: function(config)
 	{
+		this.on(&#x27;cursor&#x27;, updateCursor);
+		this.on(&#x27;spin&#x27;, updateSpin);
 	},
 
 	destructor: function()
@@ -488,6 +803,8 @@ Y.extend(MatrixCredits, Y.Widget,
 
 	bindUI: function()
 	{
+		&#x2F;&#x2F; now widget has been inserted into the DOM
+
 		if (this.get(&#x27;boundingBox&#x27;).ancestor() == Y.one(&#x27;body&#x27;))
 		{
 			resize.call(this);
@@ -499,9 +816,24 @@ Y.extend(MatrixCredits, Y.Widget,
 	{
 		&#x2F;&#x2F; now the size has been applied to bounding box
 
-		var container = this.get(&#x27;boundingBox&#x27;);
-		container.plug(Y.Plugin.MatrixBackground);
-		this.bkgd = container.matrix;
+		var bkgd = this.get(&#x27;background&#x27;);
+		if (bkgd)
+		{
+			var container = this.get(&#x27;boundingBox&#x27;);
+			container.plug(bkgd, this.get(&#x27;backgroundConfig&#x27;));
+			this.bkgd = container.matrix;
+		}
+
+		this.frame = Y.Node.create(&#x27;&lt;div class=&quot;frame&quot;&gt;&lt;&#x2F;div&gt;&#x27;);
+		this.get(&#x27;contentBox&#x27;).append(this.frame);
+
+		this.cursor = Y.Node.create(&#x27;&lt;span class=&quot;cursor hidden&quot;&gt;&lt;&#x2F;span&gt;&#x27;);
+		this.get(&#x27;contentBox&#x27;).append(this.cursor);
+		updateCursorAppearance.call(this);
+		this.after(&#x27;cursorChange&#x27;, updateCursorAppearance);
+
+		this.page_index = -1;	&#x2F;&#x2F; incremented by nextPage
+		Y.later(this.get(&#x27;introDelay&#x27;), this, nextPage);
 	}
 });
 
