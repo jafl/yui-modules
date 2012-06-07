@@ -408,14 +408,20 @@ function resize()
 {
 	if (this.is_body)
 	{
-		this.container.setStyle('width', Y.DOM.winWidth() + 'px');
-		this.container.setStyle('height', Y.DOM.winHeight() + 'px');
+		this.container.setStyles(
+		{
+			width:  Y.DOM.winWidth() + 'px',
+			height: Y.DOM.winHeight() + 'px'
+		});
 	}
 	else
 	{
 		var host = this.get('host');
-		this.container.setStyle('width', host.getStyle('width'));
-		this.container.setStyle('height', host.getStyle('height'));
+		this.container.setStyles(
+		{
+			width:  host.getStyle('width'),
+			height: host.getStyle('height')
+		});
 	}
 
 	renderTable.call(this);
@@ -426,7 +432,7 @@ Y.extend(MatrixBackground, Y.Plugin.Base,
 	initializer: function(config)
 	{
 		var host = this.get('host');
-		host.removeClass('yui3-widgetbkgd-loading');
+		host.removeClass('yui3-matrixbkgd-loading');
 
 		this.container = Y.Node.create('<div class="yui3-matrixbkgd"></div>');
 		host.append(this.container);
@@ -489,7 +495,9 @@ Y.mix(Y.Plugin.MatrixBackground,
 {
 	rnd:        rnd,
 	startTimer: startTimer,
-	stopTimer:  stopTimer
+	stopTimer:  stopTimer,
+
+	getCharacterRange: getCharacterRange
 });
 
 
