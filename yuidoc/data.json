@@ -244,6 +244,17 @@
                 "Plugin": 1
             }
         },
+        "src/gallery-datetime-utils/js/utils.js": {
+            "name": "src/gallery-datetime-utils/js/utils.js",
+            "modules": {
+                "gallery-datetime-utils": 1
+            },
+            "classes": {
+                "DateTimeUtils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/gallery-dimensions/js/Dimensions.js": {
             "name": "src/gallery-dimensions/js/Dimensions.js",
             "modules": {
@@ -329,6 +340,19 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "src/gallery-input-calendar-sync/js/sync.js": {
+            "name": "src/gallery-input-calendar-sync/js/sync.js",
+            "modules": {
+                "gallery-input-calendar-sync": 1
+            },
+            "classes": {
+                "Plugin.InputCalendarSync": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Plugin": 1
+            }
         },
         "src/gallery-instancemanager/js/InstanceManager.js": {
             "name": "src/gallery-instancemanager/js/InstanceManager.js",
@@ -1409,6 +1433,20 @@
             "description": "<p>Plugin for DataTable to preserve state, either on a single page or\nacross pages.</p>",
             "itemtype": "main"
         },
+        "gallery-datetime-utils": {
+            "name": "gallery-datetime-utils",
+            "submodules": {},
+            "classes": {
+                "DateTimeUtils": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 7,
+            "description": "Utility functions work working with dates and times.",
+            "itemtype": "main"
+        },
         "gallery-dimensions": {
             "name": "gallery-dimensions",
             "submodules": {},
@@ -1511,6 +1549,22 @@
             "file": "src/gallery-funcprog/js/yui-extras.js",
             "line": 7,
             "description": "<p>Augments global Y object with the same higher-order functions that\narray-extras adds to Y.Array.  Note that, unlike arrays and NodeLists,\niteration order for an object is arbitrary, so be careful when applying\nnon-commutative operations!</p>",
+            "itemtype": "main"
+        },
+        "gallery-input-calendar-sync": {
+            "name": "gallery-input-calendar-sync",
+            "submodules": {},
+            "classes": {
+                "Plugin.InputCalendarSync": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Plugin": 1
+            },
+            "tag": "main",
+            "file": "src/gallery-input-calendar-sync/js/sync.js",
+            "line": 7,
+            "description": "Plugin for an input field which syncs the value with a calendar.",
             "itemtype": "main"
         },
         "gallery-instancemanager": {
@@ -2432,6 +2486,24 @@
                 }
             ]
         },
+        "DateTimeUtils": {
+            "name": "DateTimeUtils",
+            "shortname": "DateTimeUtils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-datetime-utils",
+            "namespace": "",
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 7,
+            "description": "Utility functions work working with dates and times.",
+            "mainName": "gallery-datetime-utils",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true
+        },
         "Node~dimensions": {
             "name": "Node~dimensions",
             "shortname": "Node~dimensions",
@@ -2605,6 +2677,33 @@
             "tag": "main",
             "itemtype": "main",
             "_main": true
+        },
+        "Plugin.InputCalendarSync": {
+            "name": "Plugin.InputCalendarSync",
+            "shortname": "Plugin.InputCalendarSync",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-input-calendar-sync",
+            "namespace": "Plugin",
+            "file": "src/gallery-input-calendar-sync/js/sync.js",
+            "line": 7,
+            "description": "Plugin for an input field which syncs the value with a calendar.",
+            "mainName": "gallery-input-calendar-sync",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true,
+            "extends": "Plugin.Base",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "configuration",
+                    "type": "Object"
+                }
+            ]
         },
         "InstanceManager": {
             "name": "InstanceManager",
@@ -7800,6 +7899,212 @@
             "namespace": "Plugin"
         },
         {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 31,
+            "description": "Position of the year in a string representation of a date: 1,2,3",
+            "itemtype": "property",
+            "name": "YEAR_POSITION",
+            "type": "{Number}",
+            "default": "1",
+            "static": 1,
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 41,
+            "description": "Position of the month in a string representation of a date: 1,2,3",
+            "itemtype": "property",
+            "name": "MONTH_POSITION",
+            "type": "{Number}",
+            "default": "2",
+            "static": 1,
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 51,
+            "description": "Position of the day in a string representation of a date: 1,2,3",
+            "itemtype": "property",
+            "name": "DAY_POSITION",
+            "type": "{Number}",
+            "default": "3",
+            "static": 1,
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 61,
+            "description": "Delimiter of fields in a string representation of a date.",
+            "itemtype": "property",
+            "name": "DATE_FIELD_DELIMITER",
+            "type": "{String}",
+            "default": "\"-\"",
+            "static": 1,
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 71,
+            "description": "Delimiter of fields in a string representation of a time.",
+            "itemtype": "property",
+            "name": "TIME_FIELD_DELIMITER",
+            "type": "{String}",
+            "default": "\":\"",
+            "static": 1,
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 81,
+            "description": "Antemeridian string.",
+            "itemtype": "property",
+            "name": "AM_STRING",
+            "type": "{String}",
+            "default": "\"AM\"",
+            "static": 1,
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 91,
+            "description": "Postmeridian string.",
+            "itemtype": "property",
+            "name": "PM_STRING",
+            "type": "{String}",
+            "default": "\"PM\"",
+            "static": 1,
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 101,
+            "description": "How hours should be displayed to the user by classes in the DateTime\nfamily: 12hr or 24hr.  (Internal values are always 24hr.)  This is\nglobal because your app should be consistent about how it displays\ntimes.",
+            "itemtype": "property",
+            "name": "CLOCK_DISPLAY_TYPE",
+            "type": "{Number} 12 or 24",
+            "default": "24",
+            "static": 1,
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 114,
+            "description": "Normalizes the given object by converting date_str into\nyear,month,day, converting time_str into hour,minute (or adding in\nhour,minute from default_time), and adding date (instanceof Date).\nIndividual fields take precedence over strings.\n\nIf input is a Date object, then the result contains a breakdown of\nthe values.",
+            "itemtype": "method",
+            "name": "normalize",
+            "static": 1,
+            "params": [
+                {
+                    "name": "input",
+                    "description": "\n\tCan be specified either as instance of Date or as an object defining\n\tdate_str or year,month,day and (optional) either time_str or\n\thour,minute.",
+                    "type": "Object"
+                },
+                {
+                    "name": "default_time",
+                    "description": "Default hour and minute to use if input only has date.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "normalized object defining date and time",
+                "type": "Object"
+            },
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 179,
+            "description": "Format the date portion of a Date object.",
+            "itemtype": "method",
+            "name": "formatDate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "date",
+                    "description": "string (returned as-is), Date, or object specifying day,month,year",
+                    "type": "Mixed"
+                }
+            ],
+            "return": {
+                "description": "formatted date, using positions and delimiated",
+                "type": "String"
+            },
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 215,
+            "description": "Inverse of formatDate().  Extracts year, month, and day from the string.",
+            "itemtype": "method",
+            "name": "parseDate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "date",
+                    "description": "string from DateTimeUtils.formatDate()",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "year,month,day",
+                "type": "Object"
+            },
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 249,
+            "description": "Format the time portion of a Date object.",
+            "itemtype": "method",
+            "name": "formatTime",
+            "static": 1,
+            "params": [
+                {
+                    "name": "time",
+                    "description": "string (returned as-is), Date, or object specifying hour,minute",
+                    "type": "Mixed"
+                }
+            ],
+            "return": {
+                "description": "formatted date, using positions and delimiated",
+                "type": "String"
+            },
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 280,
+            "description": "Inverse of formatTime().  Extracts hour and minute from the string.",
+            "itemtype": "method",
+            "name": "parseTime",
+            "static": 1,
+            "params": [
+                {
+                    "name": "time",
+                    "description": "string from DateTimeUtils.formatTime()",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "hour,minute",
+                "type": "Object"
+            },
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
             "file": "src/gallery-dimensions/js/Dimensions.js",
             "line": 36,
             "itemtype": "method",
@@ -9416,6 +9721,18 @@
             },
             "class": "YUI~funcprog",
             "module": "gallery-funcprog"
+        },
+        {
+            "file": "src/gallery-input-calendar-sync/js/sync.js",
+            "line": 28,
+            "description": "Calendar with which to sync.",
+            "itemtype": "attribute",
+            "name": "calendar",
+            "type": "{CalendarBase}",
+            "required": 1,
+            "class": "Plugin.InputCalendarSync",
+            "module": "gallery-input-calendar-sync",
+            "namespace": "Plugin"
         },
         {
             "file": "src/gallery-instancemanager/js/InstanceManager.js",

@@ -19,6 +19,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "DataSource.AsyncFunction",
         "DataSource.BulkEdit",
         "DataSource.Treeble",
+        "DateTimeUtils",
         "EnableIfAnyCheckboxGroup",
         "ExpirationCache",
         "ExpressionBuilder",
@@ -97,6 +98,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Plugin.DataTableRowExpansion",
         "Plugin.DataTableState",
         "Plugin.FixedSizeAccordion",
+        "Plugin.InputCalendarSync",
         "Plugin.Neon",
         "Plugin.OverlayForm",
         "Plugin.PageLayoutDataTableModule",
@@ -124,6 +126,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-datasource-async-function",
         "gallery-datatable-row-expansion",
         "gallery-datatable-state",
+        "gallery-datetime-utils",
         "gallery-dimensions",
         "gallery-expiration-cache",
         "gallery-exprbuilder",
@@ -131,6 +134,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-formmgr-css-validation",
         "gallery-formmgr-overlay-plugin",
         "gallery-funcprog",
+        "gallery-input-calendar-sync",
         "gallery-instancemanager",
         "gallery-io-multiresponse",
         "gallery-iterable-extras",
@@ -225,6 +229,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "<p>Plugin for DataTable to preserve state, either on a single page or\nacross pages.</p>"
         },
         {
+            "displayName": "gallery-datetime-utils",
+            "name": "gallery-datetime-utils",
+            "description": "Utility functions work working with dates and times."
+        },
+        {
             "displayName": "gallery-dimensions",
             "name": "gallery-dimensions",
             "description": "Functions for measuring the size of a node."
@@ -258,6 +267,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-funcprog",
             "name": "gallery-funcprog",
             "description": "<p>Augments global Y object with the same higher-order functions that\narray-extras adds to Y.Array.  Note that, unlike arrays and NodeLists,\niteration order for an object is arbitrary, so be careful when applying\nnon-commutative operations!</p>"
+        },
+        {
+            "displayName": "gallery-input-calendar-sync",
+            "name": "gallery-input-calendar-sync",
+            "description": "Plugin for an input field which syncs the value with a calendar."
         },
         {
             "displayName": "gallery-instancemanager",
