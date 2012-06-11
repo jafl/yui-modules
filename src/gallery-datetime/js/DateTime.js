@@ -3,11 +3,14 @@
 var Dom = YAHOO.util.Dom,
 	SDom = YAHOO.SATG.Dom,
 	Event = YAHOO.util.Event,
-	Calendar = YAHOO.SATG.Calendar;
 
 var blackout_min_seconds = -40,
 	blackout_max_seconds = +40,
 	change_after_focus = (0 < YAHOO.env.ua.ie);
+
+/**
+ * @module gallery-datetime
+ */
 
 /**********************************************************************
  * <p>Manages an optional set of radio buttons (for "no date", etc.), a
@@ -21,6 +24,7 @@ var blackout_min_seconds = -40,
  * optionally hour,minute or time_str.  Individual values take precedence
  * over string values.  Time resolution is in minutes.</p>
  * 
+ * @main gallery-datetime
  * @class DateTime
  * @extends Widget
  * @constructor
@@ -29,16 +33,7 @@ var blackout_min_seconds = -40,
 
 function DateTime = function(config)
 {
-	config = config || {};
-
-	this.blackout      = [];
-	this.blackout_snap = config.blackout_snap || +1;
-
-	Event.onDOMReady(function(type, args1, args2)
-	{
-		this._init.apply(this, args2);
-	},
-	[container, config], this);
+	DateTime.superclass.constructor.apply(this, arguments);
 };
 
 DateTime.NAME = "datetime";
@@ -49,8 +44,9 @@ DateTime.ATTRS =
 	 * Blackout ranges, specified as a list of objects, each defining start
 	 * and end.
 	 * 
-	 * @param blackout
-	 * @type Array
+	 * @attribute blackout
+	 * @type {Array}
+	 * @default []
 	 */
 	blackouts:
 	{
@@ -140,271 +136,24 @@ DateTime.ATTRS =
 
 			return blackout;
 		}
-	}
-}
+	},
 
-/**
- * Position of the year in a string representation of a date: 1,2,3
- *
- * @property Y.DateTime.YEAR_POSITION
- * @type {Number}
- * @default 1
- * @static
- */
-DateTime.YEAR_POSITION = 1;
-
-/**
- * Position of the month in a string representation of a date: 1,2,3
- *
- * @property Y.DateTime.MONTH_POSITION
- * @type {Number}
- * @default 2
- * @static
- */
-DateTime.MONTH_POSITION = 2;
-
-/**
- * Position of the day in a string representation of a date: 1,2,3
- *
- * @property Y.DateTime.DAY_POSITION
- * @type {Number}
- * @default 3
- * @static
- */
-DateTime.DAY_POSITION = 3;
-
-/**
- * Delimiter of fields in a string representation of a date.
- *
- * @property Y.DateTime.DATE_FIELD_DELIMITER
- * @type {String}
- * @default "/"
- * @static
- */
-DateTime.DATE_FIELD_DELIMITER = '/';
-
-/**
- * Delimiter of fields in a string representation of a time.
- *
- * @property Y.DateTime.TIME_FIELD_DELIMITER
- * @type {String}
- * @default ":"
- * @static
- */
-DateTime.TIME_FIELD_DELIMITER = ':';
-
-/**
- * How hours are displayed: 12hr or 24hr.  (Internal values are always
- * 24hr.)  This is global because your app should be consistent about how
- * it displays times.
- * 
- * @property Y.DateTime.CLOCK_DISPLAY_TYPE
- * @type {Number} 12 or 24
- * @default 24
- * @static
- */
-DateTime.CLOCK_DISPLAY_TYPE = 24;
-
-/**
- * <p>Normalizes the given object by converting date_str into
- * year,month,day, converting time_str into hour,minute (or adding in
- * hour,minute from default_time), and adding date (instanceof Date).
- * Individual fields take precedence over strings.</p>
- * 
- * <p>If input is a Date object, then the result contains a breakdown of
- * the values.</p>
- * 
- * @param input {Object}
- *	Can be specified either as instance of Date or as an object defining
- *	date_str or year,month,day and (optional) either time_str or
- *	hour,minute.
- * @param default_time {Object} Default hour and minute to use if input only has date.
- * @static
- */
-DateTime.normalize(input, default_time)
-{
-	if (input instanceof Date)
+	/**
+	 * The direction to push the selected date and time when the user
+	 * selects a day with partial blackout.
+	 *
+	 * @attribute blackoutSnapDirection
+	 * @type {-1,+1}
+	 * @default +1
+	 */
+	blackoutSnapDirection:
 	{
-		var result =
+		default: +1,
+		validator: function(value)
 		{
-			year:   input.getFullYear(),
-			month:  input.getMonth()+1,
-			day:    input.getDate(),
-			hour:   input.getHours(),
-			minute: input.getMinutes(),
-			date:   input
-		};
-		return result;
-	}
-
-	var result = Y.clone(input);
-	if (result.date_str)
-	{
-		if (Y.Lang.isUndefined(result.year) &&
-			Y.Lang.isUndefined(result.month) &&
-			Y.Lang.isUndefined(result.day))
-		{
-			Y.mix(result, DateTime.parseDate(result.date_str));
+			return (value == -1 || value == +1);
 		}
-		delete result.date_str;
 	}
-
-	if (result.time_str)
-	{
-		if (Y.Lang.isUndefined(result.hour) &&
-			Y.Lang.isUndefined(result.minute))
-		{
-			Y.mix(result, DateTime.parseTime(result.time_str));
-		}
-		delete result.time_str;
-	}
-	else if (Y.Lang.isUndefined(result.hour))
-	{
-		result.hour   = default_time.hour;
-		result.minute = default_time.minute;
-	}
-
-	result.date = new Date(result.year, result.month-1, result.day, result.hour, result.minute);
-	return result;
-}
-
-function pad2(n)
-{
-	var s = n.toString();
-	if (s.length < 2)
-	{
-		s = '0' + s;
-	}
-	return s;
-}
-
-/**
- * Format the date portion of a Date object.
- * 
- * @param date {Mixed} string (returned as-is), Date, or object specifying day,month,year
- * @return {String} formatted date, using positions and delimiated
- * @static
- */
-DateTime.formatDate = function(date)
-{
-	if (!date)
-	{
-		return '';
-	}
-	else if (Y.Lang.isString(date))
-	{
-		return date;
-	}
-
-	var a = [];
-	if (date instanceof Date)
-	{
-		a[ DateTime.YEAR_POSITION-1 ]  = date.getFullYear().toString();
-		a[ DateTime.MONTH_POSITION-1 ] = pad2(date.getMonth()+1);
-		a[ DateTime.DAY_POSITION-1 ]   = pad2(date.getDate());
-	}
-	else
-	{
-		a[ DateTime.YEAR_POSITION-1 ]  = date.year.toString();
-		a[ DateTime.MONTH_POSITION-1 ] = pad2(date.month);
-		a[ DateTime.DAY_POSITION-1 ]   = pad2(date.day);
-	}
-
-	return a.join(DateTime.DATE_FIELD_DELIMITER);
-}
-
-function validInteger(v)
-{
-	return /^\d+$/.test(v);
-}
-
-/**
- * Inverse of formatDate().  Extracts year, month, and day from the string.
- * 
- * @param date {String} string from DateTime.formatDate()
- * @return {Object} year,month,day
- * @static
- */
-DateTime.parseDate = function(date)
-{
-	if (!date)
-	{
-		return null;
-	}
-	else if (!Y.Lang.isString(date))
-	{
-		return date;
-	}
-
-	var d = date.split(DateTime.DATE_FIELD_DELIMITER);
-	if (d.length != 3 || !Y.every(d, validInteger))
-	{
-		throw Error('Unparseable date format.');
-	}
-
-	var result =
-	{
-		year:  parseInt(d[ DateTime.YEAR_POSITION-1 ], 10),
-		month: parseInt(d[ DateTime.MONTH_POSITION-1 ], 10),
-		day:   parseInt(d[ DateTime.DAY_POSITION-1 ], 10)
-	};
-	return result;
-}
-
-/**
- * Format the time portion of a Date object.
- * 
- * @param time {Mixed} string (returned as-is), Date, or object specifying hour,minute
- * @return {String} formatted date, using positions and delimiated
- * @static
- */
-DateTime.formatTime = function(time)
-{
-	if (!time)
-	{
-		return '';
-	}
-	else if (Y.Lang.isString(time))
-	{
-		return time;
-	}
-	else
-	{
-		return time.hour + DateTime.TIME_FIELD_DELIMITER + time.minute;
-	}
-}
-
-/**
- * Inverse of formatTime().  Extracts hour and minute from the string.
- * 
- * @param date {String} string from DateTime.formatTime()
- * @return {Object} hour,minute
- * @static
- */
-DateTime.parseTime = function(
-	/* string */	time)
-{
-	if (!time)
-	{
-		return null;
-	}
-	else if (!Y.Lang.isString(time))
-	{
-		return time;
-	}
-
-	var t = time.split(DateTime.TIME_FIELD_DELIMITER);
-	if (t.length != 2 || !Y.every(t, validInteger))
-	{
-		throw Error('Unparseable time format.');
-	}
-
-	var result =
-	{
-		hour:   parseInt(t[0], 10),
-		minute: parseInt(t[1], 10)
-	};
-	return result;
 }
 
 function installDateTimeCalendarSelection()
@@ -437,12 +186,11 @@ function handleRadioSelection(e)
 {
 	this._updateDisplay();
 
-	if (YAHOO.lang.isArray(this.rb_hook))
+	if (Y.Lang.isArray(this.rb_hook))
 	{
-		var target = Event.getTarget(e);
 		for (var i=0; i<this.rb.length; i++)
 		{
-			if (target != this.rb[i])
+			if (e.target != this.rb[i])
 			{
 				continue;
 			}
@@ -531,15 +279,16 @@ function enforceDateTimeLimits(
 
 	if (this.blackout.length > 0)
 	{
-		var t      = date.getTime();
-		var orig_t = t;
+		var t      = date.getTime(),
+			orig_t = t,
+			snap   = this.get('blackoutSnapDirection');
 
 		for (var i=0; i<this.blackout.length; i++)
 		{
 			var blackout = this.blackout[i];
 			if (blackout[0] < t && t < blackout[1])
 			{
-				if (this.blackout_snap > 0)
+				if (snap > 0)
 				{
 					t = blackout[1] + 60000;
 				}
@@ -555,7 +304,7 @@ function enforceDateTimeLimits(
 						tmp.getMonth()    != date.getMonth() ||
 						tmp.getFullYear() != date.getFullYear())
 					{
-						t = this.blackout_snap > 0 ? blackout[0] : blackout[1] + 60000;
+						t = snap > 0 ? blackout[0] : blackout[1] + 60000;
 					}
 				}
 
@@ -1187,12 +936,6 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		{
 			updateRendering.call(this);
 		}
-	},
-
-	setBlackoutSnapDirection: function(
-		/* +1,-1 */	direction)
-	{
-		this.blackout_snap = direction || +1;
 	},
 
 	_updateDisplay: function()
