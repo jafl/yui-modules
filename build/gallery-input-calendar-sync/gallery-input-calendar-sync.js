@@ -1,3 +1,5 @@
+YUI.add('gallery-input-calendar-sync', function(Y) {
+
 "use strict";
 
 /**
@@ -63,7 +65,6 @@ function syncFromInput()
 		catch (ex)
 		{
 			this.ignore_selection_change = false;
-			Y.log('invalid date, falling back to selected date', 'debug', 'InputCalendarSync');
 		}
 	}
 
@@ -101,3 +102,6 @@ Y.extend(InputCalendarSync, Y.Plugin.Base,
 
 Y.namespace("Plugin");
 Y.Plugin.InputCalendarSync = InputCalendarSync;
+
+
+}, '@VERSION@' ,{requires:['node-pluginhost','plugin','gallery-datetime-utils','calendar']});

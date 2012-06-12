@@ -1,3 +1,5 @@
+YUI.add('gallery-input-calendar-sync', function(Y) {
+
 "use strict";
 
 /**
@@ -101,3 +103,6 @@ Y.extend(InputCalendarSync, Y.Plugin.Base,
 
 Y.namespace("Plugin");
 Y.Plugin.InputCalendarSync = InputCalendarSync;
+
+
+}, '@VERSION@' ,{requires:['node-pluginhost','plugin','gallery-datetime-utils','calendar']});
