@@ -744,7 +744,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime-utils_js_utils.js.html#l249"><code>src&#x2F;gallery-datetime-utils&#x2F;js&#x2F;utils.js:249</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime-utils_js_utils.js.html#l260"><code>src&#x2F;gallery-datetime-utils&#x2F;js&#x2F;utils.js:260</code></a>
         
         </p>
 
@@ -867,8 +867,8 @@
     </div>
 
     <div class="description">
-        <p>Normalizes the given object by converting date<em>str into
-year,month,day, converting time</em>str into hour,minute (or adding in
+        <p>Normalizes the given object by converting date_str into
+year,month,day, converting time_str into hour,minute (or adding in
 hour,minute from default_time), and adding date (instanceof Date).
 Individual fields take precedence over strings.</p>
 
@@ -997,7 +997,9 @@ hour,minute.
     </div>
 
     <div class="description">
-        <p>Inverse of formatDate().  Extracts year, month, and day from the string.</p>
+        <p>Inverse of formatDate().  Extracts year, month, and day from the
+string.  The values are normalized to fall inside the default
+ranges.</p>
     </div>
 
     
@@ -1092,7 +1094,7 @@ hour,minute.
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime-utils_js_utils.js.html#l280"><code>src&#x2F;gallery-datetime-utils&#x2F;js&#x2F;utils.js:280</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime-utils_js_utils.js.html#l291"><code>src&#x2F;gallery-datetime-utils&#x2F;js&#x2F;utils.js:291</code></a>
         
         </p>
 
@@ -1103,7 +1105,9 @@ hour,minute.
     </div>
 
     <div class="description">
-        <p>Inverse of formatTime().  Extracts hour and minute from the string.</p>
+        <p>Inverse of formatTime().  Extracts hour and minute from the string.
+Throws an error if hour is outside [0,23] or minute is outside
+[0,59].</p>
     </div>
 
     

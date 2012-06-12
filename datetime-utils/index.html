@@ -33,6 +33,16 @@ function(Y)
 	{
 		name: 'DateTime utilities',
 
+		_should:
+		{
+			error:
+			{
+				testParseTimeInvalidValue:  true,
+				testParseTimeInvalidHour:   true,
+				testParseTimeInvalidMinute: true
+			}
+		},
+
 		testNormalize: function()
 		{
 			function check(result)
@@ -52,6 +62,11 @@ function(Y)
 			check(Y.DateTimeUtils.normalize({year:2012, month:6, day:11, date_str:'2011-1-1', hour:14, minute:5, time_str:'5:10'}));
 			check(Y.DateTimeUtils.normalize({year:2012, month:6, day:11}, {hour:14, minute:5}));
 			check(Y.DateTimeUtils.normalize({date_str:'2012-6-11'}, {hour:14, minute:5}));
+
+			check(Y.DateTimeUtils.normalize({year:2011, month:18, day:11, hour:14, minute:5}));
+			check(Y.DateTimeUtils.normalize({year:2012, month:5, day:42, hour:14, minute:5}));
+			check(Y.DateTimeUtils.normalize({year:2012, month:6, day:10, hour:38, minute:5}));
+			check(Y.DateTimeUtils.normalize({year:2012, month:6, day:11, hour:12, minute:125}));
 		},
 
 		testFormatDate: function()
@@ -80,6 +95,8 @@ function(Y)
 
 			check(Y.DateTimeUtils.parseDate('2012-6-11'));
 			check(Y.DateTimeUtils.parseDate('2012-06-11'));
+			check(Y.DateTimeUtils.parseDate('2011-18-11'));
+			check(Y.DateTimeUtils.parseDate('2012-5-42'));
 
 			Y.DateTimeUtils.DATE_FIELD_DELIMITER = '/';
 			Y.DateTimeUtils.DAY_POSITION         = 1;
@@ -132,6 +149,21 @@ function(Y)
 			var result = Y.DateTimeUtils.parseTime('2:05 AM');
 			Y.Assert.areSame(2, result.hour);
 			Y.Assert.areSame(5, result.minute);
+		},
+
+		testParseTimeInvalidValue: function()
+		{
+			Y.DateTimeUtils.parseTime('2a:00');
+		},
+
+		testParseTimeInvalidHour: function()
+		{
+			Y.DateTimeUtils.parseTime('24:00');
+		},
+
+		testParseTimeInvalidMinute: function()
+		{
+			Y.DateTimeUtils.parseTime('14:60');
 		}
 	}));
 
