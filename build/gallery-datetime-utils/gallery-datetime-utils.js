@@ -114,9 +114,9 @@ Y.DateTimeUtils =
 	CLOCK_DISPLAY_TYPE: 24,
 
 	/**
-	 * Normalizes the given object by converting date_str into
-	 * year,month,day, converting time_str into hour,minute (or adding in
-	 * hour,minute from default_time), and adding date (instanceof Date).
+	 * Normalizes the given object by converting date\_str into
+	 * year,month,day, converting time\_str into hour,minute (or adding in
+	 * hour,minute from default\_time), and adding date (instanceof Date).
 	 * Individual fields take precedence over strings.
 	 * 
 	 * If input is a Date object, then the result contains a breakdown of
@@ -174,8 +174,8 @@ Y.DateTimeUtils =
 			result.minute = default_time.minute;
 		}
 
-		result.date = new Date(result.year, result.month-1, result.day, result.hour, result.minute);
-		return result;
+		// return values inside standard ranges
+		return self.normalize(new Date(result.year, result.month-1, result.day, result.hour, result.minute));
 	},
 
 	/**
@@ -215,7 +215,9 @@ Y.DateTimeUtils =
 	},
 
 	/**
-	 * Inverse of formatDate().  Extracts year, month, and day from the string.
+	 * Inverse of formatDate().  Extracts year, month, and day from the
+	 * string.  The values are normalized to fall inside the default
+	 * ranges.
 	 * 
 	 * @method parseDate
 	 * @static
@@ -239,12 +241,21 @@ Y.DateTimeUtils =
 			throw Error('Unparseable date format.');
 		}
 
+		var obj = self.normalize(
+		{
+			year:   parseInt(d[ self.YEAR_POSITION-1 ], 10),
+			month:  parseInt(d[ self.MONTH_POSITION-1 ], 10),
+			day:    parseInt(d[ self.DAY_POSITION-1 ], 10),
+			hour:   0,
+			minute: 0
+		});
+
 		var result =
 		{
-			year:  parseInt(d[ self.YEAR_POSITION-1 ], 10),
-			month: parseInt(d[ self.MONTH_POSITION-1 ], 10),
-			day:   parseInt(d[ self.DAY_POSITION-1 ], 10)
-		};
+			year:  obj.year,
+			month: obj.month,
+			day:   obj.day
+		}
 		return result;
 	},
 
@@ -281,6 +292,8 @@ Y.DateTimeUtils =
 
 	/**
 	 * Inverse of formatTime().  Extracts hour and minute from the string.
+	 * Throws an error if hour is outside [0,23] or minute is outside
+	 * [0,59].
 	 * 
 	 * @method parseTime
 	 * @static
@@ -321,6 +334,13 @@ Y.DateTimeUtils =
 			hour:   parseInt(t[0], 10) + offset,
 			minute: parseInt(t[1], 10)
 		};
+
+		if (result.hour   < 0 || 23 < result.hour ||
+			result.minute < 0 || 59 < result.minute)
+		{
+			throw Error('Invalid time values: ' + result.hour + self.TIME_FIELD_DELIMITER + pad2(result.minute));
+		}
+
 		return result;
 	}
 };
