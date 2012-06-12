@@ -59,10 +59,11 @@ function syncFromInput()
 			cal.deselectDates();	// hack for http://yuilibrary.com/projects/yui3/ticket/2530928
 			cal.selectDates(result.date);
 			cal.set('date', result.date);
-
-			this.ignore_selection_change = false;
 		}
 		catch (ex)
+		{
+		}
+		finally
 		{
 			this.ignore_selection_change = false;
 		}

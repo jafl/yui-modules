@@ -156,30 +156,23 @@ DateTime.ATTRS =
 	}
 }
 
-function installDateTimeCalendarSelection()
+function handleCalendarSelection()
 {
-	var self    = this;
-	var handler = this.calendar.handleDateSelection;
-	this.calendar.handleDateSelection = function(date)
+	if (!this.ignore_date_selection)
 	{
-		handler.call(this, date);
+		this.rb[ this.rb.length-1 ].checked = true;
+		this._updateDisplay();
 
-		if (!self.ignore_date_selection)
+		if (this.hour_menu.selectedIndex == -1 ||
+			this.minute_menu.selectedIndex == -1)
 		{
-			self.rb[ self.rb.length-1 ].checked = true;
-			self._updateDisplay();
-
-			if (self.hour_menu.selectedIndex == -1 ||
-				self.minute_menu.selectedIndex == -1)
-			{
-				self.hour_menu.value   = self.blank_time.hour;
-				self.minute_menu.value = self.blank_time.minute;
-			}
-
-			self.ping_input = self.should_ping_input;
-			enforceDateTimeLimits.call(self, 'same-day');
+			this.hour_menu.value   = this.blank_time.hour;
+			this.minute_menu.value = this.blank_time.minute;
 		}
-	};
+
+		this.ping_input = this.should_ping_input;
+		enforceDateTimeLimits.call(this, 'same-day');
+	}
 }
 
 function handleRadioSelection(e)
@@ -188,15 +181,10 @@ function handleRadioSelection(e)
 
 	if (Y.Lang.isArray(this.rb_hook))
 	{
-		for (var i=0; i<this.rb.length; i++)
+		var i = this.rb.indexOf(e.target);
+		if (i >= 0)
 		{
-			if (e.target != this.rb[i])
-			{
-				continue;
-			}
-
 			applyRadioHook.call(this, i);
-			break;
 		}
 	}
 }
@@ -204,7 +192,7 @@ function handleRadioSelection(e)
 function applyRadioHook(
 	/* int */	index)
 {
-	if (!YAHOO.lang.isArray(this.rb_hook))
+	if (!Y.Lang.isArray(this.rb_hook))
 	{
 		return;
 	}
@@ -214,11 +202,11 @@ function applyRadioHook(
 	try
 	{
 		var hook = this.rb_hook[index];
-		if (YAHOO.lang.isFunction(hook))
+		if (Y.Lang.isFunction(hook))
 		{
 			hook.call(this);
 		}
-		else if (YAHOO.lang.isString(hook))
+		else if (Y.Lang.isString(hook))
 		{
 			this[hook].call(this);
 		}
@@ -242,21 +230,22 @@ function selectHook(
 	/* string */	name)
 {
 	if (this.skip_select_hook ||
-		!YAHOO.lang.isArray(this.rb_hook))
+		!Y.Lang.isArray(this.rb_hook))
 	{
 		return;
 	}
 
-	for (var i=0; i<this.rb_hook.length; i++)
+	var i = Y.Array.findIndexOf(this.rb_hook, function(hook)
 	{
-		var hook = this.rb_hook[i];
-		if ((YAHOO.lang.isFunction(hook) && hook == this[name]) ||
-			(YAHOO.lang.isString(hook) && hook == name))
-		{
-			this.rb[i].checked = true;
-			this._updateDisplay();
-			break;
-		}
+		return ((Y.Lang.isFunction(hook) && hook == this[name]) ||
+				(Y.Lang.isString(hook) && hook == name));
+	},
+	this);
+
+	if (i >= 0)
+	{
+		this.rb.item(i).set('checked', true);
+		this._updateDisplay();
 	}
 }
 
