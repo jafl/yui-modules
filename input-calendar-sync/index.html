@@ -1,65 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>YUI 3 Neon Sign</title>
+	<title>YUI 3 Input/Calendar Sync</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
 	<script src="http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js"></script>
-	<script src="gallery-neon-debug.js"></script>
-
-	<style type="text/css">
-	body { background-color: black; color: white; }
-	a, a.visited { color: #AAAAFF; }
-	#text { font-weight: bold; font-size: 300%; }
-	</style>
+	<script src="gallery-input-calendar-sync-debug.js"></script>
+	<script src="gallery-datetime-utils-debug.js"></script>
+	<script src="gallery-funcprog-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
 </head>
-<body>
+<body class="yui3-skin-sam">
 
-<h1><a href="http://yuilibrary.com/gallery/show/neon">YUI 3 Neon</a> Example</h1>
+<h1><a href="http://yuilibrary.com/gallery/show/input-calendar-sync">YUI 3 Input/Calendar Sync</a> Example</h1>
 
-<p><a href="../yuidoc/modules/gallery-neon.html">Show me the documentation</a></p>
+<p><a href="../yuidoc/modules/gallery-input-calendar-sync.html">Show me the documentation</a></p>
 <p><a href="/yui3-gallery/">Back to project list</a></p>
 
-<button id="show">Show</button>
-<button id="hide">Hide</button>
-
-<div id="text" style="display:none;">
-	<p>F2E</p>
-	<p>Front End Engineering</p>
-</div>
-
-<div id="done" style="display:none;">Done!</div>
+<form onsubmit="return false;">
+	<label for="date">Date:</label><input type="text" id="date" value="2012-1-1" />
+	<div id="calendar"></div>
+</form>
 
 <script type="text/javascript">
 YUI({
-//	filter: 'debug'
+//	filter: 'raw', combine: false
 }).use(
-	'gallery-neon',
+	'gallery-input-calendar-sync',
 function(Y)
 {
-	var node = Y.one('#text');
-	node.plug(Y.Plugin.Neon,
+	var cal = new Y.Calendar(
 	{
-		backgroundColor: 'black',
-		textColor:       'white',
-		textShadow:      '{color} 0px 0px 10px, {color} 0px 0px 20px'
+		width:         300,
+		showPrevMonth: true,
+		showNextMonth: true
 	});
+	cal.render('#calendar');
 
-	Y.on('click', node.show, '#show', node);
-
-	Y.on('click', function()
+	var node = Y.one('#date');
+	node.plug(Y.Plugin.InputCalendarSync,
 	{
-		Y.one('#done').hide();
-		node.hide();
-	},
-	'#hide');
-
-	node.on('neon:finished', function()
-	{
-		Y.one('#done').show();
+		calendar: cal
 	});
-
-	node.show();
 });
 </script>
 
