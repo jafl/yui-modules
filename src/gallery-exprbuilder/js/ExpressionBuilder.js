@@ -76,6 +76,7 @@ ExpressionBuilder.ATTRS =
 	 * @attribute queryBuilder
 	 * @type {Y.QueryBuilder}
 	 * @default null
+	 * @required
 	 * @writeonce
 	 */
 	queryBuilder:
@@ -386,22 +387,24 @@ function resetQB(e)
 
 function setValidation(f)
 {
-	if (f)
+	if (!f)
 	{
-		var self = this;
-
-		var orig_validateForm = f.validateForm;
-		f.validateForm = function()
-		{
-			resetQB.call(self);
-			orig_validateForm.apply(this, arguments);
-		};
-
-		f.setFunction(this.get('fieldId'), function(form, e)
-		{
-			return self._validateExpression(form, e, this);
-		});
+		return;
 	}
+
+	var self = this;
+
+	var orig_validateForm = f.validateForm;
+	f.validateForm = function()
+	{
+		resetQB.call(self);
+		orig_validateForm.apply(this, arguments);
+	};
+
+	f.setFunction(this.get('fieldId'), function(form, e)
+	{
+		return self._validateExpression(form, e, this);
+	});
 }
 
 Y.extend(ExpressionBuilder, Y.Widget,
