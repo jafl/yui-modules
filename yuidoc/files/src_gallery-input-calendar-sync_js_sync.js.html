@@ -193,6 +193,8 @@
             
                 <li><a href="..&#x2F;classes/Node~dimensions.html">Node~dimensions</a></li>
             
+                <li><a href="..&#x2F;classes/Node~event-set.html">Node~event-set</a></li>
+            
                 <li><a href="..&#x2F;classes/Node~optimizations.html">Node~optimizations</a></li>
             
                 <li><a href="..&#x2F;classes/Node~scrollIntoView.html">Node~scrollIntoView</a></li>
@@ -341,6 +343,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-node-event-set.html">gallery-node-event-set</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-node-optimizations.html">gallery-node-optimizations</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-nodelist-extras2.html">gallery-nodelist-extras2</a></li>
@@ -459,26 +463,33 @@ function syncFromInput()
 			cal.deselectDates();	&#x2F;&#x2F; hack for http:&#x2F;&#x2F;yuilibrary.com&#x2F;projects&#x2F;yui3&#x2F;ticket&#x2F;2530928
 			cal.selectDates(result.date);
 			cal.set(&#x27;date&#x27;, result.date);
-
-			this.ignore_selection_change = false;
 		}
 		catch (ex)
 		{
-			this.ignore_selection_change = false;
 			Y.log(&#x27;invalid date, falling back to selected date&#x27;, &#x27;debug&#x27;, &#x27;InputCalendarSync&#x27;);
+		}
+		finally
+		{
+			this.ignore_selection_change = false;
 		}
 	}
 
-	syncFromCalendar.call(this);
+	privateSyncFromCalendar.call(this);
 }
 
 function syncFromCalendar()
 {
 	if (!this.ignore_selection_change)
 	{
-		var date = this.get(&#x27;calendar&#x27;).get(&#x27;selectedDates&#x27;)[0];
-		this.get(&#x27;host&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatDate(date));
+		this.get(&#x27;host&#x27;).focus();	&#x2F;&#x2F; make it compatible with valuechange event
+		privateSyncFromCalendar.call(this);
 	}
+}
+
+function privateSyncFromCalendar()
+{
+	var date = this.get(&#x27;calendar&#x27;).get(&#x27;selectedDates&#x27;)[0];
+	this.get(&#x27;host&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatDate(date));
 }
 
 Y.extend(InputCalendarSync, Y.Plugin.Base,

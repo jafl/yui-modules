@@ -76,6 +76,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "MultiObject",
         "NodeList~extras2",
         "Node~dimensions",
+        "Node~event-set",
         "Node~optimizations",
         "Node~scrollIntoView",
         "Object~extras",
@@ -151,6 +152,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-mru-cache",
         "gallery-multiobject",
         "gallery-neon",
+        "gallery-node-event-set",
         "gallery-node-optimizations",
         "gallery-nodelist-extras2",
         "gallery-object-extras",
@@ -352,6 +354,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-neon",
             "name": "gallery-neon",
             "description": "Overrides Y.Node.show() to make it look like a flickering neon sign."
+        },
+        {
+            "displayName": "gallery-node-event-set",
+            "name": "gallery-node-event-set",
+            "description": "Patches Y.Node to provide \"set\" events for attributes and styles similar\nto the \"change\" events provided by `Y.Attribute`.  Simply subscribe to\n_attr_Set or _style_Set, e.g., valueSet, z-indexSet, or classSet.\n\nIMPORTANT: \"set\" events will ONLY fire if changes are made through\nY.Node, NOT when directly operating on the DOM element.  Also NOT when a\ndifferent sandbox operates on a separate Y.Node instance for the same\nelement.\n\nNote: The valuechange event provided by YUI captures all changes to the\nelement's value attribute, but only when the element has focus.\n\nTo minimize the performance impact, this module initially overrides only\nY.Node.on().  Patches are then applied to the appropriate functions on\nindividual instances when a \"set\" event is requested.\n\n<dl>\n<dt>set, setAttrs, setAttribute, setStyle, setStyles</dt>\n<dd>Fires _attr_Set or _style_Set event with prevVal, newVal.</dd>\n<dt>setData,clearData</dt>\n<dd>Fires dataSet event with dataKey, prevVal, newVal.</dd>\n<dt>addClass, removeClass, replaceClass</dt>\n<dd>Fires classNameSet event with prevVal, newVal -- consistent with set('className', ...).  Also includes addedClass or removedClass, as appropriate.</dd>\n<dt>setX, setY, setXY</dt>\n<dd>Fires xySet event with prevVal and newVal defining x, y, or both.</dd>"
         },
         {
             "displayName": "gallery-node-optimizations",

@@ -967,6 +967,17 @@
                 "Plugin": 1
             }
         },
+        "src/gallery-node-event-set/js/node-event-set.js": {
+            "name": "src/gallery-node-event-set/js/node-event-set.js",
+            "modules": {
+                "gallery-node-event-set": 1
+            },
+            "classes": {
+                "Node~event-set": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/gallery-node-optimizations/js/Optimizations.js": {
             "name": "src/gallery-node-optimizations/js/Optimizations.js",
             "modules": {
@@ -1838,6 +1849,20 @@
             "file": "src/gallery-neon/js/Neon.js",
             "line": 7,
             "description": "Overrides Y.Node.show() to make it look like a flickering neon sign.",
+            "itemtype": "main"
+        },
+        "gallery-node-event-set": {
+            "name": "gallery-node-event-set",
+            "submodules": {},
+            "classes": {
+                "Node~event-set": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "src/gallery-node-event-set/js/node-event-set.js",
+            "line": 7,
+            "description": "Patches Y.Node to provide \"set\" events for attributes and styles similar\nto the \"change\" events provided by `Y.Attribute`.  Simply subscribe to\n_attr_Set or _style_Set, e.g., valueSet, z-indexSet, or classSet.\n\nIMPORTANT: \"set\" events will ONLY fire if changes are made through\nY.Node, NOT when directly operating on the DOM element.  Also NOT when a\ndifferent sandbox operates on a separate Y.Node instance for the same\nelement.\n\nNote: The valuechange event provided by YUI captures all changes to the\nelement's value attribute, but only when the element has focus.\n\nTo minimize the performance impact, this module initially overrides only\nY.Node.on().  Patches are then applied to the appropriate functions on\nindividual instances when a \"set\" event is requested.\n\n<dl>\n<dt>set, setAttrs, setAttribute, setStyle, setStyles</dt>\n<dd>Fires _attr_Set or _style_Set event with prevVal, newVal.</dd>\n<dt>setData,clearData</dt>\n<dd>Fires dataSet event with dataKey, prevVal, newVal.</dd>\n<dt>addClass, removeClass, replaceClass</dt>\n<dd>Fires classNameSet event with prevVal, newVal -- consistent with set('className', ...).  Also includes addedClass or removedClass, as appropriate.</dd>\n<dt>setX, setY, setXY</dt>\n<dd>Fires xySet event with prevVal and newVal defining x, y, or both.</dd>",
             "itemtype": "main"
         },
         "gallery-node-optimizations": {
@@ -3983,6 +4008,24 @@
                     "type": "Object"
                 }
             ]
+        },
+        "Node~event-set": {
+            "name": "Node~event-set",
+            "shortname": "Node~event-set",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-node-event-set",
+            "namespace": "",
+            "file": "src/gallery-node-event-set/js/node-event-set.js",
+            "line": 7,
+            "description": "Patches Y.Node to provide \"set\" events for attributes and styles similar\nto the \"change\" events provided by `Y.Attribute`.  Simply subscribe to\n_attr_Set or _style_Set, e.g., valueSet, z-indexSet, or classSet.\n\nIMPORTANT: \"set\" events will ONLY fire if changes are made through\nY.Node, NOT when directly operating on the DOM element.  Also NOT when a\ndifferent sandbox operates on a separate Y.Node instance for the same\nelement.\n\nNote: The valuechange event provided by YUI captures all changes to the\nelement's value attribute, but only when the element has focus.\n\nTo minimize the performance impact, this module initially overrides only\nY.Node.on().  Patches are then applied to the appropriate functions on\nindividual instances when a \"set\" event is requested.\n\n<dl>\n<dt>set, setAttrs, setAttribute, setStyle, setStyles</dt>\n<dd>Fires _attr_Set or _style_Set event with prevVal, newVal.</dd>\n<dt>setData,clearData</dt>\n<dd>Fires dataSet event with dataKey, prevVal, newVal.</dd>\n<dt>addClass, removeClass, replaceClass</dt>\n<dd>Fires classNameSet event with prevVal, newVal -- consistent with set('className', ...).  Also includes addedClass or removedClass, as appropriate.</dd>\n<dt>setX, setY, setXY</dt>\n<dd>Fires xySet event with prevVal and newVal defining x, y, or both.</dd>",
+            "mainName": "gallery-node-event-set",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true
         },
         "Node~optimizations": {
             "name": "Node~optimizations",
@@ -8380,13 +8423,14 @@
             "name": "queryBuilder",
             "type": "{Y.QueryBuilder}",
             "default": "null",
+            "required": 1,
             "writeonce": "",
             "class": "ExpressionBuilder",
             "module": "gallery-exprbuilder"
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 87,
+            "line": 88,
             "description": "A map of QueryBuilder operators to objects defining\n{operator,pattern}.  This is needed if a variable type generates\nmultiple values, and the values must be combined with something\nother than AND.",
             "itemtype": "attribute",
             "name": "combinatorMap",
@@ -8397,7 +8441,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 102,
+            "line": 103,
             "description": "The label for the Insert Parentheses button.",
             "itemtype": "attribute",
             "name": "parenLabel",
@@ -8409,7 +8453,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 117,
+            "line": 118,
             "description": "The label for the AND button.",
             "itemtype": "attribute",
             "name": "andLabel",
@@ -8421,7 +8465,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 132,
+            "line": 133,
             "description": "The label for the OR button.",
             "itemtype": "attribute",
             "name": "orLabel",
@@ -8433,7 +8477,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 147,
+            "line": 148,
             "description": "The label for the NOT button.",
             "itemtype": "attribute",
             "name": "notLabel",
@@ -8445,7 +8489,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 162,
+            "line": 163,
             "description": "The label for the Clear button.",
             "itemtype": "attribute",
             "name": "clearLabel",
@@ -8457,7 +8501,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 177,
+            "line": 178,
             "description": "The label for the Insert button.",
             "itemtype": "attribute",
             "name": "insertLabel",
@@ -8469,7 +8513,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 192,
+            "line": 193,
             "description": "The label for the Reset button.",
             "itemtype": "attribute",
             "name": "resetLabel",
@@ -8481,7 +8525,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 207,
+            "line": 208,
             "description": "The error message for an unclosed parenthesis. <q>context</q> is\nreplaced by the portion of the expression that generated the error.",
             "itemtype": "attribute",
             "name": "tooManyParensError",
@@ -8492,7 +8536,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 221,
+            "line": 222,
             "description": "The error message for an unmatched single quote.",
             "itemtype": "attribute",
             "name": "unmatchedSingleQuoteError",
@@ -8503,7 +8547,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 234,
+            "line": 235,
             "description": "The error message for an unclosed parenthesis.",
             "itemtype": "attribute",
             "name": "unclosedParenError",
@@ -8514,7 +8558,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 247,
+            "line": 248,
             "description": "The error message when the user forgets to select a variable for\ninsertion.",
             "itemtype": "attribute",
             "name": "noVariableSelectedError",
@@ -8525,7 +8569,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 476,
+            "line": 479,
             "description": "Clears the expression.",
             "itemtype": "method",
             "name": "clear",
@@ -8534,7 +8578,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 487,
+            "line": 490,
             "description": "Validate the expression.",
             "itemtype": "method",
             "name": "_validateExpression",
@@ -8549,7 +8593,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 561,
+            "line": 564,
             "itemtype": "method",
             "name": "_field",
             "access": "protected",
@@ -8563,7 +8607,7 @@
         },
         {
             "file": "src/gallery-exprbuilder/js/ExpressionBuilder.js",
-            "line": 601,
+            "line": 604,
             "itemtype": "method",
             "name": "_query",
             "access": "protected",

@@ -193,6 +193,8 @@
             
                 <li><a href="..&#x2F;classes/Node~dimensions.html">Node~dimensions</a></li>
             
+                <li><a href="..&#x2F;classes/Node~event-set.html">Node~event-set</a></li>
+            
                 <li><a href="..&#x2F;classes/Node~optimizations.html">Node~optimizations</a></li>
             
                 <li><a href="..&#x2F;classes/Node~scrollIntoView.html">Node~scrollIntoView</a></li>
@@ -341,6 +343,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-node-event-set.html">gallery-node-event-set</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-node-optimizations.html">gallery-node-optimizations</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-nodelist-extras2.html">gallery-nodelist-extras2</a></li>
@@ -478,6 +482,7 @@ ExpressionBuilder.ATTRS =
 	 * @attribute queryBuilder
 	 * @type {Y.QueryBuilder}
 	 * @default null
+	 * @required
 	 * @writeonce
 	 *&#x2F;
 	queryBuilder:
@@ -788,22 +793,24 @@ function resetQB(e)
 
 function setValidation(f)
 {
-	if (f)
+	if (!f)
 	{
-		var self = this;
-
-		var orig_validateForm = f.validateForm;
-		f.validateForm = function()
-		{
-			resetQB.call(self);
-			orig_validateForm.apply(this, arguments);
-		};
-
-		f.setFunction(this.get(&#x27;fieldId&#x27;), function(form, e)
-		{
-			return self._validateExpression(form, e, this);
-		});
+		return;
 	}
+
+	var self = this;
+
+	var orig_validateForm = f.validateForm;
+	f.validateForm = function()
+	{
+		resetQB.call(self);
+		orig_validateForm.apply(this, arguments);
+	};
+
+	f.setFunction(this.get(&#x27;fieldId&#x27;), function(form, e)
+	{
+		return self._validateExpression(form, e, this);
+	});
 }
 
 Y.extend(ExpressionBuilder, Y.Widget,
