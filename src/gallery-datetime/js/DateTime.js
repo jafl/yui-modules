@@ -13,16 +13,15 @@ var blackout_min_seconds = -40,
  */
 
 /**********************************************************************
- * <p>Manages an optional set of radio buttons (for "no date", etc.), a
- * date input field + hour and minute menus, a calendar for selecting the
- * date (either inline or as a popup tied to the date input field), and a
- * legend explaining the ways in which a day can be marked, based on
- * blackouts.</p>
+ * Manages an optional set of radio buttons (for "no date", etc.), a date
+ * input field + hour and minute menus, a calendar for selecting the date
+ * (either inline or as a popup tied to the date input field), and a legend
+ * explaining the ways in which a day can be marked, based on blackouts.
  * 
- * <p>Date/time values can be specified as either a Date object or an
- * object specifying year,month,day (all 1-based) or date_str and
- * optionally hour,minute or time_str.  Individual values take precedence
- * over string values.  Time resolution is in minutes.</p>
+ * Date/time values can be specified as either a Date object or an object
+ * specifying year,month,day (all 1-based) or date_str and optionally
+ * hour,minute or time_str.  Individual values take precedence over string
+ * values.  Time resolution is in minutes.
  * 
  * @main gallery-datetime
  * @class DateTime
@@ -38,8 +37,43 @@ function DateTime = function(config)
 
 DateTime.NAME = "datetime";
 
+function isInputNode(n)
+{
+	// allow Y.Node from a different sandbox
+	return n && n._node && n._node.tagName == 'INPUT';
+}
+
 DateTime.ATTRS =
 {
+	/**
+	 * Date input field to use.  Can be augmented with a Calendar via
+	 * gallery-input-calendar-sync.
+	 * 
+	 * @attribute calendar
+	 * @type {Calendar}
+	 * @required
+	 * @writeonce
+	 */
+	dateInput:
+	{
+		validator: isInputNode,
+		writeOnce: true
+	},
+
+	/**
+	 * Time input field to use.  Can be enhanced with gallery-timepicker.
+	 * 
+	 * @attribute timeInput
+	 * @type {Node}
+	 * @required
+	 * @writeonce
+	 */
+	timeInput:
+	{
+		validator: isInputNode,
+		writeOnce: true
+	},
+
 	/**
 	 * Blackout ranges, specified as a list of objects, each defining start
 	 * and end.

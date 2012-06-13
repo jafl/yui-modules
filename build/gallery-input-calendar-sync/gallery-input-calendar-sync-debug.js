@@ -70,16 +70,22 @@ function syncFromInput()
 		}
 	}
 
-	syncFromCalendar.call(this);
+	privateSyncFromCalendar.call(this);
 }
 
 function syncFromCalendar()
 {
 	if (!this.ignore_selection_change)
 	{
-		var date = this.get('calendar').get('selectedDates')[0];
-		this.get('host').set('value', Y.DateTimeUtils.formatDate(date));
+		this.get('host').focus();	// make it compatible with valuechange event
+		privateSyncFromCalendar.call(this);
 	}
+}
+
+function privateSyncFromCalendar()
+{
+	var date = this.get('calendar').get('selectedDates')[0];
+	this.get('host').set('value', Y.DateTimeUtils.formatDate(date));
 }
 
 Y.extend(InputCalendarSync, Y.Plugin.Base,

@@ -389,7 +389,7 @@ function updateCursorAppearance()
 	this.cursor_width = this.cursor.get('offsetWidth');
 }
 
-function resize()
+function resize()	// not using gallery-widget-fillviewport, because we subscribe to windowresize
 {
 	this.set('width', Y.DOM.winWidth());
 	this.set('height', Y.DOM.winHeight());
