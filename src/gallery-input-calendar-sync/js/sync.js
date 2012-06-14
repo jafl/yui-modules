@@ -43,6 +43,11 @@ InputCalendarSync.ATTRS =
 
 function syncFromInput()
 {
+	if (this.ignore_value_change)
+	{
+		return;
+	}
+
 	var host  = this.get('host'),
 		cal   = this.get('calendar'),
 		value = Y.Lang.trim(host.get('value'));
@@ -82,8 +87,12 @@ function syncFromCalendar()
 
 function privateSyncFromCalendar()
 {
+	this.ignore_value_change = true;
+
 	var date = this.get('calendar').get('selectedDates')[0];
 	this.get('host').set('value', Y.DateTimeUtils.formatDate(date));
+
+	this.ignore_value_change = false;
 }
 
 Y.extend(InputCalendarSync, Y.Plugin.Base,
