@@ -75,24 +75,6 @@ DateTime.ATTRS =
 	},
 
 	/**
-	 * Time value to use when no time is specified, e.g., in a blackout date.
-	 * 
-	 * @attribute blankTime
-	 * @type {Object}
-	 * @default { hour:0, minute:0 }
-	 */
-	blankTime:
-	{
-		value: { hour:0, minute:0 };
-		validator: function(value)
-		{
-			return (Y.Lang.isObject(value) &&
-					Y.Lang.isNumber(value.hour) &&
-					Y.Lang.isNumber(value.minute));
-		}
-	},
-
-	/**
 	 * Blackout ranges, specified as a list of objects, each defining start
 	 * and end.
 	 * 
@@ -109,7 +91,7 @@ DateTime.ATTRS =
 			// store ranges in ascending order of start time
 
 			blackout   = [];
-			blank_time = this.get('blankTime');
+			blank_time = this.get('blank_time');
 			for (var i=0; i<ranges.length; i++)
 			{
 				var r   = ranges[i];
@@ -212,14 +194,92 @@ function handleCalendarSelection()
 {
 	if (!this.ignore_date_selection)
 	{
-		var node = this.get('timeInput');
-		if (!node.get('value'))
+		this.rb[ this.rb.length-1 ].checked = true;
+		this._updateDisplay();
+
+		if (this.hour_menu.selectedIndex == -1 ||
+			this.minute_menu.selectedIndex == -1)
 		{
-			node.set('value', utils.formatTime(this.get('blankTime')));
+			this.hour_menu.value   = this.blank_time.hour;
+			this.minute_menu.value = this.blank_time.minute;
 		}
 
 		this.ping_input = this.should_ping_input;
 		enforceDateTimeLimits.call(this, 'same-day');
+	}
+}
+
+function handleRadioSelection(e)
+{
+	this._updateDisplay();
+
+	if (Y.Lang.isArray(this.rb_hook))
+	{
+		var i = this.rb.indexOf(e.target);
+		if (i >= 0)
+		{
+			applyRadioHook.call(this, i);
+		}
+	}
+}
+
+function applyRadioHook(
+	/* int */	index)
+{
+	if (!Y.Lang.isArray(this.rb_hook))
+	{
+		return;
+	}
+
+	this.skip_select_hook = true;
+
+	try
+	{
+		var hook = this.rb_hook[index];
+		if (Y.Lang.isFunction(hook))
+		{
+			hook.call(this);
+		}
+		else if (Y.Lang.isString(hook))
+		{
+			this[hook].call(this);
+		}
+		else if (hook && hook.fn)
+		{
+			var scope = hook.scope || this;
+			hook.fn.apply(scope, hook.args);
+		}
+	}
+	catch(e)
+	{
+		throw e;
+	}
+	finally
+	{
+		this.skip_select_hook = false;
+	}
+}
+
+function selectHook(
+	/* string */	name)
+{
+	if (this.skip_select_hook ||
+		!Y.Lang.isArray(this.rb_hook))
+	{
+		return;
+	}
+
+	var i = Y.Array.findIndexOf(this.rb_hook, function(hook)
+	{
+		return ((Y.Lang.isFunction(hook) && hook == this[name]) ||
+				(Y.Lang.isString(hook) && hook == name));
+	},
+	this);
+
+	if (i >= 0)
+	{
+		this.rb.item(i).set('checked', true);
+		this._updateDisplay();
 	}
 }
 
@@ -499,6 +559,31 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		/* object/string */	container,
 		/* map */			config)
 	{
+		this.container = Dom.get(container);
+		Dom.generateId(this.container);
+		Dom.addClass(this.container, 'satg-date-time-container');
+
+		if (!config.label)
+		{
+			config.label =
+			[
+				YAHOO.SATG.Locale.Calendar.date_time_label1,
+				YAHOO.SATG.Locale.Calendar.date_time_label2
+			];
+
+			config.hook =
+			[
+				'clearDateTime',
+				'resetDateTime'
+			];
+		}
+		else if (config.label.length !== config.hook.length)
+		{
+			throw Error('DateTime requires that label and hook must have same length.');
+		}
+
+		this.blank_time = config.blank_time || { hour:0, minute:0 };
+
 		this.min_date_time = config.min_date_time;
 		if (this.min_date_time)
 		{
@@ -519,7 +604,40 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 
 		this.ping_hilight_time = config.ping_hilight_time || SDom.visual_ping_timeout;
 
+		// controls
+
+		this.control_div           = document.createElement('div');
+		this.control_div.className = 'satg-date-time-controls';
+		this.control_div.innerHTML = this._controls(config);
+		this.container.appendChild(this.control_div);
+
+		var event = change_after_focus ? 'click' : 'change';
+
+		this.rb = Dom.getElementsByClassName('satg-date-time-radio-field', 'input', this.control_div);
+		Event.on(this.rb, event, handleRadioSelection, null, this);
+
+		for (var i=0; i<this.rb.length; i++)
+		{
+			if (!config.label[i])	// remove from document so it doesn't disrupt keyboard navigation
+			{
+				this.rb[i].parentNode.removeChild(this.rb[i]);
+			}
+		}
+
+		this.input       = Dom.getElementsByClassName('satg-date-time-date-field', 'input', this.control_div)[0];
+		this.hour_menu   = Dom.getElementsByClassName('satg-date-time-hour-field', 'select', this.control_div)[0];
+		this.minute_menu = Dom.getElementsByClassName('satg-date-time-minute-field', 'select', this.control_div)[0];
+
+		this.no_time = config.no_time;
+		this.rb_hook = config.hook;
+
+		Event.on(this.hour_menu, 'change', enforceDateTimeLimits, null, this);
+		Event.on(this.minute_menu, 'change', enforceDateTimeLimits, null, this);
+
 		// calendar
+
+		this.cal_div = document.createElement('div');
+		this.container.appendChild(this.cal_div);
 
 		this.calendar = new YAHOO.SATG.Calendar(this.cal_div,
 		{
@@ -529,27 +647,116 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 			max_date:     config.max_date_time
 		});
 
+		if (!config.hide_legend)
+		{
+			this.legend_div           = document.createElement('div');
+			this.legend_div.className = 'satg-date-time-legend';
+			this.legend_div.innerHTML = dateTimeLegend();
+			this.container.appendChild(this.legend_div);
+		}
+
+		// clear float
+
+		if (!config.do_not_clear_float)
+		{
+			var hack       = document.createElement('div');
+			hack.className = 'satg-calendar-post-float-clear';
+			this.container.parentNode.appendChild(hack);
+		}
+
+		// initialize display
+
+		if (config.allow_no_date_time && config.initial_mode)
+		{
+			this.rb[ config.initial_mode ].checked = true;
+		}
+		else if (config.allow_no_date_time)
+		{
+			this.first_rb_index = 0;
+			for (var i=0; i<config.label.length; i++)
+			{
+				if (config.label[i])
+				{
+					this.first_rb_index = i;
+					break;
+				}
+			}
+
+			this.rb[ this.first_rb_index ].checked = true;
+			config.initial_mode = this.first_rb_index;
+		}
+		else
+		{
+			var clazz = config.hide_no_date_class || SDom.hide_class;
+			var el    = Dom.getElementsByClassName('satg-date-time-primary-fields', 'div', this.control_div)[0];
+			Dom.addClass(el, clazz);
+			this.rb[ this.rb.length-1 ].checked = true;
+			config.initial_mode = this.rb.length-1;
+		}
+
+		if (config.allow_no_date_time)
+		{
+			Dom.addClass(this.container, 'satg-allow-no-date-time')
+		}
+
+		this.setDisabled(config.disabled);
+		applyRadioHook.call(this, config.initial_mode);		// after _updateDisplay()
+
 		// listen for changes
 
-		this.get('dateInput')
-
-		this.get('timeInput')
-		Event.on(this.hour_menu, 'change', enforceDateTimeLimits, null, this);
-		Event.on(this.minute_menu, 'change', enforceDateTimeLimits, null, this);
+		this.calendar.subscribe('onInitSyncFinished', installDateTimeCalendarSelection, null, this);
 
 		// black-out dates
 
+		if (config.blackout_ranges)
+		{
+			this.setBlackoutRanges(config.blackout_ranges, true);
+		}
 		updateRendering.call(this);
-		this.on('blackoutsChange', updateRendering);
+
+		// done
+
+		YAHOO.lang.later(1, this, function()
+		{
+			this.fire('init');
+		});
 	},
 
 	destroy: function()
 	{
+		Event.purgeElement(this.control_div, true);
 		this.calendar.destroy();
+
+		var hack = SDom.getFirstSiblingByClassName(this.container, 'satg-calendar-post-float-clear');
+		if (hack)
+		{
+			this.container.parentNode.removeChild(hack);
+		}
+
+		this.container.parentNode.removeChild(this.container);
+		this.container   = null;
+		this.cal_div     = null;
+		this.control_div = null;
+		this.rb          = null;
+		this.input       = null;
+		this.hour_menu   = null;
+		this.minute_menu = null;
 	},
 
 	getDateTime: function()
 	{
+		if (this._controlsDisabled())
+		{
+			for (var i=0; i<this.rb.length; i++)
+			{
+				if (this.rb[i].checked)
+				{
+					return i;
+				}
+			}
+			return false;	// should never happen
+		}
+
 		var date = this.calendar.getDate();
 		if (!date)
 		{
@@ -579,6 +786,7 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		/* object */	date_time)
 	{
 		this.rb[ this.rb.length-1 ].checked = true;
+		this._updateDisplay();
 
 		this.calendar.setDate(date_time);
 
@@ -621,6 +829,7 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 			this.minute_menu.value = this.blank_time.minute;
 		}
 
+		selectHook.call(this, 'resetDateTime');
 		enforceDateTimeLimits.call(this);
 	},
 
@@ -629,6 +838,8 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		this.calendar.clearDate();
 		this.hour_menu.selectedIndex   = -1;
 		this.minute_menu.selectedIndex = -1;
+
+		selectHook.call(this, 'clearDateTime');
 	},
 
 	setDefaultDateTime: function(
@@ -716,6 +927,53 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		}
 	},
 
+	isDisabled: function()
+	{
+		return this.disabled;
+	},
+
+	setDisabled: function(
+		/* bool */	disabled)
+	{
+		this.disabled = disabled;
+
+		function always() { return true; }
+
+		Dom.getElementsBy(always, 'input',  this.control_div, disableElement, disabled);
+		Dom.getElementsBy(always, 'select', this.control_div, disableElement, disabled);
+
+		this.calendar.setDisabled(disabled);
+
+		updateRendering.call(this);
+		this._updateDisplay();
+	},
+
+	setBlackoutRanges: function(
+		/* array */	ranges,
+		/* bool */	_skip_render)
+	{
+
+		// render blackouts
+
+		if (!_skip_render)
+		{
+			updateRendering.call(this);
+		}
+	},
+
+	_updateDisplay: function()
+	{
+		var disabled              = this._controlsDisabled();
+		this.input.disabled       = disabled;
+		this.hour_menu.disabled   = disabled;
+		this.minute_menu.disabled = disabled;
+	},
+
+	_controlsDisabled: function()
+	{
+		return (this.disabled || !this.rb[ this.rb.length-1 ].checked);
+	},
+
 	_ping: function()
 	{
 		var nodes = Array.prototype.slice.call(arguments, 0);
@@ -736,5 +994,87 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		});
 
 		this.ping_task.nodes = nodes;
+	},
+
+	//
+	// Markup
+	//
+
+	_controls: function(
+		/* map */	config)
+	{
+		var radio_markup =
+			'<div class="satg-date-time-control-row" style="{style}">' +
+				'<input type="radio" name="{name}" id="{id}" value="{value}" class="satg-date-time-field satg-date-time-radio-field"/>' +
+				'<label for="{id}" class="satg-date-time-label">{label}</label>' +
+			'</div>';
+
+		var markup =
+			'<div class="satg-date-time-primary-fields">' +
+				'{radio}' +
+			'</div>' +
+			'<div class="satg-date-time-secondary-fields">' +
+				'<input type="text" class="satg-date-time-field satg-date-time-date-field"/>' +
+				' ' +
+
+				'<span style="{menu_style}">' +
+					'<select class="satg-date-time-field satg-date-time-hour-field">' +
+						'<option value="0">00</option><option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option>' +
+						'<option value="5">05</option><option value="6">06</option><option value="7">07</option><option value="8">08</option><option value="9">09</option>' +
+						'<option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option>' +
+						'<option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option>' +
+						'<option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option>' +
+					'</select>' +
+					' ' +
+
+					'<select class="satg-date-time-field satg-date-time-minute-field">' +
+						'<option value="0">00</option><option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option>' +
+						'<option value="5">05</option><option value="6">06</option><option value="7">07</option><option value="8">08</option><option value="9">09</option>' +
+						'<option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option>' +
+						'<option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option>' +
+						'<option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>' +
+						'<option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option>' +
+						'<option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option>' +
+						'<option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option>' +
+						'<option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option>' +
+						'<option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option>' +
+						'<option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option>' +
+						'<option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option>' +
+					'</select>' +
+				'</span>' +
+			'</div>';
+
+		var radio_name = Dom.generateId();
+
+		var radio = '';
+		for (var i=0; i<config.label.length; i++)
+		{
+			radio += YAHOO.lang.substitute(radio_markup,
+			{
+				id:    Dom.generateId(),
+				name:  radio_name,
+				value: i,
+				label: config.label[i] || '&nbsp;',
+				style: config.label[i] ? '' : 'visibility:hidden;'
+			});
+		}
+
+		return YAHOO.lang.substitute(markup,
+		{
+			radio:      radio,
+			menu_style: config.no_time ? 'display:none;' : ''
+		});
 	}
 });
+
+function dateTimeLegend()
+{
+	var markup =
+		'<div class="satg-partial-blackout satg-legend-icon"></div>' +
+		'<p class="satg-legend-text">{label}</p>';
+
+	return YAHOO.lang.substitute(markup,
+	{
+		label: YAHOO.SATG.Locale.Calendar.partial_day_legend
+	});
+}

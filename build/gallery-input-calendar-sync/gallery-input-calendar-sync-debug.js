@@ -92,9 +92,14 @@ Y.extend(InputCalendarSync, Y.Plugin.Base,
 {
 	initializer: function(config)
 	{
-		var host           = this.get('host');
-		this.change_handle = host.on('change', syncFromInput, this);
-		this.cal_handle    = this.get('calendar').on('selectionChange', syncFromCalendar, this);
+		var host = this.get('host');
+
+		this.handle =
+		[
+			host.on('change', syncFromInput, this),
+			host.on('valueSet', syncFromInput, this),
+			this.get('calendar').on('selectionChange', syncFromCalendar, this)
+		];
 
 		this.get('calendar').set('selectionMode', 'single');
 
@@ -104,6 +109,7 @@ Y.extend(InputCalendarSync, Y.Plugin.Base,
 	destructor: function()
 	{
 		this.change_handle.detach();
+		this.set_handle.detach();
 		this.cal_handle.detach();
 	}
 });
@@ -112,4 +118,4 @@ Y.namespace("Plugin");
 Y.Plugin.InputCalendarSync = InputCalendarSync;
 
 
-}, '@VERSION@' ,{requires:['node-pluginhost','plugin','gallery-datetime-utils','calendar']});
+}, '@VERSION@' ,{requires:['node-pluginhost','plugin','gallery-datetime-utils','calendar','gallery-node-event-set']});
