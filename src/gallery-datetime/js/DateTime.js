@@ -1,7 +1,6 @@
 "use strict";
 
 var Dom = YAHOO.util.Dom,
-	SDom = YAHOO.SATG.Dom,
 	Event = YAHOO.util.Event,
 
 var blackout_min_seconds = -40,
@@ -205,6 +204,34 @@ DateTime.ATTRS =
 		{
 			return (value == -1 || value == +1);
 		}
+	},
+
+	/**
+	 * Duration of visual ping in milliseconds when the value of an input
+	 * field is modified because of a min/max or blackout restriction.  Set
+	 * to zero to disable.
+	 * 
+	 * @attribute pingDuration
+	 * @type {Number}
+	 * @default 2
+	 */
+	pingDuration:
+	{
+		value:     2,
+		validator: Y.Lang.isNumber
+	},
+
+	/**
+	 * CSS class applied to input field when it is pinged.
+	 * 
+	 * @attribute pingClass
+	 * @type {String}
+	 * @default "yui3-datetime-ping"
+	 */
+	pingClass:
+	{
+		value:     'yui3-datetime-ping',
+		validator: Y.Lang.isString
 	}
 }
 
@@ -340,22 +367,22 @@ function enforceDateTimeLimits(
 		this.calendar.setDate(date);
 		this.hour_menu.value   = date.getHours();
 		this.minute_menu.value = date.getMinutes();
-		this._ping(this.input, this.hour_menu, this.minute_menu);
+		ping.call(this, this.input, this.hour_menu, this.minute_menu);
 	}
 	else if (date.getHours() !== orig_date.getHours())
 	{
 		this.hour_menu.value   = date.getHours();
 		this.minute_menu.value = date.getMinutes();
-		this._ping.apply(this, pings.concat(this.hour_menu, this.minute_menu));
+		ping.apply(this, pings.concat(this.hour_menu, this.minute_menu));
 	}
 	else if (date.getMinutes() !== orig_date.getMinutes())
 	{
 		this.minute_menu.value = date.getMinutes();
-		this._ping.apply(this, pings.concat(this.minute_menu));
+		ping.apply(this, pings.concat(this.minute_menu));
 	}
 	else if (pings.length > 0)
 	{
-		this._ping.apply(this, pings);
+		ping.apply(this, pings);
 	}
 
 	this.fire('limitsEnforced');
@@ -492,6 +519,34 @@ function cellRenderer(
 		Dom.addClass(cell, css);
 	};
 }
+function ping()
+{
+	var duration = this.get('pingDuration');
+	if (duration <= 0)
+	{
+		return;
+	}
+
+	var nodes = new Y.NodeList(arguments.length > 1 ? arguments : arguments[0]);
+
+	var ping_class = this.get('pingClass');
+	if (this.ping_task)
+	{
+		this.ping_task.nodes.removeClass(ping_class);
+		this.ping_task.cancel();
+		nodes = nodes.concat(this.ping_task.nodes);
+	}
+
+	nodes.addClass(ping_class);
+
+	this.ping_task = Y.later(this.get('pingDuration'), this, function()
+	{
+		this.ping_task = null;
+		nodes.removeClass(ping_class);
+	});
+
+	this.ping_task.nodes = nodes;
+}
 
 YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 {
@@ -516,8 +571,6 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 		{
 			this.default_date_time = DateTime.normalize(this.default_date_time, this.blank_time);
 		}
-
-		this.ping_hilight_time = config.ping_hilight_time || SDom.visual_ping_timeout;
 
 		// calendar
 
@@ -714,27 +767,5 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 			this.calendar.clearMaxDate();
 			updateRendering.call(this);
 		}
-	},
-
-	_ping: function()
-	{
-		var nodes = Array.prototype.slice.call(arguments, 0);
-
-		if (this.ping_task)
-		{	
-			Dom.removeClass([this.input, this.hour_menu, this.minute_menu], SDom.ping_class);
-			this.ping_task.cancel();
-			nodes = nodes.concat(this.ping_task.nodes);
-		}
-
-		Dom.addClass(nodes, SDom.ping_class);
-
-		this.ping_task = YAHOO.lang.later(this.ping_hilight_time * 1000, this, function()
-		{
-			this.ping_task = null;
-			Dom.removeClass(nodes, SDom.ping_class);
-		});
-
-		this.ping_task.nodes = nodes;
 	}
 });
