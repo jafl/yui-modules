@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>YUI 3 Node Set Event</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.5.1/build/yui/yui.js"></script>
+	<script src="gallery-node-event-set-debug.js"></script>
+	<script src="gallery-test-extras-debug.js"></script>
+
+	<style type="text/css">
+	#xy { position:absolute; top: 0; left: 0; width:10px; height:10px; border:2px solid red; }
+	</style>
+</head>
+<body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/node-event-set">YUI 3 Node Set Event</a> Example</h1>
+
+<p><a href="../yuidoc/modules/gallery-node-event-set.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<form onsubmit="return false;">
+	<label for="demo">Input field:</label><input type="text" id="demo" />
+</form>
+
+<div id="xy"></div>
+
+<p>Performance comparison for detecting *Set event (milliseconds for 1000000 iterations):</p>
+<table id="perf">
+<tr><th>Algo</th><th>Time</th></tr>
+</table>
+
+<script type="text/javascript">
+YUI({
+	filter: 'raw', combine: false,
+	logInclude: { TestRunner: true }
+}).use(
+	'gallery-node-event-set', 'test', 'gallery-test-extras',
+	'console', 'console-filters', 'dd-plugin',
+function(Y)
+{
+	Y.Test.Runner.add(new Y.Test.Case(
+	{
+		name: 'Node Set event',
+
+		setUp: function()
+		{
+			this.node = Y.one('#demo');
+		},
+
+		tearDown: function()
+		{
+			this.node.destroy();
+			delete this.node;
+		},
+
+		testSet: function()
+		{
+			this.node.set('value', 'abc');
+
+			var prev, curr;
+			this.node.on('valueSet', function(e)
+			{
+				prev = e.prevVal;
+				curr = e.newVal;
+			});
+
+			this.node.set('value', 'xyz');
+
+			Y.Assert.areSame('abc', prev);
+			Y.Assert.areSame('xyz', curr);
+		},
+
+		testSetMultiple: function()
+		{
+			this.node.set('value',     'abc');
+			this.node.set('className', 'foo');
+
+			var prev_val, curr_val;
+			this.node.on('valueSet', function(e)
+			{
+				prev_val = e.prevVal;
+				curr_val = e.newVal;
+			});
+
+			var prev_class, curr_class;
+			this.node.on('classNameSet', function(e)
+			{
+				prev_class = e.prevVal;
+				curr_class = e.newVal;
+			});
+
+			this.node.set('value',     'xyz');
+			this.node.set('className', 'bar');
+
+			Y.Assert.areSame('abc', prev_val);
+			Y.Assert.areSame('xyz', curr_val);
+
+			Y.Assert.areSame('foo', prev_class);
+			Y.Assert.areSame('bar', curr_class);
+		},
+
+		testStyle: function()
+		{
+			this.node.setStyle('z-index', 2);
+
+			var prev, curr;
+			this.node.on('z-indexSet', function(e)
+			{
+				prev = e.prevVal;
+				curr = e.newVal;
+			});
+
+			this.node.setStyle('z-index', 4);
+
+			Y.Assert.areEqual(2, prev);
+			Y.Assert.areEqual(4, curr);
+		},
+
+		testStyles: function()
+		{
+			this.node.setStyle('z-index',          2);
+			this.node.setStyle('background-color', 'black');
+
+			var prev_z, curr_z;
+			this.node.on('z-indexSet', function(e)
+			{
+				prev_z = e.prevVal;
+				curr_z = e.newVal;
+			});
+
+			var prev_c, curr_c;
+			this.node.on('background-colorSet', function(e)
+			{
+				prev_c = e.prevVal;
+				curr_c = e.newVal;
+			});
+
+			this.node.setStyle('z-index',          4);
+			this.node.setStyle('background-color', 'white');
+
+			Y.Assert.areEqual(2, prev_z);
+			Y.Assert.areEqual(4, curr_z);
+
+			Y.Assert.areSame('black', prev_c);
+			Y.Assert.areSame('white', curr_c);
+		},
+
+		testAttribute: function()
+		{
+			this.node.setAttribute('id', 'foo');
+
+			var prev, curr;
+			this.node.on('idSet', function(e)
+			{
+				prev = e.prevVal;
+				curr = e.newVal;
+			});
+
+			this.node.setAttribute('id', 'demo');
+
+			Y.Assert.areSame('foo', prev);
+			Y.Assert.areSame('demo', curr);
+		},
+
+		testDataSet: function()
+		{
+			this.node.setData('foo', 'bar');
+
+			var key, prev, curr;
+			this.node.on('dataSet', function(e)
+			{
+				key  = e.dataKey;
+				prev = e.prevVal;
+				curr = e.newVal;
+			});
+
+			this.node.setData('foo', 'baz');
+
+			Y.Assert.areSame('foo', key);
+			Y.Assert.areSame('bar', prev);
+			Y.Assert.areSame('baz', curr);
+		},
+
+		testDataClear: function()
+		{
+			this.node.setData('foo', 'bar');
+
+			var key, prev, curr;
+			this.node.on('dataSet', function(e)
+			{
+				key  = e.dataKey;
+				prev = e.prevVal;
+				curr = e.newVal;
+			});
+
+			this.node.clearData('foo');
+
+			Y.Assert.areSame('foo', key);
+			Y.Assert.areSame('bar', prev);
+			Y.Assert.isUndefined(curr);
+		},
+
+		testDataSetAll: function()
+		{
+			this.node.setData({ foo:'bar', bar:'foo' });
+
+			var key = [], prev = [], curr = [];
+			this.node.on('dataSet', function(e)
+			{
+				key.push(e.dataKey);
+				prev.push(e.prevVal);
+				curr.push(e.newVal);
+			});
+
+			this.node.setData({ foo:'baz', baz:'bork' });
+
+			Y.Assert.areSame(3, key.length);
+			Y.ArrayAssert.contains('foo', key);
+			Y.ArrayAssert.contains('bar', key);
+			Y.ArrayAssert.contains('baz', key);
+
+			var i = Y.Array.indexOf(key, 'foo');
+			Y.Assert.areSame('bar', prev[i]);
+			Y.Assert.areSame('baz', curr[i]);
+
+			i = Y.Array.indexOf(key, 'bar');
+			Y.Assert.areSame('foo', prev[i]);
+			Y.Assert.isUndefined(curr[i]);
+
+			i = Y.Array.indexOf(key, 'baz');
+			Y.Assert.isUndefined(prev[i]);
+			Y.Assert.areSame('bork', curr[i]);
+		},
+
+		testDataClearAll: function()
+		{
+			this.node.setData({ foo:'bar', bar:'foo' });
+
+			var key = [], prev = [], curr = [];
+			this.node.on('dataSet', function(e)
+			{
+				key.push(e.dataKey);
+				prev.push(e.prevVal);
+				curr.push(e.newVal);
+			});
+
+			this.node.clearData();
+
+			Y.Assert.areSame(2, key.length);
+			Y.ArrayAssert.contains('foo', key);
+			Y.ArrayAssert.contains('bar', key);
+
+			var i = Y.Array.indexOf(key, 'foo');
+			Y.Assert.areSame('bar', prev[i]);
+			Y.Assert.isUndefined(curr[i]);
+
+			i = Y.Array.indexOf(key, 'bar');
+			Y.Assert.areSame('foo', prev[i]);
+			Y.Assert.isUndefined(curr[i]);
+		},
+
+		testAddClass: function()
+		{
+			this.node.set('className', 'foo');
+
+			var prev = [], curr = [], added = [];
+			this.node.on('classNameSet', function(e)
+			{
+				prev.push(e.prevVal);
+				curr.push(e.newVal);
+				added.push(e.addedClass);
+			});
+
+			this.node.addClass('bar');
+			this.node.addClass('bar');
+
+			Y.Assert.areSame(1, prev.length);
+			Y.Assert.areSame('foo', prev[0]);
+
+			Y.Assert.areSame(1, curr.length);
+			Y.Assert.areSame('foo bar', curr[0]);
+
+			Y.Assert.areSame(1, added.length);
+			Y.Assert.areSame('bar', added[0]);
+		},
+
+		testRemoveClass: function()
+		{
+			this.node.set('className', 'foo bar');
+
+			var prev = [], curr = [], removed = [];
+			this.node.on('classNameSet', function(e)
+			{
+				prev.push(e.prevVal);
+				curr.push(e.newVal);
+				removed.push(e.removedClass);
+			});
+
+			this.node.removeClass('bar');
+			this.node.removeClass('bar');
+
+			Y.Assert.areSame(1, prev.length);
+			Y.Assert.areSame('foo bar', prev[0]);
+
+			Y.Assert.areSame(1, curr.length);
+			Y.Assert.areSame('foo', curr[0]);
+
+			Y.Assert.areSame(1, removed.length);
+			Y.Assert.areSame('bar', removed[0]);
+		},
+
+		testReplaceClass: function()
+		{
+			this.node.set('className', 'foo bar');
+
+			var prev = [], curr = [], added = [], removed = [];
+			this.node.on('classNameSet', function(e)
+			{
+				prev.push(e.prevVal);
+				curr.push(e.newVal);
+				added.push(e.addedClass);
+				removed.push(e.removedClass);
+			});
+
+			this.node.replaceClass('bar', 'baz');
+			this.node.replaceClass('bar', 'bork');
+
+			Y.Assert.areSame(2, prev.length);
+			Y.Assert.areSame('foo bar', prev[0]);
+			Y.Assert.areSame('foo baz', prev[1]);
+
+			Y.Assert.areSame(2, curr.length);
+			Y.Assert.areSame('foo baz', curr[0]);
+			Y.Assert.areSame('foo baz bork', curr[1]);
+
+			Y.Assert.areSame(2, removed.length);
+			Y.Assert.areSame('bar', removed[0]);
+			Y.Assert.isUndefined(removed[1]);
+
+			Y.Assert.areSame(2, added.length);
+			Y.Assert.areSame('baz', added[0]);
+			Y.Assert.areSame('bork', added[1]);
+		},
+
+		testXY: function()
+		{
+			var node = Y.one('#xy');
+
+			var prev, curr;
+			node.on('xySet', function(e)
+			{
+				prev = e.prevVal;
+				curr = e.newVal;
+			});
+
+			node.setXY([300,100]);
+
+			Y.Assert.areWithinEpsilon(0, prev[0], .5);
+			Y.Assert.areWithinEpsilon(0, prev[1], .5);
+
+			Y.Assert.areWithinEpsilon(300, curr[0], .5);
+			Y.Assert.areWithinEpsilon(100, curr[1], .5);
+		}
+	}));
+
+	new Y.Console(
+	{
+		newestOnTop: false,
+		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
+	})
+	.render();
+
+	Y.Test.Runner.run();
+
+	// performance
+
+	var perf = Y.one('#perf'),
+		name = 'background-colorSet',
+		j;
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000000; i++)
+	{
+		if (Y.Lang.isString(name) && /Set$/.test(name))
+		{
+			j++;
+		}
+	}
+	var t2 = new Date().getTime();
+
+	perf.append('<tr><td>regexp</td><td>' + (t2-t1) + '</td></tr>');
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000000; i++)
+	{
+		if (Y.Lang.isString(name) && name.length > 3 &&
+			name.charAt(name.length-3) == 'S' &&
+			name.charAt(name.length-2) == 'e' &&
+			name.charAt(name.length-1) == 't')
+		{
+			j++;
+		}
+	}
+	var t2 = new Date().getTime();
+
+	perf.append('<tr><td>chars w/ isString</td><td>' + (t2-t1) + '</td></tr>');
+
+	var t1 = new Date().getTime();
+	for (var i=0; i<1000000; i++)
+	{
+		if (name.charAt && name.length > 3 &&
+			name.charAt(name.length-3) == 'S' &&
+			name.charAt(name.length-2) == 'e' &&
+			name.charAt(name.length-1) == 't')
+		{
+			j++;
+		}
+	}
+	var t2 = new Date().getTime();
+
+	perf.append('<tr><td>chars w/ charAt</td><td>' + (t2-t1) + '</td></tr>');
+});
+</script>
+
+</body>
+</html>

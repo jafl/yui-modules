@@ -77,6 +77,8 @@
             
                 <li><a href="..&#x2F;classes/DataSource.Treeble.html">DataSource.Treeble</a></li>
             
+                <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
+            
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
             
                 <li><a href="..&#x2F;classes/ExpirationCache.html">ExpirationCache</a></li>
@@ -179,6 +181,10 @@
             
                 <li><a href="..&#x2F;classes/MathFunction.Variable.html">MathFunction.Variable</a></li>
             
+                <li><a href="..&#x2F;classes/MatrixBackground.html">MatrixBackground</a></li>
+            
+                <li><a href="..&#x2F;classes/MatrixCredits.html">MatrixCredits</a></li>
+            
                 <li><a href="..&#x2F;classes/MRUCache.html">MRUCache</a></li>
             
                 <li><a href="..&#x2F;classes/MultiObject.html">MultiObject</a></li>
@@ -186,6 +192,8 @@
                 <li><a href="..&#x2F;classes/NodeList~extras2.html">NodeList~extras2</a></li>
             
                 <li><a href="..&#x2F;classes/Node~dimensions.html">Node~dimensions</a></li>
+            
+                <li><a href="..&#x2F;classes/Node~event-set.html">Node~event-set</a></li>
             
                 <li><a href="..&#x2F;classes/Node~optimizations.html">Node~optimizations</a></li>
             
@@ -230,6 +238,8 @@
                 <li><a href="..&#x2F;classes/Plugin.DataTableState.html">Plugin.DataTableState</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
+            
+                <li><a href="..&#x2F;classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
@@ -283,6 +293,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-datatable-state.html">gallery-datatable-state</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-dimensions.html">gallery-dimensions</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-expiration-cache.html">gallery-expiration-cache</a></li>
@@ -296,6 +308,8 @@
                 <li><a href="..&#x2F;modules/gallery-formmgr-overlay-plugin.html">gallery-formmgr-overlay-plugin</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-funcprog.html">gallery-funcprog</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
             
@@ -317,6 +331,10 @@
             
                 <li><a href="..&#x2F;modules/gallery-mathcanvas.html">gallery-mathcanvas</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-matrix-background.html">gallery-matrix-background</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-matrix-credits.html">gallery-matrix-credits</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-mojito-rpc.html">gallery-mojito-rpc</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-mru-cache.html">gallery-mru-cache</a></li>
@@ -324,6 +342,8 @@
                 <li><a href="..&#x2F;modules/gallery-multiobject.html">gallery-multiobject</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-node-event-set.html">gallery-node-event-set</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-node-optimizations.html">gallery-node-optimizations</a></li>
             
@@ -985,8 +1005,8 @@ function resize()
 
 	var viewport =
 	{
-		w: this.body_container.get(&#x27;winWidth&#x27;),
-		h: this.body_container.get(&#x27;winHeight&#x27;)
+		w: Y.DOM.winWidth(),
+		h: Y.DOM.winHeight()
 	};
 
 	var resize_event = arguments[0] &amp;&amp; arguments[0].type == &#x27;resize&#x27;;	&#x2F;&#x2F; IE7 generates no-op&#x27;s
@@ -1073,8 +1093,8 @@ function resize()
  *&#x2F;
 function checkViewportSize()
 {
-	if (this.body_container.get(&#x27;winWidth&#x27;)    != this.viewport.w ||
-		this.body_container.get(&#x27;winHeight&#x27;)   != this.viewport.h ||
+	if (Y.DOM.winWidth()                       != this.viewport.w ||
+		Y.DOM.winHeight()                      != this.viewport.h ||
 		this.body_container.get(&#x27;clientWidth&#x27;) != this.viewport.bcw)
 	{
 		resize.call(this);

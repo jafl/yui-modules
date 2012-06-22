@@ -19,6 +19,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "DataSource.AsyncFunction",
         "DataSource.BulkEdit",
         "DataSource.Treeble",
+        "DateTimeUtils",
         "EnableIfAnyCheckboxGroup",
         "ExpirationCache",
         "ExpressionBuilder",
@@ -70,9 +71,12 @@ YUI.add("yuidoc-meta", function(Y) {
         "MathFunction.Tangent",
         "MathFunction.Value",
         "MathFunction.Variable",
+        "MatrixBackground",
+        "MatrixCredits",
         "MultiObject",
         "NodeList~extras2",
         "Node~dimensions",
+        "Node~event-set",
         "Node~optimizations",
         "Node~scrollIntoView",
         "Object~extras",
@@ -95,6 +99,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Plugin.DataTableRowExpansion",
         "Plugin.DataTableState",
         "Plugin.FixedSizeAccordion",
+        "Plugin.InputCalendarSync",
         "Plugin.Neon",
         "Plugin.OverlayForm",
         "Plugin.PageLayoutDataTableModule",
@@ -122,6 +127,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-datasource-async-function",
         "gallery-datatable-row-expansion",
         "gallery-datatable-state",
+        "gallery-datetime-utils",
         "gallery-dimensions",
         "gallery-expiration-cache",
         "gallery-exprbuilder",
@@ -129,6 +135,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-formmgr-css-validation",
         "gallery-formmgr-overlay-plugin",
         "gallery-funcprog",
+        "gallery-input-calendar-sync",
         "gallery-instancemanager",
         "gallery-io-multiresponse",
         "gallery-iterable-extras",
@@ -139,10 +146,13 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-linkedlist",
         "gallery-math",
         "gallery-mathcanvas",
+        "gallery-matrix-background",
+        "gallery-matrix-credits",
         "gallery-mojito-rpc",
         "gallery-mru-cache",
         "gallery-multiobject",
         "gallery-neon",
+        "gallery-node-event-set",
         "gallery-node-optimizations",
         "gallery-nodelist-extras2",
         "gallery-object-extras",
@@ -158,7 +168,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "gallery-accordion-horiz-vert",
             "name": "gallery-accordion-horiz-vert",
-            "description": "<p>Widget to manage an accordion, either horizontally or vertically.\nAllows either multiple open sections or only a single open section.\nProvides option to always force at least one item to be open.</p>"
+            "description": "Widget to manage an accordion, either horizontally or vertically.\nAllows either multiple open sections or only a single open section.\nProvides option to always force at least one item to be open."
         },
         {
             "displayName": "gallery-algorithms",
@@ -221,6 +231,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "<p>Plugin for DataTable to preserve state, either on a single page or\nacross pages.</p>"
         },
         {
+            "displayName": "gallery-datetime-utils",
+            "name": "gallery-datetime-utils",
+            "description": "Utility functions work working with dates and times."
+        },
+        {
             "displayName": "gallery-dimensions",
             "name": "gallery-dimensions",
             "description": "Functions for measuring the size of a node."
@@ -254,6 +269,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-funcprog",
             "name": "gallery-funcprog",
             "description": "<p>Augments global Y object with the same higher-order functions that\narray-extras adds to Y.Array.  Note that, unlike arrays and NodeLists,\niteration order for an object is arbitrary, so be careful when applying\nnon-commutative operations!</p>"
+        },
+        {
+            "displayName": "gallery-input-calendar-sync",
+            "name": "gallery-input-calendar-sync",
+            "description": "Plugin for an input field which syncs the value with a calendar."
         },
         {
             "displayName": "gallery-instancemanager",
@@ -306,6 +326,16 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "Displays an arithmetical expression the way you would write it on paper."
         },
         {
+            "displayName": "gallery-matrix-background",
+            "name": "gallery-matrix-background",
+            "description": "Node plugin to display falling text similar to what was used in the\ncredits for The Matrix.  If you plug into the body element, then it will\nfill the viewport.  Otherwise, you must set a width and height for the\nnode."
+        },
+        {
+            "displayName": "gallery-matrix-credits",
+            "name": "gallery-matrix-credits",
+            "description": "Widget to display text similar to what was used in the credits for The\nMatrix.  If you render the widget into the body, then it will fill the\nviewport.  Otherwise, you must specify a width and height for the\nwidget."
+        },
+        {
             "displayName": "gallery-mojito-rpc",
             "name": "gallery-mojito-rpc",
             "description": "<p>RPC wrapper for Mojit proxy.  This allows you to use either\nY.RPC.JSON or Y.RPC.Mojito interchangeably.  The method in the Mojit\nproxy receives the parameters as an array in <code>body.params</code>.\nYou can pass this to the model as follows:\n<code>model.getItems.apply(model,\nac.params.getFromBody().params)</code></p>"
@@ -323,7 +353,12 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "gallery-neon",
             "name": "gallery-neon",
-            "description": "<p>Overrides Y.Node.show() to make it look like a flickering neon\nsign.</p>"
+            "description": "Overrides Y.Node.show() to make it look like a flickering neon sign."
+        },
+        {
+            "displayName": "gallery-node-event-set",
+            "name": "gallery-node-event-set",
+            "description": "Patches Y.Node to provide \"set\" events for attributes and styles similar\nto the \"change\" events provided by `Y.Attribute`.  Simply subscribe to\n_attr_Set or _style_Set, e.g., valueSet, z-indexSet, or classSet.\n\nIMPORTANT: \"set\" events will ONLY fire if changes are made through\nY.Node, NOT when directly operating on the DOM element.  Also NOT when a\ndifferent sandbox operates on a separate Y.Node instance for the same\nelement.\n\nNote: The valuechange event provided by YUI captures all changes to the\nelement's value attribute, but only when the element has focus.\n\nTo minimize the performance impact, this module initially overrides only\nY.Node.on().  Patches are then applied to the appropriate functions on\nindividual instances when a \"set\" event is requested.\n\n<dl>\n<dt>set, setAttrs, setAttribute, setStyle, setStyles</dt>\n<dd>Fires _attr_Set or _style_Set event with prevVal, newVal.</dd>\n<dt>setData,clearData</dt>\n<dd>Fires dataSet event with dataKey, prevVal, newVal.</dd>\n<dt>addClass, removeClass, replaceClass</dt>\n<dd>Fires classNameSet event with prevVal, newVal -- consistent with set('className', ...).  Also includes addedClass or removedClass, as appropriate.</dd>\n<dt>setX, setY, setXY</dt>\n<dd>Fires xySet event with prevVal and newVal defining x, y, or both.</dd>"
         },
         {
             "displayName": "gallery-node-optimizations",
