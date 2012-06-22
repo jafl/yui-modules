@@ -351,7 +351,7 @@ Y.io = function(uri, c) {
         c.form.upload = true;
     }
 
-    orig_io.call(this, uri, c);
+    return orig_io.call(this, uri, c);
 };
 
 Y.mix(Y.io, orig_io);
