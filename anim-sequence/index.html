@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Animation Sequence Examples</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js"></script>
+	<script src="gallery-anim-sequence-debug.js"></script>
+
+	<style type="text/css">
+	.ping { background-color: #99FF99; }
+	</style>
+</head>
+
+<body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/anim-class">YUI 3 Animation Sequence</a> Examples</h1>
+
+<p><a href="../yuidoc/modules/gallery-anim-sequence.html">Show me the documentation</a></p>
+<p><a href="/yui3-gallery/">Back to project list</a></p>
+
+<hr>
+
+<p id="node-fx" class="example">Click to animate</p>
+
+<div id="ab" style="width:210px; height: 210px;">
+	<p style="position: absolute; z-index: 2;">Click to animate</p>
+	<div id="a" style="border:1px solid red; width:100px; height: 100px; position: relative;"></div>
+	<div id="b" style="border:1px solid blue; width:100px; height: 100px; position: relative; left: 100px;"></div>
+</div>
+
+<button id="multi">Animate first two examples</button>
+
+<p id="ping">Click to ping</p>
+
+<script type="text/javascript">
+YUI({
+	filter: 'raw', combine: false,
+	gallery: 'gallery-2012.06.20-20-07'
+}).use(
+	'gallery-anim-sequence', 'anim-color', 'gallery-anim-class',
+function(Y)
+{
+	function reverse()
+	{
+		this.set('reverse', !this.get('reverse'));
+	}
+
+	// node plugin
+
+	var n1 = Y.one('#node-fx');
+	n1.plug(Y.Plugin.NodeFXSequence,
+	{
+		sequence:
+		[
+			new Y.Anim({ from: { backgroundColor: '#FFFFFF' }, to: { backgroundColor: '#FF0000' } }),
+			new Y.Anim({ from: { height: '20px' }, to: { height: '50px' } }),
+			new Y.Anim({ from: { backgroundColor: '#FF0000' }, to: { backgroundColor: '#00FF00' } })
+		]
+	});
+
+	n1.fx.on('end', reverse);
+	Y.on('click', n1.fx.run, '#node-fx', n1.fx);
+
+	// multiple nodes
+
+	var s1 = new Y.AnimSequence(
+	{
+		sequence:
+		[
+			[
+				new Y.Anim({ node: '#a', from: { top: 0 }, to: { top: '100px' } }),
+				new Y.Anim({ node: '#b', from: { top: 0 }, to: { top: '-100px' } })
+			],
+			[
+				new Y.Anim({ node: '#a', from: { backgroundColor: '#FFFFFF' }, to: { backgroundColor: '#FF0000' } }),
+				new Y.Anim({ node: '#b', from: { backgroundColor: '#FFFFFF' }, to: { backgroundColor: '#0000FF' } })
+			],
+			new Y.Anim({ node: '#ab', from: { backgroundColor: '#FFFFFF' }, to: { backgroundColor: '#999999' } })
+		]
+	});
+
+	s1.on('end', reverse);
+	Y.on('click', s1.run, '#ab', s1);
+
+	// actions and delays
+
+	var n2 = Y.one('#ping');
+	function modifyClass(reverse)
+	{
+		if (reverse)
+		{
+			n2.removeClass('ping');
+		}
+		else
+		{
+			n2.addClass('ping');
+		}
+	}
+
+	var s2 = new Y.AnimSequence(
+	{
+		sequence:
+		[
+			modifyClass,
+			2000,
+			new Y.Anim({ node: n2, from: { cssClass: 'ping' } })
+//			function (reverse)
+//			{
+//				modifyClass(!reverse);
+//			}
+		]
+	});
+
+	s2.on('end', reverse);
+	n2.on('click', s2.run, s2);
+
+	// embed sequence inside other sequence
+
+	var s3 = new Y.AnimSequence(
+	{
+		sequence:
+		[
+			n1.fx,
+			s1
+		]
+	});
+
+	s3.on('end', reverse);
+	Y.on('click', s3.run, '#multi', s3);
+
+	// pause/resume
+});
+</script>
+
+</body>
+</html>
