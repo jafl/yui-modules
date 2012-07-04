@@ -43,6 +43,8 @@
             
                 <li><a href="..&#x2F;classes/Accordion.html">Accordion</a></li>
             
+                <li><a href="..&#x2F;classes/AnimSequence.html">AnimSequence</a></li>
+            
                 <li><a href="..&#x2F;classes/ArrayIterator.html">ArrayIterator</a></li>
             
                 <li><a href="..&#x2F;classes/ArrayList~extras.html">ArrayList~extras</a></li>
@@ -243,6 +245,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.NodeFXSequence.html">Plugin.NodeFXSequence</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.OverlayForm.html">Plugin.OverlayForm</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.PageLayoutDataTableModule.html">Plugin.PageLayoutDataTableModule</a></li>
@@ -272,6 +276,8 @@
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-anim-sequence.html">gallery-anim-sequence</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-bulkedit.html">gallery-bulkedit</a></li>
             
@@ -449,6 +455,11 @@ InputCalendarSync.ATTRS =
 
 function syncFromInput()
 {
+	if (this.ignore_value_change)
+	{
+		return;
+	}
+
 	var host  = this.get(&#x27;host&#x27;),
 		cal   = this.get(&#x27;calendar&#x27;),
 		value = Y.Lang.trim(host.get(&#x27;value&#x27;));
@@ -488,17 +499,26 @@ function syncFromCalendar()
 
 function privateSyncFromCalendar()
 {
+	this.ignore_value_change = true;
+
 	var date = this.get(&#x27;calendar&#x27;).get(&#x27;selectedDates&#x27;)[0];
 	this.get(&#x27;host&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatDate(date));
+
+	this.ignore_value_change = false;
 }
 
 Y.extend(InputCalendarSync, Y.Plugin.Base,
 {
 	initializer: function(config)
 	{
-		var host           = this.get(&#x27;host&#x27;);
-		this.change_handle = host.on(&#x27;change&#x27;, syncFromInput, this);
-		this.cal_handle    = this.get(&#x27;calendar&#x27;).on(&#x27;selectionChange&#x27;, syncFromCalendar, this);
+		var host = this.get(&#x27;host&#x27;);
+
+		this.handle =
+		[
+			host.on(&#x27;change&#x27;, syncFromInput, this),
+			host.on(&#x27;valueSet&#x27;, syncFromInput, this),
+			this.get(&#x27;calendar&#x27;).on(&#x27;selectionChange&#x27;, syncFromCalendar, this)
+		];
 
 		this.get(&#x27;calendar&#x27;).set(&#x27;selectionMode&#x27;, &#x27;single&#x27;);
 
@@ -508,6 +528,7 @@ Y.extend(InputCalendarSync, Y.Plugin.Base,
 	destructor: function()
 	{
 		this.change_handle.detach();
+		this.set_handle.detach();
 		this.cal_handle.detach();
 	}
 });

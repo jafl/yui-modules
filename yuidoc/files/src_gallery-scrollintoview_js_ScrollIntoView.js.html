@@ -43,6 +43,8 @@
             
                 <li><a href="..&#x2F;classes/Accordion.html">Accordion</a></li>
             
+                <li><a href="..&#x2F;classes/AnimSequence.html">AnimSequence</a></li>
+            
                 <li><a href="..&#x2F;classes/ArrayIterator.html">ArrayIterator</a></li>
             
                 <li><a href="..&#x2F;classes/ArrayList~extras.html">ArrayList~extras</a></li>
@@ -243,6 +245,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.NodeFXSequence.html">Plugin.NodeFXSequence</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.OverlayForm.html">Plugin.OverlayForm</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.PageLayoutDataTableModule.html">Plugin.PageLayoutDataTableModule</a></li>
@@ -272,6 +276,8 @@
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-anim-sequence.html">gallery-anim-sequence</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-bulkedit.html">gallery-bulkedit</a></li>
             
@@ -457,9 +463,12 @@ Y.Node.prototype.scrollIntoView = function()
 		{
 			var hit_top = (ancestor.offsetParent === null);
 
-			var a = Y.one(ancestor);
-			if (ancestor.scrollWidth - a.horizMarginBorderPadding() &gt; ancestor.clientWidth ||
-				ancestor.scrollHeight - a.vertMarginBorderPadding() &gt; ancestor.clientHeight)
+			var a = Y.one(ancestor),
+				b = (Y.Node.getDOMNode(a) === Y.config.doc.body),
+				w = b ? Y.DOM.winWidth() : ancestor.clientWidth,
+				h = b ? Y.DOM.winHeight() : ancestor.clientHeight;
+			if (ancestor.scrollWidth - a.horizMarginBorderPadding() &gt; w ||
+				ancestor.scrollHeight - a.vertMarginBorderPadding() &gt; h)
 			{
 				break;
 			}

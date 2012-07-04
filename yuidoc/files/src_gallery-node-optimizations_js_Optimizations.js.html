@@ -43,6 +43,8 @@
             
                 <li><a href="..&#x2F;classes/Accordion.html">Accordion</a></li>
             
+                <li><a href="..&#x2F;classes/AnimSequence.html">AnimSequence</a></li>
+            
                 <li><a href="..&#x2F;classes/ArrayIterator.html">ArrayIterator</a></li>
             
                 <li><a href="..&#x2F;classes/ArrayList~extras.html">ArrayList~extras</a></li>
@@ -243,6 +245,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.NodeFXSequence.html">Plugin.NodeFXSequence</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.OverlayForm.html">Plugin.OverlayForm</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.PageLayoutDataTableModule.html">Plugin.PageLayoutDataTableModule</a></li>
@@ -272,6 +276,8 @@
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-anim-sequence.html">gallery-anim-sequence</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-bulkedit.html">gallery-bulkedit</a></li>
             
@@ -502,7 +508,7 @@ Y.Node.prototype.getAncestorByClassName = function(
 		e = e.parentNode;
 		if (!e || !e.tagName)
 		{
-			return null;	&#x2F;&#x2F; might be hidden, which is outside &lt;fieldset&gt;
+			return null;
 		}
 	}
 	return Y.one(e);
@@ -534,7 +540,7 @@ Y.Node.prototype.getAncestorByTagName = function(
 		e = e.parentNode;
 		if (!e || !e.tagName)
 		{
-			return null;	&#x2F;&#x2F; might be hidden, which is outside &lt;fieldset&gt;
+			return null;
 		}
 	}
 	return Y.one(e);
@@ -662,10 +668,11 @@ Y.Node.prototype.getFirstElementByClassName = function(
 		{
 			for (var i=0; i&lt;list1.length; i++)
 			{
-				var root = list1[i];
-				for (var j=0; j&lt;root.children.length; j++)
+				var root     = list1[i],
+					children = root.children || root.childNodes;	&#x2F;&#x2F; svg elements only have childNodes
+				for (var j=0; j&lt;children.length; j++)
 				{
-					var e = root.children[j];
+					var e = children[j];
 					if (Y.DOM.hasClass(e, class_name))
 					{
 						return Y.one(e);

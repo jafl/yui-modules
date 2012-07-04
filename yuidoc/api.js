@@ -2,6 +2,7 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "Accordion",
+        "AnimSequence",
         "ArrayIterator",
         "ArrayList~extras",
         "Array~algorithms",
@@ -101,6 +102,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Plugin.FixedSizeAccordion",
         "Plugin.InputCalendarSync",
         "Plugin.Neon",
+        "Plugin.NodeFXSequence",
         "Plugin.OverlayForm",
         "Plugin.PageLayoutDataTableModule",
         "QueryBuilder",
@@ -117,6 +119,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-accordion-horiz-vert",
         "gallery-algorithms",
         "gallery-anim-class",
+        "gallery-anim-sequence",
         "gallery-bulkedit",
         "gallery-busyoverlay",
         "gallery-canvas",
@@ -179,6 +182,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-anim-class",
             "name": "gallery-anim-class",
             "description": "<p>Adds CSS class animation to `Y.Anim`, so you can specify `cssClass`\nin `from` and/or `to`.  At the end of the animation, the `from` class is\nreplaced by the `to` class, and all the individual styles used during\nthe animation are removed.</p>\n\n<p>Explicit entries in `from` or `to` override values set by cssClass.</p>"
+        },
+        {
+            "displayName": "gallery-anim-sequence",
+            "name": "gallery-anim-sequence",
+            "description": "Manages a sequence of animations, so you don't have to chain them\nmanually. Each item in the sequence can be a single animation, an array\nof animations to perform in parallel, a function which performs an\nimmediate action, or a delay in milliseconds.\n\nPass `sequence` in the configuration to set the initial animation\nsequence.\n\nThis class exposes the same basic API as Y.Anim, so you can pass\nY.AnimSequence to anything that just needs to run/pause/stop an\nanimation."
         },
         {
             "displayName": "gallery-bulkedit",

@@ -57,6 +57,26 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/gallery-anim-sequence/js/anim-seq-plugin.js": {
+            "name": "src/gallery-anim-sequence/js/anim-seq-plugin.js",
+            "modules": {},
+            "classes": {
+                "Plugin.NodeFXSequence": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/gallery-anim-sequence/js/anim-seq.js": {
+            "name": "src/gallery-anim-sequence/js/anim-seq.js",
+            "modules": {
+                "gallery-anim-sequence": 1
+            },
+            "classes": {
+                "AnimSequence": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/gallery-bulkedit/js/BulkEditDataSource.js": {
             "name": "src/gallery-bulkedit/js/BulkEditDataSource.js",
             "modules": {},
@@ -1283,6 +1303,21 @@
             "line": 3,
             "description": "<p>Adds CSS class animation to `Y.Anim`, so you can specify `cssClass`\nin `from` and/or `to`.  At the end of the animation, the `from` class is\nreplaced by the `to` class, and all the individual styles used during\nthe animation are removed.</p>\n\n<p>Explicit entries in `from` or `to` override values set by cssClass.</p>"
         },
+        "gallery-anim-sequence": {
+            "name": "gallery-anim-sequence",
+            "submodules": {},
+            "classes": {
+                "Plugin.NodeFXSequence": 1,
+                "AnimSequence": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 7,
+            "description": "Manages a sequence of animations, so you don't have to chain them\nmanually. Each item in the sequence can be a single animation, an array\nof animations to perform in parallel, a function which performs an\nimmediate action, or a delay in milliseconds.\n\nPass `sequence` in the configuration to set the initial animation\nsequence.\n\nThis class exposes the same basic API as Y.Anim, so you can pass\nY.AnimSequence to anything that just needs to run/pause/stop an\nanimation.",
+            "itemtype": "main"
+        },
         "gallery-bulkedit": {
             "name": "gallery-bulkedit",
             "submodules": {},
@@ -2093,6 +2128,55 @@
             "file": "src/gallery-algorithms/js/ArrayList.js",
             "line": 7,
             "description": "Useful algorithms that are not provided by browsers.  Available if\nY.ArrayList (collection) is loaded."
+        },
+        "Plugin.NodeFXSequence": {
+            "name": "Plugin.NodeFXSequence",
+            "shortname": "Plugin.NodeFXSequence",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-anim-sequence",
+            "namespace": "",
+            "file": "src/gallery-anim-sequence/js/anim-seq-plugin.js",
+            "line": 5,
+            "description": "Binds an AnimSequence instance to a Node instance.  The API and\nnamespace is the same as NodeFX, so you can plug NodeFXSequence into\nany node that just needs to run/pause/stop an animation.\n\nPass `sequence` in the configuration to set the initial animation\nsequence.",
+            "extends": "AnimSequence",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "configuration",
+                    "type": "Object"
+                }
+            ]
+        },
+        "AnimSequence": {
+            "name": "AnimSequence",
+            "shortname": "AnimSequence",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-anim-sequence",
+            "namespace": "",
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 7,
+            "description": "Manages a sequence of animations, so you don't have to chain them\nmanually. Each item in the sequence can be a single animation, an array\nof animations to perform in parallel, a function which performs an\nimmediate action, or a delay in milliseconds.\n\nPass `sequence` in the configuration to set the initial animation\nsequence.\n\nThis class exposes the same basic API as Y.Anim, so you can pass\nY.AnimSequence to anything that just needs to run/pause/stop an\nanimation.",
+            "mainName": "gallery-anim-sequence",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "configuration",
+                    "type": "Object"
+                }
+            ]
         },
         "DataSource.BulkEdit": {
             "name": "DataSource.BulkEdit",
@@ -5364,6 +5448,164 @@
             },
             "class": "ArrayList~extras",
             "module": "gallery-algorithms"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 35,
+            "description": "If true, the animation runs backwards.  Immediate actions receive\nthe value of reverse as the only argument.",
+            "itemtype": "attribute",
+            "name": "reverse",
+            "type": "{Boolean}",
+            "default": "false",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 49,
+            "description": "Whether or not the animation is currently running.",
+            "itemtype": "attribute",
+            "name": "running",
+            "type": "{Boolean}",
+            "default": "false",
+            "readonly": "",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 64,
+            "description": "Whether or not the animation is currently paused.",
+            "itemtype": "attribute",
+            "name": "paused",
+            "type": "{Boolean}",
+            "default": "false",
+            "readonly": "",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 80,
+            "itemtype": "event",
+            "name": "start",
+            "description": "Fires when the sequence begins.",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 84,
+            "itemtype": "event",
+            "name": "item",
+            "description": "Fires when an item in the sequence begins.",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "the item index",
+                    "type": "Int"
+                }
+            ],
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 89,
+            "itemtype": "event",
+            "name": "end",
+            "description": "Fires after the sequence finishes.",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 94,
+            "itemtype": "event",
+            "name": "pause",
+            "description": "Fires when the sequence is paused.",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 98,
+            "itemtype": "event",
+            "name": "resume",
+            "description": "Fires when the sequence resumes (after being paused).",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 169,
+            "description": "Append items to the sequence.",
+            "itemtype": "method",
+            "name": "append",
+            "params": [
+                {
+                    "name": "item",
+                    "description": "animation, function, list of animations and functions, or delay in milliseconds",
+                    "type": "Anim|Function|Array|Number",
+                    "multiple": true
+                }
+            ],
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 191,
+            "description": "Prepend items to the sequence.",
+            "itemtype": "method",
+            "name": "prepend",
+            "params": [
+                {
+                    "name": "item",
+                    "description": "animation, function, list of animations and functions, or delay in milliseconds",
+                    "type": "Anim|Function|Array|Number",
+                    "multiple": true
+                }
+            ],
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 213,
+            "description": "Starts or resumes the sequence.",
+            "itemtype": "method",
+            "name": "run",
+            "chainable": 1,
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 237,
+            "description": "Stops and resets the sequence.",
+            "itemtype": "method",
+            "name": "stop",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "finish",
+                    "description": "If true, the animation will move to the last frame.",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 275,
+            "description": "Pauses the sequence.  If the current item is a delay, the sequence will\npause after the delay interval finishes.",
+            "itemtype": "method",
+            "name": "pause",
+            "chainable": 1,
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
