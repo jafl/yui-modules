@@ -9,7 +9,10 @@
 	<script src="gallery-anim-sequence-debug.js"></script>
 
 	<style type="text/css">
-	.ping { background-color: #99FF99; }
+	#ping { background-color: #FFFFFF; }
+	#ping.ping { background-color: #99FF99; }
+
+	#multi { margin-top: 10px; }
 	</style>
 </head>
 
@@ -106,10 +109,6 @@ function(Y)
 			modifyClass,
 			2000,
 			new Y.Anim({ node: n2, from: { cssClass: 'ping' } })
-//			function (reverse)
-//			{
-//				modifyClass(!reverse);
-//			}
 		]
 	});
 
@@ -122,8 +121,7 @@ function(Y)
 	{
 		sequence:
 		[
-			n1.fx,
-			s1
+			[ n1.fx, s1 ]
 		]
 	});
 
