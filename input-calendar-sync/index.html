@@ -21,6 +21,9 @@
 <form onsubmit="return false;">
 	<label for="date">Date:</label><input type="text" id="date" value="2012-1-1" />
 	<div id="calendar"></div>
+	<br>
+	<label for="date2">Date:</label><input type="text" id="date2" placeholder="No date" />
+	<div id="calendar2"></div>
 </form>
 
 <script type="text/javascript">
@@ -42,7 +45,8 @@ function(Y)
 	var node = Y.one('#date');
 	node.plug(Y.Plugin.InputCalendarSync,
 	{
-		calendar: cal
+		calendar:   cal,
+		allowBlank: false
 	});
 
 	// test compatibility with valuechange
@@ -51,6 +55,22 @@ function(Y)
 	{
 		Y.log('previous value: ' + e.prevVal);
 		Y.log('new value: ' + e.newVal);
+	});
+
+	// allow blank date
+
+	var cal2 = new Y.Calendar(
+	{
+		width:         300,
+		showPrevMonth: true,
+		showNextMonth: true
+	});
+	cal2.render('#calendar2');
+
+	var node2 = Y.one('#date2');
+	node2.plug(Y.Plugin.InputCalendarSync,
+	{
+		calendar: cal2
 	});
 });
 </script>
