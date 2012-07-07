@@ -38,6 +38,19 @@ InputCalendarSync.ATTRS =
 		{
 			return (value instanceof Y.Calendar);
 		}
+	},
+
+	/**
+	 * Set to false to require a date to be entered.
+	 *
+	 * @attribute allowBlank
+	 * @type {Boolean}
+	 * @default true
+	 */
+	allowBlank:
+	{
+		value:     true,
+		validator: Y.Lang.isBoolean
 	}
 };
 
@@ -52,7 +65,7 @@ function syncFromInput()
 		cal   = this.get('calendar'),
 		value = Y.Lang.trim(host.get('value'));
 
-	if (value)
+	if (value.length > 0)
 	{
 		try
 		{
@@ -71,9 +84,17 @@ function syncFromInput()
 		{
 			this.ignore_selection_change = false;
 		}
-	}
 
-	privateSyncFromCalendar.call(this);
+		privateSyncFromCalendar.call(this);
+	}
+	else if (!this.get('allowBlank'))
+	{
+		privateSyncFromCalendar.call(this);
+	}
+	else
+	{
+		cal.deselectDates();
+	}
 }
 
 function syncFromCalendar()
