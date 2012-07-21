@@ -35,6 +35,8 @@
 
 <button id="multi">Animate first two examples</button>
 
+<button id="bounce">Animate first two examples back &amp; forth twice</button>
+
 <p id="ping">Click to ping</p>
 
 <script type="text/javascript">
@@ -122,11 +124,26 @@ function(Y)
 		sequence:
 		[
 			[ n1.fx, s1 ]
-		]
+		],
+		direction: 'alternate'
 	});
 
 	s3.on('end', reverse);
 	Y.on('click', s3.run, '#multi', s3);
+
+	// direction: alternate
+
+	Y.on('click', function()
+	{
+		s3.set('iterations', 4);
+		s3.once('end', function()
+		{
+			s3.set('iterations', 1);
+		});
+
+		s3.run();
+	},
+	'#bounce');
 
 	// pause/resume
 });
