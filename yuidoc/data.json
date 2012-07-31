@@ -2190,7 +2190,7 @@
             "namespace": "DataSource",
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
             "line": 7,
-            "description": "<p>BulkEditDataSource manages a YUI DataSource + diffs (insertions,\nremovals, changes to values).</p>\n\n<p>The YUI DataSource must be immutable, e.g., if it is an XHR\ndatasource, the data must not change.</p>\n\n<p>By using a DataSource, we can support both client-side pagination\n(all data pre-loaded, best-effort save allowed) and server-side\npagination (load data when needed, only all-or-nothing save allowed).\nServer-side pagination is useful when editing a large amount of existing\nrecords or after uploading a large number of new records. (Store the new\nrecords in a scratch space, so everything does not have to be sent back\nto the client after parsing.)  In the case of bulk upload, server-side\nvalidation will catch errors in unviewed records.</p>\n\n<p>The responseSchema passed to the YUI DataSource must include a\ncomparator for each field that should not be treated like a string.\nThis comparator can either be 'integer', 'decimal', or a function which\ntakes two arguments.</p>",
+            "description": "<p>BulkEditDataSource manages a YUI DataSource + diffs (insertions,\nremovals, changes to values).</p>\n\n<p>The YUI DataSource must be immutable, e.g., if it is an XHR\ndatasource, the data must not change.</p>\n\n<p>By using a DataSource, we can support both client-side pagination\n(all data pre-loaded, best-effort save allowed) and server-side\npagination (load data when needed, only all-or-nothing save allowed).\nServer-side pagination is useful when editing a large amount of existing\nrecords or after uploading a large number of new records. (Store the new\nrecords in a scratch space, so everything does not have to be sent back\nto the client after parsing.)  In the case of bulk upload, server-side\nvalidation will catch errors in unviewed records.</p>\n\n<p>The responseSchema passed to the YUI DataSource must include a\ncomparator for each field that should not be treated like a string.\nThis comparator can either be 'string' (the default), 'integer',\n'decimal', 'boolean', or a function which takes two arguments.</p>",
             "extends": "DataSource.Local",
             "is_constructor": 1,
             "params": [
@@ -10016,6 +10016,18 @@
             "name": "calendar",
             "type": "{Calendar}",
             "required": 1,
+            "class": "Plugin.InputCalendarSync",
+            "module": "gallery-input-calendar-sync",
+            "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-input-calendar-sync/js/sync.js",
+            "line": 43,
+            "description": "Set to false to require a date to be entered.",
+            "itemtype": "attribute",
+            "name": "allowBlank",
+            "type": "{Boolean}",
+            "default": "true",
             "class": "Plugin.InputCalendarSync",
             "module": "gallery-input-calendar-sync",
             "namespace": "Plugin"
