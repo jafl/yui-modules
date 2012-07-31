@@ -459,6 +459,54 @@ AnimSequence.ATTRS =
 	},
 
 	&#x2F;**
+	 * The number of times the animation should run.  Can be &quot;infinite&quot;
+	 * 
+	 * @attribute iterations
+	 * @type {Number|String}
+	 * @default 1
+	 *&#x2F;
+	iterations:
+	{
+		value: 1,
+		validator: function(value)
+		{
+			return Y.Lang.isNumber(value) || value == &#x27;infinite&#x27;;
+		}
+	},
+
+	&#x2F;**
+	 * The number of times the animation has run.  Resets to zero when
+	 * the animation finishes or is stopped.
+	 * 
+	 * @attribute iterationCount
+	 * @type {Number}
+	 * @readOnly
+	 *&#x2F;
+	iterationCount:
+	{
+		value:    0,
+		readOnly: true
+	},
+
+	&#x2F;**
+	 * The behavior of the animation when &quot;iterations&quot; &gt; 1:
+	 * If &quot;normal&quot;, the animation will repeat in the same direction.
+	 * If &quot;alternate&quot;, the animation will flip &quot;reverse&quot; at the end of the sequence.
+	 * 
+	 * @attribute direction
+	 * @type {String}
+	 * @default &quot;normal&quot;
+	 *&#x2F;
+	direction:
+	{
+		value: &#x27;normal&#x27;,
+		validator: function(value)
+		{
+			return value == &#x27;normal&#x27; || value == &#x27;alternate&#x27;;
+		}
+	},
+
+	&#x2F;**
 	 * Whether or not the animation is currently running.
 	 * 
 	 * @attribute running
@@ -523,8 +571,24 @@ function next()
 	if ((!reverse &amp;&amp; this._index &gt;= this._list.length) ||
 		( reverse &amp;&amp; this._index &lt; 0))
 	{
-		this._set(&#x27;running&#x27;, false);
-		this.fire(&#x27;end&#x27;);
+		var iter_max   = this.get(&#x27;iterations&#x27;),
+			iter_count = this.get(&#x27;iterationCount&#x27;) + 1;
+		if (iter_max == &#x27;infinite&#x27; || iter_count &lt; iter_max)
+		{
+			if (this.get(&#x27;direction&#x27;) == &#x27;alternate&#x27;)
+			{
+				this.set(&#x27;reverse&#x27;, !reverse);
+			}
+
+			this._set(&#x27;iterationCount&#x27;, iter_count);
+			this._index = this.get(&#x27;reverse&#x27;) ? this._list.length-1 : 0;
+			next.call(this);
+		}
+		else
+		{
+			this._set(&#x27;running&#x27;, false);
+			this.fire(&#x27;end&#x27;);
+		}
 		return;
 	}
 
@@ -637,6 +701,7 @@ Y.extend(AnimSequence, Y.Base,
 		}
 		else
 		{
+			this._set(&#x27;iterationCount&#x27;, 0);
 			this._set(&#x27;running&#x27;, true);
 			this.fire(&#x27;start&#x27;);
 			this._index = this.get(&#x27;reverse&#x27;) ? this._list.length-1 : 0;
@@ -665,12 +730,14 @@ Y.extend(AnimSequence, Y.Base,
 			{
 				Y.each(item, function(a)
 				{
+					a.run();	&#x2F;&#x2F; so items beyond the current item will finish
 					a.stop(finish);
 				},
 				this);
 			}
 			else if ((item instanceof Y.Anim) || (item instanceof Y.AnimSequence))
 			{
+				item.run();		&#x2F;&#x2F; so items beyond the current item will finish
 				item.stop(finish);
 			}
 

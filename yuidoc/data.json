@@ -5463,6 +5463,39 @@
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
             "line": 49,
+            "description": "The number of times the animation should run.  Can be \"infinite\"",
+            "itemtype": "attribute",
+            "name": "iterations",
+            "type": "{Number|String}",
+            "default": "1",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 65,
+            "description": "The number of times the animation has run.  Resets to zero when\nthe animation finishes or is stopped.",
+            "itemtype": "attribute",
+            "name": "iterationCount",
+            "type": "{Number}",
+            "readonly": "",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 79,
+            "description": "The behavior of the animation when \"iterations\" > 1:\nIf \"normal\", the animation will repeat in the same direction.\nIf \"alternate\", the animation will flip \"reverse\" at the end of the sequence.",
+            "itemtype": "attribute",
+            "name": "direction",
+            "type": "{String}",
+            "default": "\"normal\"",
+            "class": "AnimSequence",
+            "module": "gallery-anim-sequence"
+        },
+        {
+            "file": "src/gallery-anim-sequence/js/anim-seq.js",
+            "line": 97,
             "description": "Whether or not the animation is currently running.",
             "itemtype": "attribute",
             "name": "running",
@@ -5474,7 +5507,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 64,
+            "line": 112,
             "description": "Whether or not the animation is currently paused.",
             "itemtype": "attribute",
             "name": "paused",
@@ -5486,7 +5519,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 80,
+            "line": 128,
             "itemtype": "event",
             "name": "start",
             "description": "Fires when the sequence begins.",
@@ -5495,7 +5528,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 84,
+            "line": 132,
             "itemtype": "event",
             "name": "item",
             "description": "Fires when an item in the sequence begins.",
@@ -5511,7 +5544,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 89,
+            "line": 137,
             "itemtype": "event",
             "name": "end",
             "description": "Fires after the sequence finishes.",
@@ -5520,7 +5553,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 94,
+            "line": 142,
             "itemtype": "event",
             "name": "pause",
             "description": "Fires when the sequence is paused.",
@@ -5529,7 +5562,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 98,
+            "line": 146,
             "itemtype": "event",
             "name": "resume",
             "description": "Fires when the sequence resumes (after being paused).",
@@ -5538,7 +5571,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 169,
+            "line": 233,
             "description": "Append items to the sequence.",
             "itemtype": "method",
             "name": "append",
@@ -5555,7 +5588,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 191,
+            "line": 255,
             "description": "Prepend items to the sequence.",
             "itemtype": "method",
             "name": "prepend",
@@ -5572,7 +5605,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 213,
+            "line": 277,
             "description": "Starts or resumes the sequence.",
             "itemtype": "method",
             "name": "run",
@@ -5582,7 +5615,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 237,
+            "line": 302,
             "description": "Stops and resets the sequence.",
             "itemtype": "method",
             "name": "stop",
@@ -5599,7 +5632,7 @@
         },
         {
             "file": "src/gallery-anim-sequence/js/anim-seq.js",
-            "line": 275,
+            "line": 342,
             "description": "Pauses the sequence.  If the current item is a delay, the sequence will\npause after the delay interval finishes.",
             "itemtype": "method",
             "name": "pause",
@@ -5610,10 +5643,11 @@
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
             "line": 43,
-            "description": "REQUIRED. The original data.  This must be immutable, i.e., the\nvalues must not change.",
+            "description": "The original data.  This must be immutable, i.e., the values must\nnot change.",
             "itemtype": "attribute",
             "name": "ds",
             "type": "{DataSource}",
+            "required": 1,
             "writeonce": "",
             "class": "DataSource.BulkEdit",
             "module": "gallery-bulkedit",
@@ -5621,11 +5655,12 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 56,
-            "description": "REQUIRED.  The function to convert the initial request into a\nrequest usable by the underlying DataSource.  This function takes\none argument: state (startIndex,resultCount,...).",
+            "line": 57,
+            "description": "The function to convert the initial request into a request usable by\nthe underlying DataSource.  This function takes one argument: state\n(startIndex,resultCount,...).",
             "itemtype": "attribute",
             "name": "generateRequest",
             "type": "{Function}",
+            "required": 1,
             "writeonce": "",
             "class": "DataSource.BulkEdit",
             "module": "gallery-bulkedit",
@@ -5633,11 +5668,12 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 71,
-            "description": "REQUIRED. The name of the key in each record that stores an\nidentifier which is unique across the entire data set.",
+            "line": 73,
+            "description": "The name of the key in each record that stores an identifier which\nis unique across the entire data set.",
             "itemtype": "attribute",
             "name": "uniqueIdKey",
             "type": "{String}",
+            "required": 1,
             "writeonce": "",
             "class": "DataSource.BulkEdit",
             "module": "gallery-bulkedit",
@@ -5645,7 +5681,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 85,
+            "line": 88,
             "description": "The function to call to generate a unique id for a new record.  The\ndefault generates \"bulk-edit-new-id-#\".",
             "itemtype": "attribute",
             "name": "generateUniqueId",
@@ -5657,7 +5693,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 104,
+            "line": 107,
             "description": "OGNL expression telling how to extract the startIndex from the\nreceived data, e.g., <code>.meta.startIndex</code>.  If it is not\nprovided, startIndex is always assumed to be zero.",
             "itemtype": "attribute",
             "name": "startIndexExpr",
@@ -5669,7 +5705,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 119,
+            "line": 122,
             "description": "OGNL expression telling where in the response to store the total\nnumber of records, e.g., <code>.meta.totalRecords</code>.  This is\nonly appropriate for DataSources that always return the entire data\nset.",
             "itemtype": "attribute",
             "name": "totalRecordsReturnExpr",
@@ -5681,11 +5717,12 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 135,
-            "description": "REQUIRED. The function to call to extract the total number of\nrecords from the response.",
+            "line": 138,
+            "description": "The function to call to extract the total number of\nrecords from the response.",
             "itemtype": "attribute",
             "name": "extractTotalRecords",
             "type": "{Function}",
+            "required": 1,
             "writeonce": "",
             "class": "DataSource.BulkEdit",
             "module": "gallery-bulkedit",
@@ -5693,7 +5730,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 423,
+            "line": 427,
             "itemtype": "method",
             "name": "_dataIsLocal",
             "access": "protected",
@@ -5708,7 +5745,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 433,
+            "line": 437,
             "description": "Flush the underlying datasource's cache.",
             "itemtype": "method",
             "name": "_flushCache",
@@ -5720,7 +5757,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 448,
+            "line": 452,
             "description": "Use this instead of any meta information in response.",
             "itemtype": "method",
             "name": "getRecordCount",
@@ -5734,7 +5771,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 459,
+            "line": 463,
             "itemtype": "method",
             "name": "getCurrentRecords",
             "return": {
@@ -5747,7 +5784,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 468,
+            "line": 472,
             "itemtype": "method",
             "name": "getCurrentRecordMap",
             "return": {
@@ -5760,7 +5797,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 477,
+            "line": 481,
             "itemtype": "method",
             "name": "getValue",
             "params": [
@@ -5785,7 +5822,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 521,
+            "line": 525,
             "description": "When using a remote datasource, this will include changes made to\ndeleted records.",
             "itemtype": "method",
             "name": "getChanges",
@@ -5799,7 +5836,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 533,
+            "line": 537,
             "itemtype": "method",
             "name": "getRemovedRecordIndexes",
             "return": {
@@ -5812,7 +5849,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 551,
+            "line": 555,
             "description": "You must reload() the widget after calling this function!",
             "itemtype": "method",
             "name": "insertRecord",
@@ -5840,7 +5877,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 605,
+            "line": 609,
             "description": "You must reload() the widget after calling this function!",
             "itemtype": "method",
             "name": "removeRecord",
@@ -5863,7 +5900,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 648,
+            "line": 652,
             "description": "Update a value in a record.",
             "itemtype": "method",
             "name": "updateValue",
@@ -5892,7 +5929,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 687,
+            "line": 691,
             "itemtype": "method",
             "name": "_getComparator",
             "access": "protected",
@@ -5914,7 +5951,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 711,
+            "line": 715,
             "description": "Merge changes into the underlying data, to flush diffs for a record.\nOnly usable with DataSource.Local.  When using best-effort save on\nthe server, call this for each record that was successfully saved.",
             "itemtype": "method",
             "name": "mergeChanges",
@@ -5931,7 +5968,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 770,
+            "line": 774,
             "description": "<p>Completely remove a record, from both the display and the\nunderlying data.  Only usable with DataSource.Local.  When using\nbest-effort save on the server, call this for each record that was\nsuccessfully deleted.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "killRecord",
@@ -5948,7 +5985,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 853,
+            "line": 857,
             "description": "<p>Change the id of a record.  Only usable with DataSource.Local.\nWhen using best-effort save on the server, call this for each newly\ncreated record that was successfully saved.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "updateRecordId",
@@ -5970,7 +6007,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 927,
+            "line": 931,
             "description": "Find the index of the given record id.  Only usable with\nDataSource.Local.",
             "itemtype": "method",
             "name": "recordIdToIndex",
@@ -5991,7 +6028,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditDataSource.js",
-            "line": 974,
+            "line": 978,
             "description": "Merges edits into data and returns result.",
             "itemtype": "method",
             "name": "_defRequestFn",
@@ -6007,24 +6044,26 @@
             "itemtype": "attribute",
             "name": "ds",
             "type": "{DataSource.BulkEdit}",
+            "required": 1,
             "writeonce": "",
             "class": "BulkEditor",
             "module": "gallery-bulkedit"
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 51,
+            "line": 52,
             "description": "Configuration for each field: type (input|select|textarea), label,\nvalidation (css, regex, msg, fn; see\ngallery-formmgr-css-validation).  Derived classes can require\nadditional keys.",
             "itemtype": "attribute",
             "name": "fields",
             "type": "{Object}",
+            "required": 1,
             "writeonce": "",
             "class": "BulkEditor",
             "module": "gallery-bulkedit"
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 67,
+            "line": 69,
             "description": "Paginator for switching between pages of records.  BulkEditor\nexpects it to be configured to display ValidationPageLinks, so the\nuser can see which pages have errors that need to be fixed.",
             "itemtype": "attribute",
             "name": "paginator",
@@ -6035,7 +6074,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 85,
+            "line": 87,
             "description": "Extra key/value pairs to pass in the DataSource request.",
             "itemtype": "attribute",
             "name": "requestExtra",
@@ -6046,7 +6085,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 99,
+            "line": 101,
             "description": "CSS class used to temporarily highlight a record.",
             "itemtype": "attribute",
             "name": "pingClass",
@@ -6057,7 +6096,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 112,
+            "line": 114,
             "description": "Duration in seconds that pingClass is applied to a record.",
             "itemtype": "attribute",
             "name": "pingTimeout",
@@ -6068,7 +6107,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 126,
+            "line": 128,
             "itemtype": "event",
             "name": "notifyErrors",
             "description": "Fires when widget-level validation messages need to be displayed.",
@@ -6084,7 +6123,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 131,
+            "line": 133,
             "itemtype": "event",
             "name": "clearErrorNotification",
             "description": "Fires when widget-level validation messages should be cleared.",
@@ -6093,7 +6132,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 190,
+            "line": 192,
             "description": "Reloads the current page of records.  This will erase any changes\nunsaved changes!",
             "itemtype": "method",
             "name": "reload",
@@ -6102,7 +6141,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 245,
+            "line": 247,
             "description": "Save the modified values from the current page of records.",
             "itemtype": "method",
             "name": "saveChanges",
@@ -6111,7 +6150,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 267,
+            "line": 269,
             "description": "Retrieve *all* the data.  Do not call this if you use server-side\npagination.",
             "itemtype": "method",
             "name": "getAllValues",
@@ -6127,7 +6166,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 290,
+            "line": 292,
             "itemtype": "method",
             "name": "getChanges",
             "return": {
@@ -6139,7 +6178,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 299,
+            "line": 301,
             "description": "<p>Insert a new record.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "insertRecord",
@@ -6164,7 +6203,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 323,
+            "line": 325,
             "description": "<p>Remove a record.  The removal will be recorded in the diffs.\nThere is no way to un-remove a record, so if you need that\nfunctionality, you may want to use highlighting to indicate removed\nrecords instead.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "removeRecord",
@@ -6184,7 +6223,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 355,
+            "line": 357,
             "itemtype": "method",
             "name": "getFieldConfig",
             "params": [
@@ -6203,7 +6242,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 366,
+            "line": 368,
             "itemtype": "method",
             "name": "getRecordContainerId",
             "params": [
@@ -6222,7 +6261,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 384,
+            "line": 386,
             "itemtype": "method",
             "name": "getFieldId",
             "params": [
@@ -6246,7 +6285,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 397,
+            "line": 399,
             "itemtype": "method",
             "name": "getRecordAndFieldKey",
             "params": [
@@ -6265,7 +6304,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 412,
+            "line": 414,
             "itemtype": "method",
             "name": "getRecordId",
             "params": [
@@ -6284,7 +6323,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 436,
+            "line": 438,
             "itemtype": "method",
             "name": "getRecordContainer",
             "params": [
@@ -6303,7 +6342,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 460,
+            "line": 462,
             "itemtype": "method",
             "name": "getFieldContainer",
             "params": [
@@ -6327,7 +6366,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 474,
+            "line": 476,
             "itemtype": "method",
             "name": "getFieldElement",
             "params": [
@@ -6351,7 +6390,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 491,
+            "line": 493,
             "description": "Paginate and/or scroll to make the specified record visible.  Record\nis pinged to help the user find it.",
             "itemtype": "method",
             "name": "showRecordIndex",
@@ -6367,7 +6406,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 522,
+            "line": 524,
             "description": "Paginate and/or scroll to make the specified record visible.  Record\nis pinged to help the user find it.",
             "itemtype": "method",
             "name": "showRecordId",
@@ -6383,7 +6422,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 539,
+            "line": 541,
             "description": "Apply a class to the DOM element containing the record for a short\nwhile.  Your CSS can use this class to highlight the record in some\nway.",
             "itemtype": "method",
             "name": "pingRecord",
@@ -6399,7 +6438,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 562,
+            "line": 564,
             "description": "Render the current page of records.",
             "itemtype": "method",
             "name": "_render",
@@ -6417,7 +6456,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 598,
+            "line": 600,
             "description": "Derived class should override to create a structure for the records.",
             "itemtype": "method",
             "name": "_renderContainer",
@@ -6435,7 +6474,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 611,
+            "line": 613,
             "description": "Derived class must override to create a container for the record.",
             "itemtype": "method",
             "name": "_renderRecordContainer",
@@ -6458,7 +6497,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 626,
+            "line": 628,
             "description": "Derived class can override if it needs to do more than just call\n_renderField() for each field.",
             "itemtype": "method",
             "name": "_renderRecord",
@@ -6481,7 +6520,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 653,
+            "line": 655,
             "description": "If _renderRecord is not overridden, derived class must override this\nfunction to render the field.",
             "itemtype": "method",
             "name": "_renderField",
@@ -6499,7 +6538,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 671,
+            "line": 673,
             "description": "Update the paginator to match the data source meta information.",
             "itemtype": "method",
             "name": "_updatePaginator",
@@ -6517,7 +6556,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 687,
+            "line": 689,
             "description": "Clear errors received from the server.  This clears all displayed\nmessages.",
             "itemtype": "method",
             "name": "clearServerErrors",
@@ -6526,7 +6565,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 718,
+            "line": 720,
             "description": "Set page level, record level, and field level errors received from\nthe server.  A message can be either a string (assumed to be an\nerror) or an object providing msg and type, where type can be\n'error', 'warn', 'info', or 'success'.",
             "itemtype": "method",
             "name": "setServerErrors",
@@ -6547,7 +6586,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 761,
+            "line": 763,
             "description": "Update paginator to show which pages have errors.",
             "itemtype": "method",
             "name": "_updatePageStatus",
@@ -6558,7 +6597,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 797,
+            "line": 799,
             "description": "Validate the visible values (if using server-side pagination) or all\nthe values (if using client-side pagination or no pagination).",
             "itemtype": "method",
             "name": "validate",
@@ -6571,7 +6610,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 844,
+            "line": 846,
             "description": "Validate the visible values.",
             "itemtype": "method",
             "name": "_validateVisibleFields",
@@ -6593,7 +6632,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 903,
+            "line": 905,
             "description": "Validate the given elements.",
             "itemtype": "method",
             "name": "_validateElements",
@@ -6615,7 +6654,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 993,
+            "line": 995,
             "description": "If the data is stored locally and we paginate, validate all of it\nand mark the pages that have invalid values.",
             "itemtype": "method",
             "name": "_validateAllPages",
@@ -6630,7 +6669,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1072,
+            "line": 1074,
             "description": "Clear all displayed messages.",
             "itemtype": "method",
             "name": "_clearValidationMessages",
@@ -6639,7 +6678,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1092,
+            "line": 1094,
             "description": "Display a message for the specified field.",
             "itemtype": "method",
             "name": "displayFieldMessage",
@@ -6670,7 +6709,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1137,
+            "line": 1139,
             "description": "Display a message for the specified record.",
             "itemtype": "method",
             "name": "displayRecordMessage",
@@ -6701,7 +6740,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1179,
+            "line": 1181,
             "itemtype": "method",
             "name": "_getElementStatus",
             "access": "protected",
@@ -6727,7 +6766,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1194,
+            "line": 1196,
             "description": "Update the status of the node, if the new status has higher precedence.",
             "itemtype": "method",
             "name": "_updateRecordStatus",
@@ -6767,7 +6806,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1232,
+            "line": 1234,
             "itemtype": "property",
             "name": "Y.BulkEditor.error_msg_markup",
             "type": "{String}",
@@ -6777,7 +6816,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1242,
+            "line": 1244,
             "itemtype": "method",
             "name": "labelMarkup",
             "static": 1,
@@ -6797,7 +6836,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1263,
+            "line": 1265,
             "description": "Map of field type (input,select,textarea) to function that generates the\nrequired markup.  You can add additional entries.  Each function takes a\nsingle argument: an object defining\n\tkey {String} field key,\n\tvalue {Mixed} field value,\n\tfield {Object} field configuration,\n\trecord {Object} record data",
             "itemtype": "property",
             "name": "Y.BulkEditor.markup",
@@ -6808,7 +6847,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1366,
+            "line": 1368,
             "itemtype": "method",
             "name": "fieldMarkup",
             "static": 1,
@@ -6838,13 +6877,14 @@
             "itemtype": "attribute",
             "name": "columns",
             "type": "{Array}",
+            "required": 1,
             "writeonce": "",
             "class": "HTMLTableBulkEditor",
             "module": "gallery-bulkedit"
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 36,
+            "line": 37,
             "description": "<p>Array of event delegations that will be attached to the container\nvia Y.delegate().  Each item is an object defining type, nodes, fn.\nThe function will be called in the context of the BulkEditor\ninstance.</p>\n\n<p>Attaching events to the container before the table is created does\nnot work in all browsers.</p>",
             "itemtype": "attribute",
             "name": "events",
@@ -6855,7 +6895,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 63,
+            "line": 64,
             "description": "Renders an input element in the cell.",
             "itemtype": "method",
             "name": "inputFormatter",
@@ -6872,7 +6912,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 75,
+            "line": 76,
             "description": "Renders a textarea element in the cell.",
             "itemtype": "method",
             "name": "textareaFormatter",
@@ -6889,7 +6929,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 87,
+            "line": 88,
             "description": "Renders a select element in the cell.",
             "itemtype": "method",
             "name": "selectFormatter",
@@ -6906,7 +6946,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 99,
+            "line": 100,
             "description": "Map of field type to cell formatter.",
             "itemtype": "property",
             "name": "Y.HTMLTableBulkEditor.defaults",
