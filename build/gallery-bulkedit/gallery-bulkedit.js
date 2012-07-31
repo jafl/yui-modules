@@ -43,11 +43,12 @@ BulkEditDataSource.NAME = "bulkEditDataSource";
 BulkEditDataSource.ATTRS =
 {
 	/**
-	 * REQUIRED. The original data.  This must be immutable, i.e., the
-	 * values must not change.
+	 * The original data.  This must be immutable, i.e., the values must
+	 * not change.
 	 * 
 	 * @attribute ds
 	 * @type {DataSource}
+	 * @required
 	 * @writeonce
 	 */
 	ds:
@@ -56,12 +57,13 @@ BulkEditDataSource.ATTRS =
 	},
 
 	/**
-	 * REQUIRED.  The function to convert the initial request into a
-	 * request usable by the underlying DataSource.  This function takes
-	 * one argument: state (startIndex,resultCount,...).
+	 * The function to convert the initial request into a request usable by
+	 * the underlying DataSource.  This function takes one argument: state
+	 * (startIndex,resultCount,...).
 	 * 
 	 * @attribute generateRequest
 	 * @type {Function}
+	 * @required
 	 * @writeonce
 	 */
 	generateRequest:
@@ -71,11 +73,12 @@ BulkEditDataSource.ATTRS =
 	},
 
 	/**
-	 * REQUIRED. The name of the key in each record that stores an
-	 * identifier which is unique across the entire data set.
+	 * The name of the key in each record that stores an identifier which
+	 * is unique across the entire data set.
 	 * 
 	 * @attribute uniqueIdKey
 	 * @type {String}
+	 * @required
 	 * @writeonce
 	 */
 	uniqueIdKey:
@@ -135,11 +138,12 @@ BulkEditDataSource.ATTRS =
 	},
 
 	/**
-	 * REQUIRED. The function to call to extract the total number of
+	 * The function to call to extract the total number of
 	 * records from the response.
 	 * 
 	 * @attribute extractTotalRecords
 	 * @type {Function}
+	 * @required
 	 * @writeonce
 	 */
 	extractTotalRecords:
@@ -1042,6 +1046,7 @@ BulkEditor.ATTRS =
 	/**
 	 * @attribute ds
 	 * @type {DataSource.BulkEdit}
+	 * @required
 	 * @writeonce
 	 */
 	ds:
@@ -1061,6 +1066,7 @@ BulkEditor.ATTRS =
 	 *
 	 * @attribute fields
 	 * @type {Object}
+	 * @required
 	 * @writeonce
 	 */
 	fields:
@@ -2413,6 +2419,7 @@ HTMLTableBulkEditor.ATTRS =
 	 *
 	 * @attribute columns
 	 * @type {Array}
+	 * @required
 	 * @writeonce
 	 */
 	columns:

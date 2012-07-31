@@ -37,6 +37,7 @@ BulkEditor.ATTRS =
 	/**
 	 * @attribute ds
 	 * @type {DataSource.BulkEdit}
+	 * @required
 	 * @writeonce
 	 */
 	ds:
@@ -56,6 +57,7 @@ BulkEditor.ATTRS =
 	 *
 	 * @attribute fields
 	 * @type {Object}
+	 * @required
 	 * @writeonce
 	 */
 	fields:
