@@ -25,6 +25,7 @@ HTMLTableBulkEditor.ATTRS =
 	 *
 	 * @attribute columns
 	 * @type {Array}
+	 * @required
 	 * @writeonce
 	 */
 	columns:

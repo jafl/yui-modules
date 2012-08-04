@@ -24,8 +24,8 @@ YUI.add('gallery-bulkedit', function(Y) {
  * 
  * <p>The responseSchema passed to the YUI DataSource must include a
  * comparator for each field that should not be treated like a string.
- * This comparator can either be 'integer', 'decimal', or a function which
- * takes two arguments.</p>
+ * This comparator can either be 'string' (the default), 'integer',
+ * 'decimal', 'boolean', or a function which takes two arguments.</p>
  *
  * @class BulkEdit
  * @namespace DataSource
@@ -43,11 +43,12 @@ BulkEditDataSource.NAME = "bulkEditDataSource";
 BulkEditDataSource.ATTRS =
 {
 	/**
-	 * REQUIRED. The original data.  This must be immutable, i.e., the
-	 * values must not change.
+	 * The original data.  This must be immutable, i.e., the values must
+	 * not change.
 	 * 
 	 * @attribute ds
 	 * @type {DataSource}
+	 * @required
 	 * @writeonce
 	 */
 	ds:
@@ -56,12 +57,13 @@ BulkEditDataSource.ATTRS =
 	},
 
 	/**
-	 * REQUIRED.  The function to convert the initial request into a
-	 * request usable by the underlying DataSource.  This function takes
-	 * one argument: state (startIndex,resultCount,...).
+	 * The function to convert the initial request into a request usable by
+	 * the underlying DataSource.  This function takes one argument: state
+	 * (startIndex,resultCount,...).
 	 * 
 	 * @attribute generateRequest
 	 * @type {Function}
+	 * @required
 	 * @writeonce
 	 */
 	generateRequest:
@@ -71,11 +73,12 @@ BulkEditDataSource.ATTRS =
 	},
 
 	/**
-	 * REQUIRED. The name of the key in each record that stores an
-	 * identifier which is unique across the entire data set.
+	 * The name of the key in each record that stores an identifier which
+	 * is unique across the entire data set.
 	 * 
 	 * @attribute uniqueIdKey
 	 * @type {String}
+	 * @required
 	 * @writeonce
 	 */
 	uniqueIdKey:
@@ -135,11 +138,12 @@ BulkEditDataSource.ATTRS =
 	},
 
 	/**
-	 * REQUIRED. The function to call to extract the total number of
+	 * The function to call to extract the total number of
 	 * records from the response.
 	 * 
 	 * @attribute extractTotalRecords
 	 * @type {Function}
+	 * @required
 	 * @writeonce
 	 */
 	extractTotalRecords:
@@ -1042,6 +1046,7 @@ BulkEditor.ATTRS =
 	/**
 	 * @attribute ds
 	 * @type {DataSource.BulkEdit}
+	 * @required
 	 * @writeonce
 	 */
 	ds:
@@ -1061,6 +1066,7 @@ BulkEditor.ATTRS =
 	 *
 	 * @attribute fields
 	 * @type {Object}
+	 * @required
 	 * @writeonce
 	 */
 	fields:
@@ -1144,10 +1150,6 @@ var default_page_size = 1e9,
 	id_separator = '__',
 	id_regex = new RegExp('^' + id_prefix + id_separator + '(.+?)(?:' + id_separator + '(.+?))?$'),
 
-	field_container_class        = Y.ClassNameManager.getClassName(BulkEditor.NAME, 'field-container'),
-	field_container_class_prefix = field_container_class + '-',
-	field_class_prefix           = Y.ClassNameManager.getClassName(BulkEditor.NAME, 'field') + '-',
-
 	status_prefix  = 'bulkedit-has',
 	status_pattern = status_prefix + '([a-z]+)',
 	status_re      = new RegExp(Y.Node.class_re_prefix + status_pattern + Y.Node.class_re_suffix),
@@ -1162,6 +1164,10 @@ var default_page_size = 1e9,
 
 BulkEditor.record_container_class     = Y.ClassNameManager.getClassName(BulkEditor.NAME, 'bd');
 BulkEditor.record_msg_container_class = Y.ClassNameManager.getClassName(BulkEditor.NAME, 'record-message-container');
+
+BulkEditor.field_container_class        = Y.ClassNameManager.getClassName(BulkEditor.NAME, 'field-container');
+BulkEditor.field_container_class_prefix = BulkEditor.field_container_class + '-';
+BulkEditor.field_class_prefix           = Y.ClassNameManager.getClassName(BulkEditor.NAME, 'field') + '-';
 
 function switchPage(state)
 {
@@ -1473,7 +1479,7 @@ Y.extend(BulkEditor, Y.Widget,
 		/* string */				key)
 	{
 		var field = this.getFieldElement(record, key);
-		return field.getAncestorByClassName(field_container_class, true);
+		return field.getAncestorByClassName(BulkEditor.field_container_class, true);
 	},
 
 	/**
@@ -2117,7 +2123,7 @@ Y.extend(BulkEditor, Y.Widget,
 		var bd1     = this.getRecordContainer(e);
 		var changed = this._updateRecordStatus(bd1, type, status_pattern, status_re, status_prefix);
 
-		var bd2 = e.getAncestorByClassName(field_container_class);
+		var bd2 = e.getAncestorByClassName(BulkEditor.field_container_class);
 		if (Y.FormManager.statusTakesPrecedence(this._getElementStatus(bd2, status_re), type))
 		{
 			if (msg)
@@ -2229,10 +2235,10 @@ Y.extend(BulkEditor, Y.Widget,
 // Markup
 //
 
-function cleanHTML(s)
+BulkEditor.cleanHTML = function(s)
 {
 	return (s ? Y.Escape.html(s) : '');
-}
+};
 
 /**
  * @property Y.BulkEditor.error_msg_markup
@@ -2293,12 +2299,12 @@ BulkEditor.markup =
 
 		return Y.Lang.sub(input,
 		{
-			cont:  field_container_class + ' ' + field_container_class_prefix,
-			field: field_class_prefix,
+			cont:  BulkEditor.field_container_class + ' ' + BulkEditor.field_container_class_prefix,
+			field: BulkEditor.field_class_prefix,
 			key:   o.key,
 			id:    this.getFieldId(o.record, o.key),
 			label: label,
-			value: cleanHTML(o.value),
+			value: BulkEditor.cleanHTML(o.value),
 			yiv:   (o.field && o.field.validation && o.field.validation.css) || '',
 			msg1:  label ? BulkEditor.error_msg_markup : '',
 			msg2:  label ? '' : BulkEditor.error_msg_markup
@@ -2321,7 +2327,7 @@ BulkEditor.markup =
 			return s + Y.Lang.sub(option,
 			{
 				value:    v.value,
-				text:     cleanHTML(v.text),
+				text:     BulkEditor.cleanHTML(v.text),
 				selected: o.value && o.value.toString() === v.value ? 'selected' : ''
 			});
 		});
@@ -2330,8 +2336,8 @@ BulkEditor.markup =
 
 		return Y.Lang.sub(select,
 		{
-			cont:  	 field_container_class + ' ' + field_container_class_prefix,
-			field:   field_class_prefix,
+			cont:  	 BulkEditor.field_container_class + ' ' + BulkEditor.field_container_class_prefix,
+			field:   BulkEditor.field_class_prefix,
 			key:     o.key,
 			id:      this.getFieldId(o.record, o.key),
 			label:   label,
@@ -2355,12 +2361,12 @@ BulkEditor.markup =
 
 		return Y.Lang.sub(textarea,
 		{
-			cont:   field_container_class + ' ' + field_container_class_prefix,
-			prefix: field_class_prefix,
+			cont:   BulkEditor.field_container_class + ' ' + BulkEditor.field_container_class_prefix,
+			prefix: BulkEditor.field_class_prefix,
 			key:    o.key,
 			id:     this.getFieldId(o.record, o.key),
 			label:  label,
-			value:  cleanHTML(o.value),
+			value:  BulkEditor.cleanHTML(o.value),
 			yiv:    (o.field && o.field.validation && o.field.validation.css) || '',
 			msg1:   label ? BulkEditor.error_msg_markup : '',
 			msg2:   label ? '' : BulkEditor.error_msg_markup
@@ -2415,6 +2421,7 @@ HTMLTableBulkEditor.ATTRS =
 	 *
 	 * @attribute columns
 	 * @type {Array}
+	 * @required
 	 * @writeonce
 	 */
 	columns:
@@ -2696,4 +2703,4 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 Y.HTMLTableBulkEditor = HTMLTableBulkEditor;
 
 
-}, '@VERSION@' ,{skinnable:true, optional:['datasource','dataschema','gallery-paginator'], requires:['widget','datasource-local','gallery-busyoverlay','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-scrollintoview','array-extras','gallery-funcprog','escape']});
+}, '@VERSION@' ,{requires:['widget','datasource-local','gallery-busyoverlay','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-scrollintoview','array-extras','gallery-funcprog','escape'], optional:['datasource','dataschema','gallery-paginator'], skinnable:true});
