@@ -487,6 +487,17 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/gallery-log-filter/js/log-filter.js": {
+            "name": "src/gallery-log-filter/js/log-filter.js",
+            "modules": {
+                "gallery-log-filter": 1
+            },
+            "classes": {
+                "LogFilter": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/gallery-math/js/Math.js": {
             "name": "src/gallery-math/js/Math.js",
             "modules": {
@@ -1727,6 +1738,20 @@
             "file": "src/gallery-linkedlist/js/LinkedListIterator.js",
             "line": 5,
             "description": "<p>Doubly linked list for storing items.  Supports iteration via\nLinkedListIterator (returned by this.iterator()) or Y.each().  Also\nsupports all the other operations defined in gallery-funcprog.</p>\n\n<p>Direct indexing into the list is not supported, as a reminder that it\nis an expensive operation.  Instead, use find() with a function that\nchecks the index.</p>",
+            "itemtype": "main"
+        },
+        "gallery-log-filter": {
+            "name": "gallery-log-filter",
+            "submodules": {},
+            "classes": {
+                "LogFilter": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "src/gallery-log-filter/js/log-filter.js",
+            "line": 7,
+            "description": "<p>Adds filters to `Y.log`.</p>",
             "itemtype": "main"
         },
         "gallery-math": {
@@ -3011,6 +3036,24 @@
                     "type": "LinkedList"
                 }
             ]
+        },
+        "LogFilter": {
+            "name": "LogFilter",
+            "shortname": "LogFilter",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-log-filter",
+            "namespace": "",
+            "file": "src/gallery-log-filter/js/log-filter.js",
+            "line": 7,
+            "description": "<p>Adds filters to `Y.log`.</p>",
+            "mainName": "gallery-log-filter",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true
         },
         "Math": {
             "name": "Math",
@@ -12037,6 +12080,40 @@
             "module": "gallery-linkedlist"
         },
         {
+            "file": "src/gallery-log-filter/js/log-filter.js",
+            "line": 16,
+            "description": "Adds a filter that filters out messages other than the given set of\nlevels.",
+            "itemtype": "method",
+            "name": "addLevelFilter",
+            "static": 1,
+            "params": [
+                {
+                    "name": "levels",
+                    "description": "List of log levels to pass through, e.g, `['error','warn']`.",
+                    "type": "Array"
+                }
+            ],
+            "class": "LogFilter",
+            "module": "gallery-log-filter"
+        },
+        {
+            "file": "src/gallery-log-filter/js/log-filter.js",
+            "line": 36,
+            "description": "Adds a function to filter log messages.",
+            "itemtype": "method",
+            "name": "addFilter",
+            "static": 1,
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "Function to apply.  Called with `msg, cat, src`.  Returns `true` to pass the message.",
+                    "type": "Function"
+                }
+            ],
+            "class": "LogFilter",
+            "module": "gallery-log-filter"
+        },
+        {
             "file": "src/gallery-math/js/Math.js",
             "line": 17,
             "itemtype": "method",
@@ -17983,6 +18060,13 @@
             "itemtype": "method",
             "name": "scrollIntoView",
             "chainable": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "optional configuration\n<dl>\n<dt>anim</dt>\n<dd>Animation configuration: duration, easing, method (\"both\" is default, \"xy\" or \"yx\" specifies which coordinate goes first)</dd>\n<dt>region</dt>\n<dd>Rectangle within the viewport which should be considered visible.  Default is to use the entire viewport.</dd>\n</dl>",
+                    "type": "Object"
+                }
+            ],
             "class": "Node~scrollIntoView",
             "module": "gallery-scrollintoview"
         },

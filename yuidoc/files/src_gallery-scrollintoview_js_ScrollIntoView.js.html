@@ -103,6 +103,8 @@
             
                 <li><a href="..&#x2F;classes/LinkedListIterator.html">LinkedListIterator</a></li>
             
+                <li><a href="..&#x2F;classes/LogFilter.html">LogFilter</a></li>
+            
                 <li><a href="..&#x2F;classes/Math.html">Math</a></li>
             
                 <li><a href="..&#x2F;classes/MathCanvas.html">MathCanvas</a></li>
@@ -333,6 +335,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-linkedlist.html">gallery-linkedlist</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-log-filter.html">gallery-log-filter</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-math.html">gallery-math</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-mathcanvas.html">gallery-mathcanvas</a></li>
@@ -430,8 +434,15 @@
 &#x2F;**
  * @method scrollIntoView
  * @chainable
+ * @param config {Object} optional configuration
+ * &lt;dl&gt;
+ * &lt;dt&gt;anim&lt;&#x2F;dt&gt;
+ * &lt;dd&gt;Animation configuration: duration, easing, method (&quot;both&quot; is default, &quot;xy&quot; or &quot;yx&quot; specifies which coordinate goes first)&lt;&#x2F;dd&gt;
+ * &lt;dt&gt;region&lt;&#x2F;dt&gt;
+ * &lt;dd&gt;Rectangle within the viewport which should be considered visible.  Default is to use the entire viewport.&lt;&#x2F;dd&gt;
+ * &lt;&#x2F;dl&gt;
  *&#x2F;
-Y.Node.prototype.scrollIntoView = function()
+Y.Node.prototype.scrollIntoView = function(config)
 {
 	var ancestor = Y.Node.getDOMNode(this.get(&#x27;offsetParent&#x27;));
 	if (!ancestor)

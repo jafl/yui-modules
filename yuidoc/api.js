@@ -31,6 +31,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "LinkedList",
         "LinkedListItem",
         "LinkedListIterator",
+        "LogFilter",
         "MRUCache",
         "Math",
         "MathCanvas",
@@ -147,6 +148,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-layout-datatable",
         "gallery-layout-rows",
         "gallery-linkedlist",
+        "gallery-log-filter",
         "gallery-math",
         "gallery-mathcanvas",
         "gallery-matrix-background",
@@ -322,6 +324,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-linkedlist",
             "name": "gallery-linkedlist",
             "description": "<p>Doubly linked list for storing items.  Supports iteration via\nLinkedListIterator (returned by this.iterator()) or Y.each().  Also\nsupports all the other operations defined in gallery-funcprog.</p>\n\n<p>Direct indexing into the list is not supported, as a reminder that it\nis an expensive operation.  Instead, use find() with a function that\nchecks the index.</p>"
+        },
+        {
+            "displayName": "gallery-log-filter",
+            "name": "gallery-log-filter",
+            "description": "<p>Adds filters to `Y.log`.</p>"
         },
         {
             "displayName": "gallery-math",
