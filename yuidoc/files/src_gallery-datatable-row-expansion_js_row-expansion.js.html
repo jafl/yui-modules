@@ -103,6 +103,8 @@
             
                 <li><a href="..&#x2F;classes/LinkedListIterator.html">LinkedListIterator</a></li>
             
+                <li><a href="..&#x2F;classes/LogFilter.html">LogFilter</a></li>
+            
                 <li><a href="..&#x2F;classes/Math.html">Math</a></li>
             
                 <li><a href="..&#x2F;classes/MathCanvas.html">MathCanvas</a></li>
@@ -332,6 +334,8 @@
                 <li><a href="..&#x2F;modules/gallery-layout-rows.html">gallery-layout-rows</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-linkedlist.html">gallery-linkedlist</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-log-filter.html">gallery-log-filter</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-math.html">gallery-math</a></li>
             
@@ -611,7 +615,7 @@ var cell = table.getCell(e.taregt, [0, 1];&lt;&#x2F;pre&gt;&lt;&#x2F;code&gt;
 *&#x2F;
 function getCell(seed, shift)
 {
-	var tbody = this.get(&#x27;container&#x27;),
+	var tbody = this.tbodyNode,
 		row, cell;
 
 	if (seed &amp;&amp; tbody)
@@ -695,22 +699,30 @@ found by the input, &#x60;null&#x60; is returned.
 *&#x2F;
 function getRow(id)
 {
-	var tbody = this.get(&#x27;container&#x27;) || null;
+	var tbody = this.tbodyNode,
+		row   = null;
 
-	if (id)
+	if (tbody)
 	{
-		id = this._idMap[id.get ? id.get(&#x27;clientId&#x27;) : id] || id;
+		if (id)
+		{
+			id = this._idMap[id.get ? id.get(&#x27;clientId&#x27;) : id] || id;
+		}
+
+		row = Y.one(Y.Lang.isNumber(id) ? this.getCell([id,0]).ancestor() : &#x27;#&#x27; + id);
 	}
 
-	return tbody &amp;&amp;
-		Y.one(Y.Lang.isNumber(id) ? this.getCell([id,0]).ancestor() : &#x27;#&#x27; + id);
+	return row;
 }
 
 function replaceGetters()
 {
-	var body = this.get(&#x27;host&#x27;).body;
-	if (body instanceof Y.DataTable.BodyView)
+	var view = this.get(&#x27;host&#x27;).view;
+	if (view instanceof Y.DataTable.TableView &amp;&amp;
+		view.body instanceof Y.DataTable.BodyView)
 	{
+		var body = view.body;
+
 		this.orig_getCell = body.getCell;
 		this.orig_getRow  = body.getRow;
 
@@ -721,15 +733,15 @@ function replaceGetters()
 
 function restoreGetters()
 {
-	var body = this.get(&#x27;host&#x27;).body;
-	if (this.orig_getCell)
+	var view = this.get(&#x27;host&#x27;).view;
+	if (view.body &amp;&amp; this.orig_getCell)
 	{
-		body.getCell = this.orig_getCell;
+		view.body.getCell = this.orig_getCell;
 	}
 
-	if (this.orig_getRow)
+	if (view.body &amp;&amp; this.orig_getRow)
 	{
-		body.getRow = this.orig_getRow;
+		view.body.getRow = this.orig_getRow;
 	}
 }
 
@@ -746,7 +758,7 @@ Y.extend(RowExpansion, Y.Plugin.Base,
 		analyzeColumns.call(this);
 		this.afterHostEvent(&#x27;columnsChange&#x27;, analyzeColumns);
 
-		this.afterHostEvent(&#x27;renderTable&#x27;, replaceGetters);
+		this.afterHostEvent(&#x27;table:renderTable&#x27;, replaceGetters);
 	},
 
 	destructor: function()
