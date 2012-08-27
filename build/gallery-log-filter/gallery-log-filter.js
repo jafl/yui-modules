@@ -7,7 +7,7 @@ YUI.add('gallery-log-filter', function(Y) {
  */
 
 /**********************************************************************
- * <p>Adds filters to the logge.</p>
+ * <p>Appends filters to the log output.</p>
  * 
  * @main gallery-log-filter
  * @class LogFilter

@@ -367,6 +367,7 @@ Y.extend(MathCanvas, Y.Widget,
 			{
 				bottom: 0
 			},
+			easing:   Y.Easing.easeOut,
 			duration: 0.5
 		});
 
@@ -397,6 +398,7 @@ Y.extend(MathCanvas, Y.Widget,
 			{
 				bottom: -this.keyboard.get('offsetHeight')
 			},
+			easing:   Y.Easing.easeOut,
 			duration: 0.5
 		});
 
