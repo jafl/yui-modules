@@ -328,7 +328,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "gallery-log-filter",
             "name": "gallery-log-filter",
-            "description": "<p>Adds filters to the logger.</p>"
+            "description": "<p>Appends filters to the log output.</p>"
         },
         {
             "displayName": "gallery-math",
