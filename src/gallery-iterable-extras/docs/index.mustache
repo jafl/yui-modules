@@ -1,0 +1,99 @@
+<div class="intro component">
+    <p>
+        The Iterable Extras module provides the same higher-order functions that `array-extras` adds to `Y.Array`. `Y.Iterable` is a mix-in for classes that provide implement `iterator()`.  (To add these functions to the YUI Global Object, use `gallery-funcprog`.)
+    </p>
+    <p>
+        The module also provides `Y.ArrayIterator` to make it easy for classes backed by an array to implement the `iterator()` function required by `Y.Iterable`.
+    </p>
+</div>
+
+{{>getting-started}}
+
+<p>Performance results (Turn of Firebug!):</p>
+<table id="perf">
+<tr>
+	<th>Method</th><th>Duration (ms)</th>
+</tr>
+</table>
+
+<script type="text/javascript">
+YUI().use(
+	'gallery-iterable-extras', 'node',
+function(Y)
+{
+	var list = [];
+	for (var i=0; i<1000000; i++)
+	{
+		list.push(i);
+	}
+
+	var table = Y.one('#perf');
+
+	// for loop
+
+	var t0 = new Date().getTime(), count = 0;
+
+	var size = list.length;
+	for (i=0; i<size; i++)
+	{
+		count += list[i];
+	}
+
+	var t1 = new Date().getTime();
+	table.append('<tr><td>for loop</td><td>' + (t1-t0) + '</td></tr>');
+
+	// Y.each
+
+	var t0 = new Date().getTime(), count = 0;
+
+	Y.each(list, function(value)
+	{
+		count += value;
+	});
+
+	var t1 = new Date().getTime();
+	table.append('<tr><td>Y.each</td><td>' + (t1-t0) + '</td></tr>');
+
+	// Y.ArrayIterator
+
+	var t0 = new Date().getTime(), count = 0;
+
+	var iter = new Y.ArrayIterator(list);
+	while (!iter.atEnd())
+	{
+		count += iter.next();
+	}
+
+	var t1 = new Date().getTime();
+	table.append('<tr><td>Y.ArrayIterator</td><td>' + (t1-t0) + '</td></tr>');
+
+	// class using Y.ArrayIterator to implement each
+
+	function ArrayList(list)
+	{
+		this._list = list;
+	}
+
+	ArrayList.prototype =
+	{
+		iterator: function()
+		{
+			return new Y.ArrayIterator(this._list);
+		}
+
+		// don't need newInstance() for this example
+	};
+
+	Y.mix(ArrayList, Y.Iterable, false, null, 4);
+
+	var t0 = new Date().getTime(), count = 0;
+
+	new ArrayList(list).each(function(value)
+	{
+		count += value;
+	});
+
+	var t1 = new Date().getTime();
+	table.append('<tr><td>each using Y.ArrayIterator</td><td>' + (t1-t0) + '</td></tr>');
+});
+</script>

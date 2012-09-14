@@ -1,8 +1,6 @@
 YUI.add('gallery-algorithms-tests', function(Y) {
 "use strict";
 
-	var logToLog10 = 1/Math.log(10);
-
 	Y.Test.Runner.add(new Y.Test.Case(
 	{
 		name: 'Algorithms',
