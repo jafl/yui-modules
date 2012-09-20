@@ -771,7 +771,7 @@ Y.extend(Paginator, Y.Widget,
             this._pageChanged = false;
 
             for (var k in state) {
-                if (state.hasOwnProperty(k) && this._configs.hasOwnProperty(k)) {
+                if (state.hasOwnProperty(k)) {
                     this.set(k,state[k]);
                 }
             }
