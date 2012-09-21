@@ -395,7 +395,7 @@ Y.extend(Paginator, Y.Widget,
      */
     updateVisibility : function (e) {
         var alwaysVisible = this.get('alwaysVisible'),
-            totalRecords,visible,rpp,rppOptions,i,len;
+            totalRecords,visible,rpp,rppOptions,i,len,rppOption,rppValue;
 
         if (!e || e.type === 'alwaysVisibleChange' || !alwaysVisible) {
             totalRecords = this.get('totalRecords');
@@ -405,7 +405,9 @@ Y.extend(Paginator, Y.Widget,
 
             if (Y.Lang.isArray(rppOptions)) {
                 for (i = 0, len = rppOptions.length; i < len; ++i) {
-                    rpp = Math.min(rpp,rppOptions[i]);
+                    rppOption = rppOptions[i];
+                    rppValue  = Y.Lang.isValue(rppOption.value) ? rppOption.value : rppOption;
+                    rpp       = Math.min(rpp,rppValue);
                 }
             }
 
