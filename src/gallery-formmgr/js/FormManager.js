@@ -693,7 +693,8 @@ Y.extend(FormManager, Y.Plugin.Host,
 	},
 
 	/**
-	 * Reset all values in the form to the defaults passed to the constructor.
+	 * Reset all values in the form to the defaults passed to the
+	 * constructor or to `setDefaultValues()`.
 	 * 
 	 * @method populateForm
 	 */
