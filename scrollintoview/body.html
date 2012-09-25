@@ -7,88 +7,16 @@
 	<script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
 	<script src="gallery-dimensions-debug.js"></script>
 	<script src="gallery-scrollintoview-debug.js"></script>
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.6.0/build/cssreset/reset-min.css">
-
-	<style type="text/css">
-	body
-	{
-		overflow: hidden;
-	}
-
-	h1
-	{
-		font-weight: bold;
-		margin: 10px;
-	}
-
-	p.note,
-	p.buttons
-	{
-		margin: 5px;
-	}
-
-	.container
-	{
-		position: relative;
-		border: 1px solid black;
-		padding: 20px 20px 0;
-		overflow: auto;
-	}
-
-	.shadow
-	{
-		height: 5px;
-		background-color: #CCCCCC;
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-	}
-
-	.row
-	{
-		margin-bottom: 10px;
-	}
-
-	.module
-	{
-		margin: 0 5px;
-		border: 1px solid black;
-	}
-
-	.hd
-	{
-		height: 20px;
-		background-color: #CCCCCC;
-	}
-
-	.bd
-	{
-		position:relative;
-		padding: 0 10px 10px;
-		overflow: auto;
-	}
-	</style>
 </head>
 <body>
 
 <h1><a href="http://yuilibrary.com/gallery/show/scrollintoview">YUI 3 ScrollIntoView</a> Example</h1>
 
-<p class="buttons">
-<button id="default">Default scroll</button>
-<button id="custom">Custom scroll</button>
+<p>
+	<button class="default">Default scroll</button>
+	<button class="custom">Custom scroll</button>
 </p>
 
-<p>The difference is most obvious if you scroll the <q>Hi!</q> button into view before clicking the above buttons.</p>
-
-<div class="container" style="width:800px; height:590px; overflow:hidden;">
-<div class="shadow"></div>
-<div class="row" style="height:590px; margin-bottom: 0;">
-<div class="module" style="width:788px; height:auto;">
-<div class="hd">
-<p>Header</p>
-</div>
-<div class="bd" style="height:558px;">
 <p>Let it scroll!</p>
 <p>Let it scroll!</p>
 <p>Let it scroll!</p>
@@ -298,10 +226,63 @@
 <p>Let it scroll!</p>
 <p>Let it scroll!</p>
 <p>Let it scroll!</p>
-</div>
-</div>
-</div>
-</div>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+<p>Let it scroll!</p>
+
+<p>
+	<button class="default">Default scroll</button>
+	<button class="custom">Custom scroll</button>
+</p>
 
 <script type="text/javascript">
 YUI({
@@ -311,12 +292,12 @@ YUI({
 {
 	var target = Y.one('#target');
 
-	Y.one('#default').on('click', function()
+	Y.all('.default').on('click', function()
 	{
 		Y.Node.getDOMNode(target).scrollIntoView(false);
 	});
 
-	Y.one('#custom').on('click', function()
+	Y.all('.custom').on('click', function()
 	{
 		target.scrollIntoView();
 	});
