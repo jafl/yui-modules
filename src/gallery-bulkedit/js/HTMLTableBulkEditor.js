@@ -135,11 +135,11 @@ function moveFocus(e)
 	var bd = this.getRecordContainer(e.target);
 	if (bd && e.keyCode == 38)
 	{
-		bd = bd.previousSibling;
+		bd = bd.previous();
 	}
 	else if (bd)
 	{
-		bd = bd.nextSibling;
+		bd = bd.next();
 	}
 
 	var id = bd && this.getRecordId(bd);
