@@ -1136,12 +1136,16 @@ BulkEditor.ATTRS =
 
 /**
  * @event notifyErrors
- * @description Fires when widget-level validation messages need to be displayed.
+ * @description Fired when widget-level validation messages need to be displayed.
  * @param msgs {Array} the messages to display
  */
 /**
  * @event clearErrorNotification
- * @description Fires when widget-level validation messages should be cleared.
+ * @description Fired when widget-level validation messages should be cleared.
+ */
+/**
+ * @event pageRendered
+ * @description Fired every time after the editor has rendered a page.
  */
 
 var default_page_size = 1e9,
@@ -1196,6 +1200,24 @@ Y.extend(BulkEditor, Y.Widget,
 	{
 		this.clearServerErrors();
 		this.reload();
+	},
+
+	bindUI: function()
+	{
+		this._attachEvents(this.get('contentBox'));
+	},
+
+	/**
+	 * Attaches events to the container.
+	 *
+	 * @method _attachEvents
+	 * @param container {Node} node to which events should be attached
+	 * @protected
+	 */
+	_attachEvents: function(
+		/* node */	container)
+	{
+		Y.delegate('bulkeditor|click', handleCheckboxMultiselect, container, '.checkbox-multiselect input', this);
 	},
 
 	/**
@@ -1267,8 +1289,30 @@ Y.extend(BulkEditor, Y.Widget,
 		{
 			Y.Array.each(records, function(r)
 			{
-				var node = this.getFieldElement(r, key);
-				ds.updateValue(r[ id_key ], key, node.get('value'));
+				var node = this.getFieldElement(r, key),
+					tag  = node.get('tagName').toLowerCase(),
+					value;
+				if (tag == 'input' && node.get('type').toLowerCase() == 'checkbox')
+				{
+					value = node.get('checked');
+				}
+				else if (tag == 'select' && node.get('multiple'))
+				{
+					value = Y.reduce(Y.Node.getDOMNode(node).options, [], function(v, o)
+					{
+						if (o.selected)
+						{
+							v.push(o.value);
+						}
+						return v;
+					});
+				}
+				else
+				{
+					value = node.get('value');
+				}
+
+				ds.updateValue(r[ id_key ], key, value);
 			},
 			this);
 		},
@@ -1582,7 +1626,6 @@ Y.extend(BulkEditor, Y.Widget,
 		Y.log('_render', 'debug');
 
 		var container = this.get('contentBox');
-		Y.Event.purgeElement(container);
 		this._renderContainer(container);
 		container.set('scrollTop', 0);
 		container.set('scrollLeft', 0);
@@ -1593,6 +1636,8 @@ Y.extend(BulkEditor, Y.Widget,
 			this._renderRecord(node, record);
 		},
 		this);
+
+		this.fire('pageRendered');
 
 		if (this.auto_validate)
 		{
@@ -2237,7 +2282,7 @@ Y.extend(BulkEditor, Y.Widget,
 
 BulkEditor.cleanHTML = function(s)
 {
-	return (s ? Y.Escape.html(s) : '');
+	return (Y.Lang.isValue(s) ? Y.Escape.html(s) : '');
 };
 
 /**
@@ -2328,7 +2373,7 @@ BulkEditor.markup =
 			{
 				value:    v.value,
 				text:     BulkEditor.cleanHTML(v.text),
-				selected: o.value && o.value.toString() === v.value ? 'selected' : ''
+				selected: o.value && o.value.toString() === v.value ? 'selected="selected"' : ''
 			});
 		});
 
@@ -2345,6 +2390,86 @@ BulkEditor.markup =
 			yiv:     (o.field && o.field.validation && o.field.validation.css) || '',
 			msg1:    label ? BulkEditor.error_msg_markup : '',
 			msg2:    label ? '' : BulkEditor.error_msg_markup
+		});
+	},
+
+	checkbox: function(o)
+	{
+		var checkbox =
+			'<div class="{cont}{key}">' +
+				'<input type="checkbox" id="{id}" {value} class="{field}{key}" /> ' +
+				'<label for="{id}">{label}</label>' +
+				'{msg}' +
+			'</div>';
+
+		var label = o.field && o.field.label ? BulkEditor.labelMarkup.call(this, o) : '';
+
+		return Y.Lang.sub(checkbox,
+		{
+			cont:  BulkEditor.field_container_class + ' ' + BulkEditor.field_container_class_prefix,
+			field: BulkEditor.field_class_prefix,
+			key:   o.key,
+			id:    this.getFieldId(o.record, o.key),
+			label: label,
+			value: o.value ? 'checked="checked"' : '',
+			msg:   BulkEditor.error_msg_markup
+		});
+	},
+
+	checkboxMultiselect: function(o)
+	{
+		var select =
+			'<div class="{cont}{key}">' +
+				'{label}{msg}' +
+				'<div id="{id}-cbs" class="checkbox-multiselect">{cbs}</div>' +
+				'<select id="{id}" class="{field}{key}" multiple="multiple" style="display:none;">{options}</select>' +
+			'</div>';
+
+		var id        = this.getFieldId(o.record, o.key),
+			has_value = Y.Lang.isArray(o.value);
+
+		var checkbox =
+			'<p class="checkbox-multiselect-checkbox">' +
+				'<input type="checkbox" id="{id}-{value}" value="{value}" {checked} /> ' +
+				'<label for="{id}-{value}">{label}</label>' +
+			'</p>';
+
+		var cbs = Y.Array.reduce(o.field.values, '', function(s, v)
+		{
+			return s + Y.Lang.sub(checkbox,
+			{
+				id:      id,
+				value:   v.value,
+				checked: has_value && Y.Array.indexOf(o.value, v.value) >= 0 ? 'checked="checked"' : '',
+				label:   BulkEditor.cleanHTML(v.text)
+			});
+		});
+
+		var option = '<option value="{value}" {selected}>{text}</option>';
+
+		var options = Y.Array.reduce(o.field.values, '', function(s, v)
+		{
+			return s + Y.Lang.sub(option,
+			{
+				value:    v.value,
+				text:     BulkEditor.cleanHTML(v.text),
+				selected: has_value && Y.Array.indexOf(o.value, v.value) >= 0 ? 'selected="selected"' : ''
+			});
+		});
+
+		var label = o.field && o.field.label ? BulkEditor.labelMarkup.call(this, o) : '';
+
+		return Y.Lang.sub(select,
+		{
+			cont:  	 BulkEditor.field_container_class + ' ' + BulkEditor.field_container_class_prefix,
+			field:   BulkEditor.field_class_prefix,
+			key:     o.key,
+			id:      id,
+			label:   label,
+			cbs:     cbs,
+			options: options,
+			yiv:     (o.field && o.field.validation && o.field.validation.css) || '',
+			msg:     BulkEditor.error_msg_markup
 		});
 	},
 
@@ -2392,6 +2517,22 @@ BulkEditor.fieldMarkup = function(key, record)
 		record: record
 	});
 };
+
+function handleCheckboxMultiselect(e)
+{
+	var cb     = e.currentTarget,
+		value  = cb.get('value'),
+		select = cb.ancestor('.checkbox-multiselect').next('select');
+
+	Y.some(Y.Node.getDOMNode(select).options, function(o)
+	{
+		if (o.value == value)
+		{
+			o.selected = cb.get('checked');
+			return true;
+		}
+	});
+}
 
 Y.BulkEditor = BulkEditor;
 /**
@@ -2494,6 +2635,30 @@ HTMLTableBulkEditor.selectFormatter = function(o)
 };
 
 /**
+ * Renders a checkbox element in the cell.
+ *
+ * @method checkboxFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.checkboxFormatter = function(o)
+{
+	o.cell.set('innerHTML', BulkEditor.markup.checkbox.call(this, o));
+};
+
+/**
+ * Renders a set of checkboxes for multiselect in the cell.
+ *
+ * @method checkboxMultiselectFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.checkboxMultiselectFormatter = function(o)
+{
+	o.cell.set('innerHTML', BulkEditor.markup.checkboxMultiselect.call(this, o));
+};
+
+/**
  * Map of field type to cell formatter.
  *
  * @property Y.HTMLTableBulkEditor.defaults
@@ -2510,6 +2675,16 @@ HTMLTableBulkEditor.defaults =
 	select:
 	{
 		formatter: HTMLTableBulkEditor.selectFormatter
+	},
+
+	checkbox:
+	{
+		formatter: HTMLTableBulkEditor.checkboxFormatter
+	},
+
+	checkboxMultiselect:
+	{
+		formatter: HTMLTableBulkEditor.checkboxMultiselectFormatter
 	},
 
 	textarea:
@@ -2560,6 +2735,11 @@ function moveFocus(e)
 
 Y.extend(HTMLTableBulkEditor, BulkEditor,
 {
+	bindUI: function()
+	{
+		// attach events after creating the table
+	},
+
 	_renderContainer: function(
 		/* element */	container)
 	{
@@ -2593,6 +2773,7 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 			container.set('innerHTML', s);
 			this.table = container.get('firstChild');
 
+			this._attachEvents(this.table);
 			Y.on('key', moveFocus, this.table, 'down:38,40+ctrl', this);
 
 			Y.Object.each(this.get('events'), function(e)
@@ -2605,7 +2786,7 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 		{
 			while (this.table.get('children').size() > 1)
 			{
-				this.table.get('lastChild').remove(true);
+				this.table.get('lastChild').remove().destroy(true);
 			}
 		}
 	},
@@ -2703,4 +2884,4 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 Y.HTMLTableBulkEditor = HTMLTableBulkEditor;
 
 
-}, '@VERSION@' ,{requires:['widget','datasource-local','gallery-busyoverlay','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-scrollintoview','array-extras','gallery-funcprog','escape','event-key'], optional:['datasource','dataschema','gallery-paginator'], skinnable:true});
+}, '@VERSION@' ,{requires:['widget','datasource-local','gallery-busyoverlay','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-scrollintoview','array-extras','gallery-funcprog','escape','event-key','gallery-nodelist-extras2'], optional:['datasource','dataschema','gallery-paginator'], skinnable:true});
