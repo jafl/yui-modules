@@ -98,6 +98,30 @@ HTMLTableBulkEditor.selectFormatter = function(o)
 };
 
 /**
+ * Renders a checkbox element in the cell.
+ *
+ * @method checkboxFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.checkboxFormatter = function(o)
+{
+	o.cell.set('innerHTML', BulkEditor.markup.checkbox.call(this, o));
+};
+
+/**
+ * Renders a set of checkboxes for multiselect in the cell.
+ *
+ * @method checkboxMultiselectFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.checkboxMultiselectFormatter = function(o)
+{
+	o.cell.set('innerHTML', BulkEditor.markup.checkboxMultiselect.call(this, o));
+};
+
+/**
  * Map of field type to cell formatter.
  *
  * @property Y.HTMLTableBulkEditor.defaults
@@ -114,6 +138,16 @@ HTMLTableBulkEditor.defaults =
 	select:
 	{
 		formatter: HTMLTableBulkEditor.selectFormatter
+	},
+
+	checkbox:
+	{
+		formatter: HTMLTableBulkEditor.checkboxFormatter
+	},
+
+	checkboxMultiselect:
+	{
+		formatter: HTMLTableBulkEditor.checkboxMultiselectFormatter
 	},
 
 	textarea:
@@ -164,6 +198,11 @@ function moveFocus(e)
 
 Y.extend(HTMLTableBulkEditor, BulkEditor,
 {
+	bindUI: function()
+	{
+		// attach events after creating the table
+	},
+
 	_renderContainer: function(
 		/* element */	container)
 	{
@@ -197,6 +236,7 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 			container.set('innerHTML', s);
 			this.table = container.get('firstChild');
 
+			this._attachEvents(this.table);
 			Y.on('key', moveFocus, this.table, 'down:38,40+ctrl', this);
 
 			Y.Object.each(this.get('events'), function(e)
@@ -209,7 +249,7 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 		{
 			while (this.table.get('children').size() > 1)
 			{
-				this.table.get('lastChild').remove(true);
+				this.table.get('lastChild').remove().destroy(true);
 			}
 		}
 	},
