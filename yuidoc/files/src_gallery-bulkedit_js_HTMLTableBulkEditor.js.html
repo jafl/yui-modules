@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>src&#x2F;gallery-bulkedit&#x2F;js&#x2F;HTMLTableBulkEditor.js - YUI 3 Gallery Modules</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -514,6 +514,30 @@ HTMLTableBulkEditor.selectFormatter = function(o)
 };
 
 &#x2F;**
+ * Renders a checkbox element in the cell.
+ *
+ * @method checkboxFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ *&#x2F;
+HTMLTableBulkEditor.checkboxFormatter = function(o)
+{
+	o.cell.set(&#x27;innerHTML&#x27;, BulkEditor.markup.checkbox.call(this, o));
+};
+
+&#x2F;**
+ * Renders a set of checkboxes for multiselect in the cell.
+ *
+ * @method checkboxMultiselectFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ *&#x2F;
+HTMLTableBulkEditor.checkboxMultiselectFormatter = function(o)
+{
+	o.cell.set(&#x27;innerHTML&#x27;, BulkEditor.markup.checkboxMultiselect.call(this, o));
+};
+
+&#x2F;**
  * Map of field type to cell formatter.
  *
  * @property Y.HTMLTableBulkEditor.defaults
@@ -530,6 +554,16 @@ HTMLTableBulkEditor.defaults =
 	select:
 	{
 		formatter: HTMLTableBulkEditor.selectFormatter
+	},
+
+	checkbox:
+	{
+		formatter: HTMLTableBulkEditor.checkboxFormatter
+	},
+
+	checkboxMultiselect:
+	{
+		formatter: HTMLTableBulkEditor.checkboxMultiselectFormatter
 	},
 
 	textarea:
@@ -551,11 +585,11 @@ function moveFocus(e)
 	var bd = this.getRecordContainer(e.target);
 	if (bd &amp;&amp; e.keyCode == 38)
 	{
-		bd = bd.previousSibling;
+		bd = bd.previous();
 	}
 	else if (bd)
 	{
-		bd = bd.nextSibling;
+		bd = bd.next();
 	}
 
 	var id = bd &amp;&amp; this.getRecordId(bd);
@@ -580,6 +614,11 @@ function moveFocus(e)
 
 Y.extend(HTMLTableBulkEditor, BulkEditor,
 {
+	bindUI: function()
+	{
+		&#x2F;&#x2F; attach events after creating the table
+	},
+
 	_renderContainer: function(
 		&#x2F;* element *&#x2F;	container)
 	{
@@ -613,6 +652,7 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 			container.set(&#x27;innerHTML&#x27;, s);
 			this.table = container.get(&#x27;firstChild&#x27;);
 
+			this._attachEvents(this.table);
 			Y.on(&#x27;key&#x27;, moveFocus, this.table, &#x27;down:38,40+ctrl&#x27;, this);
 
 			Y.Object.each(this.get(&#x27;events&#x27;), function(e)
@@ -625,7 +665,7 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 		{
 			while (this.table.get(&#x27;children&#x27;).size() &gt; 1)
 			{
-				this.table.get(&#x27;lastChild&#x27;).remove(true);
+				this.table.get(&#x27;lastChild&#x27;).remove().destroy(true);
 			}
 		}
 	},

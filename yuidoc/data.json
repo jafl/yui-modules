@@ -6153,7 +6153,7 @@
             "line": 128,
             "itemtype": "event",
             "name": "notifyErrors",
-            "description": "Fires when widget-level validation messages need to be displayed.",
+            "description": "Fired when widget-level validation messages need to be displayed.",
             "params": [
                 {
                     "name": "msgs",
@@ -6169,13 +6169,40 @@
             "line": 133,
             "itemtype": "event",
             "name": "clearErrorNotification",
-            "description": "Fires when widget-level validation messages should be cleared.",
+            "description": "Fired when widget-level validation messages should be cleared.",
             "class": "BulkEditor",
             "module": "gallery-bulkedit"
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 192,
+            "line": 137,
+            "itemtype": "event",
+            "name": "pageRendered",
+            "description": "Fired every time after the editor has rendered a page.",
+            "class": "BulkEditor",
+            "module": "gallery-bulkedit"
+        },
+        {
+            "file": "src/gallery-bulkedit/js/BulkEditor.js",
+            "line": 201,
+            "description": "Attaches events to the container.",
+            "itemtype": "method",
+            "name": "_attachEvents",
+            "params": [
+                {
+                    "name": "container",
+                    "description": "node to which events should be attached",
+                    "type": "Node"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "BulkEditor",
+            "module": "gallery-bulkedit"
+        },
+        {
+            "file": "src/gallery-bulkedit/js/BulkEditor.js",
+            "line": 214,
             "description": "Reloads the current page of records.  This will erase any changes\nunsaved changes!",
             "itemtype": "method",
             "name": "reload",
@@ -6184,7 +6211,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 247,
+            "line": 269,
             "description": "Save the modified values from the current page of records.",
             "itemtype": "method",
             "name": "saveChanges",
@@ -6193,7 +6220,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 269,
+            "line": 313,
             "description": "Retrieve *all* the data.  Do not call this if you use server-side\npagination.",
             "itemtype": "method",
             "name": "getAllValues",
@@ -6209,7 +6236,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 292,
+            "line": 336,
             "itemtype": "method",
             "name": "getChanges",
             "return": {
@@ -6221,7 +6248,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 301,
+            "line": 345,
             "description": "<p>Insert a new record.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "insertRecord",
@@ -6246,7 +6273,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 325,
+            "line": 369,
             "description": "<p>Remove a record.  The removal will be recorded in the diffs.\nThere is no way to un-remove a record, so if you need that\nfunctionality, you may want to use highlighting to indicate removed\nrecords instead.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "removeRecord",
@@ -6266,7 +6293,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 357,
+            "line": 401,
             "itemtype": "method",
             "name": "getFieldConfig",
             "params": [
@@ -6285,7 +6312,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 368,
+            "line": 412,
             "itemtype": "method",
             "name": "getRecordContainerId",
             "params": [
@@ -6304,7 +6331,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 386,
+            "line": 430,
             "itemtype": "method",
             "name": "getFieldId",
             "params": [
@@ -6328,7 +6355,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 399,
+            "line": 443,
             "itemtype": "method",
             "name": "getRecordAndFieldKey",
             "params": [
@@ -6347,7 +6374,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 414,
+            "line": 458,
             "itemtype": "method",
             "name": "getRecordId",
             "params": [
@@ -6366,7 +6393,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 438,
+            "line": 482,
             "itemtype": "method",
             "name": "getRecordContainer",
             "params": [
@@ -6385,7 +6412,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 462,
+            "line": 506,
             "itemtype": "method",
             "name": "getFieldContainer",
             "params": [
@@ -6409,7 +6436,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 476,
+            "line": 520,
             "itemtype": "method",
             "name": "getFieldElement",
             "params": [
@@ -6433,7 +6460,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 493,
+            "line": 537,
             "description": "Paginate and/or scroll to make the specified record visible.  Record\nis pinged to help the user find it.",
             "itemtype": "method",
             "name": "showRecordIndex",
@@ -6449,7 +6476,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 524,
+            "line": 568,
             "description": "Paginate and/or scroll to make the specified record visible.  Record\nis pinged to help the user find it.",
             "itemtype": "method",
             "name": "showRecordId",
@@ -6465,7 +6492,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 541,
+            "line": 585,
             "description": "Apply a class to the DOM element containing the record for a short\nwhile.  Your CSS can use this class to highlight the record in some\nway.",
             "itemtype": "method",
             "name": "pingRecord",
@@ -6481,7 +6508,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 564,
+            "line": 608,
             "description": "Render the current page of records.",
             "itemtype": "method",
             "name": "_render",
@@ -6499,7 +6526,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 600,
+            "line": 645,
             "description": "Derived class should override to create a structure for the records.",
             "itemtype": "method",
             "name": "_renderContainer",
@@ -6517,7 +6544,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 613,
+            "line": 658,
             "description": "Derived class must override to create a container for the record.",
             "itemtype": "method",
             "name": "_renderRecordContainer",
@@ -6540,7 +6567,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 628,
+            "line": 673,
             "description": "Derived class can override if it needs to do more than just call\n_renderField() for each field.",
             "itemtype": "method",
             "name": "_renderRecord",
@@ -6563,7 +6590,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 655,
+            "line": 700,
             "description": "If _renderRecord is not overridden, derived class must override this\nfunction to render the field.",
             "itemtype": "method",
             "name": "_renderField",
@@ -6581,7 +6608,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 673,
+            "line": 718,
             "description": "Update the paginator to match the data source meta information.",
             "itemtype": "method",
             "name": "_updatePaginator",
@@ -6599,7 +6626,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 689,
+            "line": 734,
             "description": "Clear errors received from the server.  This clears all displayed\nmessages.",
             "itemtype": "method",
             "name": "clearServerErrors",
@@ -6608,7 +6635,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 720,
+            "line": 765,
             "description": "Set page level, record level, and field level errors received from\nthe server.  A message can be either a string (assumed to be an\nerror) or an object providing msg and type, where type can be\n'error', 'warn', 'info', or 'success'.",
             "itemtype": "method",
             "name": "setServerErrors",
@@ -6629,7 +6656,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 763,
+            "line": 808,
             "description": "Update paginator to show which pages have errors.",
             "itemtype": "method",
             "name": "_updatePageStatus",
@@ -6640,7 +6667,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 799,
+            "line": 844,
             "description": "Validate the visible values (if using server-side pagination) or all\nthe values (if using client-side pagination or no pagination).",
             "itemtype": "method",
             "name": "validate",
@@ -6653,7 +6680,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 846,
+            "line": 891,
             "description": "Validate the visible values.",
             "itemtype": "method",
             "name": "_validateVisibleFields",
@@ -6675,7 +6702,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 905,
+            "line": 950,
             "description": "Validate the given elements.",
             "itemtype": "method",
             "name": "_validateElements",
@@ -6697,7 +6724,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 995,
+            "line": 1040,
             "description": "If the data is stored locally and we paginate, validate all of it\nand mark the pages that have invalid values.",
             "itemtype": "method",
             "name": "_validateAllPages",
@@ -6712,7 +6739,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1074,
+            "line": 1119,
             "description": "Clear all displayed messages.",
             "itemtype": "method",
             "name": "_clearValidationMessages",
@@ -6721,7 +6748,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1094,
+            "line": 1139,
             "description": "Display a message for the specified field.",
             "itemtype": "method",
             "name": "displayFieldMessage",
@@ -6752,7 +6779,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1139,
+            "line": 1184,
             "description": "Display a message for the specified record.",
             "itemtype": "method",
             "name": "displayRecordMessage",
@@ -6783,7 +6810,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1181,
+            "line": 1226,
             "itemtype": "method",
             "name": "_getElementStatus",
             "access": "protected",
@@ -6809,7 +6836,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1196,
+            "line": 1241,
             "description": "Update the status of the node, if the new status has higher precedence.",
             "itemtype": "method",
             "name": "_updateRecordStatus",
@@ -6849,7 +6876,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1234,
+            "line": 1279,
             "itemtype": "property",
             "name": "Y.BulkEditor.error_msg_markup",
             "type": "{String}",
@@ -6859,7 +6886,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1244,
+            "line": 1289,
             "itemtype": "method",
             "name": "labelMarkup",
             "static": 1,
@@ -6879,7 +6906,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1265,
+            "line": 1310,
             "description": "Map of field type (input,select,textarea) to function that generates the\nrequired markup.  You can add additional entries.  Each function takes a\nsingle argument: an object defining\n\tkey {String} field key,\n\tvalue {Mixed} field value,\n\tfield {Object} field configuration,\n\trecord {Object} record data",
             "itemtype": "property",
             "name": "Y.BulkEditor.markup",
@@ -6890,7 +6917,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1368,
+            "line": 1493,
             "itemtype": "method",
             "name": "fieldMarkup",
             "static": 1,
@@ -6990,6 +7017,40 @@
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
             "line": 100,
+            "description": "Renders a checkbox element in the cell.",
+            "itemtype": "method",
+            "name": "checkboxFormatter",
+            "static": 1,
+            "params": [
+                {
+                    "name": "o",
+                    "description": "cell, key, value, field, column, record",
+                    "type": "Object"
+                }
+            ],
+            "class": "HTMLTableBulkEditor",
+            "module": "gallery-bulkedit"
+        },
+        {
+            "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
+            "line": 112,
+            "description": "Renders a set of checkboxes for multiselect in the cell.",
+            "itemtype": "method",
+            "name": "checkboxMultiselectFormatter",
+            "static": 1,
+            "params": [
+                {
+                    "name": "o",
+                    "description": "cell, key, value, field, column, record",
+                    "type": "Object"
+                }
+            ],
+            "class": "HTMLTableBulkEditor",
+            "module": "gallery-bulkedit"
+        },
+        {
+            "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
+            "line": 124,
             "description": "Map of field type to cell formatter.",
             "itemtype": "property",
             "name": "Y.HTMLTableBulkEditor.defaults",
@@ -10880,7 +10941,18 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 160,
+            "line": 159,
+            "description": "Selector identifying the element which contains layout-(hd|bd|ft).\nThis cannot be used to attach PageLayout to only part of the page.\nIt should only be used when the page content is unavoidably embedded\ninside an element which fills the page.",
+            "itemtype": "attribute",
+            "name": "body",
+            "type": "{String|Node}",
+            "default": "\"body\"",
+            "class": "PageLayout",
+            "module": "gallery-layout"
+        },
+        {
+            "file": "src/gallery-layout/js/PageLayout.js",
+            "line": 179,
             "itemtype": "event",
             "name": "beforeReflow",
             "description": "Fires before the layout is reflowed.",
@@ -10889,7 +10961,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 164,
+            "line": 183,
             "itemtype": "event",
             "name": "afterReflow",
             "description": "Fires after the layout is completely reflowed, including viewport scrollbar changes.",
@@ -10898,7 +10970,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 169,
+            "line": 188,
             "itemtype": "event",
             "name": "beforeExpandModule",
             "description": "Fires before a module is expanded.",
@@ -10914,7 +10986,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 174,
+            "line": 193,
             "itemtype": "event",
             "name": "afterExpandModule",
             "description": "Fires after a module is expanded.",
@@ -10930,7 +11002,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 180,
+            "line": 199,
             "itemtype": "event",
             "name": "beforeCollapseModule",
             "description": "Fires before a module is collapsed.",
@@ -10946,7 +11018,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 185,
+            "line": 204,
             "itemtype": "event",
             "name": "afterCollapseModule",
             "description": "Fires after a module is collapsed.",
@@ -10962,7 +11034,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 191,
+            "line": 210,
             "itemtype": "event",
             "name": "beforeResizeModule",
             "description": "Fires before a module is resized.",
@@ -10988,7 +11060,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 198,
+            "line": 217,
             "itemtype": "event",
             "name": "afterResizeModule",
             "description": "Fires after a module is resized.",
@@ -11014,7 +11086,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 206,
+            "line": 225,
             "itemtype": "property",
             "name": "fit_to_viewport_class",
             "type": "{String}",
@@ -11025,7 +11097,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 214,
+            "line": 233,
             "itemtype": "property",
             "name": "fit_to_content_class",
             "type": "{String}",
@@ -11036,7 +11108,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 222,
+            "line": 241,
             "itemtype": "property",
             "name": "force_fit_class",
             "type": "{String}",
@@ -11047,7 +11119,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 230,
+            "line": 249,
             "itemtype": "property",
             "name": "page_header_class",
             "type": "{String}",
@@ -11058,7 +11130,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 238,
+            "line": 257,
             "itemtype": "property",
             "name": "page_body_class",
             "type": "{String}",
@@ -11069,7 +11141,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 246,
+            "line": 265,
             "itemtype": "property",
             "name": "page_footer_class",
             "type": "{String}",
@@ -11080,7 +11152,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 254,
+            "line": 273,
             "itemtype": "property",
             "name": "module_rows_class",
             "type": "{String}",
@@ -11091,7 +11163,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 262,
+            "line": 281,
             "itemtype": "property",
             "name": "module_cols_class",
             "type": "{String}",
@@ -11102,7 +11174,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 270,
+            "line": 289,
             "itemtype": "property",
             "name": "module_class",
             "type": "{String}",
@@ -11113,7 +11185,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 278,
+            "line": 297,
             "itemtype": "property",
             "name": "module_header_class",
             "type": "{String}",
@@ -11124,7 +11196,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 286,
+            "line": 305,
             "itemtype": "property",
             "name": "module_body_class",
             "type": "{String}",
@@ -11135,7 +11207,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 294,
+            "line": 313,
             "itemtype": "property",
             "name": "module_footer_class",
             "type": "{String}",
@@ -11146,7 +11218,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 302,
+            "line": 321,
             "itemtype": "property",
             "name": "not_managed_class",
             "type": "{String}",
@@ -11157,7 +11229,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 310,
+            "line": 329,
             "itemtype": "property",
             "name": "collapse_vert_nub_class",
             "type": "{String}",
@@ -11168,7 +11240,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 318,
+            "line": 337,
             "itemtype": "property",
             "name": "collapse_left_nub_class",
             "type": "{String}",
@@ -11179,7 +11251,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 326,
+            "line": 345,
             "itemtype": "property",
             "name": "collapse_right_nub_class",
             "type": "{String}",
@@ -11190,7 +11262,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 334,
+            "line": 353,
             "itemtype": "property",
             "name": "expand_vert_nub_class",
             "type": "{String}",
@@ -11201,7 +11273,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 342,
+            "line": 361,
             "itemtype": "property",
             "name": "expand_left_nub_class",
             "type": "{String}",
@@ -11212,7 +11284,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 350,
+            "line": 369,
             "itemtype": "property",
             "name": "expand_right_nub_class",
             "type": "{String}",
@@ -11223,7 +11295,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 358,
+            "line": 377,
             "itemtype": "property",
             "name": "collapsed_vert_class",
             "type": "{String}",
@@ -11234,7 +11306,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 366,
+            "line": 385,
             "itemtype": "property",
             "name": "collapsed_horiz_class",
             "type": "{String}",
@@ -11245,7 +11317,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 374,
+            "line": 393,
             "itemtype": "property",
             "name": "min_module_height",
             "type": "{Number}",
@@ -11256,7 +11328,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 779,
+            "line": 798,
             "description": "Call this after manually adding or removing modules on the page.",
             "itemtype": "method",
             "name": "rescanBody",
@@ -11265,7 +11337,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 927,
+            "line": 946,
             "itemtype": "method",
             "name": "getHeaderHeight",
             "return": {
@@ -11277,7 +11349,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 936,
+            "line": 955,
             "itemtype": "method",
             "name": "getHeaderContainer",
             "return": {
@@ -11289,7 +11361,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 945,
+            "line": 964,
             "itemtype": "method",
             "name": "getBodyHeight",
             "return": {
@@ -11301,7 +11373,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 954,
+            "line": 973,
             "itemtype": "method",
             "name": "getBodyContainer",
             "return": {
@@ -11313,7 +11385,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 963,
+            "line": 982,
             "itemtype": "method",
             "name": "getFooterHeight",
             "return": {
@@ -11325,7 +11397,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 973,
+            "line": 992,
             "itemtype": "method",
             "name": "getFooterContainer",
             "return": {
@@ -11337,7 +11409,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 982,
+            "line": 1001,
             "itemtype": "method",
             "name": "moduleIsCollapsed",
             "params": [
@@ -11356,7 +11428,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1005,
+            "line": 1024,
             "description": "Expand the specified module.",
             "itemtype": "method",
             "name": "expandModule",
@@ -11372,7 +11444,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1033,
+            "line": 1052,
             "description": "Collapse the specified module.",
             "itemtype": "method",
             "name": "collapseModule",
@@ -11388,7 +11460,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1061,
+            "line": 1080,
             "description": "Toggle the collapsed state of the specified layout-module.",
             "itemtype": "method",
             "name": "toggleModule",
@@ -11404,7 +11476,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1081,
+            "line": 1100,
             "description": "Call this when something changes size, to request a reflow of the\nlayout.",
             "itemtype": "method",
             "name": "elementResized",
@@ -11424,7 +11496,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1130,
+            "line": 1149,
             "description": "Returns the components of the module.",
             "itemtype": "method",
             "name": "_analyzeModule",
@@ -11446,7 +11518,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1177,
+            "line": 1196,
             "description": "Set the width of a module.",
             "itemtype": "method",
             "name": "_setWidth",
@@ -18060,6 +18132,13 @@
             "itemtype": "method",
             "name": "scrollIntoView",
             "chainable": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "optional configuration\n<dl>\n<dt>anim</dt>\n<dd>Animation configuration: duration, easing, method (\"both\" is default, \"xy\" or \"yx\" specifies which coordinate goes first)</dd>\n<dt>region</dt>\n<dd>Rectangle within the viewport which should be considered visible.  Default is to use the entire viewport.</dd>\n</dl>",
+                    "type": "Object"
+                }
+            ],
             "class": "Node~scrollIntoView",
             "module": "gallery-scrollintoview"
         },
