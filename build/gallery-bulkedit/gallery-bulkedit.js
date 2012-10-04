@@ -673,7 +673,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		record_id = record_id.toString();
 
 		var record = this._recordMap[ record_id ];
-		if (record && this._getComparator(key)(record[key] || '', value || ''))
+		if (record && this._getComparator(key)(Y.Lang.isValue(record[key]) ? record[key] : '', Y.Lang.isValue(value) ? value : ''))
 		{
 			if (this._diff[ record_id ])
 			{
@@ -1284,7 +1284,7 @@ Y.extend(BulkEditor, Y.Widget,
 		var ds      = this.get('ds');
 		var records = ds.getCurrentRecords();
 		var id_key  = ds.get('uniqueIdKey');
-		Y.Object.each(this.get('fields'), function(value, key)
+		Y.Object.each(this.get('fields'), function(field, key)
 		{
 			Y.Array.each(records, function(r)
 			{
@@ -1293,7 +1293,7 @@ Y.extend(BulkEditor, Y.Widget,
 					value;
 				if (tag == 'input' && node.get('type').toLowerCase() == 'checkbox')
 				{
-					value = node.get('checked');
+					value = node.get('checked') ? field.values.on : field.values.off;
 				}
 				else if (tag == 'select' && node.get('multiple'))
 				{
@@ -2409,7 +2409,7 @@ BulkEditor.markup =
 			key:   o.key,
 			id:    this.getFieldId(o.record, o.key),
 			label: label,
-			value: o.value ? 'checked="checked"' : '',
+			value: o.value == o.field.values.on ? 'checked="checked"' : '',
 			msg:   BulkEditor.error_msg_markup
 		});
 	},
