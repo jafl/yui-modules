@@ -2591,12 +2591,18 @@ HTMLTableBulkEditor.ATTRS =
 	}
 };
 
-var cell_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'cell'),
+var cell_class        = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'cell'),
 	cell_class_prefix = cell_class + '-',
-	odd_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'odd'),
-	even_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'even'),
-	msg_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'record-message'),
-	liner_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'liner');
+	odd_class         = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'odd'),
+	even_class        = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'even'),
+	msg_class         = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'record-message'),
+	liner_class       = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'liner'),
+
+	input_class          = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'input'),
+	textarea_class       = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'textarea'),
+	select_class         = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'select'),
+	checkbox_class       = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'checkbox'),
+	cb_multiselect_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'checkbox-multiselect');
 
 /**
  * Renders an input element in the cell.
@@ -2608,6 +2614,7 @@ var cell_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, 'cell
 HTMLTableBulkEditor.inputFormatter = function(o)
 {
 	o.cell.set('innerHTML', BulkEditor.markup.input.call(this, o));
+	o.cell.addClass(input_class);
 };
 
 /**
@@ -2620,6 +2627,7 @@ HTMLTableBulkEditor.inputFormatter = function(o)
 HTMLTableBulkEditor.textareaFormatter = function(o)
 {
 	o.cell.set('innerHTML', BulkEditor.markup.textarea.call(this, o));
+	o.cell.addClass(textarea_class);
 };
 
 /**
@@ -2632,6 +2640,7 @@ HTMLTableBulkEditor.textareaFormatter = function(o)
 HTMLTableBulkEditor.selectFormatter = function(o)
 {
 	o.cell.set('innerHTML', BulkEditor.markup.select.call(this, o));
+	o.cell.addClass(select_class);
 };
 
 /**
@@ -2644,6 +2653,7 @@ HTMLTableBulkEditor.selectFormatter = function(o)
 HTMLTableBulkEditor.checkboxFormatter = function(o)
 {
 	o.cell.set('innerHTML', BulkEditor.markup.checkbox.call(this, o));
+	o.cell.addClass(checkbox_class);
 };
 
 /**
@@ -2656,6 +2666,7 @@ HTMLTableBulkEditor.checkboxFormatter = function(o)
 HTMLTableBulkEditor.checkboxMultiselectFormatter = function(o)
 {
 	o.cell.set('innerHTML', BulkEditor.markup.checkboxMultiselect.call(this, o));
+	o.cell.addClass(cb_multiselect_class);
 };
 
 /**
