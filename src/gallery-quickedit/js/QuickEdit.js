@@ -138,6 +138,18 @@ QuickEdit.ATTRS =
 	{
 		value:     [],
 		validator: Y.Lang.isArray
+	},
+
+	/**
+	 * @attribute includeAllRowsInChanges
+	 * @description If true, getChanges() returns a record for every row, even if the record is empty.  Set to false if you want getChanges() to only return records that contain data.
+	 * @type Boolean
+	 * @default true
+	 */
+	includeAllRowsInChanges:
+	{
+		value:     true,
+		validator: Y.Lang.isBoolean
 	}
 };
 
@@ -584,8 +596,9 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 			return false;
 		}
 
-		var changes       = [];
-		var alwaysInclude = this.get('changesAlwaysInclude');
+		var changes        = [],
+			always_include = this.get('changesAlwaysInclude'),
+			include_all    = this.get('includeAllRowsInChanges');
 
 		var host      = this.get('host');
 		var rows      = host._tbodyNode.get('children');
@@ -593,8 +606,8 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 		{
 			var list = rows.item(i).all('.quickedit-field');
 
-			var change = {};
-			changes.push(change);
+			var change  = {},
+				changed = false;
 
 			var field_count = list.size();
 			for (var j=0; j<field_count; j++)
@@ -609,13 +622,19 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 						val !== (prev ? prev.toString() : ''))
 				{
 					change[key] = val;
+					changed     = true;
 				}
 			}
 
-			for (var j=0; j<alwaysInclude.length; j++)
+			for (var j=0; j<always_include.length; j++)
 			{
-				var key     = alwaysInclude[j];
+				var key     = always_include[j];
 				change[key] = rec.get(key);
+			}
+
+			if (changed || include_all)
+			{
+				changes.push(change);
 			}
 		},
 		this);
