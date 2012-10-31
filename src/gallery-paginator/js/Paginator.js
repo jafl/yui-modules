@@ -824,7 +824,7 @@ Y.extend(Paginator, Y.Widget,
             var change = this._state || {},
                 state;
 
-            change[e.type.replace(/Change$/,'')] = e.prevVal;
+            change[e.type.replace(/^.+?:/,'').replace(/Change$/,'')] = e.prevVal;
             state = this.getState(change);
 
             if (state.page !== state.before.page) {
