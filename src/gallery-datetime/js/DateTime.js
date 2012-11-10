@@ -12,10 +12,9 @@ var blackout_min_seconds = -40,
  */
 
 /**********************************************************************
- * Manages an optional set of radio buttons (for "no date", etc.), a date
- * input field + hour and minute menus, a calendar for selecting the date
- * (either inline or as a popup tied to the date input field), and a legend
- * explaining the ways in which a day can be marked, based on blackouts.
+ * Manages a date input field and an optional time field.  Calendars and
+ * time selection widgets can be attached to these fields, but will not be
+ * managed by this class.
  * 
  * Date/time values can be specified as either a Date object or an object
  * specifying year,month,day (all 1-based) or date_str and optionally
