@@ -692,7 +692,7 @@ Y.extend(BulkEditor, Y.Widget,
 		var ds      = this.get(&#x27;ds&#x27;);
 		var records = ds.getCurrentRecords();
 		var id_key  = ds.get(&#x27;uniqueIdKey&#x27;);
-		Y.Object.each(this.get(&#x27;fields&#x27;), function(value, key)
+		Y.Object.each(this.get(&#x27;fields&#x27;), function(field, key)
 		{
 			Y.Array.each(records, function(r)
 			{
@@ -701,7 +701,7 @@ Y.extend(BulkEditor, Y.Widget,
 					value;
 				if (tag == &#x27;input&#x27; &amp;&amp; node.get(&#x27;type&#x27;).toLowerCase() == &#x27;checkbox&#x27;)
 				{
-					value = node.get(&#x27;checked&#x27;);
+					value = node.get(&#x27;checked&#x27;) ? field.values.on : field.values.off;
 				}
 				else if (tag == &#x27;select&#x27; &amp;&amp; node.get(&#x27;multiple&#x27;))
 				{
@@ -1818,7 +1818,7 @@ BulkEditor.markup =
 			key:   o.key,
 			id:    this.getFieldId(o.record, o.key),
 			label: label,
-			value: o.value ? &#x27;checked=&quot;checked&quot;&#x27; : &#x27;&#x27;,
+			value: o.value == o.field.values.on ? &#x27;checked=&quot;checked&quot;&#x27; : &#x27;&#x27;,
 			msg:   BulkEditor.error_msg_markup
 		});
 	},

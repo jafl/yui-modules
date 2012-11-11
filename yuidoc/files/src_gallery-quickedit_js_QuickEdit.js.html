@@ -554,6 +554,30 @@ QuickEdit.ATTRS =
 	{
 		value:     [],
 		validator: Y.Lang.isArray
+	},
+
+	&#x2F;**
+	 * @attribute includeAllRowsInChanges
+	 * @description If true, getChanges() returns a record for every row, even if the record is empty.  Set to false if you want getChanges() to only return records that contain data.
+	 * @type Boolean
+	 * @default true
+	 *&#x2F;
+	includeAllRowsInChanges:
+	{
+		value:     true,
+		validator: Y.Lang.isBoolean
+	},
+
+	&#x2F;**
+	 * @attribute includeRowIndexInChanges
+	 * @description If true, getChanges() includes the row index in each record, using the _row_index key.
+	 * @type Boolean
+	 * @default false
+	 *&#x2F;
+	includeRowIndexInChanges:
+	{
+		value:     false,
+		validator: Y.Lang.isBoolean
 	}
 };
 
@@ -987,8 +1011,14 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 	 * Return the changed values.  For each row, an object is created with
 	 * only the changed values.  The object keys are the column keys.  If
 	 * you need values from particular columns to be included always, even
-	 * if the value did not change, include the key &quot;changesAlwaysInclude&quot;
+	 * if the value did not change, include the key &#x60;changesAlwaysInclude&#x60;
 	 * in the plugin configuration and pass an array of column keys.
+	 * If you need the row indexes, configure &#x60;includeRowIndexInChanges&#x60;.
+	 * 
+	 * If you only want the records with changes, configure
+	 * &#x60;includeAllRowsInChanges&#x60; to be false.  For this to be useful, you
+	 * will need to configure either &#x60;changesAlwaysInclude&#x60; or
+	 * &#x60;includeRowIndexInChanges&#x60;.
 	 *
 	 * @method getChanges
 	 * @return {mixed} array of objects if all validations pass, false otherwise
@@ -1000,8 +1030,10 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 			return false;
 		}
 
-		var changes       = [];
-		var alwaysInclude = this.get(&#x27;changesAlwaysInclude&#x27;);
+		var changes        = [],
+			always_include = this.get(&#x27;changesAlwaysInclude&#x27;),
+			include_index  = this.get(&#x27;includeRowIndexInChanges&#x27;),
+			include_all    = this.get(&#x27;includeAllRowsInChanges&#x27;);
 
 		var host      = this.get(&#x27;host&#x27;);
 		var rows      = host._tbodyNode.get(&#x27;children&#x27;);
@@ -1009,8 +1041,8 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 		{
 			var list = rows.item(i).all(&#x27;.quickedit-field&#x27;);
 
-			var change = {};
-			changes.push(change);
+			var change  = {},
+				changed = false;
 
 			var field_count = list.size();
 			for (var j=0; j&lt;field_count; j++)
@@ -1025,13 +1057,24 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 						val !== (prev ? prev.toString() : &#x27;&#x27;))
 				{
 					change[key] = val;
+					changed     = true;
 				}
 			}
 
-			for (var j=0; j&lt;alwaysInclude.length; j++)
+			if (changed || include_all)
 			{
-				var key     = alwaysInclude[j];
-				change[key] = rec.get(key);
+				for (var j=0; j&lt;always_include.length; j++)
+				{
+					var key     = always_include[j];
+					change[key] = rec.get(key);
+				}
+
+				if (include_index)
+				{
+					change._row_index = i;
+				}
+
+				changes.push(change);
 			}
 		},
 		this);

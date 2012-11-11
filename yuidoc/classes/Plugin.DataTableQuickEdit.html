@@ -1394,6 +1394,14 @@ function, but the name of the sample function makes the point clear.</p>
                                 <a href="#attr_host">host</a>
                             </li>
                         
+                            <li class="index-item attr">
+                                <a href="#attr_includeAllRowsInChanges">includeAllRowsInChanges</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_includeRowIndexInChanges">includeRowIndexInChanges</a>
+                            </li>
+                        
                             <li class="index-item attr inherited">
                                 <a href="#attr_initialized">initialized</a>
                             </li>
@@ -3327,7 +3335,7 @@ cached value.
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l739"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:739</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l782"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:782</code></a>
         
         </p>
 
@@ -3438,7 +3446,7 @@ cached value.
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l722"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:722</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l765"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:765</code></a>
         
         </p>
 
@@ -6882,7 +6890,7 @@ callback, object (method host), methodName, context, 0-n arguments</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l526"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:526</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l550"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:550</code></a>
         
         </p>
 
@@ -6938,7 +6946,7 @@ table has paginators, you must show them.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l654"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:654</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l697"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:697</code></a>
         
         </p>
 
@@ -7010,7 +7018,7 @@ table has paginators, you must show them.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l295"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:295</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l319"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:319</code></a>
         
         </p>
 
@@ -7504,7 +7512,7 @@ be removed.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l674"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:674</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l717"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:717</code></a>
         
         </p>
 
@@ -8266,7 +8274,7 @@ returned. If set to true, all attributes modified from their initial values are 
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l570"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:570</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l594"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:594</code></a>
         
         </p>
 
@@ -8280,8 +8288,14 @@ returned. If set to true, all attributes modified from their initial values are 
         <p>Return the changed values.  For each row, an object is created with
 only the changed values.  The object keys are the column keys.  If
 you need values from particular columns to be included always, even
-if the value did not change, include the key "changesAlwaysInclude"
-in the plugin configuration and pass an array of column keys.</p>
+if the value did not change, include the key <code>changesAlwaysInclude</code>
+in the plugin configuration and pass an array of column keys.
+If you need the row indexes, configure <code>includeRowIndexInChanges</code>.</p>
+
+<p>If you only want the records with changes, configure
+<code>includeAllRowsInChanges</code> to be false.  For this to be useful, you
+will need to configure either <code>changesAlwaysInclude</code> or
+<code>includeRowIndexInChanges</code>.</p>
     </div>
 
     
@@ -9820,7 +9834,7 @@ case the custom event is returned.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l227"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:227</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l251"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:251</code></a>
         
         </p>
 
@@ -9912,7 +9926,7 @@ should not be editable in QuickEdit mode.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l242"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:242</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l266"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:266</code></a>
         
         </p>
 
@@ -10499,7 +10513,7 @@ to set the value of a property within the object (e.g. <code>set("x.y.z", 5)</co
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l460"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:460</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l484"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:484</code></a>
         
         </p>
 
@@ -10621,7 +10635,7 @@ be editable.  If the table has paginators, you must hide them.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l203"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:203</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l227"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:227</code></a>
         
         </p>
 
@@ -10711,7 +10725,7 @@ formatter, this function displays a textarea field.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l179"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:179</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l203"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:203</code></a>
         
         </p>
 
@@ -11007,7 +11021,7 @@ be removed.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l626"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:626</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l669"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:669</code></a>
         
         </p>
 
@@ -11169,7 +11183,7 @@ applied by the plugin to the host object.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l170"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:170</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l194"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:194</code></a>
         
         </p>
 
@@ -11215,7 +11229,7 @@ applied by the plugin to the host object.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l161"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:161</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l185"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:185</code></a>
         
         </p>
 
@@ -11261,7 +11275,7 @@ applied by the plugin to the host object.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l152"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:152</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l176"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:176</code></a>
         
         </p>
 
@@ -11479,6 +11493,112 @@ has been through the destroy lifecycle phase.</p>
         <p>The plugin's host object.</p>
     </div>
 
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_includeAllRowsInChanges" class="attr item">
+    <a name="config_includeAllRowsInChanges"></a> 
+    <h3 class="name"><code>includeAllRowsInChanges</code></h3>
+    <span class="type">Boolean</span>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l143"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:143</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>If true, getChanges() returns a record for every row, even if the record is empty.  Set to false if you want getChanges() to only return records that contain data.</p>
+    </div>
+
+    
+        <p><strong>Default:</strong> true</p>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_includeRowIndexInChanges" class="attr item">
+    <a name="config_includeRowIndexInChanges"></a> 
+    <h3 class="name"><code>includeRowIndexInChanges</code></h3>
+    <span class="type">Boolean</span>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_gallery-quickedit_js_QuickEdit.js.html#l155"><code>src&#x2F;gallery-quickedit&#x2F;js&#x2F;QuickEdit.js:155</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>If true, getChanges() includes the row index in each record, using the <em>row</em>index key.</p>
+    </div>
+
+    
+        <p><strong>Default:</strong> false</p>
     
 
     
