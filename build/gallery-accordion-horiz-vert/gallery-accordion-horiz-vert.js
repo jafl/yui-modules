@@ -7,9 +7,9 @@ var use_nonzero_empty_div = (0 < Y.UA.ie && Y.UA.ie < 8),
 	section_min_size = (use_nonzero_empty_div ? 1 : 0);
 
 /**********************************************************************
- * <p>Widget to manage an accordion, either horizontally or vertically.
+ * Widget to manage an accordion, either horizontally or vertically.
  * Allows either multiple open sections or only a single open section.
- * Provides option to always force at least one item to be open.</p>
+ * Provides option to always force at least one item to be open.
  * 
  * @module gallery-accordion-horiz-vert
  * @main gallery-accordion-horiz-vert
@@ -1266,4 +1266,4 @@ Y.namespace("Plugin");
 Y.Plugin.FixedSizeAccordion = FixedSizeAccordionPlugin;
 
 
-}, '@VERSION@' ,{requires:['widget','selector-css3','plugin','gallery-dimensions'], optional:['anim-base'], skinnable:true});
+}, '@VERSION@' ,{skinnable:true, requires:['widget','selector-css3','plugin','gallery-dimensions'], optional:['anim-base']});

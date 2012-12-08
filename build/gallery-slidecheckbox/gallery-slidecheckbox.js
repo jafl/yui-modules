@@ -8,7 +8,6 @@ YUI.add('gallery-slidecheckbox', function(Y) {
 	LABELON = 'labelOn',
 	LABELOFF = 'labelOff',
 	HANDLE = 'handle';
-	;
 	
 	Y[SLIDECHECKBOX] = Y.Base.create(
 	SLIDECHECKBOX,
@@ -53,7 +52,7 @@ YUI.add('gallery-slidecheckbox', function(Y) {
 				this._wrapperNode.setStyle('width',wrapperWidth);
 			},
 			bindUI : function(){
-				this.disabled = this.src.get('disabled');
+				this.disabled = this.src.get('disabled') || this.src.get('readonly');
 				
 				var dd = new Y.DD.Drag({
 					node: this._sliderwrapNode,
@@ -95,16 +94,12 @@ YUI.add('gallery-slidecheckbox', function(Y) {
 					cb.detach('key');
 					cb.blur();
 				},this);
-				
-				this.src.on('change',function(e){
-					alert(this.src.get('checked'));
-				});
 			},syncUI : function(){
 				this._sliderwrapNode.setStyle('left',
 					this.src.get('checked')?  0 : this.left
 				);
 			},destructor : function(){
-				this.anim.stop().destroy();
+				this.anim && this.anim.stop().destroy();
 				this.src=null;
 			},
 			goLeft : function(){
@@ -155,7 +150,7 @@ YUI.add('gallery-slidecheckbox', function(Y) {
 				if(this.disabled){
 					return;
 				}
-
+				this.src.set('checked',!this.src.get('checked'));
 				if(this.anim === null){
 					this.anim = new Y.Anim({
 						node: this._sliderwrapNode,
@@ -169,7 +164,7 @@ YUI.add('gallery-slidecheckbox', function(Y) {
 				this.anim.set('from',{left:(this.from? this.from : this.baseX)});
 				this.anim.set('to',{left:this.to});
 				this.anim.run();
-				this.src.set('checked',!this.src.get('checked'));
+
 			},
 			_replacePx : function(el){
 				return parseInt(el.replace('px',''));
@@ -208,4 +203,4 @@ YUI.add('gallery-slidecheckbox', function(Y) {
 	);
 
 
-}, 'gallery-2012.04.04-17-55' ,{skinnable:true, requires:['node-base', 'anim-base', 'anim-easing', 'base-build', 'event-key', 'event-move', 'widget', 'node-style', 'gallery-makenode', 'dd-drag', 'dd-constrain']});
+}, 'gallery-2012.11.07-21-32' ,{skinnable:true, requires:['node-base', 'anim-base', 'anim-easing', 'base-build', 'event-key', 'event-move', 'widget', 'node-style', 'gallery-makenode', 'dd-drag', 'dd-constrain']});

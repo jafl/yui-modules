@@ -1,6 +1,6 @@
 YUI.add('gallery-imagecropper', function(Y) {
 
-
+'use strict';
 /**
  * @description <p>Creates an Image Cropper control.</p>
  * @requires widget, resize, gallery-event-arrow
@@ -141,7 +141,7 @@ ImageCropper = Y.Base.create('imagecropper', Y.Widget, [], {
 
 	_handleSrcChange: function (e) {
 		this.get('contentBox').set('src', e.newVal);
-		this.get('cropResizeMask').setStyle('backgroundImage', 'url(' + e.newVal + ')');
+		this.get('resizeKnob').setStyle('backgroundImage', 'url(' + e.newVal + ')');
 	},
 	
 	_syncResizeKnob: function () {
@@ -399,7 +399,10 @@ ImageCropper = Y.Base.create('imagecropper', Y.Widget, [], {
 	 * @chainable
 	 */
 	reset: function () {
-		this.get('resizeKnob').setXY(this.get('initialXY')).setStyles({
+		var initialXY = this.get('initialXY');
+		this.get('resizeKnob').setStyles({
+			left: initialXY[0],
+			top: initialXY[1],
 			width: this.get('initWidth'),
 			height: this.get('initHeight')
 		});
@@ -705,4 +708,4 @@ ImageCropper = Y.Base.create('imagecropper', Y.Widget, [], {
 Y.ImageCropper = ImageCropper;
 
 
-}, 'gallery-2011.08.31-20-57' ,{skinnable:true, requires:['widget','resize','gallery-event-arrow','dd-constrain']});
+}, 'gallery-2012.08.15-20-00' ,{requires:['widget','resize','gallery-event-arrow','dd-constrain'], skinnable:true});

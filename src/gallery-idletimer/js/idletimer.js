@@ -36,7 +36,7 @@ function handleUserEvent(event){
     if (enabled){
     
         if (/visibilitychange/.test(event.type)){
-            toggleIdleState(doc.hidden || doc.msHidden || doc.webkitHidden);
+            toggleIdleState(doc.hidden || doc.msHidden || doc.webkitHidden || doc.mozHidden);
         } else {
             //if it's idle, that means the user is no longer idle
             if (idle){
@@ -128,11 +128,15 @@ Y.IdleTimer = {
         
         //assign appropriate event handlers
         Y.on("mousemove", handleUserEvent, doc);
+        Y.on("mousedown", handleUserEvent, doc);
         Y.on("keydown", handleUserEvent, doc);
 
         //need to add the old-fashioned way
-        doc.addEventListener("msvisibilitychange", handleUserEvent, false)
-        doc.addEventListener("webkitvisibilitychange", handleUserEvent, false)
+        if (doc.addEventListener) {
+            doc.addEventListener("msvisibilitychange", handleUserEvent, false);
+            doc.addEventListener("webkitvisibilitychange", handleUserEvent, false);
+            doc.addEventListener("mozvisibilitychange", handleUserEvent, false);
+        }
         
         //set a timeout to toggle state
         tId = setTimeout(toggleIdleState, timeout);
@@ -155,10 +159,14 @@ Y.IdleTimer = {
         
         //detach the event handlers
         Y.detach("mousemove", handleUserEvent, doc);
+        Y.detach("mousedown", handleUserEvent, doc);
         Y.detach("keydown", handleUserEvent, doc);
 
-        doc.removeEventListener("msvisibilitychange", handleUserEvent, false)
-        doc.removeEventListener("webkitvisibilitychange", handleUserEvent, false)
+        if (doc.removeEventListener) {
+            doc.removeEventListener("msvisibilitychange", handleUserEvent, false);
+            doc.removeEventListener("webkitvisibilitychange", handleUserEvent, false);
+            doc.removeEventListener("mozvisibilitychange", handleUserEvent, false);
+        }
       
     }
 
