@@ -1214,4 +1214,4 @@ Y.extend(PageLayout, Y.Base,
 Y.PageLayout = PageLayout;
 
 
-}, '@VERSION@' ,{requires:['base','gallery-funcprog','gallery-node-optimizations','gallery-dimensions','gallery-nodelist-extras2'], optional:['gallery-layout-rows','gallery-layout-cols'], skinnable:true});
+}, '@VERSION@' ,{skinnable:true, requires:['base','gallery-funcprog','gallery-node-optimizations','gallery-dimensions','gallery-nodelist-extras2'], optional:['gallery-layout-rows','gallery-layout-cols']});

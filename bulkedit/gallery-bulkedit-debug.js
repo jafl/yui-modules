@@ -2430,7 +2430,7 @@ BulkEditor.markup =
 
 		var checkbox =
 			'<p class="checkbox-multiselect-checkbox">' +
-				'<input type="checkbox" id="{id}-{value}" value="{value}" {checked} /> ' +
+				'<input type="checkbox" id="{id}-{value}" value="{value}" {checked} />&nbsp;' +
 				'<label for="{id}-{value}">{label}</label>' +
 			'</p>';
 

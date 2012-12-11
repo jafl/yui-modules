@@ -31,10 +31,11 @@ PLDTModule.NS   = "layout";
 PLDTModule.ATTRS =
 {
 	/**
-	 * (Required) Instance of Y.PageLayout
+	 * Instance of Y.PageLayout
 	 * 
 	 * @attribute layout
 	 * @type {PageLayout}
+	 * @required
 	 * @writeonce
 	 */
 	layout:
