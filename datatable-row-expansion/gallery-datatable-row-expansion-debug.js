@@ -93,6 +93,7 @@ function formatTwistdown(o)
 
 	o.td.on('click', function()
 	{
+console.log(o.cell);
 		plugin.open_rows[ row_id ] = ! plugin.open_rows[ row_id ];
 		Y.later(0, this, function()
 		{
