@@ -4000,4 +4000,4 @@ Y.MathCanvas.Parser   = MathParser;
  */
 
 
-}, '@VERSION@' ,{requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas','gallery-node-optimizations','anim','array-extras'], skinnable:true});
+}, '@VERSION@' ,{skinnable:true, requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas','gallery-node-optimizations','anim','array-extras']});

@@ -801,4 +801,4 @@ Y.namespace("Plugin");
 Y.Plugin.DataTableQuickEdit = QuickEdit;
 
 
-}, '@VERSION@' ,{requires:['datatable-base','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-funcprog'], optional:['gallery-scrollintoview'], skinnable:true});
+}, '@VERSION@' ,{skinnable:true, requires:['datatable-base','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-funcprog'], optional:['gallery-scrollintoview']});
