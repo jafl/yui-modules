@@ -1,4 +1,4 @@
-YUI.add('gallery-dimensions', function(Y) {
+YUI.add('gallery-dimensions', function (Y, NAME) {
 
 "use strict";
 
@@ -160,4 +160,4 @@ Y.Node.prototype.parseDimensionStyle = function(
 };
 
 
-}, '@VERSION@' ,{requires:['node-style','array-extras']});
+}, '@VERSION@', {"requires": ["node-style", "array-extras"]});

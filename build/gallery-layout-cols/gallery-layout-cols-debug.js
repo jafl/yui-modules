@@ -1,4 +1,4 @@
-YUI.add('gallery-layout-cols', function(Y) {
+YUI.add('gallery-layout-cols', function (Y, NAME) {
 
 "use strict";
 
@@ -380,4 +380,4 @@ Y.PageLayoutCols.resize = function(
 };
 
 
-}, '@VERSION@' ,{requires:['gallery-layout']});
+}, '@VERSION@', {"requires": ["gallery-layout"]});

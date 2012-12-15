@@ -1,4 +1,4 @@
-YUI.add('gallery-instancemanager', function(Y) {
+YUI.add('gallery-instancemanager', function (Y, NAME) {
 
 "use strict";
 
@@ -190,4 +190,4 @@ InstanceManager.prototype =
 Y.InstanceManager = InstanceManager;
 
 
-}, '@VERSION@' );
+}, '@VERSION@');

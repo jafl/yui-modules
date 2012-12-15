@@ -1,4 +1,4 @@
-YUI.add('gallery-quickedit', function(Y) {
+YUI.add('gallery-quickedit', function (Y, NAME) {
 
 "use strict";
 
@@ -801,4 +801,15 @@ Y.namespace("Plugin");
 Y.Plugin.DataTableQuickEdit = QuickEdit;
 
 
-}, '@VERSION@' ,{skinnable:true, requires:['datatable-base','gallery-formmgr-css-validation','gallery-node-optimizations','gallery-funcprog'], optional:['gallery-scrollintoview']});
+}, '@VERSION@', {
+    "skinnable": "true",
+    "requires": [
+        "datatable-base",
+        "gallery-formmgr-css-validation",
+        "gallery-node-optimizations",
+        "gallery-funcprog"
+    ],
+    "optional": [
+        "gallery-scrollintoview"
+    ]
+});

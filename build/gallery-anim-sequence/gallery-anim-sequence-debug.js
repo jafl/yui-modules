@@ -1,4 +1,4 @@
-YUI.add('gallery-anim-sequence', function(Y) {
+YUI.add('gallery-anim-sequence', function (Y, NAME) {
 
 "use strict";
 
@@ -449,4 +449,4 @@ Y.namespace('Plugin');
 Y.Plugin.NodeFXSequence = NodeFXSequence;
 
 
-}, '@VERSION@' ,{requires:['anim-base','parallel','node-pluginhost']});
+}, '@VERSION@', {"requires": ["anim-base", "parallel", "node-pluginhost"]});

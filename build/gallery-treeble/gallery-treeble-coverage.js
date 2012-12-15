@@ -1,6 +1,1620 @@
-if (typeof __coverage__ === 'undefined') { __coverage__ = {}; }
-if (!__coverage__['build/gallery-treeble/gallery-treeble.js']) {
-   __coverage__['build/gallery-treeble/gallery-treeble.js'] = {"path":"build/gallery-treeble/gallery-treeble.js","s":{"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0,"24":0,"25":0,"26":0,"27":0,"28":0,"29":0,"30":0,"31":0,"32":0,"33":0,"34":0,"35":0,"36":0,"37":0,"38":0,"39":0,"40":0,"41":0,"42":0,"43":0,"44":0,"45":0,"46":0,"47":0,"48":0,"49":0,"50":0,"51":0,"52":0,"53":0,"54":0,"55":0,"56":0,"57":0,"58":0,"59":0,"60":0,"61":0,"62":0,"63":0,"64":0,"65":0,"66":0,"67":0,"68":0,"69":0,"70":0,"71":0,"72":0,"73":0,"74":0,"75":0,"76":0,"77":0,"78":0,"79":0,"80":0,"81":0,"82":0,"83":0,"84":0,"85":0,"86":0,"87":0,"88":0,"89":0,"90":0,"91":0,"92":0,"93":0,"94":0,"95":0,"96":0,"97":0,"98":0,"99":0,"100":0,"101":0,"102":0,"103":0,"104":0,"105":0,"106":0,"107":0,"108":0,"109":0,"110":0,"111":0,"112":0,"113":0,"114":0,"115":0,"116":0,"117":0,"118":0,"119":0,"120":0,"121":0,"122":0,"123":0,"124":0,"125":0,"126":0,"127":0,"128":0,"129":0,"130":0,"131":0,"132":0,"133":0,"134":0,"135":0,"136":0,"137":0,"138":0,"139":0,"140":0,"141":0,"142":0,"143":0,"144":0,"145":0,"146":0,"147":0,"148":0,"149":0,"150":0,"151":0,"152":0,"153":0,"154":0,"155":0,"156":0,"157":0,"158":0,"159":0,"160":0,"161":0,"162":0,"163":0,"164":0,"165":0,"166":0,"167":0,"168":0,"169":0,"170":0,"171":0,"172":0,"173":0,"174":0,"175":0,"176":0,"177":0,"178":0,"179":0,"180":0,"181":0,"182":0,"183":0,"184":0,"185":0,"186":0,"187":0,"188":0,"189":0,"190":0,"191":0,"192":0,"193":0,"194":0,"195":0,"196":0,"197":0,"198":0,"199":0,"200":0,"201":0,"202":0,"203":0,"204":0,"205":0,"206":0,"207":0,"208":0,"209":0,"210":0,"211":0,"212":0,"213":0,"214":0,"215":0,"216":0,"217":0,"218":0,"219":0,"220":0,"221":0,"222":0,"223":0,"224":0,"225":0,"226":0,"227":0,"228":0,"229":0,"230":0,"231":0,"232":0,"233":0,"234":0,"235":0,"236":0,"237":0,"238":0,"239":0,"240":0,"241":0,"242":0,"243":0,"244":0,"245":0,"246":0,"247":0,"248":0,"249":0,"250":0,"251":0,"252":0,"253":0,"254":0,"255":0,"256":0,"257":0,"258":0,"259":0,"260":0,"261":0,"262":0,"263":0,"264":0,"265":0,"266":0,"267":0,"268":0,"269":0,"270":0,"271":0,"272":0,"273":0,"274":0,"275":0,"276":0,"277":0,"278":0,"279":0,"280":0,"281":0,"282":0,"283":0,"284":0,"285":0,"286":0,"287":0,"288":0,"289":0,"290":0,"291":0,"292":0,"293":0,"294":0,"295":0,"296":0,"297":0,"298":0,"299":0,"300":0,"301":0,"302":0,"303":0,"304":0,"305":0,"306":0,"307":0,"308":0,"309":0,"310":0,"311":0,"312":0,"313":0,"314":0,"315":0,"316":0,"317":0,"318":0,"319":0,"320":0,"321":0,"322":0,"323":0,"324":0,"325":0,"326":0,"327":0,"328":0,"329":0,"330":0,"331":0,"332":0,"333":0,"334":0,"335":0,"336":0,"337":0,"338":0,"339":0,"340":0,"341":0,"342":0,"343":0,"344":0,"345":0,"346":0,"347":0,"348":0,"349":0,"350":0,"351":0,"352":0,"353":0,"354":0,"355":0,"356":0,"357":0,"358":0,"359":0,"360":0,"361":0,"362":0,"363":0,"364":0,"365":0,"366":0,"367":0,"368":0,"369":0,"370":0,"371":0,"372":0,"373":0,"374":0,"375":0,"376":0,"377":0,"378":0,"379":0,"380":0,"381":0,"382":0,"383":0,"384":0,"385":0,"386":0,"387":0,"388":0,"389":0,"390":0},"b":{"1":[0,0],"2":[0,0],"3":[0,0],"4":[0,0],"5":[0,0],"6":[0,0],"7":[0,0],"8":[0,0],"9":[0,0],"10":[0,0],"11":[0,0,0],"12":[0,0],"13":[0,0],"14":[0,0],"15":[0,0],"16":[0,0],"17":[0,0],"18":[0,0],"19":[0,0],"20":[0,0],"21":[0,0],"22":[0,0],"23":[0,0],"24":[0,0],"25":[0,0],"26":[0,0],"27":[0,0],"28":[0,0],"29":[0,0],"30":[0,0],"31":[0,0],"32":[0,0],"33":[0,0],"34":[0,0],"35":[0,0],"36":[0,0],"37":[0,0],"38":[0,0],"39":[0,0],"40":[0,0],"41":[0,0],"42":[0,0],"43":[0,0],"44":[0,0],"45":[0,0],"46":[0,0],"47":[0,0],"48":[0,0],"49":[0,0],"50":[0,0],"51":[0,0],"52":[0,0],"53":[0,0],"54":[0,0,0],"55":[0,0],"56":[0,0],"57":[0,0],"58":[0,0],"59":[0,0],"60":[0,0],"61":[0,0],"62":[0,0],"63":[0,0],"64":[0,0],"65":[0,0],"66":[0,0],"67":[0,0],"68":[0,0],"69":[0,0],"70":[0,0],"71":[0,0],"72":[0,0],"73":[0,0],"74":[0,0],"75":[0,0],"76":[0,0],"77":[0,0],"78":[0,0],"79":[0,0],"80":[0,0],"81":[0,0],"82":[0,0],"83":[0,0],"84":[0,0],"85":[0,0],"86":[0,0,0],"87":[0,0],"88":[0,0],"89":[0,0],"90":[0,0],"91":[0,0],"92":[0,0],"93":[0,0],"94":[0,0],"95":[0,0],"96":[0,0],"97":[0,0],"98":[0,0],"99":[0,0],"100":[0,0],"101":[0,0],"102":[0,0],"103":[0,0],"104":[0,0],"105":[0,0],"106":[0,0],"107":[0,0],"108":[0,0],"109":[0,0],"110":[0,0],"111":[0,0],"112":[0,0],"113":[0,0],"114":[0,0],"115":[0,0]},"f":{"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0,"24":0,"25":0,"26":0,"27":0,"28":0,"29":0,"30":0,"31":0,"32":0,"33":0},"fnMap":{"1":{"name":"(anonymous_1)","line":1,"loc":{"start":{"line":1,"column":27},"end":{"line":1,"column":46}}},"2":{"name":"TreebleDataSource","line":29,"loc":{"start":{"line":29,"column":0},"end":{"line":30,"column":0}}},"3":{"name":"populateOpen","line":152,"loc":{"start":{"line":152,"column":0},"end":{"line":156,"column":0}}},"4":{"name":"searchOpen","line":234,"loc":{"start":{"line":234,"column":0},"end":{"line":237,"column":0}}},"5":{"name":"getNode","line":249,"loc":{"start":{"line":249,"column":0},"end":{"line":251,"column":0}}},"6":{"name":"countVisibleNodes","line":263,"loc":{"start":{"line":263,"column":0},"end":{"line":268,"column":0}}},"7":{"name":"requestTree","line":292,"loc":{"start":{"line":292,"column":0},"end":{"line":293,"column":0}}},"8":{"name":"getVisibleSlicesPgTop","line":327,"loc":{"start":{"line":327,"column":0},"end":{"line":336,"column":0}}},"9":{"name":"getVisibleSlicesPgAll","line":414,"loc":{"start":{"line":414,"column":0},"end":{"line":427,"column":0}}},"10":{"name":"requestSlices","line":523,"loc":{"start":{"line":523,"column":0},"end":{"line":525,"column":0}}},"11":{"name":"findRequest","line":591,"loc":{"start":{"line":591,"column":0},"end":{"line":593,"column":0}}},"12":{"name":"treeSuccess","line":606,"loc":{"start":{"line":606,"column":0},"end":{"line":607,"column":0}}},"13":{"name":"treeFailure","line":660,"loc":{"start":{"line":660,"column":0},"end":{"line":661,"column":0}}},"14":{"name":"setNodeInfo","line":675,"loc":{"start":{"line":675,"column":0},"end":{"line":680,"column":0}}},"15":{"name":"searchTxId","line":690,"loc":{"start":{"line":690,"column":0},"end":{"line":694,"column":0}}},"16":{"name":"checkFinished","line":714,"loc":{"start":{"line":714,"column":0},"end":{"line":715,"column":0}}},"17":{"name":"(anonymous_17)","line":740,"loc":{"start":{"line":740,"column":7},"end":{"line":741,"column":3}}},"18":{"name":"toggleSuccess","line":785,"loc":{"start":{"line":785,"column":0},"end":{"line":786,"column":0}}},"19":{"name":"toggleFailure","line":807,"loc":{"start":{"line":807,"column":0},"end":{"line":808,"column":0}}},"20":{"name":"complete","line":822,"loc":{"start":{"line":822,"column":0},"end":{"line":823,"column":0}}},"21":{"name":"compareRequests","line":834,"loc":{"start":{"line":834,"column":0},"end":{"line":835,"column":0}}},"22":{"name":"(anonymous_22)","line":858,"loc":{"start":{"line":858,"column":14},"end":{"line":859,"column":1}}},"23":{"name":"(anonymous_23)","line":909,"loc":{"start":{"line":909,"column":9},"end":{"line":910,"column":1}}},"24":{"name":"(anonymous_24)","line":937,"loc":{"start":{"line":937,"column":9},"end":{"line":938,"column":1}}},"25":{"name":"(anonymous_25)","line":979,"loc":{"start":{"line":979,"column":16},"end":{"line":980,"column":1}}},"26":{"name":"(anonymous_26)","line":992,"loc":{"start":{"line":992,"column":21},"end":{"line":993,"column":1}}},"27":{"name":"(anonymous_27)","line":1020,"loc":{"start":{"line":1020,"column":43},"end":{"line":1021,"column":0}}},"28":{"name":"Treeble","line":1088,"loc":{"start":{"line":1088,"column":0},"end":{"line":1089,"column":0}}},"29":{"name":"(anonymous_29)","line":1102,"loc":{"start":{"line":1102,"column":34},"end":{"line":1103,"column":0}}},"30":{"name":"(anonymous_30)","line":1104,"loc":{"start":{"line":1104,"column":8},"end":{"line":1105,"column":1}}},"31":{"name":"(anonymous_31)","line":1119,"loc":{"start":{"line":1119,"column":49},"end":{"line":1120,"column":3}}},"32":{"name":"(anonymous_32)","line":1137,"loc":{"start":{"line":1137,"column":29},"end":{"line":1138,"column":0}}},"33":{"name":"(anonymous_33)","line":1147,"loc":{"start":{"line":1147,"column":7},"end":{"line":1148,"column":1}}}},"statementMap":{"1":{"start":{"line":1,"column":0},"end":{"line":1164,"column":80}},"2":{"start":{"line":3,"column":0},"end":{"line":3,"column":13}},"3":{"start":{"line":29,"column":0},"end":{"line":32,"column":1}},"4":{"start":{"line":31,"column":1},"end":{"line":31,"column":65}},"5":{"start":{"line":34,"column":0},"end":{"line":34,"column":45}},"6":{"start":{"line":36,"column":0},"end":{"line":125,"column":2}},"7":{"start":{"line":152,"column":0},"end":{"line":231,"column":1}},"8":{"start":{"line":157,"column":1},"end":{"line":157,"column":30}},"9":{"start":{"line":158,"column":1},"end":{"line":158,"column":31}},"10":{"start":{"line":159,"column":1},"end":{"line":159,"column":57}},"11":{"start":{"line":160,"column":1},"end":{"line":160,"column":55}},"12":{"start":{"line":162,"column":1},"end":{"line":168,"column":2}},"13":{"start":{"line":164,"column":2},"end":{"line":167,"column":3}},"14":{"start":{"line":166,"column":3},"end":{"line":166,"column":9}},"15":{"start":{"line":170,"column":1},"end":{"line":170,"column":43}},"16":{"start":{"line":172,"column":1},"end":{"line":172,"column":19}},"17":{"start":{"line":173,"column":1},"end":{"line":228,"column":2}},"18":{"start":{"line":175,"column":2},"end":{"line":175,"column":25}},"19":{"start":{"line":176,"column":2},"end":{"line":176,"column":36}},"20":{"start":{"line":177,"column":2},"end":{"line":180,"column":3}},"21":{"start":{"line":179,"column":3},"end":{"line":179,"column":12}},"22":{"start":{"line":182,"column":2},"end":{"line":191,"column":3}},"23":{"start":{"line":184,"column":3},"end":{"line":184,"column":21}},"24":{"start":{"line":185,"column":3},"end":{"line":185,"column":18}},"25":{"start":{"line":187,"column":3},"end":{"line":190,"column":4}},"26":{"start":{"line":189,"column":4},"end":{"line":189,"column":54}},"27":{"start":{"line":193,"column":2},"end":{"line":225,"column":3}},"28":{"start":{"line":195,"column":3},"end":{"line":203,"column":5}},"29":{"start":{"line":205,"column":3},"end":{"line":205,"column":26}},"30":{"start":{"line":206,"column":3},"end":{"line":217,"column":4}},"31":{"start":{"line":208,"column":4},"end":{"line":208,"column":61}},"32":{"start":{"line":209,"column":4},"end":{"line":214,"column":5}},"33":{"start":{"line":211,"column":5},"end":{"line":211,"column":40}},"34":{"start":{"line":212,"column":5},"end":{"line":212,"column":46}},"35":{"start":{"line":213,"column":5},"end":{"line":213,"column":47}},"36":{"start":{"line":216,"column":4},"end":{"line":216,"column":54}},"37":{"start":{"line":219,"column":3},"end":{"line":222,"column":4}},"38":{"start":{"line":221,"column":4},"end":{"line":221,"column":42}},"39":{"start":{"line":224,"column":3},"end":{"line":224,"column":27}},"40":{"start":{"line":227,"column":2},"end":{"line":227,"column":6}},"41":{"start":{"line":230,"column":1},"end":{"line":230,"column":15}},"42":{"start":{"line":234,"column":0},"end":{"line":247,"column":1}},"43":{"start":{"line":238,"column":1},"end":{"line":244,"column":2}},"44":{"start":{"line":240,"column":2},"end":{"line":243,"column":3}},"45":{"start":{"line":242,"column":3},"end":{"line":242,"column":18}},"46":{"start":{"line":246,"column":1},"end":{"line":246,"column":14}},"47":{"start":{"line":249,"column":0},"end":{"line":261,"column":1}},"48":{"start":{"line":252,"column":1},"end":{"line":252,"column":23}},"49":{"start":{"line":253,"column":1},"end":{"line":253,"column":26}},"50":{"start":{"line":254,"column":1},"end":{"line":258,"column":2}},"51":{"start":{"line":256,"column":2},"end":{"line":256,"column":39}},"52":{"start":{"line":257,"column":2},"end":{"line":257,"column":27}},"53":{"start":{"line":260,"column":1},"end":{"line":260,"column":37}},"54":{"start":{"line":263,"column":0},"end":{"line":290,"column":1}},"55":{"start":{"line":269,"column":1},"end":{"line":269,"column":15}},"56":{"start":{"line":270,"column":1},"end":{"line":274,"column":2}},"57":{"start":{"line":272,"column":2},"end":{"line":272,"column":21}},"58":{"start":{"line":273,"column":2},"end":{"line":273,"column":29}},"59":{"start":{"line":276,"column":1},"end":{"line":287,"column":2}},"60":{"start":{"line":278,"column":2},"end":{"line":286,"column":3}},"61":{"start":{"line":280,"column":3},"end":{"line":280,"column":22}},"62":{"start":{"line":281,"column":3},"end":{"line":285,"column":4}},"63":{"start":{"line":283,"column":4},"end":{"line":283,"column":29}},"64":{"start":{"line":284,"column":4},"end":{"line":284,"column":57}},"65":{"start":{"line":289,"column":1},"end":{"line":289,"column":14}},"66":{"start":{"line":292,"column":0},"end":{"line":325,"column":1}},"67":{"start":{"line":294,"column":1},"end":{"line":297,"column":2}},"68":{"start":{"line":296,"column":2},"end":{"line":296,"column":42}},"69":{"start":{"line":299,"column":1},"end":{"line":299,"column":27}},"70":{"start":{"line":301,"column":1},"end":{"line":304,"column":2}},"71":{"start":{"line":303,"column":2},"end":{"line":303,"column":29}},"72":{"start":{"line":306,"column":1},"end":{"line":306,"column":35}},"73":{"start":{"line":307,"column":1},"end":{"line":307,"column":34}},"74":{"start":{"line":309,"column":1},"end":{"line":309,"column":34}},"75":{"start":{"line":310,"column":1},"end":{"line":319,"column":2}},"76":{"start":{"line":312,"column":2},"end":{"line":313,"column":42}},"77":{"start":{"line":317,"column":2},"end":{"line":318,"column":42}},"78":{"start":{"line":321,"column":1},"end":{"line":321,"column":31}},"79":{"start":{"line":323,"column":1},"end":{"line":323,"column":35}},"80":{"start":{"line":324,"column":1},"end":{"line":324,"column":26}},"81":{"start":{"line":327,"column":0},"end":{"line":412,"column":1}},"82":{"start":{"line":337,"column":1},"end":{"line":343,"column":4}},"83":{"start":{"line":345,"column":1},"end":{"line":348,"column":2}},"84":{"start":{"line":347,"column":2},"end":{"line":347,"column":12}},"85":{"start":{"line":350,"column":1},"end":{"line":351,"column":17}},"86":{"start":{"line":353,"column":1},"end":{"line":353,"column":39}},"87":{"start":{"line":354,"column":1},"end":{"line":411,"column":2}},"88":{"start":{"line":356,"column":2},"end":{"line":356,"column":21}},"89":{"start":{"line":357,"column":2},"end":{"line":360,"column":3}},"90":{"start":{"line":359,"column":3},"end":{"line":359,"column":12}},"91":{"start":{"line":362,"column":2},"end":{"line":362,"column":32}},"92":{"start":{"line":364,"column":2},"end":{"line":398,"column":3}},"93":{"start":{"line":367,"column":3},"end":{"line":373,"column":6}},"94":{"start":{"line":375,"column":3},"end":{"line":380,"column":4}},"95":{"start":{"line":377,"column":4},"end":{"line":379,"column":53}},"96":{"start":{"line":382,"column":3},"end":{"line":382,"column":17}},"97":{"start":{"line":384,"column":7},"end":{"line":398,"column":3}},"98":{"start":{"line":386,"column":3},"end":{"line":386,"column":18}},"99":{"start":{"line":388,"column":7},"end":{"line":398,"column":3}},"100":{"start":{"line":390,"column":3},"end":{"line":396,"column":6}},"101":{"start":{"line":397,"column":3},"end":{"line":397,"column":15}},"102":{"start":{"line":400,"column":2},"end":{"line":400,"column":13}},"103":{"start":{"line":402,"column":2},"end":{"line":407,"column":3}},"104":{"start":{"line":404,"column":3},"end":{"line":406,"column":52}},"105":{"start":{"line":409,"column":2},"end":{"line":409,"column":20}},"106":{"start":{"line":410,"column":2},"end":{"line":410,"column":25}},"107":{"start":{"line":414,"column":0},"end":{"line":521,"column":1}},"108":{"start":{"line":428,"column":1},"end":{"line":435,"column":2}},"109":{"start":{"line":430,"column":2},"end":{"line":430,"column":14}},"110":{"start":{"line":431,"column":2},"end":{"line":431,"column":16}},"111":{"start":{"line":432,"column":2},"end":{"line":432,"column":13}},"112":{"start":{"line":433,"column":2},"end":{"line":433,"column":17}},"113":{"start":{"line":434,"column":2},"end":{"line":434,"column":14}},"114":{"start":{"line":437,"column":1},"end":{"line":437,"column":38}},"115":{"start":{"line":439,"column":1},"end":{"line":445,"column":4}},"116":{"start":{"line":447,"column":1},"end":{"line":447,"column":29}},"117":{"start":{"line":448,"column":1},"end":{"line":511,"column":2}},"118":{"start":{"line":450,"column":2},"end":{"line":450,"column":21}},"119":{"start":{"line":451,"column":2},"end":{"line":454,"column":3}},"120":{"start":{"line":453,"column":3},"end":{"line":453,"column":12}},"121":{"start":{"line":456,"column":2},"end":{"line":456,"column":32}},"122":{"start":{"line":457,"column":2},"end":{"line":460,"column":3}},"123":{"start":{"line":459,"column":3},"end":{"line":459,"column":11}},"124":{"start":{"line":462,"column":2},"end":{"line":489,"column":3}},"125":{"start":{"line":465,"column":3},"end":{"line":471,"column":6}},"126":{"start":{"line":473,"column":3},"end":{"line":473,"column":17}},"127":{"start":{"line":475,"column":7},"end":{"line":489,"column":3}},"128":{"start":{"line":477,"column":3},"end":{"line":477,"column":15}},"129":{"start":{"line":479,"column":7},"end":{"line":489,"column":3}},"130":{"start":{"line":481,"column":3},"end":{"line":487,"column":6}},"131":{"start":{"line":488,"column":3},"end":{"line":488,"column":15}},"132":{"start":{"line":491,"column":2},"end":{"line":491,"column":13}},"133":{"start":{"line":492,"column":2},"end":{"line":492,"column":13}},"134":{"start":{"line":494,"column":2},"end":{"line":508,"column":3}},"135":{"start":{"line":496,"column":3},"end":{"line":498,"column":39}},"136":{"start":{"line":499,"column":3},"end":{"line":507,"column":4}},"137":{"start":{"line":501,"column":4},"end":{"line":501,"column":16}},"138":{"start":{"line":505,"column":4},"end":{"line":505,"column":22}},"139":{"start":{"line":506,"column":4},"end":{"line":506,"column":21}},"140":{"start":{"line":510,"column":2},"end":{"line":510,"column":20}},"141":{"start":{"line":515,"column":1},"end":{"line":519,"column":3}},"142":{"start":{"line":520,"column":1},"end":{"line":520,"column":13}},"143":{"start":{"line":523,"column":0},"end":{"line":589,"column":1}},"144":{"start":{"line":526,"column":1},"end":{"line":569,"column":2}},"145":{"start":{"line":528,"column":2},"end":{"line":528,"column":30}},"146":{"start":{"line":529,"column":2},"end":{"line":529,"column":23}},"147":{"start":{"line":530,"column":2},"end":{"line":530,"column":41}},"148":{"start":{"line":531,"column":2},"end":{"line":568,"column":3}},"149":{"start":{"line":533,"column":3},"end":{"line":555,"column":4}},"150":{"start":{"line":535,"column":4},"end":{"line":538,"column":5}},"151":{"start":{"line":537,"column":5},"end":{"line":537,"column":60}},"152":{"start":{"line":540,"column":4},"end":{"line":554,"column":5}},"153":{"start":{"line":542,"column":5},"end":{"line":542,"column":61}},"154":{"start":{"line":546,"column":5},"end":{"line":553,"column":6}},"155":{"start":{"line":548,"column":6},"end":{"line":552,"column":7}},"156":{"start":{"line":550,"column":7},"end":{"line":550,"column":56}},"157":{"start":{"line":551,"column":7},"end":{"line":551,"column":13}},"158":{"start":{"line":557,"column":3},"end":{"line":557,"column":23}},"159":{"start":{"line":561,"column":3},"end":{"line":567,"column":6}},"160":{"start":{"line":571,"column":1},"end":{"line":571,"column":34}},"161":{"start":{"line":572,"column":1},"end":{"line":588,"column":2}},"162":{"start":{"line":574,"column":2},"end":{"line":574,"column":37}},"163":{"start":{"line":575,"column":2},"end":{"line":575,"column":34}},"164":{"start":{"line":576,"column":2},"end":{"line":576,"column":48}},"165":{"start":{"line":578,"column":2},"end":{"line":587,"column":5}},"166":{"start":{"line":591,"column":0},"end":{"line":604,"column":1}},"167":{"start":{"line":594,"column":1},"end":{"line":601,"column":2}},"168":{"start":{"line":596,"column":2},"end":{"line":596,"column":25}},"169":{"start":{"line":597,"column":2},"end":{"line":600,"column":3}},"170":{"start":{"line":599,"column":3},"end":{"line":599,"column":14}},"171":{"start":{"line":603,"column":1},"end":{"line":603,"column":13}},"172":{"start":{"line":606,"column":0},"end":{"line":658,"column":1}},"173":{"start":{"line":608,"column":1},"end":{"line":613,"column":2}},"174":{"start":{"line":611,"column":2},"end":{"line":611,"column":37}},"175":{"start":{"line":612,"column":2},"end":{"line":612,"column":9}},"176":{"start":{"line":615,"column":1},"end":{"line":615,"column":50}},"177":{"start":{"line":616,"column":1},"end":{"line":619,"column":2}},"178":{"start":{"line":618,"column":2},"end":{"line":618,"column":9}},"179":{"start":{"line":621,"column":1},"end":{"line":624,"column":2}},"180":{"start":{"line":623,"column":2},"end":{"line":623,"column":33}},"181":{"start":{"line":626,"column":1},"end":{"line":626,"column":18}},"182":{"start":{"line":627,"column":1},"end":{"line":627,"column":24}},"183":{"start":{"line":628,"column":1},"end":{"line":628,"column":19}},"184":{"start":{"line":630,"column":1},"end":{"line":630,"column":24}},"185":{"start":{"line":631,"column":1},"end":{"line":634,"column":2}},"186":{"start":{"line":633,"column":2},"end":{"line":633,"column":71}},"187":{"start":{"line":636,"column":1},"end":{"line":636,"column":50}},"188":{"start":{"line":637,"column":1},"end":{"line":637,"column":95}},"189":{"start":{"line":638,"column":1},"end":{"line":638,"column":52}},"190":{"start":{"line":640,"column":1},"end":{"line":640,"column":74}},"191":{"start":{"line":641,"column":1},"end":{"line":641,"column":63}},"192":{"start":{"line":642,"column":1},"end":{"line":646,"column":2}},"193":{"start":{"line":644,"column":2},"end":{"line":644,"column":37}},"194":{"start":{"line":645,"column":2},"end":{"line":645,"column":9}},"195":{"start":{"line":648,"column":1},"end":{"line":655,"column":2}},"196":{"start":{"line":650,"column":2},"end":{"line":650,"column":79}},"197":{"start":{"line":652,"column":6},"end":{"line":655,"column":2}},"198":{"start":{"line":654,"column":2},"end":{"line":654,"column":49}},"199":{"start":{"line":657,"column":1},"end":{"line":657,"column":26}},"200":{"start":{"line":660,"column":0},"end":{"line":673,"column":1}},"201":{"start":{"line":662,"column":1},"end":{"line":662,"column":50}},"202":{"start":{"line":663,"column":1},"end":{"line":666,"column":2}},"203":{"start":{"line":665,"column":2},"end":{"line":665,"column":9}},"204":{"start":{"line":668,"column":1},"end":{"line":668,"column":27}},"205":{"start":{"line":670,"column":1},"end":{"line":670,"column":35}},"206":{"start":{"line":671,"column":1},"end":{"line":671,"column":38}},"207":{"start":{"line":672,"column":1},"end":{"line":672,"column":39}},"208":{"start":{"line":675,"column":0},"end":{"line":688,"column":1}},"209":{"start":{"line":681,"column":1},"end":{"line":681,"column":25}},"210":{"start":{"line":682,"column":1},"end":{"line":687,"column":2}},"211":{"start":{"line":684,"column":2},"end":{"line":684,"column":34}},"212":{"start":{"line":685,"column":2},"end":{"line":685,"column":50}},"213":{"start":{"line":686,"column":2},"end":{"line":686,"column":31}},"214":{"start":{"line":690,"column":0},"end":{"line":712,"column":1}},"215":{"start":{"line":695,"column":1},"end":{"line":701,"column":2}},"216":{"start":{"line":697,"column":2},"end":{"line":700,"column":3}},"217":{"start":{"line":699,"column":3},"end":{"line":699,"column":17}},"218":{"start":{"line":705,"column":1},"end":{"line":709,"column":2}},"219":{"start":{"line":708,"column":2},"end":{"line":708,"column":30}},"220":{"start":{"line":711,"column":1},"end":{"line":711,"column":13}},"221":{"start":{"line":714,"column":0},"end":{"line":783,"column":1}},"222":{"start":{"line":716,"column":1},"end":{"line":719,"column":2}},"223":{"start":{"line":718,"column":2},"end":{"line":718,"column":9}},"224":{"start":{"line":721,"column":1},"end":{"line":721,"column":30}},"225":{"start":{"line":722,"column":1},"end":{"line":728,"column":2}},"226":{"start":{"line":724,"column":2},"end":{"line":727,"column":3}},"227":{"start":{"line":726,"column":3},"end":{"line":726,"column":10}},"228":{"start":{"line":730,"column":1},"end":{"line":747,"column":2}},"229":{"start":{"line":732,"column":2},"end":{"line":732,"column":37}},"230":{"start":{"line":733,"column":2},"end":{"line":733,"column":9}},"231":{"start":{"line":735,"column":6},"end":{"line":747,"column":2}},"232":{"start":{"line":737,"column":2},"end":{"line":737,"column":31}},"233":{"start":{"line":738,"column":2},"end":{"line":745,"column":5}},"234":{"start":{"line":742,"column":4},"end":{"line":742,"column":39}},"235":{"start":{"line":746,"column":2},"end":{"line":746,"column":9}},"236":{"start":{"line":749,"column":1},"end":{"line":749,"column":28}},"237":{"start":{"line":750,"column":1},"end":{"line":750,"column":42}},"238":{"start":{"line":751,"column":1},"end":{"line":751,"column":23}},"239":{"start":{"line":752,"column":1},"end":{"line":752,"column":44}},"240":{"start":{"line":754,"column":1},"end":{"line":754,"column":29}},"241":{"start":{"line":755,"column":1},"end":{"line":769,"column":2}},"242":{"start":{"line":757,"column":2},"end":{"line":757,"column":30}},"243":{"start":{"line":758,"column":2},"end":{"line":758,"column":47}},"244":{"start":{"line":759,"column":2},"end":{"line":763,"column":3}},"245":{"start":{"line":761,"column":3},"end":{"line":761,"column":49}},"246":{"start":{"line":762,"column":3},"end":{"line":762,"column":12}},"247":{"start":{"line":765,"column":2},"end":{"line":765,"column":37}},"248":{"start":{"line":766,"column":2},"end":{"line":766,"column":64}},"249":{"start":{"line":768,"column":2},"end":{"line":768,"column":51}},"250":{"start":{"line":771,"column":1},"end":{"line":771,"column":31}},"251":{"start":{"line":772,"column":1},"end":{"line":779,"column":2}},"252":{"start":{"line":774,"column":2},"end":{"line":774,"column":91}},"253":{"start":{"line":776,"column":6},"end":{"line":779,"column":2}},"254":{"start":{"line":778,"column":2},"end":{"line":778,"column":97}},"255":{"start":{"line":781,"column":1},"end":{"line":781,"column":36}},"256":{"start":{"line":782,"column":1},"end":{"line":782,"column":39}},"257":{"start":{"line":785,"column":0},"end":{"line":805,"column":1}},"258":{"start":{"line":787,"column":1},"end":{"line":794,"column":2}},"259":{"start":{"line":789,"column":2},"end":{"line":789,"column":77}},"260":{"start":{"line":791,"column":6},"end":{"line":794,"column":2}},"261":{"start":{"line":793,"column":2},"end":{"line":793,"column":46}},"262":{"start":{"line":796,"column":1},"end":{"line":796,"column":22}},"263":{"start":{"line":797,"column":1},"end":{"line":797,"column":20}},"264":{"start":{"line":798,"column":1},"end":{"line":798,"column":22}},"265":{"start":{"line":800,"column":1},"end":{"line":804,"column":4}},"266":{"start":{"line":807,"column":0},"end":{"line":820,"column":1}},"267":{"start":{"line":809,"column":1},"end":{"line":809,"column":21}},"268":{"start":{"line":811,"column":1},"end":{"line":811,"column":22}},"269":{"start":{"line":812,"column":1},"end":{"line":812,"column":20}},"270":{"start":{"line":813,"column":1},"end":{"line":813,"column":22}},"271":{"start":{"line":815,"column":1},"end":{"line":819,"column":4}},"272":{"start":{"line":822,"column":0},"end":{"line":832,"column":1}},"273":{"start":{"line":824,"column":1},"end":{"line":831,"column":2}},"274":{"start":{"line":826,"column":2},"end":{"line":826,"column":6}},"275":{"start":{"line":828,"column":6},"end":{"line":831,"column":2}},"276":{"start":{"line":830,"column":2},"end":{"line":830,"column":74}},"277":{"start":{"line":834,"column":0},"end":{"line":854,"column":1}},"278":{"start":{"line":836,"column":1},"end":{"line":837,"column":25}},"279":{"start":{"line":839,"column":1},"end":{"line":842,"column":2}},"280":{"start":{"line":841,"column":2},"end":{"line":841,"column":15}},"281":{"start":{"line":844,"column":1},"end":{"line":851,"column":2}},"282":{"start":{"line":846,"column":2},"end":{"line":846,"column":16}},"283":{"start":{"line":847,"column":2},"end":{"line":850,"column":3}},"284":{"start":{"line":849,"column":3},"end":{"line":849,"column":16}},"285":{"start":{"line":853,"column":1},"end":{"line":853,"column":13}},"286":{"start":{"line":856,"column":0},"end":{"line":998,"column":3}},"287":{"start":{"line":860,"column":2},"end":{"line":863,"column":3}},"288":{"start":{"line":862,"column":3},"end":{"line":862,"column":52}},"289":{"start":{"line":865,"column":2},"end":{"line":886,"column":3}},"290":{"start":{"line":867,"column":3},"end":{"line":867,"column":62}},"291":{"start":{"line":868,"column":3},"end":{"line":871,"column":4}},"292":{"start":{"line":870,"column":4},"end":{"line":870,"column":134}},"293":{"start":{"line":873,"column":3},"end":{"line":880,"column":4}},"294":{"start":{"line":875,"column":4},"end":{"line":879,"column":5}},"295":{"start":{"line":877,"column":5},"end":{"line":877,"column":62}},"296":{"start":{"line":878,"column":5},"end":{"line":878,"column":11}},"297":{"start":{"line":882,"column":3},"end":{"line":885,"column":4}},"298":{"start":{"line":884,"column":4},"end":{"line":884,"column":114}},"299":{"start":{"line":888,"column":2},"end":{"line":891,"column":3}},"300":{"start":{"line":890,"column":3},"end":{"line":890,"column":115}},"301":{"start":{"line":893,"column":2},"end":{"line":896,"column":3}},"302":{"start":{"line":895,"column":3},"end":{"line":895,"column":164}},"303":{"start":{"line":898,"column":2},"end":{"line":898,"column":24}},"304":{"start":{"line":899,"column":2},"end":{"line":899,"column":24}},"305":{"start":{"line":900,"column":2},"end":{"line":900,"column":24}},"306":{"start":{"line":901,"column":2},"end":{"line":901,"column":24}},"307":{"start":{"line":911,"column":2},"end":{"line":911,"column":24}},"308":{"start":{"line":912,"column":2},"end":{"line":920,"column":3}},"309":{"start":{"line":914,"column":3},"end":{"line":914,"column":51}},"310":{"start":{"line":915,"column":3},"end":{"line":918,"column":4}},"311":{"start":{"line":917,"column":4},"end":{"line":917,"column":17}},"312":{"start":{"line":919,"column":3},"end":{"line":919,"column":24}},"313":{"start":{"line":922,"column":2},"end":{"line":922,"column":14}},"314":{"start":{"line":939,"column":2},"end":{"line":939,"column":24}},"315":{"start":{"line":940,"column":2},"end":{"line":948,"column":3}},"316":{"start":{"line":942,"column":3},"end":{"line":942,"column":51}},"317":{"start":{"line":943,"column":3},"end":{"line":946,"column":4}},"318":{"start":{"line":945,"column":4},"end":{"line":945,"column":17}},"319":{"start":{"line":947,"column":3},"end":{"line":947,"column":24}},"320":{"start":{"line":950,"column":2},"end":{"line":975,"column":3}},"321":{"start":{"line":952,"column":3},"end":{"line":952,"column":27}},"322":{"start":{"line":953,"column":3},"end":{"line":953,"column":27}},"323":{"start":{"line":954,"column":3},"end":{"line":963,"column":6}},"324":{"start":{"line":967,"column":3},"end":{"line":967,"column":26}},"325":{"start":{"line":968,"column":3},"end":{"line":968,"column":24}},"326":{"start":{"line":970,"column":3},"end":{"line":974,"column":6}},"327":{"start":{"line":976,"column":2},"end":{"line":976,"column":14}},"328":{"start":{"line":983,"column":2},"end":{"line":986,"column":3}},"329":{"start":{"line":985,"column":3},"end":{"line":985,"column":19}},"330":{"start":{"line":988,"column":2},"end":{"line":988,"column":21}},"331":{"start":{"line":989,"column":2},"end":{"line":989,"column":31}},"332":{"start":{"line":994,"column":2},"end":{"line":994,"column":20}},"333":{"start":{"line":995,"column":2},"end":{"line":995,"column":20}},"334":{"start":{"line":996,"column":2},"end":{"line":996,"column":27}},"335":{"start":{"line":1000,"column":0},"end":{"line":1000,"column":40}},"336":{"start":{"line":1001,"column":0},"end":{"line":1001,"column":54}},"337":{"start":{"line":1020,"column":0},"end":{"line":1072,"column":2}},"338":{"start":{"line":1022,"column":1},"end":{"line":1025,"column":2}},"339":{"start":{"line":1024,"column":2},"end":{"line":1024,"column":14}},"340":{"start":{"line":1027,"column":1},"end":{"line":1027,"column":27}},"341":{"start":{"line":1028,"column":1},"end":{"line":1043,"column":2}},"342":{"start":{"line":1032,"column":6},"end":{"line":1043,"column":2}},"343":{"start":{"line":1034,"column":2},"end":{"line":1034,"column":14}},"344":{"start":{"line":1036,"column":6},"end":{"line":1043,"column":2}},"345":{"start":{"line":1038,"column":2},"end":{"line":1038,"column":20}},"346":{"start":{"line":1042,"column":2},"end":{"line":1042,"column":17}},"347":{"start":{"line":1045,"column":1},"end":{"line":1045,"column":62}},"348":{"start":{"line":1046,"column":1},"end":{"line":1046,"column":54}},"349":{"start":{"line":1047,"column":1},"end":{"line":1056,"column":2}},"350":{"start":{"line":1049,"column":2},"end":{"line":1049,"column":49}},"351":{"start":{"line":1050,"column":2},"end":{"line":1050,"column":39}},"352":{"start":{"line":1051,"column":2},"end":{"line":1051,"column":41}},"353":{"start":{"line":1053,"column":6},"end":{"line":1056,"column":2}},"354":{"start":{"line":1055,"column":2},"end":{"line":1055,"column":51}},"355":{"start":{"line":1058,"column":1},"end":{"line":1058,"column":63}},"356":{"start":{"line":1059,"column":1},"end":{"line":1059,"column":36}},"357":{"start":{"line":1061,"column":1},"end":{"line":1064,"column":2}},"358":{"start":{"line":1063,"column":2},"end":{"line":1063,"column":63}},"359":{"start":{"line":1066,"column":1},"end":{"line":1069,"column":2}},"360":{"start":{"line":1068,"column":2},"end":{"line":1068,"column":62}},"361":{"start":{"line":1071,"column":1},"end":{"line":1071,"column":11}},"362":{"start":{"line":1088,"column":0},"end":{"line":1091,"column":1}},"363":{"start":{"line":1090,"column":1},"end":{"line":1090,"column":55}},"364":{"start":{"line":1093,"column":0},"end":{"line":1093,"column":27}},"365":{"start":{"line":1102,"column":0},"end":{"line":1129,"column":2}},"366":{"start":{"line":1104,"column":1},"end":{"line":1128,"column":3}},"367":{"start":{"line":1106,"column":2},"end":{"line":1106,"column":31}},"368":{"start":{"line":1108,"column":2},"end":{"line":1108,"column":46}},"369":{"start":{"line":1109,"column":2},"end":{"line":1109,"column":56}},"370":{"start":{"line":1111,"column":2},"end":{"line":1125,"column":3}},"371":{"start":{"line":1113,"column":3},"end":{"line":1113,"column":36}},"372":{"start":{"line":1115,"column":3},"end":{"line":1115,"column":31}},"373":{"start":{"line":1116,"column":3},"end":{"line":1117,"column":49}},"374":{"start":{"line":1119,"column":3},"end":{"line":1122,"column":6}},"375":{"start":{"line":1121,"column":4},"end":{"line":1121,"column":37}},"376":{"start":{"line":1124,"column":3},"end":{"line":1124,"column":92}},"377":{"start":{"line":1127,"column":2},"end":{"line":1127,"column":15}},"378":{"start":{"line":1137,"column":0},"end":{"line":1143,"column":2}},"379":{"start":{"line":1139,"column":1},"end":{"line":1139,"column":59}},"380":{"start":{"line":1140,"column":1},"end":{"line":1140,"column":37}},"381":{"start":{"line":1141,"column":1},"end":{"line":1141,"column":36}},"382":{"start":{"line":1142,"column":1},"end":{"line":1142,"column":59}},"383":{"start":{"line":1145,"column":0},"end":{"line":1159,"column":3}},"384":{"start":{"line":1149,"column":2},"end":{"line":1155,"column":3}},"385":{"start":{"line":1151,"column":3},"end":{"line":1151,"column":43}},"386":{"start":{"line":1152,"column":3},"end":{"line":1152,"column":87}},"387":{"start":{"line":1153,"column":3},"end":{"line":1153,"column":41}},"388":{"start":{"line":1154,"column":3},"end":{"line":1154,"column":41}},"389":{"start":{"line":1157,"column":2},"end":{"line":1157,"column":49}},"390":{"start":{"line":1161,"column":0},"end":{"line":1161,"column":20}}},"branchMap":{"1":{"line":164,"type":"if","locations":[{"start":{"line":164,"column":2},"end":{"line":164,"column":2}},{"start":{"line":164,"column":2},"end":{"line":164,"column":2}}]},"2":{"line":177,"type":"if","locations":[{"start":{"line":177,"column":2},"end":{"line":177,"column":2}},{"start":{"line":177,"column":2},"end":{"line":177,"column":2}}]},"3":{"line":182,"type":"binary-expr","locations":[{"start":{"line":182,"column":9},"end":{"line":182,"column":24}},{"start":{"line":182,"column":28},"end":{"line":182,"column":45}}]},"4":{"line":187,"type":"if","locations":[{"start":{"line":187,"column":3},"end":{"line":187,"column":3}},{"start":{"line":187,"column":3},"end":{"line":187,"column":3}}]},"5":{"line":193,"type":"if","locations":[{"start":{"line":193,"column":2},"end":{"line":193,"column":2}},{"start":{"line":193,"column":2},"end":{"line":193,"column":2}}]},"6":{"line":193,"type":"binary-expr","locations":[{"start":{"line":193,"column":6},"end":{"line":193,"column":22}},{"start":{"line":193,"column":26},"end":{"line":193,"column":43}}]},"7":{"line":206,"type":"if","locations":[{"start":{"line":206,"column":3},"end":{"line":206,"column":3}},{"start":{"line":206,"column":3},"end":{"line":206,"column":3}}]},"8":{"line":209,"type":"if","locations":[{"start":{"line":209,"column":4},"end":{"line":209,"column":4}},{"start":{"line":209,"column":4},"end":{"line":209,"column":4}}]},"9":{"line":213,"type":"binary-expr","locations":[{"start":{"line":213,"column":23},"end":{"line":213,"column":33}},{"start":{"line":213,"column":37},"end":{"line":213,"column":46}}]},"10":{"line":219,"type":"if","locations":[{"start":{"line":219,"column":3},"end":{"line":219,"column":3}},{"start":{"line":219,"column":3},"end":{"line":219,"column":3}}]},"11":{"line":219,"type":"binary-expr","locations":[{"start":{"line":219,"column":7},"end":{"line":219,"column":19}},{"start":{"line":219,"column":23},"end":{"line":219,"column":34}},{"start":{"line":219,"column":38},"end":{"line":219,"column":60}}]},"12":{"line":240,"type":"if","locations":[{"start":{"line":240,"column":2},"end":{"line":240,"column":2}},{"start":{"line":240,"column":2},"end":{"line":240,"column":2}}]},"13":{"line":270,"type":"if","locations":[{"start":{"line":270,"column":1},"end":{"line":270,"column":1}},{"start":{"line":270,"column":1},"end":{"line":270,"column":1}}]},"14":{"line":276,"type":"if","locations":[{"start":{"line":276,"column":1},"end":{"line":276,"column":1}},{"start":{"line":276,"column":1},"end":{"line":276,"column":1}}]},"15":{"line":281,"type":"if","locations":[{"start":{"line":281,"column":3},"end":{"line":281,"column":3}},{"start":{"line":281,"column":3},"end":{"line":281,"column":3}}]},"16":{"line":294,"type":"if","locations":[{"start":{"line":294,"column":1},"end":{"line":294,"column":1}},{"start":{"line":294,"column":1},"end":{"line":294,"column":1}}]},"17":{"line":301,"type":"if","locations":[{"start":{"line":301,"column":1},"end":{"line":301,"column":1}},{"start":{"line":301,"column":1},"end":{"line":301,"column":1}}]},"18":{"line":310,"type":"if","locations":[{"start":{"line":310,"column":1},"end":{"line":310,"column":1}},{"start":{"line":310,"column":1},"end":{"line":310,"column":1}}]},"19":{"line":345,"type":"if","locations":[{"start":{"line":345,"column":1},"end":{"line":345,"column":1}},{"start":{"line":345,"column":1},"end":{"line":345,"column":1}}]},"20":{"line":357,"type":"if","locations":[{"start":{"line":357,"column":2},"end":{"line":357,"column":2}},{"start":{"line":357,"column":2},"end":{"line":357,"column":2}}]},"21":{"line":364,"type":"if","locations":[{"start":{"line":364,"column":2},"end":{"line":364,"column":2}},{"start":{"line":364,"column":2},"end":{"line":364,"column":2}}]},"22":{"line":364,"type":"binary-expr","locations":[{"start":{"line":364,"column":6},"end":{"line":364,"column":30}},{"start":{"line":365,"column":3},"end":{"line":365,"column":19}}]},"23":{"line":371,"type":"cond-expr","locations":[{"start":{"line":371,"column":18},"end":{"line":371,"column":19}},{"start":{"line":371,"column":22},"end":{"line":371,"column":26}}]},"24":{"line":375,"type":"if","locations":[{"start":{"line":375,"column":3},"end":{"line":375,"column":3}},{"start":{"line":375,"column":3},"end":{"line":375,"column":3}}]},"25":{"line":375,"type":"binary-expr","locations":[{"start":{"line":375,"column":7},"end":{"line":375,"column":31}},{"start":{"line":375,"column":35},"end":{"line":375,"column":54}}]},"26":{"line":384,"type":"if","locations":[{"start":{"line":384,"column":7},"end":{"line":384,"column":7}},{"start":{"line":384,"column":7},"end":{"line":384,"column":7}}]},"27":{"line":384,"type":"binary-expr","locations":[{"start":{"line":384,"column":11},"end":{"line":384,"column":16}},{"start":{"line":384,"column":20},"end":{"line":384,"column":37}}]},"28":{"line":388,"type":"if","locations":[{"start":{"line":388,"column":7},"end":{"line":388,"column":7}},{"start":{"line":388,"column":7},"end":{"line":388,"column":7}}]},"29":{"line":394,"type":"cond-expr","locations":[{"start":{"line":394,"column":18},"end":{"line":394,"column":26}},{"start":{"line":394,"column":29},"end":{"line":394,"column":33}}]},"30":{"line":402,"type":"if","locations":[{"start":{"line":402,"column":2},"end":{"line":402,"column":2}},{"start":{"line":402,"column":2},"end":{"line":402,"column":2}}]},"31":{"line":402,"type":"binary-expr","locations":[{"start":{"line":402,"column":6},"end":{"line":402,"column":10}},{"start":{"line":402,"column":14},"end":{"line":402,"column":33}}]},"32":{"line":410,"type":"binary-expr","locations":[{"start":{"line":410,"column":9},"end":{"line":410,"column":13}},{"start":{"line":410,"column":17},"end":{"line":410,"column":24}}]},"33":{"line":428,"type":"if","locations":[{"start":{"line":428,"column":1},"end":{"line":428,"column":1}},{"start":{"line":428,"column":1},"end":{"line":428,"column":1}}]},"34":{"line":437,"type":"cond-expr","locations":[{"start":{"line":437,"column":19},"end":{"line":437,"column":28}},{"start":{"line":437,"column":31},"end":{"line":437,"column":37}}]},"35":{"line":441,"type":"cond-expr","locations":[{"start":{"line":441,"column":23},"end":{"line":441,"column":40}},{"start":{"line":441,"column":43},"end":{"line":441,"column":45}}]},"36":{"line":451,"type":"if","locations":[{"start":{"line":451,"column":2},"end":{"line":451,"column":2}},{"start":{"line":451,"column":2},"end":{"line":451,"column":2}}]},"37":{"line":457,"type":"if","locations":[{"start":{"line":457,"column":2},"end":{"line":457,"column":2}},{"start":{"line":457,"column":2},"end":{"line":457,"column":2}}]},"38":{"line":462,"type":"if","locations":[{"start":{"line":462,"column":2},"end":{"line":462,"column":2}},{"start":{"line":462,"column":2},"end":{"line":462,"column":2}}]},"39":{"line":462,"type":"binary-expr","locations":[{"start":{"line":462,"column":6},"end":{"line":462,"column":36}},{"start":{"line":463,"column":3},"end":{"line":463,"column":19}}]},"40":{"line":469,"type":"cond-expr","locations":[{"start":{"line":469,"column":23},"end":{"line":469,"column":24}},{"start":{"line":469,"column":27},"end":{"line":469,"column":41}}]},"41":{"line":475,"type":"if","locations":[{"start":{"line":475,"column":7},"end":{"line":475,"column":7}},{"start":{"line":475,"column":7},"end":{"line":475,"column":7}}]},"42":{"line":475,"type":"binary-expr","locations":[{"start":{"line":475,"column":11},"end":{"line":475,"column":16}},{"start":{"line":475,"column":20},"end":{"line":475,"column":43}}]},"43":{"line":479,"type":"if","locations":[{"start":{"line":479,"column":7},"end":{"line":479,"column":7}},{"start":{"line":479,"column":7},"end":{"line":479,"column":7}}]},"44":{"line":485,"type":"cond-expr","locations":[{"start":{"line":485,"column":23},"end":{"line":485,"column":24}},{"start":{"line":485,"column":27},"end":{"line":485,"column":41}}]},"45":{"line":494,"type":"if","locations":[{"start":{"line":494,"column":2},"end":{"line":494,"column":2}},{"start":{"line":494,"column":2},"end":{"line":494,"column":2}}]},"46":{"line":499,"type":"if","locations":[{"start":{"line":499,"column":3},"end":{"line":499,"column":3}},{"start":{"line":499,"column":3},"end":{"line":499,"column":3}}]},"47":{"line":531,"type":"if","locations":[{"start":{"line":531,"column":2},"end":{"line":531,"column":2}},{"start":{"line":531,"column":2},"end":{"line":531,"column":2}}]},"48":{"line":533,"type":"if","locations":[{"start":{"line":533,"column":3},"end":{"line":533,"column":3}},{"start":{"line":533,"column":3},"end":{"line":533,"column":3}}]},"49":{"line":535,"type":"if","locations":[{"start":{"line":535,"column":4},"end":{"line":535,"column":4}},{"start":{"line":535,"column":4},"end":{"line":535,"column":4}}]},"50":{"line":540,"type":"if","locations":[{"start":{"line":540,"column":4},"end":{"line":540,"column":4}},{"start":{"line":540,"column":4},"end":{"line":540,"column":4}}]},"51":{"line":548,"type":"if","locations":[{"start":{"line":548,"column":6},"end":{"line":548,"column":6}},{"start":{"line":548,"column":6},"end":{"line":548,"column":6}}]},"52":{"line":597,"type":"if","locations":[{"start":{"line":597,"column":2},"end":{"line":597,"column":2}},{"start":{"line":597,"column":2},"end":{"line":597,"column":2}}]},"53":{"line":608,"type":"if","locations":[{"start":{"line":608,"column":1},"end":{"line":608,"column":1}},{"start":{"line":608,"column":1},"end":{"line":608,"column":1}}]},"54":{"line":608,"type":"binary-expr","locations":[{"start":{"line":608,"column":5},"end":{"line":608,"column":16}},{"start":{"line":608,"column":20},"end":{"line":608,"column":27}},{"start":{"line":609,"column":2},"end":{"line":609,"column":37}}]},"55":{"line":616,"type":"if","locations":[{"start":{"line":616,"column":1},"end":{"line":616,"column":1}},{"start":{"line":616,"column":1},"end":{"line":616,"column":1}}]},"56":{"line":621,"type":"if","locations":[{"start":{"line":621,"column":1},"end":{"line":621,"column":1}},{"start":{"line":621,"column":1},"end":{"line":621,"column":1}}]},"57":{"line":621,"type":"binary-expr","locations":[{"start":{"line":621,"column":5},"end":{"line":621,"column":23}},{"start":{"line":621,"column":27},"end":{"line":621,"column":53}}]},"58":{"line":631,"type":"if","locations":[{"start":{"line":631,"column":1},"end":{"line":631,"column":1}},{"start":{"line":631,"column":1},"end":{"line":631,"column":1}}]},"59":{"line":640,"type":"cond-expr","locations":[{"start":{"line":640,"column":37},"end":{"line":640,"column":65}},{"start":{"line":640,"column":68},"end":{"line":640,"column":72}}]},"60":{"line":641,"type":"cond-expr","locations":[{"start":{"line":641,"column":33},"end":{"line":641,"column":48}},{"start":{"line":641,"column":51},"end":{"line":641,"column":61}}]},"61":{"line":642,"type":"if","locations":[{"start":{"line":642,"column":1},"end":{"line":642,"column":1}},{"start":{"line":642,"column":1},"end":{"line":642,"column":1}}]},"62":{"line":648,"type":"if","locations":[{"start":{"line":648,"column":1},"end":{"line":648,"column":1}},{"start":{"line":648,"column":1},"end":{"line":648,"column":1}}]},"63":{"line":648,"type":"binary-expr","locations":[{"start":{"line":648,"column":5},"end":{"line":648,"column":12}},{"start":{"line":648,"column":16},"end":{"line":648,"column":54}}]},"64":{"line":652,"type":"if","locations":[{"start":{"line":652,"column":6},"end":{"line":652,"column":6}},{"start":{"line":652,"column":6},"end":{"line":652,"column":6}}]},"65":{"line":652,"type":"binary-expr","locations":[{"start":{"line":652,"column":10},"end":{"line":652,"column":17}},{"start":{"line":652,"column":21},"end":{"line":652,"column":65}}]},"66":{"line":663,"type":"if","locations":[{"start":{"line":663,"column":1},"end":{"line":663,"column":1}},{"start":{"line":663,"column":1},"end":{"line":663,"column":1}}]},"67":{"line":697,"type":"if","locations":[{"start":{"line":697,"column":2},"end":{"line":697,"column":2}},{"start":{"line":697,"column":2},"end":{"line":697,"column":2}}]},"68":{"line":705,"type":"if","locations":[{"start":{"line":705,"column":1},"end":{"line":705,"column":1}},{"start":{"line":705,"column":1},"end":{"line":705,"column":1}}]},"69":{"line":705,"type":"binary-expr","locations":[{"start":{"line":705,"column":5},"end":{"line":705,"column":31}},{"start":{"line":706,"column":2},"end":{"line":706,"column":47}}]},"70":{"line":716,"type":"if","locations":[{"start":{"line":716,"column":1},"end":{"line":716,"column":1}},{"start":{"line":716,"column":1},"end":{"line":716,"column":1}}]},"71":{"line":724,"type":"if","locations":[{"start":{"line":724,"column":2},"end":{"line":724,"column":2}},{"start":{"line":724,"column":2},"end":{"line":724,"column":2}}]},"72":{"line":730,"type":"if","locations":[{"start":{"line":730,"column":1},"end":{"line":730,"column":1}},{"start":{"line":730,"column":1},"end":{"line":730,"column":1}}]},"73":{"line":735,"type":"if","locations":[{"start":{"line":735,"column":6},"end":{"line":735,"column":6}},{"start":{"line":735,"column":6},"end":{"line":735,"column":6}}]},"74":{"line":759,"type":"if","locations":[{"start":{"line":759,"column":2},"end":{"line":759,"column":2}},{"start":{"line":759,"column":2},"end":{"line":759,"column":2}}]},"75":{"line":772,"type":"if","locations":[{"start":{"line":772,"column":1},"end":{"line":772,"column":1}},{"start":{"line":772,"column":1},"end":{"line":772,"column":1}}]},"76":{"line":776,"type":"if","locations":[{"start":{"line":776,"column":6},"end":{"line":776,"column":6}},{"start":{"line":776,"column":6},"end":{"line":776,"column":6}}]},"77":{"line":787,"type":"if","locations":[{"start":{"line":787,"column":1},"end":{"line":787,"column":1}},{"start":{"line":787,"column":1},"end":{"line":787,"column":1}}]},"78":{"line":791,"type":"if","locations":[{"start":{"line":791,"column":6},"end":{"line":791,"column":6}},{"start":{"line":791,"column":6},"end":{"line":791,"column":6}}]},"79":{"line":824,"type":"if","locations":[{"start":{"line":824,"column":1},"end":{"line":824,"column":1}},{"start":{"line":824,"column":1},"end":{"line":824,"column":1}}]},"80":{"line":828,"type":"if","locations":[{"start":{"line":828,"column":6},"end":{"line":828,"column":6}},{"start":{"line":828,"column":6},"end":{"line":828,"column":6}}]},"81":{"line":828,"type":"binary-expr","locations":[{"start":{"line":828,"column":10},"end":{"line":828,"column":11}},{"start":{"line":828,"column":15},"end":{"line":828,"column":19}}]},"82":{"line":830,"type":"binary-expr","locations":[{"start":{"line":830,"column":13},"end":{"line":830,"column":20}},{"start":{"line":830,"column":24},"end":{"line":830,"column":30}}]},"83":{"line":830,"type":"cond-expr","locations":[{"start":{"line":830,"column":61},"end":{"line":830,"column":63}},{"start":{"line":830,"column":66},"end":{"line":830,"column":72}}]},"84":{"line":839,"type":"if","locations":[{"start":{"line":839,"column":1},"end":{"line":839,"column":1}},{"start":{"line":839,"column":1},"end":{"line":839,"column":1}}]},"85":{"line":847,"type":"if","locations":[{"start":{"line":847,"column":2},"end":{"line":847,"column":2}},{"start":{"line":847,"column":2},"end":{"line":847,"column":2}}]},"86":{"line":847,"type":"binary-expr","locations":[{"start":{"line":847,"column":6},"end":{"line":847,"column":23}},{"start":{"line":847,"column":27},"end":{"line":847,"column":45}},{"start":{"line":847,"column":49},"end":{"line":847,"column":64}}]},"87":{"line":860,"type":"if","locations":[{"start":{"line":860,"column":2},"end":{"line":860,"column":2}},{"start":{"line":860,"column":2},"end":{"line":860,"column":2}}]},"88":{"line":865,"type":"if","locations":[{"start":{"line":865,"column":2},"end":{"line":865,"column":2}},{"start":{"line":865,"column":2},"end":{"line":865,"column":2}}]},"89":{"line":868,"type":"if","locations":[{"start":{"line":868,"column":3},"end":{"line":868,"column":3}},{"start":{"line":868,"column":3},"end":{"line":868,"column":3}}]},"90":{"line":868,"type":"binary-expr","locations":[{"start":{"line":868,"column":7},"end":{"line":868,"column":14}},{"start":{"line":868,"column":18},"end":{"line":868,"column":41}}]},"91":{"line":875,"type":"if","locations":[{"start":{"line":875,"column":4},"end":{"line":875,"column":4}},{"start":{"line":875,"column":4},"end":{"line":875,"column":4}}]},"92":{"line":875,"type":"binary-expr","locations":[{"start":{"line":875,"column":8},"end":{"line":875,"column":34}},{"start":{"line":875,"column":38},"end":{"line":875,"column":77}}]},"93":{"line":882,"type":"if","locations":[{"start":{"line":882,"column":3},"end":{"line":882,"column":3}},{"start":{"line":882,"column":3},"end":{"line":882,"column":3}}]},"94":{"line":888,"type":"if","locations":[{"start":{"line":888,"column":2},"end":{"line":888,"column":2}},{"start":{"line":888,"column":2},"end":{"line":888,"column":2}}]},"95":{"line":893,"type":"if","locations":[{"start":{"line":893,"column":2},"end":{"line":893,"column":2}},{"start":{"line":893,"column":2},"end":{"line":893,"column":2}}]},"96":{"line":893,"type":"binary-expr","locations":[{"start":{"line":893,"column":6},"end":{"line":893,"column":50}},{"start":{"line":893,"column":54},"end":{"line":893,"column":104}}]},"97":{"line":915,"type":"if","locations":[{"start":{"line":915,"column":3},"end":{"line":915,"column":3}},{"start":{"line":915,"column":3},"end":{"line":915,"column":3}}]},"98":{"line":915,"type":"binary-expr","locations":[{"start":{"line":915,"column":7},"end":{"line":915,"column":12}},{"start":{"line":915,"column":16},"end":{"line":915,"column":26}}]},"99":{"line":943,"type":"if","locations":[{"start":{"line":943,"column":3},"end":{"line":943,"column":3}},{"start":{"line":943,"column":3},"end":{"line":943,"column":3}}]},"100":{"line":950,"type":"if","locations":[{"start":{"line":950,"column":2},"end":{"line":950,"column":2}},{"start":{"line":950,"column":2},"end":{"line":950,"column":2}}]},"101":{"line":983,"type":"if","locations":[{"start":{"line":983,"column":2},"end":{"line":983,"column":2}},{"start":{"line":983,"column":2},"end":{"line":983,"column":2}}]},"102":{"line":983,"type":"binary-expr","locations":[{"start":{"line":983,"column":6},"end":{"line":983,"column":20}},{"start":{"line":983,"column":24},"end":{"line":983,"column":75}}]},"103":{"line":1022,"type":"if","locations":[{"start":{"line":1022,"column":1},"end":{"line":1022,"column":1}},{"start":{"line":1022,"column":1},"end":{"line":1022,"column":1}}]},"104":{"line":1028,"type":"if","locations":[{"start":{"line":1028,"column":1},"end":{"line":1028,"column":1}},{"start":{"line":1028,"column":1},"end":{"line":1028,"column":1}}]},"105":{"line":1032,"type":"if","locations":[{"start":{"line":1032,"column":6},"end":{"line":1032,"column":6}},{"start":{"line":1032,"column":6},"end":{"line":1032,"column":6}}]},"106":{"line":1036,"type":"if","locations":[{"start":{"line":1036,"column":6},"end":{"line":1036,"column":6}},{"start":{"line":1036,"column":6},"end":{"line":1036,"column":6}}]},"107":{"line":1045,"type":"cond-expr","locations":[{"start":{"line":1045,"column":39},"end":{"line":1045,"column":53}},{"start":{"line":1045,"column":56},"end":{"line":1045,"column":61}}]},"108":{"line":1047,"type":"if","locations":[{"start":{"line":1047,"column":1},"end":{"line":1047,"column":1}},{"start":{"line":1047,"column":1},"end":{"line":1047,"column":1}}]},"109":{"line":1053,"type":"if","locations":[{"start":{"line":1053,"column":6},"end":{"line":1053,"column":6}},{"start":{"line":1053,"column":6},"end":{"line":1053,"column":6}}]},"110":{"line":1055,"type":"cond-expr","locations":[{"start":{"line":1055,"column":31},"end":{"line":1055,"column":44}},{"start":{"line":1055,"column":47},"end":{"line":1055,"column":50}}]},"111":{"line":1061,"type":"if","locations":[{"start":{"line":1061,"column":1},"end":{"line":1061,"column":1}},{"start":{"line":1061,"column":1},"end":{"line":1061,"column":1}}]},"112":{"line":1066,"type":"if","locations":[{"start":{"line":1066,"column":1},"end":{"line":1066,"column":1}},{"start":{"line":1066,"column":1},"end":{"line":1066,"column":1}}]},"113":{"line":1111,"type":"if","locations":[{"start":{"line":1111,"column":2},"end":{"line":1111,"column":2}},{"start":{"line":1111,"column":2},"end":{"line":1111,"column":2}}]},"114":{"line":1117,"type":"cond-expr","locations":[{"start":{"line":1117,"column":22},"end":{"line":1117,"column":32}},{"start":{"line":1117,"column":35},"end":{"line":1117,"column":47}}]},"115":{"line":1149,"type":"if","locations":[{"start":{"line":1149,"column":2},"end":{"line":1149,"column":2}},{"start":{"line":1149,"column":2},"end":{"line":1149,"column":2}}]}},"code":["(function () { YUI.add('gallery-treeble', function (Y, NAME) {","","\"use strict\";","","/**"," * @module gallery-treeble"," */","","/**********************************************************************"," * <p>Hierarchical data source.</p>"," *"," * <p>TreebleDataSource converts a tree of DataSources into a flat list of"," * visible items.  The merged list must be paginated if the number of child"," * nodes might be very large.  To turn on this feature, set"," * paginateChildren:true.</p>"," * "," * <p>The tree must be immutable.  The total number of items available from"," * each DataSource must remain constant.  (The one exception to this rule"," * is that filtering and sorting are allowed.  This is done by detecting"," * that the request parameters have changed.)</p>"," * "," * @namespace DataSource"," * @class Treeble"," * @extends DataSource.Local"," * @constructor"," * @param config {Object}"," */","","function TreebleDataSource()","{","\tTreebleDataSource.superclass.constructor.apply(this, arguments);","}","","TreebleDataSource.NAME = \"treebleDataSource\";","","TreebleDataSource.ATTRS =","{","\t/**","\t * <p>The root datasource.</p>","\t * ","\t * <p>You <em>must</em> directly set a <code>treeble_config</code>","\t * object on this datasource.  (You cannot use","\t * <code>set('treeble_config',...)</code>.) <code>treeble_config</code> can","\t * contain the following configuration:</p>","\t * ","\t * <dl>","\t * <dt>generateRequest</dt>","\t * <dd>(required) The function to convert the initial request into","\t *\t\ta request usable by the actual DataSource.  This function takes","\t *\t\ttwo arguments: state (sort,dir,startIndex,resultCount) and path","\t *\t\t(an array of node indices telling how to reach the node).","\t *\t\t</dd>","\t * <dt>requestCfg</dt>","\t * <dd>(optional) Configuration object passed as <code>cfg</code> to","\t *\t\t<code>sendRequest</code>.</dd>","\t * <dt>schemaPluginConfig</dt>","\t * <dd>(required) Object to pass to <code>plug</code> to install a schema.</dd>","\t * <dt>cachePluginConfig</dt>","\t * <dd>(optional) Object to pass to <code>plug</code> to install a cache.</dd>","\t * <dt>childNodesKey</dt>","\t * <dd>(semi-optional) The name of the key inside a node which contains","\t *\t\tthe data used to construct the DataSource for retrieving the children.","\t *\t\tThis config is only required if you provide a custom parser.</dd>","\t * <dt>nodeOpenKey</dt>","\t * <dd>(optional) The name of the key inside a node which contains","\t *\t\tthe initial open state of the node.  If it is true, the node will","\t *\t\tautomatically be opened the first time it is shown.  (After that,","\t *\t\tit will remember the state set by the user.)</dd>","\t * <dt>startIndexExpr</dt>","\t * <dd>(optional) OGNL expression telling how to extract the startIndex","\t *\t\tfrom the received data, e.g., <code>.meta.startIndex</code>.","\t *\t\tIf it is not provided, startIndex is always assumed to be zero.</dd>","\t * <dt>totalRecordsExpr</dt>","\t * <dd>(semi-optional) OGNL expression telling how to extract the total number","\t *\t\tof records from the received data, e.g., <code>.meta.totalRecords</code>.","\t *\t\tIf this is not provided, <code>totalRecordsReturnExpr</code> must be","\t *\t\tspecified.</dd>","\t * <dt>totalRecordsReturnExpr</dt>","\t * <dd>(semi-optional) OGNL expression telling where in the response to store","\t *\t\tthe total number of records, e.g., <code>.meta.totalRecords</code>.","\t *\t\tThis is only appropriate for DataSources that always return the","\t *\t\tentire data set.  If this is not provided,","\t *\t\t<code>totalRecordsExpr</code> must be specified.  If both are provided,","\t *\t\t<code>totalRecordsExpr</code> takes priority.</dd>","\t * </dl>","\t * ","\t * @attribute root","\t * @type {DataSource}","\t * @writeonce","\t */","\troot:","\t{","\t\twriteOnce: true","\t},","","\t/**","\t * Pass <code>true</code> to paginate the result after merging child","\t * nodes into the list.  The default (<code>false</code>) is to","\t * paginate only root nodes, so all children are visible.","\t * ","\t * @attribute paginateChildren","\t * @type {boolean}","\t * @default false","\t * @writeonce","\t */","\tpaginateChildren:","\t{","\t\tvalue:     false,","\t\tvalidator: Y.Lang.isBoolean,","\t\twriteOnce: true","\t},","","\t/**","\t * The key in each record that stores an identifier which is unique","\t * across the entire tree.  If this is not specified, then all nodes","\t * will close when the data is sorted.","\t * ","\t * @attribute uniqueIdKey","\t * @type {String}","\t */","\tuniqueIdKey:","\t{","\t\tvalidator: Y.Lang.isString","\t}","};","","/**"," * @event toggled"," * @description Fires after an element is opened or closed."," * @param path {Array} the path to the toggled element"," * @param open {Boolean} the new state of the element"," */","","/*","","\tEach element in this._open contains information about an openable,","\ttop-level node and is the root of a tree of open (or previously opened)","\titems.  Each node in a tree contains the following data:","","\t\tindex:      {Number} sorting key; the index of the node","\t\topen:       null if never opened, true if open, false otherwise","\t\tds:         {DataSource} source for child nodes","\t\tchildTotal: {Number} total number of child nodes","\t\tchildren:   {Array} (recursive) child nodes which are or have been opened","\t\tparent:     {Object} parent item","","\tEach level is sorted by index to allow simple traversal in display","\torder.",""," */","","function populateOpen(","\t/* object */\tparent,","\t/* array */\t\topen,","\t/* object */\treq)","{","\tvar data          = req.data;","\tvar startIndex    = req.start;","\tvar childNodesKey = req.ds.treeble_config.childNodesKey;","\tvar nodeOpenKey   = req.ds.treeble_config.nodeOpenKey;","","\tfor (var j=0; j<open.length; j++)","\t{","\t\tif (open[j].index >= startIndex)","\t\t{","\t\t\tbreak;","\t\t}","\t}","","\tvar uniqueIdKey = this.get('uniqueIdKey');","","\tvar result = true;","\tfor (var k=0; k<data.length; k++)","\t{","\t\tvar i = startIndex + k;","\t\tvar ds = data[k][ childNodesKey ];","\t\tif (!ds)","\t\t{","\t\t\tcontinue;","\t\t}","","\t\twhile (j < open.length && open[j].index < i)","\t\t{","\t\t\topen.splice(j, 1);","\t\t\tresult = false;","","\t\t\tif (uniqueIdKey)","\t\t\t{","\t\t\t\tdelete this._open_cache[ data[k][ uniqueIdKey ] ];","\t\t\t}","\t\t}","","\t\tif (j >= open.length || open[j].index > i)","\t\t{","\t\t\tvar item =","\t\t\t{","\t\t\t\tindex:      i,","\t\t\t\topen:       null,","\t\t\t\tds:         ds,","\t\t\t\tchildren:   [],","\t\t\t\tchildTotal: 0,","\t\t\t\tparent:     parent","\t\t\t};","","\t\t\tvar cached_item = null;","\t\t\tif (uniqueIdKey)","\t\t\t{","\t\t\t\tcached_item = this._open_cache[ data[k][ uniqueIdKey ] ];","\t\t\t\tif (cached_item)","\t\t\t\t{","\t\t\t\t\titem.open       = cached_item.open;","\t\t\t\t\titem.childTotal = cached_item.childTotal;","\t\t\t\t\tthis._redo      = this._redo || item.open;","\t\t\t\t}","","\t\t\t\tthis._open_cache[ data[k][ uniqueIdKey ] ] = item;","\t\t\t}","","\t\t\tif (!cached_item && nodeOpenKey && data[k][ nodeOpenKey ])","\t\t\t{","\t\t\t\tthis._toggle.push(req.path.concat(i));","\t\t\t}","","\t\t\topen.splice(j, 0, item);","\t\t}","","\t\tj++;","\t}","","\treturn result;","}","","// TODO: worth switching to binary search?","function searchOpen(","\t/* array */\tlist,","\t/* int */\tnodeIndex)","{","\tfor (var i=0; i<list.length; i++)","\t{","\t\tif (list[i].index == nodeIndex)","\t\t{","\t\t\treturn list[i];","\t\t}","\t}","","\treturn false;","}","","function getNode(","\t/* array */\tpath)","{","\tvar open = this._open;","\tvar last = path.length-1;","\tfor (var i=0; i<last; i++)","\t{","\t\tvar node = searchOpen(open, path[i]);","\t\topen     = node.children;","\t}","","\treturn searchOpen(open, path[last]);","}","","function countVisibleNodes(","","\t// not sent by initiator","","\t/* array */ open)","{","\tvar total = 0;","\tif (!open)","\t{","\t\topen  = this._open;","\t\ttotal = this._topNodeTotal;","\t}","","\tif (this.get('paginateChildren'))","\t{","\t\tfor (var i=0; i<open.length; i++)","\t\t{","\t\t\tvar node = open[i];","\t\t\tif (node.open)","\t\t\t{","\t\t\t\ttotal += node.childTotal;","\t\t\t\ttotal += countVisibleNodes.call(this, node.children);","\t\t\t}","\t\t}","\t}","","\treturn total;","}","","function requestTree(flush_toggle)","{","\tif (!flush_toggle)","\t{","\t\tvar save_toggle = this._toggle.slice(0);","\t}","","\tthis._cancelAllRequests();","","\tif (!flush_toggle)","\t{","\t\tthis._toggle = save_toggle;","\t}","","\tthis._redo                = false;","\tthis._generating_requests = true;","","\tvar req = this._callback.request;","\tif (this.get('paginateChildren'))","\t{","\t\tthis._slices = getVisibleSlicesPgAll(req.startIndex, req.resultCount,","\t\t\t\t\t\t\t\t\t\t\t this.get('root'), this._open);","\t}","\telse","\t{","\t\tthis._slices = getVisibleSlicesPgTop(req.startIndex, req.resultCount,","\t\t\t\t\t\t\t\t\t\t\t this.get('root'), this._open);","\t}","","\trequestSlices.call(this, req);","","\tthis._generating_requests = false;","\tcheckFinished.call(this);","}","","function getVisibleSlicesPgTop(","\t/* int */\t\t\tskip,","\t/* int */\t\t\tshow,","\t/* DataSource */\tds,","\t/* array */\t\t\topen,","","\t// not sent by initiator","","\t/* array */\t\t\tpath)","{","\topen = open.concat(","\t{","\t\tindex:      -1,","\t\topen:       true,","\t\tchildTotal: 0,","\t\tchildren:   null","\t});","","\tif (!path)","\t{","\t\tpath = [];","\t}","","\tvar slices = [],","\t\tsend   = false;","","\tvar m = 0, prev = -1, presend = false;","\tfor (var i=0; i<open.length; i++)","\t{","\t\tvar node = open[i];","\t\tif (!node.open)","\t\t{","\t\t\tcontinue;","\t\t}","","\t\tvar delta = node.index - prev;","","\t\tif (m + delta >= skip + show ||","\t\t\tnode.index == -1)","\t\t{","\t\t\tslices.push(","\t\t\t{","\t\t\t\tds:    ds,","\t\t\t\tpath:  path.slice(0),","\t\t\t\tstart: send ? m : skip,","\t\t\t\tend:   skip + show - 1","\t\t\t});","","\t\t\tif (m + delta == skip + show && node.childTotal > 0)","\t\t\t{","\t\t\t\tslices = slices.concat(","\t\t\t\t\tgetVisibleSlicesPgTop(0, node.childTotal, node.ds,","\t\t\t\t\t\t\t\t\t\t  node.children, path.concat(node.index)));","\t\t\t}","","\t\t\treturn slices;","\t\t}","\t\telse if (!send && m + delta == skip)","\t\t{","\t\t\tpresend = true;","\t\t}","\t\telse if (m + delta > skip)","\t\t{","\t\t\tslices.push(","\t\t\t{","\t\t\t\tds:    ds,","\t\t\t\tpath:  path.slice(0),","\t\t\t\tstart: send ? prev + 1 : skip,","\t\t\t\tend:   m + delta - 1","\t\t\t});","\t\t\tsend = true;","\t\t}","","\t\tm += delta;","","\t\tif (send && node.childTotal > 0)","\t\t{","\t\t\tslices = slices.concat(","\t\t\t\tgetVisibleSlicesPgTop(0, node.childTotal, node.ds,","\t\t\t\t\t\t\t\t\t  node.children, path.concat(node.index)));","\t\t}","","\t\tprev = node.index;","\t\tsend = send || presend;","\t}","}","","function getVisibleSlicesPgAll(","\t/* int */\t\t\tskip,","\t/* int */\t\t\tshow,","\t/* DataSource */\trootDS,","\t/* array */\t\t\topen,","","\t// not sent by initiator","","\t/* array */\t\t\tpath,","\t/* node */\t\t\tparent,","\t/* int */\t\t\tpre,","\t/* bool */\t\t\tsend,","\t/* array */\t\t\tslices)","{","\tif (!parent)","\t{","\t\tpath   = [];","\t\tparent = null;","\t\tpre    = 0;","\t\tsend   = false;","\t\tslices = [];","\t}","","\tvar ds = parent ? parent.ds : rootDS;","","\topen = open.concat(","\t{","\t\tindex:      parent ? parent.childTotal : -1,","\t\topen:       true,","\t\tchildTotal: 0,","\t\tchildren:   null","\t});","","\tvar n = 0, m = 0, prev = -1;","\tfor (var i=0; i<open.length; i++)","\t{","\t\tvar node = open[i];","\t\tif (!node.open)","\t\t{","\t\t\tcontinue;","\t\t}","","\t\tvar delta = node.index - prev;","\t\tif (node.children === null)","\t\t{","\t\t\tdelta--;\t// last item is off the end","\t\t}","","\t\tif (pre + n + delta >= skip + show ||","\t\t\tnode.index == -1)","\t\t{","\t\t\tslices.push(","\t\t\t{","\t\t\t\tds:    ds,","\t\t\t\tpath:  path.slice(0),","\t\t\t\tstart: m + (send ? 0 : skip - pre - n),","\t\t\t\tend:   m + (skip + show - 1 - pre - n)","\t\t\t});","","\t\t\treturn slices;","\t\t}","\t\telse if (!send && pre + n + delta == skip)","\t\t{","\t\t\tsend = true;","\t\t}","\t\telse if (pre + n + delta > skip)","\t\t{","\t\t\tslices.push(","\t\t\t{","\t\t\t\tds:    ds,","\t\t\t\tpath:  path.slice(0),","\t\t\t\tstart: m + (send ? 0 : skip - pre - n),","\t\t\t\tend:   m + delta - 1","\t\t\t});","\t\t\tsend = true;","\t\t}","","\t\tn += delta;","\t\tm += delta;","","\t\tif (node.childTotal > 0)","\t\t{","\t\t\tvar info = getVisibleSlicesPgAll(skip, show, rootDS, node.children,","\t\t\t\t\t\t\t\t\t\t\t path.concat(node.index),","\t\t\t\t\t\t\t\t\t\t\t node, pre+n, send, slices);","\t\t\tif (Y.Lang.isArray(info))","\t\t\t{","\t\t\t\treturn info;","\t\t\t}","\t\t\telse","\t\t\t{","\t\t\t\tn   += info.count;","\t\t\t\tsend = info.send;","\t\t\t}","\t\t}","","\t\tprev = node.index;","\t}","","\t// only reached when parent != null","","\tvar info =","\t{","\t\tcount: n,","\t\tsend:  send","\t};","\treturn info;","}","","function requestSlices(","\t/* object */\trequest)","{","\tfor (var i=0; i<this._slices.length; i++)","\t{","\t\tvar slice = this._slices[i];","\t\tvar ds    = slice.ds;","\t\tvar req   = findRequest.call(this, ds);","\t\tif (req)","\t\t{","\t\t\tif (Y.Console)","\t\t\t{","\t\t\t\tif (req.end+1 < slice.start)","\t\t\t\t{","\t\t\t\t\tY.error('TreebleDataSource found discontinuous range');","\t\t\t\t}","","\t\t\t\tif (req.path.length != slice.path.length)","\t\t\t\t{","\t\t\t\t\tY.error('TreebleDataSource found path length mismatch');","\t\t\t\t}","\t\t\t\telse","\t\t\t\t{","\t\t\t\t\tfor (var j=0; j<slice.path.length; j++)","\t\t\t\t\t{","\t\t\t\t\t\tif (req.path[j] != slice.path[j])","\t\t\t\t\t\t{","\t\t\t\t\t\t\tY.error('TreebleDataSource found path mismatch');","\t\t\t\t\t\t\tbreak;","\t\t\t\t\t\t}","\t\t\t\t\t}","\t\t\t\t}","\t\t\t}","","\t\t\treq.end = slice.end;","\t\t}","\t\telse","\t\t{","\t\t\tthis._req.push(","\t\t\t{","\t\t\t\tds:    ds,","\t\t\t\tpath:  slice.path,","\t\t\t\tstart: slice.start,","\t\t\t\tend:   slice.end","\t\t\t});","\t\t}","\t}","","\trequest = Y.clone(request, true);","\tfor (var i=0; i<this._req.length; i++)","\t{","\t\tvar req             = this._req[i];","\t\trequest.startIndex  = req.start;","\t\trequest.resultCount = req.end - req.start + 1;","","\t\treq.txId = req.ds.sendRequest(","\t\t{","\t\t\trequest: req.ds.treeble_config.generateRequest(request, req.path),","\t\t\tcfg:     req.ds.treeble_config.requestCfg,","\t\t\tcallback:","\t\t\t{","\t\t\t\tsuccess: Y.rbind(treeSuccess, this, i),","\t\t\t\tfailure: Y.rbind(treeFailure, this, i)","\t\t\t}","\t\t});","\t}","}","","function findRequest(","\t/* DataSource */\tds)","{","\tfor (var i=0; i<this._req.length; i++)","\t{","\t\tvar req = this._req[i];","\t\tif (ds == req.ds)","\t\t{","\t\t\treturn req;","\t\t}","\t}","","\treturn null;","}","","function treeSuccess(e, reqIndex)","{","\tif (!e.response || e.error ||","\t\t!Y.Lang.isArray(e.response.results))","\t{","\t\ttreeFailure.apply(this, arguments);","\t\treturn;","\t}","","\tvar req = searchTxId(this._req, e.tId, reqIndex);","\tif (!req)","\t{","\t\treturn;\t\t// cancelled request","\t}","","\tif (!this._topResponse && req.ds == this.get('root'))","\t{","\t\tthis._topResponse = e.response;","\t}","","\treq.txId  = null;","\treq.resp  = e.response;","\treq.error = false;","","\tvar dataStartIndex = 0;","\tif (req.ds.treeble_config.startIndexExpr)","\t{","\t\teval('dataStartIndex=req.resp'+req.ds.treeble_config.startIndexExpr);","\t}","","\tvar sliceStartIndex = req.start - dataStartIndex;","\treq.data            = e.response.results.slice(sliceStartIndex, req.end - dataStartIndex + 1);","\tsetNodeInfo(req.data, req.start, req.path, req.ds);","","\tvar parent = (req.path.length > 0 ? getNode.call(this, req.path) : null);","\tvar open   = (parent !== null ? parent.children : this._open);","\tif (!populateOpen.call(this, parent, open, req))","\t{","\t\ttreeFailure.apply(this, arguments);","\t\treturn;","\t}","","\tif (!parent && req.ds.treeble_config.totalRecordsExpr)","\t{","\t\teval('this._topNodeTotal=e.response'+req.ds.treeble_config.totalRecordsExpr);","\t}","\telse if (!parent && req.ds.treeble_config.totalRecordsReturnExpr)","\t{","\t\tthis._topNodeTotal = e.response.results.length;","\t}","","\tcheckFinished.call(this);","}","","function treeFailure(e, reqIndex)","{","\tvar req = searchTxId(this._req, e.tId, reqIndex);","\tif (!req)","\t{","\t\treturn;\t\t// cancelled request","\t}","","\tthis._cancelAllRequests();","","\tthis._callback.error    = e.error;","\tthis._callback.response = e.response;","\tthis.fire('response', this._callback);","}","","function setNodeInfo(","\t/* array */\t\t\tlist,","\t/* int */\t\t\toffset,","\t/* array */\t\t\tpath,","\t/* datasource */\tds)","{","\tvar depth = path.length;","\tfor (var i=0; i<list.length; i++)","\t{","\t\tlist[i]._yui_node_depth = depth;","\t\tlist[i]._yui_node_path  = path.concat(offset+i);","\t\tlist[i]._yui_node_ds    = ds;","\t}","}","","function searchTxId(","\t/* array */\treq,","\t/* int */\tid,","\t/* int */\tfallbackIndex)","{","\tfor (var i=0; i<req.length; i++)","\t{","\t\tif (req[i].txId === id)","\t\t{","\t\t\treturn req[i];","\t\t}","\t}","","\t// synch response arrives before setting txId","","\tif (fallbackIndex < req.length &&","\t\tY.Lang.isUndefined(req[ fallbackIndex ].txId))","\t{","\t\treturn req[ fallbackIndex ];","\t}","","\treturn null;","}","","function checkFinished()","{","\tif (this._generating_requests)","\t{","\t\treturn;","\t}","","\tvar count = this._req.length;","\tfor (var i=0; i<count; i++)","\t{","\t\tif (!this._req[i].resp)","\t\t{","\t\t\treturn;","\t\t}","\t}","","\tif (this._redo)","\t{","\t\tY.Lang.later(0, this, requestTree);","\t\treturn;","\t}","\telse if (this._toggle.length > 0)","\t{","\t\tvar t = this._toggle.shift();","\t\tthis.toggle(t, Y.clone(this._callback.request, true),","\t\t{","\t\t\tfn: function()","\t\t\t{","\t\t\t\tY.Lang.later(0, this, requestTree);","\t\t\t},","\t\t\tscope: this","\t\t});","\t\treturn;","\t}","","\tvar response = { meta:{} };","\tY.mix(response, this._topResponse, true);","\tresponse.results = [];","\tresponse         = Y.clone(response, true);","","\tcount = this._slices.length;","\tfor (i=0; i<count; i++)","\t{","\t\tvar slice = this._slices[i];","\t\tvar req   = findRequest.call(this, slice.ds);","\t\tif (!req)","\t\t{","\t\t\tY.error('Failed to find request for a slice');","\t\t\tcontinue;","\t\t}","","\t\tvar j    = slice.start - req.start;","\t\tvar data = req.data.slice(j, j + slice.end - slice.start + 1);","","\t\tresponse.results = response.results.concat(data);","\t}","","\tvar rootDS = this.get('root');","\tif (rootDS.treeble_config.totalRecordsExpr)","\t{","\t\teval('response'+rootDS.treeble_config.totalRecordsExpr+'='+countVisibleNodes.call(this));","\t}","\telse if (rootDS.treeble_config.totalRecordsReturnExpr)","\t{","\t\teval('response'+rootDS.treeble_config.totalRecordsReturnExpr+'='+countVisibleNodes.call(this));","\t}","","\tthis._callback.response = response;","\tthis.fire('response', this._callback);","}","","function toggleSuccess(e, node, completion, path)","{","\tif (node.ds.treeble_config.totalRecordsExpr)","\t{","\t\teval('node.childTotal=e.response'+node.ds.treeble_config.totalRecordsExpr);","\t}","\telse if (node.ds.treeble_config.totalRecordsReturnExpr)","\t{","\t\tnode.childTotal = e.response.results.length;","\t}","","\tnode.open     = true;","\tnode.children = [];","\tcomplete(completion);","","\tthis.fire('toggled',","\t{","\t\tpath: path,","\t\topen: node.open","\t});","}","","function toggleFailure(e, node, completion, path)","{","\tnode.childTotal = 0;","","\tnode.open     = true;","\tnode.children = [];","\tcomplete(completion);","","\tthis.fire('toggled',","\t{","\t\tpath: path,","\t\topen: node.open","\t});","}","","function complete(f)","{","\tif (Y.Lang.isFunction(f))","\t{","\t\tf();","\t}","\telse if (f && f.fn)","\t{","\t\tf.fn.apply(f.scope || window, Y.Lang.isUndefined(f.args) ? [] : f.args);","\t}","}","","function compareRequests(r1, r2)","{","\tvar k1 = Y.Object.keys(r1),","\t\tk2 = Y.Object.keys(r2);","","\tif (k1.length != k2.length)","\t{","\t\treturn false;","\t}","","\tfor (var i=0; i<k1.length; i++)","\t{","\t\tvar k = k1[i];","\t\tif (k != 'startIndex' && k != 'resultCount' && r1[k] !== r2[k])","\t\t{","\t\t\treturn false;","\t\t}","\t}","","\treturn true;","}","","Y.extend(TreebleDataSource, Y.DataSource.Local,","{","\tinitializer: function(config)","\t{","\t\tif (!config.root)","\t\t{","\t\t\tY.error('TreebleDataSource requires DataSource');","\t\t}","","\t\tif (!config.root.treeble_config.childNodesKey)","\t\t{","\t\t\tvar fields = config.root.schema.get('schema').resultFields;","\t\t\tif (!fields || !Y.Lang.isArray(fields))","\t\t\t{","\t\t\t\tY.error('TreebleDataSource root DataSource requires schema.resultFields because treeble_config.childNodesKey was not specified.');","\t\t\t}","","\t\t\tfor (var i=0; i<fields.length; i++)","\t\t\t{","\t\t\t\tif (Y.Lang.isObject(fields[i]) && fields[i].parser == 'treebledatasource')","\t\t\t\t{","\t\t\t\t\tconfig.root.treeble_config.childNodesKey = fields[i].key;","\t\t\t\t\tbreak;","\t\t\t\t}","\t\t\t}","","\t\t\tif (!config.root.treeble_config.childNodesKey)","\t\t\t{","\t\t\t\tY.error('TreebleDataSource requires treeble_config.childNodesKey configuration to be set on root DataSource');","\t\t\t}","\t\t}","","\t\tif (!config.root.treeble_config.generateRequest)","\t\t{","\t\t\tY.error('TreebleDataSource requires treeble_config.generateRequest configuration to be set on root DataSource');","\t\t}","","\t\tif (!config.root.treeble_config.totalRecordsExpr && !config.root.treeble_config.totalRecordsReturnExpr)","\t\t{","\t\t\tY.error('TreebleDataSource requires either treeble_config.totalRecordsExpr or treeble_config.totalRecordsReturnExpr configuration to be set on root DataSource');","\t\t}","","\t\tthis._open       = [];","\t\tthis._open_cache = {};","\t\tthis._toggle     = [];","\t\tthis._req        = [];","\t},","","\t/**","\t * @method isOpen","\t * @param path {Array} Path to node","\t * @return {boolean} true if the node is open","\t */","\tisOpen: function(path)","\t{","\t\tvar list = this._open;","\t\tfor (var i=0; i<path.length; i++)","\t\t{","\t\t\tvar node = searchOpen.call(this, list, path[i]);","\t\t\tif (!node || !node.open)","\t\t\t{","\t\t\t\treturn false;","\t\t\t}","\t\t\tlist = node.children;","\t\t}","","\t\treturn true;","\t},","","\t/**","\t * Toggle the specified node between open and closed.  When a node is","\t * opened for the first time, this requires a request to the","\t * DataSource.  Any code that assumes the node has been opened must be","\t * passed in as a completion function.","\t * ","\t * @method toggle","\t * @param path {Array} Path to the node","\t * @param request {Object} {sort,dir,startIndex,resultCount}","\t * @param completion {Function|Object} Function to call when the operation completes.  Can be object: {fn,scope,args}","\t * @return {boolean} false if the path to the node has not yet been fully explored or is not openable, true otherwise","\t */","\ttoggle: function(path, request, completion)","\t{","\t\tvar list = this._open;","\t\tfor (var i=0; i<path.length; i++)","\t\t{","\t\t\tvar node = searchOpen.call(this, list, path[i]);","\t\t\tif (!node)","\t\t\t{","\t\t\t\treturn false;","\t\t\t}","\t\t\tlist = node.children;","\t\t}","","\t\tif (node.open === null)","\t\t{","\t\t\trequest.startIndex  = 0;","\t\t\trequest.resultCount = 0;","\t\t\tnode.ds.sendRequest(","\t\t\t{","\t\t\t\trequest: node.ds.treeble_config.generateRequest(request, path),","\t\t\t\tcfg:     node.ds.treeble_config.requestCfg,","\t\t\t\tcallback:","\t\t\t\t{","\t\t\t\t\tsuccess: Y.rbind(toggleSuccess, this, node, completion, path),","\t\t\t\t\tfailure: Y.rbind(toggleFailure, this, node, completion, path)","\t\t\t\t}","\t\t\t});","\t\t}","\t\telse","\t\t{","\t\t\tnode.open = !node.open;","\t\t\tcomplete(completion);","","\t\t\tthis.fire('toggled',","\t\t\t{","\t\t\t\tpath: path,","\t\t\t\topen: node.open","\t\t\t});","\t\t}","\t\treturn true;","\t},","","\t_defRequestFn: function(e)","\t{","\t\t// wipe out all state if the request parameters change","","\t\tif (this._callback && !compareRequests(this._callback.request, e.request))","\t\t{","\t\t\tthis._open = [];","\t\t}","","\t\tthis._callback = e;","\t\trequestTree.call(this, true);","\t},","","\t_cancelAllRequests: function()","\t{","\t\tthis._req    = [];","\t\tthis._toggle = [];","\t\tdelete this._topResponse;","\t}","});","","Y.TreebleDataSource = TreebleDataSource;","Y.namespace('DataSource').Treeble = TreebleDataSource;","/**"," * @module gallery-treeble"," */","","/**"," * <p>Converts data to a DataSource.  Data can be an object containing both"," * <code>dataType</code> and <code>liveData</code>, or it can be <q>free"," * form</q>, e.g., an array of records or an XHR URL.</p>"," *"," * @class Parsers"," */","","/**"," * @method treebledatasource"," * @static"," * @param oData {mixed} Data to convert."," * @return {DataSource} The new data source."," */","Y.namespace(\"Parsers\").treebledatasource = function(oData)","{","\tif (!oData)","\t{","\t\treturn null;","\t}","","\tvar type = oData.dataType;","\tif (type)","\t{","\t\t// use it","\t}","\telse if (Y.Lang.isString(oData))","\t{","\t\ttype = 'IO';","\t}","\telse if (Y.Lang.isFunction(oData))","\t{","\t\ttype = 'Function';","\t}","\telse","\t{","\t\ttype = 'Local';","\t}","","\tvar src            = oData.dataType ? oData.liveData : oData;","\tvar treeble_config = this.get('host').treeble_config;","\tif (type == 'Local')","\t{","\t\ttreeble_config = Y.clone(treeble_config, true);","\t\tdelete treeble_config.startIndexExpr;","\t\tdelete treeble_config.totalRecordsExpr;","\t}","\telse if (type == 'Function')","\t{","\t\tsrc = Y.Lang.isString(src) ? window[ src ] : src;","\t}","","\tvar ds            = new Y.DataSource[ type ]({ source: src });","\tds.treeble_config = treeble_config;","","\tif (ds.treeble_config.schemaPluginConfig)","\t{","\t\tds.plug(Y.clone(ds.treeble_config.schemaPluginConfig, true));","\t}","","\tif (ds.treeble_config.cachePluginConfig)","\t{","\t\tds.plug(Y.clone(ds.treeble_config.cachePluginConfig, true));","\t}","","\treturn ds;","};","/**********************************************************************"," * Treeble displays a tree of data in a table."," *"," * @module gallery-treeble"," * @main gallery-treeble"," */","","/**"," * Extension to DataTable for displaying tree data."," *"," * @class Treeble"," * @extends DataTable"," * @constructor"," * @param config {Object}"," */","function Treeble()","{","\tTreeble.superclass.constructor.apply(this, arguments);","}","","Treeble.NAME = \"datatable\";\t\t// same styling","","/**"," * <p>Formatter for open/close twistdown.</p>"," *"," * @method twistdownFormatter"," * @static"," * @param sendRequest {Function} Function that reloads DataTable"," */","Treeble.buildTwistdownFormatter = function(sendRequest)","{","\treturn function(o)","\t{","\t\to.td.addClass('treeble-nub');","","\t\tvar ds  = this.datasource.get('datasource');","\t\tvar key = ds.get('root').treeble_config.childNodesKey;","","\t\tif (o.data[key])","\t\t{","\t\t\tvar path = o.data._yui_node_path;","","\t\t\to.td.addClass('row-toggle');","\t\t\to.td.replaceClass('row-(open|closed)',","\t\t\t\tds.isOpen(path) ? 'row-open' : 'row-closed');","","\t\t\tYUI.Env.add(Y.Node.getDOMNode(o.td), 'click', function()","\t\t\t{","\t\t\t\tds.toggle(path, {}, sendRequest);","\t\t\t});","","\t\t\to.cell.set('innerHTML', '<a class=\"treeble-expand-nub\" href=\"javascript:void(0);\"></a>');","\t\t}","","\t\treturn false;\t// discard Y.Node instances","\t};","};","","/**"," * <p>Default formatter for indented column.</p>"," *"," * @method treeValueFormatter"," * @static"," */","Treeble.treeValueFormatter = function(o)","{","\tvar depth_class = 'treeble-depth-'+o.data._yui_node_depth;","\to.rowClass     += ' ' + depth_class;","\to.className    += ' treeble-value';","\treturn '<span class=\"'+depth_class+'\">'+o.value+'</span>';","};","","Y.extend(Treeble, Y.DataTable,","{","\tplug: function(plugin, config)","\t{","\t\tif (plugin === Y.Plugin.DataTableDataSource)","\t\t{","\t\t\tvar recordType = this.get('recordType');","\t\t\trecordType.ATTRS[ config.datasource.get('root').treeble_config.childNodesKey ] = {};","\t\t\trecordType.ATTRS._yui_node_path  = {};","\t\t\trecordType.ATTRS._yui_node_depth = {};","\t\t}","","\t\tTreeble.superclass.plug.apply(this, arguments);","\t}","});","","Y.Treeble = Treeble;","","","}, 'gallery-2012.12.05-21-01', {\"skinnable\": \"true\", \"requires\": [\"datasource\", \"datatable\"]});","","}());"]};
+if (typeof _yuitest_coverage == "undefined"){
+    _yuitest_coverage = {};
+    _yuitest_coverline = function(src, line){
+        var coverage = _yuitest_coverage[src];
+        if (!coverage.lines[line]){
+            coverage.calledLines++;
+        }
+        coverage.lines[line]++;
+    };
+    _yuitest_coverfunc = function(src, name, line){
+        var coverage = _yuitest_coverage[src],
+            funcId = name + ":" + line;
+        if (!coverage.functions[funcId]){
+            coverage.calledFunctions++;
+        }
+        coverage.functions[funcId]++;
+    };
 }
-var __cov_w7ERNekG4K$qkecSVL$ejQ = __coverage__['build/gallery-treeble/gallery-treeble.js'];
-__cov_w7ERNekG4K$qkecSVL$ejQ.s['1']++;YUI.add('gallery-treeble',function(Y,NAME){__cov_w7ERNekG4K$qkecSVL$ejQ.f['1']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['2']++;'use strict';__cov_w7ERNekG4K$qkecSVL$ejQ.s['3']++;function TreebleDataSource(){__cov_w7ERNekG4K$qkecSVL$ejQ.f['2']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['4']++;TreebleDataSource.superclass.constructor.apply(this,arguments);}__cov_w7ERNekG4K$qkecSVL$ejQ.s['5']++;TreebleDataSource.NAME='treebleDataSource';__cov_w7ERNekG4K$qkecSVL$ejQ.s['6']++;TreebleDataSource.ATTRS={root:{writeOnce:true},paginateChildren:{value:false,validator:Y.Lang.isBoolean,writeOnce:true},uniqueIdKey:{validator:Y.Lang.isString}};__cov_w7ERNekG4K$qkecSVL$ejQ.s['7']++;function populateOpen(parent,open,req){__cov_w7ERNekG4K$qkecSVL$ejQ.f['3']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['8']++;var data=req.data;__cov_w7ERNekG4K$qkecSVL$ejQ.s['9']++;var startIndex=req.start;__cov_w7ERNekG4K$qkecSVL$ejQ.s['10']++;var childNodesKey=req.ds.treeble_config.childNodesKey;__cov_w7ERNekG4K$qkecSVL$ejQ.s['11']++;var nodeOpenKey=req.ds.treeble_config.nodeOpenKey;__cov_w7ERNekG4K$qkecSVL$ejQ.s['12']++;for(var j=0;j<open.length;j++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['13']++;if(open[j].index>=startIndex){__cov_w7ERNekG4K$qkecSVL$ejQ.b['1'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['14']++;break;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['1'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['15']++;var uniqueIdKey=this.get('uniqueIdKey');__cov_w7ERNekG4K$qkecSVL$ejQ.s['16']++;var result=true;__cov_w7ERNekG4K$qkecSVL$ejQ.s['17']++;for(var k=0;k<data.length;k++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['18']++;var i=startIndex+k;__cov_w7ERNekG4K$qkecSVL$ejQ.s['19']++;var ds=data[k][childNodesKey];__cov_w7ERNekG4K$qkecSVL$ejQ.s['20']++;if(!ds){__cov_w7ERNekG4K$qkecSVL$ejQ.b['2'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['21']++;continue;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['2'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['22']++;while((__cov_w7ERNekG4K$qkecSVL$ejQ.b['3'][0]++,j<open.length)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['3'][1]++,open[j].index<i)){__cov_w7ERNekG4K$qkecSVL$ejQ.s['23']++;open.splice(j,1);__cov_w7ERNekG4K$qkecSVL$ejQ.s['24']++;result=false;__cov_w7ERNekG4K$qkecSVL$ejQ.s['25']++;if(uniqueIdKey){__cov_w7ERNekG4K$qkecSVL$ejQ.b['4'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['26']++;delete this._open_cache[data[k][uniqueIdKey]];}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['4'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['27']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['6'][0]++,j>=open.length)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['6'][1]++,open[j].index>i)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['5'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['28']++;var item={index:i,open:null,ds:ds,children:[],childTotal:0,parent:parent};__cov_w7ERNekG4K$qkecSVL$ejQ.s['29']++;var cached_item=null;__cov_w7ERNekG4K$qkecSVL$ejQ.s['30']++;if(uniqueIdKey){__cov_w7ERNekG4K$qkecSVL$ejQ.b['7'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['31']++;cached_item=this._open_cache[data[k][uniqueIdKey]];__cov_w7ERNekG4K$qkecSVL$ejQ.s['32']++;if(cached_item){__cov_w7ERNekG4K$qkecSVL$ejQ.b['8'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['33']++;item.open=cached_item.open;__cov_w7ERNekG4K$qkecSVL$ejQ.s['34']++;item.childTotal=cached_item.childTotal;__cov_w7ERNekG4K$qkecSVL$ejQ.s['35']++;this._redo=(__cov_w7ERNekG4K$qkecSVL$ejQ.b['9'][0]++,this._redo)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['9'][1]++,item.open);}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['8'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['36']++;this._open_cache[data[k][uniqueIdKey]]=item;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['7'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['37']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['11'][0]++,!cached_item)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['11'][1]++,nodeOpenKey)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['11'][2]++,data[k][nodeOpenKey])){__cov_w7ERNekG4K$qkecSVL$ejQ.b['10'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['38']++;this._toggle.push(req.path.concat(i));}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['10'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['39']++;open.splice(j,0,item);}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['5'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['40']++;j++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['41']++;return result;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['42']++;function searchOpen(list,nodeIndex){__cov_w7ERNekG4K$qkecSVL$ejQ.f['4']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['43']++;for(var i=0;i<list.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['44']++;if(list[i].index==nodeIndex){__cov_w7ERNekG4K$qkecSVL$ejQ.b['12'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['45']++;return list[i];}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['12'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['46']++;return false;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['47']++;function getNode(path){__cov_w7ERNekG4K$qkecSVL$ejQ.f['5']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['48']++;var open=this._open;__cov_w7ERNekG4K$qkecSVL$ejQ.s['49']++;var last=path.length-1;__cov_w7ERNekG4K$qkecSVL$ejQ.s['50']++;for(var i=0;i<last;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['51']++;var node=searchOpen(open,path[i]);__cov_w7ERNekG4K$qkecSVL$ejQ.s['52']++;open=node.children;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['53']++;return searchOpen(open,path[last]);}__cov_w7ERNekG4K$qkecSVL$ejQ.s['54']++;function countVisibleNodes(open){__cov_w7ERNekG4K$qkecSVL$ejQ.f['6']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['55']++;var total=0;__cov_w7ERNekG4K$qkecSVL$ejQ.s['56']++;if(!open){__cov_w7ERNekG4K$qkecSVL$ejQ.b['13'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['57']++;open=this._open;__cov_w7ERNekG4K$qkecSVL$ejQ.s['58']++;total=this._topNodeTotal;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['13'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['59']++;if(this.get('paginateChildren')){__cov_w7ERNekG4K$qkecSVL$ejQ.b['14'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['60']++;for(var i=0;i<open.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['61']++;var node=open[i];__cov_w7ERNekG4K$qkecSVL$ejQ.s['62']++;if(node.open){__cov_w7ERNekG4K$qkecSVL$ejQ.b['15'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['63']++;total+=node.childTotal;__cov_w7ERNekG4K$qkecSVL$ejQ.s['64']++;total+=countVisibleNodes.call(this,node.children);}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['15'][1]++;}}}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['14'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['65']++;return total;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['66']++;function requestTree(flush_toggle){__cov_w7ERNekG4K$qkecSVL$ejQ.f['7']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['67']++;if(!flush_toggle){__cov_w7ERNekG4K$qkecSVL$ejQ.b['16'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['68']++;var save_toggle=this._toggle.slice(0);}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['16'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['69']++;this._cancelAllRequests();__cov_w7ERNekG4K$qkecSVL$ejQ.s['70']++;if(!flush_toggle){__cov_w7ERNekG4K$qkecSVL$ejQ.b['17'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['71']++;this._toggle=save_toggle;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['17'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['72']++;this._redo=false;__cov_w7ERNekG4K$qkecSVL$ejQ.s['73']++;this._generating_requests=true;__cov_w7ERNekG4K$qkecSVL$ejQ.s['74']++;var req=this._callback.request;__cov_w7ERNekG4K$qkecSVL$ejQ.s['75']++;if(this.get('paginateChildren')){__cov_w7ERNekG4K$qkecSVL$ejQ.b['18'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['76']++;this._slices=getVisibleSlicesPgAll(req.startIndex,req.resultCount,this.get('root'),this._open);}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['18'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['77']++;this._slices=getVisibleSlicesPgTop(req.startIndex,req.resultCount,this.get('root'),this._open);}__cov_w7ERNekG4K$qkecSVL$ejQ.s['78']++;requestSlices.call(this,req);__cov_w7ERNekG4K$qkecSVL$ejQ.s['79']++;this._generating_requests=false;__cov_w7ERNekG4K$qkecSVL$ejQ.s['80']++;checkFinished.call(this);}__cov_w7ERNekG4K$qkecSVL$ejQ.s['81']++;function getVisibleSlicesPgTop(skip,show,ds,open,path){__cov_w7ERNekG4K$qkecSVL$ejQ.f['8']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['82']++;open=open.concat({index:-1,open:true,childTotal:0,children:null});__cov_w7ERNekG4K$qkecSVL$ejQ.s['83']++;if(!path){__cov_w7ERNekG4K$qkecSVL$ejQ.b['19'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['84']++;path=[];}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['19'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['85']++;var slices=[],send=false;__cov_w7ERNekG4K$qkecSVL$ejQ.s['86']++;var m=0,prev=-1,presend=false;__cov_w7ERNekG4K$qkecSVL$ejQ.s['87']++;for(var i=0;i<open.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['88']++;var node=open[i];__cov_w7ERNekG4K$qkecSVL$ejQ.s['89']++;if(!node.open){__cov_w7ERNekG4K$qkecSVL$ejQ.b['20'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['90']++;continue;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['20'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['91']++;var delta=node.index-prev;__cov_w7ERNekG4K$qkecSVL$ejQ.s['92']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['22'][0]++,m+delta>=skip+show)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['22'][1]++,node.index==-1)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['21'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['93']++;slices.push({ds:ds,path:path.slice(0),start:send?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['23'][0]++,m):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['23'][1]++,skip),end:skip+show-1});__cov_w7ERNekG4K$qkecSVL$ejQ.s['94']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['25'][0]++,m+delta==skip+show)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['25'][1]++,node.childTotal>0)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['24'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['95']++;slices=slices.concat(getVisibleSlicesPgTop(0,node.childTotal,node.ds,node.children,path.concat(node.index)));}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['24'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['96']++;return slices;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['21'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['97']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['27'][0]++,!send)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['27'][1]++,m+delta==skip)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['26'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['98']++;presend=true;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['26'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['99']++;if(m+delta>skip){__cov_w7ERNekG4K$qkecSVL$ejQ.b['28'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['100']++;slices.push({ds:ds,path:path.slice(0),start:send?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['29'][0]++,prev+1):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['29'][1]++,skip),end:m+delta-1});__cov_w7ERNekG4K$qkecSVL$ejQ.s['101']++;send=true;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['28'][1]++;}}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['102']++;m+=delta;__cov_w7ERNekG4K$qkecSVL$ejQ.s['103']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['31'][0]++,send)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['31'][1]++,node.childTotal>0)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['30'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['104']++;slices=slices.concat(getVisibleSlicesPgTop(0,node.childTotal,node.ds,node.children,path.concat(node.index)));}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['30'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['105']++;prev=node.index;__cov_w7ERNekG4K$qkecSVL$ejQ.s['106']++;send=(__cov_w7ERNekG4K$qkecSVL$ejQ.b['32'][0]++,send)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['32'][1]++,presend);}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['107']++;function getVisibleSlicesPgAll(skip,show,rootDS,open,path,parent,pre,send,slices){__cov_w7ERNekG4K$qkecSVL$ejQ.f['9']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['108']++;if(!parent){__cov_w7ERNekG4K$qkecSVL$ejQ.b['33'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['109']++;path=[];__cov_w7ERNekG4K$qkecSVL$ejQ.s['110']++;parent=null;__cov_w7ERNekG4K$qkecSVL$ejQ.s['111']++;pre=0;__cov_w7ERNekG4K$qkecSVL$ejQ.s['112']++;send=false;__cov_w7ERNekG4K$qkecSVL$ejQ.s['113']++;slices=[];}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['33'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['114']++;var ds=parent?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['34'][0]++,parent.ds):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['34'][1]++,rootDS);__cov_w7ERNekG4K$qkecSVL$ejQ.s['115']++;open=open.concat({index:parent?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['35'][0]++,parent.childTotal):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['35'][1]++,-1),open:true,childTotal:0,children:null});__cov_w7ERNekG4K$qkecSVL$ejQ.s['116']++;var n=0,m=0,prev=-1;__cov_w7ERNekG4K$qkecSVL$ejQ.s['117']++;for(var i=0;i<open.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['118']++;var node=open[i];__cov_w7ERNekG4K$qkecSVL$ejQ.s['119']++;if(!node.open){__cov_w7ERNekG4K$qkecSVL$ejQ.b['36'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['120']++;continue;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['36'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['121']++;var delta=node.index-prev;__cov_w7ERNekG4K$qkecSVL$ejQ.s['122']++;if(node.children===null){__cov_w7ERNekG4K$qkecSVL$ejQ.b['37'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['123']++;delta--;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['37'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['124']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['39'][0]++,pre+n+delta>=skip+show)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['39'][1]++,node.index==-1)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['38'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['125']++;slices.push({ds:ds,path:path.slice(0),start:m+(send?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['40'][0]++,0):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['40'][1]++,skip-pre-n)),end:m+(skip+show-1-pre-n)});__cov_w7ERNekG4K$qkecSVL$ejQ.s['126']++;return slices;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['38'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['127']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['42'][0]++,!send)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['42'][1]++,pre+n+delta==skip)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['41'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['128']++;send=true;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['41'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['129']++;if(pre+n+delta>skip){__cov_w7ERNekG4K$qkecSVL$ejQ.b['43'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['130']++;slices.push({ds:ds,path:path.slice(0),start:m+(send?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['44'][0]++,0):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['44'][1]++,skip-pre-n)),end:m+delta-1});__cov_w7ERNekG4K$qkecSVL$ejQ.s['131']++;send=true;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['43'][1]++;}}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['132']++;n+=delta;__cov_w7ERNekG4K$qkecSVL$ejQ.s['133']++;m+=delta;__cov_w7ERNekG4K$qkecSVL$ejQ.s['134']++;if(node.childTotal>0){__cov_w7ERNekG4K$qkecSVL$ejQ.b['45'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['135']++;var info=getVisibleSlicesPgAll(skip,show,rootDS,node.children,path.concat(node.index),node,pre+n,send,slices);__cov_w7ERNekG4K$qkecSVL$ejQ.s['136']++;if(Y.Lang.isArray(info)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['46'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['137']++;return info;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['46'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['138']++;n+=info.count;__cov_w7ERNekG4K$qkecSVL$ejQ.s['139']++;send=info.send;}}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['45'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['140']++;prev=node.index;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['141']++;var info={count:n,send:send};__cov_w7ERNekG4K$qkecSVL$ejQ.s['142']++;return info;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['143']++;function requestSlices(request){__cov_w7ERNekG4K$qkecSVL$ejQ.f['10']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['144']++;for(var i=0;i<this._slices.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['145']++;var slice=this._slices[i];__cov_w7ERNekG4K$qkecSVL$ejQ.s['146']++;var ds=slice.ds;__cov_w7ERNekG4K$qkecSVL$ejQ.s['147']++;var req=findRequest.call(this,ds);__cov_w7ERNekG4K$qkecSVL$ejQ.s['148']++;if(req){__cov_w7ERNekG4K$qkecSVL$ejQ.b['47'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['149']++;if(Y.Console){__cov_w7ERNekG4K$qkecSVL$ejQ.b['48'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['150']++;if(req.end+1<slice.start){__cov_w7ERNekG4K$qkecSVL$ejQ.b['49'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['151']++;Y.error('TreebleDataSource found discontinuous range');}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['49'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['152']++;if(req.path.length!=slice.path.length){__cov_w7ERNekG4K$qkecSVL$ejQ.b['50'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['153']++;Y.error('TreebleDataSource found path length mismatch');}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['50'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['154']++;for(var j=0;j<slice.path.length;j++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['155']++;if(req.path[j]!=slice.path[j]){__cov_w7ERNekG4K$qkecSVL$ejQ.b['51'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['156']++;Y.error('TreebleDataSource found path mismatch');__cov_w7ERNekG4K$qkecSVL$ejQ.s['157']++;break;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['51'][1]++;}}}}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['48'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['158']++;req.end=slice.end;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['47'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['159']++;this._req.push({ds:ds,path:slice.path,start:slice.start,end:slice.end});}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['160']++;request=Y.clone(request,true);__cov_w7ERNekG4K$qkecSVL$ejQ.s['161']++;for(var i=0;i<this._req.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['162']++;var req=this._req[i];__cov_w7ERNekG4K$qkecSVL$ejQ.s['163']++;request.startIndex=req.start;__cov_w7ERNekG4K$qkecSVL$ejQ.s['164']++;request.resultCount=req.end-req.start+1;__cov_w7ERNekG4K$qkecSVL$ejQ.s['165']++;req.txId=req.ds.sendRequest({request:req.ds.treeble_config.generateRequest(request,req.path),cfg:req.ds.treeble_config.requestCfg,callback:{success:Y.rbind(treeSuccess,this,i),failure:Y.rbind(treeFailure,this,i)}});}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['166']++;function findRequest(ds){__cov_w7ERNekG4K$qkecSVL$ejQ.f['11']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['167']++;for(var i=0;i<this._req.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['168']++;var req=this._req[i];__cov_w7ERNekG4K$qkecSVL$ejQ.s['169']++;if(ds==req.ds){__cov_w7ERNekG4K$qkecSVL$ejQ.b['52'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['170']++;return req;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['52'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['171']++;return null;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['172']++;function treeSuccess(e,reqIndex){__cov_w7ERNekG4K$qkecSVL$ejQ.f['12']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['173']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['54'][0]++,!e.response)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['54'][1]++,e.error)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['54'][2]++,!Y.Lang.isArray(e.response.results))){__cov_w7ERNekG4K$qkecSVL$ejQ.b['53'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['174']++;treeFailure.apply(this,arguments);__cov_w7ERNekG4K$qkecSVL$ejQ.s['175']++;return;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['53'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['176']++;var req=searchTxId(this._req,e.tId,reqIndex);__cov_w7ERNekG4K$qkecSVL$ejQ.s['177']++;if(!req){__cov_w7ERNekG4K$qkecSVL$ejQ.b['55'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['178']++;return;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['55'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['179']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['57'][0]++,!this._topResponse)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['57'][1]++,req.ds==this.get('root'))){__cov_w7ERNekG4K$qkecSVL$ejQ.b['56'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['180']++;this._topResponse=e.response;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['56'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['181']++;req.txId=null;__cov_w7ERNekG4K$qkecSVL$ejQ.s['182']++;req.resp=e.response;__cov_w7ERNekG4K$qkecSVL$ejQ.s['183']++;req.error=false;__cov_w7ERNekG4K$qkecSVL$ejQ.s['184']++;var dataStartIndex=0;__cov_w7ERNekG4K$qkecSVL$ejQ.s['185']++;if(req.ds.treeble_config.startIndexExpr){__cov_w7ERNekG4K$qkecSVL$ejQ.b['58'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['186']++;eval('dataStartIndex=req.resp'+req.ds.treeble_config.startIndexExpr);}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['58'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['187']++;var sliceStartIndex=req.start-dataStartIndex;__cov_w7ERNekG4K$qkecSVL$ejQ.s['188']++;req.data=e.response.results.slice(sliceStartIndex,req.end-dataStartIndex+1);__cov_w7ERNekG4K$qkecSVL$ejQ.s['189']++;setNodeInfo(req.data,req.start,req.path,req.ds);__cov_w7ERNekG4K$qkecSVL$ejQ.s['190']++;var parent=req.path.length>0?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['59'][0]++,getNode.call(this,req.path)):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['59'][1]++,null);__cov_w7ERNekG4K$qkecSVL$ejQ.s['191']++;var open=parent!==null?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['60'][0]++,parent.children):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['60'][1]++,this._open);__cov_w7ERNekG4K$qkecSVL$ejQ.s['192']++;if(!populateOpen.call(this,parent,open,req)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['61'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['193']++;treeFailure.apply(this,arguments);__cov_w7ERNekG4K$qkecSVL$ejQ.s['194']++;return;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['61'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['195']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['63'][0]++,!parent)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['63'][1]++,req.ds.treeble_config.totalRecordsExpr)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['62'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['196']++;eval('this._topNodeTotal=e.response'+req.ds.treeble_config.totalRecordsExpr);}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['62'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['197']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['65'][0]++,!parent)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['65'][1]++,req.ds.treeble_config.totalRecordsReturnExpr)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['64'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['198']++;this._topNodeTotal=e.response.results.length;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['64'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['199']++;checkFinished.call(this);}__cov_w7ERNekG4K$qkecSVL$ejQ.s['200']++;function treeFailure(e,reqIndex){__cov_w7ERNekG4K$qkecSVL$ejQ.f['13']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['201']++;var req=searchTxId(this._req,e.tId,reqIndex);__cov_w7ERNekG4K$qkecSVL$ejQ.s['202']++;if(!req){__cov_w7ERNekG4K$qkecSVL$ejQ.b['66'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['203']++;return;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['66'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['204']++;this._cancelAllRequests();__cov_w7ERNekG4K$qkecSVL$ejQ.s['205']++;this._callback.error=e.error;__cov_w7ERNekG4K$qkecSVL$ejQ.s['206']++;this._callback.response=e.response;__cov_w7ERNekG4K$qkecSVL$ejQ.s['207']++;this.fire('response',this._callback);}__cov_w7ERNekG4K$qkecSVL$ejQ.s['208']++;function setNodeInfo(list,offset,path,ds){__cov_w7ERNekG4K$qkecSVL$ejQ.f['14']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['209']++;var depth=path.length;__cov_w7ERNekG4K$qkecSVL$ejQ.s['210']++;for(var i=0;i<list.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['211']++;list[i]._yui_node_depth=depth;__cov_w7ERNekG4K$qkecSVL$ejQ.s['212']++;list[i]._yui_node_path=path.concat(offset+i);__cov_w7ERNekG4K$qkecSVL$ejQ.s['213']++;list[i]._yui_node_ds=ds;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['214']++;function searchTxId(req,id,fallbackIndex){__cov_w7ERNekG4K$qkecSVL$ejQ.f['15']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['215']++;for(var i=0;i<req.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['216']++;if(req[i].txId===id){__cov_w7ERNekG4K$qkecSVL$ejQ.b['67'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['217']++;return req[i];}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['67'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['218']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['69'][0]++,fallbackIndex<req.length)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['69'][1]++,Y.Lang.isUndefined(req[fallbackIndex].txId))){__cov_w7ERNekG4K$qkecSVL$ejQ.b['68'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['219']++;return req[fallbackIndex];}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['68'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['220']++;return null;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['221']++;function checkFinished(){__cov_w7ERNekG4K$qkecSVL$ejQ.f['16']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['222']++;if(this._generating_requests){__cov_w7ERNekG4K$qkecSVL$ejQ.b['70'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['223']++;return;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['70'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['224']++;var count=this._req.length;__cov_w7ERNekG4K$qkecSVL$ejQ.s['225']++;for(var i=0;i<count;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['226']++;if(!this._req[i].resp){__cov_w7ERNekG4K$qkecSVL$ejQ.b['71'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['227']++;return;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['71'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['228']++;if(this._redo){__cov_w7ERNekG4K$qkecSVL$ejQ.b['72'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['229']++;Y.Lang.later(0,this,requestTree);__cov_w7ERNekG4K$qkecSVL$ejQ.s['230']++;return;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['72'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['231']++;if(this._toggle.length>0){__cov_w7ERNekG4K$qkecSVL$ejQ.b['73'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['232']++;var t=this._toggle.shift();__cov_w7ERNekG4K$qkecSVL$ejQ.s['233']++;this.toggle(t,Y.clone(this._callback.request,true),{fn:function(){__cov_w7ERNekG4K$qkecSVL$ejQ.f['17']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['234']++;Y.Lang.later(0,this,requestTree);},scope:this});__cov_w7ERNekG4K$qkecSVL$ejQ.s['235']++;return;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['73'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['236']++;var response={meta:{}};__cov_w7ERNekG4K$qkecSVL$ejQ.s['237']++;Y.mix(response,this._topResponse,true);__cov_w7ERNekG4K$qkecSVL$ejQ.s['238']++;response.results=[];__cov_w7ERNekG4K$qkecSVL$ejQ.s['239']++;response=Y.clone(response,true);__cov_w7ERNekG4K$qkecSVL$ejQ.s['240']++;count=this._slices.length;__cov_w7ERNekG4K$qkecSVL$ejQ.s['241']++;for(i=0;i<count;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['242']++;var slice=this._slices[i];__cov_w7ERNekG4K$qkecSVL$ejQ.s['243']++;var req=findRequest.call(this,slice.ds);__cov_w7ERNekG4K$qkecSVL$ejQ.s['244']++;if(!req){__cov_w7ERNekG4K$qkecSVL$ejQ.b['74'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['245']++;Y.error('Failed to find request for a slice');__cov_w7ERNekG4K$qkecSVL$ejQ.s['246']++;continue;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['74'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['247']++;var j=slice.start-req.start;__cov_w7ERNekG4K$qkecSVL$ejQ.s['248']++;var data=req.data.slice(j,j+slice.end-slice.start+1);__cov_w7ERNekG4K$qkecSVL$ejQ.s['249']++;response.results=response.results.concat(data);}__cov_w7ERNekG4K$qkecSVL$ejQ.s['250']++;var rootDS=this.get('root');__cov_w7ERNekG4K$qkecSVL$ejQ.s['251']++;if(rootDS.treeble_config.totalRecordsExpr){__cov_w7ERNekG4K$qkecSVL$ejQ.b['75'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['252']++;eval('response'+rootDS.treeble_config.totalRecordsExpr+'='+countVisibleNodes.call(this));}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['75'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['253']++;if(rootDS.treeble_config.totalRecordsReturnExpr){__cov_w7ERNekG4K$qkecSVL$ejQ.b['76'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['254']++;eval('response'+rootDS.treeble_config.totalRecordsReturnExpr+'='+countVisibleNodes.call(this));}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['76'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['255']++;this._callback.response=response;__cov_w7ERNekG4K$qkecSVL$ejQ.s['256']++;this.fire('response',this._callback);}__cov_w7ERNekG4K$qkecSVL$ejQ.s['257']++;function toggleSuccess(e,node,completion,path){__cov_w7ERNekG4K$qkecSVL$ejQ.f['18']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['258']++;if(node.ds.treeble_config.totalRecordsExpr){__cov_w7ERNekG4K$qkecSVL$ejQ.b['77'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['259']++;eval('node.childTotal=e.response'+node.ds.treeble_config.totalRecordsExpr);}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['77'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['260']++;if(node.ds.treeble_config.totalRecordsReturnExpr){__cov_w7ERNekG4K$qkecSVL$ejQ.b['78'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['261']++;node.childTotal=e.response.results.length;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['78'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['262']++;node.open=true;__cov_w7ERNekG4K$qkecSVL$ejQ.s['263']++;node.children=[];__cov_w7ERNekG4K$qkecSVL$ejQ.s['264']++;complete(completion);__cov_w7ERNekG4K$qkecSVL$ejQ.s['265']++;this.fire('toggled',{path:path,open:node.open});}__cov_w7ERNekG4K$qkecSVL$ejQ.s['266']++;function toggleFailure(e,node,completion,path){__cov_w7ERNekG4K$qkecSVL$ejQ.f['19']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['267']++;node.childTotal=0;__cov_w7ERNekG4K$qkecSVL$ejQ.s['268']++;node.open=true;__cov_w7ERNekG4K$qkecSVL$ejQ.s['269']++;node.children=[];__cov_w7ERNekG4K$qkecSVL$ejQ.s['270']++;complete(completion);__cov_w7ERNekG4K$qkecSVL$ejQ.s['271']++;this.fire('toggled',{path:path,open:node.open});}__cov_w7ERNekG4K$qkecSVL$ejQ.s['272']++;function complete(f){__cov_w7ERNekG4K$qkecSVL$ejQ.f['20']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['273']++;if(Y.Lang.isFunction(f)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['79'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['274']++;f();}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['79'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['275']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['81'][0]++,f)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['81'][1]++,f.fn)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['80'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['276']++;f.fn.apply((__cov_w7ERNekG4K$qkecSVL$ejQ.b['82'][0]++,f.scope)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['82'][1]++,window),Y.Lang.isUndefined(f.args)?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['83'][0]++,[]):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['83'][1]++,f.args));}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['80'][1]++;}}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['277']++;function compareRequests(r1,r2){__cov_w7ERNekG4K$qkecSVL$ejQ.f['21']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['278']++;var k1=Y.Object.keys(r1),k2=Y.Object.keys(r2);__cov_w7ERNekG4K$qkecSVL$ejQ.s['279']++;if(k1.length!=k2.length){__cov_w7ERNekG4K$qkecSVL$ejQ.b['84'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['280']++;return false;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['84'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['281']++;for(var i=0;i<k1.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['282']++;var k=k1[i];__cov_w7ERNekG4K$qkecSVL$ejQ.s['283']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['86'][0]++,k!='startIndex')&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['86'][1]++,k!='resultCount')&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['86'][2]++,r1[k]!==r2[k])){__cov_w7ERNekG4K$qkecSVL$ejQ.b['85'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['284']++;return false;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['85'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['285']++;return true;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['286']++;Y.extend(TreebleDataSource,Y.DataSource.Local,{initializer:function(config){__cov_w7ERNekG4K$qkecSVL$ejQ.f['22']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['287']++;if(!config.root){__cov_w7ERNekG4K$qkecSVL$ejQ.b['87'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['288']++;Y.error('TreebleDataSource requires DataSource');}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['87'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['289']++;if(!config.root.treeble_config.childNodesKey){__cov_w7ERNekG4K$qkecSVL$ejQ.b['88'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['290']++;var fields=config.root.schema.get('schema').resultFields;__cov_w7ERNekG4K$qkecSVL$ejQ.s['291']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['90'][0]++,!fields)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['90'][1]++,!Y.Lang.isArray(fields))){__cov_w7ERNekG4K$qkecSVL$ejQ.b['89'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['292']++;Y.error('TreebleDataSource root DataSource requires schema.resultFields because treeble_config.childNodesKey was not specified.');}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['89'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['293']++;for(var i=0;i<fields.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['294']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['92'][0]++,Y.Lang.isObject(fields[i]))&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['92'][1]++,fields[i].parser=='treebledatasource')){__cov_w7ERNekG4K$qkecSVL$ejQ.b['91'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['295']++;config.root.treeble_config.childNodesKey=fields[i].key;__cov_w7ERNekG4K$qkecSVL$ejQ.s['296']++;break;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['91'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['297']++;if(!config.root.treeble_config.childNodesKey){__cov_w7ERNekG4K$qkecSVL$ejQ.b['93'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['298']++;Y.error('TreebleDataSource requires treeble_config.childNodesKey configuration to be set on root DataSource');}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['93'][1]++;}}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['88'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['299']++;if(!config.root.treeble_config.generateRequest){__cov_w7ERNekG4K$qkecSVL$ejQ.b['94'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['300']++;Y.error('TreebleDataSource requires treeble_config.generateRequest configuration to be set on root DataSource');}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['94'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['301']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['96'][0]++,!config.root.treeble_config.totalRecordsExpr)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['96'][1]++,!config.root.treeble_config.totalRecordsReturnExpr)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['95'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['302']++;Y.error('TreebleDataSource requires either treeble_config.totalRecordsExpr or treeble_config.totalRecordsReturnExpr configuration to be set on root DataSource');}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['95'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['303']++;this._open=[];__cov_w7ERNekG4K$qkecSVL$ejQ.s['304']++;this._open_cache={};__cov_w7ERNekG4K$qkecSVL$ejQ.s['305']++;this._toggle=[];__cov_w7ERNekG4K$qkecSVL$ejQ.s['306']++;this._req=[];},isOpen:function(path){__cov_w7ERNekG4K$qkecSVL$ejQ.f['23']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['307']++;var list=this._open;__cov_w7ERNekG4K$qkecSVL$ejQ.s['308']++;for(var i=0;i<path.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['309']++;var node=searchOpen.call(this,list,path[i]);__cov_w7ERNekG4K$qkecSVL$ejQ.s['310']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['98'][0]++,!node)||(__cov_w7ERNekG4K$qkecSVL$ejQ.b['98'][1]++,!node.open)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['97'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['311']++;return false;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['97'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['312']++;list=node.children;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['313']++;return true;},toggle:function(path,request,completion){__cov_w7ERNekG4K$qkecSVL$ejQ.f['24']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['314']++;var list=this._open;__cov_w7ERNekG4K$qkecSVL$ejQ.s['315']++;for(var i=0;i<path.length;i++){__cov_w7ERNekG4K$qkecSVL$ejQ.s['316']++;var node=searchOpen.call(this,list,path[i]);__cov_w7ERNekG4K$qkecSVL$ejQ.s['317']++;if(!node){__cov_w7ERNekG4K$qkecSVL$ejQ.b['99'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['318']++;return false;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['99'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['319']++;list=node.children;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['320']++;if(node.open===null){__cov_w7ERNekG4K$qkecSVL$ejQ.b['100'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['321']++;request.startIndex=0;__cov_w7ERNekG4K$qkecSVL$ejQ.s['322']++;request.resultCount=0;__cov_w7ERNekG4K$qkecSVL$ejQ.s['323']++;node.ds.sendRequest({request:node.ds.treeble_config.generateRequest(request,path),cfg:node.ds.treeble_config.requestCfg,callback:{success:Y.rbind(toggleSuccess,this,node,completion,path),failure:Y.rbind(toggleFailure,this,node,completion,path)}});}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['100'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['324']++;node.open=!node.open;__cov_w7ERNekG4K$qkecSVL$ejQ.s['325']++;complete(completion);__cov_w7ERNekG4K$qkecSVL$ejQ.s['326']++;this.fire('toggled',{path:path,open:node.open});}__cov_w7ERNekG4K$qkecSVL$ejQ.s['327']++;return true;},_defRequestFn:function(e){__cov_w7ERNekG4K$qkecSVL$ejQ.f['25']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['328']++;if((__cov_w7ERNekG4K$qkecSVL$ejQ.b['102'][0]++,this._callback)&&(__cov_w7ERNekG4K$qkecSVL$ejQ.b['102'][1]++,!compareRequests(this._callback.request,e.request))){__cov_w7ERNekG4K$qkecSVL$ejQ.b['101'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['329']++;this._open=[];}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['101'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['330']++;this._callback=e;__cov_w7ERNekG4K$qkecSVL$ejQ.s['331']++;requestTree.call(this,true);},_cancelAllRequests:function(){__cov_w7ERNekG4K$qkecSVL$ejQ.f['26']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['332']++;this._req=[];__cov_w7ERNekG4K$qkecSVL$ejQ.s['333']++;this._toggle=[];__cov_w7ERNekG4K$qkecSVL$ejQ.s['334']++;delete this._topResponse;}});__cov_w7ERNekG4K$qkecSVL$ejQ.s['335']++;Y.TreebleDataSource=TreebleDataSource;__cov_w7ERNekG4K$qkecSVL$ejQ.s['336']++;Y.namespace('DataSource').Treeble=TreebleDataSource;__cov_w7ERNekG4K$qkecSVL$ejQ.s['337']++;Y.namespace('Parsers').treebledatasource=function(oData){__cov_w7ERNekG4K$qkecSVL$ejQ.f['27']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['338']++;if(!oData){__cov_w7ERNekG4K$qkecSVL$ejQ.b['103'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['339']++;return null;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['103'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['340']++;var type=oData.dataType;__cov_w7ERNekG4K$qkecSVL$ejQ.s['341']++;if(type){__cov_w7ERNekG4K$qkecSVL$ejQ.b['104'][0]++;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['104'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['342']++;if(Y.Lang.isString(oData)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['105'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['343']++;type='IO';}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['105'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['344']++;if(Y.Lang.isFunction(oData)){__cov_w7ERNekG4K$qkecSVL$ejQ.b['106'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['345']++;type='Function';}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['106'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['346']++;type='Local';}}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['347']++;var src=oData.dataType?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['107'][0]++,oData.liveData):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['107'][1]++,oData);__cov_w7ERNekG4K$qkecSVL$ejQ.s['348']++;var treeble_config=this.get('host').treeble_config;__cov_w7ERNekG4K$qkecSVL$ejQ.s['349']++;if(type=='Local'){__cov_w7ERNekG4K$qkecSVL$ejQ.b['108'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['350']++;treeble_config=Y.clone(treeble_config,true);__cov_w7ERNekG4K$qkecSVL$ejQ.s['351']++;delete treeble_config.startIndexExpr;__cov_w7ERNekG4K$qkecSVL$ejQ.s['352']++;delete treeble_config.totalRecordsExpr;}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['108'][1]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['353']++;if(type=='Function'){__cov_w7ERNekG4K$qkecSVL$ejQ.b['109'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['354']++;src=Y.Lang.isString(src)?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['110'][0]++,window[src]):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['110'][1]++,src);}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['109'][1]++;}}__cov_w7ERNekG4K$qkecSVL$ejQ.s['355']++;var ds=new Y.DataSource[type]({source:src});__cov_w7ERNekG4K$qkecSVL$ejQ.s['356']++;ds.treeble_config=treeble_config;__cov_w7ERNekG4K$qkecSVL$ejQ.s['357']++;if(ds.treeble_config.schemaPluginConfig){__cov_w7ERNekG4K$qkecSVL$ejQ.b['111'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['358']++;ds.plug(Y.clone(ds.treeble_config.schemaPluginConfig,true));}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['111'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['359']++;if(ds.treeble_config.cachePluginConfig){__cov_w7ERNekG4K$qkecSVL$ejQ.b['112'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['360']++;ds.plug(Y.clone(ds.treeble_config.cachePluginConfig,true));}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['112'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['361']++;return ds;};__cov_w7ERNekG4K$qkecSVL$ejQ.s['362']++;function Treeble(){__cov_w7ERNekG4K$qkecSVL$ejQ.f['28']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['363']++;Treeble.superclass.constructor.apply(this,arguments);}__cov_w7ERNekG4K$qkecSVL$ejQ.s['364']++;Treeble.NAME='datatable';__cov_w7ERNekG4K$qkecSVL$ejQ.s['365']++;Treeble.buildTwistdownFormatter=function(sendRequest){__cov_w7ERNekG4K$qkecSVL$ejQ.f['29']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['366']++;return function(o){__cov_w7ERNekG4K$qkecSVL$ejQ.f['30']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['367']++;o.td.addClass('treeble-nub');__cov_w7ERNekG4K$qkecSVL$ejQ.s['368']++;var ds=this.datasource.get('datasource');__cov_w7ERNekG4K$qkecSVL$ejQ.s['369']++;var key=ds.get('root').treeble_config.childNodesKey;__cov_w7ERNekG4K$qkecSVL$ejQ.s['370']++;if(o.data[key]){__cov_w7ERNekG4K$qkecSVL$ejQ.b['113'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['371']++;var path=o.data._yui_node_path;__cov_w7ERNekG4K$qkecSVL$ejQ.s['372']++;o.td.addClass('row-toggle');__cov_w7ERNekG4K$qkecSVL$ejQ.s['373']++;o.td.replaceClass('row-(open|closed)',ds.isOpen(path)?(__cov_w7ERNekG4K$qkecSVL$ejQ.b['114'][0]++,'row-open'):(__cov_w7ERNekG4K$qkecSVL$ejQ.b['114'][1]++,'row-closed'));__cov_w7ERNekG4K$qkecSVL$ejQ.s['374']++;YUI.Env.add(Y.Node.getDOMNode(o.td),'click',function(){__cov_w7ERNekG4K$qkecSVL$ejQ.f['31']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['375']++;ds.toggle(path,{},sendRequest);});__cov_w7ERNekG4K$qkecSVL$ejQ.s['376']++;o.cell.set('innerHTML','<a class="treeble-expand-nub" href="javascript:void(0);"></a>');}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['113'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['377']++;return false;};};__cov_w7ERNekG4K$qkecSVL$ejQ.s['378']++;Treeble.treeValueFormatter=function(o){__cov_w7ERNekG4K$qkecSVL$ejQ.f['32']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['379']++;var depth_class='treeble-depth-'+o.data._yui_node_depth;__cov_w7ERNekG4K$qkecSVL$ejQ.s['380']++;o.rowClass+=' '+depth_class;__cov_w7ERNekG4K$qkecSVL$ejQ.s['381']++;o.className+=' treeble-value';__cov_w7ERNekG4K$qkecSVL$ejQ.s['382']++;return'<span class="'+depth_class+'">'+o.value+'</span>';};__cov_w7ERNekG4K$qkecSVL$ejQ.s['383']++;Y.extend(Treeble,Y.DataTable,{plug:function(plugin,config){__cov_w7ERNekG4K$qkecSVL$ejQ.f['33']++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['384']++;if(plugin===Y.Plugin.DataTableDataSource){__cov_w7ERNekG4K$qkecSVL$ejQ.b['115'][0]++;__cov_w7ERNekG4K$qkecSVL$ejQ.s['385']++;var recordType=this.get('recordType');__cov_w7ERNekG4K$qkecSVL$ejQ.s['386']++;recordType.ATTRS[config.datasource.get('root').treeble_config.childNodesKey]={};__cov_w7ERNekG4K$qkecSVL$ejQ.s['387']++;recordType.ATTRS._yui_node_path={};__cov_w7ERNekG4K$qkecSVL$ejQ.s['388']++;recordType.ATTRS._yui_node_depth={};}else{__cov_w7ERNekG4K$qkecSVL$ejQ.b['115'][1]++;}__cov_w7ERNekG4K$qkecSVL$ejQ.s['389']++;Treeble.superclass.plug.apply(this,arguments);}});__cov_w7ERNekG4K$qkecSVL$ejQ.s['390']++;Y.Treeble=Treeble;},'gallery-2012.12.05-21-01',{'skinnable':'true','requires':['datasource','datatable']});
+_yuitest_coverage["build/gallery-treeble/gallery-treeble.js"] = {
+    lines: {},
+    functions: {},
+    coveredLines: 0,
+    calledLines: 0,
+    coveredFunctions: 0,
+    calledFunctions: 0,
+    path: "build/gallery-treeble/gallery-treeble.js",
+    code: []
+};
+_yuitest_coverage["build/gallery-treeble/gallery-treeble.js"].code=["YUI.add('gallery-treeble', function (Y, NAME) {","","\"use strict\";","","/**"," * @module gallery-treeble"," */","","/**********************************************************************"," * <p>Hierarchical data source.</p>"," *"," * <p>TreebleDataSource converts a tree of DataSources into a flat list of"," * visible items.  The merged list must be paginated if the number of child"," * nodes might be very large.  To turn on this feature, set"," * paginateChildren:true.</p>"," * "," * <p>The tree must be immutable.  The total number of items available from"," * each DataSource must remain constant.  (The one exception to this rule"," * is that filtering and sorting are allowed.  This is done by detecting"," * that the request parameters have changed.)</p>"," * "," * @namespace DataSource"," * @class Treeble"," * @extends DataSource.Local"," * @constructor"," * @param config {Object}"," */","","function TreebleDataSource()","{","	TreebleDataSource.superclass.constructor.apply(this, arguments);","}","","TreebleDataSource.NAME = \"treebleDataSource\";","","TreebleDataSource.ATTRS =","{","	/**","	 * <p>The root datasource.</p>","	 * ","	 * <p>You <em>must</em> directly set a <code>treeble_config</code>","	 * object on this datasource.  (You cannot use","	 * <code>set('treeble_config',...)</code>.) <code>treeble_config</code> can","	 * contain the following configuration:</p>","	 * ","	 * <dl>","	 * <dt>generateRequest</dt>","	 * <dd>(required) The function to convert the initial request into","	 *		a request usable by the actual DataSource.  This function takes","	 *		two arguments: state (sort,dir,startIndex,resultCount) and path","	 *		(an array of node indices telling how to reach the node).","	 *		</dd>","	 * <dt>requestCfg</dt>","	 * <dd>(optional) Configuration object passed as <code>cfg</code> to","	 *		<code>sendRequest</code>.</dd>","	 * <dt>schemaPluginConfig</dt>","	 * <dd>(required) Object to pass to <code>plug</code> to install a schema.</dd>","	 * <dt>cachePluginConfig</dt>","	 * <dd>(optional) Object to pass to <code>plug</code> to install a cache.</dd>","	 * <dt>childNodesKey</dt>","	 * <dd>(semi-optional) The name of the key inside a node which contains","	 *		the data used to construct the DataSource for retrieving the children.","	 *		This config is only required if you provide a custom parser.</dd>","	 * <dt>nodeOpenKey</dt>","	 * <dd>(optional) The name of the key inside a node which contains","	 *		the initial open state of the node.  If it is true, the node will","	 *		automatically be opened the first time it is shown.  (After that,","	 *		it will remember the state set by the user.)</dd>","	 * <dt>startIndexExpr</dt>","	 * <dd>(optional) OGNL expression telling how to extract the startIndex","	 *		from the received data, e.g., <code>.meta.startIndex</code>.","	 *		If it is not provided, startIndex is always assumed to be zero.</dd>","	 * <dt>totalRecordsExpr</dt>","	 * <dd>(semi-optional) OGNL expression telling how to extract the total number","	 *		of records from the received data, e.g., <code>.meta.totalRecords</code>.","	 *		If this is not provided, <code>totalRecordsReturnExpr</code> must be","	 *		specified.</dd>","	 * <dt>totalRecordsReturnExpr</dt>","	 * <dd>(semi-optional) OGNL expression telling where in the response to store","	 *		the total number of records, e.g., <code>.meta.totalRecords</code>.","	 *		This is only appropriate for DataSources that always return the","	 *		entire data set.  If this is not provided,","	 *		<code>totalRecordsExpr</code> must be specified.  If both are provided,","	 *		<code>totalRecordsExpr</code> takes priority.</dd>","	 * </dl>","	 * ","	 * @attribute root","	 * @type {DataSource}","	 * @writeonce","	 */","	root:","	{","		writeOnce: true","	},","","	/**","	 * Pass <code>true</code> to paginate the result after merging child","	 * nodes into the list.  The default (<code>false</code>) is to","	 * paginate only root nodes, so all children are visible.","	 * ","	 * @attribute paginateChildren","	 * @type {boolean}","	 * @default false","	 * @writeonce","	 */","	paginateChildren:","	{","		value:     false,","		validator: Y.Lang.isBoolean,","		writeOnce: true","	},","","	/**","	 * The key in each record that stores an identifier which is unique","	 * across the entire tree.  If this is not specified, then all nodes","	 * will close when the data is sorted.","	 * ","	 * @attribute uniqueIdKey","	 * @type {String}","	 */","	uniqueIdKey:","	{","		validator: Y.Lang.isString","	}","};","","/**"," * @event toggled"," * @description Fires after an element is opened or closed."," * @param path {Array} the path to the toggled element"," * @param open {Boolean} the new state of the element"," */","","/*","","	Each element in this._open contains information about an openable,","	top-level node and is the root of a tree of open (or previously opened)","	items.  Each node in a tree contains the following data:","","		index:      {Number} sorting key; the index of the node","		open:       null if never opened, true if open, false otherwise","		ds:         {DataSource} source for child nodes","		childTotal: {Number} total number of child nodes","		children:   {Array} (recursive) child nodes which are or have been opened","		parent:     {Object} parent item","","	Each level is sorted by index to allow simple traversal in display","	order.",""," */","","function populateOpen(","	/* object */	parent,","	/* array */		open,","	/* object */	req)","{","	var data          = req.data;","	var startIndex    = req.start;","	var childNodesKey = req.ds.treeble_config.childNodesKey;","	var nodeOpenKey   = req.ds.treeble_config.nodeOpenKey;","","	for (var j=0; j<open.length; j++)","	{","		if (open[j].index >= startIndex)","		{","			break;","		}","	}","","	var uniqueIdKey = this.get('uniqueIdKey');","","	var result = true;","	for (var k=0; k<data.length; k++)","	{","		var i = startIndex + k;","		var ds = data[k][ childNodesKey ];","		if (!ds)","		{","			continue;","		}","","		while (j < open.length && open[j].index < i)","		{","			open.splice(j, 1);","			result = false;","","			if (uniqueIdKey)","			{","				delete this._open_cache[ data[k][ uniqueIdKey ] ];","			}","		}","","		if (j >= open.length || open[j].index > i)","		{","			var item =","			{","				index:      i,","				open:       null,","				ds:         ds,","				children:   [],","				childTotal: 0,","				parent:     parent","			};","","			var cached_item = null;","			if (uniqueIdKey)","			{","				cached_item = this._open_cache[ data[k][ uniqueIdKey ] ];","				if (cached_item)","				{","					item.open       = cached_item.open;","					item.childTotal = cached_item.childTotal;","					this._redo      = this._redo || item.open;","				}","","				this._open_cache[ data[k][ uniqueIdKey ] ] = item;","			}","","			if (!cached_item && nodeOpenKey && data[k][ nodeOpenKey ])","			{","				this._toggle.push(req.path.concat(i));","			}","","			open.splice(j, 0, item);","		}","","		j++;","	}","","	return result;","}","","// TODO: worth switching to binary search?","function searchOpen(","	/* array */	list,","	/* int */	nodeIndex)","{","	for (var i=0; i<list.length; i++)","	{","		if (list[i].index == nodeIndex)","		{","			return list[i];","		}","	}","","	return false;","}","","function getNode(","	/* array */	path)","{","	var open = this._open;","	var last = path.length-1;","	for (var i=0; i<last; i++)","	{","		var node = searchOpen(open, path[i]);","		open     = node.children;","	}","","	return searchOpen(open, path[last]);","}","","function countVisibleNodes(","","	// not sent by initiator","","	/* array */ open)","{","	var total = 0;","	if (!open)","	{","		open  = this._open;","		total = this._topNodeTotal;","	}","","	if (this.get('paginateChildren'))","	{","		for (var i=0; i<open.length; i++)","		{","			var node = open[i];","			if (node.open)","			{","				total += node.childTotal;","				total += countVisibleNodes.call(this, node.children);","			}","		}","	}","","	return total;","}","","function requestTree(flush_toggle)","{","	if (!flush_toggle)","	{","		var save_toggle = this._toggle.slice(0);","	}","","	this._cancelAllRequests();","","	if (!flush_toggle)","	{","		this._toggle = save_toggle;","	}","","	this._redo                = false;","	this._generating_requests = true;","","	var req = this._callback.request;","	if (this.get('paginateChildren'))","	{","		this._slices = getVisibleSlicesPgAll(req.startIndex, req.resultCount,","											 this.get('root'), this._open);","	}","	else","	{","		this._slices = getVisibleSlicesPgTop(req.startIndex, req.resultCount,","											 this.get('root'), this._open);","	}","","	requestSlices.call(this, req);","","	this._generating_requests = false;","	checkFinished.call(this);","}","","function getVisibleSlicesPgTop(","	/* int */			skip,","	/* int */			show,","	/* DataSource */	ds,","	/* array */			open,","","	// not sent by initiator","","	/* array */			path)","{","	open = open.concat(","	{","		index:      -1,","		open:       true,","		childTotal: 0,","		children:   null","	});","","	if (!path)","	{","		path = [];","	}","","	var slices = [],","		send   = false;","","	var m = 0, prev = -1, presend = false;","	for (var i=0; i<open.length; i++)","	{","		var node = open[i];","		if (!node.open)","		{","			continue;","		}","","		var delta = node.index - prev;","","		if (m + delta >= skip + show ||","			node.index == -1)","		{","			slices.push(","			{","				ds:    ds,","				path:  path.slice(0),","				start: send ? m : skip,","				end:   skip + show - 1","			});","","			if (m + delta == skip + show && node.childTotal > 0)","			{","				slices = slices.concat(","					getVisibleSlicesPgTop(0, node.childTotal, node.ds,","										  node.children, path.concat(node.index)));","			}","","			return slices;","		}","		else if (!send && m + delta == skip)","		{","			presend = true;","		}","		else if (m + delta > skip)","		{","			slices.push(","			{","				ds:    ds,","				path:  path.slice(0),","				start: send ? prev + 1 : skip,","				end:   m + delta - 1","			});","			send = true;","		}","","		m += delta;","","		if (send && node.childTotal > 0)","		{","			slices = slices.concat(","				getVisibleSlicesPgTop(0, node.childTotal, node.ds,","									  node.children, path.concat(node.index)));","		}","","		prev = node.index;","		send = send || presend;","	}","}","","function getVisibleSlicesPgAll(","	/* int */			skip,","	/* int */			show,","	/* DataSource */	rootDS,","	/* array */			open,","","	// not sent by initiator","","	/* array */			path,","	/* node */			parent,","	/* int */			pre,","	/* bool */			send,","	/* array */			slices)","{","	if (!parent)","	{","		path   = [];","		parent = null;","		pre    = 0;","		send   = false;","		slices = [];","	}","","	var ds = parent ? parent.ds : rootDS;","","	open = open.concat(","	{","		index:      parent ? parent.childTotal : -1,","		open:       true,","		childTotal: 0,","		children:   null","	});","","	var n = 0, m = 0, prev = -1;","	for (var i=0; i<open.length; i++)","	{","		var node = open[i];","		if (!node.open)","		{","			continue;","		}","","		var delta = node.index - prev;","		if (node.children === null)","		{","			delta--;	// last item is off the end","		}","","		if (pre + n + delta >= skip + show ||","			node.index == -1)","		{","			slices.push(","			{","				ds:    ds,","				path:  path.slice(0),","				start: m + (send ? 0 : skip - pre - n),","				end:   m + (skip + show - 1 - pre - n)","			});","","			return slices;","		}","		else if (!send && pre + n + delta == skip)","		{","			send = true;","		}","		else if (pre + n + delta > skip)","		{","			slices.push(","			{","				ds:    ds,","				path:  path.slice(0),","				start: m + (send ? 0 : skip - pre - n),","				end:   m + delta - 1","			});","			send = true;","		}","","		n += delta;","		m += delta;","","		if (node.childTotal > 0)","		{","			var info = getVisibleSlicesPgAll(skip, show, rootDS, node.children,","											 path.concat(node.index),","											 node, pre+n, send, slices);","			if (Y.Lang.isArray(info))","			{","				return info;","			}","			else","			{","				n   += info.count;","				send = info.send;","			}","		}","","		prev = node.index;","	}","","	// only reached when parent != null","","	var info =","	{","		count: n,","		send:  send","	};","	return info;","}","","function requestSlices(","	/* object */	request)","{","	for (var i=0; i<this._slices.length; i++)","	{","		var slice = this._slices[i];","		var ds    = slice.ds;","		var req   = findRequest.call(this, ds);","		if (req)","		{","			if (Y.Console)","			{","				if (req.end+1 < slice.start)","				{","					Y.error('TreebleDataSource found discontinuous range');","				}","","				if (req.path.length != slice.path.length)","				{","					Y.error('TreebleDataSource found path length mismatch');","				}","				else","				{","					for (var j=0; j<slice.path.length; j++)","					{","						if (req.path[j] != slice.path[j])","						{","							Y.error('TreebleDataSource found path mismatch');","							break;","						}","					}","				}","			}","","			req.end = slice.end;","		}","		else","		{","			this._req.push(","			{","				ds:    ds,","				path:  slice.path,","				start: slice.start,","				end:   slice.end","			});","		}","	}","","	request = Y.clone(request, true);","	for (var i=0; i<this._req.length; i++)","	{","		var req             = this._req[i];","		request.startIndex  = req.start;","		request.resultCount = req.end - req.start + 1;","","		req.txId = req.ds.sendRequest(","		{","			request: req.ds.treeble_config.generateRequest(request, req.path),","			cfg:     req.ds.treeble_config.requestCfg,","			callback:","			{","				success: Y.rbind(treeSuccess, this, i),","				failure: Y.rbind(treeFailure, this, i)","			}","		});","	}","}","","function findRequest(","	/* DataSource */	ds)","{","	for (var i=0; i<this._req.length; i++)","	{","		var req = this._req[i];","		if (ds == req.ds)","		{","			return req;","		}","	}","","	return null;","}","","function treeSuccess(e, reqIndex)","{","	if (!e.response || e.error ||","		!Y.Lang.isArray(e.response.results))","	{","		treeFailure.apply(this, arguments);","		return;","	}","","	var req = searchTxId(this._req, e.tId, reqIndex);","	if (!req)","	{","		return;		// cancelled request","	}","","	if (!this._topResponse && req.ds == this.get('root'))","	{","		this._topResponse = e.response;","	}","","	req.txId  = null;","	req.resp  = e.response;","	req.error = false;","","	var dataStartIndex = 0;","	if (req.ds.treeble_config.startIndexExpr)","	{","		eval('dataStartIndex=req.resp'+req.ds.treeble_config.startIndexExpr);","	}","","	var sliceStartIndex = req.start - dataStartIndex;","	req.data            = e.response.results.slice(sliceStartIndex, req.end - dataStartIndex + 1);","	setNodeInfo(req.data, req.start, req.path, req.ds);","","	var parent = (req.path.length > 0 ? getNode.call(this, req.path) : null);","	var open   = (parent !== null ? parent.children : this._open);","	if (!populateOpen.call(this, parent, open, req))","	{","		treeFailure.apply(this, arguments);","		return;","	}","","	if (!parent && req.ds.treeble_config.totalRecordsExpr)","	{","		eval('this._topNodeTotal=e.response'+req.ds.treeble_config.totalRecordsExpr);","	}","	else if (!parent && req.ds.treeble_config.totalRecordsReturnExpr)","	{","		this._topNodeTotal = e.response.results.length;","	}","","	checkFinished.call(this);","}","","function treeFailure(e, reqIndex)","{","	var req = searchTxId(this._req, e.tId, reqIndex);","	if (!req)","	{","		return;		// cancelled request","	}","","	this._cancelAllRequests();","","	this._callback.error    = e.error;","	this._callback.response = e.response;","	this.fire('response', this._callback);","}","","function setNodeInfo(","	/* array */			list,","	/* int */			offset,","	/* array */			path,","	/* datasource */	ds)","{","	var depth = path.length;","	for (var i=0; i<list.length; i++)","	{","		list[i]._yui_node_depth = depth;","		list[i]._yui_node_path  = path.concat(offset+i);","		list[i]._yui_node_ds    = ds;","	}","}","","function searchTxId(","	/* array */	req,","	/* int */	id,","	/* int */	fallbackIndex)","{","	for (var i=0; i<req.length; i++)","	{","		if (req[i].txId === id)","		{","			return req[i];","		}","	}","","	// synch response arrives before setting txId","","	if (fallbackIndex < req.length &&","		Y.Lang.isUndefined(req[ fallbackIndex ].txId))","	{","		return req[ fallbackIndex ];","	}","","	return null;","}","","function checkFinished()","{","	if (this._generating_requests)","	{","		return;","	}","","	var count = this._req.length;","	for (var i=0; i<count; i++)","	{","		if (!this._req[i].resp)","		{","			return;","		}","	}","","	if (this._redo)","	{","		Y.Lang.later(0, this, requestTree);","		return;","	}","	else if (this._toggle.length > 0)","	{","		var t = this._toggle.shift();","		this.toggle(t, Y.clone(this._callback.request, true),","		{","			fn: function()","			{","				Y.Lang.later(0, this, requestTree);","			},","			scope: this","		});","		return;","	}","","	var response = { meta:{} };","	Y.mix(response, this._topResponse, true);","	response.results = [];","	response         = Y.clone(response, true);","","	count = this._slices.length;","	for (i=0; i<count; i++)","	{","		var slice = this._slices[i];","		var req   = findRequest.call(this, slice.ds);","		if (!req)","		{","			Y.error('Failed to find request for a slice');","			continue;","		}","","		var j    = slice.start - req.start;","		var data = req.data.slice(j, j + slice.end - slice.start + 1);","","		response.results = response.results.concat(data);","	}","","	var rootDS = this.get('root');","	if (rootDS.treeble_config.totalRecordsExpr)","	{","		eval('response'+rootDS.treeble_config.totalRecordsExpr+'='+countVisibleNodes.call(this));","	}","	else if (rootDS.treeble_config.totalRecordsReturnExpr)","	{","		eval('response'+rootDS.treeble_config.totalRecordsReturnExpr+'='+countVisibleNodes.call(this));","	}","","	this._callback.response = response;","	this.fire('response', this._callback);","}","","function toggleSuccess(e, node, completion, path)","{","	if (node.ds.treeble_config.totalRecordsExpr)","	{","		eval('node.childTotal=e.response'+node.ds.treeble_config.totalRecordsExpr);","	}","	else if (node.ds.treeble_config.totalRecordsReturnExpr)","	{","		node.childTotal = e.response.results.length;","	}","","	node.open     = true;","	node.children = [];","	complete(completion);","","	this.fire('toggled',","	{","		path: path,","		open: node.open","	});","}","","function toggleFailure(e, node, completion, path)","{","	node.childTotal = 0;","","	node.open     = true;","	node.children = [];","	complete(completion);","","	this.fire('toggled',","	{","		path: path,","		open: node.open","	});","}","","function complete(f)","{","	if (Y.Lang.isFunction(f))","	{","		f();","	}","	else if (f && f.fn)","	{","		f.fn.apply(f.scope || window, Y.Lang.isUndefined(f.args) ? [] : f.args);","	}","}","","function compareRequests(r1, r2)","{","	var k1 = Y.Object.keys(r1),","		k2 = Y.Object.keys(r2);","","	if (k1.length != k2.length)","	{","		return false;","	}","","	for (var i=0; i<k1.length; i++)","	{","		var k = k1[i];","		if (k != 'startIndex' && k != 'resultCount' && r1[k] !== r2[k])","		{","			return false;","		}","	}","","	return true;","}","","Y.extend(TreebleDataSource, Y.DataSource.Local,","{","	initializer: function(config)","	{","		if (!config.root)","		{","			Y.error('TreebleDataSource requires DataSource');","		}","","		if (!config.root.treeble_config.childNodesKey)","		{","			var fields = config.root.schema.get('schema').resultFields;","			if (!fields || !Y.Lang.isArray(fields))","			{","				Y.error('TreebleDataSource root DataSource requires schema.resultFields because treeble_config.childNodesKey was not specified.');","			}","","			for (var i=0; i<fields.length; i++)","			{","				if (Y.Lang.isObject(fields[i]) && fields[i].parser == 'treebledatasource')","				{","					config.root.treeble_config.childNodesKey = fields[i].key;","					break;","				}","			}","","			if (!config.root.treeble_config.childNodesKey)","			{","				Y.error('TreebleDataSource requires treeble_config.childNodesKey configuration to be set on root DataSource');","			}","		}","","		if (!config.root.treeble_config.generateRequest)","		{","			Y.error('TreebleDataSource requires treeble_config.generateRequest configuration to be set on root DataSource');","		}","","		if (!config.root.treeble_config.totalRecordsExpr && !config.root.treeble_config.totalRecordsReturnExpr)","		{","			Y.error('TreebleDataSource requires either treeble_config.totalRecordsExpr or treeble_config.totalRecordsReturnExpr configuration to be set on root DataSource');","		}","","		this._open       = [];","		this._open_cache = {};","		this._toggle     = [];","		this._req        = [];","	},","","	/**","	 * @method isOpen","	 * @param path {Array} Path to node","	 * @return {boolean} true if the node is open","	 */","	isOpen: function(path)","	{","		var list = this._open;","		for (var i=0; i<path.length; i++)","		{","			var node = searchOpen.call(this, list, path[i]);","			if (!node || !node.open)","			{","				return false;","			}","			list = node.children;","		}","","		return true;","	},","","	/**","	 * Toggle the specified node between open and closed.  When a node is","	 * opened for the first time, this requires a request to the","	 * DataSource.  Any code that assumes the node has been opened must be","	 * passed in as a completion function.","	 * ","	 * @method toggle","	 * @param path {Array} Path to the node","	 * @param request {Object} {sort,dir,startIndex,resultCount}","	 * @param completion {Function|Object} Function to call when the operation completes.  Can be object: {fn,scope,args}","	 * @return {boolean} false if the path to the node has not yet been fully explored or is not openable, true otherwise","	 */","	toggle: function(path, request, completion)","	{","		var list = this._open;","		for (var i=0; i<path.length; i++)","		{","			var node = searchOpen.call(this, list, path[i]);","			if (!node)","			{","				return false;","			}","			list = node.children;","		}","","		if (node.open === null)","		{","			request.startIndex  = 0;","			request.resultCount = 0;","			node.ds.sendRequest(","			{","				request: node.ds.treeble_config.generateRequest(request, path),","				cfg:     node.ds.treeble_config.requestCfg,","				callback:","				{","					success: Y.rbind(toggleSuccess, this, node, completion, path),","					failure: Y.rbind(toggleFailure, this, node, completion, path)","				}","			});","		}","		else","		{","			node.open = !node.open;","			complete(completion);","","			this.fire('toggled',","			{","				path: path,","				open: node.open","			});","		}","		return true;","	},","","	_defRequestFn: function(e)","	{","		// wipe out all state if the request parameters change","","		if (this._callback && !compareRequests(this._callback.request, e.request))","		{","			this._open = [];","		}","","		this._callback = e;","		requestTree.call(this, true);","	},","","	_cancelAllRequests: function()","	{","		this._req    = [];","		this._toggle = [];","		delete this._topResponse;","	}","});","","Y.TreebleDataSource = TreebleDataSource;","Y.namespace('DataSource').Treeble = TreebleDataSource;","/**"," * @module gallery-treeble"," */","","/**"," * <p>Converts data to a DataSource.  Data can be an object containing both"," * <code>dataType</code> and <code>liveData</code>, or it can be <q>free"," * form</q>, e.g., an array of records or an XHR URL.</p>"," *"," * @class Parsers"," */","","/**"," * @method treebledatasource"," * @static"," * @param oData {mixed} Data to convert."," * @return {DataSource} The new data source."," */","Y.namespace(\"Parsers\").treebledatasource = function(oData)","{","	if (!oData)","	{","		return null;","	}","","	var type = oData.dataType;","	if (type)","	{","		// use it","	}","	else if (Y.Lang.isString(oData))","	{","		type = 'IO';","	}","	else if (Y.Lang.isFunction(oData))","	{","		type = 'Function';","	}","	else","	{","		type = 'Local';","	}","","	var src            = oData.dataType ? oData.liveData : oData;","	var treeble_config = this.get('host').treeble_config;","	if (type == 'Local')","	{","		treeble_config = Y.clone(treeble_config, true);","		delete treeble_config.startIndexExpr;","		delete treeble_config.totalRecordsExpr;","	}","	else if (type == 'Function')","	{","		src = Y.Lang.isString(src) ? window[ src ] : src;","	}","","	var ds            = new Y.DataSource[ type ]({ source: src });","	ds.treeble_config = treeble_config;","","	if (ds.treeble_config.schemaPluginConfig)","	{","		ds.plug(Y.clone(ds.treeble_config.schemaPluginConfig, true));","	}","","	if (ds.treeble_config.cachePluginConfig)","	{","		ds.plug(Y.clone(ds.treeble_config.cachePluginConfig, true));","	}","","	return ds;","};","/**********************************************************************"," * Treeble displays a tree of data in a table."," *"," * @module gallery-treeble"," * @main gallery-treeble"," */","","/**"," * Extension to DataTable for displaying tree data."," *"," * @class Treeble"," * @extends DataTable"," * @constructor"," * @param config {Object}"," */","function Treeble()","{","	Treeble.superclass.constructor.apply(this, arguments);","}","","Treeble.NAME = \"datatable\";		// same styling","","/**"," * <p>Formatter for open/close twistdown.</p>"," *"," * @method twistdownFormatter"," * @static"," * @param sendRequest {Function} Function that reloads DataTable"," */","Treeble.buildTwistdownFormatter = function(sendRequest)","{","	return function(o)","	{","		o.td.addClass('treeble-nub');","","		var ds  = this.datasource.get('datasource');","		var key = ds.get('root').treeble_config.childNodesKey;","","		if (o.data[key])","		{","			var path = o.data._yui_node_path;","","			o.td.addClass('row-toggle');","			o.td.replaceClass('row-(open|closed)',","				ds.isOpen(path) ? 'row-open' : 'row-closed');","","			YUI.Env.add(Y.Node.getDOMNode(o.td), 'click', function()","			{","				ds.toggle(path, {}, sendRequest);","			});","","			o.cell.set('innerHTML', '<a class=\"treeble-expand-nub\" href=\"javascript:void(0);\"></a>');","		}","","		return false;	// discard Y.Node instances","	};","};","","/**"," * <p>Default formatter for indented column.</p>"," *"," * @method treeValueFormatter"," * @static"," */","Treeble.treeValueFormatter = function(o)","{","	var depth_class = 'treeble-depth-'+o.data._yui_node_depth;","	o.rowClass     += ' ' + depth_class;","	o.className    += ' treeble-value';","	return '<span class=\"'+depth_class+'\">'+o.value+'</span>';","};","","Y.extend(Treeble, Y.DataTable,","{","	plug: function(plugin, config)","	{","		if (plugin === Y.Plugin.DataTableDataSource)","		{","			var recordType = this.get('recordType');","			recordType.ATTRS[ config.datasource.get('root').treeble_config.childNodesKey ] = {};","			recordType.ATTRS._yui_node_path  = {};","			recordType.ATTRS._yui_node_depth = {};","		}","","		Treeble.superclass.plug.apply(this, arguments);","	}","});","","Y.Treeble = Treeble;","","","}, '@VERSION@', {\"skinnable\": \"true\", \"requires\": [\"datasource\", \"datatable\"]});"];
+_yuitest_coverage["build/gallery-treeble/gallery-treeble.js"].lines = {"1":0,"3":0,"29":0,"31":0,"34":0,"36":0,"152":0,"157":0,"158":0,"159":0,"160":0,"162":0,"164":0,"166":0,"170":0,"172":0,"173":0,"175":0,"176":0,"177":0,"179":0,"182":0,"184":0,"185":0,"187":0,"189":0,"193":0,"195":0,"205":0,"206":0,"208":0,"209":0,"211":0,"212":0,"213":0,"216":0,"219":0,"221":0,"224":0,"227":0,"230":0,"234":0,"238":0,"240":0,"242":0,"246":0,"249":0,"252":0,"253":0,"254":0,"256":0,"257":0,"260":0,"263":0,"269":0,"270":0,"272":0,"273":0,"276":0,"278":0,"280":0,"281":0,"283":0,"284":0,"289":0,"292":0,"294":0,"296":0,"299":0,"301":0,"303":0,"306":0,"307":0,"309":0,"310":0,"312":0,"317":0,"321":0,"323":0,"324":0,"327":0,"337":0,"345":0,"347":0,"350":0,"353":0,"354":0,"356":0,"357":0,"359":0,"362":0,"364":0,"367":0,"375":0,"377":0,"382":0,"384":0,"386":0,"388":0,"390":0,"397":0,"400":0,"402":0,"404":0,"409":0,"410":0,"414":0,"428":0,"430":0,"431":0,"432":0,"433":0,"434":0,"437":0,"439":0,"447":0,"448":0,"450":0,"451":0,"453":0,"456":0,"457":0,"459":0,"462":0,"465":0,"473":0,"475":0,"477":0,"479":0,"481":0,"488":0,"491":0,"492":0,"494":0,"496":0,"499":0,"501":0,"505":0,"506":0,"510":0,"515":0,"520":0,"523":0,"526":0,"528":0,"529":0,"530":0,"531":0,"533":0,"535":0,"537":0,"540":0,"542":0,"546":0,"548":0,"550":0,"551":0,"557":0,"561":0,"571":0,"572":0,"574":0,"575":0,"576":0,"578":0,"591":0,"594":0,"596":0,"597":0,"599":0,"603":0,"606":0,"608":0,"611":0,"612":0,"615":0,"616":0,"618":0,"621":0,"623":0,"626":0,"627":0,"628":0,"630":0,"631":0,"633":0,"636":0,"637":0,"638":0,"640":0,"641":0,"642":0,"644":0,"645":0,"648":0,"650":0,"652":0,"654":0,"657":0,"660":0,"662":0,"663":0,"665":0,"668":0,"670":0,"671":0,"672":0,"675":0,"681":0,"682":0,"684":0,"685":0,"686":0,"690":0,"695":0,"697":0,"699":0,"705":0,"708":0,"711":0,"714":0,"716":0,"718":0,"721":0,"722":0,"724":0,"726":0,"730":0,"732":0,"733":0,"735":0,"737":0,"738":0,"742":0,"746":0,"749":0,"750":0,"751":0,"752":0,"754":0,"755":0,"757":0,"758":0,"759":0,"761":0,"762":0,"765":0,"766":0,"768":0,"771":0,"772":0,"774":0,"776":0,"778":0,"781":0,"782":0,"785":0,"787":0,"789":0,"791":0,"793":0,"796":0,"797":0,"798":0,"800":0,"807":0,"809":0,"811":0,"812":0,"813":0,"815":0,"822":0,"824":0,"826":0,"828":0,"830":0,"834":0,"836":0,"839":0,"841":0,"844":0,"846":0,"847":0,"849":0,"853":0,"856":0,"860":0,"862":0,"865":0,"867":0,"868":0,"870":0,"873":0,"875":0,"877":0,"878":0,"882":0,"884":0,"888":0,"890":0,"893":0,"895":0,"898":0,"899":0,"900":0,"901":0,"911":0,"912":0,"914":0,"915":0,"917":0,"919":0,"922":0,"939":0,"940":0,"942":0,"943":0,"945":0,"947":0,"950":0,"952":0,"953":0,"954":0,"967":0,"968":0,"970":0,"976":0,"983":0,"985":0,"988":0,"989":0,"994":0,"995":0,"996":0,"1000":0,"1001":0,"1020":0,"1022":0,"1024":0,"1027":0,"1028":0,"1032":0,"1034":0,"1036":0,"1038":0,"1042":0,"1045":0,"1046":0,"1047":0,"1049":0,"1050":0,"1051":0,"1053":0,"1055":0,"1058":0,"1059":0,"1061":0,"1063":0,"1066":0,"1068":0,"1071":0,"1088":0,"1090":0,"1093":0,"1102":0,"1104":0,"1106":0,"1108":0,"1109":0,"1111":0,"1113":0,"1115":0,"1116":0,"1119":0,"1121":0,"1124":0,"1127":0,"1137":0,"1139":0,"1140":0,"1141":0,"1142":0,"1145":0,"1149":0,"1151":0,"1152":0,"1153":0,"1154":0,"1157":0,"1161":0};
+_yuitest_coverage["build/gallery-treeble/gallery-treeble.js"].functions = {"TreebleDataSource:29":0,"populateOpen:152":0,"searchOpen:234":0,"getNode:249":0,"countVisibleNodes:263":0,"requestTree:292":0,"getVisibleSlicesPgTop:327":0,"getVisibleSlicesPgAll:414":0,"requestSlices:523":0,"findRequest:591":0,"treeSuccess:606":0,"treeFailure:660":0,"setNodeInfo:675":0,"searchTxId:690":0,"fn:740":0,"checkFinished:714":0,"toggleSuccess:785":0,"toggleFailure:807":0,"complete:822":0,"compareRequests:834":0,"initializer:858":0,"isOpen:909":0,"toggle:937":0,"_defRequestFn:979":0,"_cancelAllRequests:992":0,"treebledatasource:1020":0,"Treeble:1088":0,"(anonymous 3):1119":0,"(anonymous 2):1104":0,"buildTwistdownFormatter:1102":0,"treeValueFormatter:1137":0,"plug:1147":0,"(anonymous 1):1":0};
+_yuitest_coverage["build/gallery-treeble/gallery-treeble.js"].coveredLines = 390;
+_yuitest_coverage["build/gallery-treeble/gallery-treeble.js"].coveredFunctions = 33;
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1);
+YUI.add('gallery-treeble', function (Y, NAME) {
+
+_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "(anonymous 1)", 1);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 3);
+"use strict";
+
+/**
+ * @module gallery-treeble
+ */
+
+/**********************************************************************
+ * <p>Hierarchical data source.</p>
+ *
+ * <p>TreebleDataSource converts a tree of DataSources into a flat list of
+ * visible items.  The merged list must be paginated if the number of child
+ * nodes might be very large.  To turn on this feature, set
+ * paginateChildren:true.</p>
+ * 
+ * <p>The tree must be immutable.  The total number of items available from
+ * each DataSource must remain constant.  (The one exception to this rule
+ * is that filtering and sorting are allowed.  This is done by detecting
+ * that the request parameters have changed.)</p>
+ * 
+ * @namespace DataSource
+ * @class Treeble
+ * @extends DataSource.Local
+ * @constructor
+ * @param config {Object}
+ */
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 29);
+function TreebleDataSource()
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "TreebleDataSource", 29);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 31);
+TreebleDataSource.superclass.constructor.apply(this, arguments);
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 34);
+TreebleDataSource.NAME = "treebleDataSource";
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 36);
+TreebleDataSource.ATTRS =
+{
+	/**
+	 * <p>The root datasource.</p>
+	 * 
+	 * <p>You <em>must</em> directly set a <code>treeble_config</code>
+	 * object on this datasource.  (You cannot use
+	 * <code>set('treeble_config',...)</code>.) <code>treeble_config</code> can
+	 * contain the following configuration:</p>
+	 * 
+	 * <dl>
+	 * <dt>generateRequest</dt>
+	 * <dd>(required) The function to convert the initial request into
+	 *		a request usable by the actual DataSource.  This function takes
+	 *		two arguments: state (sort,dir,startIndex,resultCount) and path
+	 *		(an array of node indices telling how to reach the node).
+	 *		</dd>
+	 * <dt>requestCfg</dt>
+	 * <dd>(optional) Configuration object passed as <code>cfg</code> to
+	 *		<code>sendRequest</code>.</dd>
+	 * <dt>schemaPluginConfig</dt>
+	 * <dd>(required) Object to pass to <code>plug</code> to install a schema.</dd>
+	 * <dt>cachePluginConfig</dt>
+	 * <dd>(optional) Object to pass to <code>plug</code> to install a cache.</dd>
+	 * <dt>childNodesKey</dt>
+	 * <dd>(semi-optional) The name of the key inside a node which contains
+	 *		the data used to construct the DataSource for retrieving the children.
+	 *		This config is only required if you provide a custom parser.</dd>
+	 * <dt>nodeOpenKey</dt>
+	 * <dd>(optional) The name of the key inside a node which contains
+	 *		the initial open state of the node.  If it is true, the node will
+	 *		automatically be opened the first time it is shown.  (After that,
+	 *		it will remember the state set by the user.)</dd>
+	 * <dt>startIndexExpr</dt>
+	 * <dd>(optional) OGNL expression telling how to extract the startIndex
+	 *		from the received data, e.g., <code>.meta.startIndex</code>.
+	 *		If it is not provided, startIndex is always assumed to be zero.</dd>
+	 * <dt>totalRecordsExpr</dt>
+	 * <dd>(semi-optional) OGNL expression telling how to extract the total number
+	 *		of records from the received data, e.g., <code>.meta.totalRecords</code>.
+	 *		If this is not provided, <code>totalRecordsReturnExpr</code> must be
+	 *		specified.</dd>
+	 * <dt>totalRecordsReturnExpr</dt>
+	 * <dd>(semi-optional) OGNL expression telling where in the response to store
+	 *		the total number of records, e.g., <code>.meta.totalRecords</code>.
+	 *		This is only appropriate for DataSources that always return the
+	 *		entire data set.  If this is not provided,
+	 *		<code>totalRecordsExpr</code> must be specified.  If both are provided,
+	 *		<code>totalRecordsExpr</code> takes priority.</dd>
+	 * </dl>
+	 * 
+	 * @attribute root
+	 * @type {DataSource}
+	 * @writeonce
+	 */
+	root:
+	{
+		writeOnce: true
+	},
+
+	/**
+	 * Pass <code>true</code> to paginate the result after merging child
+	 * nodes into the list.  The default (<code>false</code>) is to
+	 * paginate only root nodes, so all children are visible.
+	 * 
+	 * @attribute paginateChildren
+	 * @type {boolean}
+	 * @default false
+	 * @writeonce
+	 */
+	paginateChildren:
+	{
+		value:     false,
+		validator: Y.Lang.isBoolean,
+		writeOnce: true
+	},
+
+	/**
+	 * The key in each record that stores an identifier which is unique
+	 * across the entire tree.  If this is not specified, then all nodes
+	 * will close when the data is sorted.
+	 * 
+	 * @attribute uniqueIdKey
+	 * @type {String}
+	 */
+	uniqueIdKey:
+	{
+		validator: Y.Lang.isString
+	}
+};
+
+/**
+ * @event toggled
+ * @description Fires after an element is opened or closed.
+ * @param path {Array} the path to the toggled element
+ * @param open {Boolean} the new state of the element
+ */
+
+/*
+
+	Each element in this._open contains information about an openable,
+	top-level node and is the root of a tree of open (or previously opened)
+	items.  Each node in a tree contains the following data:
+
+		index:      {Number} sorting key; the index of the node
+		open:       null if never opened, true if open, false otherwise
+		ds:         {DataSource} source for child nodes
+		childTotal: {Number} total number of child nodes
+		children:   {Array} (recursive) child nodes which are or have been opened
+		parent:     {Object} parent item
+
+	Each level is sorted by index to allow simple traversal in display
+	order.
+
+ */
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 152);
+function populateOpen(
+	/* object */	parent,
+	/* array */		open,
+	/* object */	req)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "populateOpen", 152);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 157);
+var data          = req.data;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 158);
+var startIndex    = req.start;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 159);
+var childNodesKey = req.ds.treeble_config.childNodesKey;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 160);
+var nodeOpenKey   = req.ds.treeble_config.nodeOpenKey;
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 162);
+for (var j=0; j<open.length; j++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 164);
+if (open[j].index >= startIndex)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 166);
+break;
+		}
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 170);
+var uniqueIdKey = this.get('uniqueIdKey');
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 172);
+var result = true;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 173);
+for (var k=0; k<data.length; k++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 175);
+var i = startIndex + k;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 176);
+var ds = data[k][ childNodesKey ];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 177);
+if (!ds)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 179);
+continue;
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 182);
+while (j < open.length && open[j].index < i)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 184);
+open.splice(j, 1);
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 185);
+result = false;
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 187);
+if (uniqueIdKey)
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 189);
+delete this._open_cache[ data[k][ uniqueIdKey ] ];
+			}
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 193);
+if (j >= open.length || open[j].index > i)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 195);
+var item =
+			{
+				index:      i,
+				open:       null,
+				ds:         ds,
+				children:   [],
+				childTotal: 0,
+				parent:     parent
+			};
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 205);
+var cached_item = null;
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 206);
+if (uniqueIdKey)
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 208);
+cached_item = this._open_cache[ data[k][ uniqueIdKey ] ];
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 209);
+if (cached_item)
+				{
+					_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 211);
+item.open       = cached_item.open;
+					_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 212);
+item.childTotal = cached_item.childTotal;
+					_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 213);
+this._redo      = this._redo || item.open;
+				}
+
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 216);
+this._open_cache[ data[k][ uniqueIdKey ] ] = item;
+			}
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 219);
+if (!cached_item && nodeOpenKey && data[k][ nodeOpenKey ])
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 221);
+this._toggle.push(req.path.concat(i));
+			}
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 224);
+open.splice(j, 0, item);
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 227);
+j++;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 230);
+return result;
+}
+
+// TODO: worth switching to binary search?
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 234);
+function searchOpen(
+	/* array */	list,
+	/* int */	nodeIndex)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "searchOpen", 234);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 238);
+for (var i=0; i<list.length; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 240);
+if (list[i].index == nodeIndex)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 242);
+return list[i];
+		}
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 246);
+return false;
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 249);
+function getNode(
+	/* array */	path)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "getNode", 249);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 252);
+var open = this._open;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 253);
+var last = path.length-1;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 254);
+for (var i=0; i<last; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 256);
+var node = searchOpen(open, path[i]);
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 257);
+open     = node.children;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 260);
+return searchOpen(open, path[last]);
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 263);
+function countVisibleNodes(
+
+	// not sent by initiator
+
+	/* array */ open)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "countVisibleNodes", 263);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 269);
+var total = 0;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 270);
+if (!open)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 272);
+open  = this._open;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 273);
+total = this._topNodeTotal;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 276);
+if (this.get('paginateChildren'))
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 278);
+for (var i=0; i<open.length; i++)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 280);
+var node = open[i];
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 281);
+if (node.open)
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 283);
+total += node.childTotal;
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 284);
+total += countVisibleNodes.call(this, node.children);
+			}
+		}
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 289);
+return total;
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 292);
+function requestTree(flush_toggle)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "requestTree", 292);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 294);
+if (!flush_toggle)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 296);
+var save_toggle = this._toggle.slice(0);
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 299);
+this._cancelAllRequests();
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 301);
+if (!flush_toggle)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 303);
+this._toggle = save_toggle;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 306);
+this._redo                = false;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 307);
+this._generating_requests = true;
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 309);
+var req = this._callback.request;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 310);
+if (this.get('paginateChildren'))
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 312);
+this._slices = getVisibleSlicesPgAll(req.startIndex, req.resultCount,
+											 this.get('root'), this._open);
+	}
+	else
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 317);
+this._slices = getVisibleSlicesPgTop(req.startIndex, req.resultCount,
+											 this.get('root'), this._open);
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 321);
+requestSlices.call(this, req);
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 323);
+this._generating_requests = false;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 324);
+checkFinished.call(this);
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 327);
+function getVisibleSlicesPgTop(
+	/* int */			skip,
+	/* int */			show,
+	/* DataSource */	ds,
+	/* array */			open,
+
+	// not sent by initiator
+
+	/* array */			path)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "getVisibleSlicesPgTop", 327);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 337);
+open = open.concat(
+	{
+		index:      -1,
+		open:       true,
+		childTotal: 0,
+		children:   null
+	});
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 345);
+if (!path)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 347);
+path = [];
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 350);
+var slices = [],
+		send   = false;
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 353);
+var m = 0, prev = -1, presend = false;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 354);
+for (var i=0; i<open.length; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 356);
+var node = open[i];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 357);
+if (!node.open)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 359);
+continue;
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 362);
+var delta = node.index - prev;
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 364);
+if (m + delta >= skip + show ||
+			node.index == -1)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 367);
+slices.push(
+			{
+				ds:    ds,
+				path:  path.slice(0),
+				start: send ? m : skip,
+				end:   skip + show - 1
+			});
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 375);
+if (m + delta == skip + show && node.childTotal > 0)
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 377);
+slices = slices.concat(
+					getVisibleSlicesPgTop(0, node.childTotal, node.ds,
+										  node.children, path.concat(node.index)));
+			}
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 382);
+return slices;
+		}
+		else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 384);
+if (!send && m + delta == skip)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 386);
+presend = true;
+		}
+		else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 388);
+if (m + delta > skip)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 390);
+slices.push(
+			{
+				ds:    ds,
+				path:  path.slice(0),
+				start: send ? prev + 1 : skip,
+				end:   m + delta - 1
+			});
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 397);
+send = true;
+		}}}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 400);
+m += delta;
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 402);
+if (send && node.childTotal > 0)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 404);
+slices = slices.concat(
+				getVisibleSlicesPgTop(0, node.childTotal, node.ds,
+									  node.children, path.concat(node.index)));
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 409);
+prev = node.index;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 410);
+send = send || presend;
+	}
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 414);
+function getVisibleSlicesPgAll(
+	/* int */			skip,
+	/* int */			show,
+	/* DataSource */	rootDS,
+	/* array */			open,
+
+	// not sent by initiator
+
+	/* array */			path,
+	/* node */			parent,
+	/* int */			pre,
+	/* bool */			send,
+	/* array */			slices)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "getVisibleSlicesPgAll", 414);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 428);
+if (!parent)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 430);
+path   = [];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 431);
+parent = null;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 432);
+pre    = 0;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 433);
+send   = false;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 434);
+slices = [];
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 437);
+var ds = parent ? parent.ds : rootDS;
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 439);
+open = open.concat(
+	{
+		index:      parent ? parent.childTotal : -1,
+		open:       true,
+		childTotal: 0,
+		children:   null
+	});
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 447);
+var n = 0, m = 0, prev = -1;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 448);
+for (var i=0; i<open.length; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 450);
+var node = open[i];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 451);
+if (!node.open)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 453);
+continue;
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 456);
+var delta = node.index - prev;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 457);
+if (node.children === null)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 459);
+delta--;	// last item is off the end
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 462);
+if (pre + n + delta >= skip + show ||
+			node.index == -1)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 465);
+slices.push(
+			{
+				ds:    ds,
+				path:  path.slice(0),
+				start: m + (send ? 0 : skip - pre - n),
+				end:   m + (skip + show - 1 - pre - n)
+			});
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 473);
+return slices;
+		}
+		else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 475);
+if (!send && pre + n + delta == skip)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 477);
+send = true;
+		}
+		else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 479);
+if (pre + n + delta > skip)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 481);
+slices.push(
+			{
+				ds:    ds,
+				path:  path.slice(0),
+				start: m + (send ? 0 : skip - pre - n),
+				end:   m + delta - 1
+			});
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 488);
+send = true;
+		}}}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 491);
+n += delta;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 492);
+m += delta;
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 494);
+if (node.childTotal > 0)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 496);
+var info = getVisibleSlicesPgAll(skip, show, rootDS, node.children,
+											 path.concat(node.index),
+											 node, pre+n, send, slices);
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 499);
+if (Y.Lang.isArray(info))
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 501);
+return info;
+			}
+			else
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 505);
+n   += info.count;
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 506);
+send = info.send;
+			}
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 510);
+prev = node.index;
+	}
+
+	// only reached when parent != null
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 515);
+var info =
+	{
+		count: n,
+		send:  send
+	};
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 520);
+return info;
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 523);
+function requestSlices(
+	/* object */	request)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "requestSlices", 523);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 526);
+for (var i=0; i<this._slices.length; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 528);
+var slice = this._slices[i];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 529);
+var ds    = slice.ds;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 530);
+var req   = findRequest.call(this, ds);
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 531);
+if (req)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 533);
+if (Y.Console)
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 535);
+if (req.end+1 < slice.start)
+				{
+					_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 537);
+Y.error('TreebleDataSource found discontinuous range');
+				}
+
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 540);
+if (req.path.length != slice.path.length)
+				{
+					_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 542);
+Y.error('TreebleDataSource found path length mismatch');
+				}
+				else
+				{
+					_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 546);
+for (var j=0; j<slice.path.length; j++)
+					{
+						_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 548);
+if (req.path[j] != slice.path[j])
+						{
+							_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 550);
+Y.error('TreebleDataSource found path mismatch');
+							_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 551);
+break;
+						}
+					}
+				}
+			}
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 557);
+req.end = slice.end;
+		}
+		else
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 561);
+this._req.push(
+			{
+				ds:    ds,
+				path:  slice.path,
+				start: slice.start,
+				end:   slice.end
+			});
+		}
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 571);
+request = Y.clone(request, true);
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 572);
+for (var i=0; i<this._req.length; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 574);
+var req             = this._req[i];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 575);
+request.startIndex  = req.start;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 576);
+request.resultCount = req.end - req.start + 1;
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 578);
+req.txId = req.ds.sendRequest(
+		{
+			request: req.ds.treeble_config.generateRequest(request, req.path),
+			cfg:     req.ds.treeble_config.requestCfg,
+			callback:
+			{
+				success: Y.rbind(treeSuccess, this, i),
+				failure: Y.rbind(treeFailure, this, i)
+			}
+		});
+	}
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 591);
+function findRequest(
+	/* DataSource */	ds)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "findRequest", 591);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 594);
+for (var i=0; i<this._req.length; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 596);
+var req = this._req[i];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 597);
+if (ds == req.ds)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 599);
+return req;
+		}
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 603);
+return null;
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 606);
+function treeSuccess(e, reqIndex)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "treeSuccess", 606);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 608);
+if (!e.response || e.error ||
+		!Y.Lang.isArray(e.response.results))
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 611);
+treeFailure.apply(this, arguments);
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 612);
+return;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 615);
+var req = searchTxId(this._req, e.tId, reqIndex);
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 616);
+if (!req)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 618);
+return;		// cancelled request
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 621);
+if (!this._topResponse && req.ds == this.get('root'))
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 623);
+this._topResponse = e.response;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 626);
+req.txId  = null;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 627);
+req.resp  = e.response;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 628);
+req.error = false;
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 630);
+var dataStartIndex = 0;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 631);
+if (req.ds.treeble_config.startIndexExpr)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 633);
+eval('dataStartIndex=req.resp'+req.ds.treeble_config.startIndexExpr);
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 636);
+var sliceStartIndex = req.start - dataStartIndex;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 637);
+req.data            = e.response.results.slice(sliceStartIndex, req.end - dataStartIndex + 1);
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 638);
+setNodeInfo(req.data, req.start, req.path, req.ds);
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 640);
+var parent = (req.path.length > 0 ? getNode.call(this, req.path) : null);
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 641);
+var open   = (parent !== null ? parent.children : this._open);
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 642);
+if (!populateOpen.call(this, parent, open, req))
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 644);
+treeFailure.apply(this, arguments);
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 645);
+return;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 648);
+if (!parent && req.ds.treeble_config.totalRecordsExpr)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 650);
+eval('this._topNodeTotal=e.response'+req.ds.treeble_config.totalRecordsExpr);
+	}
+	else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 652);
+if (!parent && req.ds.treeble_config.totalRecordsReturnExpr)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 654);
+this._topNodeTotal = e.response.results.length;
+	}}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 657);
+checkFinished.call(this);
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 660);
+function treeFailure(e, reqIndex)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "treeFailure", 660);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 662);
+var req = searchTxId(this._req, e.tId, reqIndex);
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 663);
+if (!req)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 665);
+return;		// cancelled request
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 668);
+this._cancelAllRequests();
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 670);
+this._callback.error    = e.error;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 671);
+this._callback.response = e.response;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 672);
+this.fire('response', this._callback);
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 675);
+function setNodeInfo(
+	/* array */			list,
+	/* int */			offset,
+	/* array */			path,
+	/* datasource */	ds)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "setNodeInfo", 675);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 681);
+var depth = path.length;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 682);
+for (var i=0; i<list.length; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 684);
+list[i]._yui_node_depth = depth;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 685);
+list[i]._yui_node_path  = path.concat(offset+i);
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 686);
+list[i]._yui_node_ds    = ds;
+	}
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 690);
+function searchTxId(
+	/* array */	req,
+	/* int */	id,
+	/* int */	fallbackIndex)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "searchTxId", 690);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 695);
+for (var i=0; i<req.length; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 697);
+if (req[i].txId === id)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 699);
+return req[i];
+		}
+	}
+
+	// synch response arrives before setting txId
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 705);
+if (fallbackIndex < req.length &&
+		Y.Lang.isUndefined(req[ fallbackIndex ].txId))
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 708);
+return req[ fallbackIndex ];
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 711);
+return null;
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 714);
+function checkFinished()
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "checkFinished", 714);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 716);
+if (this._generating_requests)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 718);
+return;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 721);
+var count = this._req.length;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 722);
+for (var i=0; i<count; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 724);
+if (!this._req[i].resp)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 726);
+return;
+		}
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 730);
+if (this._redo)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 732);
+Y.Lang.later(0, this, requestTree);
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 733);
+return;
+	}
+	else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 735);
+if (this._toggle.length > 0)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 737);
+var t = this._toggle.shift();
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 738);
+this.toggle(t, Y.clone(this._callback.request, true),
+		{
+			fn: function()
+			{
+				_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "fn", 740);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 742);
+Y.Lang.later(0, this, requestTree);
+			},
+			scope: this
+		});
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 746);
+return;
+	}}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 749);
+var response = { meta:{} };
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 750);
+Y.mix(response, this._topResponse, true);
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 751);
+response.results = [];
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 752);
+response         = Y.clone(response, true);
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 754);
+count = this._slices.length;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 755);
+for (i=0; i<count; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 757);
+var slice = this._slices[i];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 758);
+var req   = findRequest.call(this, slice.ds);
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 759);
+if (!req)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 761);
+Y.error('Failed to find request for a slice');
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 762);
+continue;
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 765);
+var j    = slice.start - req.start;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 766);
+var data = req.data.slice(j, j + slice.end - slice.start + 1);
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 768);
+response.results = response.results.concat(data);
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 771);
+var rootDS = this.get('root');
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 772);
+if (rootDS.treeble_config.totalRecordsExpr)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 774);
+eval('response'+rootDS.treeble_config.totalRecordsExpr+'='+countVisibleNodes.call(this));
+	}
+	else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 776);
+if (rootDS.treeble_config.totalRecordsReturnExpr)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 778);
+eval('response'+rootDS.treeble_config.totalRecordsReturnExpr+'='+countVisibleNodes.call(this));
+	}}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 781);
+this._callback.response = response;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 782);
+this.fire('response', this._callback);
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 785);
+function toggleSuccess(e, node, completion, path)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "toggleSuccess", 785);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 787);
+if (node.ds.treeble_config.totalRecordsExpr)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 789);
+eval('node.childTotal=e.response'+node.ds.treeble_config.totalRecordsExpr);
+	}
+	else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 791);
+if (node.ds.treeble_config.totalRecordsReturnExpr)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 793);
+node.childTotal = e.response.results.length;
+	}}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 796);
+node.open     = true;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 797);
+node.children = [];
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 798);
+complete(completion);
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 800);
+this.fire('toggled',
+	{
+		path: path,
+		open: node.open
+	});
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 807);
+function toggleFailure(e, node, completion, path)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "toggleFailure", 807);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 809);
+node.childTotal = 0;
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 811);
+node.open     = true;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 812);
+node.children = [];
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 813);
+complete(completion);
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 815);
+this.fire('toggled',
+	{
+		path: path,
+		open: node.open
+	});
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 822);
+function complete(f)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "complete", 822);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 824);
+if (Y.Lang.isFunction(f))
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 826);
+f();
+	}
+	else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 828);
+if (f && f.fn)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 830);
+f.fn.apply(f.scope || window, Y.Lang.isUndefined(f.args) ? [] : f.args);
+	}}
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 834);
+function compareRequests(r1, r2)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "compareRequests", 834);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 836);
+var k1 = Y.Object.keys(r1),
+		k2 = Y.Object.keys(r2);
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 839);
+if (k1.length != k2.length)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 841);
+return false;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 844);
+for (var i=0; i<k1.length; i++)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 846);
+var k = k1[i];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 847);
+if (k != 'startIndex' && k != 'resultCount' && r1[k] !== r2[k])
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 849);
+return false;
+		}
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 853);
+return true;
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 856);
+Y.extend(TreebleDataSource, Y.DataSource.Local,
+{
+	initializer: function(config)
+	{
+		_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "initializer", 858);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 860);
+if (!config.root)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 862);
+Y.error('TreebleDataSource requires DataSource');
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 865);
+if (!config.root.treeble_config.childNodesKey)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 867);
+var fields = config.root.schema.get('schema').resultFields;
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 868);
+if (!fields || !Y.Lang.isArray(fields))
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 870);
+Y.error('TreebleDataSource root DataSource requires schema.resultFields because treeble_config.childNodesKey was not specified.');
+			}
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 873);
+for (var i=0; i<fields.length; i++)
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 875);
+if (Y.Lang.isObject(fields[i]) && fields[i].parser == 'treebledatasource')
+				{
+					_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 877);
+config.root.treeble_config.childNodesKey = fields[i].key;
+					_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 878);
+break;
+				}
+			}
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 882);
+if (!config.root.treeble_config.childNodesKey)
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 884);
+Y.error('TreebleDataSource requires treeble_config.childNodesKey configuration to be set on root DataSource');
+			}
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 888);
+if (!config.root.treeble_config.generateRequest)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 890);
+Y.error('TreebleDataSource requires treeble_config.generateRequest configuration to be set on root DataSource');
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 893);
+if (!config.root.treeble_config.totalRecordsExpr && !config.root.treeble_config.totalRecordsReturnExpr)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 895);
+Y.error('TreebleDataSource requires either treeble_config.totalRecordsExpr or treeble_config.totalRecordsReturnExpr configuration to be set on root DataSource');
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 898);
+this._open       = [];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 899);
+this._open_cache = {};
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 900);
+this._toggle     = [];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 901);
+this._req        = [];
+	},
+
+	/**
+	 * @method isOpen
+	 * @param path {Array} Path to node
+	 * @return {boolean} true if the node is open
+	 */
+	isOpen: function(path)
+	{
+		_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "isOpen", 909);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 911);
+var list = this._open;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 912);
+for (var i=0; i<path.length; i++)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 914);
+var node = searchOpen.call(this, list, path[i]);
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 915);
+if (!node || !node.open)
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 917);
+return false;
+			}
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 919);
+list = node.children;
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 922);
+return true;
+	},
+
+	/**
+	 * Toggle the specified node between open and closed.  When a node is
+	 * opened for the first time, this requires a request to the
+	 * DataSource.  Any code that assumes the node has been opened must be
+	 * passed in as a completion function.
+	 * 
+	 * @method toggle
+	 * @param path {Array} Path to the node
+	 * @param request {Object} {sort,dir,startIndex,resultCount}
+	 * @param completion {Function|Object} Function to call when the operation completes.  Can be object: {fn,scope,args}
+	 * @return {boolean} false if the path to the node has not yet been fully explored or is not openable, true otherwise
+	 */
+	toggle: function(path, request, completion)
+	{
+		_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "toggle", 937);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 939);
+var list = this._open;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 940);
+for (var i=0; i<path.length; i++)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 942);
+var node = searchOpen.call(this, list, path[i]);
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 943);
+if (!node)
+			{
+				_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 945);
+return false;
+			}
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 947);
+list = node.children;
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 950);
+if (node.open === null)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 952);
+request.startIndex  = 0;
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 953);
+request.resultCount = 0;
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 954);
+node.ds.sendRequest(
+			{
+				request: node.ds.treeble_config.generateRequest(request, path),
+				cfg:     node.ds.treeble_config.requestCfg,
+				callback:
+				{
+					success: Y.rbind(toggleSuccess, this, node, completion, path),
+					failure: Y.rbind(toggleFailure, this, node, completion, path)
+				}
+			});
+		}
+		else
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 967);
+node.open = !node.open;
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 968);
+complete(completion);
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 970);
+this.fire('toggled',
+			{
+				path: path,
+				open: node.open
+			});
+		}
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 976);
+return true;
+	},
+
+	_defRequestFn: function(e)
+	{
+		// wipe out all state if the request parameters change
+
+		_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "_defRequestFn", 979);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 983);
+if (this._callback && !compareRequests(this._callback.request, e.request))
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 985);
+this._open = [];
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 988);
+this._callback = e;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 989);
+requestTree.call(this, true);
+	},
+
+	_cancelAllRequests: function()
+	{
+		_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "_cancelAllRequests", 992);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 994);
+this._req    = [];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 995);
+this._toggle = [];
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 996);
+delete this._topResponse;
+	}
+});
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1000);
+Y.TreebleDataSource = TreebleDataSource;
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1001);
+Y.namespace('DataSource').Treeble = TreebleDataSource;
+/**
+ * @module gallery-treeble
+ */
+
+/**
+ * <p>Converts data to a DataSource.  Data can be an object containing both
+ * <code>dataType</code> and <code>liveData</code>, or it can be <q>free
+ * form</q>, e.g., an array of records or an XHR URL.</p>
+ *
+ * @class Parsers
+ */
+
+/**
+ * @method treebledatasource
+ * @static
+ * @param oData {mixed} Data to convert.
+ * @return {DataSource} The new data source.
+ */
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1020);
+Y.namespace("Parsers").treebledatasource = function(oData)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "treebledatasource", 1020);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1022);
+if (!oData)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1024);
+return null;
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1027);
+var type = oData.dataType;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1028);
+if (type)
+	{
+		// use it
+	}
+	else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1032);
+if (Y.Lang.isString(oData))
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1034);
+type = 'IO';
+	}
+	else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1036);
+if (Y.Lang.isFunction(oData))
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1038);
+type = 'Function';
+	}
+	else
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1042);
+type = 'Local';
+	}}}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1045);
+var src            = oData.dataType ? oData.liveData : oData;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1046);
+var treeble_config = this.get('host').treeble_config;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1047);
+if (type == 'Local')
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1049);
+treeble_config = Y.clone(treeble_config, true);
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1050);
+delete treeble_config.startIndexExpr;
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1051);
+delete treeble_config.totalRecordsExpr;
+	}
+	else {_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1053);
+if (type == 'Function')
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1055);
+src = Y.Lang.isString(src) ? window[ src ] : src;
+	}}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1058);
+var ds            = new Y.DataSource[ type ]({ source: src });
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1059);
+ds.treeble_config = treeble_config;
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1061);
+if (ds.treeble_config.schemaPluginConfig)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1063);
+ds.plug(Y.clone(ds.treeble_config.schemaPluginConfig, true));
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1066);
+if (ds.treeble_config.cachePluginConfig)
+	{
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1068);
+ds.plug(Y.clone(ds.treeble_config.cachePluginConfig, true));
+	}
+
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1071);
+return ds;
+};
+/**********************************************************************
+ * Treeble displays a tree of data in a table.
+ *
+ * @module gallery-treeble
+ * @main gallery-treeble
+ */
+
+/**
+ * Extension to DataTable for displaying tree data.
+ *
+ * @class Treeble
+ * @extends DataTable
+ * @constructor
+ * @param config {Object}
+ */
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1088);
+function Treeble()
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "Treeble", 1088);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1090);
+Treeble.superclass.constructor.apply(this, arguments);
+}
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1093);
+Treeble.NAME = "datatable";		// same styling
+
+/**
+ * <p>Formatter for open/close twistdown.</p>
+ *
+ * @method twistdownFormatter
+ * @static
+ * @param sendRequest {Function} Function that reloads DataTable
+ */
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1102);
+Treeble.buildTwistdownFormatter = function(sendRequest)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "buildTwistdownFormatter", 1102);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1104);
+return function(o)
+	{
+		_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "(anonymous 2)", 1104);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1106);
+o.td.addClass('treeble-nub');
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1108);
+var ds  = this.datasource.get('datasource');
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1109);
+var key = ds.get('root').treeble_config.childNodesKey;
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1111);
+if (o.data[key])
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1113);
+var path = o.data._yui_node_path;
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1115);
+o.td.addClass('row-toggle');
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1116);
+o.td.replaceClass('row-(open|closed)',
+				ds.isOpen(path) ? 'row-open' : 'row-closed');
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1119);
+YUI.Env.add(Y.Node.getDOMNode(o.td), 'click', function()
+			{
+				_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "(anonymous 3)", 1119);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1121);
+ds.toggle(path, {}, sendRequest);
+			});
+
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1124);
+o.cell.set('innerHTML', '<a class="treeble-expand-nub" href="javascript:void(0);"></a>');
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1127);
+return false;	// discard Y.Node instances
+	};
+};
+
+/**
+ * <p>Default formatter for indented column.</p>
+ *
+ * @method treeValueFormatter
+ * @static
+ */
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1137);
+Treeble.treeValueFormatter = function(o)
+{
+	_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "treeValueFormatter", 1137);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1139);
+var depth_class = 'treeble-depth-'+o.data._yui_node_depth;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1140);
+o.rowClass     += ' ' + depth_class;
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1141);
+o.className    += ' treeble-value';
+	_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1142);
+return '<span class="'+depth_class+'">'+o.value+'</span>';
+};
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1145);
+Y.extend(Treeble, Y.DataTable,
+{
+	plug: function(plugin, config)
+	{
+		_yuitest_coverfunc("build/gallery-treeble/gallery-treeble.js", "plug", 1147);
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1149);
+if (plugin === Y.Plugin.DataTableDataSource)
+		{
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1151);
+var recordType = this.get('recordType');
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1152);
+recordType.ATTRS[ config.datasource.get('root').treeble_config.childNodesKey ] = {};
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1153);
+recordType.ATTRS._yui_node_path  = {};
+			_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1154);
+recordType.ATTRS._yui_node_depth = {};
+		}
+
+		_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1157);
+Treeble.superclass.plug.apply(this, arguments);
+	}
+});
+
+_yuitest_coverline("build/gallery-treeble/gallery-treeble.js", 1161);
+Y.Treeble = Treeble;
+
+
+}, '@VERSION@', {"skinnable": "true", "requires": ["datasource", "datatable"]});

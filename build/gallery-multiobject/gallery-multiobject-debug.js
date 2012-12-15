@@ -1,4 +1,4 @@
-YUI.add('gallery-multiobject', function(Y) {
+YUI.add('gallery-multiobject', function (Y, NAME) {
 
 "use strict";
 
@@ -240,4 +240,4 @@ Y.extend(MultiObject, Y.EventTarget,
 Y.MultiObject = MultiObject;
 
 
-}, '@VERSION@' ,{requires:['event-custom']});
+}, '@VERSION@', {"requires": ["event-custom"]});

@@ -1,4 +1,4 @@
-YUI.add('gallery-layout', function(Y) {
+YUI.add('gallery-layout', function (Y, NAME) {
 
 "use strict";
 
@@ -1213,4 +1213,17 @@ Y.extend(PageLayout, Y.Base,
 Y.PageLayout = PageLayout;
 
 
-}, '@VERSION@' ,{skinnable:true, requires:['base','gallery-funcprog','gallery-node-optimizations','gallery-dimensions','gallery-nodelist-extras2'], optional:['gallery-layout-rows','gallery-layout-cols']});
+}, '@VERSION@', {
+    "skinnable": "true",
+    "requires": [
+        "base",
+        "gallery-funcprog",
+        "gallery-node-optimizations",
+        "gallery-dimensions",
+        "gallery-nodelist-extras2"
+    ],
+    "optional": [
+        "gallery-layout-rows",
+        "gallery-layout-cols"
+    ]
+});

@@ -1,4 +1,4 @@
-YUI.add('gallery-mru-cache', function(Y) {
+YUI.add('gallery-mru-cache', function (Y, NAME) {
 
 /**
  * @module gallery-mru-cache
@@ -197,4 +197,4 @@ MRUCache.prototype =
 Y.MRUCache = MRUCache;
 
 
-}, '@VERSION@' ,{requires:['gallery-linkedlist']});
+}, '@VERSION@', {"requires": ["gallery-linkedlist"]});

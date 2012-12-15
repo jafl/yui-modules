@@ -1,4 +1,4 @@
-YUI.add('gallery-log-filter', function(Y) {
+YUI.add('gallery-log-filter', function (Y, NAME) {
 
 "use strict";
 
@@ -56,4 +56,4 @@ Y.LogFilter =
 };
 
 
-}, '@VERSION@' );
+}, '@VERSION@', {"requires": [""]});

@@ -1,4 +1,4 @@
-YUI.add('gallery-datatable-row-expansion', function(Y) {
+YUI.add('gallery-datatable-row-expansion', function (Y, NAME) {
 
 "use strict";
 
@@ -369,4 +369,13 @@ Y.namespace("Plugin");
 Y.Plugin.DataTableRowExpansion = RowExpansion;
 
 
-}, '@VERSION@' ,{requires:['datatable','plugin','gallery-funcprog','gallery-node-optimizations','gallery-math'], skinnable:true});
+}, '@VERSION@', {
+    "skinnable": "true",
+    "requires": [
+        "datatable",
+        "plugin",
+        "gallery-funcprog",
+        "gallery-node-optimizations",
+        "gallery-math"
+    ]
+});

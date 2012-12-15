@@ -1,4 +1,4 @@
-YUI.add('gallery-formmgr-overlay-plugin', function(Y) {
+YUI.add('gallery-formmgr-overlay-plugin', function (Y, NAME) {
 
 "use strict";
 
@@ -77,4 +77,4 @@ Y.namespace("Plugin");
 Y.Plugin.OverlayForm = OverlayFormPlugin;
 
 
-}, '@VERSION@' ,{requires:['plugin','overlay','gallery-formmgr']});
+}, '@VERSION@', {"requires": ["plugin", "overlay", "gallery-formmgr"]});

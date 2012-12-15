@@ -1,4 +1,4 @@
-YUI.add('gallery-chipper', function(Y) {
+YUI.add('gallery-chipper', function (Y, NAME) {
 
 "use strict";
 
@@ -59,4 +59,4 @@ Y.Chipper =
 };
 
 
-}, '@VERSION@' ,{requires:['yui-later']});
+}, '@VERSION@', {"requires": ["yui-later"]});

@@ -1,4 +1,4 @@
-YUI.add('gallery-layout-datatable', function(Y) {
+YUI.add('gallery-layout-datatable', function (Y, NAME) {
 
 "use strict";
 
@@ -85,4 +85,4 @@ Y.namespace("Plugin");
 Y.Plugin.PageLayoutDataTableModule = PLDTModule;
 
 
-}, '@VERSION@' ,{requires:['gallery-layout','datatable-scroll','plugin']});
+}, '@VERSION@', {"requires": ["gallery-layout", "datatable-scroll", "plugin"]});

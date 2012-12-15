@@ -1,4 +1,4 @@
-YUI.add('gallery-expiration-cache', function(Y) {
+YUI.add('gallery-expiration-cache', function (Y, NAME) {
 
 /**
  * @module gallery-expiration-cache
@@ -194,4 +194,4 @@ ExpirationCache.prototype =
 Y.ExpirationCache = ExpirationCache;
 
 
-}, '@VERSION@' ,{requires:['gallery-instancemanager']});
+}, '@VERSION@', {"requires": ["gallery-instancemanager"]});

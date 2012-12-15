@@ -1,4 +1,4 @@
-YUI.add('gallery-complexnumber', function(Y) {
+YUI.add('gallery-complexnumber', function (Y, NAME) {
 
 "use strict";
 
@@ -795,4 +795,4 @@ var ComplexMath =
 Y.ComplexMath = ComplexMath;
 
 
-}, '@VERSION@' ,{requires:['gallery-math']});
+}, '@VERSION@', {"requires": ["gallery-math"]});

@@ -1,4 +1,4 @@
-YUI.add('gallery-linkedlist', function(Y) {
+YUI.add('gallery-linkedlist', function (Y, NAME) {
 
 "use strict";
 
@@ -710,4 +710,4 @@ Y.mix(LinkedList, Y.Iterable, false, null, 4);
 Y.LinkedList = LinkedList;
 
 
-}, '@VERSION@' ,{requires:['gallery-iterable-extras'], optional:['gallery-funcprog']});
+}, '@VERSION@', {"requires": ["gallery-iterable-extras"], "optional": ["gallery-funcprog"]});

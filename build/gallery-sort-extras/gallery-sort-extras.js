@@ -1,4 +1,4 @@
-YUI.add('gallery-sort-extras', function(Y) {
+YUI.add('gallery-sort-extras', function (Y, NAME) {
 
 "use strict";
 
@@ -130,4 +130,4 @@ Sort.flip = function(f)
 };
 
 
-}, '@VERSION@' ,{requires:['oop']});
+}, '@VERSION@', {"requires": ["oop"]});

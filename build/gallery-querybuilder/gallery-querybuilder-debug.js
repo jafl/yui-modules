@@ -1,4 +1,4 @@
-YUI.add('gallery-querybuilder', function(Y) {
+YUI.add('gallery-querybuilder', function (Y, NAME) {
 
 "use strict";
 
@@ -1168,4 +1168,14 @@ QueryBuilder.plugin_mapping =
 };
 
 
-}, '@VERSION@' ,{skinnable:true, requires:['widget','gallery-formmgr'], optional:['gallery-scrollintoview','autocomplete']});
+}, '@VERSION@', {
+    "skinnable": "true",
+    "requires": [
+        "widget",
+        "gallery-formmgr"
+    ],
+    "optional": [
+        "gallery-scrollintoview",
+        "autocomplete"
+    ]
+});

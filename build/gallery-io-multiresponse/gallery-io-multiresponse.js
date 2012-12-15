@@ -1,4 +1,4 @@
-YUI.add('gallery-io-multiresponse', function(Y) {
+YUI.add('gallery-io-multiresponse', function (Y, NAME) {
 
 /**
  * <p>Extends the IO base class to enable multiple responses using an
@@ -357,4 +357,4 @@ Y.io = function(uri, c) {
 Y.mix(Y.io, orig_io);
 
 
-}, '@VERSION@' ,{requires:['io-upload-iframe'], optional:['json-stringify']});
+}, '@VERSION@', {"requires": ["io-upload-iframe"], "optional": ["json-stringify"]});

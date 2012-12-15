@@ -8,7 +8,7 @@ for f in ~/open-source/jafl.github-yui3/*; do
 	if [[ ! -d $f || "$d" == "yuidoc" ]]; then continue; fi
 
 	pushd gallery-$d
-	ant all
+	yogi build --no-lint
 	popd
 done
 

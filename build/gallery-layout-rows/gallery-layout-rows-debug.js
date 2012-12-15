@@ -1,4 +1,4 @@
-YUI.add('gallery-layout-rows', function(Y) {
+YUI.add('gallery-layout-rows', function (Y, NAME) {
 
 "use strict";
 
@@ -400,4 +400,4 @@ Y.PageLayoutRows.resize = function(
 };
 
 
-}, '@VERSION@' ,{requires:['gallery-layout']});
+}, '@VERSION@', {"requires": ["gallery-layout"]});

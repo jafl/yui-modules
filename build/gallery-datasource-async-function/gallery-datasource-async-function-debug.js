@@ -1,4 +1,4 @@
-YUI.add('gallery-datasource-async-function', function(Y) {
+YUI.add('gallery-datasource-async-function', function (Y, NAME) {
 
 "use strict";
 
@@ -110,4 +110,4 @@ Y.extend(AsyncFunctionDataSource, Y.DataSource.Local,
 Y.DataSource.AsyncFunction = AsyncFunctionDataSource;
 
 
-}, '@VERSION@' ,{requires:['datasource-local']});
+}, '@VERSION@', {"requires": ["datasource-local"]});

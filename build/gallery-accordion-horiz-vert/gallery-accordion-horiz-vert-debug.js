@@ -1,4 +1,4 @@
-YUI.add('gallery-accordion-horiz-vert', function(Y) {
+YUI.add('gallery-accordion-horiz-vert', function (Y, NAME) {
 
 "use strict";
 
@@ -1267,4 +1267,15 @@ Y.namespace("Plugin");
 Y.Plugin.FixedSizeAccordion = FixedSizeAccordionPlugin;
 
 
-}, '@VERSION@' ,{skinnable:true, requires:['widget','selector-css3','plugin','gallery-dimensions'], optional:['anim-base']});
+}, '@VERSION@', {
+    "skinnable": "true",
+    "requires": [
+        "widget",
+        "selector-css3",
+        "plugin",
+        "gallery-dimensions"
+    ],
+    "optional": [
+        "anim-base"
+    ]
+});

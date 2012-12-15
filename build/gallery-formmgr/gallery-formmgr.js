@@ -1,4 +1,4 @@
-YUI.add('gallery-formmgr', function(Y) {
+YUI.add('gallery-formmgr', function (Y, NAME) {
 
 "use strict";
 
@@ -1191,4 +1191,13 @@ Y.aggregate(FormManager, Y.FormManager);
 Y.FormManager = FormManager;
 
 
-}, '@VERSION@' ,{requires:['pluginhost-base','gallery-node-optimizations','gallery-formmgr-css-validation'], optional:['gallery-scrollintoview']});
+}, '@VERSION@', {
+    "requires": [
+        "pluginhost-base",
+        "gallery-node-optimizations",
+        "gallery-formmgr-css-validation"
+    ],
+    "optional": [
+        "gallery-scrollintoview"
+    ]
+});

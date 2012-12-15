@@ -1,4 +1,4 @@
-YUI.add('gallery-node-optimizations', function(Y) {
+YUI.add('gallery-node-optimizations', function (Y, NAME) {
 
 "use strict";
 
@@ -287,4 +287,4 @@ Y.Node.prototype.getFirstElementByClassName = function(
 };
 
 
-}, '@VERSION@' ,{requires:['node-base']});
+}, '@VERSION@', {"requires": ["node-base"]});

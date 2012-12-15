@@ -1,4 +1,4 @@
-YUI.add('gallery-matrix-credits', function(Y) {
+YUI.add('gallery-matrix-credits', function (Y, NAME) {
 
 "use strict";
 
@@ -449,4 +449,4 @@ Y.extend(MatrixCredits, Y.Widget,
 Y.MatrixCredits = MatrixCredits;
 
 
-}, '@VERSION@' ,{requires:['widget','gallery-matrix-background','gallery-funcprog'], skinnable:true});
+}, '@VERSION@', {"skinnable": "true", "requires": ["widget", "gallery-matrix-background", "gallery-funcprog"]});

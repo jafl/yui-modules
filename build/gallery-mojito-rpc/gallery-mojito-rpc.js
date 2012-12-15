@@ -1,4 +1,4 @@
-YUI.add('gallery-mojito-rpc', function(Y) {
+YUI.add('gallery-mojito-rpc', function (Y, NAME) {
 
 "use strict";
 
@@ -135,4 +135,4 @@ RPC.mojito = function(proxy, method, params, callback, config)
 };
 
 
-}, '@VERSION@' ,{requires:['oop']});
+}, '@VERSION@', {"requires": ["oop"]});

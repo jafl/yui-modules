@@ -1,4 +1,4 @@
-YUI.add('gallery-canvas', function(Y) {
+YUI.add('gallery-canvas', function (Y, NAME) {
 
 "use strict";
 
@@ -221,4 +221,4 @@ Y.namespace('Canvas');
 Y.Canvas.Context2d = Context2d;
 
 
-}, '@VERSION@' ,{requires:['node-base']});
+}, '@VERSION@', {"requires": ["node-base"], "optional": [""]});

@@ -1,4 +1,4 @@
-YUI.add('gallery-node-event-set', function(Y) {
+YUI.add('gallery-node-event-set', function (Y, NAME) {
 
 "use strict";
 
@@ -328,4 +328,14 @@ Y.Node.prototype.on = function(type, fn, context)
 };
 
 
-}, '@VERSION@' ,{requires:['node-base'], optional:['node-data','node-screen','node-style','event-custom-complex']});
+}, '@VERSION@', {
+    "requires": [
+        "node-base"
+    ],
+    "optional": [
+        "node-data",
+        "node-screen",
+        "node-style",
+        "event-custom-complex"
+    ]
+});

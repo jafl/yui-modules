@@ -1,4 +1,4 @@
-YUI.add('gallery-iterable-extras', function(Y) {
+YUI.add('gallery-iterable-extras', function (Y, NAME) {
 
 "use strict";
 
@@ -386,4 +386,4 @@ ArrayIterator.prototype =
 Y.ArrayIterator = ArrayIterator;
 
 
-}, '@VERSION@' ,{optional:['gallery-funcprog']});
+}, '@VERSION@', {"requires": [""], "optional": ["gallery-funcprog"]});

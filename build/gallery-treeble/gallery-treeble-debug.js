@@ -1,4 +1,4 @@
-YUI.add('gallery-treeble', function(Y) {
+YUI.add('gallery-treeble', function (Y, NAME) {
 
 "use strict";
 
@@ -1161,4 +1161,4 @@ Y.extend(Treeble, Y.DataTable,
 Y.Treeble = Treeble;
 
 
-}, '@VERSION@' ,{requires:['datasource','datatable'], skinnable:true});
+}, '@VERSION@', {"skinnable": "true", "requires": ["datasource", "datatable"]});
