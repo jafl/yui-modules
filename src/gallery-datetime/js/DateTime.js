@@ -1,11 +1,8 @@
 "use strict";
 
-var Dom = YAHOO.util.Dom,
-	Event = YAHOO.util.Event,
-
 var blackout_min_seconds = -40,
 	blackout_max_seconds = +40,
-	change_after_focus = (0 < YAHOO.env.ua.ie);
+	change_after_focus   = (0 < Y.UA.ie);
 
 /**
  * @module gallery-datetime
@@ -47,8 +44,8 @@ DateTime.ATTRS =
 	 * Date input field to use.  Can be augmented with a Calendar via
 	 * gallery-input-calendar-sync.
 	 * 
-	 * @attribute calendar
-	 * @type {Calendar}
+	 * @attribute dateInput
+	 * @type {Node}
 	 * @required
 	 * @writeonce
 	 */
@@ -63,7 +60,6 @@ DateTime.ATTRS =
 	 * 
 	 * @attribute timeInput
 	 * @type {Node}
-	 * @required
 	 * @writeonce
 	 */
 	timeInput:
@@ -547,9 +543,9 @@ function ping()
 	this.ping_task.nodes = nodes;
 }
 
-YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
+Y.extend(DateTime, Y.Base,
 {
-	_init: function(
+	initializer: function(
 		/* object/string */	container,
 		/* map */			config)
 	{
@@ -583,11 +579,17 @@ YAHOO.lang.extend(DateTime, YAHOO.util.EventProvider,
 
 		// listen for changes
 
-		this.get('dateInput')
+		this.get('dateInput').on('change', enforceDateTimeLimits, this);
 
-		this.get('timeInput')
-		Event.on(this.hour_menu, 'change', enforceDateTimeLimits, null, this);
-		Event.on(this.minute_menu, 'change', enforceDateTimeLimits, null, this);
+		var time_input = this.get('timeInput');
+		if (time_input)
+		{
+			time_input.on('change', enforceDateTimeLimits, this);
+		}
+		else
+		{
+			this.set('timeInput', Y.Node.create('<input type="hidden"></input>'));
+		}
 
 		// black-out dates
 
