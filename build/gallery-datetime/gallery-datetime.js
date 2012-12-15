@@ -22,7 +22,7 @@ var blackout_min_seconds = -40,
  * 
  * @main gallery-datetime
  * @class DateTime
- * @extends Widget
+ * @extends Base
  * @constructor
  * @param config {Object}
  */
@@ -797,9 +797,12 @@ Y.extend(DateTime, Y.Base,
 	}
 });
 
+Y.DateTime = DateTime;
+
 
 }, '@VERSION@', {
     "requires": [
+        "base",
         "gallery-datetime-utils",
         "gallery-funcprog"
     ],
