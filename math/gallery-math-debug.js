@@ -1,4 +1,4 @@
-YUI.add('gallery-math', function(Y) {
+YUI.add('gallery-math', function (Y, NAME) {
 
 "use strict";
 
@@ -185,4 +185,4 @@ Y.mix(Math,
 });
 
 
-}, '@VERSION@' ,{requires:['array-extras']});
+}, '@VERSION@', {"requires": ["array-extras"]});

@@ -1,4 +1,4 @@
-YUI.add('gallery-matrix-background', function(Y) {
+YUI.add('gallery-matrix-background', function (Y, NAME) {
 
 "use strict";
 
@@ -501,4 +501,13 @@ Y.mix(Y.Plugin.MatrixBackground,
 });
 
 
-}, '@VERSION@' ,{requires:['node-pluginhost','plugin','gallery-dimensions','node-screen','event-resize'], skinnable:true});
+}, '@VERSION@', {
+    "skinnable": "true",
+    "requires": [
+        "node-pluginhost",
+        "plugin",
+        "gallery-dimensions",
+        "node-screen",
+        "event-resize"
+    ]
+});

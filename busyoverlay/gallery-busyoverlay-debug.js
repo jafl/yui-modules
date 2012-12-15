@@ -1,4 +1,4 @@
-YUI.add('gallery-busyoverlay', function(Y) {
+YUI.add('gallery-busyoverlay', function (Y, NAME) {
 
 "use strict";
 
@@ -168,4 +168,4 @@ Y.namespace("Plugin");
 Y.Plugin.BusyOverlay = BusyOverlayPlugin;
 
 
-}, '@VERSION@' ,{requires:['plugin','node-pluginhost','node-screen','node-style'], skinnable:true});
+}, '@VERSION@', {"skinnable": "true", "requires": ["plugin", "node-pluginhost", "node-screen", "node-style"]});

@@ -1,4 +1,4 @@
-YUI.add('gallery-algorithms', function(Y) {
+YUI.add('gallery-algorithms', function (Y, NAME) {
 
 "use strict";
 
@@ -297,4 +297,4 @@ if (Y.ArrayList)
 }
 
 
-}, '@VERSION@' ,{optional:['collection']});
+}, '@VERSION@', {"optional": ["collection"]});

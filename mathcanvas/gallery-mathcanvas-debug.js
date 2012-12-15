@@ -1,4 +1,4 @@
-YUI.add('gallery-mathcanvas', function(Y) {
+YUI.add('gallery-mathcanvas', function (Y, NAME) {
 
 "use strict";
 
@@ -3302,8 +3302,7 @@ exports.main = function commonjsMain(args) {
 if (typeof module !== 'undefined' && require.main === module) {
   exports.main(typeof process !== 'undefined' ? process.argv.slice(1) : require("system").args);
 }
-}
-/**
+}/**
  * @module gallery-mathcanvas
  */
 
@@ -4000,4 +3999,19 @@ Y.MathCanvas.Parser   = MathParser;
  */
 
 
-}, '@VERSION@' ,{skinnable:true, requires:['widget','collection','node-screen','gallery-complexnumber','gallery-canvas','gallery-node-optimizations','anim','array-extras']});
+}, '@VERSION@', {
+    "skinnable": "true",
+    "requires": [
+        "widget",
+        "collection",
+        "node-screen",
+        "gallery-complexnumber",
+        "gallery-canvas",
+        "gallery-node-optimizations",
+        "anim",
+        "array-extras"
+    ],
+    "optional": [
+        ""
+    ]
+});

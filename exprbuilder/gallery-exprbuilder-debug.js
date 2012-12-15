@@ -1,4 +1,4 @@
-YUI.add('gallery-exprbuilder', function(Y) {
+YUI.add('gallery-exprbuilder', function (Y, NAME) {
 
 "use strict";
 
@@ -633,4 +633,4 @@ Y.extend(ExpressionBuilder, Y.Widget,
 Y.ExpressionBuilder = ExpressionBuilder;
 
 
-}, '@VERSION@' ,{requires:['gallery-querybuilder','gallery-formmgr'], skinnable:true});
+}, '@VERSION@', {"skinnable": "true", "requires": ["gallery-querybuilder", "gallery-formmgr"]});

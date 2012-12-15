@@ -1,4 +1,4 @@
-YUI.add('gallery-paginator', function(Y) {
+YUI.add('gallery-paginator', function (Y, NAME) {
 
 "use strict";
 /*
@@ -2579,4 +2579,4 @@ Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
 });
 
 
-}, '@VERSION@' ,{requires:['widget','event-key','substitute'], skinnable:true});
+}, '@VERSION@', {"skinnable": "true", "requires": ["widget", "event-key", "substitute"]});

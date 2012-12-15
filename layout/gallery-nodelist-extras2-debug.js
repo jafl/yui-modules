@@ -1,4 +1,4 @@
-YUI.add('gallery-nodelist-extras2', function(Y) {
+YUI.add('gallery-nodelist-extras2', function (Y, NAME) {
 
 "use strict";
 
@@ -161,4 +161,4 @@ Y.mix(Y.NodeList.prototype,
 });
 
 
-}, '@VERSION@' ,{requires:['gallery-nodelist-extras','gallery-funcprog']});
+}, '@VERSION@', {"requires": ["gallery-nodelist-extras", "gallery-funcprog"], "optional": [""]});

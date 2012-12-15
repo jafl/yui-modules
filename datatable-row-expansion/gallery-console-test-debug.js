@@ -1,4 +1,4 @@
-YUI.add('gallery-console-test', function(Y) {
+YUI.add('gallery-console-test', function (Y, NAME) {
 
 "use strict";
 
@@ -120,4 +120,4 @@ Y.namespace("Plugin");
 Y.Plugin.ConsoleTest = ConsoleTest;
 
 
-}, '@VERSION@' ,{requires:['console','plugin','test'], skinnable:true});
+}, '@VERSION@', {"skinnable": "true", "requires": ["console", "plugin", "test"]});

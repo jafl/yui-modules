@@ -1,4 +1,4 @@
-YUI.add('gallery-scrollintoview', function(Y) {
+YUI.add('gallery-scrollintoview', function (Y, NAME) {
 
 "use strict";
 
@@ -133,4 +133,4 @@ Y.Node.prototype.scrollIntoView = function()
 };
 
 
-}, '@VERSION@' ,{requires:['gallery-dimensions','dom-screen']});
+}, '@VERSION@', {"requires": ["gallery-dimensions", "dom-screen"]});

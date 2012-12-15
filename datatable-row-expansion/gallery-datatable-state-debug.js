@@ -1,4 +1,4 @@
-YUI.add('gallery-datatable-state', function(Y) {
+YUI.add('gallery-datatable-state', function (Y, NAME) {
 
 "use strict";
 
@@ -290,4 +290,4 @@ Y.namespace("Plugin");
 Y.Plugin.DataTableState = State;
 
 
-}, '@VERSION@' ,{requires:['datatable','plugin','gallery-funcprog','gallery-node-optimizations']});
+}, '@VERSION@', {"requires": ["datatable", "plugin", "gallery-funcprog", "gallery-node-optimizations"]});

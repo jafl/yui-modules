@@ -1,4 +1,4 @@
-YUI.add('gallery-neon', function(Y) {
+YUI.add('gallery-neon', function (Y, NAME) {
 
 "use strict";
 
@@ -173,4 +173,4 @@ Y.namespace("Plugin");
 Y.Plugin.Neon = Neon;
 
 
-}, '@VERSION@' ,{requires:['node-style','node-pluginhost','anim-easing','plugin']});
+}, '@VERSION@', {"requires": ["node-style", "node-pluginhost", "anim-easing", "plugin"]});

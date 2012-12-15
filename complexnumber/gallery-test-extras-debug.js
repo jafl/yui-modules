@@ -1,4 +1,4 @@
-YUI.add('gallery-test-extras', function(Y) {
+YUI.add('gallery-test-extras', function (Y, NAME) {
 
 "use strict";
 
@@ -63,4 +63,4 @@ Y.mix(Y.Assert,
 });
 
 
-}, '@VERSION@' ,{requires:['test'], optional:['gallery-complexnumber']});
+}, '@VERSION@', {"requires": ["test"], "optional": ["gallery-complexnumber"]});

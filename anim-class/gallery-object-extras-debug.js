@@ -1,4 +1,4 @@
-YUI.add('gallery-object-extras', function(Y) {
+YUI.add('gallery-object-extras', function (Y, NAME) {
 
 "use strict";
 
@@ -377,4 +377,4 @@ Y.mix(Y.Array,
 });
 
 
-}, '@VERSION@' ,{optional:['gallery-funcprog']});
+}, '@VERSION@', {"requires": [""], "optional": ["gallery-funcprog"]});

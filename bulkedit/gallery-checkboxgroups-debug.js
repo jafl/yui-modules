@@ -1,4 +1,4 @@
-YUI.add('gallery-checkboxgroups', function(Y) {
+YUI.add('gallery-checkboxgroups', function (Y, NAME) {
 
 "use strict";
 
@@ -457,4 +457,4 @@ Y.extend(EnableIfAnyCheckboxGroup, CheckboxGroup,
 Y.EnableIfAnyCheckboxGroup = EnableIfAnyCheckboxGroup;
 
 
-}, '@VERSION@' ,{requires:['node-base']});
+}, '@VERSION@', {"requires": ["node-base"]});

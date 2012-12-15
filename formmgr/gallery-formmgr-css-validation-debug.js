@@ -1,4 +1,4 @@
-YUI.add('gallery-formmgr-css-validation', function(Y) {
+YUI.add('gallery-formmgr-css-validation', function (Y, NAME) {
 
 "use strict";
 
@@ -391,4 +391,4 @@ Y.FormManager.statusTakesPrecedence = function(
 };
 
 
-}, '@VERSION@' ,{requires:['substitute']});
+}, '@VERSION@', {"requires": ["substitute"]});

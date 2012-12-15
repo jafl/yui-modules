@@ -1,4 +1,4 @@
-YUI.add('gallery-funcprog', function(Y) {
+YUI.add('gallery-funcprog', function (Y, NAME) {
 
 "use strict";
 
@@ -292,4 +292,4 @@ Y.Array.reduceRight = Y.Lang._isNative(Array.prototype.reduceRight) ?
 	};
 
 
-}, '@VERSION@' ,{requires:['oop','array-extras','gallery-object-extras'], optional:['gallery-nodelist-extras2']});
+}, '@VERSION@', {"requires": ["oop", "array-extras", "gallery-object-extras"], "optional": ["gallery-nodelist-extras2"]});

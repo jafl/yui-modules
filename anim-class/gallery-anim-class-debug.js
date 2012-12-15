@@ -1,4 +1,4 @@
-YUI.add('gallery-anim-class', function(Y) {
+YUI.add('gallery-anim-class', function (Y, NAME) {
 
 "use strict";
 
@@ -213,4 +213,4 @@ Y.Anim.prototype._end = function()
 };
 
 
-}, '@VERSION@' ,{requires:['anim-base','node-style','gallery-funcprog']});
+}, '@VERSION@', {"requires": ["anim-base", "node-style", "gallery-funcprog"], "optional": [""]});
