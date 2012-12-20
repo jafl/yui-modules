@@ -323,7 +323,7 @@ function cleanContainer(
 
 	while (el.hasChildNodes())
 	{
-		el.removeChild(el.lastChild);
+		el.removeChild(el.get('lastChild'));
 	}
 }
 
