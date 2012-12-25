@@ -189,10 +189,10 @@ function(Y)
 		document.getElementById('allow-multiple').checked = vm.get('allowMultipleOpen');
 
 		vm.render('#accordion-test-vert-markup');
-		Y.on('click', onTitleClicked, '#accordion-test-vert-markup .my-title-vert', null, vm);
+		Y.delegate('click', onTitleClicked, '#accordion-test-vert-markup', '.my-title-vert', null, vm);
 
 		hm.render('#accordion-test-horiz-markup');
-		Y.on('click', onTitleClicked, '#accordion-test-horiz-markup .my-title-horiz', null, hm);
+		Y.delegate('click', onTitleClicked, '#accordion-test-horiz-markup', '.my-title-horiz', null, hm);
 
 		hm.set('width', Y.one('#accordion-test-horiz-markup').get('offsetWidth'));
 		Y.after('resize', function()
@@ -231,8 +231,6 @@ function(Y)
 		/* object */	a,
 		/* object */	s)
 	{
-		Y.on('click', onTitleClicked, s.title, null, a);
-
 		Y.on('click', function(type, a, el)
 		{
 			var i = a.findSection(el);

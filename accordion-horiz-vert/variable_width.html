@@ -253,12 +253,12 @@ function(Y)
 		]
 	});
 
+	Y.delegate('click', onTitleClicked, '#accordion-test-vert-js', '.my-title-vert', null, vjs);
+
 	vjs.after('render', function()
 	{
 		var box = this.get('contentBox');
 		box.all('.yui3-accordion-section').addClass('my-section-vert');
-
-		Y.on('click', onTitleClicked, '#accordion-test-vert-js .my-title-vert', null, vjs);
 	});
 
 	var hjs = new Y.Accordion(
@@ -279,13 +279,13 @@ function(Y)
 		]
 	});
 
+	Y.delegate('click', onTitleClicked, '#accordion-test-horiz-js', '.my-title-horiz', null, hjs);
+
 	hjs.after('render', function()
 	{
 		var box = this.get('contentBox');
 		box.all('.yui3-accordion-title').addClass('my-title-horiz');
 		box.all('.yui3-accordion-section').addClass('my-section-horiz');
-
-		Y.on('click', onTitleClicked, '#accordion-test-horiz-js .my-title-horiz', null, hjs);
 	});
 
 	var vm = new Y.Accordion(
@@ -294,10 +294,7 @@ function(Y)
 		replaceTitleContainer: false
 	});
 
-	vm.after('render', function()
-	{
-		Y.on('click', onTitleClicked, '#accordion-test-vert-markup .my-title-vert', null, vm);
-	});
+	Y.delegate('click', onTitleClicked, '#accordion-test-vert-markup', '.my-title-vert', null, vm);
 
 	var hm = new Y.Accordion(
 	{
@@ -306,10 +303,7 @@ function(Y)
 		animateRender: true
 	});
 
-	hm.after('render', function()
-	{
-		Y.on('click', onTitleClicked, '#accordion-test-horiz-markup .my-title-horiz', null, hm);
-	});
+	Y.delegate('click', onTitleClicked, '#accordion-test-horiz-markup', '.my-title-horiz', null, hm);
 
 	var accordions = [ vjs, hjs, vm, hm ];
 
@@ -383,8 +377,6 @@ function(Y)
 		/* object */	a,
 		/* object */	s)
 	{
-		Y.on('click', onTitleClicked, s.title, null, a);
-
 		Y.on('click', function(type, a, el)
 		{
 			var i = a.findSection(el);
