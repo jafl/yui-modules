@@ -506,9 +506,9 @@ Y.extend(QuickEdit, Y.Plugin.Base,
 //			this.saveEdit.push(col.editor);
 //			col.editor = null;
 
-			var qe  = col.quickEdit;
-			var qef = col.qeFormatter;
-			if (/*!col.hidden &&*/ (qe || qef))
+			var qe  = col.quickEdit,
+				qef = col.qeFormatter;
+			if (/* !col.hidden && */ (qe || qef))
 			{
 				var fn = null;
 				if (qe && Y.Lang.isFunction(qe.formatter))
