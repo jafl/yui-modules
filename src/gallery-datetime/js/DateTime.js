@@ -20,15 +20,15 @@ var blackout_min_seconds = -40,
  * 
  * @main gallery-datetime
  * @class DateTime
- * @extends Widget
+ * @extends Base
  * @constructor
  * @param config {Object}
  */
 
-function DateTime = function(config)
+function DateTime(config)
 {
 	DateTime.superclass.constructor.apply(this, arguments);
-};
+}
 
 DateTime.NAME = "datetime";
 
@@ -69,6 +69,48 @@ DateTime.ATTRS =
 	},
 
 	/**
+	 * Default date and time, used during initialization and by resetDateTime().
+	 * 
+	 * @attribute defaultDateTime
+	 * @type {Object}
+	 */
+	defaultDateTime:
+	{
+		setter: function(value)
+		{
+			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
+		}
+	},
+
+	/**
+	 * Minimum date and time.
+	 * 
+	 * @attribute minDateTime
+	 * @type {Object}
+	 */
+	minDateTime:
+	{
+		setter: function(value)
+		{
+			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
+		}
+	},
+
+	/**
+	 * Maximum date and time.
+	 * 
+	 * @attribute minDateTime
+	 * @type {Object}
+	 */
+	maxDateTime:
+	{
+		setter: function(value)
+		{
+			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
+		}
+	},
+
+	/**
 	 * Time value to use when no time is specified, e.g., in a blackout date.
 	 * 
 	 * @attribute blankTime
@@ -77,7 +119,7 @@ DateTime.ATTRS =
 	 */
 	blankTime:
 	{
-		value: { hour:0, minute:0 };
+		value:     { hour:0, minute:0 },
 		validator: function(value)
 		{
 			return (Y.Lang.isObject(value) &&
@@ -98,17 +140,17 @@ DateTime.ATTRS =
 	{
 		value:     [],
 		validator: Y.Lang.isArray,
-		setter: function(ranges)
+		setter:    function(ranges)
 		{
 			// store ranges in ascending order of start time
 
-			blackout   = [];
-			blank_time = this.get('blankTime');
+			var blackout   = [],
+				blank_time = this.get('blankTime');
 			for (var i=0; i<ranges.length; i++)
 			{
 				var r   = ranges[i];
-				r.start = DateTime.normalize(r.start, blank_time);
-				r.end   = DateTime.normalize(r.end,   blank_time);
+				r.start = Y.DateTimeUtils.normalize(r.start, blank_time);
+				r.end   = Y.DateTimeUtils.normalize(r.end,   blank_time);
 
 				r =
 				[
@@ -194,7 +236,7 @@ DateTime.ATTRS =
 	 */
 	blackoutSnapDirection:
 	{
-		default: +1,
+		'default': +1,
 		validator: function(value)
 		{
 			return (value == -1 || value == +1);
@@ -228,19 +270,17 @@ DateTime.ATTRS =
 		value:     'yui3-datetime-ping',
 		validator: Y.Lang.isString
 	}
-}
+};
 
-function handleCalendarSelection()
+/**
+ * @event limitsEnforced
+ * @description Fires after min/max and blackouts have been enforced.
+ */
+
+function checkEnforceDateTimeLimits()
 {
-	if (!this.ignore_date_selection)
+	if (!this.ignore_value_set)
 	{
-		var node = this.get('timeInput');
-		if (!node.get('value'))
-		{
-			node.set('value', utils.formatTime(this.get('blankTime')));
-		}
-
-		this.ping_input = this.should_ping_input;
 		enforceDateTimeLimits.call(this, 'same-day');
 	}
 }
@@ -248,16 +288,13 @@ function handleCalendarSelection()
 function enforceDateTimeLimits(
 	/* string */	algo)
 {
-	var date = this.calendar.getDate();
+	var date = this.getDateTime();
 	if (!date)
 	{
 		return;
 	}
+	date = date.date;
 
-	date.setHours(parseInt(this.hour_menu.value, 10));
-	date.setMinutes(parseInt(this.minute_menu.value, 10));
-	date.setSeconds(0);
-	date.setMilliseconds(0);
 	var orig_date = new Date(date.getTime());
 
 	// blackout ranges
@@ -305,9 +342,10 @@ function enforceDateTimeLimits(
 
 	// min/max last, shrink inward if blackout dates extend outside [min,max] range
 
-	if (this.min_date_time)
+	var min = this.get('minDateTime');
+	if (min)
 	{
-		var t = this.min_date_time.date.getTime();
+		var t = this.min.date.getTime();
 
 		if (this.blackout.length > 0)
 		{
@@ -326,9 +364,10 @@ function enforceDateTimeLimits(
 		}
 	}
 
-	if (this.max_date_time)
+	var max = this.get('maxDateTime');
+	if (max)
 	{
-		var t = this.max_date_time.date.getTime();
+		var t = this.max.date.getTime();
 
 		if (this.blackout.length > 0)
 		{
@@ -349,42 +388,32 @@ function enforceDateTimeLimits(
 
 	// update controls that changed
 
-	var pings = [];
-	if (this.ping_input)
-	{
-		pings.push(this.input);
-	}
+	this.ignore_value_set = true;
 
 	if (date.getFullYear() !== orig_date.getFullYear() ||
 		date.getMonth()    !== orig_date.getMonth()    ||
 		date.getDate()     !== orig_date.getDate())
 	{
-		this.calendar.setDate(date);
-		this.hour_menu.value   = date.getHours();
-		this.minute_menu.value = date.getMinutes();
-		ping.call(this, this.input, this.hour_menu, this.minute_menu);
+		this.get('dateInput').set('value', Y.DateTimeUtils.formatDate(date));
+		this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(date));
+		ping.call(this, 'dateInput', 'timeInput');
 	}
-	else if (date.getHours() !== orig_date.getHours())
+	else if (date.getHours() !== orig_date.getHours() ||
+			 date.getMinutes() !== orig_date.getMinutes())
 	{
-		this.hour_menu.value   = date.getHours();
-		this.minute_menu.value = date.getMinutes();
-		ping.apply(this, pings.concat(this.hour_menu, this.minute_menu));
+		this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(date));
+		ping.apply(this, 'timeInput');
 	}
-	else if (date.getMinutes() !== orig_date.getMinutes())
-	{
-		this.minute_menu.value = date.getMinutes();
-		ping.apply(this, pings.concat(this.minute_menu));
-	}
-	else if (pings.length > 0)
-	{
-		ping.apply(this, pings);
-	}
+
+	this.ignore_value_set = false;
 
 	this.fire('limitsEnforced');
 }
 
 function updateRendering()
 {
+	return;
+
 	if (this.disabled)
 	{
 		return;
@@ -522,7 +551,11 @@ function ping()
 		return;
 	}
 
-	var nodes = new Y.NodeList(arguments.length > 1 ? arguments : arguments[0]);
+	var nodes = new Y.NodeList(Y.reduce(arguments, [], function(list, name)
+	{
+		list.push(this.get(name));
+		return list;
+	}));
 
 	var ping_class = this.get('pingClass');
 	if (this.ping_task)
@@ -549,46 +582,49 @@ Y.extend(DateTime, Y.Base,
 		/* object/string */	container,
 		/* map */			config)
 	{
-		this.min_date_time = config.min_date_time;
-		if (this.min_date_time)
-		{
-			this.min_date_time = DateTime.normalize(this.min_date_time, this.blank_time);
-		}
-
-		this.max_date_time = config.max_date_time;
-		if (this.max_date_time)
-		{
-			this.max_date_time = DateTime.normalize(this.max_date_time, this.blank_time);
-		}
-
-		this.default_date_time = config.default_date_time;
-		if (this.default_date_time)
-		{
-			this.default_date_time = DateTime.normalize(this.default_date_time, this.blank_time);
-		}
-
-		// calendar
-
-		this.calendar = new YAHOO.SATG.Calendar(this.cal_div,
-		{
-			input:        this.input,
-			initial_date: config.default_date_time,
-			min_date:     config.min_date_time,
-			max_date:     config.max_date_time
-		});
-
-		// listen for changes
-
-		this.get('dateInput').on('change', enforceDateTimeLimits, this);
+		var date_input = this.get('dateInput');
+		date_input.on('change', enforceDateTimeLimits, this);
+		date_input.after('valueSet', checkEnforceDateTimeLimits, this);
 
 		var time_input = this.get('timeInput');
 		if (time_input)
 		{
 			time_input.on('change', enforceDateTimeLimits, this);
+			time_input.after('valueSet', checkEnforceDateTimeLimits, this);
 		}
 		else
 		{
-			this.set('timeInput', Y.Node.create('<input type="hidden"></input>'));
+			time_input = Y.Node.create('<input type="hidden"></input>');
+			this.set('timeInput', time_input);
+		}
+
+		var default_date_time = this.get('defaultDateTime');
+		if (default_date_time)
+		{
+			date_input.set('value', Y.DateTimeUtils.formatDate(default_date_time));
+			time_input.set('value', Y.DateTimeUtils.formatTime(default_date_time));
+		}
+
+		if (date_input.calendarSync)
+		{
+			this.calendar = date_input.calendarSync.get('calendar');
+
+			if (this.calendar && default_date_time)
+			{
+				this.calendar.set('date', default_date_time.date);
+			}
+
+			var t = this.get('minDateTime');
+			if (this.calendar && t)
+			{
+				this.calendar.set('minimumDate', t.date);
+			}
+
+			t = this.get('maxDateTime');
+			if (this.calendar && t)
+			{
+				this.calendar.set('maximumDate', t.date);
+			}
 		}
 
 		// black-out dates
@@ -599,36 +635,55 @@ Y.extend(DateTime, Y.Base,
 
 	destroy: function()
 	{
-		this.calendar.destroy();
 	},
 
+	/**
+	 * Get the currently selected date and time.
+	 * 
+	 * @return {Object} year,month,day,hour,minute,date,date_str,time_str
+	 */
 	getDateTime: function()
 	{
-		var date = this.calendar.getDate();
-		if (!date)
+		try
+		{
+			var date = Y.DateTimeUtils.parseDate(this.get('dateInput').get('value'));
+			if (!date)
+			{
+				return false;
+			}
+		}
+		catch (e)
 		{
 			return false;
 		}
 
-		var result =
+		var time_input = this.get('timeInput');
+		if (time_input)
 		{
-			year:   date.getFullYear(),
-			month:  date.getMonth()+1,
-			day:    date.getDate(),
-
-			date_str: DateTime.formatDate(date)
-		};
-
-		if (!this.no_time)
+			try
+			{
+				var time = Y.DateTimeUtils.parseTime(time_input.get('value'));
+				if (!time)
+				{
+					return false;
+				}
+			}
+			catch (e)
+			{
+				return false;
+			}
+		}
+		else
 		{
-			result.hour     = parseInt(this.hour_menu.value, 10);
-			result.minute   = parseInt(this.minute_menu.value, 10);
-			result.time_str = DateTime.formatTime({ hour: this.hour_menu.value, minute: this.minute_menu.value });
+			var time = this.get('blankTime');
 		}
 
+		var result      = Y.DateTimeUtils.normalize(Y.mix(date, time));
+		result.date_str = Y.DateTimeUtils.formatDate(result);
+		result.time_str = Y.DateTimeUtils.formatTime(result);
 		return result;
 	},
-
+// TODO
 	setDateTime: function(
 		/* object */	date_time)
 	{
@@ -655,14 +710,14 @@ Y.extend(DateTime, Y.Base,
 
 		enforceDateTimeLimits.call(this);
 	},
-
+// TODO
 	resetDateTime: function()
 	{
 		if (this.default_date_time)
 		{
-			this.ignore_date_selection = true;
+			this.ignore_value_set = true;
 			this.calendar.setDate(this.default_date_time);
-			this.ignore_date_selection = false;
+			this.ignore_value_set = false;
 
 			this.hour_menu.value   = this.default_date_time.hour;
 			this.minute_menu.value = this.default_date_time.minute;
@@ -680,89 +735,58 @@ Y.extend(DateTime, Y.Base,
 
 	clearDateTime: function()
 	{
-		this.calendar.clearDate();
-		this.hour_menu.selectedIndex   = -1;
-		this.minute_menu.selectedIndex = -1;
-	},
+		this.get('dateInput').set('value', '');
 
-	setDefaultDateTime: function(
-		/* object */	date_time)
-	{
-		this.default_date_time = date_time;
-		if (this.default_date_time)
+		var time_input = this.get('timeInput');
+		if (time_input)
 		{
-			this.default_date_time = DateTime.normalize(this.default_date_time, this.blank_time);
+			time_input.set('value', '');
 		}
 	},
-
-	clearDefaultDateTime: function()
-	{
-		this.default_date_time = null;
-	},
-
+// TODO: onMinDateTimeChange
 	setMinDateTime: function(
 		/* object */	min)
 	{
 		if (min)
 		{
-			min = DateTime.normalize(min, this.blank_time);
+			min = Y.DateTimeUtils.normalize(min, this.blank_time);
 
 			if (!this.min_date_time ||
 				this.min_date_time.date.getTime() != min.date.getTime())
 			{
 				this.min_date_time = min;
-				this.should_ping_input = true;
-				this.calendar.setMinDate(this.min_date_time);
 				enforceDateTimeLimits.call(this);
-				this.should_ping_input = this.ping_input = false;
+				this.calendar.setMinDate(this.min_date_time);
 
 				updateRendering.call(this);
 			}
 		}
-		else
-		{
-			this.clearMinDateTime();
-		}
-	},
-
-	clearMinDateTime: function()
-	{
-		if (this.min_date_time)
+		else if (this.min_date_time)
 		{
 			this.min_date_time = null;
 			this.calendar.clearMinDate();
 			updateRendering.call(this);
 		}
 	},
-
+// TODO: onMaxDateTimeChange
 	setMaxDateTime: function(
 		/* object */	max)
 	{
 		if (max)
 		{
-			max = DateTime.normalize(max, this.blank_time);
+			max = Y.DateTimeUtils.normalize(max, this.blank_time);
 
 			if (!this.max_date_time ||
 				this.max_date_time.date.getTime() != max.date.getTime())
 			{
 				this.max_date_time = max;
-				this.should_ping_input = true;
-				this.calendar.setMaxDate(this.max_date_time);
 				enforceDateTimeLimits.call(this);
-				this.should_ping_input = this.ping_input = false;
+				this.calendar.setMaxDate(this.max_date_time);
 
 				updateRendering.call(this);
 			}
 		}
-		else
-		{
-			this.clearMaxDateTime();
-		}
-	},
-
-	clearMaxDateTime: function()
-	{
-		if (this.max_date_time)
+		else if (this.max_date_time)
 		{
 			this.max_date_time = null;
 			this.calendar.clearMaxDate();
@@ -770,3 +794,5 @@ Y.extend(DateTime, Y.Base,
 		}
 	}
 });
+
+Y.DateTime = DateTime;
