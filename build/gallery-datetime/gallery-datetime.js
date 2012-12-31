@@ -34,10 +34,9 @@ function DateTime(config)
 
 DateTime.NAME = "datetime";
 
-function isInputNode(n)
+function setNode(n)
 {
-	// allow Y.Node from a different sandbox
-	return n && n._node && n._node.tagName == 'INPUT';
+	return Y.one(n) || Attribute.INVALID_VALUE;
 }
 
 DateTime.ATTRS =
@@ -47,13 +46,13 @@ DateTime.ATTRS =
 	 * gallery-input-calendar-sync.
 	 * 
 	 * @attribute dateInput
-	 * @type {Node}
+	 * @type {Node|String}
 	 * @required
 	 * @writeonce
 	 */
 	dateInput:
 	{
-		validator: isInputNode,
+		setter:    setNode,
 		writeOnce: true
 	},
 
@@ -61,12 +60,12 @@ DateTime.ATTRS =
 	 * Time input field to use.  Can be enhanced with gallery-timepicker.
 	 * 
 	 * @attribute timeInput
-	 * @type {Node}
+	 * @type {Node|String}
 	 * @writeonce
 	 */
 	timeInput:
 	{
-		validator: isInputNode,
+		setter:    setNode,
 		writeOnce: true
 	},
 
@@ -132,7 +131,7 @@ DateTime.ATTRS =
 
 	/**
 	 * Blackout ranges, specified as a list of objects, each defining start
-	 * and end.
+	 * and end.  The data is overwritten, so this is a write-only value.
 	 * 
 	 * @attribute blackout
 	 * @type {Array}
@@ -144,9 +143,11 @@ DateTime.ATTRS =
 		validator: Y.Lang.isArray,
 		setter:    function(ranges)
 		{
+			ranges = ranges || [];
+
 			// store ranges in ascending order of start time
 
-			var blackout   = [],
+			var blackouts  = [],
 				blank_time = this.get('blankTime');
 			for (var i=0; i<ranges.length; i++)
 			{
@@ -165,30 +166,30 @@ DateTime.ATTRS =
 				];
 
 				var inserted = false;
-				for (var j=0; j<blackout.length; j++)
+				for (var j=0; j<blackouts.length; j++)
 				{
-					var r1 = blackout[j];
+					var r1 = blackouts[j];
 					if (r[0] <= r1[0])
 					{
 						if (j > 0 &&
-							r[0] <  blackout[j-1][1] &&
-							r[1] <= blackout[j-1][1])
+							r[0] <  blackouts[j-1][1] &&
+							r[1] <= blackouts[j-1][1])
 						{
 							// covered by prev
 						}
 						else if (j > 0 &&
-								 r[0] - 60000 < blackout[j-1][1] &&
+								 r[0] - 60000 < blackouts[j-1][1] &&
 								 r1[0] < r[1] + 60000)
 						{
 							// overlaps prev and next
-							r = [ blackout[j-1][0], r[1] ];
-							blackout.splice(j-1, 2, r);
+							r = [ blackouts[j-1][0], r[1] ];
+							blackouts.splice(j-1, 2, r);
 						}
 						else if (j > 0 &&
-								 r[0] - 60000 < blackout[j-1][1])
+								 r[0] - 60000 < blackouts[j-1][1])
 						{
 							// overlaps prev
-							blackout[j-1][1] = r[1];
+							blackouts[j-1][1] = r[1];
 						}
 						else if (r1[0] < r[1] + 60000)
 						{
@@ -197,51 +198,52 @@ DateTime.ATTRS =
 						}
 						else
 						{
-							blackout.splice(j, 0, r);
+							blackouts.splice(j, 0, r);
 						}
 						inserted = true;
 						break;
 					}
 				}
 
-				// j == blackout.length
+				// j == blackouts.length
 
 				if (!inserted && j > 0 &&
-					r[0] <  blackout[j-1][1] &&
-					r[1] <= blackout[j-1][1])
+					r[0] <  blackouts[j-1][1] &&
+					r[1] <= blackouts[j-1][1])
 				{
 					// covered by prev
 				}
 				else if (!inserted && j > 0 &&
-						 r[0] - 60000 < blackout[j-1][1])
+						 r[0] - 60000 < blackouts[j-1][1])
 				{
 					// overlaps prev
-					blackout[j-1][1] = r[1];
+					blackouts[j-1][1] = r[1];
 				}
 				else if (!inserted)
 				{
-					blackout.push(r);
+					blackouts.push(r);
 				}
 			}
 
-			return blackout;
+			return blackouts;
 		}
 	},
 
 	/**
 	 * The direction to push the selected date and time when the user
-	 * selects a day with partial blackout.
+	 * selects a day with partial blackout.  The default value of zero
+	 * means go to the nearest available time.
 	 *
 	 * @attribute blackoutSnapDirection
-	 * @type {-1,+1}
-	 * @default +1
+	 * @type {-1,0,+1}
+	 * @default 0
 	 */
 	blackoutSnapDirection:
 	{
-		'default': +1,
+		value:     0,
 		validator: function(value)
 		{
-			return (value == -1 || value == +1);
+			return (value == -1 || value === 0 || value == +1);
 		}
 	},
 
@@ -252,11 +254,11 @@ DateTime.ATTRS =
 	 * 
 	 * @attribute pingDuration
 	 * @type {Number}
-	 * @default 2
+	 * @default 2000
 	 */
 	pingDuration:
 	{
-		value:     2,
+		value:     2000,
 		validator: Y.Lang.isNumber
 	},
 
@@ -301,35 +303,33 @@ function enforceDateTimeLimits(
 
 	// blackout ranges
 
-	if (this.blackout.length > 0)
+	var blackouts = this.get('blackouts');
+	if (blackouts.length > 0)
 	{
 		var t      = date.getTime(),
 			orig_t = t,
-			snap   = this.get('blackoutSnapDirection');
+			snap   = algo == 'same-day' ? 0 : this.get('blackoutSnapDirection');
 
-		for (var i=0; i<this.blackout.length; i++)
+		for (var i=0; i<blackouts.length; i++)
 		{
-			var blackout = this.blackout[i];
+			var blackout = blackouts[i];
 			if (blackout[0] < t && t < blackout[1])
 			{
 				if (snap > 0)
 				{
 					t = blackout[1] + 60000;
 				}
-				else
+				else if (snap < 0)
 				{
 					t = blackout[0];
 				}
-
-				if (algo == 'same-day')
+				else if (t - blackout[0] < blackout[1] - t)
 				{
-					var tmp = new Date(t);
-					if (tmp.getDate()     != date.getDate()  ||
-						tmp.getMonth()    != date.getMonth() ||
-						tmp.getFullYear() != date.getFullYear())
-					{
-						t = snap > 0 ? blackout[0] : blackout[1] + 60000;
-					}
+					t = blackout[0];
+				}
+				else
+				{
+					t = blackout[1] + 60000;
 				}
 
 				break;
@@ -347,15 +347,15 @@ function enforceDateTimeLimits(
 	var min = this.get('minDateTime');
 	if (min)
 	{
-		var t = this.min.date.getTime();
+		var t = min.date.getTime();
 
-		if (this.blackout.length > 0)
+		if (blackouts.length > 0)
 		{
 			var orig_t = t;
 			var i      = 0;
-			while (i < this.blackout.length && this.blackout[i][0] < t)
+			while (i < blackouts.length && blackouts[i][0] < t)
 			{
-				t = Math.max(orig_t, this.blackout[i][1]);
+				t = Math.max(orig_t, blackouts[i][1]);
 				i++;
 			}
 		}
@@ -369,15 +369,15 @@ function enforceDateTimeLimits(
 	var max = this.get('maxDateTime');
 	if (max)
 	{
-		var t = this.max.date.getTime();
+		var t = max.date.getTime();
 
-		if (this.blackout.length > 0)
+		if (blackouts.length > 0)
 		{
 			var orig_t = t;
-			var i      = this.blackout.length - 1;
-			while (i >= 0 && t < this.blackout[i][1])
+			var i      = blackouts.length - 1;
+			while (i >= 0 && t < blackouts[i][1])
 			{
-				t = Math.min(orig_t, this.blackout[i][0]);
+				t = Math.min(orig_t, blackouts[i][0]);
 				i--;
 			}
 		}
@@ -396,15 +396,15 @@ function enforceDateTimeLimits(
 		date.getMonth()    !== orig_date.getMonth()    ||
 		date.getDate()     !== orig_date.getDate())
 	{
-		this.get('dateInput').set('value', Y.DateTimeUtils.formatDate(date));
-		this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(date));
-		ping.call(this, 'dateInput', 'timeInput');
+		var timer       = getEnforceTimer.call(this);
+		timer.dateInput = Y.DateTimeUtils.formatDate(date);
+		timer.timeInput = Y.DateTimeUtils.formatTime(date);
 	}
 	else if (date.getHours() !== orig_date.getHours() ||
 			 date.getMinutes() !== orig_date.getMinutes())
 	{
-		this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(date));
-		ping.apply(this, 'timeInput');
+		var timer       = getEnforceTimer.call(this);
+		timer.timeInput = Y.DateTimeUtils.formatTime(date);
 	}
 
 	this.ignore_value_set = false;
@@ -412,24 +412,84 @@ function enforceDateTimeLimits(
 	this.fire('limitsEnforced');
 }
 
+function getEnforceTimer()
+{
+	if (!this.enforce_timer)
+	{
+		this.enforce_timer = Y.later(0, this, function()
+		{
+			var ping_list = [];
+
+			Y.each(['dateInput', 'timeInput'], function(name)
+			{
+				if (this.enforce_timer[name])
+				{
+					this.get(name).set('value', this.enforce_timer[name]);
+					ping_list.push(name);
+				}
+			},
+			this);
+
+			ping.apply(this, ping_list);
+			this.enforce_timer = null;
+		});
+	}
+
+	return this.enforce_timer;
+}
+
 function updateRendering()
 {
-	return;
-
-	if (this.disabled)
+	if (!this.calendar)
 	{
 		return;
 	}
 
-	this.calendar.calendar.removeRenderers();
+	function mkpath()
+	{
+		var obj = rules;
+		Y.each(arguments, function(key)
+		{
+			if (!obj[key])
+			{
+				obj[key] = {};
+			}
+			obj = obj[key];
+		});
+	}
 
-	var blackouts = this.blackout.slice(0);
+	function set(date, type)
+	{
+		var y = date.getFullYear(),
+			m = date.getMonth(),
+			d = date.getDate();
 
-	if (this.min_date_time)
+		mkpath(y, m, d);
+
+		rules[y][m][d] = type;
+	}
+
+	function disableRemaining(date, delta)
+	{
+		var d = new Date(date);
+		d.setDate(d.getDate() + delta);
+
+		while (d.getMonth() == date.getMonth())
+		{
+			set(d, 'disabled');
+			d.setDate(d.getDate() + delta);
+		}
+	}
+
+	var blackouts = this.get('blackouts').slice(0),
+		rules     = {};
+
+	var min = this.get('minDateTime');
+	if (min)
 	{
 		if (blackouts.length > 0)
 		{
-			var t       = this.min_date_time.date.getTime();
+			var t       = min.date.getTime();
 			var changed = false;
 			for (var i=0; i < blackouts.length; i++)
 			{
@@ -453,19 +513,20 @@ function updateRendering()
 		}
 
 		if (!changed &&
-			(this.min_date_time.hour > 0 || this.min_date_time.minute > 0))
+			(min.hour > 0 || min.minute > 0))
 		{
-			this.calendar.calendar.addRenderer(
-				DateTime.formatDate(this.min_date_time.date),
-				cellRenderer('satg-partial-blackout'));
+			set(min.date, 'partial');
 		}
+
+		disableRemaining(min.date, -1);
 	}
 
-	if (this.max_date_time)
+	var max = this.get('maxDateTime');
+	if (max)
 	{
 		if (blackouts.length > 0)
 		{
-			var t       = this.max_date_time.date.getTime();
+			var t       = max.date.getTime();
 			var changed = false;
 			for (var i=blackouts.length-1; i>=0; i--)
 			{
@@ -488,12 +549,12 @@ function updateRendering()
 		}
 
 		if (!changed &&
-			(this.max_date_time.hour < 23 || this.max_date_time.minute < 59))
+			(max.hour < 23 || max.minute < 59))
 		{
-			this.calendar.calendar.addRenderer(
-				DateTime.formatDate(this.max_date_time.date),
-				cellRenderer('satg-partial-blackout'));
+			set(max.date, 'partial');
 		}
+
+		disableRemaining(max.date, +1);
 	}
 
 	for (var i=0; i<blackouts.length; i++)
@@ -504,47 +565,44 @@ function updateRendering()
 
 		if (start.getHours() > 0 || start.getMinutes() > 0)
 		{
-			this.calendar.calendar.addRenderer(
-				DateTime.formatDate(start),
-				cellRenderer('satg-partial-blackout'));
+			set(start, 'partial');
 			start.setDate(start.getDate()+1);
 			start.setHours(0);
 		}
 
 		if (end.getHours() < 23 || end.getMinutes() < 59)
 		{
-			this.calendar.calendar.addRenderer(
-				DateTime.formatDate(end),
-				cellRenderer('satg-partial-blackout'));
+			set(end, 'partial');
 			end.setDate(end.getDate()-1);
 			end.setHours(23);
 		}
 
-		if (start.getTime() < end.getTime())
+		while (start.getTime() < end.getTime())
 		{
-			var s = DateTime.formatDate(start),
-				e = DateTime.formatDate(end);
-			if (s != e)
-			{
-				s += YAHOO.SATG.Locale.Calendar.YUI_DATE_RANGE_DELIMITER + e;
-			}
-
-			this.calendar.calendar.addRenderer(
-				s, this.calendar.calendar.renderOutOfBoundsDate);
+			set(start, 'disabled');
+			start.setDate(start.getDate()+1);
 		}
 	}
 
-	this.calendar.render();
+	this.calendar.set('customRenderer',
+	{
+		rules:          rules,
+		filterFunction: renderFilter
+	});
 }
 
-function cellRenderer(
-	/* string */ css)
+function renderFilter(date, node, rules)
 {
-	return function(date, cell)
+	if (Y.Array.indexOf(rules, 'partial') >= 0)
 	{
-		Dom.addClass(cell, css);
-	};
+		node.addClass('yui3-datetime-partial');
+	}
+	else if (Y.Array.indexOf(rules, 'disabled') >= 0)
+	{
+		node.addClass('yui3-calendar-selection-disabled');
+	}
 }
+
 function ping()
 {
 	var duration = this.get('pingDuration');
@@ -557,7 +615,8 @@ function ping()
 	{
 		list.push(this.get(name));
 		return list;
-	}));
+	},
+	this));
 
 	var ping_class = this.get('pingClass');
 	if (this.ping_task)
@@ -569,7 +628,7 @@ function ping()
 
 	nodes.addClass(ping_class);
 
-	this.ping_task = Y.later(this.get('pingDuration'), this, function()
+	this.ping_task = Y.later(duration, this, function()
 	{
 		this.ping_task = null;
 		nodes.removeClass(ping_class);
@@ -598,13 +657,18 @@ Y.extend(DateTime, Y.Base,
 		{
 			time_input = Y.Node.create('<input type="hidden"></input>');
 			this.set('timeInput', time_input);
+			time_input.set('value', Y.DateTimeUtils.formatTime(this.get('blankTime')));
+			var created_time_input = true;
 		}
 
 		var default_date_time = this.get('defaultDateTime');
 		if (default_date_time)
 		{
 			date_input.set('value', Y.DateTimeUtils.formatDate(default_date_time));
-			time_input.set('value', Y.DateTimeUtils.formatTime(default_date_time));
+			if (!created_time_input)
+			{
+				time_input.set('value', Y.DateTimeUtils.formatTime(default_date_time));
+			}
 		}
 
 		if (date_input.calendarSync)
@@ -659,25 +723,17 @@ Y.extend(DateTime, Y.Base,
 			return false;
 		}
 
-		var time_input = this.get('timeInput');
-		if (time_input)
+		try
 		{
-			try
-			{
-				var time = Y.DateTimeUtils.parseTime(time_input.get('value'));
-				if (!time)
-				{
-					return false;
-				}
-			}
-			catch (e)
+			var time = Y.DateTimeUtils.parseTime(this.get('timeInput').get('value'));
+			if (!time)
 			{
 				return false;
 			}
 		}
-		else
+		catch (e)
 		{
-			var time = this.get('blankTime');
+			return false;
 		}
 
 		var result      = Y.DateTimeUtils.normalize(Y.mix(date, time));
@@ -717,9 +773,7 @@ Y.extend(DateTime, Y.Base,
 	{
 		if (this.default_date_time)
 		{
-			this.ignore_value_set = true;
 			this.calendar.setDate(this.default_date_time);
-			this.ignore_value_set = false;
 
 			this.hour_menu.value   = this.default_date_time.hour;
 			this.minute_menu.value = this.default_date_time.minute;
@@ -801,6 +855,7 @@ Y.DateTime = DateTime;
 
 
 }, '@VERSION@', {
+    "skinnable": "true",
     "requires": [
         "base",
         "gallery-datetime-utils",

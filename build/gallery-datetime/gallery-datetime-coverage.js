@@ -26,11 +26,11 @@ _yuitest_coverage["build/gallery-datetime/gallery-datetime.js"] = {
     path: "build/gallery-datetime/gallery-datetime.js",
     code: []
 };
-_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].code=["YUI.add('gallery-datetime', function (Y, NAME) {","","\"use strict\";","","var blackout_min_seconds = -40,","	blackout_max_seconds = +40,","	change_after_focus   = (0 < Y.UA.ie);","","/**"," * @module gallery-datetime"," */","","/**********************************************************************"," * Manages a date input field and an optional time field.  Calendars and"," * time selection widgets can be attached to these fields, but will not be"," * managed by this class."," * "," * Date/time values can be specified as either a Date object or an object"," * specifying year,month,day (all 1-based) or date_str and optionally"," * hour,minute or time_str.  Individual values take precedence over string"," * values.  Time resolution is in minutes."," * "," * @main gallery-datetime"," * @class DateTime"," * @extends Base"," * @constructor"," * @param config {Object}"," */","","function DateTime(config)","{","	DateTime.superclass.constructor.apply(this, arguments);","}","","DateTime.NAME = \"datetime\";","","function isInputNode(n)","{","	// allow Y.Node from a different sandbox","	return n && n._node && n._node.tagName == 'INPUT';","}","","DateTime.ATTRS =","{","	/**","	 * Date input field to use.  Can be augmented with a Calendar via","	 * gallery-input-calendar-sync.","	 * ","	 * @attribute dateInput","	 * @type {Node}","	 * @required","	 * @writeonce","	 */","	dateInput:","	{","		validator: isInputNode,","		writeOnce: true","	},","","	/**","	 * Time input field to use.  Can be enhanced with gallery-timepicker.","	 * ","	 * @attribute timeInput","	 * @type {Node}","	 * @writeonce","	 */","	timeInput:","	{","		validator: isInputNode,","		writeOnce: true","	},","","	/**","	 * Default date and time, used during initialization and by resetDateTime().","	 * ","	 * @attribute defaultDateTime","	 * @type {Object}","	 */","	defaultDateTime:","	{","		setter: function(value)","		{","			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;","		}","	},","","	/**","	 * Minimum date and time.","	 * ","	 * @attribute minDateTime","	 * @type {Object}","	 */","	minDateTime:","	{","		setter: function(value)","		{","			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;","		}","	},","","	/**","	 * Maximum date and time.","	 * ","	 * @attribute minDateTime","	 * @type {Object}","	 */","	maxDateTime:","	{","		setter: function(value)","		{","			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;","		}","	},","","	/**","	 * Time value to use when no time is specified, e.g., in a blackout date.","	 * ","	 * @attribute blankTime","	 * @type {Object}","	 * @default { hour:0, minute:0 }","	 */","	blankTime:","	{","		value:     { hour:0, minute:0 },","		validator: function(value)","		{","			return (Y.Lang.isObject(value) &&","					Y.Lang.isNumber(value.hour) &&","					Y.Lang.isNumber(value.minute));","		}","	},","","	/**","	 * Blackout ranges, specified as a list of objects, each defining start","	 * and end.","	 * ","	 * @attribute blackout","	 * @type {Array}","	 * @default []","	 */","	blackouts:","	{","		value:     [],","		validator: Y.Lang.isArray,","		setter:    function(ranges)","		{","			// store ranges in ascending order of start time","","			var blackout   = [],","				blank_time = this.get('blankTime');","			for (var i=0; i<ranges.length; i++)","			{","				var r   = ranges[i];","				r.start = Y.DateTimeUtils.normalize(r.start, blank_time);","				r.end   = Y.DateTimeUtils.normalize(r.end,   blank_time);","","				r =","				[","					new Date(r.start.year, r.start.month-1, r.start.day,","							 r.start.hour, r.start.minute, blackout_min_seconds)","							 .getTime(),","					new Date(r.end.year, r.end.month-1, r.end.day,","							 r.end.hour, r.end.minute, blackout_max_seconds)","							 .getTime()","				];","","				var inserted = false;","				for (var j=0; j<blackout.length; j++)","				{","					var r1 = blackout[j];","					if (r[0] <= r1[0])","					{","						if (j > 0 &&","							r[0] <  blackout[j-1][1] &&","							r[1] <= blackout[j-1][1])","						{","							// covered by prev","						}","						else if (j > 0 &&","								 r[0] - 60000 < blackout[j-1][1] &&","								 r1[0] < r[1] + 60000)","						{","							// overlaps prev and next","							r = [ blackout[j-1][0], r[1] ];","							blackout.splice(j-1, 2, r);","						}","						else if (j > 0 &&","								 r[0] - 60000 < blackout[j-1][1])","						{","							// overlaps prev","							blackout[j-1][1] = r[1];","						}","						else if (r1[0] < r[1] + 60000)","						{","							// overlaps next","							r1[0] = r[0];","						}","						else","						{","							blackout.splice(j, 0, r);","						}","						inserted = true;","						break;","					}","				}","","				// j == blackout.length","","				if (!inserted && j > 0 &&","					r[0] <  blackout[j-1][1] &&","					r[1] <= blackout[j-1][1])","				{","					// covered by prev","				}","				else if (!inserted && j > 0 &&","						 r[0] - 60000 < blackout[j-1][1])","				{","					// overlaps prev","					blackout[j-1][1] = r[1];","				}","				else if (!inserted)","				{","					blackout.push(r);","				}","			}","","			return blackout;","		}","	},","","	/**","	 * The direction to push the selected date and time when the user","	 * selects a day with partial blackout.","	 *","	 * @attribute blackoutSnapDirection","	 * @type {-1,+1}","	 * @default +1","	 */","	blackoutSnapDirection:","	{","		'default': +1,","		validator: function(value)","		{","			return (value == -1 || value == +1);","		}","	},","","	/**","	 * Duration of visual ping in milliseconds when the value of an input","	 * field is modified because of a min/max or blackout restriction.  Set","	 * to zero to disable.","	 * ","	 * @attribute pingDuration","	 * @type {Number}","	 * @default 2","	 */","	pingDuration:","	{","		value:     2,","		validator: Y.Lang.isNumber","	},","","	/**","	 * CSS class applied to input field when it is pinged.","	 * ","	 * @attribute pingClass","	 * @type {String}","	 * @default \"yui3-datetime-ping\"","	 */","	pingClass:","	{","		value:     'yui3-datetime-ping',","		validator: Y.Lang.isString","	}","};","","/**"," * @event limitsEnforced"," * @description Fires after min/max and blackouts have been enforced."," */","","function checkEnforceDateTimeLimits()","{","	if (!this.ignore_value_set)","	{","		enforceDateTimeLimits.call(this, 'same-day');","	}","}","","function enforceDateTimeLimits(","	/* string */	algo)","{","	var date = this.getDateTime();","	if (!date)","	{","		return;","	}","	date = date.date;","","	var orig_date = new Date(date.getTime());","","	// blackout ranges","","	if (this.blackout.length > 0)","	{","		var t      = date.getTime(),","			orig_t = t,","			snap   = this.get('blackoutSnapDirection');","","		for (var i=0; i<this.blackout.length; i++)","		{","			var blackout = this.blackout[i];","			if (blackout[0] < t && t < blackout[1])","			{","				if (snap > 0)","				{","					t = blackout[1] + 60000;","				}","				else","				{","					t = blackout[0];","				}","","				if (algo == 'same-day')","				{","					var tmp = new Date(t);","					if (tmp.getDate()     != date.getDate()  ||","						tmp.getMonth()    != date.getMonth() ||","						tmp.getFullYear() != date.getFullYear())","					{","						t = snap > 0 ? blackout[0] : blackout[1] + 60000;","					}","				}","","				break;","			}","		}","","		if (t != orig_t)","		{","			date = new Date(t);","		}","	}","","	// min/max last, shrink inward if blackout dates extend outside [min,max] range","","	var min = this.get('minDateTime');","	if (min)","	{","		var t = this.min.date.getTime();","","		if (this.blackout.length > 0)","		{","			var orig_t = t;","			var i      = 0;","			while (i < this.blackout.length && this.blackout[i][0] < t)","			{","				t = Math.max(orig_t, this.blackout[i][1]);","				i++;","			}","		}","","		if (date.getTime() < t)","		{","			date = new Date(t);","		}","	}","","	var max = this.get('maxDateTime');","	if (max)","	{","		var t = this.max.date.getTime();","","		if (this.blackout.length > 0)","		{","			var orig_t = t;","			var i      = this.blackout.length - 1;","			while (i >= 0 && t < this.blackout[i][1])","			{","				t = Math.min(orig_t, this.blackout[i][0]);","				i--;","			}","		}","","		if (t < date.getTime())","		{","			date = new Date(t);","		}","	}","","	// update controls that changed","","	this.ignore_value_set = true;","","	if (date.getFullYear() !== orig_date.getFullYear() ||","		date.getMonth()    !== orig_date.getMonth()    ||","		date.getDate()     !== orig_date.getDate())","	{","		this.get('dateInput').set('value', Y.DateTimeUtils.formatDate(date));","		this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(date));","		ping.call(this, 'dateInput', 'timeInput');","	}","	else if (date.getHours() !== orig_date.getHours() ||","			 date.getMinutes() !== orig_date.getMinutes())","	{","		this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(date));","		ping.apply(this, 'timeInput');","	}","","	this.ignore_value_set = false;","","	this.fire('limitsEnforced');","}","","function updateRendering()","{","	return;","","	if (this.disabled)","	{","		return;","	}","","	this.calendar.calendar.removeRenderers();","","	var blackouts = this.blackout.slice(0);","","	if (this.min_date_time)","	{","		if (blackouts.length > 0)","		{","			var t       = this.min_date_time.date.getTime();","			var changed = false;","			for (var i=0; i < blackouts.length; i++)","			{","				var blackout = blackouts[i];","				if (blackout[1] <= t)","				{","					blackouts.shift();","					i--;","				}","				else if (blackout[0] < t)","				{","					var start = new Date(blackout[0]);","					start.setHours(0);","					start.setMinutes(0);","					start.setSeconds(blackout_min_seconds);","					blackouts[i] = [ start.getTime(), blackout[1] ];","					changed      = true;","					break;","				}","			}","		}","","		if (!changed &&","			(this.min_date_time.hour > 0 || this.min_date_time.minute > 0))","		{","			this.calendar.calendar.addRenderer(","				DateTime.formatDate(this.min_date_time.date),","				cellRenderer('satg-partial-blackout'));","		}","	}","","	if (this.max_date_time)","	{","		if (blackouts.length > 0)","		{","			var t       = this.max_date_time.date.getTime();","			var changed = false;","			for (var i=blackouts.length-1; i>=0; i--)","			{","				var blackout = blackouts[i];","				if (t <= blackout[0])","				{","					blackouts.pop();","				}","				else if (t < blackout[1])","				{","					var end = new Date(blackout[1]);","					end.setHours(23);","					end.setMinutes(59);","					end.setSeconds(blackout_max_seconds);","					blackouts[i] = [ blackout[0], end.getTime() ];","					changed      = true;","					break;","				}","			}","		}","","		if (!changed &&","			(this.max_date_time.hour < 23 || this.max_date_time.minute < 59))","		{","			this.calendar.calendar.addRenderer(","				DateTime.formatDate(this.max_date_time.date),","				cellRenderer('satg-partial-blackout'));","		}","	}","","	for (var i=0; i<blackouts.length; i++)","	{","		var blackout = blackouts[i];","		var start    = new Date(blackout[0] + blackout_max_seconds*1000);","		var end      = new Date(blackout[1] + blackout_min_seconds*1000);","","		if (start.getHours() > 0 || start.getMinutes() > 0)","		{","			this.calendar.calendar.addRenderer(","				DateTime.formatDate(start),","				cellRenderer('satg-partial-blackout'));","			start.setDate(start.getDate()+1);","			start.setHours(0);","		}","","		if (end.getHours() < 23 || end.getMinutes() < 59)","		{","			this.calendar.calendar.addRenderer(","				DateTime.formatDate(end),","				cellRenderer('satg-partial-blackout'));","			end.setDate(end.getDate()-1);","			end.setHours(23);","		}","","		if (start.getTime() < end.getTime())","		{","			var s = DateTime.formatDate(start),","				e = DateTime.formatDate(end);","			if (s != e)","			{","				s += YAHOO.SATG.Locale.Calendar.YUI_DATE_RANGE_DELIMITER + e;","			}","","			this.calendar.calendar.addRenderer(","				s, this.calendar.calendar.renderOutOfBoundsDate);","		}","	}","","	this.calendar.render();","}","","function cellRenderer(","	/* string */ css)","{","	return function(date, cell)","	{","		Dom.addClass(cell, css);","	};","}","function ping()","{","	var duration = this.get('pingDuration');","	if (duration <= 0)","	{","		return;","	}","","	var nodes = new Y.NodeList(Y.reduce(arguments, [], function(list, name)","	{","		list.push(this.get(name));","		return list;","	}));","","	var ping_class = this.get('pingClass');","	if (this.ping_task)","	{","		this.ping_task.nodes.removeClass(ping_class);","		this.ping_task.cancel();","		nodes = nodes.concat(this.ping_task.nodes);","	}","","	nodes.addClass(ping_class);","","	this.ping_task = Y.later(this.get('pingDuration'), this, function()","	{","		this.ping_task = null;","		nodes.removeClass(ping_class);","	});","","	this.ping_task.nodes = nodes;","}","","Y.extend(DateTime, Y.Base,","{","	initializer: function(","		/* object/string */	container,","		/* map */			config)","	{","		var date_input = this.get('dateInput');","		date_input.on('change', enforceDateTimeLimits, this);","		date_input.after('valueSet', checkEnforceDateTimeLimits, this);","","		var time_input = this.get('timeInput');","		if (time_input)","		{","			time_input.on('change', enforceDateTimeLimits, this);","			time_input.after('valueSet', checkEnforceDateTimeLimits, this);","		}","		else","		{","			time_input = Y.Node.create('<input type=\"hidden\"></input>');","			this.set('timeInput', time_input);","		}","","		var default_date_time = this.get('defaultDateTime');","		if (default_date_time)","		{","			date_input.set('value', Y.DateTimeUtils.formatDate(default_date_time));","			time_input.set('value', Y.DateTimeUtils.formatTime(default_date_time));","		}","","		if (date_input.calendarSync)","		{","			this.calendar = date_input.calendarSync.get('calendar');","","			if (this.calendar && default_date_time)","			{","				this.calendar.set('date', default_date_time.date);","			}","","			var t = this.get('minDateTime');","			if (this.calendar && t)","			{","				this.calendar.set('minimumDate', t.date);","			}","","			t = this.get('maxDateTime');","			if (this.calendar && t)","			{","				this.calendar.set('maximumDate', t.date);","			}","		}","","		// black-out dates","","		updateRendering.call(this);","		this.on('blackoutsChange', updateRendering);","	},","","	destroy: function()","	{","	},","","	/**","	 * Get the currently selected date and time.","	 * ","	 * @return {Object} year,month,day,hour,minute,date,date_str,time_str","	 */","	getDateTime: function()","	{","		try","		{","			var date = Y.DateTimeUtils.parseDate(this.get('dateInput').get('value'));","			if (!date)","			{","				return false;","			}","		}","		catch (e)","		{","			return false;","		}","","		var time_input = this.get('timeInput');","		if (time_input)","		{","			try","			{","				var time = Y.DateTimeUtils.parseTime(time_input.get('value'));","				if (!time)","				{","					return false;","				}","			}","			catch (e)","			{","				return false;","			}","		}","		else","		{","			var time = this.get('blankTime');","		}","","		var result      = Y.DateTimeUtils.normalize(Y.mix(date, time));","		result.date_str = Y.DateTimeUtils.formatDate(result);","		result.time_str = Y.DateTimeUtils.formatTime(result);","		return result;","	},","// TODO","	setDateTime: function(","		/* object */	date_time)","	{","		this.rb[ this.rb.length-1 ].checked = true;","","		this.calendar.setDate(date_time);","","		if (date_time instanceof Date)","		{","			this.hour_menu.value   = date_time.getHours();","			this.minute_menu.value = date_time.getMinutes();","		}","		else if (date_time.time_str)","		{","			var obj                = DateTime.parseTime(date_time.time_str);","			this.hour_menu.value   = obj.hour;","			this.minute_menu.value = obj.minute;","		}","		else","		{","			this.hour_menu.value   = date_time.hour;","			this.minute_menu.value = date_time.minute;","		}","","		enforceDateTimeLimits.call(this);","	},","// TODO","	resetDateTime: function()","	{","		if (this.default_date_time)","		{","			this.ignore_value_set = true;","			this.calendar.setDate(this.default_date_time);","			this.ignore_value_set = false;","","			this.hour_menu.value   = this.default_date_time.hour;","			this.minute_menu.value = this.default_date_time.minute;","		}","		else","		{","			this.calendar.clearDate();","","			this.hour_menu.value   = this.blank_time.hour;","			this.minute_menu.value = this.blank_time.minute;","		}","","		enforceDateTimeLimits.call(this);","	},","","	clearDateTime: function()","	{","		this.get('dateInput').set('value', '');","","		var time_input = this.get('timeInput');","		if (time_input)","		{","			time_input.set('value', '');","		}","	},","// TODO: onMinDateTimeChange","	setMinDateTime: function(","		/* object */	min)","	{","		if (min)","		{","			min = Y.DateTimeUtils.normalize(min, this.blank_time);","","			if (!this.min_date_time ||","				this.min_date_time.date.getTime() != min.date.getTime())","			{","				this.min_date_time = min;","				enforceDateTimeLimits.call(this);","				this.calendar.setMinDate(this.min_date_time);","","				updateRendering.call(this);","			}","		}","		else if (this.min_date_time)","		{","			this.min_date_time = null;","			this.calendar.clearMinDate();","			updateRendering.call(this);","		}","	},","// TODO: onMaxDateTimeChange","	setMaxDateTime: function(","		/* object */	max)","	{","		if (max)","		{","			max = Y.DateTimeUtils.normalize(max, this.blank_time);","","			if (!this.max_date_time ||","				this.max_date_time.date.getTime() != max.date.getTime())","			{","				this.max_date_time = max;","				enforceDateTimeLimits.call(this);","				this.calendar.setMaxDate(this.max_date_time);","","				updateRendering.call(this);","			}","		}","		else if (this.max_date_time)","		{","			this.max_date_time = null;","			this.calendar.clearMaxDate();","			updateRendering.call(this);","		}","	}","});","","Y.DateTime = DateTime;","","","}, '@VERSION@', {","    \"requires\": [","        \"base\",","        \"gallery-datetime-utils\",","        \"gallery-funcprog\"","    ],","    \"optional\": [","        \"calendar\",","        \"gallery-timepicker\"","    ]","});"];
-_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].lines = {"1":0,"3":0,"5":0,"30":0,"32":0,"35":0,"37":0,"40":0,"43":0,"83":0,"97":0,"111":0,"127":0,"149":0,"151":0,"153":0,"154":0,"155":0,"157":0,"167":0,"168":0,"170":0,"171":0,"173":0,"179":0,"184":0,"185":0,"187":0,"191":0,"193":0,"196":0,"200":0,"202":0,"203":0,"209":0,"215":0,"219":0,"221":0,"223":0,"227":0,"244":0,"282":0,"284":0,"286":0,"290":0,"293":0,"294":0,"296":0,"298":0,"300":0,"304":0,"306":0,"310":0,"312":0,"313":0,"315":0,"317":0,"321":0,"324":0,"326":0,"327":0,"331":0,"335":0,"339":0,"341":0,"347":0,"348":0,"350":0,"352":0,"354":0,"355":0,"356":0,"358":0,"359":0,"363":0,"365":0,"369":0,"370":0,"372":0,"374":0,"376":0,"377":0,"378":0,"380":0,"381":0,"385":0,"387":0,"393":0,"395":0,"399":0,"400":0,"401":0,"403":0,"406":0,"407":0,"410":0,"412":0,"415":0,"417":0,"419":0,"421":0,"424":0,"426":0,"428":0,"430":0,"432":0,"433":0,"434":0,"436":0,"437":0,"439":0,"440":0,"442":0,"444":0,"445":0,"446":0,"447":0,"448":0,"449":0,"450":0,"455":0,"458":0,"464":0,"466":0,"468":0,"469":0,"470":0,"472":0,"473":0,"475":0,"477":0,"479":0,"480":0,"481":0,"482":0,"483":0,"484":0,"485":0,"490":0,"493":0,"499":0,"501":0,"502":0,"503":0,"505":0,"507":0,"510":0,"511":0,"514":0,"516":0,"519":0,"520":0,"523":0,"525":0,"527":0,"529":0,"532":0,"537":0,"540":0,"543":0,"545":0,"548":0,"550":0,"551":0,"553":0,"556":0,"558":0,"559":0,"562":0,"563":0,"565":0,"566":0,"567":0,"570":0,"572":0,"574":0,"575":0,"578":0,"581":0,"587":0,"588":0,"589":0,"591":0,"592":0,"594":0,"595":0,"599":0,"600":0,"603":0,"604":0,"606":0,"607":0,"610":0,"612":0,"614":0,"616":0,"619":0,"620":0,"622":0,"625":0,"626":0,"628":0,"634":0,"635":0,"649":0,"651":0,"652":0,"654":0,"659":0,"662":0,"663":0,"665":0,"667":0,"668":0,"670":0,"675":0,"680":0,"683":0,"684":0,"685":0,"686":0,"692":0,"694":0,"696":0,"698":0,"699":0,"701":0,"703":0,"704":0,"705":0,"709":0,"710":0,"713":0,"718":0,"720":0,"721":0,"722":0,"724":0,"725":0,"729":0,"731":0,"732":0,"735":0,"740":0,"742":0,"743":0,"745":0,"752":0,"754":0,"756":0,"759":0,"760":0,"761":0,"763":0,"766":0,"768":0,"769":0,"770":0,"777":0,"779":0,"781":0,"784":0,"785":0,"786":0,"788":0,"791":0,"793":0,"794":0,"795":0,"800":0};
-_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].functions = {"DateTime:30":0,"isInputNode:37":0,"setter:81":0,"setter:95":0,"setter:109":0,"validator:125":0,"setter:145":0,"validator:242":0,"checkEnforceDateTimeLimits:282":0,"enforceDateTimeLimits:290":0,"updateRendering:415":0,"(anonymous 2):543":0,"cellRenderer:540":0,"(anonymous 3):556":0,"(anonymous 4):572":0,"ping:548":0,"initializer:583":0,"getDateTime:647":0,"setDateTime:689":0,"resetDateTime:716":0,"clearDateTime:738":0,"setMinDateTime:749":0,"setMaxDateTime:774":0,"(anonymous 1):1":0};
-_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].coveredLines = 270;
-_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].coveredFunctions = 24;
+_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].code=["YUI.add('gallery-datetime', function (Y, NAME) {","","\"use strict\";","","var blackout_min_seconds = -40,","	blackout_max_seconds = +40,","	change_after_focus   = (0 < Y.UA.ie);","","/**"," * @module gallery-datetime"," */","","/**********************************************************************"," * Manages a date input field and an optional time field.  Calendars and"," * time selection widgets can be attached to these fields, but will not be"," * managed by this class."," * "," * Date/time values can be specified as either a Date object or an object"," * specifying year,month,day (all 1-based) or date_str and optionally"," * hour,minute or time_str.  Individual values take precedence over string"," * values.  Time resolution is in minutes."," * "," * @main gallery-datetime"," * @class DateTime"," * @extends Base"," * @constructor"," * @param config {Object}"," */","","function DateTime(config)","{","	DateTime.superclass.constructor.apply(this, arguments);","}","","DateTime.NAME = \"datetime\";","","function setNode(n)","{","	return Y.one(n) || Attribute.INVALID_VALUE;","}","","DateTime.ATTRS =","{","	/**","	 * Date input field to use.  Can be augmented with a Calendar via","	 * gallery-input-calendar-sync.","	 * ","	 * @attribute dateInput","	 * @type {Node|String}","	 * @required","	 * @writeonce","	 */","	dateInput:","	{","		setter:    setNode,","		writeOnce: true","	},","","	/**","	 * Time input field to use.  Can be enhanced with gallery-timepicker.","	 * ","	 * @attribute timeInput","	 * @type {Node|String}","	 * @writeonce","	 */","	timeInput:","	{","		setter:    setNode,","		writeOnce: true","	},","","	/**","	 * Default date and time, used during initialization and by resetDateTime().","	 * ","	 * @attribute defaultDateTime","	 * @type {Object}","	 */","	defaultDateTime:","	{","		setter: function(value)","		{","			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;","		}","	},","","	/**","	 * Minimum date and time.","	 * ","	 * @attribute minDateTime","	 * @type {Object}","	 */","	minDateTime:","	{","		setter: function(value)","		{","			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;","		}","	},","","	/**","	 * Maximum date and time.","	 * ","	 * @attribute minDateTime","	 * @type {Object}","	 */","	maxDateTime:","	{","		setter: function(value)","		{","			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;","		}","	},","","	/**","	 * Time value to use when no time is specified, e.g., in a blackout date.","	 * ","	 * @attribute blankTime","	 * @type {Object}","	 * @default { hour:0, minute:0 }","	 */","	blankTime:","	{","		value:     { hour:0, minute:0 },","		validator: function(value)","		{","			return (Y.Lang.isObject(value) &&","					Y.Lang.isNumber(value.hour) &&","					Y.Lang.isNumber(value.minute));","		}","	},","","	/**","	 * Blackout ranges, specified as a list of objects, each defining start","	 * and end.  The data is overwritten, so this is a write-only value.","	 * ","	 * @attribute blackout","	 * @type {Array}","	 * @default []","	 */","	blackouts:","	{","		value:     [],","		validator: Y.Lang.isArray,","		setter:    function(ranges)","		{","			ranges = ranges || [];","","			// store ranges in ascending order of start time","","			var blackouts  = [],","				blank_time = this.get('blankTime');","			for (var i=0; i<ranges.length; i++)","			{","				var r   = ranges[i];","				r.start = Y.DateTimeUtils.normalize(r.start, blank_time);","				r.end   = Y.DateTimeUtils.normalize(r.end,   blank_time);","","				r =","				[","					new Date(r.start.year, r.start.month-1, r.start.day,","							 r.start.hour, r.start.minute, blackout_min_seconds)","							 .getTime(),","					new Date(r.end.year, r.end.month-1, r.end.day,","							 r.end.hour, r.end.minute, blackout_max_seconds)","							 .getTime()","				];","","				var inserted = false;","				for (var j=0; j<blackouts.length; j++)","				{","					var r1 = blackouts[j];","					if (r[0] <= r1[0])","					{","						if (j > 0 &&","							r[0] <  blackouts[j-1][1] &&","							r[1] <= blackouts[j-1][1])","						{","							// covered by prev","						}","						else if (j > 0 &&","								 r[0] - 60000 < blackouts[j-1][1] &&","								 r1[0] < r[1] + 60000)","						{","							// overlaps prev and next","							r = [ blackouts[j-1][0], r[1] ];","							blackouts.splice(j-1, 2, r);","						}","						else if (j > 0 &&","								 r[0] - 60000 < blackouts[j-1][1])","						{","							// overlaps prev","							blackouts[j-1][1] = r[1];","						}","						else if (r1[0] < r[1] + 60000)","						{","							// overlaps next","							r1[0] = r[0];","						}","						else","						{","							blackouts.splice(j, 0, r);","						}","						inserted = true;","						break;","					}","				}","","				// j == blackouts.length","","				if (!inserted && j > 0 &&","					r[0] <  blackouts[j-1][1] &&","					r[1] <= blackouts[j-1][1])","				{","					// covered by prev","				}","				else if (!inserted && j > 0 &&","						 r[0] - 60000 < blackouts[j-1][1])","				{","					// overlaps prev","					blackouts[j-1][1] = r[1];","				}","				else if (!inserted)","				{","					blackouts.push(r);","				}","			}","","			return blackouts;","		}","	},","","	/**","	 * The direction to push the selected date and time when the user","	 * selects a day with partial blackout.  The default value of zero","	 * means go to the nearest available time.","	 *","	 * @attribute blackoutSnapDirection","	 * @type {-1,0,+1}","	 * @default 0","	 */","	blackoutSnapDirection:","	{","		value:     0,","		validator: function(value)","		{","			return (value == -1 || value === 0 || value == +1);","		}","	},","","	/**","	 * Duration of visual ping in milliseconds when the value of an input","	 * field is modified because of a min/max or blackout restriction.  Set","	 * to zero to disable.","	 * ","	 * @attribute pingDuration","	 * @type {Number}","	 * @default 2000","	 */","	pingDuration:","	{","		value:     2000,","		validator: Y.Lang.isNumber","	},","","	/**","	 * CSS class applied to input field when it is pinged.","	 * ","	 * @attribute pingClass","	 * @type {String}","	 * @default \"yui3-datetime-ping\"","	 */","	pingClass:","	{","		value:     'yui3-datetime-ping',","		validator: Y.Lang.isString","	}","};","","/**"," * @event limitsEnforced"," * @description Fires after min/max and blackouts have been enforced."," */","","function checkEnforceDateTimeLimits()","{","	if (!this.ignore_value_set)","	{","		enforceDateTimeLimits.call(this, 'same-day');","	}","}","","function enforceDateTimeLimits(","	/* string */	algo)","{","	var date = this.getDateTime();","	if (!date)","	{","		return;","	}","	date = date.date;","","	var orig_date = new Date(date.getTime());","","	// blackout ranges","","	var blackouts = this.get('blackouts');","	if (blackouts.length > 0)","	{","		var t      = date.getTime(),","			orig_t = t,","			snap   = algo == 'same-day' ? 0 : this.get('blackoutSnapDirection');","","		for (var i=0; i<blackouts.length; i++)","		{","			var blackout = blackouts[i];","			if (blackout[0] < t && t < blackout[1])","			{","				if (snap > 0)","				{","					t = blackout[1] + 60000;","				}","				else if (snap < 0)","				{","					t = blackout[0];","				}","				else if (t - blackout[0] < blackout[1] - t)","				{","					t = blackout[0];","				}","				else","				{","					t = blackout[1] + 60000;","				}","","				break;","			}","		}","","		if (t != orig_t)","		{","			date = new Date(t);","		}","	}","","	// min/max last, shrink inward if blackout dates extend outside [min,max] range","","	var min = this.get('minDateTime');","	if (min)","	{","		var t = min.date.getTime();","","		if (blackouts.length > 0)","		{","			var orig_t = t;","			var i      = 0;","			while (i < blackouts.length && blackouts[i][0] < t)","			{","				t = Math.max(orig_t, blackouts[i][1]);","				i++;","			}","		}","","		if (date.getTime() < t)","		{","			date = new Date(t);","		}","	}","","	var max = this.get('maxDateTime');","	if (max)","	{","		var t = max.date.getTime();","","		if (blackouts.length > 0)","		{","			var orig_t = t;","			var i      = blackouts.length - 1;","			while (i >= 0 && t < blackouts[i][1])","			{","				t = Math.min(orig_t, blackouts[i][0]);","				i--;","			}","		}","","		if (t < date.getTime())","		{","			date = new Date(t);","		}","	}","","	// update controls that changed","","	this.ignore_value_set = true;","","	if (date.getFullYear() !== orig_date.getFullYear() ||","		date.getMonth()    !== orig_date.getMonth()    ||","		date.getDate()     !== orig_date.getDate())","	{","		var timer       = getEnforceTimer.call(this);","		timer.dateInput = Y.DateTimeUtils.formatDate(date);","		timer.timeInput = Y.DateTimeUtils.formatTime(date);","	}","	else if (date.getHours() !== orig_date.getHours() ||","			 date.getMinutes() !== orig_date.getMinutes())","	{","		var timer       = getEnforceTimer.call(this);","		timer.timeInput = Y.DateTimeUtils.formatTime(date);","	}","","	this.ignore_value_set = false;","","	this.fire('limitsEnforced');","}","","function getEnforceTimer()","{","	if (!this.enforce_timer)","	{","		this.enforce_timer = Y.later(0, this, function()","		{","			var ping_list = [];","","			Y.each(['dateInput', 'timeInput'], function(name)","			{","				if (this.enforce_timer[name])","				{","					this.get(name).set('value', this.enforce_timer[name]);","					ping_list.push(name);","				}","			},","			this);","","			ping.apply(this, ping_list);","			this.enforce_timer = null;","		});","	}","","	return this.enforce_timer;","}","","function updateRendering()","{","	if (!this.calendar)","	{","		return;","	}","","	function mkpath()","	{","		var obj = rules;","		Y.each(arguments, function(key)","		{","			if (!obj[key])","			{","				obj[key] = {};","			}","			obj = obj[key];","		});","	}","","	function set(date, type)","	{","		var y = date.getFullYear(),","			m = date.getMonth(),","			d = date.getDate();","","		mkpath(y, m, d);","","		rules[y][m][d] = type;","	}","","	function disableRemaining(date, delta)","	{","		var d = new Date(date);","		d.setDate(d.getDate() + delta);","","		while (d.getMonth() == date.getMonth())","		{","			set(d, 'disabled');","			d.setDate(d.getDate() + delta);","		}","	}","","	var blackouts = this.get('blackouts').slice(0),","		rules     = {};","","	var min = this.get('minDateTime');","	if (min)","	{","		if (blackouts.length > 0)","		{","			var t       = min.date.getTime();","			var changed = false;","			for (var i=0; i < blackouts.length; i++)","			{","				var blackout = blackouts[i];","				if (blackout[1] <= t)","				{","					blackouts.shift();","					i--;","				}","				else if (blackout[0] < t)","				{","					var start = new Date(blackout[0]);","					start.setHours(0);","					start.setMinutes(0);","					start.setSeconds(blackout_min_seconds);","					blackouts[i] = [ start.getTime(), blackout[1] ];","					changed      = true;","					break;","				}","			}","		}","","		if (!changed &&","			(min.hour > 0 || min.minute > 0))","		{","			set(min.date, 'partial');","		}","","		disableRemaining(min.date, -1);","	}","","	var max = this.get('maxDateTime');","	if (max)","	{","		if (blackouts.length > 0)","		{","			var t       = max.date.getTime();","			var changed = false;","			for (var i=blackouts.length-1; i>=0; i--)","			{","				var blackout = blackouts[i];","				if (t <= blackout[0])","				{","					blackouts.pop();","				}","				else if (t < blackout[1])","				{","					var end = new Date(blackout[1]);","					end.setHours(23);","					end.setMinutes(59);","					end.setSeconds(blackout_max_seconds);","					blackouts[i] = [ blackout[0], end.getTime() ];","					changed      = true;","					break;","				}","			}","		}","","		if (!changed &&","			(max.hour < 23 || max.minute < 59))","		{","			set(max.date, 'partial');","		}","","		disableRemaining(max.date, +1);","	}","","	for (var i=0; i<blackouts.length; i++)","	{","		var blackout = blackouts[i];","		var start    = new Date(blackout[0] + blackout_max_seconds*1000);","		var end      = new Date(blackout[1] + blackout_min_seconds*1000);","","		if (start.getHours() > 0 || start.getMinutes() > 0)","		{","			set(start, 'partial');","			start.setDate(start.getDate()+1);","			start.setHours(0);","		}","","		if (end.getHours() < 23 || end.getMinutes() < 59)","		{","			set(end, 'partial');","			end.setDate(end.getDate()-1);","			end.setHours(23);","		}","","		while (start.getTime() < end.getTime())","		{","			set(start, 'disabled');","			start.setDate(start.getDate()+1);","		}","	}","","	this.calendar.set('customRenderer',","	{","		rules:          rules,","		filterFunction: renderFilter","	});","}","","function renderFilter(date, node, rules)","{","	if (Y.Array.indexOf(rules, 'partial') >= 0)","	{","		node.addClass('yui3-datetime-partial');","	}","	else if (Y.Array.indexOf(rules, 'disabled') >= 0)","	{","		node.addClass('yui3-calendar-selection-disabled');","	}","}","","function ping()","{","	var duration = this.get('pingDuration');","	if (duration <= 0)","	{","		return;","	}","","	var nodes = new Y.NodeList(Y.reduce(arguments, [], function(list, name)","	{","		list.push(this.get(name));","		return list;","	},","	this));","","	var ping_class = this.get('pingClass');","	if (this.ping_task)","	{","		this.ping_task.nodes.removeClass(ping_class);","		this.ping_task.cancel();","		nodes = nodes.concat(this.ping_task.nodes);","	}","","	nodes.addClass(ping_class);","","	this.ping_task = Y.later(duration, this, function()","	{","		this.ping_task = null;","		nodes.removeClass(ping_class);","	});","","	this.ping_task.nodes = nodes;","}","","Y.extend(DateTime, Y.Base,","{","	initializer: function(","		/* object/string */	container,","		/* map */			config)","	{","		var date_input = this.get('dateInput');","		date_input.on('change', enforceDateTimeLimits, this);","		date_input.after('valueSet', checkEnforceDateTimeLimits, this);","","		var time_input = this.get('timeInput');","		if (time_input)","		{","			time_input.on('change', enforceDateTimeLimits, this);","			time_input.after('valueSet', checkEnforceDateTimeLimits, this);","		}","		else","		{","			time_input = Y.Node.create('<input type=\"hidden\"></input>');","			this.set('timeInput', time_input);","			time_input.set('value', Y.DateTimeUtils.formatTime(this.get('blankTime')));","			var created_time_input = true;","		}","","		var default_date_time = this.get('defaultDateTime');","		if (default_date_time)","		{","			date_input.set('value', Y.DateTimeUtils.formatDate(default_date_time));","			if (!created_time_input)","			{","				time_input.set('value', Y.DateTimeUtils.formatTime(default_date_time));","			}","		}","","		if (date_input.calendarSync)","		{","			this.calendar = date_input.calendarSync.get('calendar');","","			if (this.calendar && default_date_time)","			{","				this.calendar.set('date', default_date_time.date);","			}","","			var t = this.get('minDateTime');","			if (this.calendar && t)","			{","				this.calendar.set('minimumDate', t.date);","			}","","			t = this.get('maxDateTime');","			if (this.calendar && t)","			{","				this.calendar.set('maximumDate', t.date);","			}","		}","","		// black-out dates","","		updateRendering.call(this);","		this.on('blackoutsChange', updateRendering);","	},","","	destroy: function()","	{","	},","","	/**","	 * Get the currently selected date and time.","	 * ","	 * @return {Object} year,month,day,hour,minute,date,date_str,time_str","	 */","	getDateTime: function()","	{","		try","		{","			var date = Y.DateTimeUtils.parseDate(this.get('dateInput').get('value'));","			if (!date)","			{","				return false;","			}","		}","		catch (e)","		{","			return false;","		}","","		try","		{","			var time = Y.DateTimeUtils.parseTime(this.get('timeInput').get('value'));","			if (!time)","			{","				return false;","			}","		}","		catch (e)","		{","			return false;","		}","","		var result      = Y.DateTimeUtils.normalize(Y.mix(date, time));","		result.date_str = Y.DateTimeUtils.formatDate(result);","		result.time_str = Y.DateTimeUtils.formatTime(result);","		return result;","	},","// TODO","	setDateTime: function(","		/* object */	date_time)","	{","		this.rb[ this.rb.length-1 ].checked = true;","","		this.calendar.setDate(date_time);","","		if (date_time instanceof Date)","		{","			this.hour_menu.value   = date_time.getHours();","			this.minute_menu.value = date_time.getMinutes();","		}","		else if (date_time.time_str)","		{","			var obj                = DateTime.parseTime(date_time.time_str);","			this.hour_menu.value   = obj.hour;","			this.minute_menu.value = obj.minute;","		}","		else","		{","			this.hour_menu.value   = date_time.hour;","			this.minute_menu.value = date_time.minute;","		}","","		enforceDateTimeLimits.call(this);","	},","// TODO","	resetDateTime: function()","	{","		if (this.default_date_time)","		{","			this.calendar.setDate(this.default_date_time);","","			this.hour_menu.value   = this.default_date_time.hour;","			this.minute_menu.value = this.default_date_time.minute;","		}","		else","		{","			this.calendar.clearDate();","","			this.hour_menu.value   = this.blank_time.hour;","			this.minute_menu.value = this.blank_time.minute;","		}","","		enforceDateTimeLimits.call(this);","	},","","	clearDateTime: function()","	{","		this.get('dateInput').set('value', '');","","		var time_input = this.get('timeInput');","		if (time_input)","		{","			time_input.set('value', '');","		}","	},","// TODO: onMinDateTimeChange","	setMinDateTime: function(","		/* object */	min)","	{","		if (min)","		{","			min = Y.DateTimeUtils.normalize(min, this.blank_time);","","			if (!this.min_date_time ||","				this.min_date_time.date.getTime() != min.date.getTime())","			{","				this.min_date_time = min;","				enforceDateTimeLimits.call(this);","				this.calendar.setMinDate(this.min_date_time);","","				updateRendering.call(this);","			}","		}","		else if (this.min_date_time)","		{","			this.min_date_time = null;","			this.calendar.clearMinDate();","			updateRendering.call(this);","		}","	},","// TODO: onMaxDateTimeChange","	setMaxDateTime: function(","		/* object */	max)","	{","		if (max)","		{","			max = Y.DateTimeUtils.normalize(max, this.blank_time);","","			if (!this.max_date_time ||","				this.max_date_time.date.getTime() != max.date.getTime())","			{","				this.max_date_time = max;","				enforceDateTimeLimits.call(this);","				this.calendar.setMaxDate(this.max_date_time);","","				updateRendering.call(this);","			}","		}","		else if (this.max_date_time)","		{","			this.max_date_time = null;","			this.calendar.clearMaxDate();","			updateRendering.call(this);","		}","	}","});","","Y.DateTime = DateTime;","","","}, '@VERSION@', {","    \"skinnable\": \"true\",","    \"requires\": [","        \"base\",","        \"gallery-datetime-utils\",","        \"gallery-funcprog\"","    ],","    \"optional\": [","        \"calendar\",","        \"gallery-timepicker\"","    ]","});"];
+_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].lines = {"1":0,"3":0,"5":0,"30":0,"32":0,"35":0,"37":0,"39":0,"42":0,"82":0,"96":0,"110":0,"126":0,"146":0,"150":0,"152":0,"154":0,"155":0,"156":0,"158":0,"168":0,"169":0,"171":0,"172":0,"174":0,"180":0,"185":0,"186":0,"188":0,"192":0,"194":0,"197":0,"201":0,"203":0,"204":0,"210":0,"216":0,"220":0,"222":0,"224":0,"228":0,"246":0,"284":0,"286":0,"288":0,"292":0,"295":0,"296":0,"298":0,"300":0,"302":0,"306":0,"307":0,"309":0,"313":0,"315":0,"316":0,"318":0,"320":0,"322":0,"324":0,"326":0,"328":0,"332":0,"335":0,"339":0,"341":0,"347":0,"348":0,"350":0,"352":0,"354":0,"355":0,"356":0,"358":0,"359":0,"363":0,"365":0,"369":0,"370":0,"372":0,"374":0,"376":0,"377":0,"378":0,"380":0,"381":0,"385":0,"387":0,"393":0,"395":0,"399":0,"400":0,"401":0,"403":0,"406":0,"407":0,"410":0,"412":0,"415":0,"417":0,"419":0,"421":0,"423":0,"425":0,"427":0,"428":0,"433":0,"434":0,"438":0,"441":0,"443":0,"445":0,"448":0,"450":0,"451":0,"453":0,"455":0,"457":0,"461":0,"463":0,"467":0,"469":0,"472":0,"474":0,"475":0,"477":0,"479":0,"480":0,"484":0,"487":0,"488":0,"490":0,"492":0,"493":0,"494":0,"496":0,"497":0,"499":0,"500":0,"502":0,"504":0,"505":0,"506":0,"507":0,"508":0,"509":0,"510":0,"515":0,"518":0,"521":0,"524":0,"525":0,"527":0,"529":0,"530":0,"531":0,"533":0,"534":0,"536":0,"538":0,"540":0,"541":0,"542":0,"543":0,"544":0,"545":0,"546":0,"551":0,"554":0,"557":0,"560":0,"562":0,"563":0,"564":0,"566":0,"568":0,"569":0,"570":0,"573":0,"575":0,"576":0,"577":0,"580":0,"582":0,"583":0,"587":0,"594":0,"596":0,"598":0,"600":0,"602":0,"606":0,"608":0,"609":0,"611":0,"614":0,"616":0,"617":0,"621":0,"622":0,"624":0,"625":0,"626":0,"629":0,"631":0,"633":0,"634":0,"637":0,"640":0,"646":0,"647":0,"648":0,"650":0,"651":0,"653":0,"654":0,"658":0,"659":0,"660":0,"661":0,"664":0,"665":0,"667":0,"668":0,"670":0,"674":0,"676":0,"678":0,"680":0,"683":0,"684":0,"686":0,"689":0,"690":0,"692":0,"698":0,"699":0,"713":0,"715":0,"716":0,"718":0,"723":0,"726":0,"728":0,"729":0,"731":0,"736":0,"739":0,"740":0,"741":0,"742":0,"748":0,"750":0,"752":0,"754":0,"755":0,"757":0,"759":0,"760":0,"761":0,"765":0,"766":0,"769":0,"774":0,"776":0,"778":0,"779":0,"783":0,"785":0,"786":0,"789":0,"794":0,"796":0,"797":0,"799":0,"806":0,"808":0,"810":0,"813":0,"814":0,"815":0,"817":0,"820":0,"822":0,"823":0,"824":0,"831":0,"833":0,"835":0,"838":0,"839":0,"840":0,"842":0,"845":0,"847":0,"848":0,"849":0,"854":0};
+_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].functions = {"DateTime:30":0,"setNode:37":0,"setter:80":0,"setter:94":0,"setter:108":0,"validator:124":0,"setter:144":0,"validator:244":0,"checkEnforceDateTimeLimits:284":0,"enforceDateTimeLimits:292":0,"(anonymous 3):423":0,"(anonymous 2):419":0,"getEnforceTimer:415":0,"(anonymous 4):451":0,"mkpath:448":0,"set:461":0,"disableRemaining:472":0,"updateRendering:441":0,"renderFilter:594":0,"(anonymous 5):614":0,"(anonymous 6):631":0,"ping:606":0,"initializer:642":0,"getDateTime:711":0,"setDateTime:745":0,"resetDateTime:772":0,"clearDateTime:792":0,"setMinDateTime:803":0,"setMaxDateTime:828":0,"(anonymous 1):1":0};
+_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].coveredLines = 299;
+_yuitest_coverage["build/gallery-datetime/gallery-datetime.js"].coveredFunctions = 30;
 _yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 1);
 YUI.add('gallery-datetime', function (Y, NAME) {
 
@@ -76,15 +76,14 @@ _yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 35);
 DateTime.NAME = "datetime";
 
 _yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 37);
-function isInputNode(n)
+function setNode(n)
 {
-	// allow Y.Node from a different sandbox
-	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "isInputNode", 37);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 40);
-return n && n._node && n._node.tagName == 'INPUT';
+	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setNode", 37);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 39);
+return Y.one(n) || Attribute.INVALID_VALUE;
 }
 
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 43);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 42);
 DateTime.ATTRS =
 {
 	/**
@@ -92,13 +91,13 @@ DateTime.ATTRS =
 	 * gallery-input-calendar-sync.
 	 * 
 	 * @attribute dateInput
-	 * @type {Node}
+	 * @type {Node|String}
 	 * @required
 	 * @writeonce
 	 */
 	dateInput:
 	{
-		validator: isInputNode,
+		setter:    setNode,
 		writeOnce: true
 	},
 
@@ -106,12 +105,12 @@ DateTime.ATTRS =
 	 * Time input field to use.  Can be enhanced with gallery-timepicker.
 	 * 
 	 * @attribute timeInput
-	 * @type {Node}
+	 * @type {Node|String}
 	 * @writeonce
 	 */
 	timeInput:
 	{
-		validator: isInputNode,
+		setter:    setNode,
 		writeOnce: true
 	},
 
@@ -125,8 +124,8 @@ DateTime.ATTRS =
 	{
 		setter: function(value)
 		{
-			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setter", 81);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 83);
+			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setter", 80);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 82);
 return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
 		}
 	},
@@ -141,8 +140,8 @@ return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
 	{
 		setter: function(value)
 		{
-			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setter", 95);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 97);
+			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setter", 94);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 96);
 return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
 		}
 	},
@@ -157,8 +156,8 @@ return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
 	{
 		setter: function(value)
 		{
-			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setter", 109);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 111);
+			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setter", 108);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 110);
 return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
 		}
 	},
@@ -175,8 +174,8 @@ return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
 		value:     { hour:0, minute:0 },
 		validator: function(value)
 		{
-			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "validator", 125);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 127);
+			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "validator", 124);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 126);
 return (Y.Lang.isObject(value) &&
 					Y.Lang.isNumber(value.hour) &&
 					Y.Lang.isNumber(value.minute));
@@ -185,7 +184,7 @@ return (Y.Lang.isObject(value) &&
 
 	/**
 	 * Blackout ranges, specified as a list of objects, each defining start
-	 * and end.
+	 * and end.  The data is overwritten, so this is a write-only value.
 	 * 
 	 * @attribute blackout
 	 * @type {Array}
@@ -197,23 +196,26 @@ return (Y.Lang.isObject(value) &&
 		validator: Y.Lang.isArray,
 		setter:    function(ranges)
 		{
+			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setter", 144);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 146);
+ranges = ranges || [];
+
 			// store ranges in ascending order of start time
 
-			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setter", 145);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 149);
-var blackout   = [],
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 150);
+var blackouts  = [],
 				blank_time = this.get('blankTime');
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 151);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 152);
 for (var i=0; i<ranges.length; i++)
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 153);
-var r   = ranges[i];
 				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 154);
-r.start = Y.DateTimeUtils.normalize(r.start, blank_time);
+var r   = ranges[i];
 				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 155);
+r.start = Y.DateTimeUtils.normalize(r.start, blank_time);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 156);
 r.end   = Y.DateTimeUtils.normalize(r.end,   blank_time);
 
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 157);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 158);
 r =
 				[
 					new Date(r.start.year, r.start.month-1, r.start.day,
@@ -224,107 +226,108 @@ r =
 							 .getTime()
 				];
 
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 167);
-var inserted = false;
 				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 168);
-for (var j=0; j<blackout.length; j++)
+var inserted = false;
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 169);
+for (var j=0; j<blackouts.length; j++)
 				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 170);
-var r1 = blackout[j];
 					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 171);
+var r1 = blackouts[j];
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 172);
 if (r[0] <= r1[0])
 					{
-						_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 173);
+						_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 174);
 if (j > 0 &&
-							r[0] <  blackout[j-1][1] &&
-							r[1] <= blackout[j-1][1])
+							r[0] <  blackouts[j-1][1] &&
+							r[1] <= blackouts[j-1][1])
 						{
 							// covered by prev
 						}
-						else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 179);
+						else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 180);
 if (j > 0 &&
-								 r[0] - 60000 < blackout[j-1][1] &&
+								 r[0] - 60000 < blackouts[j-1][1] &&
 								 r1[0] < r[1] + 60000)
 						{
 							// overlaps prev and next
-							_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 184);
-r = [ blackout[j-1][0], r[1] ];
 							_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 185);
-blackout.splice(j-1, 2, r);
+r = [ blackouts[j-1][0], r[1] ];
+							_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 186);
+blackouts.splice(j-1, 2, r);
 						}
-						else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 187);
+						else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 188);
 if (j > 0 &&
-								 r[0] - 60000 < blackout[j-1][1])
+								 r[0] - 60000 < blackouts[j-1][1])
 						{
 							// overlaps prev
-							_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 191);
-blackout[j-1][1] = r[1];
+							_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 192);
+blackouts[j-1][1] = r[1];
 						}
-						else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 193);
+						else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 194);
 if (r1[0] < r[1] + 60000)
 						{
 							// overlaps next
-							_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 196);
+							_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 197);
 r1[0] = r[0];
 						}
 						else
 						{
-							_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 200);
-blackout.splice(j, 0, r);
+							_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 201);
+blackouts.splice(j, 0, r);
 						}}}}
-						_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 202);
-inserted = true;
 						_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 203);
+inserted = true;
+						_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 204);
 break;
 					}
 				}
 
-				// j == blackout.length
+				// j == blackouts.length
 
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 209);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 210);
 if (!inserted && j > 0 &&
-					r[0] <  blackout[j-1][1] &&
-					r[1] <= blackout[j-1][1])
+					r[0] <  blackouts[j-1][1] &&
+					r[1] <= blackouts[j-1][1])
 				{
 					// covered by prev
 				}
-				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 215);
+				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 216);
 if (!inserted && j > 0 &&
-						 r[0] - 60000 < blackout[j-1][1])
+						 r[0] - 60000 < blackouts[j-1][1])
 				{
 					// overlaps prev
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 219);
-blackout[j-1][1] = r[1];
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 220);
+blackouts[j-1][1] = r[1];
 				}
-				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 221);
+				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 222);
 if (!inserted)
 				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 223);
-blackout.push(r);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 224);
+blackouts.push(r);
 				}}}
 			}
 
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 227);
-return blackout;
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 228);
+return blackouts;
 		}
 	},
 
 	/**
 	 * The direction to push the selected date and time when the user
-	 * selects a day with partial blackout.
+	 * selects a day with partial blackout.  The default value of zero
+	 * means go to the nearest available time.
 	 *
 	 * @attribute blackoutSnapDirection
-	 * @type {-1,+1}
-	 * @default +1
+	 * @type {-1,0,+1}
+	 * @default 0
 	 */
 	blackoutSnapDirection:
 	{
-		'default': +1,
+		value:     0,
 		validator: function(value)
 		{
-			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "validator", 242);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 244);
-return (value == -1 || value == +1);
+			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "validator", 244);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 246);
+return (value == -1 || value === 0 || value == +1);
 		}
 	},
 
@@ -335,11 +338,11 @@ return (value == -1 || value == +1);
 	 * 
 	 * @attribute pingDuration
 	 * @type {Number}
-	 * @default 2
+	 * @default 2000
 	 */
 	pingDuration:
 	{
-		value:     2,
+		value:     2000,
 		validator: Y.Lang.isNumber
 	},
 
@@ -362,81 +365,80 @@ return (value == -1 || value == +1);
  * @description Fires after min/max and blackouts have been enforced.
  */
 
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 282);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 284);
 function checkEnforceDateTimeLimits()
 {
-	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "checkEnforceDateTimeLimits", 282);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 284);
+	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "checkEnforceDateTimeLimits", 284);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 286);
 if (!this.ignore_value_set)
 	{
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 286);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 288);
 enforceDateTimeLimits.call(this, 'same-day');
 	}
 }
 
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 290);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 292);
 function enforceDateTimeLimits(
 	/* string */	algo)
 {
-	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "enforceDateTimeLimits", 290);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 293);
+	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "enforceDateTimeLimits", 292);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 295);
 var date = this.getDateTime();
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 294);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 296);
 if (!date)
 	{
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 296);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 298);
 return;
 	}
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 298);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 300);
 date = date.date;
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 300);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 302);
 var orig_date = new Date(date.getTime());
 
 	// blackout ranges
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 304);
-if (this.blackout.length > 0)
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 306);
+var blackouts = this.get('blackouts');
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 307);
+if (blackouts.length > 0)
 	{
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 306);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 309);
 var t      = date.getTime(),
 			orig_t = t,
-			snap   = this.get('blackoutSnapDirection');
+			snap   = algo == 'same-day' ? 0 : this.get('blackoutSnapDirection');
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 310);
-for (var i=0; i<this.blackout.length; i++)
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 313);
+for (var i=0; i<blackouts.length; i++)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 312);
-var blackout = this.blackout[i];
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 313);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 315);
+var blackout = blackouts[i];
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 316);
 if (blackout[0] < t && t < blackout[1])
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 315);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 318);
 if (snap > 0)
 				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 317);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 320);
 t = blackout[1] + 60000;
+				}
+				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 322);
+if (snap < 0)
+				{
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 324);
+t = blackout[0];
+				}
+				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 326);
+if (t - blackout[0] < blackout[1] - t)
+				{
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 328);
+t = blackout[0];
 				}
 				else
 				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 321);
-t = blackout[0];
-				}
-
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 324);
-if (algo == 'same-day')
-				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 326);
-var tmp = new Date(t);
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 327);
-if (tmp.getDate()     != date.getDate()  ||
-						tmp.getMonth()    != date.getMonth() ||
-						tmp.getFullYear() != date.getFullYear())
-					{
-						_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 331);
-t = snap > 0 ? blackout[0] : blackout[1] + 60000;
-					}
-				}
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 332);
+t = blackout[1] + 60000;
+				}}}
 
 				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 335);
 break;
@@ -459,20 +461,20 @@ var min = this.get('minDateTime');
 if (min)
 	{
 		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 350);
-var t = this.min.date.getTime();
+var t = min.date.getTime();
 
 		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 352);
-if (this.blackout.length > 0)
+if (blackouts.length > 0)
 		{
 			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 354);
 var orig_t = t;
 			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 355);
 var i      = 0;
 			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 356);
-while (i < this.blackout.length && this.blackout[i][0] < t)
+while (i < blackouts.length && blackouts[i][0] < t)
 			{
 				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 358);
-t = Math.max(orig_t, this.blackout[i][1]);
+t = Math.max(orig_t, blackouts[i][1]);
 				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 359);
 i++;
 			}
@@ -492,20 +494,20 @@ var max = this.get('maxDateTime');
 if (max)
 	{
 		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 372);
-var t = this.max.date.getTime();
+var t = max.date.getTime();
 
 		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 374);
-if (this.blackout.length > 0)
+if (blackouts.length > 0)
 		{
 			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 376);
 var orig_t = t;
 			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 377);
-var i      = this.blackout.length - 1;
+var i      = blackouts.length - 1;
 			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 378);
-while (i >= 0 && t < this.blackout[i][1])
+while (i >= 0 && t < blackouts[i][1])
 			{
 				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 380);
-t = Math.min(orig_t, this.blackout[i][0]);
+t = Math.min(orig_t, blackouts[i][0]);
 				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 381);
 i--;
 			}
@@ -530,20 +532,20 @@ if (date.getFullYear() !== orig_date.getFullYear() ||
 		date.getDate()     !== orig_date.getDate())
 	{
 		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 399);
-this.get('dateInput').set('value', Y.DateTimeUtils.formatDate(date));
+var timer       = getEnforceTimer.call(this);
 		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 400);
-this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(date));
+timer.dateInput = Y.DateTimeUtils.formatDate(date);
 		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 401);
-ping.call(this, 'dateInput', 'timeInput');
+timer.timeInput = Y.DateTimeUtils.formatTime(date);
 	}
 	else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 403);
 if (date.getHours() !== orig_date.getHours() ||
 			 date.getMinutes() !== orig_date.getMinutes())
 	{
 		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 406);
-this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(date));
+var timer       = getEnforceTimer.call(this);
 		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 407);
-ping.apply(this, 'timeInput');
+timer.timeInput = Y.DateTimeUtils.formatTime(date);
 	}}
 
 	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 410);
@@ -554,339 +556,441 @@ this.fire('limitsEnforced');
 }
 
 _yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 415);
+function getEnforceTimer()
+{
+	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "getEnforceTimer", 415);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 417);
+if (!this.enforce_timer)
+	{
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 419);
+this.enforce_timer = Y.later(0, this, function()
+		{
+			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "(anonymous 2)", 419);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 421);
+var ping_list = [];
+
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 423);
+Y.each(['dateInput', 'timeInput'], function(name)
+			{
+				_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "(anonymous 3)", 423);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 425);
+if (this.enforce_timer[name])
+				{
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 427);
+this.get(name).set('value', this.enforce_timer[name]);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 428);
+ping_list.push(name);
+				}
+			},
+			this);
+
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 433);
+ping.apply(this, ping_list);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 434);
+this.enforce_timer = null;
+		});
+	}
+
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 438);
+return this.enforce_timer;
+}
+
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 441);
 function updateRendering()
 {
-	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "updateRendering", 415);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 417);
-return;
-
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 419);
-if (this.disabled)
+	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "updateRendering", 441);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 443);
+if (!this.calendar)
 	{
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 421);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 445);
 return;
 	}
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 424);
-this.calendar.calendar.removeRenderers();
-
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 426);
-var blackouts = this.blackout.slice(0);
-
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 428);
-if (this.min_date_time)
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 448);
+function mkpath()
 	{
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 430);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "mkpath", 448);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 450);
+var obj = rules;
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 451);
+Y.each(arguments, function(key)
+		{
+			_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "(anonymous 4)", 451);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 453);
+if (!obj[key])
+			{
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 455);
+obj[key] = {};
+			}
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 457);
+obj = obj[key];
+		});
+	}
+
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 461);
+function set(date, type)
+	{
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "set", 461);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 463);
+var y = date.getFullYear(),
+			m = date.getMonth(),
+			d = date.getDate();
+
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 467);
+mkpath(y, m, d);
+
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 469);
+rules[y][m][d] = type;
+	}
+
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 472);
+function disableRemaining(date, delta)
+	{
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "disableRemaining", 472);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 474);
+var d = new Date(date);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 475);
+d.setDate(d.getDate() + delta);
+
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 477);
+while (d.getMonth() == date.getMonth())
+		{
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 479);
+set(d, 'disabled');
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 480);
+d.setDate(d.getDate() + delta);
+		}
+	}
+
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 484);
+var blackouts = this.get('blackouts').slice(0),
+		rules     = {};
+
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 487);
+var min = this.get('minDateTime');
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 488);
+if (min)
+	{
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 490);
 if (blackouts.length > 0)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 432);
-var t       = this.min_date_time.date.getTime();
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 433);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 492);
+var t       = min.date.getTime();
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 493);
 var changed = false;
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 434);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 494);
 for (var i=0; i < blackouts.length; i++)
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 436);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 496);
 var blackout = blackouts[i];
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 437);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 497);
 if (blackout[1] <= t)
 				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 439);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 499);
 blackouts.shift();
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 440);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 500);
 i--;
 				}
-				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 442);
+				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 502);
 if (blackout[0] < t)
 				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 444);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 504);
 var start = new Date(blackout[0]);
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 445);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 505);
 start.setHours(0);
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 446);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 506);
 start.setMinutes(0);
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 447);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 507);
 start.setSeconds(blackout_min_seconds);
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 448);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 508);
 blackouts[i] = [ start.getTime(), blackout[1] ];
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 449);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 509);
 changed      = true;
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 450);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 510);
 break;
 				}}
 			}
 		}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 455);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 515);
 if (!changed &&
-			(this.min_date_time.hour > 0 || this.min_date_time.minute > 0))
+			(min.hour > 0 || min.minute > 0))
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 458);
-this.calendar.calendar.addRenderer(
-				DateTime.formatDate(this.min_date_time.date),
-				cellRenderer('satg-partial-blackout'));
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 518);
+set(min.date, 'partial');
 		}
+
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 521);
+disableRemaining(min.date, -1);
 	}
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 464);
-if (this.max_date_time)
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 524);
+var max = this.get('maxDateTime');
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 525);
+if (max)
 	{
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 466);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 527);
 if (blackouts.length > 0)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 468);
-var t       = this.max_date_time.date.getTime();
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 469);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 529);
+var t       = max.date.getTime();
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 530);
 var changed = false;
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 470);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 531);
 for (var i=blackouts.length-1; i>=0; i--)
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 472);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 533);
 var blackout = blackouts[i];
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 473);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 534);
 if (t <= blackout[0])
 				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 475);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 536);
 blackouts.pop();
 				}
-				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 477);
+				else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 538);
 if (t < blackout[1])
 				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 479);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 540);
 var end = new Date(blackout[1]);
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 480);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 541);
 end.setHours(23);
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 481);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 542);
 end.setMinutes(59);
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 482);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 543);
 end.setSeconds(blackout_max_seconds);
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 483);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 544);
 blackouts[i] = [ blackout[0], end.getTime() ];
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 484);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 545);
 changed      = true;
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 485);
+					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 546);
 break;
 				}}
 			}
 		}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 490);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 551);
 if (!changed &&
-			(this.max_date_time.hour < 23 || this.max_date_time.minute < 59))
+			(max.hour < 23 || max.minute < 59))
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 493);
-this.calendar.calendar.addRenderer(
-				DateTime.formatDate(this.max_date_time.date),
-				cellRenderer('satg-partial-blackout'));
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 554);
+set(max.date, 'partial');
 		}
+
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 557);
+disableRemaining(max.date, +1);
 	}
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 499);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 560);
 for (var i=0; i<blackouts.length; i++)
 	{
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 501);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 562);
 var blackout = blackouts[i];
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 502);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 563);
 var start    = new Date(blackout[0] + blackout_max_seconds*1000);
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 503);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 564);
 var end      = new Date(blackout[1] + blackout_min_seconds*1000);
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 505);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 566);
 if (start.getHours() > 0 || start.getMinutes() > 0)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 507);
-this.calendar.calendar.addRenderer(
-				DateTime.formatDate(start),
-				cellRenderer('satg-partial-blackout'));
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 510);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 568);
+set(start, 'partial');
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 569);
 start.setDate(start.getDate()+1);
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 511);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 570);
 start.setHours(0);
 		}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 514);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 573);
 if (end.getHours() < 23 || end.getMinutes() < 59)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 516);
-this.calendar.calendar.addRenderer(
-				DateTime.formatDate(end),
-				cellRenderer('satg-partial-blackout'));
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 519);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 575);
+set(end, 'partial');
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 576);
 end.setDate(end.getDate()-1);
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 520);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 577);
 end.setHours(23);
 		}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 523);
-if (start.getTime() < end.getTime())
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 580);
+while (start.getTime() < end.getTime())
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 525);
-var s = DateTime.formatDate(start),
-				e = DateTime.formatDate(end);
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 527);
-if (s != e)
-			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 529);
-s += YAHOO.SATG.Locale.Calendar.YUI_DATE_RANGE_DELIMITER + e;
-			}
-
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 532);
-this.calendar.calendar.addRenderer(
-				s, this.calendar.calendar.renderOutOfBoundsDate);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 582);
+set(start, 'disabled');
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 583);
+start.setDate(start.getDate()+1);
 		}
 	}
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 537);
-this.calendar.render();
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 587);
+this.calendar.set('customRenderer',
+	{
+		rules:          rules,
+		filterFunction: renderFilter
+	});
 }
 
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 540);
-function cellRenderer(
-	/* string */ css)
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 594);
+function renderFilter(date, node, rules)
 {
-	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "cellRenderer", 540);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 543);
-return function(date, cell)
+	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "renderFilter", 594);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 596);
+if (Y.Array.indexOf(rules, 'partial') >= 0)
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "(anonymous 2)", 543);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 545);
-Dom.addClass(cell, css);
-	};
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 598);
+node.addClass('yui3-datetime-partial');
+	}
+	else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 600);
+if (Y.Array.indexOf(rules, 'disabled') >= 0)
+	{
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 602);
+node.addClass('yui3-calendar-selection-disabled');
+	}}
 }
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 548);
+
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 606);
 function ping()
 {
-	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "ping", 548);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 550);
+	_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "ping", 606);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 608);
 var duration = this.get('pingDuration');
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 551);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 609);
 if (duration <= 0)
 	{
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 553);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 611);
 return;
 	}
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 556);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 614);
 var nodes = new Y.NodeList(Y.reduce(arguments, [], function(list, name)
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "(anonymous 3)", 556);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 558);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "(anonymous 5)", 614);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 616);
 list.push(this.get(name));
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 559);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 617);
 return list;
-	}));
+	},
+	this));
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 562);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 621);
 var ping_class = this.get('pingClass');
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 563);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 622);
 if (this.ping_task)
 	{
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 565);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 624);
 this.ping_task.nodes.removeClass(ping_class);
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 566);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 625);
 this.ping_task.cancel();
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 567);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 626);
 nodes = nodes.concat(this.ping_task.nodes);
 	}
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 570);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 629);
 nodes.addClass(ping_class);
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 572);
-this.ping_task = Y.later(this.get('pingDuration'), this, function()
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 631);
+this.ping_task = Y.later(duration, this, function()
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "(anonymous 4)", 572);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 574);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "(anonymous 6)", 631);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 633);
 this.ping_task = null;
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 575);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 634);
 nodes.removeClass(ping_class);
 	});
 
-	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 578);
+	_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 637);
 this.ping_task.nodes = nodes;
 }
 
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 581);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 640);
 Y.extend(DateTime, Y.Base,
 {
 	initializer: function(
 		/* object/string */	container,
 		/* map */			config)
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "initializer", 583);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 587);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "initializer", 642);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 646);
 var date_input = this.get('dateInput');
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 588);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 647);
 date_input.on('change', enforceDateTimeLimits, this);
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 589);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 648);
 date_input.after('valueSet', checkEnforceDateTimeLimits, this);
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 591);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 650);
 var time_input = this.get('timeInput');
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 592);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 651);
 if (time_input)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 594);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 653);
 time_input.on('change', enforceDateTimeLimits, this);
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 595);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 654);
 time_input.after('valueSet', checkEnforceDateTimeLimits, this);
 		}
 		else
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 599);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 658);
 time_input = Y.Node.create('<input type="hidden"></input>');
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 600);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 659);
 this.set('timeInput', time_input);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 660);
+time_input.set('value', Y.DateTimeUtils.formatTime(this.get('blankTime')));
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 661);
+var created_time_input = true;
 		}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 603);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 664);
 var default_date_time = this.get('defaultDateTime');
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 604);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 665);
 if (default_date_time)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 606);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 667);
 date_input.set('value', Y.DateTimeUtils.formatDate(default_date_time));
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 607);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 668);
+if (!created_time_input)
+			{
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 670);
 time_input.set('value', Y.DateTimeUtils.formatTime(default_date_time));
+			}
 		}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 610);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 674);
 if (date_input.calendarSync)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 612);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 676);
 this.calendar = date_input.calendarSync.get('calendar');
 
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 614);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 678);
 if (this.calendar && default_date_time)
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 616);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 680);
 this.calendar.set('date', default_date_time.date);
 			}
 
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 619);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 683);
 var t = this.get('minDateTime');
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 620);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 684);
 if (this.calendar && t)
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 622);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 686);
 this.calendar.set('minimumDate', t.date);
 			}
 
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 625);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 689);
 t = this.get('maxDateTime');
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 626);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 690);
 if (this.calendar && t)
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 628);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 692);
 this.calendar.set('maximumDate', t.date);
 			}
 		}
 
 		// black-out dates
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 634);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 698);
 updateRendering.call(this);
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 635);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 699);
 this.on('blackoutsChange', updateRendering);
 	},
 
@@ -901,149 +1005,134 @@ this.on('blackoutsChange', updateRendering);
 	 */
 	getDateTime: function()
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "getDateTime", 647);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 649);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "getDateTime", 711);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 713);
 try
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 651);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 715);
 var date = Y.DateTimeUtils.parseDate(this.get('dateInput').get('value'));
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 652);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 716);
 if (!date)
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 654);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 718);
 return false;
 			}
 		}
 		catch (e)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 659);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 723);
 return false;
 		}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 662);
-var time_input = this.get('timeInput');
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 663);
-if (time_input)
-		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 665);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 726);
 try
-			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 667);
-var time = Y.DateTimeUtils.parseTime(time_input.get('value'));
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 668);
+		{
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 728);
+var time = Y.DateTimeUtils.parseTime(this.get('timeInput').get('value'));
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 729);
 if (!time)
-				{
-					_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 670);
-return false;
-				}
-			}
-			catch (e)
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 675);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 731);
 return false;
 			}
 		}
-		else
+		catch (e)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 680);
-var time = this.get('blankTime');
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 736);
+return false;
 		}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 683);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 739);
 var result      = Y.DateTimeUtils.normalize(Y.mix(date, time));
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 684);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 740);
 result.date_str = Y.DateTimeUtils.formatDate(result);
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 685);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 741);
 result.time_str = Y.DateTimeUtils.formatTime(result);
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 686);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 742);
 return result;
 	},
 // TODO
 	setDateTime: function(
 		/* object */	date_time)
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setDateTime", 689);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 692);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setDateTime", 745);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 748);
 this.rb[ this.rb.length-1 ].checked = true;
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 694);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 750);
 this.calendar.setDate(date_time);
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 696);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 752);
 if (date_time instanceof Date)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 698);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 754);
 this.hour_menu.value   = date_time.getHours();
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 699);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 755);
 this.minute_menu.value = date_time.getMinutes();
 		}
-		else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 701);
+		else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 757);
 if (date_time.time_str)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 703);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 759);
 var obj                = DateTime.parseTime(date_time.time_str);
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 704);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 760);
 this.hour_menu.value   = obj.hour;
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 705);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 761);
 this.minute_menu.value = obj.minute;
 		}
 		else
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 709);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 765);
 this.hour_menu.value   = date_time.hour;
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 710);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 766);
 this.minute_menu.value = date_time.minute;
 		}}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 713);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 769);
 enforceDateTimeLimits.call(this);
 	},
 // TODO
 	resetDateTime: function()
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "resetDateTime", 716);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 718);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "resetDateTime", 772);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 774);
 if (this.default_date_time)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 720);
-this.ignore_value_set = true;
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 721);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 776);
 this.calendar.setDate(this.default_date_time);
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 722);
-this.ignore_value_set = false;
 
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 724);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 778);
 this.hour_menu.value   = this.default_date_time.hour;
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 725);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 779);
 this.minute_menu.value = this.default_date_time.minute;
 		}
 		else
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 729);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 783);
 this.calendar.clearDate();
 
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 731);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 785);
 this.hour_menu.value   = this.blank_time.hour;
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 732);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 786);
 this.minute_menu.value = this.blank_time.minute;
 		}
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 735);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 789);
 enforceDateTimeLimits.call(this);
 	},
 
 	clearDateTime: function()
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "clearDateTime", 738);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 740);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "clearDateTime", 792);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 794);
 this.get('dateInput').set('value', '');
 
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 742);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 796);
 var time_input = this.get('timeInput');
-		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 743);
+		_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 797);
 if (time_input)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 745);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 799);
 time_input.set('value', '');
 		}
 	},
@@ -1051,36 +1140,36 @@ time_input.set('value', '');
 	setMinDateTime: function(
 		/* object */	min)
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setMinDateTime", 749);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 752);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setMinDateTime", 803);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 806);
 if (min)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 754);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 808);
 min = Y.DateTimeUtils.normalize(min, this.blank_time);
 
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 756);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 810);
 if (!this.min_date_time ||
 				this.min_date_time.date.getTime() != min.date.getTime())
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 759);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 813);
 this.min_date_time = min;
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 760);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 814);
 enforceDateTimeLimits.call(this);
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 761);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 815);
 this.calendar.setMinDate(this.min_date_time);
 
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 763);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 817);
 updateRendering.call(this);
 			}
 		}
-		else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 766);
+		else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 820);
 if (this.min_date_time)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 768);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 822);
 this.min_date_time = null;
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 769);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 823);
 this.calendar.clearMinDate();
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 770);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 824);
 updateRendering.call(this);
 		}}
 	},
@@ -1088,46 +1177,47 @@ updateRendering.call(this);
 	setMaxDateTime: function(
 		/* object */	max)
 	{
-		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setMaxDateTime", 774);
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 777);
+		_yuitest_coverfunc("build/gallery-datetime/gallery-datetime.js", "setMaxDateTime", 828);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 831);
 if (max)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 779);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 833);
 max = Y.DateTimeUtils.normalize(max, this.blank_time);
 
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 781);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 835);
 if (!this.max_date_time ||
 				this.max_date_time.date.getTime() != max.date.getTime())
 			{
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 784);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 838);
 this.max_date_time = max;
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 785);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 839);
 enforceDateTimeLimits.call(this);
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 786);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 840);
 this.calendar.setMaxDate(this.max_date_time);
 
-				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 788);
+				_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 842);
 updateRendering.call(this);
 			}
 		}
-		else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 791);
+		else {_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 845);
 if (this.max_date_time)
 		{
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 793);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 847);
 this.max_date_time = null;
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 794);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 848);
 this.calendar.clearMaxDate();
-			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 795);
+			_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 849);
 updateRendering.call(this);
 		}}
 	}
 });
 
-_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 800);
+_yuitest_coverline("build/gallery-datetime/gallery-datetime.js", 854);
 Y.DateTime = DateTime;
 
 
 }, '@VERSION@', {
+    "skinnable": "true",
     "requires": [
         "base",
         "gallery-datetime-utils",
