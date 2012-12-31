@@ -277,7 +277,17 @@ Y.DateTimeUtils =
 		{
 			return time;
 		}
-		else if (self.CLOCK_DISPLAY_TYPE == 12)
+
+		if (time instanceof Date)
+		{
+			time =
+			{
+				hour:   time.getHours(),
+				minute: time.getMinutes()
+			};
+		}
+
+		if (self.CLOCK_DISPLAY_TYPE == 12)
 		{
 			var s = self.TIME_FIELD_DELIMITER + pad2(time.minute) + ' ';
 			return (time.hour > 12 ?
