@@ -79,6 +79,8 @@
             
                 <li><a href="..&#x2F;classes/DataSource.Treeble.html">DataSource.Treeble</a></li>
             
+                <li><a href="..&#x2F;classes/DateTime.html">DateTime</a></li>
+            
                 <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
             
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
@@ -301,6 +303,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-datatable-state.html">gallery-datatable-state</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-datetime.html">gallery-datetime</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-dimensions.html">gallery-dimensions</a></li>
@@ -496,22 +500,63 @@ RowExpansion.column_key = &#x27;row-expander&#x27;;
  *&#x2F;
 RowExpansion.row_class = &#x27;row-expansion&#x27;;
 
-function formatTwistdown(o)
+function insertRow(o)
 {
 	var plugin = this.rowexpander;
-	var row_id = o.data[ plugin.get(&#x27;uniqueIdKey&#x27;) ];
-	var open   = plugin.open_rows[ row_id ];
+
+	var pre_cells = &#x27;&#x27;;
+	for (var i=0; i&lt;=plugin.col_count.pre; i++)
+	{
+		pre_cells += &#x27;&lt;td class=&quot;yui3-datatable-cell pre-row-expansion&quot;&gt;&amp;nbsp;&lt;&#x2F;td&gt;&#x27;;
+	}
+
+	var tmpl = plugin.get(&#x27;template&#x27;);
+	if (Y.Lang.isFunction(tmpl))
+	{
+		var s = tmpl.call(this, o.data);
+	}
+	else
+	{
+		var s = Y.Lang.sub(tmpl, o.data);
+	}
+
+	var row       = o.cell.ancestor();
+	var extra_row = Y.Lang.sub(
+		&#x27;&lt;tr class=&quot;{c}&quot;&gt;&#x27; +
+			&#x27;{pre}&#x27; +
+			&#x27;&lt;td colspan=&quot;{post}&quot; class=&quot;yui3-datatable-cell post-row-expansion&quot;&gt;{tmpl}&lt;&#x2F;td&gt;&#x27; +
+		&#x27;&lt;&#x2F;tr&gt;&#x27;,
+		{
+			c:    row.get(&#x27;className&#x27;) + &#x27; &#x27; + RowExpansion.row_class,
+			pre:  pre_cells,
+			post: plugin.col_count.post,
+			tmpl: s
+		});
+
+	row.insert(extra_row, &#x27;after&#x27;);
+}
+
+function formatTwistdown(o)
+{
+	var plugin = this.rowexpander,
+		row_id = o.data[ plugin.get(&#x27;uniqueIdKey&#x27;) ],
+		open   = plugin.open_rows[ row_id ];
 
 	o.td.addClass(&#x27;row-toggle&#x27;);
 	o.td.replaceClass(&#x27;row-(open|closed)&#x27;, open ? &#x27;row-open&#x27; : &#x27;row-closed&#x27;);
 
 	o.td.on(&#x27;click&#x27;, function()
 	{
-		plugin.open_rows[ row_id ] = ! plugin.open_rows[ row_id ];
-		Y.later(0, this, function()
+		var open = plugin.open_rows[ row_id ] = ! plugin.open_rows[ row_id ];
+
+		if (open)
 		{
-			this.syncUI();
-		});
+			insertRow.call(this, o);
+		}
+		else
+		{
+			o.cell.ancestor().next().remove();
+		}
 	},
 	this);
 
@@ -519,36 +564,7 @@ function formatTwistdown(o)
 
 	if (open)
 	{
-		var pre_cells = &#x27;&#x27;;
-		for (var i=0; i&lt;=plugin.col_count.pre; i++)
-		{
-			pre_cells += &#x27;&lt;td class=&quot;yui3-datatable-cell pre-row-expansion&quot;&gt;&amp;nbsp;&lt;&#x2F;td&gt;&#x27;;
-		}
-
-		var tmpl = plugin.get(&#x27;template&#x27;);
-		if (Y.Lang.isFunction(tmpl))
-		{
-			var s = tmpl.call(this, o.data);
-		}
-		else
-		{
-			var s = Y.Lang.sub(tmpl, o.data);
-		}
-
-		var row       = o.cell.ancestor();
-		var extra_row = Y.Lang.sub(
-			&#x27;&lt;tr class=&quot;{c}&quot;&gt;&#x27; +
-				&#x27;{pre}&#x27; +
-				&#x27;&lt;td colspan=&quot;{post}&quot; class=&quot;yui3-datatable-cell post-row-expansion&quot;&gt;{tmpl}&lt;&#x2F;td&gt;&#x27; +
-			&#x27;&lt;&#x2F;tr&gt;&#x27;,
-			{
-				c:    row.get(&#x27;className&#x27;) + &#x27; &#x27; + RowExpansion.row_class,
-				pre:  pre_cells,
-				post: plugin.col_count.post,
-				tmpl: s
-			});
-
-		row.insert(extra_row, &#x27;after&#x27;);
+		insertRow.call(this, o);
 	}
 }
 

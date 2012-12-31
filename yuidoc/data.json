@@ -264,6 +264,17 @@
                 "Plugin": 1
             }
         },
+        "src/gallery-datetime/js/DateTime.js": {
+            "name": "src/gallery-datetime/js/DateTime.js",
+            "modules": {
+                "gallery-datetime": 1
+            },
+            "classes": {
+                "DateTime": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/gallery-datetime-utils/js/utils.js": {
             "name": "src/gallery-datetime-utils/js/utils.js",
             "modules": {
@@ -1490,6 +1501,20 @@
             "description": "<p>Plugin for DataTable to preserve state, either on a single page or\nacross pages.</p>",
             "itemtype": "main"
         },
+        "gallery-datetime": {
+            "name": "gallery-datetime",
+            "submodules": {},
+            "classes": {
+                "DateTime": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 11,
+            "description": "Manages a date input field and an optional time field.  Calendars and\ntime selection widgets can be attached to these fields, but will not be\nmanaged by this class.\n\nDate/time values can be specified as either a Date object or an object\nspecifying year,month,day (all 1-based) or date_str and optionally\nhour,minute or time_str.  Individual values take precedence over string\nvalues.  Time resolution is in minutes.",
+            "itemtype": "main"
+        },
         "gallery-datetime-utils": {
             "name": "gallery-datetime-utils",
             "submodules": {},
@@ -2616,6 +2641,33 @@
                 {
                     "name": "config",
                     "description": "configuration",
+                    "type": "Object"
+                }
+            ]
+        },
+        "DateTime": {
+            "name": "DateTime",
+            "shortname": "DateTime",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-datetime",
+            "namespace": "",
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 11,
+            "description": "Manages a date input field and an optional time field.  Calendars and\ntime selection widgets can be attached to these fields, but will not be\nmanaged by this class.\n\nDate/time values can be specified as either a Date object or an object\nspecifying year,month,day (all 1-based) or date_str and optionally\nhour,minute or time_str.  Individual values take precedence over string\nvalues.  Time resolution is in minutes.",
+            "mainName": "gallery-datetime",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true,
+            "extends": "Base",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "",
                     "type": "Object"
                 }
             ]
@@ -8221,8 +8273,42 @@
             "params": [
                 {
                     "name": "e",
-                    "description": "Event Facade with the following properties:\n<dl>\n<dt>tId (Number)</dt> <dd>Unique transaction ID.</dd>\n<dt>request (Object)</dt> <dd>The request.</dd>\n<dt>callback (Object)</dt> <dd>The callback object with the following properties:\n    <dl>\n        <dt>success (Function)</dt> <dd>Success handler.</dd>\n        <dt>failure (Function)</dt> <dd>Failure handler.</dd>\n    </dl>\n</dd>\n<dt>cfg (Object)</dt> <dd>Configuration object.</dd>\n</dl>",
-                    "type": "Event.Facade"
+                    "description": "Event Facade",
+                    "type": "Event.Facade",
+                    "props": [
+                        {
+                            "name": "tId",
+                            "description": "Unique transaction ID",
+                            "type": "Number"
+                        },
+                        {
+                            "name": "request",
+                            "description": "The request",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "callback",
+                            "description": "The callback object",
+                            "type": "Object",
+                            "props": [
+                                {
+                                    "name": "success",
+                                    "description": "Success handler",
+                                    "type": "Function"
+                                },
+                                {
+                                    "name": "failure",
+                                    "description": "Failure handler",
+                                    "type": "Function"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cfg",
+                            "description": "Configuration object",
+                            "type": "Object"
+                        }
+                    ]
                 }
             ],
             "access": "protected",
@@ -8326,6 +8412,134 @@
             "class": "Plugin.DataTableState",
             "module": "gallery-datatable-state",
             "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 43,
+            "description": "Date input field to use.  Can be augmented with a Calendar via\ngallery-input-calendar-sync.",
+            "itemtype": "attribute",
+            "name": "dateInput",
+            "type": "{Node}",
+            "required": 1,
+            "writeonce": "",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 58,
+            "description": "Time input field to use.  Can be enhanced with gallery-timepicker.",
+            "itemtype": "attribute",
+            "name": "timeInput",
+            "type": "{Node}",
+            "writeonce": "",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 71,
+            "description": "Default date and time, used during initialization and by resetDateTime().",
+            "itemtype": "attribute",
+            "name": "defaultDateTime",
+            "type": "{Object}",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 85,
+            "description": "Minimum date and time.",
+            "itemtype": "attribute",
+            "name": "minDateTime",
+            "type": "{Object}",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 99,
+            "description": "Maximum date and time.",
+            "itemtype": "attribute",
+            "name": "minDateTime",
+            "type": "{Object}",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 113,
+            "description": "Time value to use when no time is specified, e.g., in a blackout date.",
+            "itemtype": "attribute",
+            "name": "blankTime",
+            "type": "{Object}",
+            "default": "{ hour:0, minute:0 }",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 131,
+            "description": "Blackout ranges, specified as a list of objects, each defining start\nand end.",
+            "itemtype": "attribute",
+            "name": "blackout",
+            "type": "{Array}",
+            "default": "[]",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 229,
+            "description": "The direction to push the selected date and time when the user\nselects a day with partial blackout.",
+            "itemtype": "attribute",
+            "name": "blackoutSnapDirection",
+            "type": "{-1,+1}",
+            "default": "+1",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 246,
+            "description": "Duration of visual ping in milliseconds when the value of an input\nfield is modified because of a min/max or blackout restriction.  Set\nto zero to disable.",
+            "itemtype": "attribute",
+            "name": "pingDuration",
+            "type": "{Number}",
+            "default": "2",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 261,
+            "description": "CSS class applied to input field when it is pinged.",
+            "itemtype": "attribute",
+            "name": "pingClass",
+            "type": "{String}",
+            "default": "\"yui3-datetime-ping\"",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 275,
+            "itemtype": "event",
+            "name": "limitsEnforced",
+            "description": "Fires after min/max and blackouts have been enforced.",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 640,
+            "description": "Get the currently selected date and time.",
+            "return": {
+                "description": "year,month,day,hour,minute,date,date_str,time_str",
+                "type": "Object"
+            },
+            "class": "DateTime",
+            "module": "gallery-datetime"
         },
         {
             "file": "src/gallery-datetime-utils/js/utils.js",
@@ -8464,7 +8678,7 @@
                 }
             ],
             "return": {
-                "description": "formatted date, using positions and delimiated",
+                "description": "formatted date, using positions and delimiters",
                 "type": "String"
             },
             "class": "DateTimeUtils",
@@ -8485,7 +8699,7 @@
                 }
             ],
             "return": {
-                "description": "year,month,day",
+                "description": "year,month,day, or null",
                 "type": "Object"
             },
             "class": "DateTimeUtils",
@@ -8506,7 +8720,7 @@
                 }
             ],
             "return": {
-                "description": "formatted date, using positions and delimiated",
+                "description": "formatted date, using positions and delimiters",
                 "type": "String"
             },
             "class": "DateTimeUtils",
@@ -8527,7 +8741,7 @@
                 }
             ],
             "return": {
-                "description": "hour,minute",
+                "description": "hour,minute, or null",
                 "type": "Object"
             },
             "class": "DateTimeUtils",
@@ -18525,5 +18739,10 @@
             "module": "gallery-treeble"
         }
     ],
-    "warnings": []
+    "warnings": [
+        {
+            "message": "Missing item type\nGet the currently selected date and time.",
+            "line": " src/gallery-datetime/js/DateTime.js:640"
+        }
+    ]
 }

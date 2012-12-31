@@ -4,7 +4,7 @@
 	<title>YUI 3 DateTime Examples</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-	<script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
+	<script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
 
 	<script src="gallery-datetime-debug.js"></script>
 	<script src="gallery-input-calendar-sync-debug.js"></script>
@@ -12,6 +12,7 @@
 	<script src="gallery-node-event-set-debug.js"></script>
 	<script src="gallery-funcprog-debug.js"></script>
 	<script src="gallery-object-extras-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-datetime.css" />
 </head>
 <body class="yui3-skin-sam">
 
@@ -21,11 +22,17 @@
 <p><a href="/yui3-gallery/">Back to project list</a></p>
 
 <form onsubmit="return false;">
-	<label for="date">Date:</label><input type="text" id="date" value="2012-1-1" />
+	<label for="date">Date:</label><input type="text" id="date" />
+	<button id="show-date">Print to Console</button>
 	<div id="calendar"></div>
 	<br>
 	<label for="date2">Date:</label><input type="text" id="date2" placeholder="No date" />
+	<button id="show-date2">Print to Console</button>
 	<div id="calendar2"></div>
+	<br>
+	<label for="date3">Date/Time:</label><input type="text" id="date3" /> <input type="text" id="time3" />
+	<button id="show-date3">Print to Console</button>
+	<div id="calendar3"></div>
 </form>
 
 <script type="text/javascript">
@@ -33,9 +40,13 @@ YUI({
 	filter: 'raw', combine: false,
 	gallery: 'gallery-2012.12.19-21-23'
 }).use(
-	'gallery-datetime', 'gallery-input-calendar-sync',
+	'gallery-datetime', 'gallery-input-calendar-sync', 'datatype-date-math',
 function(Y)
 {
+	var now  = new Date(),
+		today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+		delta = 3*7*24*3600000;
+
 	var cal = new Y.Calendar(
 	{
 		width:         300,
@@ -44,12 +55,25 @@ function(Y)
 	});
 	cal.render('#calendar');
 
-	var node = Y.one('#date');
-	node.plug(Y.Plugin.InputCalendarSync,
+	Y.one('#date').plug(Y.Plugin.InputCalendarSync,
 	{
 		calendar:   cal,
 		allowBlank: false
 	});
+
+	var dt = new Y.DateTime(
+	{
+		dateInput:       '#date',
+		defaultDateTime: now,
+		minDateTime:     new Date(today.getTime() - delta),
+		maxDateTime:     new Date(today.getTime() + delta - 60000)
+	});
+
+	Y.on('click', function(e)
+	{
+		console.log(dt.getDateTime());
+	},
+	'#show-date');
 
 	// allow blank date
 
@@ -66,6 +90,64 @@ function(Y)
 	{
 		calendar: cal2
 	});
+
+	var dt2 = new Y.DateTime(
+	{
+		dateInput: node2,
+		blankTime: { hour: 12, minute: 30 }
+	});
+
+	Y.on('click', function(e)
+	{
+		console.log(dt2.getDateTime());
+	},
+	'#show-date2');
+
+	// date & time
+
+	var cal3 = new Y.Calendar(
+	{
+		width:         300,
+		showPrevMonth: true,
+		showNextMonth: true
+	});
+	cal3.render('#calendar3');
+
+	Y.one('#date3').plug(Y.Plugin.InputCalendarSync,
+	{
+		calendar:   cal3,
+		allowBlank: false
+	});
+
+	var dt3 = new Y.DateTime(
+	{
+		dateInput:       '#date3',
+		timeInput:       '#time3',
+		defaultDateTime: now,
+		minDateTime:     new Date(now.getTime() - delta),
+		maxDateTime:     new Date(now.getTime() + delta),
+		blackouts:
+		[
+			{
+				start: Y.Date.addDays(now, 2),
+				end:   Y.Date.addDays(now, 5)
+			},
+			{
+				start: new Date(today.getTime() - 2.7*24*3600000),
+				end:   new Date(today.getTime() - 2.3*24*3600000)
+			},
+			{
+				start: new Date(today.getTime() - 5*24*3600000),
+				end:   new Date(today.getTime() - 4*24*3600000 - 60000)
+			}
+		]
+	});
+
+	Y.on('click', function(e)
+	{
+		console.log(dt3.getDateTime());
+	},
+	'#show-date3');
 });
 </script>
 

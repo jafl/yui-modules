@@ -79,6 +79,8 @@
             
                 <li><a href="..&#x2F;classes/DataSource.Treeble.html">DataSource.Treeble</a></li>
             
+                <li><a href="..&#x2F;classes/DateTime.html">DateTime</a></li>
+            
                 <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
             
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
@@ -301,6 +303,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-datatable-state.html">gallery-datatable-state</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-datetime.html">gallery-datetime</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-dimensions.html">gallery-dimensions</a></li>
@@ -461,18 +465,13 @@ Y.extend(AsyncFunctionDataSource, Y.DataSource.Local,
 	 * response is received asynchronously.
 	 *
 	 * @method _defRequestFn
-	 * @param e {Event.Facade} Event Facade with the following properties:
-	 * &lt;dl&gt;
-	 * &lt;dt&gt;tId (Number)&lt;&#x2F;dt&gt; &lt;dd&gt;Unique transaction ID.&lt;&#x2F;dd&gt;
-	 * &lt;dt&gt;request (Object)&lt;&#x2F;dt&gt; &lt;dd&gt;The request.&lt;&#x2F;dd&gt;
-	 * &lt;dt&gt;callback (Object)&lt;&#x2F;dt&gt; &lt;dd&gt;The callback object with the following properties:
-	 *     &lt;dl&gt;
-	 *         &lt;dt&gt;success (Function)&lt;&#x2F;dt&gt; &lt;dd&gt;Success handler.&lt;&#x2F;dd&gt;
-	 *         &lt;dt&gt;failure (Function)&lt;&#x2F;dt&gt; &lt;dd&gt;Failure handler.&lt;&#x2F;dd&gt;
-	 *     &lt;&#x2F;dl&gt;
-	 * &lt;&#x2F;dd&gt;
-	 * &lt;dt&gt;cfg (Object)&lt;&#x2F;dt&gt; &lt;dd&gt;Configuration object.&lt;&#x2F;dd&gt;
-	 * &lt;&#x2F;dl&gt;
+	 * @param e {Event.Facade} Event Facade
+	 * @param e.tId {Number} Unique transaction ID
+	 * @param e.request {Object} The request
+	 * @param e.callback {Object} The callback object
+	 * @param e.callback.success {Function} Success handler
+	 * @param e.callback.failure {Function} Failure handler
+	 * @param e.cfg {Object} Configuration object
 	 * @protected
 	 *&#x2F;
 	_defRequestFn: function(e)

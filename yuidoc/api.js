@@ -20,6 +20,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "DataSource.AsyncFunction",
         "DataSource.BulkEdit",
         "DataSource.Treeble",
+        "DateTime",
         "DateTimeUtils",
         "EnableIfAnyCheckboxGroup",
         "ExpirationCache",
@@ -131,6 +132,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-datasource-async-function",
         "gallery-datatable-row-expansion",
         "gallery-datatable-state",
+        "gallery-datetime",
         "gallery-datetime-utils",
         "gallery-dimensions",
         "gallery-expiration-cache",
@@ -239,6 +241,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-datatable-state",
             "name": "gallery-datatable-state",
             "description": "<p>Plugin for DataTable to preserve state, either on a single page or\nacross pages.</p>"
+        },
+        {
+            "displayName": "gallery-datetime",
+            "name": "gallery-datetime",
+            "description": "Manages a date input field and an optional time field.  Calendars and\ntime selection widgets can be attached to these fields, but will not be\nmanaged by this class.\n\nDate/time values can be specified as either a Date object or an object\nspecifying year,month,day (all 1-based) or date_str and optionally\nhour,minute or time_str.  Individual values take precedence over string\nvalues.  Time resolution is in minutes."
         },
         {
             "displayName": "gallery-datetime-utils",
