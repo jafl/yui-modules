@@ -11,6 +11,7 @@ YUI.add('gallery-datetime-utils-tests', function(Y) {
 		{
 			error:
 			{
+				testParseDateInvalidValue:  true,
 				testParseTimeInvalidValue:  true,
 				testParseTimeInvalidHour:   true,
 				testParseTimeInvalidMinute: true
@@ -86,6 +87,11 @@ YUI.add('gallery-datetime-utils-tests', function(Y) {
 			Y.DateTimeUtils.DAY_POSITION         = 3;
 		},
 
+		testParseDateInvalidValue: function()
+		{
+			Y.DateTimeUtils.parseDate('abc');
+		},
+
 		testFormatTime: function()
 		{
 			Y.Assert.areSame('', Y.DateTimeUtils.formatTime());
@@ -107,10 +113,10 @@ YUI.add('gallery-datetime-utils-tests', function(Y) {
 
 		testParseTime: function()
 		{
-			Y.Assert.areSame(null, Y.DateTimeUtils.parseDate());
-			Y.Assert.areSame(null, Y.DateTimeUtils.parseDate(null));
-			Y.Assert.areSame(null, Y.DateTimeUtils.parseDate(''));
-			Y.Assert.areSame(date, Y.DateTimeUtils.parseDate(date));
+			Y.Assert.areSame(null, Y.DateTimeUtils.parseTime());
+			Y.Assert.areSame(null, Y.DateTimeUtils.parseTime(null));
+			Y.Assert.areSame(null, Y.DateTimeUtils.parseTime(''));
+			Y.Assert.areSame(date, Y.DateTimeUtils.parseTime(date));
 
 			function check(result)
 			{
