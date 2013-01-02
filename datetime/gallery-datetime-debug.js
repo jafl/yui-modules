@@ -390,8 +390,6 @@ function enforceDateTimeLimits(
 
 	// update controls that changed
 
-	this.ignore_value_set = true;
-
 	if (date.getFullYear() !== orig_date.getFullYear() ||
 		date.getMonth()    !== orig_date.getMonth()    ||
 		date.getDate()     !== orig_date.getDate())
@@ -406,10 +404,6 @@ function enforceDateTimeLimits(
 		var timer       = getEnforceTimer.call(this);
 		timer.timeInput = Y.DateTimeUtils.formatTime(date);
 	}
-
-	this.ignore_value_set = false;
-
-	this.fire('limitsEnforced');
 }
 
 function getEnforceTimer()
@@ -418,20 +412,26 @@ function getEnforceTimer()
 	{
 		this.enforce_timer = Y.later(0, this, function()
 		{
-			var ping_list = [];
+			var timer          = this.enforce_timer;
+			this.enforce_timer = null;
+
+			var ping_list         = [];
+			this.ignore_value_set = true;
 
 			Y.each(['dateInput', 'timeInput'], function(name)
 			{
-				if (this.enforce_timer[name])
+				if (timer[name])
 				{
-					this.get(name).set('value', this.enforce_timer[name]);
+					this.get(name).set('value', timer[name]);
 					ping_list.push(name);
 				}
 			},
 			this);
 
+			this.ignore_value_set = false;
 			ping.apply(this, ping_list);
-			this.enforce_timer = null;
+
+			this.fire('limitsEnforced');
 		});
 	}
 
@@ -706,6 +706,7 @@ Y.extend(DateTime, Y.Base,
 	/**
 	 * Get the currently selected date and time.
 	 * 
+	 * @method getDateTime
 	 * @return {Object} year,month,day,hour,minute,date,date_str,time_str
 	 */
 	getDateTime: function()

@@ -21,19 +21,53 @@
 <p><a href="../yuidoc/modules/gallery-datetime.html">Show me the documentation</a></p>
 <p><a href="/yui3-gallery/">Back to project list</a></p>
 
-<form onsubmit="return false;">
-	<label for="date">Date:</label><input type="text" id="date" />
-	<button id="show-date">Print to Console</button>
-	<div id="calendar"></div>
-	<br>
-	<label for="date2">Date:</label><input type="text" id="date2" placeholder="No date" />
-	<button id="show-date2">Print to Console</button>
-	<div id="calendar2"></div>
-	<br>
-	<label for="date3">Date/Time:</label><input type="text" id="date3" /> <input type="text" id="time3" />
-	<button id="show-date3">Print to Console</button>
-	<div id="calendar3"></div>
+<form id="test-form" onsubmit="return false;">
+	<fieldset>
+		<legend>Date</legend>
+		<label for="date">Date:</label><input type="text" id="date" />
+		<button id="show-date" class="log-to-console">Print to Console</button>
+		<div id="calendar"></div>
+	</fieldset>
+	<fieldset>
+		<legend>Date allowing blank</legend>
+		<label for="date2">Date:</label><input type="text" id="date2" placeholder="No date" />
+		<button id="show-date2" class="log-to-console">Print to Console</button>
+		<div id="calendar2"></div>
+	</fieldset>
+	<fieldset>
+		<legend>Date &amp; Time</legend>
+		<label for="date3">Date/Time:</label><input type="text" id="date3" /> <input type="text" id="time3" />
+		<button id="show-date3" class="log-to-console">Print to Console</button>
+		<div id="calendar3"></div>
+	</fieldset>
+	<fieldset>
+		<legend>Date w/out calendar</legend>
+		<label for="date4">Date:</label><input type="text" id="date4" />
+		<button id="show-date4" class="log-to-console">Print to Console</button>
+	</fieldset>
+	<fieldset>
+		<legend>Date &amp; Time (HTML5)</legend>
+		<label for="date5">Date/Time:</label><input type="date" id="date5" /> <input type="time" id="time5" />
+		<button id="show-date5" class="log-to-console">Print to Console</button>
+	</fieldset>
 </form>
+
+<!--
+enforce date & time formats in DateTime.js - don't rely on Y.Calendar
+
+option to provide starting set of rules and filterFn
+	how does "all" interact with individual rules?
+
+test with gallery-timepicker
+	render in Y.Overlay
+
+test with 12-hour time:  AM/PM
+
+test with date format: d/m/y
+	probably incompatible with type="date" in Chrome
+
+setting type="time" to zero blanks it instead of setting to 12:00AM
+-->
 
 <script type="text/javascript">
 YUI({
@@ -41,11 +75,15 @@ YUI({
 	gallery: 'gallery-2012.12.19-21-23'
 }).use(
 	'gallery-datetime', 'gallery-input-calendar-sync', 'datatype-date-math',
+	'gallery-timepicker',
 function(Y)
 {
-	var now  = new Date(),
-		today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-		delta = 3*7*24*3600000;
+	var now    = new Date(),
+		today  = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+		delta  = 3*7*24*3600000,
+		dt_map = {};
+
+	// date
 
 	var cal = new Y.Calendar(
 	{
@@ -61,19 +99,13 @@ function(Y)
 		allowBlank: false
 	});
 
-	var dt = new Y.DateTime(
+	dt_map.date = new Y.DateTime(
 	{
 		dateInput:       '#date',
 		defaultDateTime: now,
 		minDateTime:     new Date(today.getTime() - delta),
 		maxDateTime:     new Date(today.getTime() + delta - 60000)
 	});
-
-	Y.on('click', function(e)
-	{
-		console.log(dt.getDateTime());
-	},
-	'#show-date');
 
 	// allow blank date
 
@@ -91,17 +123,11 @@ function(Y)
 		calendar: cal2
 	});
 
-	var dt2 = new Y.DateTime(
+	dt_map.date2 = new Y.DateTime(
 	{
 		dateInput: node2,
 		blankTime: { hour: 12, minute: 30 }
 	});
-
-	Y.on('click', function(e)
-	{
-		console.log(dt2.getDateTime());
-	},
-	'#show-date2');
 
 	// date & time
 
@@ -119,7 +145,7 @@ function(Y)
 		allowBlank: false
 	});
 
-	var dt3 = new Y.DateTime(
+	dt_map.date3 = new Y.DateTime(
 	{
 		dateInput:       '#date3',
 		timeInput:       '#time3',
@@ -143,11 +169,50 @@ function(Y)
 		]
 	});
 
-	Y.on('click', function(e)
+	// date w/out calendar
+
+	dt_map.date4 = new Y.DateTime(
 	{
-		console.log(dt3.getDateTime());
+		dateInput:       '#date4',
+		defaultDateTime: now,
+		minDateTime:     new Date(today.getTime() - delta),
+		maxDateTime:     new Date(today.getTime() + delta - 60000)
+	});
+
+	// date & time (HTML5)
+
+	dt_map.date5 = new Y.DateTime(
+	{
+		dateInput:       '#date5',
+		timeInput:       '#time5',
+		defaultDateTime: now,
+		minDateTime:     new Date(now.getTime() - delta),
+		maxDateTime:     new Date(now.getTime() + delta),
+		blackouts:
+		[
+			{
+				start: Y.Date.addDays(now, 2),
+				end:   Y.Date.addDays(now, 5)
+			},
+			{
+				start: new Date(today.getTime() - 2.7*24*3600000),
+				end:   new Date(today.getTime() - 2.3*24*3600000)
+			},
+			{
+				start: new Date(today.getTime() - 5*24*3600000),
+				end:   new Date(today.getTime() - 4*24*3600000 - 60000)
+			}
+		]
+	});
+
+	// printout
+
+	Y.delegate('click', function(e)
+	{
+		var name = e.target.get('id').replace(/^show-/, '');
+		console.log(dt_map[ name ].getDateTime());
 	},
-	'#show-date3');
+	'#test-form', '.log-to-console');
 });
 </script>
 
