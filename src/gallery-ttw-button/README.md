@@ -1,2 +1,0 @@
-TipTheWeb Tip Button
-====================
