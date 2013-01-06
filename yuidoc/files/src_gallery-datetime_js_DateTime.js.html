@@ -452,10 +452,9 @@ function DateTime(config)
 
 DateTime.NAME = &quot;datetime&quot;;
 
-function isInputNode(n)
+function setNode(n)
 {
-	&#x2F;&#x2F; allow Y.Node from a different sandbox
-	return n &amp;&amp; n._node &amp;&amp; n._node.tagName == &#x27;INPUT&#x27;;
+	return Y.one(n) || Attribute.INVALID_VALUE;
 }
 
 DateTime.ATTRS =
@@ -465,13 +464,13 @@ DateTime.ATTRS =
 	 * gallery-input-calendar-sync.
 	 * 
 	 * @attribute dateInput
-	 * @type {Node}
+	 * @type {Node|String}
 	 * @required
 	 * @writeonce
 	 *&#x2F;
 	dateInput:
 	{
-		validator: isInputNode,
+		setter:    setNode,
 		writeOnce: true
 	},
 
@@ -479,12 +478,12 @@ DateTime.ATTRS =
 	 * Time input field to use.  Can be enhanced with gallery-timepicker.
 	 * 
 	 * @attribute timeInput
-	 * @type {Node}
+	 * @type {Node|String}
 	 * @writeonce
 	 *&#x2F;
 	timeInput:
 	{
-		validator: isInputNode,
+		setter:    setNode,
 		writeOnce: true
 	},
 
@@ -550,7 +549,7 @@ DateTime.ATTRS =
 
 	&#x2F;**
 	 * Blackout ranges, specified as a list of objects, each defining start
-	 * and end.
+	 * and end.  The data is overwritten, so this is a write-only value.
 	 * 
 	 * @attribute blackout
 	 * @type {Array}
@@ -562,9 +561,11 @@ DateTime.ATTRS =
 		validator: Y.Lang.isArray,
 		setter:    function(ranges)
 		{
+			ranges = ranges || [];
+
 			&#x2F;&#x2F; store ranges in ascending order of start time
 
-			var blackout   = [],
+			var blackouts  = [],
 				blank_time = this.get(&#x27;blankTime&#x27;);
 			for (var i=0; i&lt;ranges.length; i++)
 			{
@@ -583,30 +584,30 @@ DateTime.ATTRS =
 				];
 
 				var inserted = false;
-				for (var j=0; j&lt;blackout.length; j++)
+				for (var j=0; j&lt;blackouts.length; j++)
 				{
-					var r1 = blackout[j];
+					var r1 = blackouts[j];
 					if (r[0] &lt;= r1[0])
 					{
 						if (j &gt; 0 &amp;&amp;
-							r[0] &lt;  blackout[j-1][1] &amp;&amp;
-							r[1] &lt;= blackout[j-1][1])
+							r[0] &lt;  blackouts[j-1][1] &amp;&amp;
+							r[1] &lt;= blackouts[j-1][1])
 						{
 							&#x2F;&#x2F; covered by prev
 						}
 						else if (j &gt; 0 &amp;&amp;
-								 r[0] - 60000 &lt; blackout[j-1][1] &amp;&amp;
+								 r[0] - 60000 &lt; blackouts[j-1][1] &amp;&amp;
 								 r1[0] &lt; r[1] + 60000)
 						{
 							&#x2F;&#x2F; overlaps prev and next
-							r = [ blackout[j-1][0], r[1] ];
-							blackout.splice(j-1, 2, r);
+							r = [ blackouts[j-1][0], r[1] ];
+							blackouts.splice(j-1, 2, r);
 						}
 						else if (j &gt; 0 &amp;&amp;
-								 r[0] - 60000 &lt; blackout[j-1][1])
+								 r[0] - 60000 &lt; blackouts[j-1][1])
 						{
 							&#x2F;&#x2F; overlaps prev
-							blackout[j-1][1] = r[1];
+							blackouts[j-1][1] = r[1];
 						}
 						else if (r1[0] &lt; r[1] + 60000)
 						{
@@ -615,51 +616,52 @@ DateTime.ATTRS =
 						}
 						else
 						{
-							blackout.splice(j, 0, r);
+							blackouts.splice(j, 0, r);
 						}
 						inserted = true;
 						break;
 					}
 				}
 
-				&#x2F;&#x2F; j == blackout.length
+				&#x2F;&#x2F; j == blackouts.length
 
 				if (!inserted &amp;&amp; j &gt; 0 &amp;&amp;
-					r[0] &lt;  blackout[j-1][1] &amp;&amp;
-					r[1] &lt;= blackout[j-1][1])
+					r[0] &lt;  blackouts[j-1][1] &amp;&amp;
+					r[1] &lt;= blackouts[j-1][1])
 				{
 					&#x2F;&#x2F; covered by prev
 				}
 				else if (!inserted &amp;&amp; j &gt; 0 &amp;&amp;
-						 r[0] - 60000 &lt; blackout[j-1][1])
+						 r[0] - 60000 &lt; blackouts[j-1][1])
 				{
 					&#x2F;&#x2F; overlaps prev
-					blackout[j-1][1] = r[1];
+					blackouts[j-1][1] = r[1];
 				}
 				else if (!inserted)
 				{
-					blackout.push(r);
+					blackouts.push(r);
 				}
 			}
 
-			return blackout;
+			return blackouts;
 		}
 	},
 
 	&#x2F;**
 	 * The direction to push the selected date and time when the user
-	 * selects a day with partial blackout.
+	 * selects a day with partial blackout.  The default value of zero
+	 * means go to the nearest available time.
 	 *
 	 * @attribute blackoutSnapDirection
-	 * @type {-1,+1}
-	 * @default +1
+	 * @type {-1,0,+1}
+	 * @default 0
 	 *&#x2F;
 	blackoutSnapDirection:
 	{
-		&#x27;default&#x27;: +1,
+		value:     0,
 		validator: function(value)
 		{
-			return (value == -1 || value == +1);
+			return (value == -1 || value === 0 || value == +1);
 		}
 	},
 
@@ -670,11 +672,11 @@ DateTime.ATTRS =
 	 * 
 	 * @attribute pingDuration
 	 * @type {Number}
-	 * @default 2
+	 * @default 2000
 	 *&#x2F;
 	pingDuration:
 	{
-		value:     2,
+		value:     2000,
 		validator: Y.Lang.isNumber
 	},
 
@@ -719,35 +721,33 @@ function enforceDateTimeLimits(
 
 	&#x2F;&#x2F; blackout ranges
 
-	if (this.blackout.length &gt; 0)
+	var blackouts = this.get(&#x27;blackouts&#x27;);
+	if (blackouts.length &gt; 0)
 	{
 		var t      = date.getTime(),
 			orig_t = t,
-			snap   = this.get(&#x27;blackoutSnapDirection&#x27;);
+			snap   = algo == &#x27;same-day&#x27; ? 0 : this.get(&#x27;blackoutSnapDirection&#x27;);
 
-		for (var i=0; i&lt;this.blackout.length; i++)
+		for (var i=0; i&lt;blackouts.length; i++)
 		{
-			var blackout = this.blackout[i];
+			var blackout = blackouts[i];
 			if (blackout[0] &lt; t &amp;&amp; t &lt; blackout[1])
 			{
 				if (snap &gt; 0)
 				{
 					t = blackout[1] + 60000;
 				}
-				else
+				else if (snap &lt; 0)
 				{
 					t = blackout[0];
 				}
-
-				if (algo == &#x27;same-day&#x27;)
+				else if (t - blackout[0] &lt; blackout[1] - t)
 				{
-					var tmp = new Date(t);
-					if (tmp.getDate()     != date.getDate()  ||
-						tmp.getMonth()    != date.getMonth() ||
-						tmp.getFullYear() != date.getFullYear())
-					{
-						t = snap &gt; 0 ? blackout[0] : blackout[1] + 60000;
-					}
+					t = blackout[0];
+				}
+				else
+				{
+					t = blackout[1] + 60000;
 				}
 
 				break;
@@ -765,15 +765,15 @@ function enforceDateTimeLimits(
 	var min = this.get(&#x27;minDateTime&#x27;);
 	if (min)
 	{
-		var t = this.min.date.getTime();
+		var t = min.date.getTime();
 
-		if (this.blackout.length &gt; 0)
+		if (blackouts.length &gt; 0)
 		{
 			var orig_t = t;
 			var i      = 0;
-			while (i &lt; this.blackout.length &amp;&amp; this.blackout[i][0] &lt; t)
+			while (i &lt; blackouts.length &amp;&amp; blackouts[i][0] &lt; t)
 			{
-				t = Math.max(orig_t, this.blackout[i][1]);
+				t = Math.max(orig_t, blackouts[i][1]);
 				i++;
 			}
 		}
@@ -787,15 +787,15 @@ function enforceDateTimeLimits(
 	var max = this.get(&#x27;maxDateTime&#x27;);
 	if (max)
 	{
-		var t = this.max.date.getTime();
+		var t = max.date.getTime();
 
-		if (this.blackout.length &gt; 0)
+		if (blackouts.length &gt; 0)
 		{
 			var orig_t = t;
-			var i      = this.blackout.length - 1;
-			while (i &gt;= 0 &amp;&amp; t &lt; this.blackout[i][1])
+			var i      = blackouts.length - 1;
+			while (i &gt;= 0 &amp;&amp; t &lt; blackouts[i][1])
 			{
-				t = Math.min(orig_t, this.blackout[i][0]);
+				t = Math.min(orig_t, blackouts[i][0]);
 				i--;
 			}
 		}
@@ -808,46 +808,106 @@ function enforceDateTimeLimits(
 
 	&#x2F;&#x2F; update controls that changed
 
-	this.ignore_value_set = true;
-
 	if (date.getFullYear() !== orig_date.getFullYear() ||
 		date.getMonth()    !== orig_date.getMonth()    ||
 		date.getDate()     !== orig_date.getDate())
 	{
-		this.get(&#x27;dateInput&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatDate(date));
-		this.get(&#x27;timeInput&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatTime(date));
-		ping.call(this, &#x27;dateInput&#x27;, &#x27;timeInput&#x27;);
+		var timer       = getEnforceTimer.call(this);
+		timer.dateInput = Y.DateTimeUtils.formatDate(date);
+		timer.timeInput = Y.DateTimeUtils.formatTime(date);
 	}
 	else if (date.getHours() !== orig_date.getHours() ||
 			 date.getMinutes() !== orig_date.getMinutes())
 	{
-		this.get(&#x27;timeInput&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatTime(date));
-		ping.apply(this, &#x27;timeInput&#x27;);
+		var timer       = getEnforceTimer.call(this);
+		timer.timeInput = Y.DateTimeUtils.formatTime(date);
+	}
+}
+
+function getEnforceTimer()
+{
+	if (!this.enforce_timer)
+	{
+		this.enforce_timer = Y.later(0, this, function()
+		{
+			var timer          = this.enforce_timer;
+			this.enforce_timer = null;
+
+			var ping_list         = [];
+			this.ignore_value_set = true;
+
+			Y.each([&#x27;dateInput&#x27;, &#x27;timeInput&#x27;], function(name)
+			{
+				if (timer[name])
+				{
+					this.get(name).set(&#x27;value&#x27;, timer[name]);
+					ping_list.push(name);
+				}
+			},
+			this);
+
+			this.ignore_value_set = false;
+			ping.apply(this, ping_list);
+
+			this.fire(&#x27;limitsEnforced&#x27;);
+		});
 	}
 
-	this.ignore_value_set = false;
-
-	this.fire(&#x27;limitsEnforced&#x27;);
+	return this.enforce_timer;
 }
 
 function updateRendering()
 {
-	return;
-
-	if (this.disabled)
+	if (!this.calendar)
 	{
 		return;
 	}
 
-	this.calendar.calendar.removeRenderers();
+	function mkpath()
+	{
+		var obj = rules;
+		Y.each(arguments, function(key)
+		{
+			if (!obj[key])
+			{
+				obj[key] = {};
+			}
+			obj = obj[key];
+		});
+	}
 
-	var blackouts = this.blackout.slice(0);
+	function set(date, type)
+	{
+		var y = date.getFullYear(),
+			m = date.getMonth(),
+			d = date.getDate();
 
-	if (this.min_date_time)
+		mkpath(y, m, d);
+
+		rules[y][m][d] = type;
+	}
+
+	function disableRemaining(date, delta)
+	{
+		var d = new Date(date);
+		d.setDate(d.getDate() + delta);
+
+		while (d.getMonth() == date.getMonth())
+		{
+			set(d, &#x27;disabled&#x27;);
+			d.setDate(d.getDate() + delta);
+		}
+	}
+
+	var blackouts = this.get(&#x27;blackouts&#x27;).slice(0),
+		rules     = {};
+
+	var min = this.get(&#x27;minDateTime&#x27;);
+	if (min)
 	{
 		if (blackouts.length &gt; 0)
 		{
-			var t       = this.min_date_time.date.getTime();
+			var t       = min.date.getTime();
 			var changed = false;
 			for (var i=0; i &lt; blackouts.length; i++)
 			{
@@ -871,19 +931,20 @@ function updateRendering()
 		}
 
 		if (!changed &amp;&amp;
-			(this.min_date_time.hour &gt; 0 || this.min_date_time.minute &gt; 0))
+			(min.hour &gt; 0 || min.minute &gt; 0))
 		{
-			this.calendar.calendar.addRenderer(
-				DateTime.formatDate(this.min_date_time.date),
-				cellRenderer(&#x27;satg-partial-blackout&#x27;));
+			set(min.date, &#x27;partial&#x27;);
 		}
+
+		disableRemaining(min.date, -1);
 	}
 
-	if (this.max_date_time)
+	var max = this.get(&#x27;maxDateTime&#x27;);
+	if (max)
 	{
 		if (blackouts.length &gt; 0)
 		{
-			var t       = this.max_date_time.date.getTime();
+			var t       = max.date.getTime();
 			var changed = false;
 			for (var i=blackouts.length-1; i&gt;=0; i--)
 			{
@@ -906,12 +967,12 @@ function updateRendering()
 		}
 
 		if (!changed &amp;&amp;
-			(this.max_date_time.hour &lt; 23 || this.max_date_time.minute &lt; 59))
+			(max.hour &lt; 23 || max.minute &lt; 59))
 		{
-			this.calendar.calendar.addRenderer(
-				DateTime.formatDate(this.max_date_time.date),
-				cellRenderer(&#x27;satg-partial-blackout&#x27;));
+			set(max.date, &#x27;partial&#x27;);
 		}
+
+		disableRemaining(max.date, +1);
 	}
 
 	for (var i=0; i&lt;blackouts.length; i++)
@@ -922,47 +983,44 @@ function updateRendering()
 
 		if (start.getHours() &gt; 0 || start.getMinutes() &gt; 0)
 		{
-			this.calendar.calendar.addRenderer(
-				DateTime.formatDate(start),
-				cellRenderer(&#x27;satg-partial-blackout&#x27;));
+			set(start, &#x27;partial&#x27;);
 			start.setDate(start.getDate()+1);
 			start.setHours(0);
 		}
 
 		if (end.getHours() &lt; 23 || end.getMinutes() &lt; 59)
 		{
-			this.calendar.calendar.addRenderer(
-				DateTime.formatDate(end),
-				cellRenderer(&#x27;satg-partial-blackout&#x27;));
+			set(end, &#x27;partial&#x27;);
 			end.setDate(end.getDate()-1);
 			end.setHours(23);
 		}
 
-		if (start.getTime() &lt; end.getTime())
+		while (start.getTime() &lt; end.getTime())
 		{
-			var s = DateTime.formatDate(start),
-				e = DateTime.formatDate(end);
-			if (s != e)
-			{
-				s += YAHOO.SATG.Locale.Calendar.YUI_DATE_RANGE_DELIMITER + e;
-			}
-
-			this.calendar.calendar.addRenderer(
-				s, this.calendar.calendar.renderOutOfBoundsDate);
+			set(start, &#x27;disabled&#x27;);
+			start.setDate(start.getDate()+1);
 		}
 	}
 
-	this.calendar.render();
+	this.calendar.set(&#x27;customRenderer&#x27;,
+	{
+		rules:          rules,
+		filterFunction: renderFilter
+	});
 }
 
-function cellRenderer(
-	&#x2F;* string *&#x2F; css)
+function renderFilter(date, node, rules)
 {
-	return function(date, cell)
+	if (Y.Array.indexOf(rules, &#x27;partial&#x27;) &gt;= 0)
 	{
-		Dom.addClass(cell, css);
-	};
+		node.addClass(&#x27;yui3-datetime-partial&#x27;);
+	}
+	else if (Y.Array.indexOf(rules, &#x27;disabled&#x27;) &gt;= 0)
+	{
+		node.addClass(&#x27;yui3-calendar-selection-disabled&#x27;);
+	}
 }
+
 function ping()
 {
 	var duration = this.get(&#x27;pingDuration&#x27;);
@@ -975,7 +1033,8 @@ function ping()
 	{
 		list.push(this.get(name));
 		return list;
-	}));
+	},
+	this));
 
 	var ping_class = this.get(&#x27;pingClass&#x27;);
 	if (this.ping_task)
@@ -987,7 +1046,7 @@ function ping()
 
 	nodes.addClass(ping_class);
 
-	this.ping_task = Y.later(this.get(&#x27;pingDuration&#x27;), this, function()
+	this.ping_task = Y.later(duration, this, function()
 	{
 		this.ping_task = null;
 		nodes.removeClass(ping_class);
@@ -1016,13 +1075,18 @@ Y.extend(DateTime, Y.Base,
 		{
 			time_input = Y.Node.create(&#x27;&lt;input type=&quot;hidden&quot;&gt;&lt;&#x2F;input&gt;&#x27;);
 			this.set(&#x27;timeInput&#x27;, time_input);
+			time_input.set(&#x27;value&#x27;, Y.DateTimeUtils.formatTime(this.get(&#x27;blankTime&#x27;)));
+			var created_time_input = true;
 		}
 
 		var default_date_time = this.get(&#x27;defaultDateTime&#x27;);
 		if (default_date_time)
 		{
 			date_input.set(&#x27;value&#x27;, Y.DateTimeUtils.formatDate(default_date_time));
-			time_input.set(&#x27;value&#x27;, Y.DateTimeUtils.formatTime(default_date_time));
+			if (!created_time_input)
+			{
+				time_input.set(&#x27;value&#x27;, Y.DateTimeUtils.formatTime(default_date_time));
+			}
 		}
 
 		if (date_input.calendarSync)
@@ -1060,6 +1124,7 @@ Y.extend(DateTime, Y.Base,
 	&#x2F;**
 	 * Get the currently selected date and time.
 	 * 
+	 * @method getDateTime
 	 * @return {Object} year,month,day,hour,minute,date,date_str,time_str
 	 *&#x2F;
 	getDateTime: function()
@@ -1077,25 +1142,17 @@ Y.extend(DateTime, Y.Base,
 			return false;
 		}
 
-		var time_input = this.get(&#x27;timeInput&#x27;);
-		if (time_input)
+		try
 		{
-			try
-			{
-				var time = Y.DateTimeUtils.parseTime(time_input.get(&#x27;value&#x27;));
-				if (!time)
-				{
-					return false;
-				}
-			}
-			catch (e)
+			var time = Y.DateTimeUtils.parseTime(this.get(&#x27;timeInput&#x27;).get(&#x27;value&#x27;));
+			if (!time)
 			{
 				return false;
 			}
 		}
-		else
+		catch (e)
 		{
-			var time = this.get(&#x27;blankTime&#x27;);
+			return false;
 		}
 
 		var result      = Y.DateTimeUtils.normalize(Y.mix(date, time));
@@ -1135,9 +1192,7 @@ Y.extend(DateTime, Y.Base,
 	{
 		if (this.default_date_time)
 		{
-			this.ignore_value_set = true;
 			this.calendar.setDate(this.default_date_time);
-			this.ignore_value_set = false;
 
 			this.hour_menu.value   = this.default_date_time.hour;
 			this.minute_menu.value = this.default_date_time.minute;

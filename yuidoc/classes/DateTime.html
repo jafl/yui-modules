@@ -931,6 +931,13 @@ values.  Time resolution is in minutes.</p>
                                 
                             </li>
                         
+                            <li class="index-item method">
+                                <a href="#method_getDateTime">getDateTime</a>
+
+                                
+                                
+                            </li>
+                        
                             <li class="index-item method inherited">
                                 <a href="#method_getEvent">getEvent</a>
 
@@ -6595,6 +6602,77 @@ returned. If set to true, all attributes modified from their initial values are 
 </div>
 
                 
+                    <div id="method_getDateTime" class="method item">
+    <h3 class="name"><code>getDateTime</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l704"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:704</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Get the currently selected date and time.</p>
+    </div>
+
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Object</span>:
+                    
+                    year,month,day,hour,minute,date,date<em>str,time</em>str
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
                     <div id="method_getEvent" class="method item inherited">
     <h3 class="name"><code>getEvent</code></h3>
 
@@ -8753,7 +8831,7 @@ not handled by the MyClass.<em>NON</em>ATTRS_CFG</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l131"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:131</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l130"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:130</code></a>
         
         </p>
 
@@ -8764,7 +8842,7 @@ not handled by the MyClass.<em>NON</em>ATTRS_CFG</p>
 
     <div class="description">
         <p>Blackout ranges, specified as a list of objects, each defining start
-and end.</p>
+and end.  The data is overwritten, so this is a write-only value.</p>
     </div>
 
     
@@ -8780,7 +8858,7 @@ and end.</p>
                     <div id="attr_blackoutSnapDirection" class="attr item">
     <a name="config_blackoutSnapDirection"></a> 
     <h3 class="name"><code>blackoutSnapDirection</code></h3>
-    <span class="type">-1,+1</span>
+    <span class="type">-1,0,+1</span>
 
     
 
@@ -8807,7 +8885,7 @@ and end.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l229"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:229</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l230"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:230</code></a>
         
         </p>
 
@@ -8818,11 +8896,12 @@ and end.</p>
 
     <div class="description">
         <p>The direction to push the selected date and time when the user
-selects a day with partial blackout.</p>
+selects a day with partial blackout.  The default value of zero
+means go to the nearest available time.</p>
     </div>
 
     
-        <p><strong>Default:</strong> +1</p>
+        <p><strong>Default:</strong> 0</p>
     
 
     
@@ -8861,7 +8940,7 @@ selects a day with partial blackout.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l113"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:113</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l112"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:112</code></a>
         
         </p>
 
@@ -8887,7 +8966,7 @@ selects a day with partial blackout.</p>
                     <div id="attr_dateInput" class="attr item">
     <a name="config_dateInput"></a> 
     <h3 class="name"><code>dateInput</code></h3>
-    <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/Node.html" class="crosslink external" target="_blank">Node</a></span>
+    <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/Node.html" class="crosslink external" target="_blank">Node</a> | String</span>
 
     
 
@@ -8916,7 +8995,7 @@ selects a day with partial blackout.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l43"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:43</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l42"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:42</code></a>
         
         </p>
 
@@ -8968,7 +9047,7 @@ gallery-input-calendar-sync.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l71"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:71</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l70"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:70</code></a>
         
         </p>
 
@@ -9125,7 +9204,7 @@ has been through the init lifecycle phase.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l99"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:99</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l98"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:98</code></a>
         
         </p>
 
@@ -9176,7 +9255,7 @@ has been through the init lifecycle phase.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l85"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:85</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l84"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:84</code></a>
         
         </p>
 
@@ -9227,7 +9306,7 @@ has been through the init lifecycle phase.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l261"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:261</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l263"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:263</code></a>
         
         </p>
 
@@ -9280,7 +9359,7 @@ has been through the init lifecycle phase.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l246"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:246</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l248"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:248</code></a>
         
         </p>
 
@@ -9296,7 +9375,7 @@ to zero to disable.</p>
     </div>
 
     
-        <p><strong>Default:</strong> 2</p>
+        <p><strong>Default:</strong> 2000</p>
     
 
     
@@ -9308,7 +9387,7 @@ to zero to disable.</p>
                     <div id="attr_timeInput" class="attr item">
     <a name="config_timeInput"></a> 
     <h3 class="name"><code>timeInput</code></h3>
-    <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/Node.html" class="crosslink external" target="_blank">Node</a></span>
+    <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/Node.html" class="crosslink external" target="_blank">Node</a> | String</span>
 
     
 
@@ -9335,7 +9414,7 @@ to zero to disable.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l58"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:58</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l57"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:57</code></a>
         
         </p>
 
@@ -9535,7 +9614,7 @@ refers to the configuration object passed to the constructor.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l275"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:275</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime_js_DateTime.js.html#l277"><code>src&#x2F;gallery-datetime&#x2F;js&#x2F;DateTime.js:277</code></a>
         
         </p>
 

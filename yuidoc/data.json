@@ -3,7 +3,7 @@
         "name": "YUI 3 Gallery Modules",
         "description": "YUI 3 Gallery Modules maintained by John Lindal",
         "version": "1.0.0",
-        "url": "http://jafl.github.com/yui-modules/"
+        "url": "http://jafl.github.com/yui3-gallery/"
     },
     "files": {
         "src/gallery-accordion-horiz-vert/js/Accordion.js": {
@@ -8415,11 +8415,11 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 43,
+            "line": 42,
             "description": "Date input field to use.  Can be augmented with a Calendar via\ngallery-input-calendar-sync.",
             "itemtype": "attribute",
             "name": "dateInput",
-            "type": "{Node}",
+            "type": "{Node|String}",
             "required": 1,
             "writeonce": "",
             "class": "DateTime",
@@ -8427,18 +8427,18 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 58,
+            "line": 57,
             "description": "Time input field to use.  Can be enhanced with gallery-timepicker.",
             "itemtype": "attribute",
             "name": "timeInput",
-            "type": "{Node}",
+            "type": "{Node|String}",
             "writeonce": "",
             "class": "DateTime",
             "module": "gallery-datetime"
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 71,
+            "line": 70,
             "description": "Default date and time, used during initialization and by resetDateTime().",
             "itemtype": "attribute",
             "name": "defaultDateTime",
@@ -8448,7 +8448,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 85,
+            "line": 84,
             "description": "Minimum date and time.",
             "itemtype": "attribute",
             "name": "minDateTime",
@@ -8458,7 +8458,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 99,
+            "line": 98,
             "description": "Maximum date and time.",
             "itemtype": "attribute",
             "name": "minDateTime",
@@ -8468,7 +8468,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 113,
+            "line": 112,
             "description": "Time value to use when no time is specified, e.g., in a blackout date.",
             "itemtype": "attribute",
             "name": "blankTime",
@@ -8479,8 +8479,8 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 131,
-            "description": "Blackout ranges, specified as a list of objects, each defining start\nand end.",
+            "line": 130,
+            "description": "Blackout ranges, specified as a list of objects, each defining start\nand end.  The data is overwritten, so this is a write-only value.",
             "itemtype": "attribute",
             "name": "blackout",
             "type": "{Array}",
@@ -8490,29 +8490,29 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 229,
-            "description": "The direction to push the selected date and time when the user\nselects a day with partial blackout.",
+            "line": 230,
+            "description": "The direction to push the selected date and time when the user\nselects a day with partial blackout.  The default value of zero\nmeans go to the nearest available time.",
             "itemtype": "attribute",
             "name": "blackoutSnapDirection",
-            "type": "{-1,+1}",
-            "default": "+1",
+            "type": "{-1,0,+1}",
+            "default": "0",
             "class": "DateTime",
             "module": "gallery-datetime"
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 246,
+            "line": 248,
             "description": "Duration of visual ping in milliseconds when the value of an input\nfield is modified because of a min/max or blackout restriction.  Set\nto zero to disable.",
             "itemtype": "attribute",
             "name": "pingDuration",
             "type": "{Number}",
-            "default": "2",
+            "default": "2000",
             "class": "DateTime",
             "module": "gallery-datetime"
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 261,
+            "line": 263,
             "description": "CSS class applied to input field when it is pinged.",
             "itemtype": "attribute",
             "name": "pingClass",
@@ -8523,7 +8523,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 275,
+            "line": 277,
             "itemtype": "event",
             "name": "limitsEnforced",
             "description": "Fires after min/max and blackouts have been enforced.",
@@ -8532,8 +8532,10 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 640,
+            "line": 704,
             "description": "Get the currently selected date and time.",
+            "itemtype": "method",
+            "name": "getDateTime",
             "return": {
                 "description": "year,month,day,hour,minute,date,date_str,time_str",
                 "type": "Object"
@@ -8728,7 +8730,7 @@
         },
         {
             "file": "src/gallery-datetime-utils/js/utils.js",
-            "line": 291,
+            "line": 301,
             "description": "Inverse of formatTime().  Extracts hour and minute from the string.\nThrows an error if hour is outside [0,23] or minute is outside\n[0,59].",
             "itemtype": "method",
             "name": "parseTime",
@@ -18739,10 +18741,5 @@
             "module": "gallery-treeble"
         }
     ],
-    "warnings": [
-        {
-            "message": "Missing item type\nGet the currently selected date and time.",
-            "line": " src/gallery-datetime/js/DateTime.js:640"
-        }
-    ]
+    "warnings": []
 }
