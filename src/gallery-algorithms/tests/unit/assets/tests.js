@@ -52,6 +52,10 @@ YUI.add('gallery-algorithms-tests', function(Y) {
 
 		testBinarySearch: function()
 		{
+			Y.Assert.isNull(Y.Array.binarySearch());
+			Y.Assert.isNull(Y.Array.binarySearch([]));
+			Y.Assert.isNull(Y.Array.binarySearch(['a']));
+
 			var list = ['a'];
 			Y.Assert.areSame(0, Y.Array.binarySearch(list, 'a'));
 			Y.Assert.areSame(-1, Y.Array.binarySearch(list, 'b'));
