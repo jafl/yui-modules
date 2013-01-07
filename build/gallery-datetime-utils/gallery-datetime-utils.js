@@ -188,7 +188,7 @@ Y.DateTimeUtils =
 	 * 
 	 * @method formatDate
 	 * @static
-	 * @param date {Mixed} string (returned as-is), Date, or object specifying day,month,year
+	 * @param date {Mixed} string (returned as-is), Date, milliseconds, or object specifying day,month,year
 	 * @return {String} formatted date, using positions and delimiters
 	 */
 	formatDate: function(date)
@@ -200,6 +200,11 @@ Y.DateTimeUtils =
 		else if (Y.Lang.isString(date))
 		{
 			return date;
+		}
+
+		if (Y.Lang.isNumber(date))
+		{
+			date = new Date(date);
 		}
 
 		var a = [];
@@ -298,7 +303,7 @@ Y.DateTimeUtils =
 	 * 
 	 * @method formatTime
 	 * @static
-	 * @param time {Mixed} string (returned as-is), Date, or object specifying hour,minute
+	 * @param time {Mixed} string (returned as-is), Date, milliseconds, or object specifying hour,minute
 	 * @return {String} formatted date, using positions and delimiters
 	 */
 	formatTime: function(time)
@@ -310,6 +315,11 @@ Y.DateTimeUtils =
 		else if (Y.Lang.isString(time))
 		{
 			return time;
+		}
+
+		if (Y.Lang.isNumber(time))
+		{
+			time = new Date(time);
 		}
 
 		if (time instanceof Date)
