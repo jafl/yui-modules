@@ -235,20 +235,18 @@ Y.DateTimeUtils =
 			return date;
 		}
 
-		var d = date.split(self.DATE_FIELD_DELIMITER);
-		if (d.length != 3 || !Y.every(d, validInteger))
+		try
 		{
-			throw Error('Unparseable date format.');
+			var obj = self.parseDateString(date, self.DATE_FIELD_DELIMITER,
+				self.YEAR_POSITION, self.MONTH_POSITION, self.DAY_POSITION);
 		}
-
-		var obj = self.normalize(
+		catch (e)
 		{
-			year:   parseInt(d[ self.YEAR_POSITION-1 ], 10),
-			month:  parseInt(d[ self.MONTH_POSITION-1 ], 10),
-			day:    parseInt(d[ self.DAY_POSITION-1 ], 10),
-			hour:   0,
-			minute: 0
-		});
+			// Try the standard format provided by <input type="date">.
+			// If this fails, we let the exception propagate.
+
+			obj = self.parseDateString(date, '-', 1, 2, 3);
+		}
 
 		var result =
 		{
@@ -257,6 +255,37 @@ Y.DateTimeUtils =
 			day:   obj.day
 		}
 		return result;
+	},
+
+	/**
+	 * Utility for parsing a date string that is not formatted based on the
+	 * Y.DateTime configuration.
+	 * 
+	 * @method parseDate
+	 * @static
+	 * @param date {String} string from DateTimeUtils.formatDate()
+	 * @param delimiater {String} delimiter between the date fields
+	 * @param year_pos {Number} position of the year in the string representation: 1,2,3
+	 * @param month_pos {Number} position of the month in the string representation: 1,2,3
+	 * @param day_pos {Number} position of the day in the string representation: 1,2,3
+	 * @return {Object} normalized object defining date
+	 */
+	parseDateString: function(date, delimiter, year_pos, month_pos, day_pos)
+	{
+		var d = date.split(delimiter);
+		if (d.length != 3 || !Y.every(d, validInteger))
+		{
+			throw Error('Unparseable date format.');
+		}
+
+		return self.normalize(
+		{
+			year:   parseInt(d[ year_pos-1 ], 10),
+			month:  parseInt(d[ month_pos-1 ], 10),
+			day:    parseInt(d[ day_pos-1 ], 10),
+			hour:   0,
+			minute: 0
+		});
 	},
 
 	/**

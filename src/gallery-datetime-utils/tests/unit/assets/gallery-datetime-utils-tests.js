@@ -80,6 +80,7 @@ YUI.add('gallery-datetime-utils-tests', function(Y) {
 
 			check(Y.DateTimeUtils.parseDate('11/6/2012'));
 			check(Y.DateTimeUtils.parseDate('11/06/2012'));
+			check(Y.DateTimeUtils.parseDate('2012-6-11'));
 
 			Y.DateTimeUtils.DATE_FIELD_DELIMITER = '-';
 			Y.DateTimeUtils.YEAR_POSITION        = 1;
