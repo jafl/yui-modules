@@ -122,8 +122,9 @@ Y.DateTimeUtils =
 	 * 
 	 * @method normalize
 	 * @static
-	 * @param input {Object}
-	 *	Can be specified either as instance of Date or as an object defining
+	 * @param input {Date|Number|Object}
+	 *	Can be specified either as instance of Date, a number specifying
+	 *	milliseconds since midnight Jan 1, 1970, or as an object defining
 	 *	date_str or year,month,day and (optional) either time_str or
 	 *	hour,minute.
 	 * @param default_time {Object} Default hour and minute to use if input only has date.
@@ -143,6 +144,10 @@ Y.DateTimeUtils =
 				date:   input
 			};
 			return result;
+		}
+		else if (Y.Lang.isNumber(input))
+		{
+			return self.normalize(new Date(input));
 		}
 
 		var result = Y.clone(input);

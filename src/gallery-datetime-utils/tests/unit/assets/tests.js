@@ -32,6 +32,7 @@ YUI.add('gallery-datetime-utils-tests', function(Y) {
 			}
 
 			check(Y.DateTimeUtils.normalize(date));
+			check(Y.DateTimeUtils.normalize(date.getTime()));
 			check(Y.DateTimeUtils.normalize({year:2012, month:6, day:11, hour:14, minute:5}));
 			check(Y.DateTimeUtils.normalize({date_str:'2012-6-11', time_str:'14:05'}));
 			check(Y.DateTimeUtils.normalize({year:2012, month:6, day:11, date_str:'2011-1-1', hour:14, minute:5, time_str:'5:10'}));
