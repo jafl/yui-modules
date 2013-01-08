@@ -124,8 +124,9 @@ Y.DateTimeUtils =
 	 * 
 	 * @method normalize
 	 * @static
-	 * @param input {Object}
-	 *	Can be specified either as instance of Date or as an object defining
+	 * @param input {Date|Number|Object}
+	 *	Can be specified either as instance of Date, a number specifying
+	 *	milliseconds since midnight Jan 1, 1970, or as an object defining
 	 *	date_str or year,month,day and (optional) either time_str or
 	 *	hour,minute.
 	 * @param default_time {Object} Default hour and minute to use if input only has date.
@@ -145,6 +146,10 @@ Y.DateTimeUtils =
 				date:   input
 			};
 			return result;
+		}
+		else if (Y.Lang.isNumber(input))
+		{
+			return self.normalize(new Date(input));
 		}
 
 		var result = Y.clone(input);
@@ -183,7 +188,7 @@ Y.DateTimeUtils =
 	 * 
 	 * @method formatDate
 	 * @static
-	 * @param date {Mixed} string (returned as-is), Date, or object specifying day,month,year
+	 * @param date {Mixed} string (returned as-is), Date, milliseconds, or object specifying day,month,year
 	 * @return {String} formatted date, using positions and delimiters
 	 */
 	formatDate: function(date)
@@ -195,6 +200,11 @@ Y.DateTimeUtils =
 		else if (Y.Lang.isString(date))
 		{
 			return date;
+		}
+
+		if (Y.Lang.isNumber(date))
+		{
+			date = new Date(date);
 		}
 
 		var a = [];
@@ -293,7 +303,7 @@ Y.DateTimeUtils =
 	 * 
 	 * @method formatTime
 	 * @static
-	 * @param time {Mixed} string (returned as-is), Date, or object specifying hour,minute
+	 * @param time {Mixed} string (returned as-is), Date, milliseconds, or object specifying hour,minute
 	 * @return {String} formatted date, using positions and delimiters
 	 */
 	formatTime: function(time)
@@ -305,6 +315,11 @@ Y.DateTimeUtils =
 		else if (Y.Lang.isString(time))
 		{
 			return time;
+		}
+
+		if (Y.Lang.isNumber(time))
+		{
+			time = new Date(time);
 		}
 
 		if (time instanceof Date)

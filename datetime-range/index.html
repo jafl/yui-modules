@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>YUI 3 DateTime Examples</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
+
+	<script src="gallery-datetime-range-debug.js"></script>
+	<script src="gallery-datetime-debug.js"></script>
+	<script src="gallery-input-calendar-sync-debug.js"></script>
+	<script src="gallery-datetime-utils-debug.js"></script>
+	<script src="gallery-node-event-set-debug.js"></script>
+	<script src="gallery-funcprog-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-datetime.css" />
+
+	<style type="text/css">
+	.s-date-container,
+	.e-date-container { float:left; }
+	.e-date-container { margin-left:20px; }
+	</style>
+</head>
+<body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/datetime">YUI 3 DateTime</a> Examples</h1>
+
+<p><a href="../yuidoc/modules/gallery-datetime.html">Show me the documentation</a></p>
+<p><a href="/yui-modules/">Back to project list</a></p>
+
+<form id="test-form" onsubmit="return false;">
+	<fieldset>
+		<legend>Date</legend>
+		<div class="s-date-container">
+			<label for="s-date">Start date:</label><input type="text" id="s-date" />
+			<button id="show-s-date" class="log-to-console">Print to Console</button>
+			<div id="s-calendar"></div>
+		</div>
+		<div class="e-date-container">
+			<label for="e-date">End date:</label><input type="text" id="e-date" />
+			<button id="show-e-date" class="log-to-console">Print to Console</button>
+			<div id="e-calendar"></div>
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend>Date &amp; Time</legend>
+		<div class="s-date-container">
+			<label for="s-date2">Start date:</label><input type="text" id="s-date2" /> <input type="text" id="s-time2" />
+			<button id="show-s-date2" class="log-to-console">Print to Console</button>
+			<div id="s-calendar2"></div>
+		</div>
+		<div class="e-date-container">
+			<label for="e-date2">End date:</label><input type="text" id="e-date2" /> <input type="text" id="e-time2" />
+			<button id="show-e-date2" class="log-to-console">Print to Console</button>
+			<div id="e-calendar2"></div>
+		</div>
+	</fieldset>
+</form>
+
+<script type="text/javascript">
+YUI({
+	filter: 'raw', combine: false,
+	gallery: 'gallery-2012.12.19-21-23'
+}).use(
+	'gallery-datetime-range', 'gallery-input-calendar-sync', 'datatype-date-math',
+	'gallery-timepicker',
+function(Y)
+{
+	var now    = new Date(),
+		today  = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+		delta  = 3*7*24*3600000,
+		dt_map = {};
+
+	// date
+
+	var s_cal = new Y.Calendar(
+	{
+		width:         300,
+		showPrevMonth: true,
+		showNextMonth: true
+	});
+	s_cal.render('#s-calendar');
+
+	Y.one('#s-date').plug(Y.Plugin.InputCalendarSync,
+	{
+		calendar:   s_cal,
+		allowBlank: false
+	});
+
+	dt_map.s_date = new Y.DateTime(
+	{
+		dateInput:       '#s-date',
+		defaultDateTime: now,
+		minDateTime:     new Date(today.getTime() - delta),
+		maxDateTime:     new Date(today.getTime() + delta - 60000)
+	});
+
+	var e_cal = new Y.Calendar(
+	{
+		width:         300,
+		showPrevMonth: true,
+		showNextMonth: true
+	});
+	e_cal.render('#e-calendar');
+
+	Y.one('#e-date').plug(Y.Plugin.InputCalendarSync,
+	{
+		calendar:   e_cal,
+		allowBlank: false
+	});
+
+	dt_map.e_date = new Y.DateTime(
+	{
+		dateInput:       '#e-date',
+		defaultDateTime: Y.Date.addDays(now, 2)
+	});
+
+	new Y.DateTimeRange(
+	{
+		startDateTime: dt_map.s_date,
+		endDateTime:   dt_map.e_date
+	});
+
+	// date & time
+
+	var s_cal2 = new Y.Calendar(
+	{
+		width:         300,
+		showPrevMonth: true,
+		showNextMonth: true
+	});
+	s_cal2.render('#s-calendar2');
+
+	Y.one('#s-date2').plug(Y.Plugin.InputCalendarSync,
+	{
+		calendar:   s_cal2,
+		allowBlank: false
+	});
+
+	dt_map.s_date2 = new Y.DateTime(
+	{
+		dateInput:       '#s-date2',
+		timeInput:       '#s-time2',
+		defaultDateTime: now,
+		minDateTime:     new Date(now.getTime() - delta),
+		maxDateTime:     new Date(now.getTime() + delta),
+		blackouts:
+		[
+			{
+				start: Y.Date.addDays(now, 2),
+				end:   Y.Date.addDays(now, 5)
+			},
+			{
+				start: new Date(today.getTime() - 2.7*24*3600000),
+				end:   new Date(today.getTime() - 2.3*24*3600000)
+			},
+			{
+				start: new Date(today.getTime() - 5*24*3600000),
+				end:   new Date(today.getTime() - 4*24*3600000 - 60000)
+			}
+		]
+	});
+
+	var e_cal2 = new Y.Calendar(
+	{
+		width:         300,
+		showPrevMonth: true,
+		showNextMonth: true
+	});
+	e_cal2.render('#e-calendar2');
+
+	Y.one('#e-date2').plug(Y.Plugin.InputCalendarSync,
+	{
+		calendar:   e_cal2,
+		allowBlank: false
+	});
+
+	dt_map.e_date2 = new Y.DateTime(
+	{
+		dateInput:       '#e-date2',
+		defaultDateTime: Y.Date.addDays(now, 2)
+	});
+
+	new Y.DateTimeRange(
+	{
+		startDateTime: dt_map.s_date2,
+		endDateTime:   dt_map.e_date2
+	});
+
+	// printout
+
+	Y.delegate('click', function(e)
+	{
+		var name = e.target.get('id').replace(/^show-/, '').replace(/-/g, '_');
+		console.log(dt_map[ name ].getDateTime());
+	},
+	'#test-form', '.log-to-console');
+});
+</script>
+
+</body>
+</html>
