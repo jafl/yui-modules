@@ -1,3 +1,5 @@
+YUI.add('gallery-datetime-range', function (Y, NAME) {
+
 "use strict";
 
 /**
@@ -139,3 +141,6 @@ Y.extend(DateTimeRange, Y.Base,
 });
 
 Y.DateTimeRange = DateTimeRange;
+
+
+}, '@VERSION@', {"requires": ["gallery-datetime"]});

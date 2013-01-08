@@ -39,6 +39,11 @@ function setNode(n)
 	return Y.one(n) || Attribute.INVALID_VALUE;
 }
 
+function setDateTime(value)
+{
+	return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
+};
+
 DateTime.ATTRS =
 {
 	/**
@@ -77,10 +82,7 @@ DateTime.ATTRS =
 	 */
 	defaultDateTime:
 	{
-		setter: function(value)
-		{
-			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
-		}
+		setter: setDateTime
 	},
 
 	/**
@@ -91,10 +93,7 @@ DateTime.ATTRS =
 	 */
 	minDateTime:
 	{
-		setter: function(value)
-		{
-			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
-		}
+		setter: setDateTime
 	},
 
 	/**
@@ -105,10 +104,7 @@ DateTime.ATTRS =
 	 */
 	maxDateTime:
 	{
-		setter: function(value)
-		{
-			return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
-		}
+		setter: setDateTime
 	},
 
 	/**
@@ -404,38 +400,43 @@ function enforceDateTimeLimits(
 		var timer       = getEnforceTimer.call(this);
 		timer.timeInput = Y.DateTimeUtils.formatTime(date);
 	}
+	else
+	{
+		this.fire('limitsEnforced');
+	}
 }
 
 function getEnforceTimer()
 {
 	if (!this.enforce_timer)
 	{
-		this.enforce_timer = Y.later(0, this, function()
-		{
-			var timer          = this.enforce_timer;
-			this.enforce_timer = null;
-
-			var ping_list         = [];
-			this.ignore_value_set = true;
-
-			Y.each(['dateInput', 'timeInput'], function(name)
-			{
-				if (timer[name])
-				{
-					this.get(name).set('value', timer[name]);
-					ping_list.push(name);
-				}
-			},
-			this);
-
-			this.ignore_value_set = false;
-			ping.apply(this, ping_list);
-
-			this.fire('limitsEnforced');
-		});
+		this.enforce_timer = Y.later(0, this, enforceTimerCallback);
 	}
-
 	return this.enforce_timer;
+}
+
+function enforceTimerCallback()
+{
+	var timer          = this.enforce_timer;
+	this.enforce_timer = null;
+
+	var ping_list         = [];
+	this.ignore_value_set = true;
+
+	Y.each(['dateInput', 'timeInput'], function(name)
+	{
+		if (timer[name])
+		{
+			this.get(name).set('value', timer[name]);
+			ping_list.push(name);
+		}
+	},
+	this);
+
+	this.ignore_value_set = false;
+	ping.apply(this, ping_list);
+
+	this.fire('limitsEnforced');
 }
 
 function updateRendering()
@@ -699,10 +700,6 @@ Y.extend(DateTime, Y.Base,
 		this.on('blackoutsChange', updateRendering);
 	},
 
-	destroy: function()
-	{
-	},
-
 	/**
 	 * Get the currently selected date and time.
 	 * 
@@ -790,6 +787,11 @@ Y.extend(DateTime, Y.Base,
 		enforceDateTimeLimits.call(this);
 	},
 
+	/**
+	 * Clear the date and time.
+	 *
+	 * @method clearDateTime
+	 */
 	clearDateTime: function()
 	{
 		this.get('dateInput').set('value', '');
@@ -800,7 +802,7 @@ Y.extend(DateTime, Y.Base,
 			time_input.set('value', '');
 		}
 	},
-// TODO: onMinDateTimeChange
+// TODO: on minDateTimeChange
 	setMinDateTime: function(
 		/* object */	min)
 	{
@@ -825,7 +827,7 @@ Y.extend(DateTime, Y.Base,
 			updateRendering.call(this);
 		}
 	},
-// TODO: onMaxDateTimeChange
+// TODO: on maxDateTimeChange
 	setMaxDateTime: function(
 		/* object */	max)
 	{
