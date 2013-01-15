@@ -1,1 +1,0 @@
-YUI.add("gallery-chipper",function(e,t){"use strict";function i(){r||(r=e.later(100,null,function(){if(n.length>0){var t=n.pop();e.Lang.isFunction(t.destroy)&&t.destroy()}else r.cancel(),r=null},null,!0))}var n=[],r=null;e.Chipper={destroy:function(e){n=n.concat(e),i()}}},"@VERSION@",{requires:["yui-later"]});
