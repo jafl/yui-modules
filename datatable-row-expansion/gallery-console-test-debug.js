@@ -62,8 +62,8 @@ Y.extend(ConsoleTest, Y.Plugin.Base,
 				Y.Lang.sub(
 					'<div class="{c}">' +
 						'<select class="menu"></select>' +
-						'<button class="run">{b1}</button>' +
-						'<button class="refresh">{b2}</button>' +
+						'<button type="button" class="run">{b1}</button>' +
+						'<button type="button" class="refresh">{b2}</button>' +
 					'</div>',
 				{
 					c:  Y.ClassNameManager.getClassName('console', 'test', 'container'),
