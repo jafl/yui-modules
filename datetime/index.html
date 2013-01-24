@@ -38,6 +38,7 @@
 		<legend>Date &amp; Time</legend>
 		<label for="date3">Date/Time:</label><input type="text" id="date3" /> <input type="text" id="time3" />
 		<button id="show-date3" class="log-to-console">Print to Console</button>
+		<button id="change-blackouts">Change Blackouts</button>
 		<div id="calendar3"></div>
 	</fieldset>
 	<fieldset>
@@ -151,6 +152,18 @@ function(Y)
 			}
 		]
 	});
+
+	Y.on('click', function()
+	{
+		dt_map.date3.set('blackouts',
+		[
+			{
+				start: Y.Date.addDays(now, 3),
+				end:   Y.Date.addDays(now, 6)
+			}
+		]);
+	},
+	'#change-blackouts');
 
 	// date w/out calendar
 
