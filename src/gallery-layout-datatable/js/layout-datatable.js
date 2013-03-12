@@ -53,8 +53,8 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 				layout = this.get('layout'),
 
 				module_bd =
-				table.get('boundingBox')
-					 .ancestor('.' + Y.PageLayout.module_body_class);
+					table.get('boundingBox')
+						 .ancestor('.' + Y.PageLayout.module_body_class);
 
 			module_bd.generateID();
 
@@ -71,6 +71,7 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 			{
 				if (e.bd.get('id') == module_bd.get('id'))
 				{
+					table.set('width', (e.width-15)+'px');
 					table.set('height', e.height+'px');
 					table.set('scrollable', true);
 				}
