@@ -81,6 +81,8 @@
             
                 <li><a href="..&#x2F;classes/DateTime.html">DateTime</a></li>
             
+                <li><a href="..&#x2F;classes/DateTimeRange.html">DateTimeRange</a></li>
+            
                 <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
             
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
@@ -304,6 +306,8 @@
                 <li><a href="..&#x2F;modules/gallery-datatable-state.html">gallery-datatable-state</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datetime.html">gallery-datetime</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datetime-range.html">gallery-datetime-range</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
             
@@ -916,6 +920,16 @@ Y.extend(Accordion, Y.Widget,
 		{
 			t.setStyle(&#x27;display&#x27;, t.get(&#x27;innerHTML&#x27;) ? &#x27;&#x27; : &#x27;none&#x27;);
 		}
+
+		&#x2F;&#x2F; aria
+
+		var clip = this.section_list[index].clip;
+
+		t.setAttribute(&#x27;aria-controls&#x27;, clip.generateID());
+		t.setAttribute(&#x27;role&#x27;, &#x27;tab&#x27;);
+
+		clip.setAttribute(&#x27;aria-labeledby&#x27;, t.generateID());
+		clip.setAttribute(&#x27;role&#x27;, &#x27;tabpanel&#x27;);
 	},
 
 	&#x2F;**
@@ -1051,6 +1065,7 @@ Y.extend(Accordion, Y.Widget,
 		var c = Y.Node.create(&#x27;&lt;div&#x2F;&gt;&#x27;);
 		c.addClass(this.getClassName(&#x27;section-clip&#x27;));
 		c.setStyle(this.slide_style_name, section_min_size+&#x27;px&#x27;);
+		c.setAttribute(&#x27;aria-hidden&#x27;, &#x27;true&#x27;);
 		if (this.get(&#x27;animateOpenClose&#x27;))
 		{
 			c.setStyle(&#x27;opacity&#x27;, 0);
@@ -1357,13 +1372,16 @@ Y.extend(Accordion, Y.Widget,
 
 		function onCompleteOpenSection(type, index)
 		{
-			this.section_list[index].clip.setStyle(this.slide_style_name, &#x27;auto&#x27;);
+			var clip = this.section_list[index].clip;
+			clip.setStyle(this.slide_style_name, &#x27;auto&#x27;);
+			clip.setAttribute(&#x27;aria-hidden&#x27;, &#x27;false&#x27;);
 			this.fire(&#x27;open&#x27;, index);
 		}
 
 		function onCompleteCloseSection(type, index)
 		{
 			this.section_list[index].content.setStyle(&#x27;display&#x27;, &#x27;none&#x27;);
+			this.section_list[index].clip.setAttribute(&#x27;aria-hidden&#x27;, &#x27;true&#x27;);
 			this.fire(&#x27;close&#x27;, index);
 		}
 

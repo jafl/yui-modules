@@ -81,6 +81,8 @@
             
                 <li><a href="..&#x2F;classes/DateTime.html">DateTime</a></li>
             
+                <li><a href="..&#x2F;classes/DateTimeRange.html">DateTimeRange</a></li>
+            
                 <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
             
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
@@ -304,6 +306,8 @@
                 <li><a href="..&#x2F;modules/gallery-datatable-state.html">gallery-datatable-state</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datetime.html">gallery-datetime</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datetime-range.html">gallery-datetime-range</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
             
@@ -542,8 +546,9 @@ Y.DateTimeUtils =
 	 * 
 	 * @method normalize
 	 * @static
-	 * @param input {Object}
-	 *	Can be specified either as instance of Date or as an object defining
+	 * @param input {Date|Number|Object}
+	 *	Can be specified either as instance of Date, a number specifying
+	 *	milliseconds since midnight Jan 1, 1970, or as an object defining
 	 *	date_str or year,month,day and (optional) either time_str or
 	 *	hour,minute.
 	 * @param default_time {Object} Default hour and minute to use if input only has date.
@@ -563,6 +568,10 @@ Y.DateTimeUtils =
 				date:   input
 			};
 			return result;
+		}
+		else if (Y.Lang.isNumber(input))
+		{
+			return self.normalize(new Date(input));
 		}
 
 		var result = Y.clone(input);
@@ -601,7 +610,7 @@ Y.DateTimeUtils =
 	 * 
 	 * @method formatDate
 	 * @static
-	 * @param date {Mixed} string (returned as-is), Date, or object specifying day,month,year
+	 * @param date {Mixed} string (returned as-is), Date, milliseconds, or object specifying day,month,year
 	 * @return {String} formatted date, using positions and delimiters
 	 *&#x2F;
 	formatDate: function(date)
@@ -613,6 +622,11 @@ Y.DateTimeUtils =
 		else if (Y.Lang.isString(date))
 		{
 			return date;
+		}
+
+		if (Y.Lang.isNumber(date))
+		{
+			date = new Date(date);
 		}
 
 		var a = [];
@@ -653,20 +667,18 @@ Y.DateTimeUtils =
 			return date;
 		}
 
-		var d = date.split(self.DATE_FIELD_DELIMITER);
-		if (d.length != 3 || !Y.every(d, validInteger))
+		try
 		{
-			throw Error(&#x27;Unparseable date format.&#x27;);
+			var obj = self.parseDateString(date, self.DATE_FIELD_DELIMITER,
+				self.YEAR_POSITION, self.MONTH_POSITION, self.DAY_POSITION);
 		}
-
-		var obj = self.normalize(
+		catch (e)
 		{
-			year:   parseInt(d[ self.YEAR_POSITION-1 ], 10),
-			month:  parseInt(d[ self.MONTH_POSITION-1 ], 10),
-			day:    parseInt(d[ self.DAY_POSITION-1 ], 10),
-			hour:   0,
-			minute: 0
-		});
+			&#x2F;&#x2F; Try the standard format provided by &lt;input type=&quot;date&quot;&gt;.
+			&#x2F;&#x2F; If this fails, we let the exception propagate.
+
+			obj = self.parseDateString(date, &#x27;-&#x27;, 1, 2, 3);
+		}
 
 		var result =
 		{
@@ -678,11 +690,42 @@ Y.DateTimeUtils =
 	},
 
 	&#x2F;**
+	 * Utility for parsing a date string that is not formatted based on the
+	 * Y.DateTime configuration.
+	 * 
+	 * @method parseDate
+	 * @static
+	 * @param date {String} string from DateTimeUtils.formatDate()
+	 * @param delimiater {String} delimiter between the date fields
+	 * @param year_pos {Number} position of the year in the string representation: 1,2,3
+	 * @param month_pos {Number} position of the month in the string representation: 1,2,3
+	 * @param day_pos {Number} position of the day in the string representation: 1,2,3
+	 * @return {Object} normalized object defining date
+	 *&#x2F;
+	parseDateString: function(date, delimiter, year_pos, month_pos, day_pos)
+	{
+		var d = date.split(delimiter);
+		if (d.length != 3 || !Y.every(d, validInteger))
+		{
+			throw Error(&#x27;Unparseable date format.&#x27;);
+		}
+
+		return self.normalize(
+		{
+			year:   parseInt(d[ year_pos-1 ], 10),
+			month:  parseInt(d[ month_pos-1 ], 10),
+			day:    parseInt(d[ day_pos-1 ], 10),
+			hour:   0,
+			minute: 0
+		});
+	},
+
+	&#x2F;**
 	 * Format the time portion of a Date object.
 	 * 
 	 * @method formatTime
 	 * @static
-	 * @param time {Mixed} string (returned as-is), Date, or object specifying hour,minute
+	 * @param time {Mixed} string (returned as-is), Date, milliseconds, or object specifying hour,minute
 	 * @return {String} formatted date, using positions and delimiters
 	 *&#x2F;
 	formatTime: function(time)
@@ -694,6 +737,11 @@ Y.DateTimeUtils =
 		else if (Y.Lang.isString(time))
 		{
 			return time;
+		}
+
+		if (Y.Lang.isNumber(time))
+		{
+			time = new Date(time);
 		}
 
 		if (time instanceof Date)

@@ -275,6 +275,17 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/gallery-datetime-range/js/DateTimeRange.js": {
+            "name": "src/gallery-datetime-range/js/DateTimeRange.js",
+            "modules": {
+                "gallery-datetime-range": 1
+            },
+            "classes": {
+                "DateTimeRange": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/gallery-datetime-utils/js/utils.js": {
             "name": "src/gallery-datetime-utils/js/utils.js",
             "modules": {
@@ -1515,6 +1526,20 @@
             "description": "Manages a date input field and an optional time field.  Calendars and\ntime selection widgets can be attached to these fields, but will not be\nmanaged by this class.\n\nDate/time values can be specified as either a Date object or an object\nspecifying year,month,day (all 1-based) or date_str and optionally\nhour,minute or time_str.  Individual values take precedence over string\nvalues.  Time resolution is in minutes.",
             "itemtype": "main"
         },
+        "gallery-datetime-range": {
+            "name": "gallery-datetime-range",
+            "submodules": {},
+            "classes": {
+                "DateTimeRange": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "src/gallery-datetime-range/js/DateTimeRange.js",
+            "line": 7,
+            "description": "Manages a pair of Y.DateTime instances.  The ending date is constrained\nby the min, max, and blackout ranges configured on the startDateTime\ninstance.  The range is not allowed to span a blackout, so if the start\ndate is between two blackout ranges, then the end date must be after the\nstart date and before the start of the next blackout range.",
+            "itemtype": "main"
+        },
         "gallery-datetime-utils": {
             "name": "gallery-datetime-utils",
             "submodules": {},
@@ -2059,7 +2084,7 @@
             "tag": "main",
             "file": "src/gallery-scrollintoview/js/ScrollIntoView.js",
             "line": 7,
-            "description": "<p>Only scrolls the browser if the object is not currently visible.</p>\n\n<p>This requires that all scrollable elements have position:relative.\nOtherwise, this algorithm will skip over them with unpredictable\nresults.</p>",
+            "description": "Only scrolls if the object is not currently visible.\n\nThis requires that all scrollable elements have position:relative.\nOtherwise, this algorithm will skip over them with unpredictable\nresults.",
             "itemtype": "main"
         },
         "gallery-sort-extras": {
@@ -2659,6 +2684,33 @@
             "line": 11,
             "description": "Manages a date input field and an optional time field.  Calendars and\ntime selection widgets can be attached to these fields, but will not be\nmanaged by this class.\n\nDate/time values can be specified as either a Date object or an object\nspecifying year,month,day (all 1-based) or date_str and optionally\nhour,minute or time_str.  Individual values take precedence over string\nvalues.  Time resolution is in minutes.",
             "mainName": "gallery-datetime",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true,
+            "extends": "Base",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "DateTimeRange": {
+            "name": "DateTimeRange",
+            "shortname": "DateTimeRange",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-datetime-range",
+            "namespace": "",
+            "file": "src/gallery-datetime-range/js/DateTimeRange.js",
+            "line": 7,
+            "description": "Manages a pair of Y.DateTime instances.  The ending date is constrained\nby the min, max, and blackout ranges configured on the startDateTime\ninstance.  The range is not allowed to span a blackout, so if the start\ndate is between two blackout ranges, then the end date must be after the\nstart date and before the start of the next blackout range.",
+            "mainName": "gallery-datetime-range",
             "tag": "main",
             "itemtype": "main",
             "_main": true,
@@ -4639,7 +4691,7 @@
             "namespace": "",
             "file": "src/gallery-scrollintoview/js/ScrollIntoView.js",
             "line": 7,
-            "description": "<p>Only scrolls the browser if the object is not currently visible.</p>\n\n<p>This requires that all scrollable elements have position:relative.\nOtherwise, this algorithm will skip over them with unpredictable\nresults.</p>",
+            "description": "Only scrolls if the object is not currently visible.\n\nThis requires that all scrollable elements have position:relative.\nOtherwise, this algorithm will skip over them with unpredictable\nresults.",
             "mainName": "gallery-scrollintoview",
             "tag": "main",
             "itemtype": "main",
@@ -5063,7 +5115,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 501,
+            "line": 511,
             "itemtype": "method",
             "name": "getSection",
             "params": [
@@ -5082,7 +5134,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 512,
+            "line": 522,
             "description": "Sets the contents of the specified section.",
             "itemtype": "method",
             "name": "setSection",
@@ -5103,7 +5155,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 568,
+            "line": 578,
             "itemtype": "method",
             "name": "_getClip",
             "access": "protected",
@@ -5124,7 +5176,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 580,
+            "line": 590,
             "description": "Prepends the section to the accordion.",
             "itemtype": "method",
             "name": "prependSection",
@@ -5145,7 +5197,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 594,
+            "line": 604,
             "description": "Appends the section to the accordion.",
             "itemtype": "method",
             "name": "appendSection",
@@ -5166,7 +5218,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 608,
+            "line": 618,
             "description": "Inserts the section into the accordion at the specified location.",
             "itemtype": "method",
             "name": "insertSection",
@@ -5192,7 +5244,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 734,
+            "line": 745,
             "description": "Removes the specified section.",
             "itemtype": "method",
             "name": "removeSection",
@@ -5208,7 +5260,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 810,
+            "line": 821,
             "itemtype": "method",
             "name": "findSection",
             "params": [
@@ -5227,7 +5279,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 835,
+            "line": 846,
             "itemtype": "method",
             "name": "isSectionOpen",
             "return": {
@@ -5239,7 +5291,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 845,
+            "line": 856,
             "description": "Open the specified section.",
             "itemtype": "method",
             "name": "openSection",
@@ -5255,7 +5307,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 860,
+            "line": 871,
             "description": "Close the specified section.",
             "itemtype": "method",
             "name": "closeSection",
@@ -5271,7 +5323,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 875,
+            "line": 886,
             "itemtype": "method",
             "name": "allSectionsOpen",
             "return": {
@@ -5283,7 +5335,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 893,
+            "line": 904,
             "itemtype": "method",
             "name": "allSectionsClosed",
             "return": {
@@ -5295,7 +5347,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 911,
+            "line": 922,
             "description": "Show/hide the section content.",
             "itemtype": "method",
             "name": "toggleSection",
@@ -5311,7 +5363,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 1027,
+            "line": 1041,
             "description": "Open all sections, if possible.",
             "itemtype": "method",
             "name": "openAllSections",
@@ -5320,7 +5372,7 @@
         },
         {
             "file": "src/gallery-accordion-horiz-vert/js/Accordion.js",
-            "line": 1047,
+            "line": 1061,
             "description": "Close all sections, if possible.",
             "itemtype": "method",
             "name": "closeAllSections",
@@ -5406,28 +5458,7 @@
         },
         {
             "file": "src/gallery-algorithms/js/Array.js",
-            "line": 65,
-            "description": "<p>Converts a -1,0,+1 comparator into a boolean comparator, for use by\nY.Array.find().</p>",
-            "itemtype": "method",
-            "name": "compareForFind",
-            "static": 1,
-            "params": [
-                {
-                    "name": "f",
-                    "description": "-1,0,+1 comparator function",
-                    "type": "Function"
-                }
-            ],
-            "return": {
-                "description": "function that returns true if the arguments are equal",
-                "type": "Function"
-            },
-            "class": "Array~algorithms",
-            "module": "gallery-algorithms"
-        },
-        {
-            "file": "src/gallery-algorithms/js/Array.js",
-            "line": 162,
+            "line": 145,
             "description": "<p>Quick sort the given list.</p>",
             "itemtype": "method",
             "name": "quickSort",
@@ -5449,7 +5480,7 @@
         },
         {
             "file": "src/gallery-algorithms/js/Array.js",
-            "line": 182,
+            "line": 165,
             "description": "<p>Binary search.</p>",
             "itemtype": "method",
             "name": "binarySearch",
@@ -5466,9 +5497,11 @@
                     "type": "Mixed"
                 },
                 {
-                    "name": "compare=Y.Array.compareStringsCaseSensitive",
+                    "name": "compare",
                     "description": "the comparison function",
-                    "type": "Function"
+                    "type": "Function",
+                    "optional": true,
+                    "optdefault": "Y.Array.compareStringsCaseSensitive"
                 }
             ],
             "return": {
@@ -8415,7 +8448,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 42,
+            "line": 47,
             "description": "Date input field to use.  Can be augmented with a Calendar via\ngallery-input-calendar-sync.",
             "itemtype": "attribute",
             "name": "dateInput",
@@ -8427,7 +8460,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 57,
+            "line": 62,
             "description": "Time input field to use.  Can be enhanced with gallery-timepicker.",
             "itemtype": "attribute",
             "name": "timeInput",
@@ -8438,7 +8471,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 70,
+            "line": 75,
             "description": "Default date and time, used during initialization and by resetDateTime().",
             "itemtype": "attribute",
             "name": "defaultDateTime",
@@ -8448,7 +8481,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 84,
+            "line": 86,
             "description": "Minimum date and time.",
             "itemtype": "attribute",
             "name": "minDateTime",
@@ -8458,7 +8491,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 98,
+            "line": 97,
             "description": "Maximum date and time.",
             "itemtype": "attribute",
             "name": "minDateTime",
@@ -8468,7 +8501,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 112,
+            "line": 108,
             "description": "Time value to use when no time is specified, e.g., in a blackout date.",
             "itemtype": "attribute",
             "name": "blankTime",
@@ -8479,7 +8512,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 130,
+            "line": 126,
             "description": "Blackout ranges, specified as a list of objects, each defining start\nand end.  The data is overwritten, so this is a write-only value.",
             "itemtype": "attribute",
             "name": "blackout",
@@ -8490,7 +8523,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 230,
+            "line": 226,
             "description": "The direction to push the selected date and time when the user\nselects a day with partial blackout.  The default value of zero\nmeans go to the nearest available time.",
             "itemtype": "attribute",
             "name": "blackoutSnapDirection",
@@ -8501,7 +8534,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 248,
+            "line": 244,
             "description": "Duration of visual ping in milliseconds when the value of an input\nfield is modified because of a min/max or blackout restriction.  Set\nto zero to disable.",
             "itemtype": "attribute",
             "name": "pingDuration",
@@ -8512,7 +8545,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 263,
+            "line": 259,
             "description": "CSS class applied to input field when it is pinged.",
             "itemtype": "attribute",
             "name": "pingClass",
@@ -8523,7 +8556,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 277,
+            "line": 273,
             "itemtype": "event",
             "name": "limitsEnforced",
             "description": "Fires after min/max and blackouts have been enforced.",
@@ -8532,7 +8565,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 704,
+            "line": 724,
             "description": "Get the currently selected date and time.",
             "itemtype": "method",
             "name": "getDateTime",
@@ -8542,6 +8575,48 @@
             },
             "class": "DateTime",
             "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 791,
+            "description": "Reset the date and time to the values in `defaultDateTime`.",
+            "itemtype": "method",
+            "name": "resetDateTime",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 811,
+            "description": "Clear the date and time.",
+            "itemtype": "method",
+            "name": "clearDateTime",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime-range/js/DateTimeRange.js",
+            "line": 35,
+            "description": "Instance of `Y.DateTime` that stores the start time.  The min and\nmax dates and any blackout ranges must be configured on this object.",
+            "itemtype": "attribute",
+            "name": "startDateTime",
+            "type": "{DateTime}",
+            "required": 1,
+            "writeonce": "",
+            "class": "DateTimeRange",
+            "module": "gallery-datetime-range"
+        },
+        {
+            "file": "src/gallery-datetime-range/js/DateTimeRange.js",
+            "line": 50,
+            "description": "Instance of `Y.DateTime` that stores the end time.",
+            "itemtype": "attribute",
+            "name": "endDateTime",
+            "type": "{DateTime}",
+            "required": 1,
+            "writeonce": "",
+            "class": "DateTimeRange",
+            "module": "gallery-datetime-range"
         },
         {
             "file": "src/gallery-datetime-utils/js/utils.js",
@@ -8649,8 +8724,8 @@
             "params": [
                 {
                     "name": "input",
-                    "description": "\n\tCan be specified either as instance of Date or as an object defining\n\tdate_str or year,month,day and (optional) either time_str or\n\thour,minute.",
-                    "type": "Object"
+                    "description": "\n\tCan be specified either as instance of Date, a number specifying\n\tmilliseconds since midnight Jan 1, 1970, or as an object defining\n\tdate_str or year,month,day and (optional) either time_str or\n\thour,minute.",
+                    "type": "Date|Number|Object"
                 },
                 {
                     "name": "default_time",
@@ -8667,7 +8742,7 @@
         },
         {
             "file": "src/gallery-datetime-utils/js/utils.js",
-            "line": 179,
+            "line": 184,
             "description": "Format the date portion of a Date object.",
             "itemtype": "method",
             "name": "formatDate",
@@ -8675,7 +8750,7 @@
             "params": [
                 {
                     "name": "date",
-                    "description": "string (returned as-is), Date, or object specifying day,month,year",
+                    "description": "string (returned as-is), Date, milliseconds, or object specifying day,month,year",
                     "type": "Mixed"
                 }
             ],
@@ -8688,7 +8763,7 @@
         },
         {
             "file": "src/gallery-datetime-utils/js/utils.js",
-            "line": 215,
+            "line": 225,
             "description": "Inverse of formatDate().  Extracts year, month, and day from the\nstring.  The values are normalized to fall inside the default\nranges.",
             "itemtype": "method",
             "name": "parseDate",
@@ -8709,7 +8784,48 @@
         },
         {
             "file": "src/gallery-datetime-utils/js/utils.js",
-            "line": 260,
+            "line": 268,
+            "description": "Utility for parsing a date string that is not formatted based on the\nY.DateTime configuration.",
+            "itemtype": "method",
+            "name": "parseDate",
+            "static": 1,
+            "params": [
+                {
+                    "name": "date",
+                    "description": "string from DateTimeUtils.formatDate()",
+                    "type": "String"
+                },
+                {
+                    "name": "delimiater",
+                    "description": "delimiter between the date fields",
+                    "type": "String"
+                },
+                {
+                    "name": "year_pos",
+                    "description": "position of the year in the string representation: 1,2,3",
+                    "type": "Number"
+                },
+                {
+                    "name": "month_pos",
+                    "description": "position of the month in the string representation: 1,2,3",
+                    "type": "Number"
+                },
+                {
+                    "name": "day_pos",
+                    "description": "position of the day in the string representation: 1,2,3",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "normalized object defining date",
+                "type": "Object"
+            },
+            "class": "DateTimeUtils",
+            "module": "gallery-datetime-utils"
+        },
+        {
+            "file": "src/gallery-datetime-utils/js/utils.js",
+            "line": 299,
             "description": "Format the time portion of a Date object.",
             "itemtype": "method",
             "name": "formatTime",
@@ -8717,7 +8833,7 @@
             "params": [
                 {
                     "name": "time",
-                    "description": "string (returned as-is), Date, or object specifying hour,minute",
+                    "description": "string (returned as-is), Date, milliseconds, or object specifying hour,minute",
                     "type": "Mixed"
                 }
             ],
@@ -8730,7 +8846,7 @@
         },
         {
             "file": "src/gallery-datetime-utils/js/utils.js",
-            "line": 301,
+            "line": 345,
             "description": "Inverse of formatTime().  Extracts hour and minute from the string.\nThrows an error if hour is outside [0,23] or minute is outside\n[0,59].",
             "itemtype": "method",
             "name": "parseTime",
@@ -9314,7 +9430,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 393,
+            "line": 447,
             "description": "<p>Exposed for use by Y.QueryBuilder</p>\n\n<p>Clear the message for the given field.</p>",
             "itemtype": "method",
             "name": "clearMessage",
@@ -9331,7 +9447,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 414,
+            "line": 468,
             "description": "<p>Exposed for use by Y.QueryBuilder</p>\n\n<p>Display a message for the form row containing the specified element.\nThe message will only be displayed if no message with a higher\nprecedence is already visible. (see Y.FormManager.status_order)</p>",
             "itemtype": "method",
             "name": "displayMessage",
@@ -9374,7 +9490,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 498,
+            "line": 552,
             "itemtype": "method",
             "name": "getForm",
             "return": {
@@ -9386,7 +9502,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 511,
+            "line": 565,
             "itemtype": "method",
             "name": "hasFileInputs",
             "return": {
@@ -9398,7 +9514,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 520,
+            "line": 574,
             "itemtype": "method",
             "name": "setStatusNode",
             "params": [
@@ -9413,7 +9529,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 530,
+            "line": 584,
             "description": "Set the default values for all form elements.",
             "itemtype": "method",
             "name": "setDefaultValues",
@@ -9429,7 +9545,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 547,
+            "line": 601,
             "description": "Set the default values for a single form element.",
             "itemtype": "method",
             "name": "setDefaultValue",
@@ -9450,7 +9566,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 561,
+            "line": 615,
             "description": "Store the current form values in <code>default_value_map</code>.",
             "itemtype": "method",
             "name": "saveCurrentValuesAsDefault",
@@ -9459,7 +9575,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 577,
+            "line": 631,
             "description": "Set the validation function for a form element.",
             "itemtype": "method",
             "name": "setFunction",
@@ -9480,7 +9596,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 596,
+            "line": 650,
             "description": "<p>Set the regular expression used to validate the field value.</p>\n\n<p><strong>Since there is no default message for failed regular\nexpression validation, this function will complain if you have not\nalready called `setErrorMessages()` or\n`addErrorMessage` to specify an error message.</strong></p>",
             "itemtype": "method",
             "name": "setRegex",
@@ -9506,7 +9622,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 631,
+            "line": 685,
             "description": "<p>Set the error messages for a form element.  This can be used to\noverride the default messages for individual elements</p>\n\n<p>The valid error types are:</p>\n<dl>\n<dt><code>required</code></dt>\n<dd>&nbsp;</dd>\n<dt><code>min_length</code></dt>\n<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>\n<dt><code>max_length</code></dt>\n<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>\n<dt><code>integer</code></dt>\n<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>\n<dt><code>decimal</code></dt>\n<dd><code>{min}</code> and <code>{max}</code> are replaced</dd>\n<dt><code>regex</code></dt>\n<dd>This <string>must</strong> be set for elements which validate with regular expressions.</dd>\n</dl>",
             "itemtype": "method",
             "name": "setErrorMessages",
@@ -9527,7 +9643,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 662,
+            "line": 716,
             "description": "Set one particular error message for a form element.",
             "itemtype": "method",
             "name": "addErrorMessage",
@@ -9553,7 +9669,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 683,
+            "line": 737,
             "description": "Reset all values in the form to the defaults specified in the markup.",
             "itemtype": "method",
             "name": "clearForm",
@@ -9562,7 +9678,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 695,
+            "line": 749,
             "description": "Reset all values in the form to the defaults passed to the\nconstructor or to `setDefaultValues()`.",
             "itemtype": "method",
             "name": "populateForm",
@@ -9571,7 +9687,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 717,
+            "line": 771,
             "description": "Hook for performing additional actions after `populateForm()`\ncompletes.",
             "itemtype": "method",
             "name": "postPopulateForm",
@@ -9580,7 +9696,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 727,
+            "line": 781,
             "description": "Check if form values have been modified.",
             "itemtype": "method",
             "name": "isChanged",
@@ -9593,7 +9709,20 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 788,
+            "line": 800,
+            "description": "Return the modified values.",
+            "itemtype": "method",
+            "name": "getChanges",
+            "return": {
+                "description": "map of form element names to new values",
+                "type": "Object"
+            },
+            "class": "FormManager",
+            "module": "gallery-formmgr"
+        },
+        {
+            "file": "src/gallery-formmgr/js/FormManager.js",
+            "line": 821,
             "description": "Prepare the form for display.",
             "itemtype": "method",
             "name": "prepareForm",
@@ -9606,7 +9735,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 810,
+            "line": 843,
             "description": "Hook called before <code>prepareForm()</code> executes.",
             "itemtype": "method",
             "name": "prePrepareForm",
@@ -9619,7 +9748,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 821,
+            "line": 854,
             "description": "Hook called after <code>prepareForm()</code> executes.",
             "itemtype": "method",
             "name": "postPrepareForm",
@@ -9632,7 +9761,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 832,
+            "line": 865,
             "description": "Set focus to first input field.  If a page contains multiple forms,\nonly call this for one of them.",
             "itemtype": "method",
             "name": "initFocus",
@@ -9641,7 +9770,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 869,
+            "line": 902,
             "itemtype": "method",
             "name": "validateForm",
             "return": {
@@ -9653,7 +9782,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 945,
+            "line": 978,
             "description": "Hook called at the end of `validateForm()`.  This is the best place\nto put holistic validations that touch multiple form elements.",
             "itemtype": "method",
             "name": "postValidateForm",
@@ -9666,7 +9795,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 962,
+            "line": 995,
             "description": "Register an object that can be disabled.  The object must support\nthe set('disabled', ...) API.  (The exception is DOM nodes, since\nthey are automatically wrapped in Y.Node.)  Buttons contained within\nthe form DOM element are automatically registered.",
             "itemtype": "method",
             "name": "registerButton",
@@ -9682,7 +9811,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 982,
+            "line": 1015,
             "itemtype": "method",
             "name": "isFormEnabled",
             "return": {
@@ -9694,7 +9823,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 991,
+            "line": 1024,
             "description": "Enable all the registered buttons.",
             "itemtype": "method",
             "name": "enableForm",
@@ -9703,7 +9832,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1001,
+            "line": 1034,
             "description": "Disable all the registered buttons.",
             "itemtype": "method",
             "name": "disableForm",
@@ -9712,7 +9841,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1011,
+            "line": 1044,
             "description": "Set the enabled state all the registered buttons.",
             "itemtype": "method",
             "name": "setFormEnabled",
@@ -9728,7 +9857,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1039,
+            "line": 1072,
             "itemtype": "method",
             "name": "hasMessages",
             "return": {
@@ -9740,7 +9869,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1048,
+            "line": 1081,
             "itemtype": "method",
             "name": "hasErrors",
             "return": {
@@ -9752,7 +9881,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1057,
+            "line": 1090,
             "description": "Get the message type displayed for the row containing the specified element.",
             "itemtype": "method",
             "name": "getRowStatus",
@@ -9772,7 +9901,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1071,
+            "line": 1104,
             "description": "Clear all messages in <code>status_node</code> and the form rows.",
             "itemtype": "method",
             "name": "clearMessages",
@@ -9781,7 +9910,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1100,
+            "line": 1133,
             "description": "Display a message for the form row containing the specified element.\nThe message will only be displayed if no message with a higher\nprecedence is already visible. (see Y.FormManager.status_order)",
             "itemtype": "method",
             "name": "displayMessage",
@@ -9817,7 +9946,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1134,
+            "line": 1167,
             "description": "Displays a generic message in <code>status_node</code> stating that\nthe form data failed to validate.  Override this if you want to get\nfancy.",
             "itemtype": "method",
             "name": "notifyErrors",
@@ -9826,7 +9955,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1146,
+            "line": 1179,
             "description": "Display a message in <code>status_node</code>.",
             "itemtype": "method",
             "name": "displayFormMessage",
@@ -18227,7 +18356,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 484,
+            "line": 489,
             "description": "Switch to QuickEdit mode.  Columns that have quickEdit defined will\nbe editable.  If the table has paginators, you must hide them.",
             "itemtype": "method",
             "name": "start",
@@ -18237,7 +18366,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 550,
+            "line": 555,
             "description": "Stop QuickEdit mode.  THIS DISCARDS ALL DATA!  If you want to save\nthe data, call getChanges() BEFORE calling this function.  If the\ntable has paginators, you must show them.",
             "itemtype": "method",
             "name": "cancel",
@@ -18247,7 +18376,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 594,
+            "line": 599,
             "description": "Return the changed values.  For each row, an object is created with\nonly the changed values.  The object keys are the column keys.  If\nyou need values from particular columns to be included always, even\nif the value did not change, include the key `changesAlwaysInclude`\nin the plugin configuration and pass an array of column keys.\nIf you need the row indexes, configure `includeRowIndexInChanges`.\n\nIf you only want the records with changes, configure\n`includeAllRowsInChanges` to be false.  For this to be useful, you\nwill need to configure either `changesAlwaysInclude` or\n`includeRowIndexInChanges`.",
             "itemtype": "method",
             "name": "getChanges",
@@ -18261,7 +18390,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 669,
+            "line": 674,
             "description": "Validate the QuickEdit data.",
             "itemtype": "method",
             "name": "validate",
@@ -18275,7 +18404,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 697,
+            "line": 702,
             "description": "Clear all validation messages in QuickEdit mode.",
             "itemtype": "method",
             "name": "clearMessages",
@@ -18285,7 +18414,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 717,
+            "line": 722,
             "description": "Display a message for a QuickEdit field.  If an existing message with\na higher precedence is already visible, it will not be replaced.",
             "itemtype": "method",
             "name": "displayMessage",
@@ -18317,7 +18446,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 765,
+            "line": 770,
             "description": "Return the status of the field.",
             "itemtype": "method",
             "name": "_getElementStatus",
@@ -18345,7 +18474,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 782,
+            "line": 787,
             "description": "Return the column key for the specified field.",
             "itemtype": "method",
             "name": "_getColumnKey",
@@ -18368,9 +18497,27 @@
         },
         {
             "file": "src/gallery-scrollintoview/js/ScrollIntoView.js",
-            "line": 18,
+            "line": 176,
+            "description": "To receive notification of when the animation finishes, subscribe to the\nevent `scrollIntoViewFinished` on the Y.Node instance.  For consistency,\nthis event always fires, even without animation.\n\nIf you modify the ancestor chain while the animation is running, the\nresults will be unpredictable.",
             "itemtype": "method",
             "name": "scrollIntoView",
+            "params": [
+                {
+                    "name": "config.anim",
+                    "description": "true to use default duration and easing, or object",
+                    "optional": true
+                },
+                {
+                    "name": "config.anim.duration",
+                    "description": "duration of animation",
+                    "optional": true
+                },
+                {
+                    "name": "config.anim.easing",
+                    "description": "easing used during animation",
+                    "optional": true
+                }
+            ],
             "chainable": 1,
             "class": "Node~scrollIntoView",
             "module": "gallery-scrollintoview"

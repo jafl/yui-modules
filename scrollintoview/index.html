@@ -10,7 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.8.0/build/cssreset/reset-min.css">
 
 	<style type="text/css">
-	body
+	body.noscroll
 	{
 		overflow: hidden;
 	}
@@ -70,13 +70,15 @@
 	}
 	</style>
 </head>
-<body>
+<body class="noscroll">
 
 <h1><a href="http://yuilibrary.com/gallery/show/scrollintoview">YUI 3 ScrollIntoView</a> Example</h1>
 
 <p class="buttons">
 <button id="default">Default scroll</button>
 <button id="custom">Custom scroll</button>
+<input type="checkbox" id="animate" /><label for="animate">Animate custom scroll</label>
+<input type="checkbox" id="bodyscroll" /><label for="bodyscroll">Allow body to scroll</label>
 </p>
 
 <p>The difference is most obvious if you scroll the <q>Hi!</q> button into view before clicking the above buttons.</p>
@@ -303,11 +305,20 @@
 </div>
 </div>
 
+<div>
+<p>Padding</p>
+<p>Padding</p>
+<p>Padding</p>
+<p>Padding</p>
+<p>Padding</p>
+<p>Padding</p>
+</div>
+
 <script type="text/javascript">
 YUI({
 //	base: '../yui3/',
 //	filter: 'debug'
-}).use('gallery-scrollintoview', function(Y)
+}).use('gallery-scrollintoview', 'anim', function(Y)
 {
 	var target = Y.one('#target');
 
@@ -318,7 +329,24 @@ YUI({
 
 	Y.one('#custom').on('click', function()
 	{
-		target.scrollIntoView();
+		target.scrollIntoView({ anim: Y.one('#animate').get('checked') });
+	});
+
+	Y.one('#bodyscroll').on('click', function()
+	{
+		if (this.get('checked'))
+		{
+			Y.one('body').removeClass('noscroll');
+		}
+		else
+		{
+			Y.one('body').addClass('noscroll');
+		}
+	});
+
+	target.on('scrollIntoViewFinished', function()
+	{
+		alert('Done!');
 	});
 });
 </script>

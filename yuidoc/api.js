@@ -21,6 +21,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "DataSource.BulkEdit",
         "DataSource.Treeble",
         "DateTime",
+        "DateTimeRange",
         "DateTimeUtils",
         "EnableIfAnyCheckboxGroup",
         "ExpirationCache",
@@ -133,6 +134,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-datatable-row-expansion",
         "gallery-datatable-state",
         "gallery-datetime",
+        "gallery-datetime-range",
         "gallery-datetime-utils",
         "gallery-dimensions",
         "gallery-expiration-cache",
@@ -246,6 +248,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-datetime",
             "name": "gallery-datetime",
             "description": "Manages a date input field and an optional time field.  Calendars and\ntime selection widgets can be attached to these fields, but will not be\nmanaged by this class.\n\nDate/time values can be specified as either a Date object or an object\nspecifying year,month,day (all 1-based) or date_str and optionally\nhour,minute or time_str.  Individual values take precedence over string\nvalues.  Time resolution is in minutes."
+        },
+        {
+            "displayName": "gallery-datetime-range",
+            "name": "gallery-datetime-range",
+            "description": "Manages a pair of Y.DateTime instances.  The ending date is constrained\nby the min, max, and blackout ranges configured on the startDateTime\ninstance.  The range is not allowed to span a blackout, so if the start\ndate is between two blackout ranges, then the end date must be after the\nstart date and before the start of the next blackout range."
         },
         {
             "displayName": "gallery-datetime-utils",
@@ -414,7 +421,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "gallery-scrollintoview",
             "name": "gallery-scrollintoview",
-            "description": "<p>Only scrolls the browser if the object is not currently visible.</p>\n\n<p>This requires that all scrollable elements have position:relative.\nOtherwise, this algorithm will skip over them with unpredictable\nresults.</p>"
+            "description": "Only scrolls if the object is not currently visible.\n\nThis requires that all scrollable elements have position:relative.\nOtherwise, this algorithm will skip over them with unpredictable\nresults."
         },
         {
             "displayName": "gallery-sort-extras",

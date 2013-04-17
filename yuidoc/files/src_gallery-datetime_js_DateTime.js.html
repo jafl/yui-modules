@@ -81,6 +81,8 @@
             
                 <li><a href="..&#x2F;classes/DateTime.html">DateTime</a></li>
             
+                <li><a href="..&#x2F;classes/DateTimeRange.html">DateTimeRange</a></li>
+            
                 <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
             
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
@@ -305,6 +307,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-datetime.html">gallery-datetime</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-datetime-range.html">gallery-datetime-range</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-dimensions.html">gallery-dimensions</a></li>
@@ -457,6 +461,11 @@ function setNode(n)
 	return Y.one(n) || Attribute.INVALID_VALUE;
 }
 
+function setDateTime(value)
+{
+	return value ? Y.DateTimeUtils.normalize(value, this.get(&#x27;blankTime&#x27;)) : null;
+};
+
 DateTime.ATTRS =
 {
 	&#x2F;**
@@ -495,10 +504,7 @@ DateTime.ATTRS =
 	 *&#x2F;
 	defaultDateTime:
 	{
-		setter: function(value)
-		{
-			return value ? Y.DateTimeUtils.normalize(value, this.get(&#x27;blankTime&#x27;)) : null;
-		}
+		setter: setDateTime
 	},
 
 	&#x2F;**
@@ -509,10 +515,7 @@ DateTime.ATTRS =
 	 *&#x2F;
 	minDateTime:
 	{
-		setter: function(value)
-		{
-			return value ? Y.DateTimeUtils.normalize(value, this.get(&#x27;blankTime&#x27;)) : null;
-		}
+		setter: setDateTime
 	},
 
 	&#x2F;**
@@ -523,10 +526,7 @@ DateTime.ATTRS =
 	 *&#x2F;
 	maxDateTime:
 	{
-		setter: function(value)
-		{
-			return value ? Y.DateTimeUtils.normalize(value, this.get(&#x27;blankTime&#x27;)) : null;
-		}
+		setter: setDateTime
 	},
 
 	&#x2F;**
@@ -822,38 +822,43 @@ function enforceDateTimeLimits(
 		var timer       = getEnforceTimer.call(this);
 		timer.timeInput = Y.DateTimeUtils.formatTime(date);
 	}
+	else
+	{
+		this.fire(&#x27;limitsEnforced&#x27;);
+	}
 }
 
 function getEnforceTimer()
 {
 	if (!this.enforce_timer)
 	{
-		this.enforce_timer = Y.later(0, this, function()
-		{
-			var timer          = this.enforce_timer;
-			this.enforce_timer = null;
-
-			var ping_list         = [];
-			this.ignore_value_set = true;
-
-			Y.each([&#x27;dateInput&#x27;, &#x27;timeInput&#x27;], function(name)
-			{
-				if (timer[name])
-				{
-					this.get(name).set(&#x27;value&#x27;, timer[name]);
-					ping_list.push(name);
-				}
-			},
-			this);
-
-			this.ignore_value_set = false;
-			ping.apply(this, ping_list);
-
-			this.fire(&#x27;limitsEnforced&#x27;);
-		});
+		this.enforce_timer = Y.later(0, this, enforceTimerCallback);
 	}
-
 	return this.enforce_timer;
+}
+
+function enforceTimerCallback()
+{
+	var timer          = this.enforce_timer;
+	this.enforce_timer = null;
+
+	var ping_list         = [];
+	this.ignore_value_set = true;
+
+	Y.each([&#x27;dateInput&#x27;, &#x27;timeInput&#x27;], function(name)
+	{
+		if (timer[name])
+		{
+			this.get(name).set(&#x27;value&#x27;, timer[name]);
+			ping_list.push(name);
+		}
+	},
+	this);
+
+	this.ignore_value_set = false;
+	ping.apply(this, ping_list);
+
+	this.fire(&#x27;limitsEnforced&#x27;);
 }
 
 function updateRendering()
@@ -1111,14 +1116,33 @@ Y.extend(DateTime, Y.Base,
 			}
 		}
 
-		&#x2F;&#x2F; black-out dates
+		&#x2F;&#x2F; changes
+
+		function updateLimit(key, e)
+		{
+			if (e.newVal)
+			{
+				enforceDateTimeLimits.call(this);
+				this.calendar.set(key, e.newVal.date);
+			}
+			else
+			{
+				this.calendar.set(key, null);
+			}
+
+			updateRendering.call(this);
+		}
+
+		this.after(&#x27;minDateTimeChange&#x27;, Y.bind(updateLimit, this, &#x27;minimumDate&#x27;));
+		this.after(&#x27;maxDateTimeChange&#x27;, Y.bind(updateLimit, this, &#x27;maximumDate&#x27;));
+
+		this.after(&#x27;blackoutsChange&#x27;, function()
+		{
+			enforceDateTimeLimits.call(this);
+			updateRendering.call(this);
+		});
 
 		updateRendering.call(this);
-		this.on(&#x27;blackoutsChange&#x27;, updateRendering);
-	},
-
-	destroy: function()
-	{
 	},
 
 	&#x2F;**
@@ -1187,27 +1211,32 @@ Y.extend(DateTime, Y.Base,
 
 		enforceDateTimeLimits.call(this);
 	},
-&#x2F;&#x2F; TODO
+
+	&#x2F;**
+	 * Reset the date and time to the values in &#x60;defaultDateTime&#x60;.
+	 * 
+	 * @method resetDateTime
+	 *&#x2F;
 	resetDateTime: function()
 	{
-		if (this.default_date_time)
+		var d = this.get(&#x27;defaultDateTime&#x27;);
+		if (d)
 		{
-			this.calendar.setDate(this.default_date_time);
-
-			this.hour_menu.value   = this.default_date_time.hour;
-			this.minute_menu.value = this.default_date_time.minute;
+			this.setDateTime(d);
 		}
 		else
 		{
-			this.calendar.clearDate();
-
-			this.hour_menu.value   = this.blank_time.hour;
-			this.minute_menu.value = this.blank_time.minute;
+			this.clearDateTime();
 		}
 
 		enforceDateTimeLimits.call(this);
 	},
 
+	&#x2F;**
+	 * Clear the date and time.
+	 *
+	 * @method clearDateTime
+	 *&#x2F;
 	clearDateTime: function()
 	{
 		this.get(&#x27;dateInput&#x27;).set(&#x27;value&#x27;, &#x27;&#x27;);
@@ -1216,56 +1245,6 @@ Y.extend(DateTime, Y.Base,
 		if (time_input)
 		{
 			time_input.set(&#x27;value&#x27;, &#x27;&#x27;);
-		}
-	},
-&#x2F;&#x2F; TODO: onMinDateTimeChange
-	setMinDateTime: function(
-		&#x2F;* object *&#x2F;	min)
-	{
-		if (min)
-		{
-			min = Y.DateTimeUtils.normalize(min, this.blank_time);
-
-			if (!this.min_date_time ||
-				this.min_date_time.date.getTime() != min.date.getTime())
-			{
-				this.min_date_time = min;
-				enforceDateTimeLimits.call(this);
-				this.calendar.setMinDate(this.min_date_time);
-
-				updateRendering.call(this);
-			}
-		}
-		else if (this.min_date_time)
-		{
-			this.min_date_time = null;
-			this.calendar.clearMinDate();
-			updateRendering.call(this);
-		}
-	},
-&#x2F;&#x2F; TODO: onMaxDateTimeChange
-	setMaxDateTime: function(
-		&#x2F;* object *&#x2F;	max)
-	{
-		if (max)
-		{
-			max = Y.DateTimeUtils.normalize(max, this.blank_time);
-
-			if (!this.max_date_time ||
-				this.max_date_time.date.getTime() != max.date.getTime())
-			{
-				this.max_date_time = max;
-				enforceDateTimeLimits.call(this);
-				this.calendar.setMaxDate(this.max_date_time);
-
-				updateRendering.call(this);
-			}
-		}
-		else if (this.max_date_time)
-		{
-			this.max_date_time = null;
-			this.calendar.clearMaxDate();
-			updateRendering.call(this);
 		}
 	}
 });

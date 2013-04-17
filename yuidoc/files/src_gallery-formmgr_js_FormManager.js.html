@@ -81,6 +81,8 @@
             
                 <li><a href="..&#x2F;classes/DateTime.html">DateTime</a></li>
             
+                <li><a href="..&#x2F;classes/DateTimeRange.html">DateTimeRange</a></li>
+            
                 <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
             
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
@@ -304,6 +306,8 @@
                 <li><a href="..&#x2F;modules/gallery-datatable-state.html">gallery-datatable-state</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datetime.html">gallery-datetime</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datetime-range.html">gallery-datetime-range</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
             
@@ -718,7 +722,7 @@ function getId(
 	}
 }
 
-function populateForm1()
+function _populateForm()
 {
 	var collect_buttons = (this.button_list.length === 0);
 
@@ -807,6 +811,60 @@ function populateForm1()
 		{
 			e.value = v;
 		}
+	}
+}
+
+function _isChanged(i)
+{
+	var e = this.form.elements[i];
+	if (!e.name)
+	{
+		return false;
+	}
+
+	var type = (e.type ? e.type.toLowerCase() : null);
+	var name = e.tagName.toLowerCase();
+	var v    = this.default_value_map[ e.name ];
+	if (v === null || typeof v === &#x27;undefined&#x27;)
+	{
+		v = &#x27;&#x27;;
+	}
+
+	if (name == &#x27;input&#x27; &amp;&amp; type == &#x27;file&#x27;)
+	{
+		if (e.value)
+		{
+			return true;
+		}
+	}
+	else if (name == &#x27;input&#x27; &amp;&amp;
+			 (type == &#x27;password&#x27; || type == &#x27;text&#x27; || type == &#x27;file&#x27;))
+	{
+		if (e.value != v)
+		{
+			return true;
+		}
+	}
+	else if (name == &#x27;input&#x27; &amp;&amp;
+			 (type == &#x27;checkbox&#x27; || type == &#x27;radio&#x27;))
+	{
+		var checked = (e.value == v);
+		if ((checked &amp;&amp; !e.checked) || (!checked &amp;&amp; e.checked))
+		{
+			return true;
+		}
+	}
+	else if ((name == &#x27;select&#x27; &amp;&amp; type == &#x27;select-one&#x27;) ||
+			 name == &#x27;textarea&#x27;)
+	{
+		if (e.value != v)
+		{
+			return true;
+		}
+	}
+	else
+	{
+		return false;
 	}
 }
 
@@ -987,7 +1045,7 @@ Y.extend(FormManager, Y.Plugin.Host,
 	{
 		this.default_value_map = {};
 		this.button_list       = [];
-		populateForm1.call(this);
+		_populateForm.call(this);
 	},
 
 	&#x2F;* *********************************************************************
@@ -1127,7 +1185,7 @@ Y.extend(FormManager, Y.Plugin.Host,
 
 		this.clearMessages();
 
-		populateForm1.call(this);
+		_populateForm.call(this);
 
 		&#x2F;&#x2F; let derived class adjust
 
@@ -1154,55 +1212,34 @@ Y.extend(FormManager, Y.Plugin.Host,
 	{
 		for (var i=0; i&lt;this.form.elements.length; i++)
 		{
-			var e = this.form.elements[i];
-			if (!e.name)
+			if (_isChanged.call(this, i))
 			{
-				continue;
-			}
-
-			var type = (e.type ? e.type.toLowerCase() : null);
-			var name = e.tagName.toLowerCase();
-			var v    = this.default_value_map[ e.name ];
-			if (v === null || typeof v === &#x27;undefined&#x27;)
-			{
-				v = &quot;&quot;;
-			}
-
-			if (name == &#x27;input&#x27; &amp;&amp; type == &#x27;file&#x27;)
-			{
-				if (e.value)
-				{
-					return true;
-				}
-			}
-			else if (name == &#x27;input&#x27; &amp;&amp;
-					 (type == &#x27;password&#x27; || type == &#x27;text&#x27; || type == &#x27;file&#x27;))
-			{
-				if (e.value != v)
-				{
-					return true;
-				}
-			}
-			else if (name == &#x27;input&#x27; &amp;&amp;
-					 (type == &#x27;checkbox&#x27; || type == &#x27;radio&#x27;))
-			{
-				var checked = (e.value == v);
-				if ((checked &amp;&amp; !e.checked) || (!checked &amp;&amp; e.checked))
-				{
-					return true;
-				}
-			}
-			else if ((name == &#x27;select&#x27; &amp;&amp; type == &#x27;select-one&#x27;) ||
-					 name == &#x27;textarea&#x27;)
-			{
-				if (e.value != v)
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 
 		return false;
+	},
+
+	&#x2F;**
+	 * Return the modified values.
+	 * 
+	 * @method getChanges
+	 * @return {Object} map of form element names to new values
+	 *&#x2F;
+	getChanges: function()
+	{
+		var result = {};
+		for (var i=0; i&lt;this.form.elements.length; i++)
+		{
+			if (_isChanged.call(this, i))
+			{
+				var e            = this.form.elements[i];
+				result[ e.name ] = e.value;
+			}
+		}
+
+		return result;
 	},
 
 	&#x2F;**

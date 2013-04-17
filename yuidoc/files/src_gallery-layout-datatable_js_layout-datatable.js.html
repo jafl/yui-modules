@@ -81,6 +81,8 @@
             
                 <li><a href="..&#x2F;classes/DateTime.html">DateTime</a></li>
             
+                <li><a href="..&#x2F;classes/DateTimeRange.html">DateTimeRange</a></li>
+            
                 <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
             
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
@@ -305,6 +307,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-datetime.html">gallery-datetime</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-datetime-range.html">gallery-datetime-range</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-dimensions.html">gallery-dimensions</a></li>
@@ -473,8 +477,10 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 				layout = this.get(&#x27;layout&#x27;),
 
 				module_bd =
-				table.get(&#x27;boundingBox&#x27;)
-					 .ancestor(&#x27;.&#x27; + Y.PageLayout.module_body_class);
+					table.get(&#x27;boundingBox&#x27;)
+						 .ancestor(&#x27;.&#x27; + Y.PageLayout.module_body_class),
+
+				scroll_top = 0;
 
 			module_bd.generateID();
 
@@ -482,6 +488,11 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 			{
 				if (e.bd.get(&#x27;id&#x27;) == module_bd.get(&#x27;id&#x27;) &amp;&amp; e.height == &#x27;auto&#x27;)
 				{
+					if (table._yScrollNode)
+					{
+						scroll_top = table._yScrollNode.get(&#x27;scrollTop&#x27;);
+					}
+
 					table.set(&#x27;height&#x27;, &#x27;auto&#x27;);
 					table.set(&#x27;scrollable&#x27;, &#x27;x&#x27;);
 				}
@@ -491,8 +502,14 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 			{
 				if (e.bd.get(&#x27;id&#x27;) == module_bd.get(&#x27;id&#x27;))
 				{
+					table.set(&#x27;width&#x27;, (e.width - Y.DOM.getScrollbarWidth())+&#x27;px&#x27;);
 					table.set(&#x27;height&#x27;, e.height+&#x27;px&#x27;);
 					table.set(&#x27;scrollable&#x27;, true);
+
+					if (table._yScrollNode)
+					{
+						table._yScrollNode.set(&#x27;scrollTop&#x27;, scroll_top);
+					}
 				}
 			});
 		});

@@ -81,6 +81,8 @@
             
                 <li><a href="..&#x2F;classes/DateTime.html">DateTime</a></li>
             
+                <li><a href="..&#x2F;classes/DateTimeRange.html">DateTimeRange</a></li>
+            
                 <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
             
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
@@ -305,6 +307,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-datetime.html">gallery-datetime</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-datetime-range.html">gallery-datetime-range</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-dimensions.html">gallery-dimensions</a></li>
@@ -482,23 +486,6 @@ Y.Array.compareStringsCaseInsensitive = function(s1, s2)
 	return Y.Array.compareStringsCaseSensitive(s1.toLowerCase(), s2.toLowerCase());
 };
 
-&#x2F;**********************************************************************
- * &lt;p&gt;Converts a -1,0,+1 comparator into a boolean comparator, for use by
- * Y.Array.find().&lt;&#x2F;p&gt;
- * 
- * @method compareForFind
- * @static
- * @param f {Function} -1,0,+1 comparator function
- * @return {Function} function that returns true if the arguments are equal
- *&#x2F;
-Y.Array.compareForFind = function(f)
-{
-	return function(a,b)
-	{
-		return (f(a,b) === 0);
-	};
-};
-
 &#x2F;*
 quick sort history:
 
@@ -606,7 +593,7 @@ binary search history:
  * @static
  * @param list {Array} the list to search (sorted on the compare function)
  * @param target {Mixed} the object to search for
- * @param compare=Y.Array.compareStringsCaseSensitive {Function} the comparison function
+ * @param [compare=Y.Array.compareStringsCaseSensitive] {Function} the comparison function
  * @return {int} index of matched item or -1 if no match
  *&#x2F;
 Y.Array.binarySearch = function(list, target, compare)
@@ -641,13 +628,9 @@ Y.Array.binarySearch = function(list, target, compare)
 			high = aTry - 1;
 			continue;
 		}
-		if (c === 0)
-		{
-			high = aTry - 1;
-			lastTry = aTry;
-			continue;
-		}
-		return aTry;
+
+		high    = aTry - 1;
+		lastTry = aTry;
 	}
 
 	return (Y.Lang.isUndefined(lastTry) ? -1 : lastTry);

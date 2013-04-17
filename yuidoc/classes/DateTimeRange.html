@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>DataSource.AsyncFunction - YUI 3 Gallery Modules</title>
+    <title>DateTimeRange - YUI 3 Gallery Modules</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -418,25 +418,25 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>DataSource.AsyncFunction Class</h1>
+                        <h1>DateTimeRange Class</h1>
 <div class="box meta">
     
 
     
         <div class="extends">
-            Extends <a href="http://yuilibrary.com/yui/docs/api/classes/DataSource.Local.html" class="crosslink external" target="_blank">DataSource.Local</a>
+            Extends <a href="http://yuilibrary.com/yui/docs/api/classes/Base.html" class="crosslink external" target="_blank">Base</a>
         </div>
     
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_gallery-datasource-async-function_js_AsyncFunctionDataSource.js.html#l7"><code>src&#x2F;gallery-datasource-async-function&#x2F;js&#x2F;AsyncFunctionDataSource.js:7</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_gallery-datetime-range_js_DateTimeRange.js.html#l7"><code>src&#x2F;gallery-datetime-range&#x2F;js&#x2F;DateTimeRange.js:7</code></a>
         </div>
     
 
     
         
-            Module: <a href="../modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a>
+            Module: <a href="../modules/gallery-datetime-range.html">gallery-datetime-range</a>
         
     
 
@@ -446,14 +446,18 @@
 
 
 <div class="box intro">
-    <p>Data source that calls an asynchronous function.</p>
+    <p>Manages a pair of Y.DateTime instances.  The ending date is constrained
+by the min, max, and blackout ranges configured on the startDateTime
+instance.  The range is not allowed to span a blackout, so if the start
+date is between two blackout ranges, then the end date must be after the
+start date and before the start of the next blackout range.</p>
 </div>
 
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_DataSource.AsyncFunction" class="method item">
-    <h3 class="name"><code>DataSource.AsyncFunction</code></h3>
+        <div id="method_DateTimeRange" class="method item">
+    <h3 class="name"><code>DateTimeRange</code></h3>
 
     
         <div class="args">
@@ -494,7 +498,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datasource-async-function_js_AsyncFunctionDataSource.js.html#l7"><code>src&#x2F;gallery-datasource-async-function&#x2F;js&#x2F;AsyncFunctionDataSource.js:7</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime-range_js_DateTimeRange.js.html#l7"><code>src&#x2F;gallery-datetime-range&#x2F;js&#x2F;DateTimeRange.js:7</code></a>
         
         </p>
 
@@ -619,13 +623,6 @@
                             </li>
                         
                             <li class="index-item method protected inherited">
-                                <a href="#method__defDataFn">_defDataFn</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method protected inherited">
                                 <a href="#method__defDestroyFn">_defDestroyFn</a>
 
                                 
@@ -634,20 +631,6 @@
                         
                             <li class="index-item method protected inherited">
                                 <a href="#method__defInitFn">_defInitFn</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method protected inherited">
-                                <a href="#method__defRequestFn">_defRequestFn</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method protected inherited">
-                                <a href="#method__defResponseFn">_defResponseFn</a>
 
                                 
                                 
@@ -760,13 +743,6 @@
                         
                             <li class="index-item method private inherited">
                                 <a href="#method__initBase">_initBase</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method private inherited">
-                                <a href="#method__initEvents">_initEvents</a>
 
                                 
                                 
@@ -977,13 +953,6 @@
                                 
                             </li>
                         
-                            <li class="index-item method private inherited">
-                                <a href="#method_initializer">initializer</a>
-
-                                
-                                
-                            </li>
-                        
                             <li class="index-item method inherited">
                                 <a href="#method_modifyAttr">modifyAttr</a>
 
@@ -1042,13 +1011,6 @@
                         
                             <li class="index-item method inherited">
                                 <a href="#method_reset">reset</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item method inherited">
-                                <a href="#method_sendRequest">sendRequest</a>
 
                                 
                                 
@@ -1142,12 +1104,16 @@
                                 <a href="#attr_destroyed">destroyed</a>
                             </li>
                         
+                            <li class="index-item attr">
+                                <a href="#attr_endDateTime">endDateTime</a>
+                            </li>
+                        
                             <li class="index-item attr inherited">
                                 <a href="#attr_initialized">initialized</a>
                             </li>
                         
-                            <li class="index-item attr inherited">
-                                <a href="#attr_source">source</a>
+                            <li class="index-item attr">
+                                <a href="#attr_startDateTime">startDateTime</a>
                             </li>
                         
                     </ul>
@@ -1161,13 +1127,6 @@
                     <ul class="index-list events extends">
                         
                             <li class="index-item event inherited">
-                                <a href="#event_data">data</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item event inherited">
                                 <a href="#event_destroy">destroy</a>
 
                                 
@@ -1175,28 +1134,7 @@
                             </li>
                         
                             <li class="index-item event inherited">
-                                <a href="#event_error">error</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item event inherited">
                                 <a href="#event_init">init</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item event inherited">
-                                <a href="#event_request">request</a>
-
-                                
-                                
-                            </li>
-                        
-                            <li class="index-item event inherited">
-                                <a href="#event_response">response</a>
 
                                 
                                 
@@ -1789,108 +1727,6 @@ this class.</p>
 </div>
 
                 
-                    <div id="method__defDataFn" class="method item protected inherited">
-    <h3 class="name"><code>_defDataFn</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>e</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-        <span class="flag protected">protected</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                <p>Inherited from
-                <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#method__defDataFn">DataSource.Local</a>:
-            
-        
-        
-        <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;files&#x2F;datasource_js_datasource-local.js.html#l279"><code>datasource&#x2F;js&#x2F;datasource-local.js:279</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Normalizes raw data into a response that includes results and meta properties.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">e</code>
-                        <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/EventFacade.html" class="crosslink external" target="_blank">Event.Facade</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Event Facade with the following properties:</p>
-
-<dl>
-<dt>tId (Number)</dt> <dd>Unique transaction ID.</dd>
-<dt>request (Object)</dt> <dd>The request.</dd>
-<dt>callback (Object)</dt> <dd>Deprecated alias for the
-  <strong>on</strong> property</dd>
-<dt>on (Object)</dt> <dd>The map of configured transaction
-  callbacks.  An object with the following properties:
-    <dl>
-        <dt>success (Function)</dt> <dd>Success handler.</dd>
-        <dt>failure (Function)</dt> <dd>Failure handler.</dd>
-    </dl>
-</dd>
-<dt>cfg (Object)</dt> <dd>Configuration object.</dd>
-<dt>data (Object)</dt> <dd>Raw data.</dd>
-</dl>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
                     <div id="method__defDestroyFn" class="method item protected inherited">
     <h3 class="name"><code>_defDestroyFn</code></h3>
 
@@ -2049,287 +1885,6 @@ this class.</p>
                     <div class="param-description">
                         <p>Event object, with a cfg property which
 refers to the configuration object passed to the constructor.</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method__defRequestFn" class="method item protected">
-    <h3 class="name"><code>_defRequestFn</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>e</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-        <span class="flag protected">protected</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            <p>Inherited from
-            <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#method__defRequestFn">
-                DataSource.Local
-            </a>
-            
-            but overwritten in
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;src_gallery-datasource-async-function_js_AsyncFunctionDataSource.js.html#l43"><code>src&#x2F;gallery-datasource-async-function&#x2F;js&#x2F;AsyncFunctionDataSource.js:43</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Passes request to source. Fires <code>data</code> event when
-response is received asynchronously.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">e</code>
-                        <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/EventFacade.html" class="crosslink external" target="_blank">Event.Facade</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Event Facade</p>
-                    </div>
-
-                    
-                        <ul class="params-list">
-                            
-                            <li class="param">
-                                
-                                    <code class="param-name">tId</code>
-                                    <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/Number.html" class="crosslink external" target="_blank">Number</a></span>
-                                
-
-                                <div class="param-description">
-                                    <p>Unique transaction ID</p>
-                                </div>
-
-                                
-                            </li>
-                            
-                            <li class="param">
-                                
-                                    <code class="param-name">request</code>
-                                    <span class="type">Object</span>
-                                
-
-                                <div class="param-description">
-                                    <p>The request</p>
-                                </div>
-
-                                
-                            </li>
-                            
-                            <li class="param">
-                                
-                                    <code class="param-name">callback</code>
-                                    <span class="type">Object</span>
-                                
-
-                                <div class="param-description">
-                                    <p>The callback object</p>
-                                </div>
-
-                                
-                                    <ul class="params-list">
-                                        
-                                        <li class="param">
-                                            
-                                                <code class="param-name">success</code>
-                                                <span class="type">Function</span>
-                                            
-
-                                            <div class="param-description">
-                                                Success handler
-                                            </div>
-                                        </li>
-                                        
-                                        <li class="param">
-                                            
-                                                <code class="param-name">failure</code>
-                                                <span class="type">Function</span>
-                                            
-
-                                            <div class="param-description">
-                                                Failure handler
-                                            </div>
-                                        </li>
-                                        
-                                    </ul>
-                                
-                            </li>
-                            
-                            <li class="param">
-                                
-                                    <code class="param-name">cfg</code>
-                                    <span class="type">Object</span>
-                                
-
-                                <div class="param-description">
-                                    <p>Configuration object</p>
-                                </div>
-
-                                
-                            </li>
-                            
-                        </ul>
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method__defResponseFn" class="method item protected inherited">
-    <h3 class="name"><code>_defResponseFn</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>e</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-        <span class="flag protected">protected</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                <p>Inherited from
-                <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#method__defResponseFn">DataSource.Local</a>:
-            
-        
-        
-        <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;files&#x2F;datasource_js_datasource-local.js.html#l314"><code>datasource&#x2F;js&#x2F;datasource-local.js:314</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Sends data as a normalized response to callback.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">e</code>
-                        <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/EventFacade.html" class="crosslink external" target="_blank">Event.Facade</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Event Facade with the following properties:</p>
-
-<dl>
-<dt>tId (Number)</dt> <dd>Unique transaction ID.</dd>
-<dt>request (Object)</dt> <dd>The request.</dd>
-<dt>callback (Object)</dt> <dd>Deprecated alias for the
-  <strong>on</strong> property</dd>
-<dt>on (Object)</dt> <dd>The map of configured transaction
-  callbacks.  An object with the following properties:
-    <dl>
-        <dt>success (Function)</dt> <dd>Success handler.</dd>
-        <dt>failure (Function)</dt> <dd>Failure handler.</dd>
-    </dl>
-</dd>
-<dt>cfg (Object)</dt> <dd>Configuration object.</dd>
-<dt>data (Object)</dt> <dd>Raw data.</dd>
-<dt>response (Object)</dt> <dd>Normalized response object with the following properties:
-    <dl>
-        <dt>results (Object)</dt> <dd>Parsed results.</dd>
-        <dt>meta (Object)</dt> <dd>Parsed meta data.</dd>
-        <dt>error (Boolean)</dt> <dd>Error flag.</dd>
-    </dl>
-</dd>
-</dl>
                     </div>
 
                     
@@ -3991,59 +3546,6 @@ either through the constructor.ATTRS property, or explicitly passed in.</p>
             
             </ul>
         </div>
-    
-
-    
-
-    
-</div>
-
-                
-                    <div id="method__initEvents" class="method item private inherited">
-    <h3 class="name"><code>_initEvents</code></h3>
-
-    
-        <span class="paren">()</span>
-    
-
-    
-
-    
-
-    
-        <span class="flag private">private</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                <p>Inherited from
-                <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#method__initEvents">DataSource.Local</a>:
-            
-        
-        
-        <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;files&#x2F;datasource_js_datasource-local.js.html#l124"><code>datasource&#x2F;js&#x2F;datasource-local.js:124</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>This method creates all the events for this module.</p>
-    </div>
-
     
 
     
@@ -7420,92 +6922,6 @@ and invokes initializers for the class hierarchy.</p>
 </div>
 
                 
-                    <div id="method_initializer" class="method item private inherited">
-    <h3 class="name"><code>initializer</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code>config</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-
-    
-
-    
-        <span class="flag private">private</span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                <p>Inherited from
-                <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#method_initializer">DataSource.Local</a>:
-            
-        
-        
-        <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;files&#x2F;datasource_js_datasource-local.js.html#l113"><code>datasource&#x2F;js&#x2F;datasource-local.js:113</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Internal init() handler.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">config</code>
-                        <span class="type">Object</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Config object.</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-
-    
-</div>
-
-                
                     <div id="method_modifyAttr" class="method item inherited">
     <h3 class="name"><code>modifyAttr</code></h3>
 
@@ -8723,128 +8139,6 @@ the attribute is not readOnly, or writeOnce.</p>
 </div>
 
                 
-                    <div id="method_sendRequest" class="method item inherited">
-    <h3 class="name"><code>sendRequest</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code class="optional">[request]</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/Number.html" class="crosslink external" target="_blank">Number</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                <p>Inherited from
-                <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#method_sendRequest">DataSource.Local</a>:
-            
-        
-        
-        <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;files&#x2F;datasource_js_datasource-local.js.html#l348"><code>datasource&#x2F;js&#x2F;datasource-local.js:348</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Generates a unique transaction ID and fires <code>request</code> event.
-<strong>Note</strong>: the property <code>callback</code> is a
-deprecated alias for the <code>on</code> transaction configuration
-property described below.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[request]</code>
-                        <span class="type">Object</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>An object literal with the following properties:
-    <dl>
-    <dt><code>request</code></dt>
-    <dd>The request to send to the live data source, if any.</dd>
-    <dt><code>on</code></dt>
-    <dd>An object literal with the following properties:
-        <dl>
-        <dt><code>success</code></dt>
-        <dd>The function to call when the data is ready.</dd>
-        <dt><code>failure</code></dt>
-        <dd>The function to call upon a response failure condition.</dd>
-        <dt><code>argument</code></dt>
-        <dd>Arbitrary data payload that will be passed back to the success and failure handlers.</dd>
-        </dl>
-    </dd>
-    <dt><code>cfg</code></dt>
-    <dd>Configuration object, if any.</dd>
-    </dl></p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/Number.html" class="crosslink external" target="_blank">Number</a></span>:
-                    
-                    Transaction ID.
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
                     <div id="method_set" class="method item inherited">
     <h3 class="name"><code>set</code></h3>
 
@@ -9557,6 +8851,59 @@ has been through the destroy lifecycle phase.</p>
 </div>
 
                 
+                    <div id="attr_endDateTime" class="attr item">
+    <a name="config_endDateTime"></a> 
+    <h3 class="name"><code>endDateTime</code></h3>
+    <span class="type"><a href="../classes/DateTime.html" class="crosslink">DateTime</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag required">required</span>
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime-range_js_DateTimeRange.js.html#l50"><code>src&#x2F;gallery-datetime-range&#x2F;js&#x2F;DateTimeRange.js:50</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Instance of <code>Y.DateTime</code> that stores the end time.</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="attr_initialized" class="attr item inherited">
     <a name="config_initialized"></a> 
     <h3 class="name"><code>initialized</code></h3>
@@ -9610,10 +8957,10 @@ has been through the init lifecycle phase.</p>
 </div>
 
                 
-                    <div id="attr_source" class="attr item">
-    <a name="config_source"></a> 
-    <h3 class="name"><code>source</code></h3>
-    <span class="type">Function</span>
+                    <div id="attr_startDateTime" class="attr item">
+    <a name="config_startDateTime"></a> 
+    <h3 class="name"><code>startDateTime</code></h3>
+    <span class="type"><a href="../classes/DateTime.html" class="crosslink">DateTime</a></span>
 
     
 
@@ -9625,22 +8972,24 @@ has been through the init lifecycle phase.</p>
 
     
 
+    
+        <span class="flag required">required</span>
     
 
     
 
     <div class="meta">
         
-            <p>Inherited from
-            <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#attr_source">
-                DataSource.Local
-            </a>
             
-            but overwritten in
+                
+                <p>
+                
+                Defined in
+                
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-datasource-async-function_js_AsyncFunctionDataSource.js.html#l26"><code>src&#x2F;gallery-datasource-async-function&#x2F;js&#x2F;AsyncFunctionDataSource.js:26</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-datetime-range_js_DateTimeRange.js.html#l35"><code>src&#x2F;gallery-datetime-range&#x2F;js&#x2F;DateTimeRange.js:35</code></a>
         
         </p>
 
@@ -9650,10 +8999,8 @@ has been through the init lifecycle phase.</p>
     </div>
 
     <div class="description">
-        <p>The function that will be called to retrieve the data.  This
-function is called with the DataSource as the scope and arguments
-(callback,request,ds,e).  The function must invoke callback, passing
-(error,response).</p>
+        <p>Instance of <code>Y.DateTime</code> that stores the start time.  The min and
+max dates and any blackout ranges must be configured on this object.</p>
     </div>
 
     
@@ -9670,85 +9017,6 @@ function is called with the DataSource as the scope and arguments
         
             <div id="events" class="api-class-tabpanel">
                 <h2 class="off-left">Events</h2>
-
-                
-                    <div id="event_data" class="events item inherited">
-    <h3 class="name"><code>data</code></h3>
-    <span class="type"></span>
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                <p>Inherited from
-                <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#event_data">DataSource.Local</a>:
-            
-        
-        
-        <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;files&#x2F;datasource_js_datasource-local.js.html#l148"><code>datasource&#x2F;js&#x2F;datasource-local.js:148</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Fired when raw data is received.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Event Payload:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">e</code>
-                        <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/EventFacade.html" class="crosslink external" target="_blank">Event.Facade</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Event Facade with the following properties:</p>
-
-<dl>
-<dt>tId (Number)</dt> <dd>Unique transaction ID.</dd>
-<dt>request (Object)</dt> <dd>The request.</dd>
-<dt>callback (Object)</dt> <dd>Deprecated alias for the
-  <strong>on</strong> property</dd>
-<dt>on (Object)</dt> <dd>The map of configured transaction
-  callbacks.  An object with the following properties:
-    <dl>
-        <dt>success (Function)</dt> <dd>Success handler.</dd>
-        <dt>failure (Function)</dt> <dd>Failure handler.</dd>
-    </dl>
-</dd>
-<dt>cfg (Object)</dt> <dd>Configuration object.</dd>
-<dt>data (Object)</dt> <dd>Raw data.</dd>
-</dl>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-
-    
-</div>
 
                 
                     <div id="event_destroy" class="events item inherited">
@@ -9825,95 +9093,6 @@ destruction).
 </div>
 
                 
-                    <div id="event_error" class="events item inherited">
-    <h3 class="name"><code>error</code></h3>
-    <span class="type"></span>
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                <p>Inherited from
-                <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#event_error">DataSource.Local</a>:
-            
-        
-        
-        <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;files&#x2F;datasource_js_datasource-local.js.html#l206"><code>datasource&#x2F;js&#x2F;datasource-local.js:206</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Fired when an error is encountered.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Event Payload:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">e</code>
-                        <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/EventFacade.html" class="crosslink external" target="_blank">Event.Facade</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Event Facade with the following properties:</p>
-
-<dl>
-<dt>tId (Number)</dt> <dd>Unique transaction ID.</dd>
-<dt>request (Object)</dt> <dd>The request.</dd>
-<dt>callback (Object)</dt> <dd>Deprecated alias for the
-  <strong>on</strong> property</dd>
-<dt>on (Object)</dt> <dd>The map of configured transaction
-  callbacks.  An object with the following properties:
-    <dl>
-        <dt>success (Function)</dt> <dd>Success handler.</dd>
-        <dt>failure (Function)</dt> <dd>Failure handler.</dd>
-    </dl>
-</dd>
-<dt>cfg (Object)</dt> <dd>Configuration object.</dd>
-<dt>data (Object)</dt> <dd>Raw data.</dd>
-<dt>response (Object)</dt>
-    <dd>Normalized response object with the following properties:
-        <dl>
-            <dt>results (Object)</dt> <dd>Parsed results.</dd>
-            <dt>meta (Object)</dt> <dd>Parsed meta data.</dd>
-            <dt>error (Object)</dt> <dd>Error object.</dd>
-        </dl>
-    </dd>
-<dt>error</dt>
-    <dd>Any error that occurred along the transaction lifecycle.</dd>
-</dl>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-
-    
-</div>
-
-                
                     <div id="event_init" class="events item inherited">
     <h3 class="name"><code>init</code></h3>
     <span class="type"></span>
@@ -9974,168 +9153,6 @@ cannot prevent initialization).
                     <div class="param-description">
                         <p>Event object, with a cfg property which
 refers to the configuration object passed to the constructor.</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-
-    
-</div>
-
-                
-                    <div id="event_request" class="events item inherited">
-    <h3 class="name"><code>request</code></h3>
-    <span class="type"></span>
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                <p>Inherited from
-                <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#event_request">DataSource.Local</a>:
-            
-        
-        
-        <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;files&#x2F;datasource_js_datasource-local.js.html#l130"><code>datasource&#x2F;js&#x2F;datasource-local.js:130</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Fired when a data request is received.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Event Payload:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">e</code>
-                        <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/EventFacade.html" class="crosslink external" target="_blank">Event.Facade</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Event Facade with the following properties:</p>
-
-<dl>                          
-<dt>tId (Number)</dt> <dd>Unique transaction ID.</dd>
-<dt>request (Object)</dt> <dd>The request.</dd>
-<dt>callback (Object)</dt> <dd>The callback object
-  (deprecated, refer to <strong>on</strong></dd>
-<dt>on (Object)</dt> <dd>The map of configured callback
-  functions.</dd>
-<dt>cfg (Object)</dt> <dd>Configuration object.</dd>
-</dl>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-
-    
-</div>
-
-                
-                    <div id="event_response" class="events item inherited">
-    <h3 class="name"><code>response</code></h3>
-    <span class="type"></span>
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                <p>Inherited from
-                <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;classes&#x2F;DataSource.Local.html#event_response">DataSource.Local</a>:
-            
-        
-        
-        <a href="http:&#x2F;&#x2F;yuilibrary.com&#x2F;yui&#x2F;docs&#x2F;api&#x2F;files&#x2F;datasource_js_datasource-local.js.html#l172"><code>datasource&#x2F;js&#x2F;datasource-local.js:172</code></a>
-        
-        </p>
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Fired when response is returned.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Event Payload:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">e</code>
-                        <span class="type"><a href="http://yuilibrary.com/yui/docs/api/classes/EventFacade.html" class="crosslink external" target="_blank">Event.Facade</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>Event Facade with the following properties:</p>
-
-<dl>
-<dt>tId (Number)</dt> <dd>Unique transaction ID.</dd>
-<dt>request (Object)</dt> <dd>The request.</dd>
-<dt>callback (Object)</dt> <dd>Deprecated alias for the
-  <strong>on</strong> property</dd>
-<dt>on (Object)</dt> <dd>The map of configured transaction
-  callbacks.  An object with the following properties:
-    <dl>
-        <dt>success (Function)</dt> <dd>Success handler.</dd>
-        <dt>failure (Function)</dt> <dd>Failure handler.</dd>
-    </dl>
-</dd>
-<dt>cfg (Object)</dt> <dd>Configuration object.</dd>
-<dt>data (Object)</dt> <dd>Raw data.</dd>
-<dt>response (Object)</dt>
-    <dd>Normalized response object with the following properties:
-        <dl>
-            <dt>results (Object)</dt> <dd>Parsed results.</dd>
-            <dt>meta (Object)</dt> <dd>Parsed meta data.</dd>
-            <dt>error (Boolean)</dt> <dd>Error flag.</dd>
-        </dl>
-    </dd>
-<dt>error</dt>
-    <dd>Any error that occurred along the transaction lifecycle.</dd>
-</dl>
                     </div>
 
                     

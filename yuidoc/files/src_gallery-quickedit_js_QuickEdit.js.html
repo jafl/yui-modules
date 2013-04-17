@@ -81,6 +81,8 @@
             
                 <li><a href="..&#x2F;classes/DateTime.html">DateTime</a></li>
             
+                <li><a href="..&#x2F;classes/DateTimeRange.html">DateTimeRange</a></li>
+            
                 <li><a href="..&#x2F;classes/DateTimeUtils.html">DateTimeUtils</a></li>
             
                 <li><a href="..&#x2F;classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
@@ -304,6 +306,8 @@
                 <li><a href="..&#x2F;modules/gallery-datatable-state.html">gallery-datatable-state</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datetime.html">gallery-datetime</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datetime-range.html">gallery-datetime-range</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
             
@@ -749,7 +753,7 @@ QuickEdit.copyDownFormatter = function(o, td)
 {
 	if (o.column.quickEdit.copyDown &amp;&amp; o.rowIndex === 0)
 	{
-		return Y.Lang.sub(&#x27;&lt;button title=&quot;Copy down&quot; class=&quot;{c}&quot;&gt;&amp;darr;&lt;&#x2F;button&gt;&#x27;,
+		return Y.Lang.sub(&#x27;&lt;button type=&quot;button&quot; title=&quot;Copy down&quot; class=&quot;{c}&quot;&gt;&amp;darr;&lt;&#x2F;button&gt;&#x27;,
 		{
 			c: QuickEdit.copy_down_button_class
 		});
@@ -843,7 +847,12 @@ function validateElements(
 	var count  = list.size();
 	for (var i=0; i&lt;count; i++)
 	{
-		var e  = list.item(i);
+		var e = list.item(i);
+		if (!Y.DOM.hasClass(e, &#x27;quickedit-field&#x27;))
+		{
+			continue;
+		}
+
 		var qe = this.column_map[ this._getColumnKey(e) ].quickEdit;
 		if (!qe)
 		{

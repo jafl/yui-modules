@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>gallery-mathcanvas - YUI 3 Gallery Modules</title>
+    <title>src&#x2F;gallery-datetime-range&#x2F;js&#x2F;DateTimeRange.js - YUI 3 Gallery Modules</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -418,277 +418,153 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>gallery-mathcanvas Module</h1>
-<div class="box clearfix meta">
-    
+                        <h1 class="file-heading">File: src&#x2F;gallery-datetime-range&#x2F;js&#x2F;DateTimeRange.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+&quot;use strict&quot;;
 
-    
-        <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_gallery-mathcanvas_js_Variable.js.html#l5"><code>src&#x2F;gallery-mathcanvas&#x2F;js&#x2F;Variable.js:5</code></a>
-        </div>
-    
+&#x2F;**
+ * @module gallery-datetime-range
+ *&#x2F;
 
-    
-</div>
+&#x2F;**********************************************************************
+ * Manages a pair of Y.DateTime instances.  The ending date is constrained
+ * by the min, max, and blackout ranges configured on the startDateTime
+ * instance.  The range is not allowed to span a blackout, so if the start
+ * date is between two blackout ranges, then the end date must be after the
+ * start date and before the start of the next blackout range.
+ * 
+ * @main gallery-datetime-range
+ * @class DateTimeRange
+ * @extends Base
+ * @constructor
+ * @param config {Object}
+ *&#x2F;
 
+function DateTimeRange(config)
+{
+	DateTimeRange.superclass.constructor.apply(this, arguments);
+}
 
+DateTimeRange.NAME = &quot;datetimerange&quot;;
 
-<div class="box intro">
-    <p>Displays an arithmetical expression the way you would write it on paper.</p>
-</div>
+function isDateTime(v)
+{
+	return (v instanceof Y.DateTime);
+}
 
+DateTimeRange.ATTRS =
+{
+	&#x2F;**
+	 * Instance of &#x60;Y.DateTime&#x60; that stores the start time.  The min and
+	 * max dates and any blackout ranges must be configured on this object.
+	 * 
+	 * @attribute startDateTime
+	 * @type {DateTime}
+	 * @required
+	 * @writeonce
+	 *&#x2F;
+	startDateTime:
+	{
+		validator: isDateTime,
+		writeOnce: true
+	},
 
+	&#x2F;**
+	 * Instance of &#x60;Y.DateTime&#x60; that stores the end time.
+	 * 
+	 * @attribute endDateTime
+	 * @type {DateTime}
+	 * @required
+	 * @writeonce
+	 *&#x2F;
+	endDateTime:
+	{
+		validator: isDateTime,
+		writeOnce: true
+	}
+};
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-            <p>This module provides the following classes:</p>
+function updateEndDateTime()
+{
+	var sdt = this.get(&#x27;startDateTime&#x27;),
 
-            <ul class="module-classes">
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathCanvas.html">
-                        MathCanvas
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathCanvas.Parser.html">
-                        MathCanvas.Parser
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathCanvas.RectList.html">
-                        MathCanvas.RectList
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.html">
-                        MathFunction
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Arccosine.html">
-                        MathFunction.Arccosine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Arcsine.html">
-                        MathFunction.Arcsine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Arctangent.html">
-                        MathFunction.Arctangent
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Arctangent2.html">
-                        MathFunction.Arctangent2
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Conjugate.html">
-                        MathFunction.Conjugate
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Cosine.html">
-                        MathFunction.Cosine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.E.html">
-                        MathFunction.E
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Exponential.html">
-                        MathFunction.Exponential
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.FunctionWithArgs.html">
-                        MathFunction.FunctionWithArgs
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.HyperbolicCosine.html">
-                        MathFunction.HyperbolicCosine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.HyperbolicSine.html">
-                        MathFunction.HyperbolicSine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.HyperbolicTangent.html">
-                        MathFunction.HyperbolicTangent
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.I.html">
-                        MathFunction.I
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.ImaginaryPart.html">
-                        MathFunction.ImaginaryPart
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.InverseHyperbolicCosine.html">
-                        MathFunction.InverseHyperbolicCosine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.InverseHyperbolicSine.html">
-                        MathFunction.InverseHyperbolicSine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.InverseHyperbolicTangent.html">
-                        MathFunction.InverseHyperbolicTangent
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Logarithm.html">
-                        MathFunction.Logarithm
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Magnitude.html">
-                        MathFunction.Magnitude
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Max.html">
-                        MathFunction.Max
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Min.html">
-                        MathFunction.Min
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.NaturalLog.html">
-                        MathFunction.NaturalLog
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Negate.html">
-                        MathFunction.Negate
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Phase.html">
-                        MathFunction.Phase
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Pi.html">
-                        MathFunction.Pi
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Product.html">
-                        MathFunction.Product
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Quotient.html">
-                        MathFunction.Quotient
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.RealPart.html">
-                        MathFunction.RealPart
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Rotate.html">
-                        MathFunction.Rotate
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Sine.html">
-                        MathFunction.Sine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.SquareRoot.html">
-                        MathFunction.SquareRoot
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Sum.html">
-                        MathFunction.Sum
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Tangent.html">
-                        MathFunction.Tangent
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Value.html">
-                        MathFunction.Value
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Variable.html">
-                        MathFunction.Variable
-                    </a>
-                </li>
-            
-            </ul>
-        
-    </div>
+		min_date_time = sdt.getDateTime() || sdt.get(&#x27;minDateTime&#x27;),
+		max_date_time = sdt.get(&#x27;maxDateTime&#x27;),
 
-    <div class="yui3-u-1-2">
-        
-    </div>
+		min_t = min_date_time ? min_date_time.date.getTime() : 0,
+		max_t = max_date_time ? max_date_time.date.getTime() : 0,
+
+		blackouts = sdt.get(&#x27;blackouts&#x27;).slice(0);
+
+	&#x2F;&#x2F; adjust max_t based on blackouts
+
+	var found = false;
+
+	blackouts.push([max_t, max_t]);
+	for (var i=blackouts.length-2; i&gt;=0; i--)
+	{
+		if (blackouts[i][1] &lt; min_t)
+		{
+			max_t = blackouts[i+1][0];
+			found = true;
+			break;
+		}
+	}
+
+	if (!found)
+	{
+		max_t = blackouts[0][0];
+	}
+
+	&#x2F;&#x2F; set min&#x2F;max on endDateTime
+
+	var edt = this.get(&#x27;endDateTime&#x27;),
+		max = edt.get(&#x27;maxDateTime&#x27;);
+
+	if (!max || min_t &lt; max.date.getTime())
+	{
+		edt.set(&#x27;minDateTime&#x27;, min_date_time);
+		min_t = -1;
+	}
+
+	edt.set(&#x27;maxDateTime&#x27;, max_t &gt; 0 ? max_t : null);
+
+	if (min_t &gt; 0)
+	{
+		edt.set(&#x27;minDateTime&#x27;, min_date_time);
+	}
+}
+
+Y.extend(DateTimeRange, Y.Base,
+{
+	initializer: function()
+	{
+		var self = this,
+			sdt  = this.get(&#x27;startDateTime&#x27;);
+
+		var origSClearDateTime = sdt.clearDateTime;
+		sdt.clearDateTime = function()
+		{
+			origSClearDateTime.apply(this, arguments);
+			updateEndDateTime.call(self);
+		};
+
+		&#x2F;&#x2F; constraints
+
+		sdt.on(&#x27;limitsEnforced&#x27;, updateEndDateTime, this);
+		sdt.on(&#x27;minDateTimeChange&#x27;, updateEndDateTime, this);
+		sdt.on(&#x27;maxDateTimeChange&#x27;, updateEndDateTime, this);
+		sdt.on(&#x27;blackoutsChange&#x27;, updateEndDateTime, this);
+
+		updateEndDateTime.call(this);
+	}
+});
+
+Y.DateTimeRange = DateTimeRange;
+
+    </pre>
 </div>
 
                     </div>

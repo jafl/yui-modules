@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>gallery-mathcanvas - YUI 3 Gallery Modules</title>
+    <title>gallery-datetime-range - YUI 3 Gallery Modules</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -418,7 +418,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>gallery-mathcanvas Module</h1>
+                        <h1>gallery-datetime-range Module</h1>
 <div class="box clearfix meta">
     
 
@@ -426,7 +426,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;src_gallery-mathcanvas_js_Variable.js.html#l5"><code>src&#x2F;gallery-mathcanvas&#x2F;js&#x2F;Variable.js:5</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;src_gallery-datetime-range_js_DateTimeRange.js.html#l7"><code>src&#x2F;gallery-datetime-range&#x2F;js&#x2F;DateTimeRange.js:7</code></a>
         </div>
     
 
@@ -436,7 +436,11 @@
 
 
 <div class="box intro">
-    <p>Displays an arithmetical expression the way you would write it on paper.</p>
+    <p>Manages a pair of Y.DateTime instances.  The ending date is constrained
+by the min, max, and blackout ranges configured on the startDateTime
+instance.  The range is not allowed to span a blackout, so if the start
+date is between two blackout ranges, then the end date must be after the
+start date and before the start of the next blackout range.</p>
 </div>
 
 
@@ -449,236 +453,8 @@
             <ul class="module-classes">
             
                 <li class="module-class">
-                    <a href="..&#x2F;classes/MathCanvas.html">
-                        MathCanvas
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathCanvas.Parser.html">
-                        MathCanvas.Parser
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathCanvas.RectList.html">
-                        MathCanvas.RectList
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.html">
-                        MathFunction
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Arccosine.html">
-                        MathFunction.Arccosine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Arcsine.html">
-                        MathFunction.Arcsine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Arctangent.html">
-                        MathFunction.Arctangent
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Arctangent2.html">
-                        MathFunction.Arctangent2
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Conjugate.html">
-                        MathFunction.Conjugate
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Cosine.html">
-                        MathFunction.Cosine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.E.html">
-                        MathFunction.E
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Exponential.html">
-                        MathFunction.Exponential
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.FunctionWithArgs.html">
-                        MathFunction.FunctionWithArgs
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.HyperbolicCosine.html">
-                        MathFunction.HyperbolicCosine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.HyperbolicSine.html">
-                        MathFunction.HyperbolicSine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.HyperbolicTangent.html">
-                        MathFunction.HyperbolicTangent
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.I.html">
-                        MathFunction.I
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.ImaginaryPart.html">
-                        MathFunction.ImaginaryPart
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.InverseHyperbolicCosine.html">
-                        MathFunction.InverseHyperbolicCosine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.InverseHyperbolicSine.html">
-                        MathFunction.InverseHyperbolicSine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.InverseHyperbolicTangent.html">
-                        MathFunction.InverseHyperbolicTangent
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Logarithm.html">
-                        MathFunction.Logarithm
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Magnitude.html">
-                        MathFunction.Magnitude
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Max.html">
-                        MathFunction.Max
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Min.html">
-                        MathFunction.Min
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.NaturalLog.html">
-                        MathFunction.NaturalLog
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Negate.html">
-                        MathFunction.Negate
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Phase.html">
-                        MathFunction.Phase
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Pi.html">
-                        MathFunction.Pi
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Product.html">
-                        MathFunction.Product
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Quotient.html">
-                        MathFunction.Quotient
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.RealPart.html">
-                        MathFunction.RealPart
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Rotate.html">
-                        MathFunction.Rotate
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Sine.html">
-                        MathFunction.Sine
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.SquareRoot.html">
-                        MathFunction.SquareRoot
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Sum.html">
-                        MathFunction.Sum
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Tangent.html">
-                        MathFunction.Tangent
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Value.html">
-                        MathFunction.Value
-                    </a>
-                </li>
-            
-                <li class="module-class">
-                    <a href="..&#x2F;classes/MathFunction.Variable.html">
-                        MathFunction.Variable
+                    <a href="..&#x2F;classes/DateTimeRange.html">
+                        DateTimeRange
                     </a>
                 </li>
             
