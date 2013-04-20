@@ -18497,25 +18497,61 @@
         },
         {
             "file": "src/gallery-scrollintoview/js/ScrollIntoView.js",
-            "line": 176,
+            "line": 184,
             "description": "To receive notification of when the animation finishes, subscribe to the\nevent `scrollIntoViewFinished` on the Y.Node instance.  For consistency,\nthis event always fires, even without animation.\n\nIf you modify the ancestor chain while the animation is running, the\nresults will be unpredictable.",
             "itemtype": "method",
             "name": "scrollIntoView",
             "params": [
                 {
-                    "name": "config.anim",
-                    "description": "true to use default duration and easing, or object",
-                    "optional": true
-                },
-                {
-                    "name": "config.anim.duration",
-                    "description": "duration of animation",
-                    "optional": true
-                },
-                {
-                    "name": "config.anim.easing",
-                    "description": "easing used during animation",
-                    "optional": true
+                    "name": "config",
+                    "description": "configuration",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "anim",
+                            "description": "true to use default duration and easing, or object",
+                            "optional": true,
+                            "props": [
+                                {
+                                    "name": "duration",
+                                    "description": "duration of animation",
+                                    "optional": true
+                                },
+                                {
+                                    "name": "easing",
+                                    "description": "easing used during animation",
+                                    "optional": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "margin",
+                            "description": "viewport margins, to avoid ending up under an element with `position:fixed`",
+                            "optional": true,
+                            "props": [
+                                {
+                                    "name": "top",
+                                    "description": "top margin (px)",
+                                    "optional": true
+                                },
+                                {
+                                    "name": "bottom",
+                                    "description": "bottom margin (px)",
+                                    "optional": true
+                                },
+                                {
+                                    "name": "left",
+                                    "description": "left margin (px)",
+                                    "optional": true
+                                },
+                                {
+                                    "name": "right",
+                                    "description": "right margin (px)",
+                                    "optional": true
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "chainable": 1,

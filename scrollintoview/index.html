@@ -329,7 +329,14 @@ YUI({
 
 	Y.one('#custom').on('click', function()
 	{
-		target.scrollIntoView({ anim: Y.one('#animate').get('checked') });
+		target.scrollIntoView(
+		{
+			anim: Y.one('#animate').get('checked'),
+			margin:
+			{
+				bottom: 30
+			}
+		});
 	});
 
 	Y.one('#bodyscroll').on('click', function()
