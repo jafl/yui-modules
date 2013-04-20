@@ -53,6 +53,14 @@ function scrollContainer(node)
 		right:  scrollX + (hit_top ? Y.DOM.winWidth() : info.a.clientWidth)
 	};
 
+	if (hit_top && info.margin)
+	{
+		d.top    += info.margin.top    || 0;
+		d.bottom -= info.margin.bottom || 0;
+		d.left   += info.margin.left   || 0;
+		d.right  -= info.margin.right  || 0;
+	}
+
 	var dy = 0;
 	if (a.getStyle('overflowY') == 'hidden')
 	{
@@ -182,9 +190,15 @@ function scrollContainer(node)
  * results will be unpredictable.
  *
  * @method scrollIntoView
+ * @param [config] configuration
  * @param [config.anim] true to use default duration and easing, or object
  * @param [config.anim.duration] duration of animation
  * @param [config.anim.easing] easing used during animation
+ * @param [config.margin] viewport margins, to avoid ending up under an element with `position:fixed`
+ * @param [config.margin.top] top margin (px)
+ * @param [config.margin.bottom] bottom margin (px)
+ * @param [config.margin.left] left margin (px)
+ * @param [config.margin.right] right margin (px)
  * @chainable
  */
 Y.Node.prototype.scrollIntoView = function(config)
@@ -225,7 +239,9 @@ Y.Node.prototype.scrollIntoView = function(config)
 		r: r
 	}
 
-	config = config || {};
+	config                         = config || {};
+	this.scrollIntoViewData.margin = config.margin;
+
 	if (config.anim)
 	{
 		var anim_config = {};
