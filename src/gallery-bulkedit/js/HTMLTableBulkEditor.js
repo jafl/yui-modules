@@ -220,7 +220,7 @@ Y.extend(HTMLTableBulkEditor, BulkEditor,
 		var table_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME);
 
 		if (!this.table ||
-			container.get('firstChild').get('tagName').toLowerCase() != 'table' ||
+			container.get('firstChild').get('tagName') != 'TABLE' ||
 			!container.get('firstChild').hasClass(table_class))
 		{
 			var s = Y.Lang.sub('<table class="{t}"><thead class="{hd}"><tr>',

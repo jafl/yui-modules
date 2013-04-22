@@ -147,7 +147,7 @@ Y.FormManager.validateFromCSSData = function(
 		{
 			msg = msg_list.required;
 		}
-		else if (e.tagName.toLowerCase() == 'select')
+		else if (e.tagName == 'SELECT')
 		{
 			msg = Strings.required_menu;
 		}

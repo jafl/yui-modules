@@ -281,13 +281,13 @@ Y.extend(BulkEditor, Y.Widget,
 			Y.Array.each(records, function(r)
 			{
 				var node = this.getFieldElement(r, key),
-					tag  = node.get('tagName').toLowerCase(),
+					tag  = node.get('tagName'),
 					value;
-				if (tag == 'input' && node.get('type').toLowerCase() == 'checkbox')
+				if (tag == 'INPUT' && node.get('type').toLowerCase() == 'checkbox')
 				{
 					value = node.get('checked') ? field.values.on : field.values.off;
 				}
-				else if (tag == 'select' && node.get('multiple'))
+				else if (tag == 'SELECT' && node.get('multiple'))
 				{
 					value = Y.reduce(Y.Node.getDOMNode(node).options, [], function(v, o)
 					{
