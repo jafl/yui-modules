@@ -592,7 +592,7 @@ function reparentFooter()
 	{
 		this.body_container.get('parentNode').insertBefore(this.footer_container, this.body_container.next(function(node)
 		{
-			return node.get('tagName').toLowerCase() != 'script';
+			return node.get('tagName') != 'SCRIPT';
 		}));
 	}
 	else
