@@ -1135,6 +1135,15 @@ BulkEditor.ATTRS =
 };
 
 /**
+ * The number of checkboxes in each column of a checkboxMultiselect field.
+ * 
+ * @property checkbox_multiselect_column_height
+ * @type {Number}
+ * @static
+ */
+BulkEditor.checkbox_multiselect_column_height = 6;
+
+/**
  * @event notifyErrors
  * @description Fired when widget-level validation messages need to be displayed.
  * @param msgs {Array} the messages to display
@@ -2559,16 +2568,28 @@ function multiselectMarkup(type, o)
 				'<label for="{id}-{value}">{label}</label>' +
 			'</p>';
 
-		var input_markup = Y.Array.reduce(o.field.values, '', function(s, v)
+		var column_start = '<div class="checkbox-multiselect-column">',
+			column_end   = '</div>';
+
+		var input_markup = Y.Array.reduce(o.field.values, '<div class="checkbox-multiselect-column first">', function(s, v, i)
 		{
-			return s + Y.Lang.sub(checkbox,
+			var m = Y.Lang.sub(checkbox,
 			{
 				id:      id,
 				value:   v.value,
 				checked: has_value && Y.Array.indexOf(o.value, v.value.toString()) >= 0 ? 'checked="checked"' : '',
 				label:   BulkEditor.cleanHTML(v.text)
 			});
+
+			if (i > 0 && i % BulkEditor.checkbox_multiselect_column_height === 0)
+			{
+				m = column_end + column_start + m;
+			}
+
+			return s + m;
 		});
+
+		input_markup += column_end;
 	}
 
 	var option = '<option value="{value}" {selected}>{text}</option>';
