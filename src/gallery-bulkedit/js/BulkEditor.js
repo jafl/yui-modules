@@ -185,6 +185,8 @@ Y.extend(BulkEditor, Y.Widget,
 		{
 			config.paginator.on('changeRequest', switchPage, this);
 		}
+
+		this._hopper = [];
 	},
 
 	renderUI: function()
@@ -208,7 +210,17 @@ Y.extend(BulkEditor, Y.Widget,
 	_attachEvents: function(
 		/* node */	container)
 	{
-		Y.delegate('bulkeditor|click', handleCheckboxMultiselect, container, '.checkbox-multiselect input', this);
+		Y.delegate('bulkeditor|click', handleCheckboxMultiselectClickOnCheckbox, container, '.checkbox-multiselect input[type=checkbox]', this);
+	},
+
+	/**
+	 * @method _destroyOnRender
+	 * @param o {Object} object to destroy when BulkEditor is re-rendered
+	 * @protected
+	 */
+	_destroyOnRender: function(o)
+	{
+		this._hopper.push(o);
 	},
 
 	/**
@@ -283,6 +295,10 @@ Y.extend(BulkEditor, Y.Widget,
 				var node = this.getFieldElement(r, key),
 					tag  = node.get('tagName'),
 					value;
+
+				// Limited number of HTML form tags.  Behaviors should not be
+				// changed.  Thus, not using a lookup table.
+
 				if (tag == 'INPUT' && node.get('type').toLowerCase() == 'checkbox')
 				{
 					value = node.get('checked') ? field.values.on : field.values.off;
@@ -615,6 +631,9 @@ Y.extend(BulkEditor, Y.Widget,
 	_render: function(response)
 	{
 		Y.log('_render', 'debug');
+
+		Y.Chipper.destroy(this._hopper);
+		this._hopper = [];
 
 		var container = this.get('contentBox');
 		this._renderContainer(container);
@@ -1409,59 +1428,12 @@ BulkEditor.markup =
 
 	checkboxMultiselect: function(o)
 	{
-		var select =
-			'<div class="{cont}{key}">' +
-				'{label}{msg}' +
-				'<div id="{id}-cbs" class="checkbox-multiselect">{cbs}</div>' +
-				'<select id="{id}" class="{field}{key}" multiple="multiple" style="display:none;">{options}</select>' +
-			'</div>';
+		return multiselectMarkup.call(this, 'checkboxes', o);
+	},
 
-		var id        = this.getFieldId(o.record, o.key),
-			has_value = Y.Lang.isArray(o.value);
-
-		var checkbox =
-			'<p class="checkbox-multiselect-checkbox">' +
-				'<input type="checkbox" id="{id}-{value}" value="{value}" {checked} />&nbsp;' +
-				'<label for="{id}-{value}">{label}</label>' +
-			'</p>';
-
-		var cbs = Y.Array.reduce(o.field.values, '', function(s, v)
-		{
-			return s + Y.Lang.sub(checkbox,
-			{
-				id:      id,
-				value:   v.value,
-				checked: has_value && Y.Array.indexOf(o.value, v.value) >= 0 ? 'checked="checked"' : '',
-				label:   BulkEditor.cleanHTML(v.text)
-			});
-		});
-
-		var option = '<option value="{value}" {selected}>{text}</option>';
-
-		var options = Y.Array.reduce(o.field.values, '', function(s, v)
-		{
-			return s + Y.Lang.sub(option,
-			{
-				value:    v.value,
-				text:     BulkEditor.cleanHTML(v.text),
-				selected: has_value && Y.Array.indexOf(o.value, v.value) >= 0 ? 'selected="selected"' : ''
-			});
-		});
-
-		var label = o.field && o.field.label ? BulkEditor.labelMarkup.call(this, o) : '';
-
-		return Y.Lang.sub(select,
-		{
-			cont:  	 BulkEditor.field_container_class + ' ' + BulkEditor.field_container_class_prefix,
-			field:   BulkEditor.field_class_prefix,
-			key:     o.key,
-			id:      id,
-			label:   label,
-			cbs:     cbs,
-			options: options,
-			yiv:     (o.field && o.field.validation && o.field.validation.css) || '',
-			msg:     BulkEditor.error_msg_markup
-		});
+	autocompleteInputMultiselect: function(o)
+	{
+		return multiselectMarkup.call(this, 'autocompleteMultivalueInput', o);
 	},
 
 	textarea: function(o)
@@ -1509,7 +1481,116 @@ BulkEditor.fieldMarkup = function(key, record)
 	});
 };
 
-function handleCheckboxMultiselect(e)
+function multiselectMarkup(type, o)
+{
+	var select =
+		'<div class="{cont}{key}">' +
+			'{label}{msg}' +
+			'<div id="{id}-multiselect" class="checkbox-multiselect">{input}</div>' +
+			'<select id="{id}" class="{field}{key}" multiple="multiple" style="display:none;">{options}</select>' +
+		'</div>';
+
+	var id        = this.getFieldId(o.record, o.key),
+		has_value = Y.Lang.isArray(o.value);
+
+	if (type == 'autocompleteMultivalueInput')
+	{
+		var input_markup = Y.Lang.sub('<input type="text" id="{id}-multivalue-input" />',
+		{
+			id: id
+		});
+
+		Y.later(0, this, function()
+		{
+			var node = Y.one('#' + id + '-multivalue-input');
+
+			node.plug(Y.Plugin.AutoComplete,
+			{
+				resultFilters:     'phraseMatch',
+				resultHighlighter: 'phraseMatch',
+				source: Y.reduce(o.field.values, [], function(list, v)
+				{
+					list.push(v.text);
+					return list;
+				})
+			})
+
+			node.plug(Y.Plugin.MultivalueInput,
+			{
+				values: Y.map(o.value, function(v)
+				{
+					var i = Y.Array.findIndexOf(o.field.values, function(v1)
+					{
+						return (v === v1.value.toString());
+					});
+
+					return (i >= 0 ? o.field.values[i].text : '');
+				})
+			});
+
+			node.mvi.on('valuesChange', function()
+			{
+				var value_list = node.mvi.get('values'),
+					select     = node.ancestor('.checkbox-multiselect').next('select');
+
+				Y.each(Y.Node.getDOMNode(select).options, function(o)
+				{
+					o.selected = (Y.Array.indexOf(value_list, o.text) >= 0);
+				});
+			});
+
+			this._destroyOnRender(node);
+		});
+	}
+	else if (type == 'checkboxes')
+	{
+		var checkbox =
+			'<p class="checkbox-multiselect-checkbox">' +
+				'<input type="checkbox" id="{id}-{value}" value="{value}" {checked} />&nbsp;' +
+				'<label for="{id}-{value}">{label}</label>' +
+			'</p>';
+
+		var input_markup = Y.Array.reduce(o.field.values, '', function(s, v)
+		{
+			return s + Y.Lang.sub(checkbox,
+			{
+				id:      id,
+				value:   v.value,
+				checked: has_value && Y.Array.indexOf(o.value, v.value.toString()) >= 0 ? 'checked="checked"' : '',
+				label:   BulkEditor.cleanHTML(v.text)
+			});
+		});
+	}
+
+	var option = '<option value="{value}" {selected}>{text}</option>';
+
+	var options = Y.Array.reduce(o.field.values, '', function(s, v)
+	{
+		return s + Y.Lang.sub(option,
+		{
+			value:    v.value,
+			text:     BulkEditor.cleanHTML(v.text),
+			selected: has_value && Y.Array.indexOf(o.value, v.value.toString()) >= 0 ? 'selected="selected"' : ''
+		});
+	});
+
+	var label = o.field && o.field.label ? BulkEditor.labelMarkup.call(this, o) : '';
+
+	return Y.Lang.sub(select,
+	{
+		cont:  	 BulkEditor.field_container_class + ' ' + BulkEditor.field_container_class_prefix,
+		field:   BulkEditor.field_class_prefix,
+		key:     o.key,
+		id:      id,
+		label:   label,
+		input:   input_markup,
+		options: options,
+		yiv:     (o.field && o.field.validation && o.field.validation.css) || '',
+		msg:     BulkEditor.error_msg_markup
+	});
+}
+
+function handleCheckboxMultiselectClickOnCheckbox(e)
 {
 	var cb     = e.currentTarget,
 		value  = cb.get('value'),
