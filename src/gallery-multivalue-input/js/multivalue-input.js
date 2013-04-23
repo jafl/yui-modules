@@ -249,7 +249,6 @@ Y.extend(MultiValueInput, Y.Plugin.Base,
 			 * add the item in to the list
 			 * @method _appendItem
 			 * @protected
-			 * @return
 			 */
 
 			_appendItem : function() {
@@ -264,7 +263,6 @@ Y.extend(MultiValueInput, Y.Plugin.Base,
 			 * @method _removeItem
 			 * @protected
 			 * @param {Node}
-			 * @return
 			 */
 
 			_removeItem : function(/* Node */selectedListNode, /* int */ idx) {
@@ -279,7 +277,6 @@ Y.extend(MultiValueInput, Y.Plugin.Base,
 			 * Add value to value list
 			 * @method _addValue
 			 * @protected
-			 * @return
 			 */
 
 			_addValue : function(val) {
@@ -294,7 +291,6 @@ Y.extend(MultiValueInput, Y.Plugin.Base,
 			 * @method _removeValue
 			 * @protected
 			 * @param {index}
-			 * @return
 			 */
 
 			_removeValue : function(/* int */ index) {
