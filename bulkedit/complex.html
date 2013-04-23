@@ -8,7 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.8.0/build/cssreset/reset-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.8.0/build/cssfonts/fonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.8.0/build/cssbase/base-min.css" />
-<!--
+
 	<script src="gallery-bulkedit-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
@@ -17,10 +17,13 @@
 	<script src="gallery-node-optimizations-debug.js"></script>
 	<script src="gallery-object-extras-debug.js"></script>
 	<script src="gallery-nodelist-extras2-debug.js"></script>
+	<script src="gallery-multivalue-input-debug.js"></script>
+	<script src="gallery-chipper-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-bulkedit.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-busyoverlay.css" />
--->
+	<link rel="stylesheet" type="text/css" href="assets/gallery-multivalue-input.css" />
+
 	<style type="text/css">
 	.yui3-js-enabled .yui3-widget-loading { display: none; }
 
@@ -36,6 +39,8 @@
 	#validate { margin-left: 20px; }
 	#server { margin-left: 20px; }
 	#server-note { display: none; }
+
+	.yui3-skin-sam .yui3-htmltablebulkedit-cell-multi10 { white-space:nowrap; }
 	</style>
 </head>
 <body class="yui3-skin-sam">
@@ -70,6 +75,8 @@ YUI({
 	'gallery-bulkedit', 'datasource-arrayschema',
 	'gallery-checkboxgroups', 'gallery-paginator',
 	'gallery-nodelist-extras2',
+	'autocomplete', 'autocomplete-filters', 'autocomplete-highlighters',
+	'gallery-multivalue-input',
 function(Y)
 {
 // Raw data
@@ -112,6 +119,60 @@ function(Y)
 		{id:'i1', year:1671, quantity:7, title:"Method of Fluxions", foo:"Method", bar:"of@baz", color:"red"},
 		{id:'i2', year:1687, quantity:4, title:"Philosophi&aelig; Naturalis Principia Mathematica", foo:"Philosophi&aelig;", bar:"Naturalis@baz", color:"green"},
 		{id:'i3', year:1704, quantity:3, title:"Opticks", foo:"G", bar:"H@baz", color:"blue"}
+	];
+
+	var states =
+	[
+		'Alabama',
+		'Alaska',
+		'Arizona',
+		'Arkansas',
+		'California',
+		'Colorado',
+		'Connecticut',
+		'Delaware',
+		'Florida',
+		'Georgia',
+		'Hawaii',
+		'Idaho',
+		'Illinois',
+		'Indiana',
+		'Iowa',
+		'Kansas',
+		'Kentucky',
+		'Louisiana',
+		'Maine',
+		'Maryland',
+		'Massachusetts',
+		'Michigan',
+		'Minnesota',
+		'Mississippi',
+		'Missouri',
+		'Montana',
+		'Nebraska',
+		'Nevada',
+		'New Hampshire',
+		'New Jersey',
+		'New Mexico',
+		'New York',
+		'North Dakota',
+		'North Carolina',
+		'Ohio',
+		'Oklahoma',
+		'Oregon',
+		'Pennsylvania',
+		'Rhode Island',
+		'South Carolina',
+		'South Dakota',
+		'Tennessee',
+		'Texas',
+		'Utah',
+		'Vermont',
+		'Virginia',
+		'Washington',
+		'West Virginia',
+		'Wisconsin',
+		'Wyoming'
 	];
 
 // Field configuration
@@ -169,8 +230,38 @@ function(Y)
 			}
 		},
 		baz: {},
-		bork: {}
+		bork: {},
+		multi10:
+		{
+			type:   'checkboxMultiselect',
+			label:  '10 options',
+			values: []
+		},
+		multi50:
+		{
+			type:   'autocompleteInputMultiselect',
+			label:  '50 options',
+			values: []
+		}
 	};
+
+	for (var i=0; i<10; i++)
+	{
+		fields.multi10.values.push(
+		{
+			value: i,
+			text:  states[i]
+		});
+	}
+
+	for (var i=0; i<50; i++)
+	{
+		fields.multi50.values.push(
+		{
+			value: i,
+			text:  states[i]
+		});
+	}
 
 // Data source
 
@@ -275,7 +366,9 @@ function(Y)
 				configureHueMenu(menu, o.record.color, o.record.hue);
 			}
 		},
-		{ key: 'bork', label: 'Bork' }
+		{ key: 'bork', label: 'Bork' },
+		{ key: 'multi10', label: 'Checkboxes' },
+		{ key: 'multi50', label: 'Multivalue input' }
 	];
 
 // Paginator

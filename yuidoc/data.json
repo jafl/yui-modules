@@ -1007,6 +1007,19 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/gallery-multivalue-input/js/multivalue-input.js": {
+            "name": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "modules": {
+                "gallery-multivalue-input": 1
+            },
+            "classes": {
+                "Plugin.MultivalueInput": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Plugin": 1
+            }
+        },
         "src/gallery-neon/js/Neon.js": {
             "name": "src/gallery-neon/js/Neon.js",
             "modules": {
@@ -1944,6 +1957,22 @@
             "line": 7,
             "description": "<p>MultiObject exposes exactly the same API as each individual object,\nboth functions and events, and the state of all the objects is kept in\nsync.  The objects must maintain all state via\nY.Attribute.<p>\n\n<p>MultiObject is similar to Y.ArrayList, except:</p>\n<ul>\n<li>All objects must be of the same type, since MultiObject is supposed\n\t\tto behave exactly like any single object.</li>\n<li>MultiObject automatically delegates all methods.</li>\n<li>By default, MultiObject returns the result from the first object\n\t\tin the list, not an array of results.</li>\n<li>MultiObject propagates all events.</li>\n</ul>\n\n<p>Internally, MultiObject delegates all methods by name, so it supports\nY.Do.before, Y.Do.after, etc.</p>\n\n<p>To avoid shadowing potential function names, we inherit from\nY.EventTarget and use multi_ as the prefix for our own functions.</p>",
             "itemtype": "main"
+        },
+        "gallery-multivalue-input": {
+            "name": "gallery-multivalue-input",
+            "submodules": {},
+            "classes": {
+                "Plugin.MultivalueInput": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Plugin": 1
+            },
+            "tag": "module",
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 9,
+            "description": "Plugin which allows user select multiple value, it replaces the traditional ugly\nmulti select input control",
+            "author": "MaYanK(mzgupta)"
         },
         "gallery-neon": {
             "name": "gallery-neon",
@@ -4213,6 +4242,28 @@
                 }
             ]
         },
+        "Plugin.MultivalueInput": {
+            "name": "Plugin.MultivalueInput",
+            "shortname": "Plugin.MultivalueInput",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin",
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 9,
+            "extends": "Plugin.Base",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Widget configuration",
+                    "type": "Object"
+                }
+            ]
+        },
         "Plugin.Neon": {
             "name": "Plugin.Neon",
             "shortname": "Plugin.Neon",
@@ -6269,7 +6320,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 201,
+            "line": 203,
             "description": "Attaches events to the container.",
             "itemtype": "method",
             "name": "_attachEvents",
@@ -6287,7 +6338,24 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 214,
+            "line": 216,
+            "itemtype": "method",
+            "name": "_destroyOnRender",
+            "params": [
+                {
+                    "name": "o",
+                    "description": "object to destroy when BulkEditor is re-rendered",
+                    "type": "Object"
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "class": "BulkEditor",
+            "module": "gallery-bulkedit"
+        },
+        {
+            "file": "src/gallery-bulkedit/js/BulkEditor.js",
+            "line": 226,
             "description": "Reloads the current page of records.  This will erase any changes\nunsaved changes!",
             "itemtype": "method",
             "name": "reload",
@@ -6296,7 +6364,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 269,
+            "line": 281,
             "description": "Save the modified values from the current page of records.",
             "itemtype": "method",
             "name": "saveChanges",
@@ -6305,7 +6373,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 313,
+            "line": 329,
             "description": "Retrieve *all* the data.  Do not call this if you use server-side\npagination.",
             "itemtype": "method",
             "name": "getAllValues",
@@ -6321,7 +6389,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 336,
+            "line": 352,
             "itemtype": "method",
             "name": "getChanges",
             "return": {
@@ -6333,7 +6401,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 345,
+            "line": 361,
             "description": "<p>Insert a new record.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "insertRecord",
@@ -6358,7 +6426,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 369,
+            "line": 385,
             "description": "<p>Remove a record.  The removal will be recorded in the diffs.\nThere is no way to un-remove a record, so if you need that\nfunctionality, you may want to use highlighting to indicate removed\nrecords instead.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "removeRecord",
@@ -6378,7 +6446,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 401,
+            "line": 417,
             "itemtype": "method",
             "name": "getFieldConfig",
             "params": [
@@ -6397,7 +6465,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 412,
+            "line": 428,
             "itemtype": "method",
             "name": "getRecordContainerId",
             "params": [
@@ -6416,7 +6484,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 430,
+            "line": 446,
             "itemtype": "method",
             "name": "getFieldId",
             "params": [
@@ -6440,7 +6508,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 443,
+            "line": 459,
             "itemtype": "method",
             "name": "getRecordAndFieldKey",
             "params": [
@@ -6459,7 +6527,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 458,
+            "line": 474,
             "itemtype": "method",
             "name": "getRecordId",
             "params": [
@@ -6478,7 +6546,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 482,
+            "line": 498,
             "itemtype": "method",
             "name": "getRecordContainer",
             "params": [
@@ -6497,7 +6565,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 506,
+            "line": 522,
             "itemtype": "method",
             "name": "getFieldContainer",
             "params": [
@@ -6521,7 +6589,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 520,
+            "line": 536,
             "itemtype": "method",
             "name": "getFieldElement",
             "params": [
@@ -6545,7 +6613,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 537,
+            "line": 553,
             "description": "Paginate and/or scroll to make the specified record visible.  Record\nis pinged to help the user find it.",
             "itemtype": "method",
             "name": "showRecordIndex",
@@ -6561,7 +6629,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 568,
+            "line": 584,
             "description": "Paginate and/or scroll to make the specified record visible.  Record\nis pinged to help the user find it.",
             "itemtype": "method",
             "name": "showRecordId",
@@ -6577,7 +6645,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 585,
+            "line": 601,
             "description": "Apply a class to the DOM element containing the record for a short\nwhile.  Your CSS can use this class to highlight the record in some\nway.",
             "itemtype": "method",
             "name": "pingRecord",
@@ -6593,7 +6661,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 608,
+            "line": 624,
             "description": "Render the current page of records.",
             "itemtype": "method",
             "name": "_render",
@@ -6611,7 +6679,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 645,
+            "line": 664,
             "description": "Derived class should override to create a structure for the records.",
             "itemtype": "method",
             "name": "_renderContainer",
@@ -6629,7 +6697,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 658,
+            "line": 677,
             "description": "Derived class must override to create a container for the record.",
             "itemtype": "method",
             "name": "_renderRecordContainer",
@@ -6652,7 +6720,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 673,
+            "line": 692,
             "description": "Derived class can override if it needs to do more than just call\n_renderField() for each field.",
             "itemtype": "method",
             "name": "_renderRecord",
@@ -6675,7 +6743,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 700,
+            "line": 719,
             "description": "If _renderRecord is not overridden, derived class must override this\nfunction to render the field.",
             "itemtype": "method",
             "name": "_renderField",
@@ -6693,7 +6761,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 718,
+            "line": 737,
             "description": "Update the paginator to match the data source meta information.",
             "itemtype": "method",
             "name": "_updatePaginator",
@@ -6711,7 +6779,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 734,
+            "line": 753,
             "description": "Clear errors received from the server.  This clears all displayed\nmessages.",
             "itemtype": "method",
             "name": "clearServerErrors",
@@ -6720,7 +6788,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 765,
+            "line": 784,
             "description": "Set page level, record level, and field level errors received from\nthe server.  A message can be either a string (assumed to be an\nerror) or an object providing msg and type, where type can be\n'error', 'warn', 'info', or 'success'.",
             "itemtype": "method",
             "name": "setServerErrors",
@@ -6741,7 +6809,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 808,
+            "line": 827,
             "description": "Update paginator to show which pages have errors.",
             "itemtype": "method",
             "name": "_updatePageStatus",
@@ -6752,7 +6820,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 844,
+            "line": 863,
             "description": "Validate the visible values (if using server-side pagination) or all\nthe values (if using client-side pagination or no pagination).",
             "itemtype": "method",
             "name": "validate",
@@ -6765,7 +6833,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 891,
+            "line": 910,
             "description": "Validate the visible values.",
             "itemtype": "method",
             "name": "_validateVisibleFields",
@@ -6787,7 +6855,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 950,
+            "line": 969,
             "description": "Validate the given elements.",
             "itemtype": "method",
             "name": "_validateElements",
@@ -6809,7 +6877,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1040,
+            "line": 1059,
             "description": "If the data is stored locally and we paginate, validate all of it\nand mark the pages that have invalid values.",
             "itemtype": "method",
             "name": "_validateAllPages",
@@ -6824,7 +6892,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1119,
+            "line": 1138,
             "description": "Clear all displayed messages.",
             "itemtype": "method",
             "name": "_clearValidationMessages",
@@ -6833,7 +6901,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1139,
+            "line": 1158,
             "description": "Display a message for the specified field.",
             "itemtype": "method",
             "name": "displayFieldMessage",
@@ -6864,7 +6932,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1184,
+            "line": 1203,
             "description": "Display a message for the specified record.",
             "itemtype": "method",
             "name": "displayRecordMessage",
@@ -6895,7 +6963,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1226,
+            "line": 1245,
             "itemtype": "method",
             "name": "_getElementStatus",
             "access": "protected",
@@ -6921,7 +6989,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1241,
+            "line": 1260,
             "description": "Update the status of the node, if the new status has higher precedence.",
             "itemtype": "method",
             "name": "_updateRecordStatus",
@@ -6961,7 +7029,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1279,
+            "line": 1298,
             "itemtype": "property",
             "name": "Y.BulkEditor.error_msg_markup",
             "type": "{String}",
@@ -6971,7 +7039,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1289,
+            "line": 1308,
             "itemtype": "method",
             "name": "labelMarkup",
             "static": 1,
@@ -6991,7 +7059,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1310,
+            "line": 1329,
             "description": "Map of field type (input,select,textarea) to function that generates the\nrequired markup.  You can add additional entries.  Each function takes a\nsingle argument: an object defining\n\tkey {String} field key,\n\tvalue {Mixed} field value,\n\tfield {Object} field configuration,\n\trecord {Object} record data",
             "itemtype": "property",
             "name": "Y.BulkEditor.markup",
@@ -7002,7 +7070,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1493,
+            "line": 1465,
             "itemtype": "method",
             "name": "fieldMarkup",
             "static": 1,
@@ -7050,7 +7118,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 70,
+            "line": 71,
             "description": "Renders an input element in the cell.",
             "itemtype": "method",
             "name": "inputFormatter",
@@ -7067,7 +7135,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 83,
+            "line": 84,
             "description": "Renders a textarea element in the cell.",
             "itemtype": "method",
             "name": "textareaFormatter",
@@ -7084,7 +7152,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 96,
+            "line": 97,
             "description": "Renders a select element in the cell.",
             "itemtype": "method",
             "name": "selectFormatter",
@@ -7101,7 +7169,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 109,
+            "line": 110,
             "description": "Renders a checkbox element in the cell.",
             "itemtype": "method",
             "name": "checkboxFormatter",
@@ -7118,7 +7186,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 122,
+            "line": 123,
             "description": "Renders a set of checkboxes for multiselect in the cell.",
             "itemtype": "method",
             "name": "checkboxMultiselectFormatter",
@@ -7135,7 +7203,24 @@
         },
         {
             "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
-            "line": 135,
+            "line": 136,
+            "description": "Renders a multi-value input for multiselect in the cell.",
+            "itemtype": "method",
+            "name": "autocompleteInputMultiselectFormatter",
+            "static": 1,
+            "params": [
+                {
+                    "name": "o",
+                    "description": "cell, key, value, field, column, record",
+                    "type": "Object"
+                }
+            ],
+            "class": "HTMLTableBulkEditor",
+            "module": "gallery-bulkedit"
+        },
+        {
+            "file": "src/gallery-bulkedit/js/HTMLTableBulkEditor.js",
+            "line": 149,
             "description": "Map of field type to cell formatter.",
             "itemtype": "property",
             "name": "Y.HTMLTableBulkEditor.defaults",
@@ -9910,7 +9995,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1133,
+            "line": 1132,
             "description": "Display a message for the form row containing the specified element.\nThe message will only be displayed if no message with a higher\nprecedence is already visible. (see Y.FormManager.status_order)",
             "itemtype": "method",
             "name": "displayMessage",
@@ -9946,7 +10031,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1167,
+            "line": 1166,
             "description": "Displays a generic message in <code>status_node</code> stating that\nthe form data failed to validate.  Override this if you want to get\nfancy.",
             "itemtype": "method",
             "name": "notifyErrors",
@@ -9955,7 +10040,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1179,
+            "line": 1178,
             "description": "Display a message in <code>status_node</code>.",
             "itemtype": "method",
             "name": "displayFormMessage",
@@ -15318,6 +15403,165 @@
             "module": "gallery-multiobject"
         },
         {
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 141,
+            "description": "Generate Markup for UL tag",
+            "itemtype": "method",
+            "name": "_keyDownHandler",
+            "access": "protected",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "class": "Plugin.MultivalueInput",
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 168,
+            "description": "Generate Markup for UL tag",
+            "itemtype": "method",
+            "name": "_createULNode",
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "Plugin.MultivalueInput",
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 182,
+            "description": "Generate Markup for list tag",
+            "itemtype": "method",
+            "name": "_createListNode",
+            "access": "protected",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "the section index",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "Plugin.MultivalueInput",
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 217,
+            "description": "Generate Markup for div tag",
+            "itemtype": "method",
+            "name": "_createDivNode",
+            "access": "protected",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Node"
+            },
+            "class": "Plugin.MultivalueInput",
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 230,
+            "description": "Get the index of remove item",
+            "itemtype": "method",
+            "name": "_getListIndex",
+            "access": "protected",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Node"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Index"
+            },
+            "class": "Plugin.MultivalueInput",
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 248,
+            "description": "add the item in to the list",
+            "itemtype": "method",
+            "name": "_appendItem",
+            "access": "protected",
+            "tagname": "",
+            "class": "Plugin.MultivalueInput",
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 261,
+            "description": "remove the item from the list",
+            "itemtype": "method",
+            "name": "_removeItem",
+            "access": "protected",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Node"
+                }
+            ],
+            "class": "Plugin.MultivalueInput",
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 276,
+            "description": "Add value to value list",
+            "itemtype": "method",
+            "name": "_addValue",
+            "access": "protected",
+            "tagname": "",
+            "class": "Plugin.MultivalueInput",
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin"
+        },
+        {
+            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
+            "line": 289,
+            "description": "remove value from value list",
+            "itemtype": "method",
+            "name": "_removeValue",
+            "access": "protected",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Index"
+                }
+            ],
+            "class": "Plugin.MultivalueInput",
+            "module": "gallery-multivalue-input",
+            "namespace": "Plugin"
+        },
+        {
             "file": "src/gallery-neon/js/Neon.js",
             "line": 28,
             "description": "Background (starting) color.  Must be parseable by Y.Color.toRGB().",
@@ -18924,5 +19168,22 @@
             "module": "gallery-treeble"
         }
     ],
-    "warnings": []
+    "warnings": [
+        {
+            "message": "param name missing: {Event}",
+            "line": " src/gallery-multivalue-input/js/multivalue-input.js:141"
+        },
+        {
+            "message": "param name missing: {Node}",
+            "line": " src/gallery-multivalue-input/js/multivalue-input.js:230"
+        },
+        {
+            "message": "param name missing: {Node}",
+            "line": " src/gallery-multivalue-input/js/multivalue-input.js:261"
+        },
+        {
+            "message": "param name missing: {index}",
+            "line": " src/gallery-multivalue-input/js/multivalue-input.js:289"
+        }
+    ]
 }

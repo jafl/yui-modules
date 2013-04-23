@@ -104,6 +104,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Plugin.DataTableState",
         "Plugin.FixedSizeAccordion",
         "Plugin.InputCalendarSync",
+        "Plugin.MultivalueInput",
         "Plugin.Neon",
         "Plugin.NodeFXSequence",
         "Plugin.OverlayForm",
@@ -160,6 +161,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-mojito-rpc",
         "gallery-mru-cache",
         "gallery-multiobject",
+        "gallery-multivalue-input",
         "gallery-neon",
         "gallery-node-event-set",
         "gallery-node-optimizations",
@@ -378,6 +380,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-multiobject",
             "name": "gallery-multiobject",
             "description": "<p>MultiObject exposes exactly the same API as each individual object,\nboth functions and events, and the state of all the objects is kept in\nsync.  The objects must maintain all state via\nY.Attribute.<p>\n\n<p>MultiObject is similar to Y.ArrayList, except:</p>\n<ul>\n<li>All objects must be of the same type, since MultiObject is supposed\n\t\tto behave exactly like any single object.</li>\n<li>MultiObject automatically delegates all methods.</li>\n<li>By default, MultiObject returns the result from the first object\n\t\tin the list, not an array of results.</li>\n<li>MultiObject propagates all events.</li>\n</ul>\n\n<p>Internally, MultiObject delegates all methods by name, so it supports\nY.Do.before, Y.Do.after, etc.</p>\n\n<p>To avoid shadowing potential function names, we inherit from\nY.EventTarget and use multi_ as the prefix for our own functions.</p>"
+        },
+        {
+            "displayName": "gallery-multivalue-input",
+            "name": "gallery-multivalue-input",
+            "description": "Plugin which allows user select multiple value, it replaces the traditional ugly\nmulti select input control"
         },
         {
             "displayName": "gallery-neon",
