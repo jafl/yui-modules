@@ -84,222 +84,221 @@ MultiValueInput.ITEM_REMOVE = '<a href="javascript:void(0)" class="{remove_class
 /* MultiValueInput extends the base Widget class */
 Y.extend(MultiValueInput, Y.Plugin.Base,
 {
-			initializer : function() {
-				var values = this.get("values"),placeholder=this.get("placeholder");
-				this._host = this.get("host");
-				this._host.set("placeholder",placeholder);
+	initializer : function() {
+		var values = this.get("values"),placeholder=this.get("placeholder");
+		this._host = this.get("host");
+		this._host.set("placeholder",placeholder);
 
-				//Create Container div that contains list of values
-				this._divContent = this._createDivNode();
-				this._host.insert(this._divContent, "before");
+		//Create Container div that contains list of values
+		this._divContent = this._createDivNode();
+		this._host.insert(this._divContent, "before");
 
-				//Create un order List
-				this._ul = this._createULNode();
+		//Create un order List
+		this._ul = this._createULNode();
 
-				if (values) {
-					for(var i=0;i<values.length;i++){
-						this._ul.appendChild(this._createListNode(values[i], true));
-					}
-					Y.log("List Initialized:"+this.get("values"),"info","MultiValueInput.initializer");
-				}
-				this._host.addClass(INPUT);
-				this._inputWrapper = this._createListNode("");
-				this._inputWrapper.appendChild(this._host);
-				this._ul.appendChild(this._inputWrapper);
-
-
-				this._divContent.appendChild(this._ul);
-
-				// Event Biniding
-
-				if (this._host.ac) {
-					//If host has autocomplete plugged
-					this._host.ac.after("select", this._appendItem, this);
-				} else {
-					this._host.after("change", this._appendItem, this);
-				}
-
-				this._host.after("blur", function() {
-					this._host.set("value", "");
-					this._divContent.removeClass("yui3-multivalueinput-border");
-				},this);
-
-				this._host.after("focus", function() {
-					this._host.set("value", "");
-					this._divContent.addClass("yui3-multivalueinput-border");
-				},this);
-
-				this._host.on("keydown", this._keyDownHandler, this);
-
-				this._divContent.delegate("click", function(e)
-				{
-					this._removeItem(e.currentTarget.ancestor("." + LIST_ITEM));
-				},
-				"." + REMOVE, this);
-			},
-
-			/**
-			 * Generate Markup for UL tag
-			 * @method _keyDownHandler
-			 * @protected
-			 * @param {Event}
-			 */
-
-			_keyDownHandler:function(/* Event */ e){
-				var allList,lastItem, lastItemIndex;
-				if(e.keyCode !== 8){
-					return;
-				}
-				allList=this._ul.get("children");
-				lastItemIndex=allList.size()-2;
-				lastItem=allList.item(lastItemIndex);
-				if(!this._host.get("value")){
-					if(this._pendingDelete){
-						this._removeItem(lastItem, lastItemIndex);
-						this._pendingDelete = false;
-					}
-					else{
-						lastItem.addClass("yui3-multivalueinput-pendingdelete");
-						this._pendingDelete = true;
-					}
-				}
-			},
-
-			/**
-			 * Generate Markup for UL tag
-			 * @method _createULNode
-			 * @protected
-			 * @return {Node}
-			 */
-
-			_createULNode : function() {
-				return Node.create(Y.substitute(
-						MultiValueInput.VALUE_HOLDER_TEMPLATE, {
-							ul_class : UL
-						}));
-			},
-
-			/**
-			 * Generate Markup for list tag
-			 * @method _createListNode
-			 * @protected
-			 * @param index {int} the section index
-			 * @return {Node}
-			 */
-
-			_createListNode : function(
-					/* String */ item,
-					/* boolean */ isListItem)
-			{
-				var listNode, anchorNode;
-				if (isListItem) {
-					anchorNode = Node.create(Y
-							.substitute(MultiValueInput.ITEM_REMOVE, {
-								remove_class : REMOVE
-							}));
-					listNode = Node.create(Y.substitute(
-							MultiValueInput.LI_TEMPLATE, {
-								item : item,
-								list_class : LIST
-							}));
-					listNode.appendChild(anchorNode);
-					listNode.addClass(LIST_ITEM);
-				} else {
-					listNode = Node.create(Y.substitute(
-							MultiValueInput.LI_TEMPLATE, {
-								item : item,
-								list_class : LIST
-								}));
-				}
-				return listNode;
-			},
-
-			/**
-			 * Generate Markup for div tag
-			 * @method _createDivNode
-			 * @protected
-			 * @return {Node}
-			 */
-
-			_createDivNode : function() {
-				return Node.create(Y.substitute(MultiValueInput.DIV_TEMPLATE, {
-					div_class : DIVCONTENT
-				}));
-			},
-
-			/**
-			 * Get the index of remove item
-			 * @method _getListIndex
-			 * @protected
-			 * @param {Node}
-			 * @return {index}
-			 */
-
-			_getListIndex : function(listNode) {
-				var allList=this._ul.get("children"),size=allList.size();
-				for(var i=0;i<size;i++){
-					if(listNode.compareTo(allList.item(i))){
-						return i;
-					}
-				}
-				return -1;
-			},
-
-			/**
-			 * add the item in to the list
-			 * @method _appendItem
-			 * @protected
-			 */
-
-			_appendItem : function() {
-				var val = this._host.get("value");
-				this._inputWrapper.insert(this._createListNode(val, true), "before");
-				this._addValue(val);
-				this._host.set("value", "");
-			},
-
-			/**
-			 * remove the item from the list
-			 * @method _removeItem
-			 * @protected
-			 * @param {Node}
-			 */
-
-			_removeItem : function(/* Node */selectedListNode, /* int */ idx) {
-				var index = idx || this._getListIndex(selectedListNode);
-				this._host.focus();
-				selectedListNode.get("parentNode")
-						.removeChild(selectedListNode);
-				this._removeValue(index);
-			},
-
-			/**
-			 * Add value to value list
-			 * @method _addValue
-			 * @protected
-			 */
-
-			_addValue : function(val) {
-				var values = this.get("values");
-				values.push(val);
-				this.set("values", values.slice(0));	// force change event
-				Y.log(val+" added to the List:"+this.get("values"),"info","MultiValueInput._addValue");
-			},
-
-			/**
-			 * remove value from value list
-			 * @method _removeValue
-			 * @protected
-			 * @param {index}
-			 */
-
-			_removeValue : function(/* int */ index) {
-				var values = this.get("values"), val = values[index];
-				values.splice(index,1);
-				this.set("values", values.slice(0));	// force change event
-				Y.log(val+" removed from the List:"+this.get("values"),"info","MultiValueInput._removeValue");
+		if (values) {
+			for(var i=0;i<values.length;i++){
+				this._ul.appendChild(this._createListNode(values[i], true));
 			}
+			Y.log("List Initialized:"+this.get("values"),"info","MultiValueInput.initializer");
+		}
+		this._host.addClass(INPUT);
+		this._inputWrapper = this._createListNode("");
+		this._inputWrapper.appendChild(this._host);
+		this._ul.appendChild(this._inputWrapper);
 
+
+		this._divContent.appendChild(this._ul);
+
+		// Event Biniding
+
+		if (this._host.ac) {
+			//If host has autocomplete plugged
+			this._host.ac.after("select", this._appendItem, this);
+		} else {
+			this._host.after("change", this._appendItem, this);
+		}
+
+		this._host.after("blur", function() {
+			this._host.set("value", "");
+			this._divContent.removeClass("yui3-multivalueinput-border");
+		},this);
+
+		this._host.after("focus", function() {
+			this._host.set("value", "");
+			this._divContent.addClass("yui3-multivalueinput-border");
+		},this);
+
+		this._host.on("keydown", this._keyDownHandler, this);
+
+		this._divContent.delegate("click", function(e)
+		{
+			this._removeItem(e.currentTarget.ancestor("." + LIST_ITEM));
+		},
+		"." + REMOVE, this);
+	},
+
+	/**
+	 * Generate Markup for UL tag
+	 * @method _keyDownHandler
+	 * @protected
+	 * @param {Event}
+	 */
+
+	_keyDownHandler:function(/* Event */ e){
+		var allList,lastItem, lastItemIndex;
+		if(e.keyCode !== 8){
+			return;
+		}
+		allList=this._ul.get("children");
+		lastItemIndex=allList.size()-2;
+		lastItem=allList.item(lastItemIndex);
+		if(!this._host.get("value")){
+			if(this._pendingDelete){
+				this._removeItem(lastItem, lastItemIndex);
+				this._pendingDelete = false;
+			}
+			else{
+				lastItem.addClass("yui3-multivalueinput-pendingdelete");
+				this._pendingDelete = true;
+			}
+		}
+	},
+
+	/**
+	 * Generate Markup for UL tag
+	 * @method _createULNode
+	 * @protected
+	 * @return {Node}
+	 */
+
+	_createULNode : function() {
+		return Node.create(Y.substitute(
+				MultiValueInput.VALUE_HOLDER_TEMPLATE, {
+					ul_class : UL
+				}));
+	},
+
+	/**
+	 * Generate Markup for list tag
+	 * @method _createListNode
+	 * @protected
+	 * @param index {int} the section index
+	 * @return {Node}
+	 */
+
+	_createListNode : function(
+			/* String */ item,
+			/* boolean */ isListItem)
+	{
+		var listNode, anchorNode;
+		if (isListItem) {
+			anchorNode = Node.create(Y
+					.substitute(MultiValueInput.ITEM_REMOVE, {
+						remove_class : REMOVE
+					}));
+			listNode = Node.create(Y.substitute(
+					MultiValueInput.LI_TEMPLATE, {
+						item : item,
+						list_class : LIST
+					}));
+			listNode.appendChild(anchorNode);
+			listNode.addClass(LIST_ITEM);
+		} else {
+			listNode = Node.create(Y.substitute(
+					MultiValueInput.LI_TEMPLATE, {
+						item : item,
+						list_class : LIST
+						}));
+		}
+		return listNode;
+	},
+
+	/**
+	 * Generate Markup for div tag
+	 * @method _createDivNode
+	 * @protected
+	 * @return {Node}
+	 */
+
+	_createDivNode : function() {
+		return Node.create(Y.substitute(MultiValueInput.DIV_TEMPLATE, {
+			div_class : DIVCONTENT
+		}));
+	},
+
+	/**
+	 * Get the index of remove item
+	 * @method _getListIndex
+	 * @protected
+	 * @param {Node}
+	 * @return {index}
+	 */
+
+	_getListIndex : function(listNode) {
+		var allList=this._ul.get("children"),size=allList.size();
+		for(var i=0;i<size;i++){
+			if(listNode.compareTo(allList.item(i))){
+				return i;
+			}
+		}
+		return -1;
+	},
+
+	/**
+	 * add the item in to the list
+	 * @method _appendItem
+	 * @protected
+	 */
+
+	_appendItem : function() {
+		var val = this._host.get("value");
+		this._inputWrapper.insert(this._createListNode(val, true), "before");
+		this._addValue(val);
+		this._host.set("value", "");
+	},
+
+	/**
+	 * remove the item from the list
+	 * @method _removeItem
+	 * @protected
+	 * @param {Node}
+	 */
+
+	_removeItem : function(/* Node */selectedListNode, /* int */ idx) {
+		var index = idx || this._getListIndex(selectedListNode);
+		this._host.focus();
+		selectedListNode.get("parentNode")
+				.removeChild(selectedListNode);
+		this._removeValue(index);
+	},
+
+	/**
+	 * Add value to value list
+	 * @method _addValue
+	 * @protected
+	 */
+
+	_addValue : function(val) {
+		var values = this.get("values");
+		values.push(val);
+		this.set("values", values.slice(0));	// force change event
+		Y.log(val+" added to the List:"+this.get("values"),"info","MultiValueInput._addValue");
+	},
+
+	/**
+	 * remove value from value list
+	 * @method _removeValue
+	 * @protected
+	 * @param {index}
+	 */
+
+	_removeValue : function(/* int */ index) {
+		var values = this.get("values"), val = values[index];
+		values.splice(index,1);
+		this.set("values", values.slice(0));	// force change event
+		Y.log(val+" removed from the List:"+this.get("values"),"info","MultiValueInput._removeValue");
+	}
 });
 
 Y.MultiValueInput = MultiValueInput;
