@@ -1875,7 +1875,7 @@ Y.extend(BulkEditor, Y.Widget,
 				status[j] = 'error';
 				if (this.first_error_page == -1)
 				{
-					this.first_error_page = i;
+					this.first_error_page = j+1;
 				}
 			}
 		}

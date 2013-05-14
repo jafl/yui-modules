@@ -320,19 +320,17 @@ function(Y)
 
 	editor.on('notifyErrors', function(e)
 	{
-		var s = '';
-		for (var i=0; i<e.msgs.length; i++)
+		var s = Y.reduce(e.msgs, '', function(s, m)
 		{
-			var m = e.msgs[i];
 			if (Y.Lang.isString(m))
 			{
-				s += '<li class="error">' + m + '</li>';
+				return s + '<li class="error">' + m + '</li>';
 			}
 			else
 			{
-				s += '<li class="' + m.type + '">' + m.msg + '</li>';
+				return s + '<li class="' + m.type + '">' + m.msg + '</li>';
 			}
-		}
+		});
 
 		Y.one('#page-messages').set('innerHTML', '<ul>' + s + '</ul>');
 	});
