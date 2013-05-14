@@ -500,7 +500,8 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 					table.set(&#x27;height&#x27;, &#x27;auto&#x27;);
 					table.set(&#x27;scrollable&#x27;, &#x27;x&#x27;);
 				}
-			});
+			},
+			this);
 
 			layout.on(&#x27;afterResizeModule&#x27;, function(e)
 			{
@@ -510,13 +511,29 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 					table.set(&#x27;height&#x27;, e.height+&#x27;px&#x27;);
 					table.set(&#x27;scrollable&#x27;, true);
 
-					if (table._yScrollNode)
+					if (table._yScrollNode &amp;&amp; !this.ignore_scroll_top)
 					{
 						table._yScrollNode.set(&#x27;scrollTop&#x27;, scroll_top);
 					}
+					this.ignore_scroll_top = false;
 				}
-			});
+			},
+			this);
 		});
+	},
+
+	&#x2F;**
+	 * By default, the scroll position is restored after Y.PageLayout
+	 * reflows the page.  In certain cases, e.g., switching to a different
+	 * page of data, the scroll position should be reset instead.  Call
+	 * this function to request that the scroll position be reset after the
+	 * next layout reflow.
+	 * 
+	 * @method resetScroll
+	 *&#x2F;
+	resetScroll: function()
+	{
+		this.ignore_scroll_top = true;
 	}
 });
 

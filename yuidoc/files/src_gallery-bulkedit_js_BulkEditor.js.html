@@ -554,6 +554,15 @@ BulkEditor.ATTRS =
 };
 
 &#x2F;**
+ * The number of checkboxes in each column of a checkboxMultiselect field.
+ * 
+ * @property checkbox_multiselect_column_height
+ * @type {Number}
+ * @static
+ *&#x2F;
+BulkEditor.checkbox_multiselect_column_height = 6;
+
+&#x2F;**
  * @event notifyErrors
  * @description Fired when widget-level validation messages need to be displayed.
  * @param msgs {Array} the messages to display
@@ -766,7 +775,8 @@ Y.extend(BulkEditor, Y.Widget,
 		var request =
 		{
 			startIndex:  0,
-			resultCount: this.get(&#x27;ds&#x27;).getRecordCount()
+			resultCount: this.get(&#x27;ds&#x27;).getRecordCount(),
+			out_of_band: true
 		};
 		Y.mix(request, this.get(&#x27;requestExtra&#x27;));
 
@@ -1519,11 +1529,12 @@ Y.extend(BulkEditor, Y.Widget,
 			this);
 		}
 
-		var count     = ds.getRecordCount();
-		var page_size = pg.getRowsPerPage();
+		var count     = ds.getRecordCount(),
+			page_size = pg.getRowsPerPage(),
+			status    = true;
 		for (var i=0; i&lt;count; i++)
 		{
-			var status = true;
+			var page_status = true;
 			Y.Array.each(this.validation_keys, function(key)
 			{
 				var field = this.get(&#x27;fields&#x27;)[key];
@@ -1535,7 +1546,7 @@ Y.extend(BulkEditor, Y.Widget,
 				var info = Y.FormManager.validateFromCSSData(this.validation_node);
 				if (info.error)
 				{
-					status = false;
+					page_status = false;
 					return;
 				}
 
@@ -1544,23 +1555,24 @@ Y.extend(BulkEditor, Y.Widget,
 					if (field.validation.regex instanceof RegExp &amp;&amp;
 						!field.validation.regex.test(value))
 					{
-						status = false;
+						page_status = false;
 						return;
 					}
 				}
 			},
 			this);
 
-			if (!status)
+			if (!page_status)
 			{
 				var j = Math.floor(i &#x2F; page_size);
 				i     = (j+1)*page_size - 1;	&#x2F;&#x2F; skip to next page
 
 				this.page_status[j] = &#x27;error&#x27;;
+				status              = false;
 			}
 		}
 
-		return true;
+		return status;
 	},
 
 	&#x2F;**
@@ -1978,16 +1990,28 @@ function multiselectMarkup(type, o)
 				&#x27;&lt;label for=&quot;{id}-{value}&quot;&gt;{label}&lt;&#x2F;label&gt;&#x27; +
 			&#x27;&lt;&#x2F;p&gt;&#x27;;
 
-		var input_markup = Y.Array.reduce(o.field.values, &#x27;&#x27;, function(s, v)
+		var column_start = &#x27;&lt;div class=&quot;checkbox-multiselect-column&quot;&gt;&#x27;,
+			column_end   = &#x27;&lt;&#x2F;div&gt;&#x27;;
+
+		var input_markup = Y.Array.reduce(o.field.values, &#x27;&lt;div class=&quot;checkbox-multiselect-column first&quot;&gt;&#x27;, function(s, v, i)
 		{
-			return s + Y.Lang.sub(checkbox,
+			var m = Y.Lang.sub(checkbox,
 			{
 				id:      id,
 				value:   v.value,
 				checked: has_value &amp;&amp; Y.Array.indexOf(o.value, v.value.toString()) &gt;= 0 ? &#x27;checked=&quot;checked&quot;&#x27; : &#x27;&#x27;,
 				label:   BulkEditor.cleanHTML(v.text)
 			});
+
+			if (i &gt; 0 &amp;&amp; i % BulkEditor.checkbox_multiselect_column_height === 0)
+			{
+				m = column_end + column_start + m;
+			}
+
+			return s + m;
 		});
+
+		input_markup += column_end;
 	}
 
 	var option = &#x27;&lt;option value=&quot;{value}&quot; {selected}&gt;{text}&lt;&#x2F;option&gt;&#x27;;

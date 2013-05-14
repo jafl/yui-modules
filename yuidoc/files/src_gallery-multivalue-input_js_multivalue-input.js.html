@@ -512,222 +512,221 @@ MultiValueInput.ITEM_REMOVE = &#x27;&lt;a href=&quot;javascript:void(0)&quot; cl
 &#x2F;* MultiValueInput extends the base Widget class *&#x2F;
 Y.extend(MultiValueInput, Y.Plugin.Base,
 {
-			initializer : function() {
-				var values = this.get(&quot;values&quot;),placeholder=this.get(&quot;placeholder&quot;);
-				this._host = this.get(&quot;host&quot;);
-				this._host.set(&quot;placeholder&quot;,placeholder);
+	initializer : function() {
+		var values = this.get(&quot;values&quot;),placeholder=this.get(&quot;placeholder&quot;);
+		this._host = this.get(&quot;host&quot;);
+		this._host.set(&quot;placeholder&quot;,placeholder);
 
-				&#x2F;&#x2F;Create Container div that contains list of values
-				this._divContent = this._createDivNode();
-				this._host.insert(this._divContent, &quot;before&quot;);
+		&#x2F;&#x2F;Create Container div that contains list of values
+		this._divContent = this._createDivNode();
+		this._host.insert(this._divContent, &quot;before&quot;);
 
-				&#x2F;&#x2F;Create un order List
-				this._ul = this._createULNode();
+		&#x2F;&#x2F;Create un order List
+		this._ul = this._createULNode();
 
-				if (values) {
-					for(var i=0;i&lt;values.length;i++){
-						this._ul.appendChild(this._createListNode(values[i], true));
-					}
-					Y.log(&quot;List Initialized:&quot;+this.get(&quot;values&quot;),&quot;info&quot;,&quot;MultiValueInput.initializer&quot;);
-				}
-				this._host.addClass(INPUT);
-				this._inputWrapper = this._createListNode(&quot;&quot;);
-				this._inputWrapper.appendChild(this._host);
-				this._ul.appendChild(this._inputWrapper);
-
-
-				this._divContent.appendChild(this._ul);
-
-				&#x2F;&#x2F; Event Biniding
-
-				if (this._host.ac) {
-					&#x2F;&#x2F;If host has autocomplete plugged
-					this._host.ac.after(&quot;select&quot;, this._appendItem, this);
-				} else {
-					this._host.after(&quot;change&quot;, this._appendItem, this);
-				}
-
-				this._host.after(&quot;blur&quot;, function() {
-					this._host.set(&quot;value&quot;, &quot;&quot;);
-					this._divContent.removeClass(&quot;yui3-multivalueinput-border&quot;);
-				},this);
-
-				this._host.after(&quot;focus&quot;, function() {
-					this._host.set(&quot;value&quot;, &quot;&quot;);
-					this._divContent.addClass(&quot;yui3-multivalueinput-border&quot;);
-				},this);
-
-				this._host.on(&quot;keydown&quot;, this._keyDownHandler, this);
-
-				this._divContent.delegate(&quot;click&quot;, function(e)
-				{
-					this._removeItem(e.currentTarget.ancestor(&quot;.&quot; + LIST_ITEM));
-				},
-				&quot;.&quot; + REMOVE, this);
-			},
-
-			&#x2F;**
-			 * Generate Markup for UL tag
-			 * @method _keyDownHandler
-			 * @protected
-			 * @param {Event}
-			 *&#x2F;
-
-			_keyDownHandler:function(&#x2F;* Event *&#x2F; e){
-				var allList,lastItem, lastItemIndex;
-				if(e.keyCode !== 8){
-					return;
-				}
-				allList=this._ul.get(&quot;children&quot;);
-				lastItemIndex=allList.size()-2;
-				lastItem=allList.item(lastItemIndex);
-				if(!this._host.get(&quot;value&quot;)){
-					if(this._pendingDelete){
-						this._removeItem(lastItem, lastItemIndex);
-						this._pendingDelete = false;
-					}
-					else{
-						lastItem.addClass(&quot;yui3-multivalueinput-pendingdelete&quot;);
-						this._pendingDelete = true;
-					}
-				}
-			},
-
-			&#x2F;**
-			 * Generate Markup for UL tag
-			 * @method _createULNode
-			 * @protected
-			 * @return {Node}
-			 *&#x2F;
-
-			_createULNode : function() {
-				return Node.create(Y.substitute(
-						MultiValueInput.VALUE_HOLDER_TEMPLATE, {
-							ul_class : UL
-						}));
-			},
-
-			&#x2F;**
-			 * Generate Markup for list tag
-			 * @method _createListNode
-			 * @protected
-			 * @param index {int} the section index
-			 * @return {Node}
-			 *&#x2F;
-
-			_createListNode : function(
-					&#x2F;* String *&#x2F; item,
-					&#x2F;* boolean *&#x2F; isListItem)
-			{
-				var listNode, anchorNode;
-				if (isListItem) {
-					anchorNode = Node.create(Y
-							.substitute(MultiValueInput.ITEM_REMOVE, {
-								remove_class : REMOVE
-							}));
-					listNode = Node.create(Y.substitute(
-							MultiValueInput.LI_TEMPLATE, {
-								item : item,
-								list_class : LIST
-							}));
-					listNode.appendChild(anchorNode);
-					listNode.addClass(LIST_ITEM);
-				} else {
-					listNode = Node.create(Y.substitute(
-							MultiValueInput.LI_TEMPLATE, {
-								item : item,
-								list_class : LIST
-								}));
-				}
-				return listNode;
-			},
-
-			&#x2F;**
-			 * Generate Markup for div tag
-			 * @method _createDivNode
-			 * @protected
-			 * @return {Node}
-			 *&#x2F;
-
-			_createDivNode : function() {
-				return Node.create(Y.substitute(MultiValueInput.DIV_TEMPLATE, {
-					div_class : DIVCONTENT
-				}));
-			},
-
-			&#x2F;**
-			 * Get the index of remove item
-			 * @method _getListIndex
-			 * @protected
-			 * @param {Node}
-			 * @return {index}
-			 *&#x2F;
-
-			_getListIndex : function(listNode) {
-				var allList=this._ul.get(&quot;children&quot;),size=allList.size();
-				for(var i=0;i&lt;size;i++){
-					if(listNode.compareTo(allList.item(i))){
-						return i;
-					}
-				}
-				return -1;
-			},
-
-			&#x2F;**
-			 * add the item in to the list
-			 * @method _appendItem
-			 * @protected
-			 *&#x2F;
-
-			_appendItem : function() {
-				var val = this._host.get(&quot;value&quot;);
-				this._inputWrapper.insert(this._createListNode(val, true), &quot;before&quot;);
-				this._addValue(val);
-				this._host.set(&quot;value&quot;, &quot;&quot;);
-			},
-
-			&#x2F;**
-			 * remove the item from the list
-			 * @method _removeItem
-			 * @protected
-			 * @param {Node}
-			 *&#x2F;
-
-			_removeItem : function(&#x2F;* Node *&#x2F;selectedListNode, &#x2F;* int *&#x2F; idx) {
-				var index = idx || this._getListIndex(selectedListNode);
-				this._host.focus();
-				selectedListNode.get(&quot;parentNode&quot;)
-						.removeChild(selectedListNode);
-				this._removeValue(index);
-			},
-
-			&#x2F;**
-			 * Add value to value list
-			 * @method _addValue
-			 * @protected
-			 *&#x2F;
-
-			_addValue : function(val) {
-				var values = this.get(&quot;values&quot;);
-				values.push(val);
-				this.set(&quot;values&quot;, values.slice(0));	&#x2F;&#x2F; force change event
-				Y.log(val+&quot; added to the List:&quot;+this.get(&quot;values&quot;),&quot;info&quot;,&quot;MultiValueInput._addValue&quot;);
-			},
-
-			&#x2F;**
-			 * remove value from value list
-			 * @method _removeValue
-			 * @protected
-			 * @param {index}
-			 *&#x2F;
-
-			_removeValue : function(&#x2F;* int *&#x2F; index) {
-				var values = this.get(&quot;values&quot;), val = values[index];
-				values.splice(index,1);
-				this.set(&quot;values&quot;, values.slice(0));	&#x2F;&#x2F; force change event
-				Y.log(val+&quot; removed from the List:&quot;+this.get(&quot;values&quot;),&quot;info&quot;,&quot;MultiValueInput._removeValue&quot;);
+		if (values) {
+			for(var i=0;i&lt;values.length;i++){
+				this._ul.appendChild(this._createListNode(values[i], true));
 			}
+			Y.log(&quot;List Initialized:&quot;+this.get(&quot;values&quot;),&quot;info&quot;,&quot;MultiValueInput.initializer&quot;);
+		}
+		this._host.addClass(INPUT);
+		this._inputWrapper = this._createListNode(&quot;&quot;);
+		this._inputWrapper.appendChild(this._host);
+		this._ul.appendChild(this._inputWrapper);
 
+
+		this._divContent.appendChild(this._ul);
+
+		&#x2F;&#x2F; Event Biniding
+
+		if (this._host.ac) {
+			&#x2F;&#x2F;If host has autocomplete plugged
+			this._host.ac.after(&quot;select&quot;, this._appendItem, this);
+		} else {
+			this._host.after(&quot;change&quot;, this._appendItem, this);
+		}
+
+		this._host.after(&quot;blur&quot;, function() {
+			this._host.set(&quot;value&quot;, &quot;&quot;);
+			this._divContent.removeClass(&quot;yui3-multivalueinput-border&quot;);
+		},this);
+
+		this._host.after(&quot;focus&quot;, function() {
+			this._host.set(&quot;value&quot;, &quot;&quot;);
+			this._divContent.addClass(&quot;yui3-multivalueinput-border&quot;);
+		},this);
+
+		this._host.on(&quot;keydown&quot;, this._keyDownHandler, this);
+
+		this._divContent.delegate(&quot;click&quot;, function(e)
+		{
+			this._removeItem(e.currentTarget.ancestor(&quot;.&quot; + LIST_ITEM));
+		},
+		&quot;.&quot; + REMOVE, this);
+	},
+
+	&#x2F;**
+	 * Generate Markup for UL tag
+	 * @method _keyDownHandler
+	 * @protected
+	 * @param {Event}
+	 *&#x2F;
+
+	_keyDownHandler:function(&#x2F;* Event *&#x2F; e){
+		var allList,lastItem, lastItemIndex;
+		if(e.keyCode !== 8){
+			return;
+		}
+		allList=this._ul.get(&quot;children&quot;);
+		lastItemIndex=allList.size()-2;
+		lastItem=allList.item(lastItemIndex);
+		if(!this._host.get(&quot;value&quot;)){
+			if(this._pendingDelete){
+				this._removeItem(lastItem, lastItemIndex);
+				this._pendingDelete = false;
+			}
+			else{
+				lastItem.addClass(&quot;yui3-multivalueinput-pendingdelete&quot;);
+				this._pendingDelete = true;
+			}
+		}
+	},
+
+	&#x2F;**
+	 * Generate Markup for UL tag
+	 * @method _createULNode
+	 * @protected
+	 * @return {Node}
+	 *&#x2F;
+
+	_createULNode : function() {
+		return Node.create(Y.substitute(
+				MultiValueInput.VALUE_HOLDER_TEMPLATE, {
+					ul_class : UL
+				}));
+	},
+
+	&#x2F;**
+	 * Generate Markup for list tag
+	 * @method _createListNode
+	 * @protected
+	 * @param index {int} the section index
+	 * @return {Node}
+	 *&#x2F;
+
+	_createListNode : function(
+			&#x2F;* String *&#x2F; item,
+			&#x2F;* boolean *&#x2F; isListItem)
+	{
+		var listNode, anchorNode;
+		if (isListItem) {
+			anchorNode = Node.create(Y
+					.substitute(MultiValueInput.ITEM_REMOVE, {
+						remove_class : REMOVE
+					}));
+			listNode = Node.create(Y.substitute(
+					MultiValueInput.LI_TEMPLATE, {
+						item : item,
+						list_class : LIST
+					}));
+			listNode.appendChild(anchorNode);
+			listNode.addClass(LIST_ITEM);
+		} else {
+			listNode = Node.create(Y.substitute(
+					MultiValueInput.LI_TEMPLATE, {
+						item : item,
+						list_class : LIST
+						}));
+		}
+		return listNode;
+	},
+
+	&#x2F;**
+	 * Generate Markup for div tag
+	 * @method _createDivNode
+	 * @protected
+	 * @return {Node}
+	 *&#x2F;
+
+	_createDivNode : function() {
+		return Node.create(Y.substitute(MultiValueInput.DIV_TEMPLATE, {
+			div_class : DIVCONTENT
+		}));
+	},
+
+	&#x2F;**
+	 * Get the index of remove item
+	 * @method _getListIndex
+	 * @protected
+	 * @param {Node}
+	 * @return {index}
+	 *&#x2F;
+
+	_getListIndex : function(listNode) {
+		var allList=this._ul.get(&quot;children&quot;),size=allList.size();
+		for(var i=0;i&lt;size;i++){
+			if(listNode.compareTo(allList.item(i))){
+				return i;
+			}
+		}
+		return -1;
+	},
+
+	&#x2F;**
+	 * add the item in to the list
+	 * @method _appendItem
+	 * @protected
+	 *&#x2F;
+
+	_appendItem : function() {
+		var val = this._host.get(&quot;value&quot;);
+		this._inputWrapper.insert(this._createListNode(val, true), &quot;before&quot;);
+		this._addValue(val);
+		this._host.set(&quot;value&quot;, &quot;&quot;);
+	},
+
+	&#x2F;**
+	 * remove the item from the list
+	 * @method _removeItem
+	 * @protected
+	 * @param {Node}
+	 *&#x2F;
+
+	_removeItem : function(&#x2F;* Node *&#x2F;selectedListNode, &#x2F;* int *&#x2F; idx) {
+		var index = idx || this._getListIndex(selectedListNode);
+		this._host.focus();
+		selectedListNode.get(&quot;parentNode&quot;)
+				.removeChild(selectedListNode);
+		this._removeValue(index);
+	},
+
+	&#x2F;**
+	 * Add value to value list
+	 * @method _addValue
+	 * @protected
+	 *&#x2F;
+
+	_addValue : function(val) {
+		var values = this.get(&quot;values&quot;);
+		values.push(val);
+		this.set(&quot;values&quot;, values.slice(0));	&#x2F;&#x2F; force change event
+		Y.log(val+&quot; added to the List:&quot;+this.get(&quot;values&quot;),&quot;info&quot;,&quot;MultiValueInput._addValue&quot;);
+	},
+
+	&#x2F;**
+	 * remove value from value list
+	 * @method _removeValue
+	 * @protected
+	 * @param {index}
+	 *&#x2F;
+
+	_removeValue : function(&#x2F;* int *&#x2F; index) {
+		var values = this.get(&quot;values&quot;), val = values[index];
+		values.splice(index,1);
+		this.set(&quot;values&quot;, values.slice(0));	&#x2F;&#x2F; force change event
+		Y.log(val+&quot; removed from the List:&quot;+this.get(&quot;values&quot;),&quot;info&quot;,&quot;MultiValueInput._removeValue&quot;);
+	}
 });
 
 Y.MultiValueInput = MultiValueInput;

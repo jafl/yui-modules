@@ -804,7 +804,7 @@ Y.DateTimeUtils =
 		}
 
 		var t = time.split(self.TIME_FIELD_DELIMITER);
-		if (t.length != 2 || !Y.every(t, validInteger))
+		if (t.length &lt; 2 || 3 &lt; t.length || !Y.every(t, validInteger))
 		{
 			throw Error(&#x27;Unparseable time format.&#x27;);
 		}

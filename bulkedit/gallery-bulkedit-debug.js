@@ -368,17 +368,21 @@ function checkFinished()
 
 	// save results so we can refer to them later
 
-	this._records   = [];
-	this._recordMap = {};
 	var uniqueIdKey = this.get('uniqueIdKey');
 
-	Y.Array.each(response.results, function(value)
+	if (!this._callback.request.out_of_band)
 	{
-		var rec = Y.clone(value, true);
-		this._records.push(rec);
-		this._recordMap[ rec[ uniqueIdKey ] ] = rec;
-	},
-	this);
+		this._records   = [];
+		this._recordMap = {};
+
+		Y.Array.each(response.results, function(value)
+		{
+			var rec = Y.clone(value, true);
+			this._records.push(rec);
+			this._recordMap[ rec[ uniqueIdKey ] ] = rec;
+		},
+		this);
+	}
 
 	// merge in diffs
 
@@ -1356,7 +1360,8 @@ Y.extend(BulkEditor, Y.Widget,
 		var request =
 		{
 			startIndex:  0,
-			resultCount: this.get('ds').getRecordCount()
+			resultCount: this.get('ds').getRecordCount(),
+			out_of_band: true
 		};
 		Y.mix(request, this.get('requestExtra'));
 
@@ -2109,11 +2114,12 @@ Y.extend(BulkEditor, Y.Widget,
 			this);
 		}
 
-		var count     = ds.getRecordCount();
-		var page_size = pg.getRowsPerPage();
+		var count     = ds.getRecordCount(),
+			page_size = pg.getRowsPerPage(),
+			status    = true;
 		for (var i=0; i<count; i++)
 		{
-			var status = true;
+			var page_status = true;
 			Y.Array.each(this.validation_keys, function(key)
 			{
 				var field = this.get('fields')[key];
@@ -2125,7 +2131,7 @@ Y.extend(BulkEditor, Y.Widget,
 				var info = Y.FormManager.validateFromCSSData(this.validation_node);
 				if (info.error)
 				{
-					status = false;
+					page_status = false;
 					return;
 				}
 
@@ -2134,23 +2140,24 @@ Y.extend(BulkEditor, Y.Widget,
 					if (field.validation.regex instanceof RegExp &&
 						!field.validation.regex.test(value))
 					{
-						status = false;
+						page_status = false;
 						return;
 					}
 				}
 			},
 			this);
 
-			if (!status)
+			if (!page_status)
 			{
 				var j = Math.floor(i / page_size);
 				i     = (j+1)*page_size - 1;	// skip to next page
 
 				this.page_status[j] = 'error';
+				status              = false;
 			}
 		}
 
-		return true;
+		return status;
 	},
 
 	/**
