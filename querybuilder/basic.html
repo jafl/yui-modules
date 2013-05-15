@@ -13,6 +13,10 @@
 	<script src="gallery-node-optimizations-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-querybuilder.css" />
 -->
+	<script src="gallery-querybuilder-multiselect-input-debug.js"></script>
+	<script src="gallery-multivalue-input-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-multivalue-input.css" />
+
 	<style type="text/css">
 	#query
 	{
@@ -47,6 +51,7 @@
 
 <div id="controls">
 	<button id="validate">Validate</button>
+	<button id="db-query">Log as DB Query</button>
 </div>
 
 <p class="plug">For a more general way to build an expression, see <a href="http://yuilibrary.com/gallery/show/exprbuilder">Expression Builder</a>.
@@ -60,7 +65,7 @@ YUI({
 //	filter: 'raw', combine: false,
 	gallery: 'gallery-2013.05.02-22-59'
 }).use(
-	'gallery-querybuilder',
+	'gallery-querybuilder', 'gallery-querybuilder-multiselect-input',
 	'autocomplete', 'autocomplete-filters', 'autocomplete-highlighters',
 function(Y)
 {
@@ -99,9 +104,9 @@ function(Y)
 	var var_list =
 	[
 		{
-			name: 'url',
-			type: 'string',
-			text: 'URL',
+			name:       'url',
+			type:       'string',
+			text:       'URL',
 			validation: 'yiv-length:[,3000]',
 			autocomplete:
 			{
@@ -112,15 +117,21 @@ function(Y)
 			}
 		},
 		{
-			name: 'impressions',
-			type: 'number',
-			text: 'Impressions (1000\'s)',
+			name:       'extra-urls',
+			type:       'multiselect-input',
+			text:       'Extra URLs',
+			value_list: url_list
+		},
+		{
+			name:       'impressions',
+			type:       'number',
+			text:       'Impressions (1000\'s)',
 			validation: 'yiv-integer'
 		},
 		{
-			name: 'ctr',
-			type: 'number',
-			text: 'Click-through rate (%)',
+			name:       'ctr',
+			type:       'number',
+			text:       'Click-through rate (%)',
 			validation: 'yiv-decimal:[0,]'
 		},
 		{
@@ -168,7 +179,13 @@ function(Y)
 
 		select:
 		[
-			'EQUALS'
+			'equals'
+		],
+
+		'multiselect-input':
+		[
+			{ value: 'in',     text: 'Is one of' },
+			{ value: 'not-in', text: 'Is NOT one of' }
 		]
 	};
 
@@ -179,6 +196,12 @@ function(Y)
 	// if this is part of a larger form.
 
 	Y.on('click', query.validateFields, '#validate', query);
+
+	Y.on('click', function()
+	{
+		console.log(query.toDatabaseQuery());
+	},
+	'#db-query');
 });
 </script>
 

@@ -1227,6 +1227,19 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/gallery-querybuilder-multiselect-input/js/multiselect-input.js": {
+            "name": "src/gallery-querybuilder-multiselect-input/js/multiselect-input.js",
+            "modules": {
+                "gallery-querybuilder-multiselect-input": 1
+            },
+            "classes": {
+                "QueryBuilder.MultiselectInput": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "QueryBuilder": 1
+            }
+        },
         "src/gallery-quickedit/js/QuickEdit.js": {
             "name": "src/gallery-quickedit/js/QuickEdit.js",
             "modules": {
@@ -2071,20 +2084,41 @@
         },
         "gallery-querybuilder": {
             "name": "gallery-querybuilder",
-            "submodules": {},
+            "submodules": {
+                "gallery-querybuilder-multiselect-input": 1
+            },
             "classes": {
                 "QueryBuilder": 1,
                 "QueryBuilder.Select": 1,
-                "QueryBuilder.String": 1
+                "QueryBuilder.String": 1,
+                "QueryBuilder.MultiselectInput": 1
             },
             "fors": {},
             "namespaces": {
                 "QueryBuilder": 1
             },
             "tag": "module",
-            "file": "src/gallery-querybuilder/js/String.js",
-            "line": 5,
-            "description": "Widget which allows user to build a list of query criteria, e.g., for\nsearching.  All the conditions are either AND'ed or OR'ed.  For a more\ngeneral query builder, see gallery-exprbuilder."
+            "file": "src/gallery-querybuilder-multiselect-input/js/multiselect-input.js",
+            "line": 6,
+            "description": "Widget which allows user to build a list of query criteria, e.g., for\nsearching.  All the conditions are either AND'ed or OR'ed.  For a more\ngeneral query builder, see gallery-exprbuilder.",
+            "itemtype": "main"
+        },
+        "gallery-querybuilder-multiselect-input": {
+            "name": "gallery-querybuilder-multiselect-input",
+            "submodules": {},
+            "classes": {
+                "QueryBuilder.MultiselectInput": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {
+                "QueryBuilder": 1
+            },
+            "module": "gallery-querybuilder",
+            "namespace": "",
+            "file": "src/gallery-querybuilder-multiselect-input/js/multiselect-input.js",
+            "line": 6,
+            "description": "Plugin for accepting multiple strings from a specified list.  In the\n`var_list` configuration, specify `value_list` as a list of strings.\nAll the operators specified for this plugin are displayed on a menu.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ operator_name, value_list ]`, where\n`value_list` is an array of strings.\n\nIf you specify `autocomplete.containerClassName` in the `var_list`\nconfiguration, this CSS class will be added to the container generated\nby the autocomplete plugin."
         },
         "gallery-quickedit": {
             "name": "gallery-quickedit",
@@ -4687,7 +4721,7 @@
             "namespace": "QueryBuilder",
             "file": "src/gallery-querybuilder/js/Select.js",
             "line": 5,
-            "description": "<p>Plugin for choosing from a list of values.  In the\n<code>var_list</code> configuration, specify <code>value_list</code> as\na list of objects, each defining <code>value</code> and\n<code>text</code>.</p>\n\n<p>There must be exactly one operator specified for this plugin.</p>\n\n<p>The <code>value</code> argument passed to\n<code>QueryBuilder.appendNew()</code> must be a string: the value of the\nmenu item to select.</p>"
+            "description": "Plugin for choosing from a list of values.  In the `var_list`\nconfiguration, specify `value_list` as a list of objects, each defining\n`value` and `text`.\n\nThere must be exactly one operator specified for this plugin.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be a\nstring: the value of the menu item to select."
         },
         "QueryBuilder.String": {
             "name": "QueryBuilder.String",
@@ -4701,7 +4735,22 @@
             "namespace": "QueryBuilder",
             "file": "src/gallery-querybuilder/js/String.js",
             "line": 5,
-            "description": "<p>Plugin for accepting a string or number.  All the operators specified\nfor this plugin are displayed on a menu.</p>\n\n<p>In the <code>var_list</code> configuration, specify\n<code>validation</code> to provide CSS classes that will be interpreted\nby <code>Y.FormManager</code>.</p>\n\n<p>To enable autocomplete, define <code>autocomplete</code> in the\n<code>var_list</code> configuration.  The object will be used as the\nconfiguration for <code>Y.Plugin.AutoComplete</code>.  If you specify\n<code>autocomplete.containerClassName</code>, this CSS class will be\nadded to the container generated by the autocomplete plugin.</p>\n\n<p>The <code>value</code> argument passed to\n<code>QueryBuilder.appendNew()</code> must be an array with two\nelements: <code>[ operator_name, value ]</code>.</p>"
+            "description": "Plugin for accepting a string or number.  All the operators specified\nfor this plugin are displayed on a menu.\n\nIn the `var_list` configuration, specify `validation` to provide CSS\nclasses that will be interpreted by `Y.FormManager`.\n\nTo enable autocomplete, define `autocomplete` in the `var_list`\nconfiguration.  The object will be used as the configuration for\n`Y.Plugin.AutoComplete`.  If you specify\n`autocomplete.containerClassName`, this CSS class will be added to the\ncontainer generated by the autocomplete plugin.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ operator_name, value ]`."
+        },
+        "QueryBuilder.MultiselectInput": {
+            "name": "QueryBuilder.MultiselectInput",
+            "shortname": "QueryBuilder.MultiselectInput",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-querybuilder",
+            "submodule": "gallery-querybuilder-multiselect-input",
+            "namespace": "QueryBuilder",
+            "file": "src/gallery-querybuilder-multiselect-input/js/multiselect-input.js",
+            "line": 6,
+            "description": "Plugin for accepting multiple strings from a specified list.  In the\n`var_list` configuration, specify `value_list` as a list of strings.\nAll the operators specified for this plugin are displayed on a menu.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ operator_name, value_list ]`, where\n`value_list` is an array of strings.\n\nIf you specify `autocomplete.containerClassName` in the `var_list`\nconfiguration, this CSS class will be added to the container generated\nby the autocomplete plugin."
         },
         "Plugin.DataTableQuickEdit": {
             "name": "Plugin.DataTableQuickEdit",
@@ -18126,7 +18175,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 109,
+            "line": 110,
             "description": "The prompt displayed when a new item is added to the query.",
             "itemtype": "attribute",
             "name": "chooseVarPrompt",
@@ -18138,7 +18187,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 124,
+            "line": 125,
             "description": "All generated form field names start with this prefix.  This avoids\nconflicts if you have more than one QueryBuilder on a page.",
             "itemtype": "attribute",
             "name": "fieldPrefix",
@@ -18150,7 +18199,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 140,
+            "line": 141,
             "description": "Configuration passed to plugins when they are constructed.",
             "itemtype": "attribute",
             "name": "pluginConfig",
@@ -18162,7 +18211,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 156,
+            "line": 157,
             "itemtype": "event",
             "name": "queryChanged",
             "description": "Fires when the query is modified.",
@@ -18178,7 +18227,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 266,
+            "line": 267,
             "description": "Reset the query.",
             "itemtype": "method",
             "name": "reset",
@@ -18199,7 +18248,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 302,
+            "line": 303,
             "description": "Append a new query condition to the table.",
             "itemtype": "method",
             "name": "appendNew",
@@ -18224,7 +18273,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 427,
+            "line": 428,
             "description": "Set the value of the specified row.",
             "itemtype": "method",
             "name": "update",
@@ -18245,7 +18294,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 523,
+            "line": 524,
             "description": "Removes the specified row.",
             "itemtype": "method",
             "name": "remove",
@@ -18265,7 +18314,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 586,
+            "line": 587,
             "description": "Validate the fields in each row.",
             "itemtype": "method",
             "name": "validateFields",
@@ -18278,7 +18327,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 623,
+            "line": 624,
             "itemtype": "method",
             "name": "clearFieldMessages",
             "class": "QueryBuilder",
@@ -18286,7 +18335,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 641,
+            "line": 642,
             "description": "Display a message for the specified field.",
             "itemtype": "method",
             "name": "displayFieldMessage",
@@ -18322,7 +18371,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 668,
+            "line": 669,
             "description": "Returns plugin used for the specified row, if any.",
             "itemtype": "method",
             "name": "getPlugin",
@@ -18342,7 +18391,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 681,
+            "line": 682,
             "itemtype": "method",
             "name": "toDatabaseQuery",
             "return": {
@@ -18354,7 +18403,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 710,
+            "line": 711,
             "itemtype": "method",
             "name": "_createContainer",
             "access": "protected",
@@ -18368,7 +18417,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 720,
+            "line": 721,
             "description": "Fires the queryChanged event.",
             "itemtype": "method",
             "name": "_notifyChanged",
@@ -18379,7 +18428,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 735,
+            "line": 736,
             "itemtype": "method",
             "name": "variableName",
             "params": [
@@ -18398,7 +18447,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 750,
+            "line": 751,
             "itemtype": "method",
             "name": "_variablesMenu",
             "access": "protected",
@@ -18419,7 +18468,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 771,
+            "line": 772,
             "itemtype": "method",
             "name": "_rowControls",
             "access": "protected",
@@ -18433,7 +18482,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 797,
+            "line": 798,
             "description": "<p>Environment information.</p>\n\n<dl>\n<dt>has_bubble_problem</dt>\n<dd>True if change events from select elements do not bubble.</dd>\n</dl>",
             "itemtype": "property",
             "name": "Env",
