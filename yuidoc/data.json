@@ -2118,7 +2118,7 @@
             "namespace": "",
             "file": "src/gallery-querybuilder-multiselect-input/js/multiselect-input.js",
             "line": 6,
-            "description": "Plugin for accepting multiple strings from a specified list.  In the\n`var_list` configuration, specify `value_list` as a list of strings.\nAll the operators specified for this plugin are displayed on a menu.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ operator_name, value_list ]`, where\n`value_list` is an array of strings.\n\nIf you specify `autocomplete.containerClassName` in the `var_list`\nconfiguration, this CSS class will be added to the container generated\nby the autocomplete plugin."
+            "description": "Plugin for accepting multiple strings from a specified list.  In the\n`var_list` configuration, specify `value_list` as a list of strings.  If\nthere is more than one operator specified for this plugin, then they are\ndisplayed on a menu.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ operator_name, value_list ]`, where\n`value_list` is an array of strings.\n\nIf you specify `autocomplete.containerClassName` in the `var_list`\nconfiguration, this CSS class will be added to the container generated\nby the autocomplete plugin."
         },
         "gallery-quickedit": {
             "name": "gallery-quickedit",
@@ -4750,7 +4750,7 @@
             "namespace": "QueryBuilder",
             "file": "src/gallery-querybuilder-multiselect-input/js/multiselect-input.js",
             "line": 6,
-            "description": "Plugin for accepting multiple strings from a specified list.  In the\n`var_list` configuration, specify `value_list` as a list of strings.\nAll the operators specified for this plugin are displayed on a menu.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ operator_name, value_list ]`, where\n`value_list` is an array of strings.\n\nIf you specify `autocomplete.containerClassName` in the `var_list`\nconfiguration, this CSS class will be added to the container generated\nby the autocomplete plugin."
+            "description": "Plugin for accepting multiple strings from a specified list.  In the\n`var_list` configuration, specify `value_list` as a list of strings.  If\nthere is more than one operator specified for this plugin, then they are\ndisplayed on a menu.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ operator_name, value_list ]`, where\n`value_list` is an array of strings.\n\nIf you specify `autocomplete.containerClassName` in the `var_list`\nconfiguration, this CSS class will be added to the container generated\nby the autocomplete plugin."
         },
         "Plugin.DataTableQuickEdit": {
             "name": "Plugin.DataTableQuickEdit",
@@ -10151,7 +10151,7 @@
         {
             "file": "src/gallery-formmgr-css-validation/js/CSSValidation.js",
             "line": 66,
-            "description": "<p>Map of localizable strings used by pre-validation.</p>\n\n<dl>\n<dt>validation_error</dt>\n<dd>Displayed in <code>status_node</code> by <code>notifyErrors()</code> when pre-validation fails.</dd>\n<dt>required_string</dt>\n<dd>Displayed when <code>yiv-required</code> fails on an input field.</dd>\n<dt>required_menu</dt>\n<dd>Displayed when <code>yiv-required</code> fails on a select element.</dd>\n<dt>length_too_short, length_too_long, length_out_of_range</dt>\n<dd>Displayed when <code>yiv-length</code> fails on an input field.</dd>\n<dt>integer, integer_too_small, integer_too_large, integer_out_of_range</dt>\n<dd>Displayed when <code>yiv-integer</code> fails on an input field.</dd>\n<dt>decimal, decimal_too_small, decimal_too_large, decimal_out_of_range</dt>\n<dd>Displayed when <code>yiv-decimal</code> fails on an input field.</dd>\n</dl>",
+            "description": "<p>Map of localizable strings used by pre-validation.</p>\n\n<dl>\n<dt>validation_error</dt>\n<dd>Displayed in `status_node` by `notifyErrors()` when pre-validation fails.</dd>\n<dt>required_string</dt>\n<dd>Displayed when `yiv-required` fails on an input field.</dd>\n<dt>required_menu</dt>\n<dd>Displayed when `yiv-required` fails on a select element.</dd>\n<dt>length_too_short, length_too_long, length_out_of_range</dt>\n<dd>Displayed when `yiv-length` fails on an input field.</dd>\n<dt>integer, integer_too_small, integer_too_large, integer_out_of_range</dt>\n<dd>Displayed when `yiv-integer` fails on an input field.</dd>\n<dt>decimal, decimal_too_small, decimal_too_large, decimal_out_of_range</dt>\n<dd>Displayed when `yiv-decimal` fails on an input field.</dd>\n</dl>",
             "itemtype": "property",
             "name": "Strings",
             "type": "{Object}",
@@ -18501,6 +18501,19 @@
             "static": 1,
             "class": "QueryBuilder",
             "module": "gallery-querybuilder"
+        },
+        {
+            "file": "src/gallery-querybuilder-multiselect-input/js/multiselect-input.js",
+            "line": 34,
+            "description": "<p>Map of localizable strings.</p>\n\n<dl>\n<dt>required</dt>\n<dd>Displayed when the field is left empty.</dd>\n</dl>",
+            "itemtype": "property",
+            "name": "Strings",
+            "type": "{Object}",
+            "static": 1,
+            "class": "QueryBuilder.MultiselectInput",
+            "module": "gallery-querybuilder",
+            "submodule": "gallery-querybuilder-multiselect-input",
+            "namespace": "QueryBuilder"
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",

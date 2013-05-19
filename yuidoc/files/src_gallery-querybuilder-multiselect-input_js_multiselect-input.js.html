@@ -437,8 +437,9 @@
 
 &#x2F;**********************************************************************
  * Plugin for accepting multiple strings from a specified list.  In the
- * &#x60;var_list&#x60; configuration, specify &#x60;value_list&#x60; as a list of strings.
- * All the operators specified for this plugin are displayed on a menu.
+ * &#x60;var_list&#x60; configuration, specify &#x60;value_list&#x60; as a list of strings.  If
+ * there is more than one operator specified for this plugin, then they are
+ * displayed on a menu.
  * 
  * The &#x60;value&#x60; argument passed to &#x60;QueryBuilder.appendNew()&#x60; must be an
  * array with two elements: &#x60;[ operator_name, value_list ]&#x60;, where
@@ -462,6 +463,23 @@ Y.QueryBuilder.MultiselectInput = function(
 	this.val_input_name_pattern = config.field_prefix + &#x27;query_val_{i}&#x27;;
 };
 
+&#x2F;**
+ * &lt;p&gt;Map of localizable strings.&lt;&#x2F;p&gt;
+ * 
+ * &lt;dl&gt;
+ * &lt;dt&gt;required&lt;&#x2F;dt&gt;
+ * &lt;dd&gt;Displayed when the field is left empty.&lt;&#x2F;dd&gt;
+ * &lt;&#x2F;dl&gt;
+ * 
+ * @property Strings
+ * @type {Object}
+ * @static
+ *&#x2F;
+Y.QueryBuilder.MultiselectInput.Strings =
+{
+	required: &#x27;Please enter at least one value.&#x27;
+};
+
 Y.QueryBuilder.MultiselectInput.prototype =
 {
 	create: function(
@@ -470,26 +488,34 @@ Y.QueryBuilder.MultiselectInput.prototype =
 		&#x2F;* array *&#x2F;		op_list,
 		&#x2F;* array *&#x2F;		value)
 	{
-		var op_cell = this.qb._createContainer();
-		op_cell.set(&#x27;className&#x27;, this.qb.getClassName(&#x27;operator&#x27;));
-		op_cell.set(&#x27;innerHTML&#x27;, this._operationsMenu(this.operationName(query_index)));
-		this.op_menu = op_cell.one(&#x27;select&#x27;);
-
-		var options = Y.Node.getDOMNode(this.op_menu).options;
-		for (var i=0; i&lt;op_list.length; i++)
-		{
-			options[i] = new Option(op_list[i].text, op_list[i].value);
-		}
-
 		value = value || [&#x27;&#x27;, null];
-		if (value[0])
-		{
-			this.op_menu.set(&#x27;value&#x27;, value[0]);
-		}
 
-		if (Y.QueryBuilder.Env.has_bubble_problem)
+		if (op_list.length &gt; 1)
 		{
-			this.op_menu.on(&#x27;change&#x27;, this.qb._notifyChanged, this.qb);
+			var op_cell = this.qb._createContainer();
+			op_cell.set(&#x27;className&#x27;, this.qb.getClassName(&#x27;operator&#x27;));
+			op_cell.set(&#x27;innerHTML&#x27;, this._operationsMenu(this.operationName(query_index)));
+			this.op_menu = op_cell.one(&#x27;select&#x27;);
+
+			var options = Y.Node.getDOMNode(this.op_menu).options;
+			for (var i=0; i&lt;op_list.length; i++)
+			{
+				options[i] = new Option(op_list[i].text, op_list[i].value);
+			}
+
+			if (value[0])
+			{
+				this.op_menu.set(&#x27;value&#x27;, value[0]);
+			}
+
+			if (Y.QueryBuilder.Env.has_bubble_problem)
+			{
+				this.op_menu.on(&#x27;change&#x27;, this.qb._notifyChanged, this.qb);
+			}
+		}
+		else
+		{
+			this.db_query_equals = op_list[0];
 		}
 
 		var value_cell = this.qb._createContainer();
@@ -557,7 +583,10 @@ Y.QueryBuilder.MultiselectInput.prototype =
 	updateName: function(
 		&#x2F;* int *&#x2F;	new_index)
 	{
-		this.op_menu.setAttribute(&#x27;name&#x27;, this.operationName(new_index));
+		if (this.op_menu)
+		{
+			this.op_menu.setAttribute(&#x27;name&#x27;, this.operationName(new_index));
+		}
 		this.value_input.setAttribute(&#x27;name&#x27;, this.valueName(new_index));
 	},
 
@@ -567,12 +596,29 @@ Y.QueryBuilder.MultiselectInput.prototype =
 &#x2F;&#x2F;		&#x2F;* int *&#x2F;	query_index,
 &#x2F;&#x2F;		&#x2F;* map *&#x2F;	data)
 &#x2F;&#x2F;	{
-&#x2F;&#x2F;		this.op_menu.set(&#x27;value&#x27;, data[ this.operationName(query_index) ]);
+&#x2F;&#x2F;		if (this.op_menu)
+&#x2F;&#x2F;		{
+&#x2F;&#x2F;			this.op_menu.set(&#x27;value&#x27;, data[ this.operationName(query_index) ]);
+&#x2F;&#x2F;		}
 &#x2F;&#x2F;	},
 
 	toDatabaseQuery: function()
 	{
-		return [ [ this.op_menu.get(&#x27;value&#x27;), this.value_input.mvi.get(&#x27;values&#x27;) ] ];
+		var op = this.op_menu ? this.op_menu.get(&#x27;value&#x27;) : this.db_query_equals;
+		return [ [ op, this.value_input.mvi.get(&#x27;values&#x27;) ] ];
+	},
+
+	validate: function()
+	{
+		if (this.value_input.mvi.get(&#x27;values&#x27;).length === 0)
+		{
+			this.qb.displayFieldMessage(this.value_input, Y.QueryBuilder.MultiselectInput.Strings.required, &#x27;error&#x27;);
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	},
 
 	&#x2F;* *********************************************************************

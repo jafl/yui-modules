@@ -425,7 +425,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "gallery-querybuilder-multiselect-input",
             "name": "gallery-querybuilder-multiselect-input",
-            "description": "Plugin for accepting multiple strings from a specified list.  In the\n`var_list` configuration, specify `value_list` as a list of strings.\nAll the operators specified for this plugin are displayed on a menu.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ operator_name, value_list ]`, where\n`value_list` is an array of strings.\n\nIf you specify `autocomplete.containerClassName` in the `var_list`\nconfiguration, this CSS class will be added to the container generated\nby the autocomplete plugin."
+            "description": "Plugin for accepting multiple strings from a specified list.  In the\n`var_list` configuration, specify `value_list` as a list of strings.  If\nthere is more than one operator specified for this plugin, then they are\ndisplayed on a menu.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ operator_name, value_list ]`, where\n`value_list` is an array of strings.\n\nIf you specify `autocomplete.containerClassName` in the `var_list`\nconfiguration, this CSS class will be added to the container generated\nby the autocomplete plugin."
         },
         {
             "displayName": "gallery-quickedit",

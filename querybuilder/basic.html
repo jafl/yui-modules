@@ -62,13 +62,15 @@
 
 <script type="text/javascript">
 YUI({
-//	filter: 'raw', combine: false,
+	filter: 'raw', combine: false,
 	gallery: 'gallery-2013.05.02-22-59'
 }).use(
 	'gallery-querybuilder', 'gallery-querybuilder-multiselect-input',
 	'autocomplete', 'autocomplete-filters', 'autocomplete-highlighters',
 function(Y)
 {
+	Y.QueryBuilder.plugin_mapping[ 'my-simple-multiselect-input' ] = Y.QueryBuilder.MultiselectInput;
+
 	var url_list =
 	[
 		'autos.yahoo.com',
@@ -120,6 +122,12 @@ function(Y)
 			name:       'extra-urls',
 			type:       'multiselect-input',
 			text:       'Extra URLs',
+			value_list: url_list
+		},
+		{
+			name:       'more-urls',
+			type:       'my-simple-multiselect-input',
+			text:       'More URLs',
 			value_list: url_list
 		},
 		{
@@ -186,6 +194,11 @@ function(Y)
 		[
 			{ value: 'in',     text: 'Is one of' },
 			{ value: 'not-in', text: 'Is NOT one of' }
+		],
+
+		'my-simple-multiselect-input':
+		[
+			'is'
 		]
 	};
 
