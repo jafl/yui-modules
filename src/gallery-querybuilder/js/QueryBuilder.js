@@ -611,7 +611,7 @@ Y.extend(QueryBuilder, Y.Widget,
 			},
 			this);
 
-			if ((!info || info.keepGoing) && row.plugin && Y.Lang.isFunction(row.plugin.validate))
+			if ((!info || !info.error) && row.plugin && Y.Lang.isFunction(row.plugin.validate))
 			{
 				status = row.plugin.validate() && status;	// status last to guarantee call to validate()
 			}
