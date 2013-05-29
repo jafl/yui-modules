@@ -4,7 +4,7 @@
 	<title>YUI 3 DateTime Examples</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-	<script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
+	<script src="http://yui.yahooapis.com/3.10.1/build/yui/yui-min.js"></script>
 
 	<script src="gallery-datetime-range-debug.js"></script>
 	<script src="gallery-datetime-debug.js"></script>
@@ -60,7 +60,7 @@
 <script type="text/javascript">
 YUI({
 	filter: 'raw', combine: false,
-	gallery: 'gallery-2013.05.02-22-59'
+	gallery: 'gallery-2013.05.29-23-38'
 }).use(
 	'gallery-datetime-range', 'gallery-input-calendar-sync', 'datatype-date-math',
 	'gallery-timepicker',
@@ -81,7 +81,7 @@ function(Y)
 	});
 	s_cal.render('#s-calendar');
 
-	Y.one('#s-date').plug(Y.Plugin.InputCalendarSync,
+	Y.one('#s-date').plug(Y.Plugin.InputCalendarSync,		// must be before Y.DateTime
 	{
 		calendar:   s_cal,
 		allowBlank: false
@@ -103,7 +103,7 @@ function(Y)
 	});
 	e_cal.render('#e-calendar');
 
-	Y.one('#e-date').plug(Y.Plugin.InputCalendarSync,
+	Y.one('#e-date').plug(Y.Plugin.InputCalendarSync,		// must be before Y.DateTime
 	{
 		calendar:   e_cal,
 		allowBlank: false
@@ -131,7 +131,7 @@ function(Y)
 	});
 	s_cal2.render('#s-calendar2');
 
-	Y.one('#s-date2').plug(Y.Plugin.InputCalendarSync,
+	Y.one('#s-date2').plug(Y.Plugin.InputCalendarSync,		// must be before Y.DateTime
 	{
 		calendar:   s_cal2,
 		allowBlank: false
@@ -169,7 +169,7 @@ function(Y)
 	});
 	e_cal2.render('#e-calendar2');
 
-	Y.one('#e-date2').plug(Y.Plugin.InputCalendarSync,
+	Y.one('#e-date2').plug(Y.Plugin.InputCalendarSync,		// must be before Y.DateTime
 	{
 		calendar:   e_cal2,
 		allowBlank: false
