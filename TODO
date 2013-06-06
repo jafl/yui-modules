@@ -2,12 +2,17 @@ date/time
 	enforce date & time formats in DateTime.js - don't rely on Y.Calendar
 		enforceDateTimeLimits() gives up because this.getDateTime() returns false
 
+		w/out calendar:
+			need to store last valid date, so can revert if new value is invalid
+			DateTime doesn't know about calendar, so needs to work either way
+
 		type "3a" in time field or in date field w/out calendar
 		range: end is not enforcing time portion of blackout range
 
 	option to provide starting set of rules and filterFn
 		how does "all" interact with individual rules?
 
+	implement setDateTime()
 	test resetDateTime()
 
 	test with gallery-timepicker
