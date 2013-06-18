@@ -55,6 +55,17 @@
 			<div id="e-calendar2"></div>
 		</div>
 	</fieldset>
+	<fieldset>
+		<legend>Date w/out calendar</legend>
+		<div class="s-date-container">
+			<label for="s-date3">Start date:</label><input type="text" id="s-date3" />
+			<button id="show-s-date3" class="log-to-console">Print to Console</button>
+		</div>
+		<div class="e-date-container">
+			<label for="e-date3">End date:</label><input type="text" id="e-date3" />
+			<button id="show-e-date3" class="log-to-console">Print to Console</button>
+		</div>
+	</fieldset>
 </form>
 
 <script type="text/javascript">
@@ -178,6 +189,7 @@ function(Y)
 	dt_map.e_date2 = new Y.DateTime(
 	{
 		dateInput:       '#e-date2',
+		timeInput:       '#e-time2',
 		defaultDateTime: Y.Date.addDays(now, 2)
 	});
 
@@ -185,6 +197,28 @@ function(Y)
 	{
 		startDateTime: dt_map.s_date2,
 		endDateTime:   dt_map.e_date2
+	});
+
+	// date w/out calendar
+
+	dt_map.s_date3 = new Y.DateTime(
+	{
+		dateInput:       '#s-date3',
+		defaultDateTime: now,
+		minDateTime:     new Date(today.getTime() - delta),
+		maxDateTime:     new Date(today.getTime() + delta - 60000)
+	});
+
+	dt_map.e_date3 = new Y.DateTime(
+	{
+		dateInput:       '#e-date3',
+		defaultDateTime: Y.Date.addDays(now, 2)
+	});
+
+	new Y.DateTimeRange(
+	{
+		startDateTime: dt_map.s_date3,
+		endDateTime:   dt_map.e_date3
 	});
 
 	// printout
