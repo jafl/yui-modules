@@ -1,10 +1,13 @@
 date/time
-	option to provide starting set of rules and filterFn
-		how does "all" interact with individual rules?
+	test allowBlank with range
+		how does end date react when start date is blank?
+		should treat it as startDateTime = minDateTime
 
-	implement setDateTime()
+	test setDateTime()
 	test resetDateTime()
+		if !allowBlank and no default date/time, throw error
 	test clearDateTime()
+		if !allowBlank, call resetDateTime()
 
 	test with gallery-timepicker
 		render in Y.Overlay
@@ -15,7 +18,11 @@ date/time
 	test with date format: d/m/y
 		probably incompatible with type="date" in Chrome
 
-	setting type="time" to zero blanks it instead of setting to 12:00AM
+	option to provide starting set of rules and filterFn
+		how does "all" interact with individual rules?
+
+	Chrome annoyance:
+		setting <input type="time"> to zero blanks it instead of setting to 12:00AM
 
 date/time range
 	test shifting min/max by enough so there is no overlap between orig and new ranges
