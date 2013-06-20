@@ -316,7 +316,7 @@ function enforceDateTimeLimits(
 		}
 		else if (date_len > 0 && this.get('timeInput').get('value').length === 0)
 		{
-			this.get('timeInput').set('value', '0:00');		// recursive
+			this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(this.get('blankTime')));		// recursive
 			return;
 		}
 	}
@@ -687,11 +687,8 @@ Y.extend(DateTime, Y.Base,
 		/* object/string */	container,
 		/* map */			config)
 	{
-		var date_input = this.get('dateInput');
-		date_input.on('change', enforceDateTimeLimits, this);
-		date_input.after('valueSet', checkEnforceDateTimeLimits, this);
-
-		var time_input = this.get('timeInput');
+		var date_input = this.get('dateInput'),
+			time_input = this.get('timeInput');
 		if (!time_input)
 		{
 			time_input = Y.Node.create('<input type="hidden"></input>');
@@ -699,8 +696,6 @@ Y.extend(DateTime, Y.Base,
 			time_input.set('value', Y.DateTimeUtils.formatTime(this.get('blankTime')));
 			var created_time_input = true;
 		}
-		time_input.on('change', enforceDateTimeLimits, this);
-		time_input.after('valueSet', checkEnforceDateTimeLimits, this);
 
 		var default_date_time = this.get('defaultDateTime');
 		if (default_date_time)
@@ -739,6 +734,14 @@ Y.extend(DateTime, Y.Base,
 		}
 
 		// changes
+
+		date_input.on('change', enforceDateTimeLimits, this);
+		date_input.after('valueSet', checkEnforceDateTimeLimits, this);
+
+		time_input.on('change', enforceDateTimeLimits, this);
+		time_input.after('valueSet', checkEnforceDateTimeLimits, this);
+
+		enforceDateTimeLimits.call(this);
 
 		function updateLimit(key, e)
 		{
