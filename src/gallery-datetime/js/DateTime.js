@@ -826,8 +826,8 @@ Y.extend(DateTime, Y.Base,
 		if (date_time)
 		{
 			this.ignore_value_set = true;
-			date_input.set('value', Y.DateTimeUtils.formatDate(default_date_time));
-			time_input.set('value', Y.DateTimeUtils.formatTime(default_date_time));
+			this.get('dateInput').set('value', Y.DateTimeUtils.formatDate(date_time));
+			this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(date_time));
 			this.ignore_value_set = false;
 
 			enforceDateTimeLimits.call(this);
