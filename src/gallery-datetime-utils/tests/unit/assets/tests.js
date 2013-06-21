@@ -131,13 +131,17 @@ YUI.add('gallery-datetime-utils-tests', function(Y) {
 
 			check(Y.DateTimeUtils.parseTime('14:05'));
 			check(Y.DateTimeUtils.parseTime('14:5'));
-			check(Y.DateTimeUtils.parseTime('2:05 PM'));
+			check(Y.DateTimeUtils.parseTime('2:05PM'));
 
 			var result = Y.DateTimeUtils.parseTime('2:05 AM');
 			Y.Assert.areSame(2, result.hour);
 			Y.Assert.areSame(5, result.minute);
 
 			check(Y.DateTimeUtils.parseTime('2:05:15 PM'));
+
+			var t = Y.DateTimeUtils.parseTime('10AM');
+			Y.Assert.areSame(10, t.hour);
+			Y.Assert.areSame(0, t.minute);
 		},
 
 		testParseTimeInvalidValue: function()

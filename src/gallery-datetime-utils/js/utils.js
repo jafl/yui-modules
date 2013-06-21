@@ -364,19 +364,26 @@ Y.DateTimeUtils =
 			return time;
 		}
 
-		var offset = 0;
+		var offset = 0,
+			ampm   = false;
 		if (time.indexOf(self.AM_STRING) > 0)
 		{
+			ampm = true;
 			time = Y.Lang.trim(time.replace(self.AM_STRING, ''));
 		}
 		else if (time.indexOf(self.PM_STRING) > 0)
 		{
+			ampm = true;
 			time   = Y.Lang.trim(time.replace(self.PM_STRING, ''));
 			offset = 12;
 		}
 
 		var t = time.split(self.TIME_FIELD_DELIMITER);
-		if (t.length < 2 || 3 < t.length || !Y.every(t, validInteger))
+		if (t.length == 1 && ampm)
+		{
+			t[1] = 0;
+		}
+		else if (t.length < 2 || 3 < t.length || !Y.every(t, validInteger))
 		{
 			throw Error('Unparseable time format.');
 		}
