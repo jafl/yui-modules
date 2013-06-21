@@ -320,7 +320,8 @@ function enforceDateTimeLimits(
 			return;
 		}
 	}
-	else if (!date && this.prev_date_time)
+
+	if (!date && this.prev_date_time)
 	{
 		date = Y.clone(this.prev_date_time);
 		this.ignore_value_set = true;
