@@ -124,7 +124,7 @@ Y.extend(InputCalendarSync, Y.Plugin.Base,
 	{
 		var host = this.get('host');
 
-		this.handle =
+		this.handle_list =
 		[
 			host.on('change', syncFromInput, this),
 			host.on('valueSet', syncFromInput, this),
@@ -138,9 +138,7 @@ Y.extend(InputCalendarSync, Y.Plugin.Base,
 
 	destructor: function()
 	{
-		this.change_handle.detach();
-		this.set_handle.detach();
-		this.cal_handle.detach();
+		Y.Array.invoke(this.handle_list, 'detach');
 	}
 });
 

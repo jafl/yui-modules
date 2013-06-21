@@ -18,6 +18,8 @@
 
 <h1><a href="http://yuilibrary.com/gallery/show/datetime">YUI 3 DateTime</a> Examples</h1>
 
+<p><a href="/yui-modules/datetime/?time=12hr">Test with 12 hour time (AM/PM)</a></p>
+<p><a href="/yui-modules/datetime/?date=US">Test with US date format</a></p>
 <p><a href="../yuidoc/modules/gallery-datetime.html">Show me the documentation</a></p>
 <p><a href="/yui-modules/">Back to project list</a></p>
 
@@ -26,31 +28,73 @@
 		<legend>Date</legend>
 		<label for="date">Date:</label><input type="text" id="date" />
 		<button id="show-date" class="log-to-console">Print to Console</button>
+		<button id="set-date" class="set-date">Set Date/Time</button>
+		<button id="reset-date" class="reset-date">Reset Date/Time</button>
+		<button id="clear-date" class="clear-date">Clear Date/Time</button>
 		<div id="calendar"></div>
 	</fieldset>
 	<fieldset>
 		<legend>Date allowing blank</legend>
 		<label for="date2">Date:</label><input type="text" id="date2" placeholder="No date" />
 		<button id="show-date2" class="log-to-console">Print to Console</button>
+		<button id="set-date2" class="set-date">Set Date/Time</button>
+		<button id="reset-date2" class="reset-date">Reset Date/Time</button>
+		<button id="clear-date2" class="clear-date">Clear Date/Time</button>
 		<div id="calendar2"></div>
 	</fieldset>
 	<fieldset>
 		<legend>Date &amp; Time</legend>
 		<label for="date3">Date/Time:</label><input type="text" id="date3" /> <input type="text" id="time3" />
 		<button id="show-date3" class="log-to-console">Print to Console</button>
-		<button id="change-blackouts">Change Blackouts</button>
+		<button id="set-date3" class="set-date">Set Date/Time</button>
+		<button id="reset-date3" class="reset-date">Reset Date/Time</button>
+		<button id="clear-date3" class="clear-date">Clear Date/Time</button>
+		<button id="change-blackouts3">Change Blackouts</button>
 		<div id="calendar3"></div>
+	</fieldset>
+	<fieldset>
+		<legend>Date &amp; Time allowing blank</legend>
+		<label for="date7">Date/Time:</label><input type="text" id="date7" placeholder="No date" /> <input type="text" id="time7" placeholder="No time" />
+		<button id="show-date7" class="log-to-console">Print to Console</button>
+		<button id="set-date7" class="set-date">Set Date/Time</button>
+		<button id="reset-date7" class="reset-date">Reset Date/Time</button>
+		<button id="clear-date7" class="clear-date">Clear Date/Time</button>
+		<button id="change-blackouts7">Change Blackouts</button>
+		<div id="calendar7"></div>
 	</fieldset>
 	<fieldset>
 		<legend>Date w/out calendar</legend>
 		<label for="date4">Date:</label><input type="text" id="date4" />
 		<button id="show-date4" class="log-to-console">Print to Console</button>
+		<button id="set-date4" class="set-date">Set Date/Time</button>
+		<button id="reset-date4" class="reset-date">Reset Date/Time</button>
+		<button id="clear-date4" class="clear-date">Clear Date/Time</button>
+	</fieldset>
+	<fieldset>
+		<legend>Date w/out calendar allowing blank</legend>
+		<label for="date8">Date:</label><input type="text" id="date8" placeholder="No date" />
+		<button id="show-date8" class="log-to-console">Print to Console</button>
+		<button id="set-date8" class="set-date">Set Date/Time</button>
+		<button id="reset-date8" class="reset-date">Reset Date/Time</button>
+		<button id="clear-date8" class="clear-date">Clear Date/Time</button>
+	</fieldset>
+	<fieldset>
+		<legend>Date &amp; Time w/out calendar allowing blank</legend>
+		<label for="date6">Date/Time:</label><input type="text" id="date6" placeholder="No date" /> <input type="text" id="time6" placeholder="No time" />
+		<button id="show-date6" class="log-to-console">Print to Console</button>
+		<button id="set-date6" class="set-date">Set Date/Time</button>
+		<button id="reset-date6" class="reset-date">Reset Date/Time</button>
+		<button id="clear-date6" class="clear-date">Clear Date/Time</button>
 	</fieldset>
 	<fieldset>
 		<legend>Date &amp; Time (HTML5)</legend>
 		<label for="date5">Date/Time:</label><input type="date" id="date5" /> <input type="time" id="time5" />
 		<button id="show-date5" class="log-to-console">Print to Console</button>
-		<p>Note: This interacts very badly with Chrome's implementation of date and time inputs.</p>
+		<button id="set-date5" class="set-date">Set Date/Time</button>
+		<button id="reset-date5" class="reset-date">Reset Date/Time</button>
+		<button id="clear-date5" class="clear-date">Clear Date/Time</button>
+		<p>Note: This interacts very badly with Chrome's implementation of HTML5 date and time inputs.</p>
+		<p>Note: Chrome only accepts the date format YYYY-MM-DD, so changing <code>Y.DateTimeUtils</code> format doesn't work in Chrome.</p>
 	</fieldset>
 </form>
 
@@ -67,6 +111,19 @@ function(Y)
 		today  = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
 		delta  = 3*7*24*3600000,
 		dt_map = {};
+
+	if (/time=12hr/.test(window.location.search))
+	{
+		Y.DateTimeUtils.CLOCK_DISPLAY_TYPE = 12;
+	}
+
+	if (/date=US/.test(window.location.search))
+	{
+		Y.DateTimeUtils.MONTH_POSITION       = 1;
+		Y.DateTimeUtils.DAY_POSITION         = 2;
+		Y.DateTimeUtils.YEAR_POSITION        = 3;
+		Y.DateTimeUtils.DATE_FIELD_DELIMITER = '/';
+	}
 
 	// date
 
@@ -164,13 +221,14 @@ function(Y)
 			}
 		]);
 	},
-	'#change-blackouts');
+	'#change-blackouts3');
 
 	// date w/out calendar
 
 	dt_map.date4 = new Y.DateTime(
 	{
 		dateInput:       '#date4',
+		allowBlank:      false,
 		defaultDateTime: now,
 		minDateTime:     new Date(today.getTime() - delta),
 		maxDateTime:     new Date(today.getTime() + delta - 60000)
@@ -182,6 +240,7 @@ function(Y)
 	{
 		dateInput:       '#date5',
 		timeInput:       '#time5',
+		allowBlank:      false,
 		defaultDateTime: now,
 		minDateTime:     new Date(now.getTime() - delta),
 		maxDateTime:     new Date(now.getTime() + delta),
@@ -202,6 +261,81 @@ function(Y)
 		]
 	});
 
+	// date & time allowing blank
+
+	var cal7 = new Y.Calendar(
+	{
+		width:         300,
+		showPrevMonth: true,
+		showNextMonth: true
+	});
+	cal7.render('#calendar7');
+
+	Y.one('#date7').plug(Y.Plugin.InputCalendarSync,	// must be before Y.DateTime
+	{
+		calendar: cal7
+	});
+
+	dt_map.date7 = new Y.DateTime(
+	{
+		dateInput:       '#date7',
+		timeInput:       '#time7',
+		defaultDateTime: now,
+		minDateTime:     new Date(now.getTime() - delta),
+		maxDateTime:     new Date(now.getTime() + delta),
+		blackouts:
+		[
+			{
+				start: Y.Date.addDays(now, 2),
+				end:   Y.Date.addDays(now, 5)
+			},
+			{
+				start: new Date(today.getTime() - 2.7*24*3600000),
+				end:   new Date(today.getTime() - 2.3*24*3600000)
+			},
+			{
+				start: new Date(today.getTime() - 5*24*3600000),
+				end:   new Date(today.getTime() - 4*24*3600000 - 60000)
+			}
+		]
+	});
+
+	Y.on('click', function()
+	{
+		dt_map.date7.set('blackouts',
+		[
+			{
+				start: Y.Date.addDays(now, 3),
+				end:   Y.Date.addDays(now, 6)
+			}
+		]);
+	},
+	'#change-blackouts7');
+
+	// date & time allowing blank w/out calendar
+
+	dt_map.date6 = new Y.DateTime(
+	{
+		dateInput:       '#date6',
+		timeInput:       '#time6',
+		allowBlank:      true,
+		defaultDateTime: now,
+		minDateTime:     new Date(today.getTime() - delta),
+		maxDateTime:     new Date(today.getTime() + delta - 60000),
+		blankTime:       { hour: 12, minute: 0 }
+	});
+
+	// date allowing blank w/out calendar
+
+	dt_map.date8 = new Y.DateTime(
+	{
+		dateInput:       '#date8',
+		allowBlank:      true,
+		defaultDateTime: now,
+		minDateTime:     new Date(today.getTime() - delta),
+		maxDateTime:     new Date(today.getTime() + delta - 60000)
+	});
+
 	// printout
 
 	Y.delegate('click', function(e)
@@ -210,6 +344,29 @@ function(Y)
 		console.log(dt_map[ name ].getDateTime());
 	},
 	'#test-form', '.log-to-console');
+
+	// set/reset/clear
+
+	Y.delegate('click', function(e)
+	{
+		var name = e.target.get('id').replace(/^set-/, '');
+		dt_map[ name ].setDateTime(Y.Date.addDays(now, 1.1));
+	},
+	'#test-form', '.set-date');
+
+	Y.delegate('click', function(e)
+	{
+		var name = e.target.get('id').replace(/^reset-/, '');
+		dt_map[ name ].resetDateTime();
+	},
+	'#test-form', '.reset-date');
+
+	Y.delegate('click', function(e)
+	{
+		var name = e.target.get('id').replace(/^clear-/, '');
+		dt_map[ name ].clearDateTime();
+	},
+	'#test-form', '.clear-date');
 });
 </script>
 
