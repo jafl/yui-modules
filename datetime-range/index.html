@@ -54,6 +54,9 @@
 			<button id="show-e-date2" class="log-to-console">Print to Console</button>
 			<div id="e-calendar2"></div>
 		</div>
+		<button id="change-blackouts2">Change Blackouts</button>
+		<button id="decrement-minmax2">Lower Min/Max</button>
+		<button id="increment-minmax2">Raise Min/Max</button>
 	</fieldset>
 	<fieldset>
 		<legend>Date w/out calendar</legend>
@@ -198,6 +201,41 @@ function(Y)
 		startDateTime: dt_map.s_date2,
 		endDateTime:   dt_map.e_date2
 	});
+
+	Y.on('click', function()
+	{
+		dt_map.s_date2.set('blackouts',
+		[
+			{
+				start: Y.Date.addDays(now, 3),
+				end:   Y.Date.addDays(now, 6)
+			}
+		]);
+	},
+	'#change-blackouts2');
+
+	Y.on('click', function()
+	{
+		dt_map.s_date2.set('blackouts', []);
+		dt_map.s_date2.set('minDateTime', Y.Date.addDays(now, -72));
+		dt_map.s_date2.set('maxDateTime', Y.Date.addDays(now, -63));
+		dt_map.s_date2.set('blackouts',
+		[
+			{
+				start: Y.Date.addDays(now, -70),
+				end:   Y.Date.addDays(now, -69)
+			}
+		]);
+	},
+	'#decrement-minmax2');
+
+	Y.on('click', function()
+	{
+		dt_map.s_date2.set('blackouts', []);
+		dt_map.s_date2.set('maxDateTime', Y.Date.addDays(now, 72));
+		dt_map.s_date2.set('minDateTime', Y.Date.addDays(now, 63));
+	},
+	'#increment-minmax2');
 
 	// date w/out calendar
 
