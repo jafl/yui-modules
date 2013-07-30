@@ -9,28 +9,25 @@
 	<style type="text/css">
 	.yui3-js-enabled .yui3-widget-loading { display: none; }
 
-	/* YUI 3 Accordion Examples Page Styling 
-	 */
+	/* YUI 3 Accordion Examples Page Styling */
 
-	#accordions {margin:0 340px 0 10px;padding:0 10px 10px;background-color:#aaa;}
-	#accordions h4 {padding:10px 0 6px;}
+	#accordion {margin:0 340px 0 10px;padding:0 10px 10px;background-color:#aaa;}
+	#accordion h4 {padding:10px 0 6px;}
 
-	/* YUI 3 Accordion Sample Skin Styling
-	 */
+	/* YUI 3 Accordion Sample Skin Styling */
 
 	.accordion-test-vert {width:auto;background-color:#fff;}
 	.my-title-vert {background-color:#ccc;margin:1px;}
 	.my-title-vert a {display:block;text-align:center;cursor:pointer;}
 	.my-title-vert a {padding:4px 0;}
-	.my-title-vert a:focus
+	.my-title-vert a:focus,
 	.my-title-vert a:hover {background-color:#eee;}
 	.my-section-vert{margin:1px;padding:10px;}
 	</style>
 </head>
 <body class="yui3-skin-sam">
 
-
-<div id="accordions">
+<div id="accordion">
 	<h4>Vertical</h4>
 	<div id="accordion-test-vert-markup" class="accordion-test-vert"></div>
 	<ul id="accordion-test-vert-markup-content" class="yui3-widget-loading">
@@ -50,7 +47,7 @@
 			</div>
 		</li>
 	</ul>
-
+</div>
 
 <script type="text/javascript">
 YUI({
@@ -75,12 +72,16 @@ function(Y)
 	function updateFocusMgr()
 	{
 		var a    = this;
+		var keys = a.get('horizontal') ?
+			{ next: "down:39", previous: "down:37" } :
+			{ next: "down:40", previous: "down:38" };
 
 		var node = a.get('contentBox');
 		node.unplug(Y.Plugin.NodeFocusManager);
 		node.plug(Y.Plugin.NodeFocusManager,
 		{
 			descendants: '.yui3-accordion-title a',
+			keys:        keys,
 			circular:    false,
 			focusClass:
 			{
@@ -93,7 +94,7 @@ function(Y)
 		});
 	}
 
-	// create accordions
+	// create accordion
 
 	var vm = new Y.Accordion(
 	{
@@ -103,61 +104,19 @@ function(Y)
 		allowMultipleOpen:       true
 	});
 
-	var accordions = [ vm ];
-
 	Y.on('domready', function()
 	{
 		vm.render('#accordion-test-vert-markup');
 		Y.delegate('click', onTitleClicked, '#accordion-test-vert-markup', '.my-title-vert', null, vm);
 
-		Y.each(accordions, function(a)
-		{
-			updateFocusMgr.call(a);
+		updateFocusMgr.call(vm);
 
-			a.on('insert', function()
-			{
-				Y.later(1, this, updateFocusMgr);
-			});
-			a.on('remove', updateFocusMgr);
+		vm.on('insert', function()
+		{
+			Y.later(1, this, updateFocusMgr);
 		});
+		vm.on('remove', updateFocusMgr);
 	});
-
-	// test inserting sections
-
-	var count = 6;
-
-	function addSectionHandlers(
-		/* object */	a,
-		/* object */	s)
-	{
-		Y.on('click', function(type, a, el)
-		{
-			var i = a.findSection(el);
-			if (i >= 0)
-			{
-				a.removeSection(i);
-			}
-		},
-		s.content, null, a, s.content);
-	};
-
-	function insertVertSection(
-		/* accordion */	obj,
-		/* string */	c1,
-		/* string */	c2)
-	{
-		count++;
-
-		var s = obj.insertSection(1, '<div class="'+c1+'"><a href="javascript:void(0);">#'+count+'</a></div>',
-								  '<div class="'+c2+'"><p>inserted content #'+count+'<br>click to delete</p></div>');
-		addSectionHandlers(obj, s);
-	};
-
-	Y.on('click', function()
-	{
-		insertVertSection(vm, 'my-title-vert', 'my-section-vert');
-	},
-	'#insert-section');
 });
 </script>
 
