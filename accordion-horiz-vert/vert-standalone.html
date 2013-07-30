@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>YUI 3 Accordion Vert Standalone Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.10.2/build/yui/yui-min.js"></script>
+
+	<style type="text/css">
+	.yui3-js-enabled .yui3-widget-loading { display: none; }
+
+	/* YUI 3 Accordion Examples Page Styling 
+	 */
+
+	#accordions {margin:0 340px 0 10px;padding:0 10px 10px;background-color:#aaa;}
+	#accordions h4 {padding:10px 0 6px;}
+
+	/* YUI 3 Accordion Sample Skin Styling
+	 */
+
+	.accordion-test-vert {width:auto;background-color:#fff;}
+	.my-title-vert {background-color:#ccc;margin:1px;}
+	.my-title-vert a {display:block;text-align:center;cursor:pointer;}
+	.my-title-vert a {padding:4px 0;}
+	.my-title-vert a:focus
+	.my-title-vert a:hover {background-color:#eee;}
+	.my-section-vert{margin:1px;padding:10px;}
+	</style>
+</head>
+<body class="yui3-skin-sam">
+
+
+<div id="accordions">
+	<h4>Vertical</h4>
+	<div id="accordion-test-vert-markup" class="accordion-test-vert"></div>
+	<ul id="accordion-test-vert-markup-content" class="yui3-widget-loading">
+		<li>
+			<div class="my-title-vert"><a href="javascript:void(0);">#1</a></div>
+			<div class="my-section-vert"><p>testing</p></div>
+		</li>
+		<li>
+			<div class="my-title-vert"><a href="javascript:void(0);">#2</a></div>
+			<div class="my-section-vert"><p>testing testing</p></div>
+		</li>
+		<li>
+			<div class="my-title-vert"><a href="javascript:void(0);">#3</a></div>
+			<div class="my-section-vert">
+				<p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p>
+				<p>testing</p><p>testing</p><p>testing</p><p>testing</p><p>testing</p>
+			</div>
+		</li>
+	</ul>
+
+
+<script type="text/javascript">
+YUI({
+//	filter: 'debug', combine: false,
+	gallery: 'gallery-2013.06.26-23-09'
+}).use(
+	'gallery-accordion-horiz-vert',
+	'anim-base',
+	'node-focusmanager',
+function(Y)
+{
+	function onTitleClicked(e, a)
+	{
+		var t = e.target;
+		var i = a.findSection(e.target);
+		if (i >= 0)
+		{
+			a.toggleSection(i);
+		}
+	}
+
+	function updateFocusMgr()
+	{
+		var a    = this;
+
+		var node = a.get('contentBox');
+		node.unplug(Y.Plugin.NodeFocusManager);
+		node.plug(Y.Plugin.NodeFocusManager,
+		{
+			descendants: '.yui3-accordion-title a',
+			circular:    false,
+			focusClass:
+			{
+				className: a.getClassName('title', 'focused'),
+				fn: function (node)
+				{
+					return node.get('parentNode');
+				}
+			}
+		});
+	}
+
+	// create accordions
+
+	var vm = new Y.Accordion(
+	{
+		srcNode: '#accordion-test-vert-markup-content',
+		replaceTitleContainer:   false,
+		replaceSectionContainer: false,
+		allowMultipleOpen:       true
+	});
+
+	var accordions = [ vm ];
+
+	Y.on('domready', function()
+	{
+		vm.render('#accordion-test-vert-markup');
+		Y.delegate('click', onTitleClicked, '#accordion-test-vert-markup', '.my-title-vert', null, vm);
+
+		Y.each(accordions, function(a)
+		{
+			updateFocusMgr.call(a);
+
+			a.on('insert', function()
+			{
+				Y.later(1, this, updateFocusMgr);
+			});
+			a.on('remove', updateFocusMgr);
+		});
+	});
+
+	// test inserting sections
+
+	var count = 6;
+
+	function addSectionHandlers(
+		/* object */	a,
+		/* object */	s)
+	{
+		Y.on('click', function(type, a, el)
+		{
+			var i = a.findSection(el);
+			if (i >= 0)
+			{
+				a.removeSection(i);
+			}
+		},
+		s.content, null, a, s.content);
+	};
+
+	function insertVertSection(
+		/* accordion */	obj,
+		/* string */	c1,
+		/* string */	c2)
+	{
+		count++;
+
+		var s = obj.insertSection(1, '<div class="'+c1+'"><a href="javascript:void(0);">#'+count+'</a></div>',
+								  '<div class="'+c2+'"><p>inserted content #'+count+'<br>click to delete</p></div>');
+		addSectionHandlers(obj, s);
+	};
+
+	Y.on('click', function()
+	{
+		insertVertSection(vm, 'my-title-vert', 'my-section-vert');
+	},
+	'#insert-section');
+});
+</script>
+
+</body>
+</html>
