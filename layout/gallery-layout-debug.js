@@ -984,6 +984,11 @@ Y.extend(PageLayout, Y.Base,
 		var self = this;
 		Y.use(plugin_data.module, function(Y)
 		{
+			Y.all('div.layout-loading').each(function(n)
+			{
+				n.setStyle('display', 'none');
+			});
+
 			self.layout_plugin = Y[ plugin_data.plugin ];
 			updateFitClass.call(self);	// plugin may modify it
 			resize.call(self);
