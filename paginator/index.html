@@ -46,26 +46,26 @@ YUI({
 		this.setRowsPerPage(state.rowsPerPage, true);
 	}
 
-	var p = new Y.Paginator(
+	var p1 = new Y.Paginator(
 	{
 		totalRecords: 25,
 		rowsPerPage:5,
 		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}'
 	});
-	p.on('changeRequest', update);
-	p.render('#pg1');
+	p1.on('changeRequest', update);
+	p1.render('#pg1');
 
-	p = new Y.Paginator(
+	var p5 = new Y.Paginator(
 	{
 		totalRecords: 25,
 		rowsPerPage:5,
 		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {ValidationPageLinks} {NextPageLink} {LastPageLink}'
 	});
-	p.on('changeRequest', update);
-	p.render('#pg5');
-	p.set('pageStatus', [ null, 'error', null, 'warn', null ]);
+	p5.on('changeRequest', update);
+	p5.render('#pg5');
+	p5.set('pageStatus', [ null, 'error', null, 'warn', null ]);
 
-	p = new Y.Paginator(
+	var p2 = new Y.Paginator(
 	{
 		totalRecords: 25,
 		rowsPerPage:5,
@@ -75,10 +75,10 @@ YUI({
 		nextPageLinkLabel:     '&gt;',
 		lastPageLinkLabel:     '&gt;|'
 	});
-	p.on('changeRequest', update);
-	p.render('#pg2');
+	p2.on('changeRequest', update);
+	p2.render('#pg2');
 
-	p = new Y.Paginator(
+	var p3 = new Y.Paginator(
 	{
 		totalRecords: 25,
 		rowsPerPage:5,
@@ -88,22 +88,23 @@ YUI({
 		nextPageLinkLabel:     '&gt;',
 		lastPageLinkLabel:     '&gt;|'
 	});
-	p.on('changeRequest', update);
-	p.render('#pg3');
+	p3.on('changeRequest', update);
+	p3.render('#pg3');
 
-	p = new Y.Paginator(
+	var p4 = new Y.Paginator(
 	{
 		totalRecords: 200,
 		rowsPerPage: 5,
 		template: '{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {CurrentPageInput} {ItemRangeDropdown} {PageLinks} {NextPageLink} {LastPageLink} Rows per page: {RowsPerPageDropdown}',
 		rowsPerPageOptions: [5,10,25,{value:50,text:'50 rows'}]
 	});
-	p.on('changeRequest', update);
-	p.render('#pg4');
+	p4.on('changeRequest', update);
+	p4.render('#pg4');
 
 	Y.on('click', function(e)
 	{
-		p[ e.target.get('id') ]();
+		p4[ e.target.get('id') ]();
+		p5[ e.target.get('id') ]();
 	},
 	'#disable,#enable');
 });
