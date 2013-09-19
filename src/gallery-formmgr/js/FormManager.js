@@ -140,7 +140,7 @@ function FormManager(
 
 	// default values for form elements
 
-	this.default_value_map = config.default_value_map;
+	this.default_value_map = config.default_value_map || {};
 
 	// pre-validation methods
 
@@ -754,11 +754,6 @@ Y.extend(FormManager, Y.Plugin.Host,
 	 */
 	populateForm: function()
 	{
-		if (!this.default_value_map)
-		{
-			this.default_value_map = {};
-		}
-
 		this.clearMessages();
 
 		_populateForm.call(this);
