@@ -394,7 +394,7 @@ Y.extend(SelectAllCheckboxGroup, CheckboxGroup,
 	 */
 	toggleSelectAll: function()
 	{
-		this.select_call_cb.set('checked', !this.select_all_cb.get('checked'));
+		this.select_all_cb.set('checked', !this.select_all_cb.get('checked'));
 		updateSelectAll.call(this);
 	},
 
