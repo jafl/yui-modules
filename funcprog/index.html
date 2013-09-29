@@ -197,6 +197,19 @@ function(Y)
 				}));
 		},
 
+		testMapToObject: function()
+		{
+			var o = Y.Array.mapToObject([1,2,3,4], function(v,i)
+			{
+				return [ i, v*v ];
+			});
+			Y.Assert.areEqual(4, Y.Object.keys(o).length);
+			Y.Assert.areEqual(1, o[0]);
+			Y.Assert.areEqual(4, o[1]);
+			Y.Assert.areEqual(9, o[2]);
+			Y.Assert.areEqual(16, o[3]);
+		},
+
 		testPartition: function()
 		{
 			// array
