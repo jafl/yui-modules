@@ -1007,19 +1007,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/gallery-multivalue-input/js/multivalue-input.js": {
-            "name": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "modules": {
-                "gallery-multivalue-input": 1
-            },
-            "classes": {
-                "Plugin.MultivalueInput": 1
-            },
-            "fors": {},
-            "namespaces": {
-                "Plugin": 1
-            }
-        },
         "src/gallery-neon/js/Neon.js": {
             "name": "src/gallery-neon/js/Neon.js",
             "modules": {
@@ -1971,22 +1958,6 @@
             "description": "<p>MultiObject exposes exactly the same API as each individual object,\nboth functions and events, and the state of all the objects is kept in\nsync.  The objects must maintain all state via\nY.Attribute.<p>\n\n<p>MultiObject is similar to Y.ArrayList, except:</p>\n<ul>\n<li>All objects must be of the same type, since MultiObject is supposed\n\t\tto behave exactly like any single object.</li>\n<li>MultiObject automatically delegates all methods.</li>\n<li>By default, MultiObject returns the result from the first object\n\t\tin the list, not an array of results.</li>\n<li>MultiObject propagates all events.</li>\n</ul>\n\n<p>Internally, MultiObject delegates all methods by name, so it supports\nY.Do.before, Y.Do.after, etc.</p>\n\n<p>To avoid shadowing potential function names, we inherit from\nY.EventTarget and use multi_ as the prefix for our own functions.</p>",
             "itemtype": "main"
         },
-        "gallery-multivalue-input": {
-            "name": "gallery-multivalue-input",
-            "submodules": {},
-            "classes": {
-                "Plugin.MultivalueInput": 1
-            },
-            "fors": {},
-            "namespaces": {
-                "Plugin": 1
-            },
-            "tag": "module",
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 9,
-            "description": "Plugin which allows user select multiple value, it replaces the traditional ugly\nmulti select input control",
-            "author": "MaYanK(mzgupta)"
-        },
         "gallery-neon": {
             "name": "gallery-neon",
             "submodules": {},
@@ -2146,7 +2117,7 @@
             "namespaces": {},
             "tag": "main",
             "file": "src/gallery-scrollintoview/js/ScrollIntoView.js",
-            "line": 7,
+            "line": 9,
             "description": "Only scrolls if the object is not currently visible.\n\nThis requires that all scrollable elements have position:relative.\nOtherwise, this algorithm will skip over them with unpredictable\nresults.",
             "itemtype": "main"
         },
@@ -3091,7 +3062,7 @@
             "namespace": "",
             "file": "src/gallery-layout/js/PageLayout.js",
             "line": 9,
-            "description": "<p>Manages header (layout-hd), body (layout-bd), footer (layout-ft)\nstacked vertically to either fit inside the viewport (fit-to-viewport)\nor adjust to the size of the body content (fit-to-content).</p>\n\n<p>The body content is sub-divided into modules, arranged either in rows\nor columns.  The layout is automatically detected based on the marker\nclasses attached to the two layers of divs inside layout-bd:  either\nlayout-module-row > layout-module or layout-module-col > layout-module</p>\n\n<p>Each module has an optional header (layout-m-hd), a body\n(layout-m-bd), and an optional footer (layout-m-ft).  You can have\nmultiple layout-m-bd's, but only one can be visible at a time.  If you\nchange the DOM in any way that affects the height of any module header,\nbody, or footer, or if you switch bodies, you must call\n<code>elementResized()</code> to reflow the layout.  (Technically, you\ndo not have to call <code>elementResized()</code> if you modify a module\nbody in fit-to-viewport mode, but if you later decide to switch to\nfit-to-content, your optimization will cause trouble.)</p>\n\n<p>If you want a row, column, or module to have a fixed size, add the\nclass layout-not-managed to the layout-module-row, layout-module-column,\nor layout-module.  Then use CSS to set the width of layout-module (for a\nrow) or layout-module-col (for a col), or the height of layout-m-bd.</p>\n\n<p>If the body content is a single module, it expands as the content\nexpands (fit-to-content) until it would push the footer below the fold.\nThen it switches to fit-to-viewport so the scrollbar appears on the\nmodule instead of the entire viewport.  (If you do not want this\nbehavior in a particular case, add the class FORCE_FIT to\nlayout-bd.)</p>\n\n<p>Note that a non-zero margin-top on the top element or a non-zero\nmargin-bottom on the bottom element inside any container will break the\nlayout because browsers lie about the total height of the container in\nthis case.  Use padding instead of margin on elements inside headers and\nfooters.</p>",
+            "description": "Manages header (layout-hd), body (layout-bd), footer (layout-ft) stacked\nvertically to either fit inside the viewport (fit-to-viewport) or adjust\nto the size of the body content (fit-to-content).\n\nThe body content is sub-divided into modules, arranged either in rows or\ncolumns.  The layout is automatically detected based on the marker\nclasses attached to the two layers of divs inside layout-bd:  either\nlayout-module-row > layout-module or layout-module-col > layout-module\n\nEach module has an optional header (layout-m-hd), a body (layout-m-bd),\nand an optional footer (layout-m-ft).  You can have multiple\nlayout-m-bd's, but only one can be visible at a time.  If you change the\nDOM in any way that affects the height of any module header, body, or\nfooter, or if you switch bodies, you must call `elementResized()` to\nreflow the layout.  (Technically, you do not have to call\n`elementResized()` if you modify a module body in fit-to-viewport mode,\nbut if you later decide to switch to fit-to-content, your optimization\nwill cause trouble.)\n\nIf you want a row, column, or module to have a fixed size, add the class\nlayout-not-managed to the layout-module-row, layout-module-column, or\nlayout-module.  Then use CSS to set the width of layout-module (for a\nrow) or layout-module-col (for a col), or the height of layout-m-bd.\n\nIf the body content is a single module, it expands as the content\nexpands (fit-to-content) until it would push the footer below the fold.\nThen it switches to fit-to-viewport so the scrollbar appears on the\nmodule instead of the entire viewport.  (If you do not want this\nbehavior in a particular case, add the class FORCE_FIT to layout-bd.)\n\nNote that a non-zero margin-top on the top element or a non-zero\nmargin-bottom on the bottom element inside any container will break the\nlayout because browsers lie about the total height of the container in\nthis case.  Use padding instead of margin on elements inside headers and\nfooters.\n\nIf you wish to display a loading message that automatically disappears\nafter the first time the layout is calculated, add the class\n`layout-loading` to the div containing the message.  (To be visible,\nthis div must not be inside the div with class `layout-bd`, since that\nhas `visibility:hidden`.)",
             "extends": "Base",
             "is_constructor": 1,
             "params": [
@@ -4276,28 +4247,6 @@
                 }
             ]
         },
-        "Plugin.MultivalueInput": {
-            "name": "Plugin.MultivalueInput",
-            "shortname": "Plugin.MultivalueInput",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin",
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 9,
-            "extends": "Plugin.Base",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "config",
-                    "description": "Widget configuration",
-                    "type": "Object"
-                }
-            ]
-        },
         "Plugin.Neon": {
             "name": "Plugin.Neon",
             "shortname": "Plugin.Neon",
@@ -4790,7 +4739,7 @@
             "module": "gallery-scrollintoview",
             "namespace": "",
             "file": "src/gallery-scrollintoview/js/ScrollIntoView.js",
-            "line": 7,
+            "line": 9,
             "description": "Only scrolls if the object is not currently visible.\n\nThis requires that all scrollable elements have position:relative.\nOtherwise, this algorithm will skip over them with unpredictable\nresults.",
             "mainName": "gallery-scrollintoview",
             "tag": "main",
@@ -6424,7 +6373,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 290,
+            "line": 292,
             "description": "Save the modified values from the current page of records.",
             "itemtype": "method",
             "name": "saveChanges",
@@ -6433,7 +6382,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 338,
+            "line": 340,
             "description": "Retrieve *all* the data.  Do not call this if you use server-side\npagination.",
             "itemtype": "method",
             "name": "getAllValues",
@@ -6449,7 +6398,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 362,
+            "line": 364,
             "itemtype": "method",
             "name": "getChanges",
             "return": {
@@ -6461,7 +6410,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 371,
+            "line": 373,
             "description": "<p>Insert a new record.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "insertRecord",
@@ -6486,7 +6435,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 395,
+            "line": 397,
             "description": "<p>Remove a record.  The removal will be recorded in the diffs.\nThere is no way to un-remove a record, so if you need that\nfunctionality, you may want to use highlighting to indicate removed\nrecords instead.</p>\n\n<p>You must reload() the widget after calling this function!</p>",
             "itemtype": "method",
             "name": "removeRecord",
@@ -6506,7 +6455,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 427,
+            "line": 429,
             "itemtype": "method",
             "name": "getFieldConfig",
             "params": [
@@ -6525,7 +6474,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 438,
+            "line": 440,
             "itemtype": "method",
             "name": "getRecordContainerId",
             "params": [
@@ -6544,7 +6493,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 456,
+            "line": 458,
             "itemtype": "method",
             "name": "getFieldId",
             "params": [
@@ -6568,7 +6517,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 469,
+            "line": 471,
             "itemtype": "method",
             "name": "getRecordAndFieldKey",
             "params": [
@@ -6587,7 +6536,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 484,
+            "line": 486,
             "itemtype": "method",
             "name": "getRecordId",
             "params": [
@@ -6606,7 +6555,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 508,
+            "line": 510,
             "itemtype": "method",
             "name": "getRecordContainer",
             "params": [
@@ -6625,7 +6574,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 532,
+            "line": 534,
             "itemtype": "method",
             "name": "getFieldContainer",
             "params": [
@@ -6649,7 +6598,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 546,
+            "line": 548,
             "itemtype": "method",
             "name": "getFieldElement",
             "params": [
@@ -6673,7 +6622,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 563,
+            "line": 565,
             "description": "Paginate and/or scroll to make the specified record visible.  Record\nis pinged to help the user find it.",
             "itemtype": "method",
             "name": "showRecordIndex",
@@ -6689,7 +6638,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 594,
+            "line": 596,
             "description": "Paginate and/or scroll to make the specified record visible.  Record\nis pinged to help the user find it.",
             "itemtype": "method",
             "name": "showRecordId",
@@ -6705,7 +6654,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 611,
+            "line": 613,
             "description": "Apply a class to the DOM element containing the record for a short\nwhile.  Your CSS can use this class to highlight the record in some\nway.",
             "itemtype": "method",
             "name": "pingRecord",
@@ -6721,7 +6670,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 634,
+            "line": 636,
             "description": "Render the current page of records.",
             "itemtype": "method",
             "name": "_render",
@@ -6739,7 +6688,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 674,
+            "line": 676,
             "description": "Derived class should override to create a structure for the records.",
             "itemtype": "method",
             "name": "_renderContainer",
@@ -6757,7 +6706,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 687,
+            "line": 689,
             "description": "Derived class must override to create a container for the record.",
             "itemtype": "method",
             "name": "_renderRecordContainer",
@@ -6780,7 +6729,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 702,
+            "line": 704,
             "description": "Derived class can override if it needs to do more than just call\n_renderField() for each field.",
             "itemtype": "method",
             "name": "_renderRecord",
@@ -6803,7 +6752,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 729,
+            "line": 731,
             "description": "If _renderRecord is not overridden, derived class must override this\nfunction to render the field.",
             "itemtype": "method",
             "name": "_renderField",
@@ -6821,7 +6770,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 747,
+            "line": 749,
             "description": "Update the paginator to match the data source meta information.",
             "itemtype": "method",
             "name": "_updatePaginator",
@@ -6839,7 +6788,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 763,
+            "line": 765,
             "description": "Clear errors received from the server.  This clears all displayed\nmessages.",
             "itemtype": "method",
             "name": "clearServerErrors",
@@ -6848,7 +6797,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 794,
+            "line": 796,
             "description": "Set page level, record level, and field level errors received from\nthe server.  A message can be either a string (assumed to be an\nerror) or an object providing msg and type, where type can be\n'error', 'warn', 'info', or 'success'.",
             "itemtype": "method",
             "name": "setServerErrors",
@@ -6869,7 +6818,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 837,
+            "line": 839,
             "description": "Update paginator to show which pages have errors.",
             "itemtype": "method",
             "name": "_updatePageStatus",
@@ -6880,7 +6829,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 873,
+            "line": 875,
             "description": "Validate the visible values (if using server-side pagination) or all\nthe values (if using client-side pagination or no pagination).",
             "itemtype": "method",
             "name": "validate",
@@ -6893,7 +6842,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 920,
+            "line": 922,
             "description": "Validate the visible values.",
             "itemtype": "method",
             "name": "_validateVisibleFields",
@@ -6915,7 +6864,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 979,
+            "line": 981,
             "description": "Validate the given elements.",
             "itemtype": "method",
             "name": "_validateElements",
@@ -6937,7 +6886,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1069,
+            "line": 1071,
             "description": "If the data is stored locally and we paginate, validate all of it\nand mark the pages that have invalid values.",
             "itemtype": "method",
             "name": "_validateAllPages",
@@ -6952,7 +6901,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1150,
+            "line": 1152,
             "description": "Clear all displayed messages.",
             "itemtype": "method",
             "name": "_clearValidationMessages",
@@ -6961,7 +6910,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1170,
+            "line": 1172,
             "description": "Display a message for the specified field.",
             "itemtype": "method",
             "name": "displayFieldMessage",
@@ -6992,7 +6941,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1215,
+            "line": 1217,
             "description": "Display a message for the specified record.",
             "itemtype": "method",
             "name": "displayRecordMessage",
@@ -7023,7 +6972,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1257,
+            "line": 1259,
             "itemtype": "method",
             "name": "_getElementStatus",
             "access": "protected",
@@ -7049,7 +6998,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1272,
+            "line": 1274,
             "description": "Update the status of the node, if the new status has higher precedence.",
             "itemtype": "method",
             "name": "_updateRecordStatus",
@@ -7089,7 +7038,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1310,
+            "line": 1312,
             "itemtype": "property",
             "name": "Y.BulkEditor.error_msg_markup",
             "type": "{String}",
@@ -7099,7 +7048,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1320,
+            "line": 1322,
             "itemtype": "method",
             "name": "labelMarkup",
             "static": 1,
@@ -7119,7 +7068,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1341,
+            "line": 1343,
             "description": "Map of field type (input,select,textarea) to function that generates the\nrequired markup.  You can add additional entries.  Each function takes a\nsingle argument: an object defining\n\tkey {String} field key,\n\tvalue {Mixed} field value,\n\tfield {Object} field configuration,\n\trecord {Object} record data",
             "itemtype": "property",
             "name": "Y.BulkEditor.markup",
@@ -7130,7 +7079,7 @@
         },
         {
             "file": "src/gallery-bulkedit/js/BulkEditor.js",
-            "line": 1477,
+            "line": 1479,
             "itemtype": "method",
             "name": "fieldMarkup",
             "static": 1,
@@ -8617,6 +8566,17 @@
         {
             "file": "src/gallery-datetime/js/DateTime.js",
             "line": 75,
+            "description": "Set to false to require a date to be entered.  If dateInput is\nconfigured with Y.InputCalendarSync, allowBlank will be copied from\nthere.",
+            "itemtype": "attribute",
+            "name": "allowBlank",
+            "type": "{Boolean}",
+            "default": "true",
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 90,
             "description": "Default date and time, used during initialization and by resetDateTime().",
             "itemtype": "attribute",
             "name": "defaultDateTime",
@@ -8626,7 +8586,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 86,
+            "line": 101,
             "description": "Minimum date and time.",
             "itemtype": "attribute",
             "name": "minDateTime",
@@ -8636,7 +8596,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 97,
+            "line": 112,
             "description": "Maximum date and time.",
             "itemtype": "attribute",
             "name": "minDateTime",
@@ -8646,8 +8606,8 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 108,
-            "description": "Time value to use when no time is specified, e.g., in a blackout date.",
+            "line": 123,
+            "description": "Time value to use when no time is specified as part of a date.",
             "itemtype": "attribute",
             "name": "blankTime",
             "type": "{Object}",
@@ -8657,7 +8617,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 126,
+            "line": 141,
             "description": "Blackout ranges, specified as a list of objects, each defining start\nand end.  The data is overwritten, so this is a write-only value.",
             "itemtype": "attribute",
             "name": "blackout",
@@ -8668,7 +8628,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 226,
+            "line": 241,
             "description": "The direction to push the selected date and time when the user\nselects a day with partial blackout.  The default value of zero\nmeans go to the nearest available time.",
             "itemtype": "attribute",
             "name": "blackoutSnapDirection",
@@ -8679,7 +8639,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 244,
+            "line": 259,
             "description": "Duration of visual ping in milliseconds when the value of an input\nfield is modified because of a min/max or blackout restriction.  Set\nto zero to disable.",
             "itemtype": "attribute",
             "name": "pingDuration",
@@ -8690,7 +8650,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 259,
+            "line": 274,
             "description": "CSS class applied to input field when it is pinged.",
             "itemtype": "attribute",
             "name": "pingClass",
@@ -8701,7 +8661,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 273,
+            "line": 288,
             "itemtype": "event",
             "name": "limitsEnforced",
             "description": "Fires after min/max and blackouts have been enforced.",
@@ -8710,7 +8670,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 724,
+            "line": 777,
             "description": "Get the currently selected date and time.",
             "itemtype": "method",
             "name": "getDateTime",
@@ -8723,7 +8683,23 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 791,
+            "line": 817,
+            "description": "Set the date and time.",
+            "itemtype": "method",
+            "name": "setDateTime",
+            "params": [
+                {
+                    "name": "date_time",
+                    "description": "date and time",
+                    "type": "Object"
+                }
+            ],
+            "class": "DateTime",
+            "module": "gallery-datetime"
+        },
+        {
+            "file": "src/gallery-datetime/js/DateTime.js",
+            "line": 838,
             "description": "Reset the date and time to the values in `defaultDateTime`.",
             "itemtype": "method",
             "name": "resetDateTime",
@@ -8732,7 +8708,7 @@
         },
         {
             "file": "src/gallery-datetime/js/DateTime.js",
-            "line": 811,
+            "line": 862,
             "description": "Clear the date and time.",
             "itemtype": "method",
             "name": "clearDateTime",
@@ -8991,7 +8967,7 @@
         },
         {
             "file": "src/gallery-datetime-utils/js/utils.js",
-            "line": 345,
+            "line": 358,
             "description": "Inverse of formatTime().  Extracts hour and minute from the string.\nThrows an error if hour is outside [0,23] or minute is outside\n[0,59].",
             "itemtype": "method",
             "name": "parseTime",
@@ -9832,7 +9808,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 771,
+            "line": 766,
             "description": "Hook for performing additional actions after `populateForm()`\ncompletes.",
             "itemtype": "method",
             "name": "postPopulateForm",
@@ -9841,7 +9817,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 781,
+            "line": 776,
             "description": "Check if form values have been modified.",
             "itemtype": "method",
             "name": "isChanged",
@@ -9854,7 +9830,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 800,
+            "line": 795,
             "description": "Return the modified values.",
             "itemtype": "method",
             "name": "getChanges",
@@ -9867,7 +9843,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 821,
+            "line": 816,
             "description": "Prepare the form for display.",
             "itemtype": "method",
             "name": "prepareForm",
@@ -9880,7 +9856,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 843,
+            "line": 838,
             "description": "Hook called before <code>prepareForm()</code> executes.",
             "itemtype": "method",
             "name": "prePrepareForm",
@@ -9893,7 +9869,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 854,
+            "line": 849,
             "description": "Hook called after <code>prepareForm()</code> executes.",
             "itemtype": "method",
             "name": "postPrepareForm",
@@ -9906,7 +9882,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 865,
+            "line": 860,
             "description": "Set focus to first input field.  If a page contains multiple forms,\nonly call this for one of them.",
             "itemtype": "method",
             "name": "initFocus",
@@ -9915,7 +9891,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 902,
+            "line": 897,
             "itemtype": "method",
             "name": "validateForm",
             "return": {
@@ -9927,7 +9903,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 978,
+            "line": 973,
             "description": "Hook called at the end of `validateForm()`.  This is the best place\nto put holistic validations that touch multiple form elements.",
             "itemtype": "method",
             "name": "postValidateForm",
@@ -9940,7 +9916,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 995,
+            "line": 990,
             "description": "Register an object that can be disabled.  The object must support\nthe set('disabled', ...) API.  (The exception is DOM nodes, since\nthey are automatically wrapped in Y.Node.)  Buttons contained within\nthe form DOM element are automatically registered.",
             "itemtype": "method",
             "name": "registerButton",
@@ -9956,7 +9932,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1015,
+            "line": 1010,
             "itemtype": "method",
             "name": "isFormEnabled",
             "return": {
@@ -9968,7 +9944,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1024,
+            "line": 1019,
             "description": "Enable all the registered buttons.",
             "itemtype": "method",
             "name": "enableForm",
@@ -9977,7 +9953,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1034,
+            "line": 1029,
             "description": "Disable all the registered buttons.",
             "itemtype": "method",
             "name": "disableForm",
@@ -9986,7 +9962,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1044,
+            "line": 1039,
             "description": "Set the enabled state all the registered buttons.",
             "itemtype": "method",
             "name": "setFormEnabled",
@@ -10002,7 +9978,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1072,
+            "line": 1067,
             "itemtype": "method",
             "name": "hasMessages",
             "return": {
@@ -10014,7 +9990,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1081,
+            "line": 1076,
             "itemtype": "method",
             "name": "hasErrors",
             "return": {
@@ -10026,7 +10002,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1090,
+            "line": 1085,
             "description": "Get the message type displayed for the row containing the specified element.",
             "itemtype": "method",
             "name": "getRowStatus",
@@ -10046,7 +10022,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1104,
+            "line": 1099,
             "description": "Clear all messages in <code>status_node</code> and the form rows.",
             "itemtype": "method",
             "name": "clearMessages",
@@ -10055,7 +10031,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1132,
+            "line": 1127,
             "description": "Display a message for the form row containing the specified element.\nThe message will only be displayed if no message with a higher\nprecedence is already visible. (see Y.FormManager.status_order)",
             "itemtype": "method",
             "name": "displayMessage",
@@ -10091,7 +10067,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1166,
+            "line": 1161,
             "description": "Displays a generic message in <code>status_node</code> stating that\nthe form data failed to validate.  Override this if you want to get\nfancy.",
             "itemtype": "method",
             "name": "notifyErrors",
@@ -10100,7 +10076,7 @@
         },
         {
             "file": "src/gallery-formmgr/js/FormManager.js",
-            "line": 1178,
+            "line": 1173,
             "description": "Display a message in <code>status_node</code>.",
             "itemtype": "method",
             "name": "displayFormMessage",
@@ -10316,11 +10292,17 @@
         },
         {
             "file": "src/gallery-funcprog/js/array-extras.js",
-            "line": 41,
+            "line": 40,
             "description": "Executes the supplied function on each item in the array, starting\nfrom the end and folding the list into a single value.  The function\nreceives the value returned by the previous iteration (or the\ninitial value if this is the first iteration), the value being\niterated, the index, and the list itself as parameters (in that\norder).  The function must return the updated value.",
             "itemtype": "method",
             "name": "reduceRight",
+            "static": 1,
             "params": [
+                {
+                    "name": "a",
+                    "description": "the array to iterate",
+                    "type": "Array"
+                },
                 {
                     "name": "init",
                     "description": "the initial value",
@@ -10328,7 +10310,7 @@
                 },
                 {
                     "name": "f",
-                    "description": "the function to invoke",
+                    "description": "the function to execute on each item",
                     "type": "String"
                 },
                 {
@@ -10340,6 +10322,37 @@
             "return": {
                 "description": "final result from iteratively applying the given function to each item in the array",
                 "type": "Mixed"
+            },
+            "class": "Array~funcprog-extras",
+            "module": "gallery-funcprog"
+        },
+        {
+            "file": "src/gallery-funcprog/js/array-extras.js",
+            "line": 77,
+            "description": "Executes the supplied function on each item in the array and returns\nan object with the results.  The function receives the value, the\nkey, and the object itself as parameters (in that order).  The\nfunction must return an array with two elements (key, value), which\nwill be mixed into the result.",
+            "itemtype": "method",
+            "name": "mapToObject",
+            "static": 1,
+            "params": [
+                {
+                    "name": "a",
+                    "description": "the array to iterate",
+                    "type": "Mixed"
+                },
+                {
+                    "name": "f",
+                    "description": "the function to execute on each item",
+                    "type": "String"
+                },
+                {
+                    "name": "c",
+                    "description": "optional context object",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "object of all return values, constructed via Y.mix",
+                "type": "Object"
             },
             "class": "Array~funcprog-extras",
             "module": "gallery-funcprog"
@@ -11358,7 +11371,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 60,
+            "line": 65,
             "itemtype": "property",
             "name": "FIT_TO_VIEWPORT",
             "static": 1,
@@ -11367,7 +11380,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 66,
+            "line": 71,
             "itemtype": "property",
             "name": "FIT_TO_CONTENT",
             "static": 1,
@@ -11376,7 +11389,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 74,
+            "line": 79,
             "description": "FIT_TO_VIEWPORT sizes the rows to fit everything inside the\nbrowser's viewport.  FIT_TO_CONTENT sizes the rows to eliminate all\nscrollbars on module bodies.  Note that you can configure this\nproperty by putting the CSS class \"FIT_TO_VIEWPORT\" or\n\"FIT_TO_CONTENT\" on layout-bd.",
             "itemtype": "attribute",
             "name": "mode",
@@ -11387,7 +11400,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 94,
+            "line": 99,
             "description": "Minimum page width, measured in em's.  The page content will not\ncollapse narrower than this width.  If the viewport is smaller, the\nbrower's horizontal scrollbar will appear.",
             "itemtype": "attribute",
             "name": "minWidth",
@@ -11398,7 +11411,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 112,
+            "line": 117,
             "description": "Minimum page height in FIT_TO_VIEWPORT mode, measured in em's.  The\npage content will not collapse lower than this height.  If the\nviewport is smaller, the brower's vertical scrollbar will appear.",
             "itemtype": "attribute",
             "name": "minHeight",
@@ -11409,7 +11422,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 130,
+            "line": 135,
             "description": "In FIT_TO_CONTENT mode, set this to true to make the footer stick to\nthe bottom of the viewport.  The default is for the footer to scroll\nalong with the rest of the page content.",
             "itemtype": "attribute",
             "name": "stickyFooter",
@@ -11420,7 +11433,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 145,
+            "line": 150,
             "description": "When organizing modules into columns in FIT_TO_CONTENT mode, set\nthis to false to allow each column to be a different height.",
             "itemtype": "attribute",
             "name": "matchColumnHeights",
@@ -11431,7 +11444,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 159,
+            "line": 164,
             "description": "Selector identifying the element which contains layout-(hd|bd|ft).\nThis cannot be used to attach PageLayout to only part of the page.\nIt should only be used when the page content is unavoidably embedded\ninside an element which fills the page.",
             "itemtype": "attribute",
             "name": "body",
@@ -11442,7 +11455,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 179,
+            "line": 184,
             "itemtype": "event",
             "name": "beforeReflow",
             "description": "Fires before the layout is reflowed.",
@@ -11451,7 +11464,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 183,
+            "line": 188,
             "itemtype": "event",
             "name": "afterReflow",
             "description": "Fires after the layout is completely reflowed, including viewport scrollbar changes.",
@@ -11460,7 +11473,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 188,
+            "line": 193,
             "itemtype": "event",
             "name": "beforeExpandModule",
             "description": "Fires before a module is expanded.",
@@ -11476,7 +11489,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 193,
+            "line": 198,
             "itemtype": "event",
             "name": "afterExpandModule",
             "description": "Fires after a module is expanded.",
@@ -11492,7 +11505,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 199,
+            "line": 204,
             "itemtype": "event",
             "name": "beforeCollapseModule",
             "description": "Fires before a module is collapsed.",
@@ -11508,7 +11521,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 204,
+            "line": 209,
             "itemtype": "event",
             "name": "afterCollapseModule",
             "description": "Fires after a module is collapsed.",
@@ -11524,7 +11537,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 210,
+            "line": 215,
             "itemtype": "event",
             "name": "beforeResizeModule",
             "description": "Fires before a module is resized.",
@@ -11550,7 +11563,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 217,
+            "line": 222,
             "itemtype": "event",
             "name": "afterResizeModule",
             "description": "Fires after a module is resized.",
@@ -11576,7 +11589,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 225,
+            "line": 230,
             "itemtype": "property",
             "name": "fit_to_viewport_class",
             "type": "{String}",
@@ -11587,7 +11600,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 233,
+            "line": 238,
             "itemtype": "property",
             "name": "fit_to_content_class",
             "type": "{String}",
@@ -11598,7 +11611,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 241,
+            "line": 246,
             "itemtype": "property",
             "name": "force_fit_class",
             "type": "{String}",
@@ -11609,7 +11622,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 249,
+            "line": 254,
             "itemtype": "property",
             "name": "page_header_class",
             "type": "{String}",
@@ -11620,7 +11633,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 257,
+            "line": 262,
             "itemtype": "property",
             "name": "page_body_class",
             "type": "{String}",
@@ -11631,7 +11644,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 265,
+            "line": 270,
             "itemtype": "property",
             "name": "page_footer_class",
             "type": "{String}",
@@ -11642,7 +11655,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 273,
+            "line": 278,
             "itemtype": "property",
             "name": "module_rows_class",
             "type": "{String}",
@@ -11653,7 +11666,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 281,
+            "line": 286,
             "itemtype": "property",
             "name": "module_cols_class",
             "type": "{String}",
@@ -11664,7 +11677,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 289,
+            "line": 294,
             "itemtype": "property",
             "name": "module_class",
             "type": "{String}",
@@ -11675,7 +11688,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 297,
+            "line": 302,
             "itemtype": "property",
             "name": "module_header_class",
             "type": "{String}",
@@ -11686,7 +11699,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 305,
+            "line": 310,
             "itemtype": "property",
             "name": "module_body_class",
             "type": "{String}",
@@ -11697,7 +11710,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 313,
+            "line": 318,
             "itemtype": "property",
             "name": "module_footer_class",
             "type": "{String}",
@@ -11708,7 +11721,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 321,
+            "line": 326,
             "itemtype": "property",
             "name": "not_managed_class",
             "type": "{String}",
@@ -11719,7 +11732,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 329,
+            "line": 334,
             "itemtype": "property",
             "name": "collapse_vert_nub_class",
             "type": "{String}",
@@ -11730,7 +11743,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 337,
+            "line": 342,
             "itemtype": "property",
             "name": "collapse_left_nub_class",
             "type": "{String}",
@@ -11741,7 +11754,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 345,
+            "line": 350,
             "itemtype": "property",
             "name": "collapse_right_nub_class",
             "type": "{String}",
@@ -11752,7 +11765,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 353,
+            "line": 358,
             "itemtype": "property",
             "name": "expand_vert_nub_class",
             "type": "{String}",
@@ -11763,7 +11776,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 361,
+            "line": 366,
             "itemtype": "property",
             "name": "expand_left_nub_class",
             "type": "{String}",
@@ -11774,7 +11787,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 369,
+            "line": 374,
             "itemtype": "property",
             "name": "expand_right_nub_class",
             "type": "{String}",
@@ -11785,7 +11798,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 377,
+            "line": 382,
             "itemtype": "property",
             "name": "collapsed_vert_class",
             "type": "{String}",
@@ -11796,7 +11809,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 385,
+            "line": 390,
             "itemtype": "property",
             "name": "collapsed_horiz_class",
             "type": "{String}",
@@ -11807,7 +11820,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 393,
+            "line": 398,
             "itemtype": "property",
             "name": "min_module_height",
             "type": "{Number}",
@@ -11818,7 +11831,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 798,
+            "line": 849,
             "description": "Call this after manually adding or removing modules on the page.",
             "itemtype": "method",
             "name": "rescanBody",
@@ -11827,7 +11840,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 946,
+            "line": 1002,
             "itemtype": "method",
             "name": "getHeaderHeight",
             "return": {
@@ -11839,7 +11852,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 955,
+            "line": 1011,
             "itemtype": "method",
             "name": "getHeaderContainer",
             "return": {
@@ -11851,7 +11864,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 964,
+            "line": 1020,
             "itemtype": "method",
             "name": "getBodyHeight",
             "return": {
@@ -11863,7 +11876,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 973,
+            "line": 1029,
             "itemtype": "method",
             "name": "getBodyContainer",
             "return": {
@@ -11875,7 +11888,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 982,
+            "line": 1038,
             "itemtype": "method",
             "name": "getFooterHeight",
             "return": {
@@ -11887,7 +11900,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 992,
+            "line": 1048,
             "itemtype": "method",
             "name": "getFooterContainer",
             "return": {
@@ -11899,7 +11912,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1001,
+            "line": 1057,
             "itemtype": "method",
             "name": "moduleIsCollapsed",
             "params": [
@@ -11918,7 +11931,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1024,
+            "line": 1080,
             "description": "Expand the specified module.",
             "itemtype": "method",
             "name": "expandModule",
@@ -11934,7 +11947,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1052,
+            "line": 1108,
             "description": "Collapse the specified module.",
             "itemtype": "method",
             "name": "collapseModule",
@@ -11950,7 +11963,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1080,
+            "line": 1136,
             "description": "Toggle the collapsed state of the specified layout-module.",
             "itemtype": "method",
             "name": "toggleModule",
@@ -11966,7 +11979,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1100,
+            "line": 1156,
             "description": "Call this when something changes size, to request a reflow of the\nlayout.",
             "itemtype": "method",
             "name": "elementResized",
@@ -11986,7 +11999,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1149,
+            "line": 1205,
             "description": "Returns the components of the module.",
             "itemtype": "method",
             "name": "_analyzeModule",
@@ -12008,7 +12021,7 @@
         },
         {
             "file": "src/gallery-layout/js/PageLayout.js",
-            "line": 1196,
+            "line": 1252,
             "description": "Set the width of a module.",
             "itemtype": "method",
             "name": "_setWidth",
@@ -15473,165 +15486,6 @@
             "module": "gallery-multiobject"
         },
         {
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 141,
-            "description": "Generate Markup for UL tag",
-            "itemtype": "method",
-            "name": "_keyDownHandler",
-            "access": "protected",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "UNKNOWN",
-                    "description": "",
-                    "type": "Event"
-                }
-            ],
-            "class": "Plugin.MultivalueInput",
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin"
-        },
-        {
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 168,
-            "description": "Generate Markup for UL tag",
-            "itemtype": "method",
-            "name": "_createULNode",
-            "access": "protected",
-            "tagname": "",
-            "return": {
-                "description": "",
-                "type": "Node"
-            },
-            "class": "Plugin.MultivalueInput",
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin"
-        },
-        {
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 182,
-            "description": "Generate Markup for list tag",
-            "itemtype": "method",
-            "name": "_createListNode",
-            "access": "protected",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "index",
-                    "description": "the section index",
-                    "type": "Int"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Node"
-            },
-            "class": "Plugin.MultivalueInput",
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin"
-        },
-        {
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 217,
-            "description": "Generate Markup for div tag",
-            "itemtype": "method",
-            "name": "_createDivNode",
-            "access": "protected",
-            "tagname": "",
-            "return": {
-                "description": "",
-                "type": "Node"
-            },
-            "class": "Plugin.MultivalueInput",
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin"
-        },
-        {
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 230,
-            "description": "Get the index of remove item",
-            "itemtype": "method",
-            "name": "_getListIndex",
-            "access": "protected",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "UNKNOWN",
-                    "description": "",
-                    "type": "Node"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Index"
-            },
-            "class": "Plugin.MultivalueInput",
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin"
-        },
-        {
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 248,
-            "description": "add the item in to the list",
-            "itemtype": "method",
-            "name": "_appendItem",
-            "access": "protected",
-            "tagname": "",
-            "class": "Plugin.MultivalueInput",
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin"
-        },
-        {
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 261,
-            "description": "remove the item from the list",
-            "itemtype": "method",
-            "name": "_removeItem",
-            "access": "protected",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "UNKNOWN",
-                    "description": "",
-                    "type": "Node"
-                }
-            ],
-            "class": "Plugin.MultivalueInput",
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin"
-        },
-        {
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 276,
-            "description": "Add value to value list",
-            "itemtype": "method",
-            "name": "_addValue",
-            "access": "protected",
-            "tagname": "",
-            "class": "Plugin.MultivalueInput",
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin"
-        },
-        {
-            "file": "src/gallery-multivalue-input/js/multivalue-input.js",
-            "line": 289,
-            "description": "remove value from value list",
-            "itemtype": "method",
-            "name": "_removeValue",
-            "access": "protected",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "UNKNOWN",
-                    "description": "",
-                    "type": "Index"
-                }
-            ],
-            "class": "Plugin.MultivalueInput",
-            "module": "gallery-multivalue-input",
-            "namespace": "Plugin"
-        },
-        {
             "file": "src/gallery-neon/js/Neon.js",
             "line": 28,
             "description": "Background (starting) color.  Must be parseable by Y.Color.toRGB().",
@@ -17131,6 +16985,16 @@
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
             "line": 90,
+            "description": "Templates for generating page links.",
+            "itemtype": "property",
+            "name": "templates",
+            "static": 1,
+            "class": "Paginator.ui.PageLinks",
+            "module": "gallery-paginator"
+        },
+        {
+            "file": "src/gallery-paginator/js/PageLinks.js",
+            "line": 102,
             "description": "Calculates start and end page numbers given a current page, attempting\nto keep the current page in the middle",
             "static": 1,
             "itemtype": "method",
@@ -17163,7 +17027,7 @@
         },
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
-            "line": 135,
+            "line": 147,
             "description": "Current page",
             "itemtype": "property",
             "name": "current",
@@ -17175,7 +17039,7 @@
         },
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
-            "line": 143,
+            "line": 155,
             "description": "Span node containing the page links",
             "itemtype": "property",
             "name": "container",
@@ -17187,7 +17051,7 @@
         },
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
-            "line": 152,
+            "line": 164,
             "description": "Removes the page links container node and clears event listeners",
             "itemtype": "method",
             "name": "destroy",
@@ -17198,7 +17062,7 @@
         },
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
-            "line": 162,
+            "line": 174,
             "description": "Generate the nodes and return the container node containing page links\nappropriate to the current pagination state.",
             "itemtype": "method",
             "name": "render",
@@ -17218,7 +17082,7 @@
         },
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
-            "line": 186,
+            "line": 198,
             "description": "Update the links if appropriate",
             "itemtype": "method",
             "name": "update",
@@ -17234,7 +17098,7 @@
         },
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
-            "line": 234,
+            "line": 265,
             "description": "Force a rebuild of the page links.",
             "itemtype": "method",
             "name": "rebuild",
@@ -17250,7 +17114,7 @@
         },
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
-            "line": 244,
+            "line": 275,
             "description": "Listener for the container's onclick event.  Looks for qualifying link\nclicks, and pulls the page number from the link's page attribute.\nSends link's page attribute to the Paginator's setPage method.",
             "itemtype": "method",
             "name": "onClick",
@@ -18174,6 +18038,16 @@
             "module": "gallery-paginator"
         },
         {
+            "file": "src/gallery-paginator/js/ValidationPageLinks.js",
+            "line": 36,
+            "description": "Templates for generating page links.",
+            "itemtype": "property",
+            "name": "templates",
+            "static": 1,
+            "class": "Paginator.ui.ValidationPageLinks",
+            "module": "gallery-paginator"
+        },
+        {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
             "line": 110,
             "description": "The prompt displayed when a new item is added to the query.",
@@ -18824,7 +18698,7 @@
         },
         {
             "file": "src/gallery-scrollintoview/js/ScrollIntoView.js",
-            "line": 184,
+            "line": 189,
             "description": "To receive notification of when the animation finishes, subscribe to the\nevent `scrollIntoViewFinished` on the Y.Node instance.  For consistency,\nthis event always fires, even without animation.\n\nIf you modify the ancestor chain while the animation is running, the\nresults will be unpredictable.",
             "itemtype": "method",
             "name": "scrollIntoView",
@@ -19251,22 +19125,5 @@
             "module": "gallery-treeble"
         }
     ],
-    "warnings": [
-        {
-            "message": "param name missing: {Event}",
-            "line": " src/gallery-multivalue-input/js/multivalue-input.js:141"
-        },
-        {
-            "message": "param name missing: {Node}",
-            "line": " src/gallery-multivalue-input/js/multivalue-input.js:230"
-        },
-        {
-            "message": "param name missing: {Node}",
-            "line": " src/gallery-multivalue-input/js/multivalue-input.js:261"
-        },
-        {
-            "message": "param name missing: {index}",
-            "line": " src/gallery-multivalue-input/js/multivalue-input.js:289"
-        }
-    ]
+    "warnings": []
 }

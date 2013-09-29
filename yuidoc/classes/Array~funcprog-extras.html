@@ -211,8 +211,6 @@
             
                 <li><a href="..&#x2F;classes/PageLayout.html">PageLayout</a></li>
             
-                <li><a href="..&#x2F;classes/Paginator.html">Paginator</a></li>
-            
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
             
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
@@ -248,8 +246,6 @@
                 <li><a href="..&#x2F;classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
-            
-                <li><a href="..&#x2F;classes/Plugin.MultivalueInput.html">Plugin.MultivalueInput</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
@@ -362,8 +358,6 @@
                 <li><a href="..&#x2F;modules/gallery-mru-cache.html">gallery-mru-cache</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-multiobject.html">gallery-multiobject</a></li>
-            
-                <li><a href="..&#x2F;modules/gallery-multivalue-input.html">gallery-multivalue-input</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
@@ -487,8 +481,19 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_mapToObject">mapToObject</a>
+
+                                
+                                    <span class="flag static">static</span>
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_reduceRight">reduceRight</a>
 
+                                
+                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
@@ -660,12 +665,170 @@ receives the value, the index, and the array itself as parameters
 </div>
 
                 
+                    <div id="method_mapToObject" class="method item">
+    <h3 class="name"><code>mapToObject</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>a</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>f</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>c</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;src_gallery-funcprog_js_array-extras.js.html#l77"><code>src&#x2F;gallery-funcprog&#x2F;js&#x2F;array-extras.js:77</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Executes the supplied function on each item in the array and returns
+an object with the results.  The function receives the value, the
+key, and the object itself as parameters (in that order).  The
+function must return an array with two elements (key, value), which
+will be mixed into the result.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">a</code>
+                        <span class="type">Mixed</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the array to iterate</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">f</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the function to execute on each item</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">c</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>optional context object</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Object</span>:
+                    
+                    object of all return values, constructed via Y.mix
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
                     <div id="method_reduceRight" class="method item">
     <h3 class="name"><code>reduceRight</code></h3>
 
     
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>a</code>
+                    
+                </li>
             
                 <li class="arg">
                     
@@ -702,6 +865,8 @@ receives the value, the index, and the array itself as parameters
     
 
     
+        <span class="flag static">static</span>
+    
 
     
 
@@ -718,7 +883,7 @@ receives the value, the index, and the array itself as parameters
             
         
         
-        <a href="..&#x2F;files&#x2F;src_gallery-funcprog_js_array-extras.js.html#l41"><code>src&#x2F;gallery-funcprog&#x2F;js&#x2F;array-extras.js:41</code></a>
+        <a href="..&#x2F;files&#x2F;src_gallery-funcprog_js_array-extras.js.html#l40"><code>src&#x2F;gallery-funcprog&#x2F;js&#x2F;array-extras.js:40</code></a>
         
         </p>
 
@@ -745,6 +910,21 @@ order).  The function must return the updated value.</p>
             
                 <li class="param">
                     
+                        <code class="param-name">a</code>
+                        <span class="type">Array</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>the array to iterate</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
                         <code class="param-name">init</code>
                         <span class="type">Mixed</span>
                     
@@ -767,7 +947,7 @@ order).  The function must return the updated value.</p>
                     
 
                     <div class="param-description">
-                        <p>the function to invoke</p>
+                        <p>the function to execute on each item</p>
                     </div>
 
                     

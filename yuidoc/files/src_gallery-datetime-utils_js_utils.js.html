@@ -211,8 +211,6 @@
             
                 <li><a href="..&#x2F;classes/PageLayout.html">PageLayout</a></li>
             
-                <li><a href="..&#x2F;classes/Paginator.html">Paginator</a></li>
-            
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
             
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
@@ -248,8 +246,6 @@
                 <li><a href="..&#x2F;classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
-            
-                <li><a href="..&#x2F;classes/Plugin.MultivalueInput.html">Plugin.MultivalueInput</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
@@ -362,8 +358,6 @@
                 <li><a href="..&#x2F;modules/gallery-mru-cache.html">gallery-mru-cache</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-multiobject.html">gallery-multiobject</a></li>
-            
-                <li><a href="..&#x2F;modules/gallery-multivalue-input.html">gallery-multivalue-input</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
@@ -764,9 +758,22 @@ Y.DateTimeUtils =
 		if (self.CLOCK_DISPLAY_TYPE == 12)
 		{
 			var s = self.TIME_FIELD_DELIMITER + pad2(time.minute) + &#x27; &#x27;;
-			return (time.hour &gt; 12 ?
-					(time.hour - 12) + s + self.PM_STRING :
-					time.hour + s + self.AM_STRING);
+			if (time.hour === 0)
+			{
+				return &#x27;12&#x27; + s + self.AM_STRING;
+			}
+			else if (time.hour === 12)
+			{
+				return &#x27;12&#x27; + s + self.PM_STRING;
+			}
+			else if (time.hour &gt; 12)
+			{
+				return (time.hour - 12) + s + self.PM_STRING;
+			}
+			else
+			{
+				return time.hour + s + self.AM_STRING;
+			}
 		}
 		else
 		{
@@ -796,21 +803,38 @@ Y.DateTimeUtils =
 			return time;
 		}
 
-		var offset = 0;
+		var offset = 0,
+			am     = false,
+			pm     = false;
 		if (time.indexOf(self.AM_STRING) &gt; 0)
 		{
+			am   = true;
 			time = Y.Lang.trim(time.replace(self.AM_STRING, &#x27;&#x27;));
 		}
 		else if (time.indexOf(self.PM_STRING) &gt; 0)
 		{
+			pm     = true;
 			time   = Y.Lang.trim(time.replace(self.PM_STRING, &#x27;&#x27;));
 			offset = 12;
 		}
 
 		var t = time.split(self.TIME_FIELD_DELIMITER);
-		if (t.length &lt; 2 || 3 &lt; t.length || !Y.every(t, validInteger))
+		if (t.length == 1 &amp;&amp; (am || pm))
+		{
+			t[1] = 0;
+		}
+		else if (t.length &lt; 2 || 3 &lt; t.length || !Y.every(t, validInteger))
 		{
 			throw Error(&#x27;Unparseable time format.&#x27;);
+		}
+
+		if (am &amp;&amp; t[0] == &#x27;12&#x27;)
+		{
+			t[0] = 0;
+		}
+		else if (pm &amp;&amp; t[0] == &#x27;12&#x27;)
+		{
+			offset = 0;
 		}
 
 		var result =

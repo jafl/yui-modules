@@ -211,8 +211,6 @@
             
                 <li><a href="..&#x2F;classes/PageLayout.html">PageLayout</a></li>
             
-                <li><a href="..&#x2F;classes/Paginator.html">Paginator</a></li>
-            
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
             
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
@@ -248,8 +246,6 @@
                 <li><a href="..&#x2F;classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
-            
-                <li><a href="..&#x2F;classes/Plugin.MultivalueInput.html">Plugin.MultivalueInput</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
@@ -362,8 +358,6 @@
                 <li><a href="..&#x2F;modules/gallery-mru-cache.html">gallery-mru-cache</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-multiobject.html">gallery-multiobject</a></li>
-            
-                <li><a href="..&#x2F;modules/gallery-multivalue-input.html">gallery-multivalue-input</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
@@ -520,6 +514,18 @@ Paginator.ATTRS.pageLabelBuilder =
 };
 
 &#x2F;**
+ * Templates for generating page links.
+ * @property templates
+ * @static
+ *&#x2F;
+Paginator.ui.PageLinks.templates =
+{
+    currentPageLink:  &#x27;&lt;span class=&quot;{currentPageClass} {pageLinkClass}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;,
+    pageLink:         &#x27;&lt;a href=&quot;#&quot; class=&quot;{pageLinkClass}&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;a&gt;&#x27;,
+    disabledPageLink: &#x27;&lt;span class=&quot;{pageLinkClass} disabled&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;
+}
+
+&#x2F;**
  * Calculates start and end page numbers given a current page, attempting
  * to keep the current page in the middle
  * @static
@@ -631,31 +637,50 @@ Paginator.ui.PageLinks.prototype = {
         &#x2F;&#x2F; Replace content if there&#x27;s been a change
         if (this.current !== currentPage || !currentPage || e.rebuild) {
             var labelBuilder = p.get(&#x27;pageLabelBuilder&#x27;),
+                totalPages   = p.getTotalPages(),
                 range        = Paginator.ui.PageLinks.calculateRange(
                                 currentPage,
-                                p.getTotalPages(),
+                                totalPages,
                                 p.get(&#x27;pageLinks&#x27;)),
                 start        = range[0],
                 end          = range[1],
                 content      = &#x27;&#x27;,
-                disabled     = p.get(&#x27;disabled&#x27;),
-                i;
+                showLast     = false,
+                i,
+                params = {
+                    currentPageClass: p.get(&#x27;currentPageClass&#x27;),
+                    pageLinkClass:    p.get(&#x27;pageLinkClass&#x27;)
+                },
+                pageLink = p.get(&#x27;disabled&#x27;) ?
+                    Paginator.ui.PageLinks.templates.disabledPageLink :
+                    Paginator.ui.PageLinks.templates.pageLink;
+
+            if (start &gt; 1) {
+                start++;
+                params.page  = 1;
+                params.label = labelBuilder(1,p);
+                content     += Y.Lang.sub(pageLink, params);
+                content     += &#x27;&amp;hellip;&#x27;;
+            }
+
+            if (end &lt; totalPages) {
+                end--;
+                showLast = true;
+            }
 
             for (i = start; i &lt;= end; ++i) {
-                if (i === currentPage) {
-                    content +=
-                        &#x27;&lt;span class=&quot;&#x27; + p.get(&#x27;currentPageClass&#x27;) + &#x27; &#x27; +
-                                          p.get(&#x27;pageLinkClass&#x27;) + &#x27;&quot;&gt;&#x27; +
-                        labelBuilder(i,p) + &#x27;&lt;&#x2F;span&gt;&#x27;;
-                } else if (disabled) {
-                    content +=
-                        &#x27;&lt;span class=&quot;&#x27; + p.get(&#x27;pageLinkClass&#x27;) +
-                           &#x27; disabled&quot; page=&quot;&#x27; + i + &#x27;&quot;&gt;&#x27; + labelBuilder(i,p) + &#x27;&lt;&#x2F;span&gt;&#x27;;
-                } else {
-                    content +=
-                        &#x27;&lt;a href=&quot;#&quot; class=&quot;&#x27; + p.get(&#x27;pageLinkClass&#x27;) +
-                           &#x27;&quot; page=&quot;&#x27; + i + &#x27;&quot;&gt;&#x27; + labelBuilder(i,p) + &#x27;&lt;&#x2F;a&gt;&#x27;;
-                }
+                params.page  = i;
+                params.label = labelBuilder(i,p);
+                content += Y.Lang.sub(i === currentPage ?
+                    Paginator.ui.PageLinks.templates.currentPageLink : pageLink,
+                    params);
+            }
+
+            if (showLast) {
+                params.page  = totalPages;
+                params.label = labelBuilder(totalPages,p);
+                content     += &#x27;&amp;hellip;&#x27;;
+                content     += Y.Lang.sub(pageLink, params);
             }
 
             this.container.set(&#x27;className&#x27;, p.get(&#x27;pageLinksContainerClass&#x27;));

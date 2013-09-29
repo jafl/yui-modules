@@ -211,8 +211,6 @@
             
                 <li><a href="..&#x2F;classes/PageLayout.html">PageLayout</a></li>
             
-                <li><a href="..&#x2F;classes/Paginator.html">Paginator</a></li>
-            
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
             
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
@@ -248,8 +246,6 @@
                 <li><a href="..&#x2F;classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
-            
-                <li><a href="..&#x2F;classes/Plugin.MultivalueInput.html">Plugin.MultivalueInput</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
@@ -363,8 +359,6 @@
             
                 <li><a href="..&#x2F;modules/gallery-multiobject.html">gallery-multiobject</a></li>
             
-                <li><a href="..&#x2F;modules/gallery-multivalue-input.html">gallery-multivalue-input</a></li>
-            
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-node-event-set.html">gallery-node-event-set</a></li>
@@ -435,6 +429,8 @@
 &#x2F;**
  * @module gallery-scrollintoview
  *&#x2F;
+
+var scrollBodyParent = (YUI.Env.UA.gecko &gt; 0 || YUI.Env.UA.opera &gt; 0);
 
 &#x2F;**
  * Only scrolls if the object is not currently visible.
@@ -523,12 +519,16 @@ function scrollContainer(node)
 
 	if (hit_top)
 	{
-		console.log(dx +&#x27;,&#x27; + dy);
 		if (dx || dy)
 		{
 			if (info.anim)
 			{
 				var body = Y.one(&#x27;body&#x27;);
+				if (scrollBodyParent)
+				{
+					body = body.get(&#x27;parentNode&#x27;);
+				}
+
 				info.anim.setAttrs(
 				{
 					node: body,
@@ -563,7 +563,6 @@ function scrollContainer(node)
 		return false;
 	}
 
-	console.log(dx +&#x27;,&#x27; + dy);
 	if (dx || dy)
 	{
 		if (info.anim)
@@ -658,7 +657,6 @@ Y.Node.prototype.scrollIntoView = function(config)
 		&#x2F;* int *&#x2F;	dx,
 		&#x2F;* int *&#x2F;	dy)
 	{
-	console.log(&#x27;move:&#x27;+dx+&#x27;,&#x27;+dy);
 		this.top    += dy;
 		this.bottom += dy;
 		this.left   += dx;

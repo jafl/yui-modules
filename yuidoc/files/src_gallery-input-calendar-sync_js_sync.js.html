@@ -211,8 +211,6 @@
             
                 <li><a href="..&#x2F;classes/PageLayout.html">PageLayout</a></li>
             
-                <li><a href="..&#x2F;classes/Paginator.html">Paginator</a></li>
-            
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
             
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
@@ -248,8 +246,6 @@
                 <li><a href="..&#x2F;classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
-            
-                <li><a href="..&#x2F;classes/Plugin.MultivalueInput.html">Plugin.MultivalueInput</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
@@ -362,8 +358,6 @@
                 <li><a href="..&#x2F;modules/gallery-mru-cache.html">gallery-mru-cache</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-multiobject.html">gallery-multiobject</a></li>
-            
-                <li><a href="..&#x2F;modules/gallery-multivalue-input.html">gallery-multivalue-input</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
@@ -554,7 +548,7 @@ Y.extend(InputCalendarSync, Y.Plugin.Base,
 	{
 		var host = this.get(&#x27;host&#x27;);
 
-		this.handle =
+		this.handle_list =
 		[
 			host.on(&#x27;change&#x27;, syncFromInput, this),
 			host.on(&#x27;valueSet&#x27;, syncFromInput, this),
@@ -568,9 +562,7 @@ Y.extend(InputCalendarSync, Y.Plugin.Base,
 
 	destructor: function()
 	{
-		this.change_handle.detach();
-		this.set_handle.detach();
-		this.cal_handle.detach();
+		Y.Array.invoke(this.handle_list, &#x27;detach&#x27;);
 	}
 });
 

@@ -211,8 +211,6 @@
             
                 <li><a href="..&#x2F;classes/PageLayout.html">PageLayout</a></li>
             
-                <li><a href="..&#x2F;classes/Paginator.html">Paginator</a></li>
-            
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
             
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
@@ -248,8 +246,6 @@
                 <li><a href="..&#x2F;classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
-            
-                <li><a href="..&#x2F;classes/Plugin.MultivalueInput.html">Plugin.MultivalueInput</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
@@ -363,8 +359,6 @@
             
                 <li><a href="..&#x2F;modules/gallery-multiobject.html">gallery-multiobject</a></li>
             
-                <li><a href="..&#x2F;modules/gallery-multivalue-input.html">gallery-multivalue-input</a></li>
-            
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-node-event-set.html">gallery-node-event-set</a></li>
@@ -465,6 +459,18 @@ Paginator.ATTRS.pageStatus =
 	validator: Y.Lang.isArray
 };
 
+&#x2F;**
+ * Templates for generating page links.
+ * @property templates
+ * @static
+ *&#x2F;
+Paginator.ui.ValidationPageLinks.templates =
+{
+    currentPageLink:  &#x27;&lt;span class=&quot;{link} {curr} {status}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;,
+    pageLink:         &#x27;&lt;a href=&quot;#&quot; class=&quot;{link} {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;a&gt;&#x27;,
+    disabledPageLink: &#x27;&lt;span class=&quot;{link} disabled {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;
+};
+
 Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
 {
 	update: function(e)
@@ -476,31 +482,61 @@ Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
 
 		var currentPage	= this.paginator.getCurrentPage();
 
-		var curr_markup = &#x27;&lt;span class=&quot;{link} {curr} {status}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;;
-		var link_markup = &#x27;&lt;a href=&quot;#&quot; class=&quot;{link} {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;a&gt;&#x27;;
-		var dis_markup  = &#x27;&lt;span class=&quot;{link} disabled {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;;
-
 		if (this.current !== currentPage || !currentPage || e.rebuild)
 		{
 			var linkClass    = this.paginator.get(&#x27;pageLinkClass&#x27;),
 				status       = this.paginator.get(&#x27;pageStatus&#x27;),
 				labelBuilder = this.paginator.get(&#x27;pageLabelBuilder&#x27;),
-				disabled     = this.paginator.get(&#x27;disabled&#x27;);
+				totalPages   = this.paginator.getTotalPages(),
+				linkMarkup   = this.paginator.get(&#x27;disabled&#x27;) ?
+					Paginator.ui.ValidationPageLinks.templates.disabledPageLink :
+					Paginator.ui.ValidationPageLinks.templates.pageLink;
 
 			var range =
 				Paginator.ui.PageLinks.calculateRange(
-					currentPage, this.paginator.getTotalPages(), this.paginator.get(&#x27;pageLinks&#x27;));
+					currentPage, totalPages, this.paginator.get(&#x27;pageLinks&#x27;));
 
 			var content = &#x27;&#x27;;
+
+			if (range[0] &gt; 1) {
+				range[0]++;
+				content += Y.Lang.sub(linkMarkup,
+				{
+					link:   linkClass,
+					curr:   &#x27;&#x27;,
+					status: status[0] ? vpl_status_prefix + status[0] : &#x27;&#x27;,
+					page:   1,
+					label:  labelBuilder(1, this.paginator)
+				});
+				content += &#x27;&amp;hellip;&#x27;
+			}
+
+			if (range[1] &lt; totalPages) {
+				range[1]--;
+				var showLast = true;
+			}
+
 			for (var i=range[0]; i&lt;=range[1]; i++)
 			{
-				content += Y.Lang.sub(i === currentPage ? curr_markup : disabled ? dis_markup : link_markup,
+				content += Y.Lang.sub(i === currentPage ? Paginator.ui.ValidationPageLinks.templates.currentPageLink : linkMarkup,
 				{
 					link:   linkClass,
 					curr:   (i === currentPage ? this.paginator.get(&#x27;currentPageClass&#x27;) : &#x27;&#x27;),
 					status: status[i-1] ? vpl_status_prefix + status[i-1] : &#x27;&#x27;,
 					page:   i,
 					label:  labelBuilder(i, this.paginator)
+				});
+			}
+
+			if (showLast) {
+				content += &#x27;&amp;hellip;&#x27;;
+				content += Y.Lang.sub(linkMarkup,
+				{
+					link:   linkClass,
+					curr:   &#x27;&#x27;,
+					status: status[totalPages-1] ? vpl_status_prefix + status[totalPages-1] : &#x27;&#x27;,
+					page:   totalPages,
+					label:  labelBuilder(totalPages, this.paginator)
 				});
 			}
 

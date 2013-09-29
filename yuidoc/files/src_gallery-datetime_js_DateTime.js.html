@@ -211,8 +211,6 @@
             
                 <li><a href="..&#x2F;classes/PageLayout.html">PageLayout</a></li>
             
-                <li><a href="..&#x2F;classes/Paginator.html">Paginator</a></li>
-            
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
             
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
@@ -248,8 +246,6 @@
                 <li><a href="..&#x2F;classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
-            
-                <li><a href="..&#x2F;classes/Plugin.MultivalueInput.html">Plugin.MultivalueInput</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
@@ -363,8 +359,6 @@
             
                 <li><a href="..&#x2F;modules/gallery-multiobject.html">gallery-multiobject</a></li>
             
-                <li><a href="..&#x2F;modules/gallery-multivalue-input.html">gallery-multivalue-input</a></li>
-            
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-node-event-set.html">gallery-node-event-set</a></li>
@@ -469,7 +463,7 @@ function setNode(n)
 	return Y.one(n) || Attribute.INVALID_VALUE;
 }
 
-function setDateTime(value)
+function dateTimeSetter(value)
 {
 	return value ? Y.DateTimeUtils.normalize(value, this.get(&#x27;blankTime&#x27;)) : null;
 };
@@ -505,6 +499,21 @@ DateTime.ATTRS =
 	},
 
 	&#x2F;**
+	 * Set to false to require a date to be entered.  If dateInput is
+	 * configured with Y.InputCalendarSync, allowBlank will be copied from
+	 * there.
+	 *
+	 * @attribute allowBlank
+	 * @type {Boolean}
+	 * @default true
+	 *&#x2F;
+	allowBlank:
+	{
+		value:     true,
+		validator: Y.Lang.isBoolean
+	},
+
+	&#x2F;**
 	 * Default date and time, used during initialization and by resetDateTime().
 	 * 
 	 * @attribute defaultDateTime
@@ -512,7 +521,7 @@ DateTime.ATTRS =
 	 *&#x2F;
 	defaultDateTime:
 	{
-		setter: setDateTime
+		setter: dateTimeSetter
 	},
 
 	&#x2F;**
@@ -523,7 +532,7 @@ DateTime.ATTRS =
 	 *&#x2F;
 	minDateTime:
 	{
-		setter: setDateTime
+		setter: dateTimeSetter
 	},
 
 	&#x2F;**
@@ -534,11 +543,11 @@ DateTime.ATTRS =
 	 *&#x2F;
 	maxDateTime:
 	{
-		setter: setDateTime
+		setter: dateTimeSetter
 	},
 
 	&#x2F;**
-	 * Time value to use when no time is specified, e.g., in a blackout date.
+	 * Time value to use when no time is specified as part of a date.
 	 * 
 	 * @attribute blankTime
 	 * @type {Object}
@@ -719,7 +728,34 @@ function enforceDateTimeLimits(
 	&#x2F;* string *&#x2F;	algo)
 {
 	var date = this.getDateTime();
-	if (!date)
+	if (!date &amp;&amp; this.get(&#x27;allowBlank&#x27;))
+	{
+		var date_len = this.get(&#x27;dateInput&#x27;).get(&#x27;value&#x27;).length;
+		if (date_len === 0)
+		{
+			this.ignore_value_set = true;
+			this.get(&#x27;timeInput&#x27;).set(&#x27;value&#x27;, &#x27;&#x27;);
+			this.ignore_value_set = false;
+
+			this.prev_date_time = null;
+			return;
+		}
+		else if (date_len &gt; 0 &amp;&amp; this.get(&#x27;timeInput&#x27;).get(&#x27;value&#x27;).length === 0)
+		{
+			this.get(&#x27;timeInput&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatTime(this.get(&#x27;blankTime&#x27;)));		&#x2F;&#x2F; recursive
+			return;
+		}
+	}
+
+	if (!date &amp;&amp; this.prev_date_time)
+	{
+		date = Y.clone(this.prev_date_time);
+		this.ignore_value_set = true;
+		this.get(&#x27;dateInput&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatDate(date));
+		this.get(&#x27;timeInput&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatTime(date));
+		this.ignore_value_set = false;
+	}
+	else if (!date)
 	{
 		return;
 	}
@@ -834,6 +870,10 @@ function enforceDateTimeLimits(
 	{
 		this.fire(&#x27;limitsEnforced&#x27;);
 	}
+
+	&#x2F;&#x2F; save valid input, in case use types invalid date next time
+
+	this.prev_date_time = dateTimeSetter.call(this, date);
 }
 
 function getEnforceTimer()
@@ -869,7 +909,7 @@ function enforceTimerCallback()
 	this.fire(&#x27;limitsEnforced&#x27;);
 }
 
-function updateRendering()
+function updateCalendarRendering()
 {
 	if (!this.calendar)
 	{
@@ -1074,17 +1114,9 @@ Y.extend(DateTime, Y.Base,
 		&#x2F;* object&#x2F;string *&#x2F;	container,
 		&#x2F;* map *&#x2F;			config)
 	{
-		var date_input = this.get(&#x27;dateInput&#x27;);
-		date_input.on(&#x27;change&#x27;, enforceDateTimeLimits, this);
-		date_input.after(&#x27;valueSet&#x27;, checkEnforceDateTimeLimits, this);
-
-		var time_input = this.get(&#x27;timeInput&#x27;);
-		if (time_input)
-		{
-			time_input.on(&#x27;change&#x27;, enforceDateTimeLimits, this);
-			time_input.after(&#x27;valueSet&#x27;, checkEnforceDateTimeLimits, this);
-		}
-		else
+		var date_input = this.get(&#x27;dateInput&#x27;),
+			time_input = this.get(&#x27;timeInput&#x27;);
+		if (!time_input)
 		{
 			time_input = Y.Node.create(&#x27;&lt;input type=&quot;hidden&quot;&gt;&lt;&#x2F;input&gt;&#x27;);
 			this.set(&#x27;timeInput&#x27;, time_input);
@@ -1100,6 +1132,8 @@ Y.extend(DateTime, Y.Base,
 			{
 				time_input.set(&#x27;value&#x27;, Y.DateTimeUtils.formatTime(default_date_time));
 			}
+
+			this.prev_date_time = default_date_time;
 		}
 
 		if (date_input.calendarSync)
@@ -1122,23 +1156,36 @@ Y.extend(DateTime, Y.Base,
 			{
 				this.calendar.set(&#x27;maximumDate&#x27;, t.date);
 			}
+
+			this.set(&#x27;allowBlank&#x27;, date_input.calendarSync.get(&#x27;allowBlank&#x27;));
 		}
 
 		&#x2F;&#x2F; changes
+
+		date_input.on(&#x27;change&#x27;, enforceDateTimeLimits, this);
+		date_input.after(&#x27;valueSet&#x27;, checkEnforceDateTimeLimits, this);
+
+		time_input.on(&#x27;change&#x27;, enforceDateTimeLimits, this);
+		time_input.after(&#x27;valueSet&#x27;, checkEnforceDateTimeLimits, this);
+
+		enforceDateTimeLimits.call(this);
 
 		function updateLimit(key, e)
 		{
 			if (e.newVal)
 			{
 				enforceDateTimeLimits.call(this);
-				this.calendar.set(key, e.newVal.date);
+				if (this.calendar)
+				{
+					this.calendar.set(key, e.newVal.date);
+				}
 			}
-			else
+			else if (this.calendar)
 			{
 				this.calendar.set(key, null);
 			}
 
-			updateRendering.call(this);
+			updateCalendarRendering.call(this);
 		}
 
 		this.after(&#x27;minDateTimeChange&#x27;, Y.bind(updateLimit, this, &#x27;minimumDate&#x27;));
@@ -1147,10 +1194,10 @@ Y.extend(DateTime, Y.Base,
 		this.after(&#x27;blackoutsChange&#x27;, function()
 		{
 			enforceDateTimeLimits.call(this);
-			updateRendering.call(this);
+			updateCalendarRendering.call(this);
 		});
 
-		updateRendering.call(this);
+		updateCalendarRendering.call(this);
 	},
 
 	&#x2F;**
@@ -1192,32 +1239,26 @@ Y.extend(DateTime, Y.Base,
 		result.time_str = Y.DateTimeUtils.formatTime(result);
 		return result;
 	},
-&#x2F;&#x2F; TODO
+
+	&#x2F;**
+	 * Set the date and time.
+	 *
+	 * @method setDateTime
+	 * @param date_time {Object} date and time
+	 *&#x2F;
 	setDateTime: function(
 		&#x2F;* object *&#x2F;	date_time)
 	{
-		this.rb[ this.rb.length-1 ].checked = true;
-
-		this.calendar.setDate(date_time);
-
-		if (date_time instanceof Date)
+		date_time = dateTimeSetter.call(this, date_time);
+		if (date_time)
 		{
-			this.hour_menu.value   = date_time.getHours();
-			this.minute_menu.value = date_time.getMinutes();
-		}
-		else if (date_time.time_str)
-		{
-			var obj                = DateTime.parseTime(date_time.time_str);
-			this.hour_menu.value   = obj.hour;
-			this.minute_menu.value = obj.minute;
-		}
-		else
-		{
-			this.hour_menu.value   = date_time.hour;
-			this.minute_menu.value = date_time.minute;
-		}
+			this.ignore_value_set = true;
+			this.get(&#x27;dateInput&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatDate(date_time));
+			this.get(&#x27;timeInput&#x27;).set(&#x27;value&#x27;, Y.DateTimeUtils.formatTime(date_time));
+			this.ignore_value_set = false;
 
-		enforceDateTimeLimits.call(this);
+			enforceDateTimeLimits.call(this);
+		}
 	},
 
 	&#x2F;**
@@ -1232,9 +1273,13 @@ Y.extend(DateTime, Y.Base,
 		{
 			this.setDateTime(d);
 		}
-		else
+		else if (this.get(&#x27;allowBlank&#x27;))
 		{
 			this.clearDateTime();
+		}
+		else
+		{
+			return;
 		}
 
 		enforceDateTimeLimits.call(this);
@@ -1247,12 +1292,14 @@ Y.extend(DateTime, Y.Base,
 	 *&#x2F;
 	clearDateTime: function()
 	{
-		this.get(&#x27;dateInput&#x27;).set(&#x27;value&#x27;, &#x27;&#x27;);
-
-		var time_input = this.get(&#x27;timeInput&#x27;);
-		if (time_input)
+		if (this.get(&#x27;allowBlank&#x27;))
 		{
-			time_input.set(&#x27;value&#x27;, &#x27;&#x27;);
+			this.get(&#x27;dateInput&#x27;).set(&#x27;value&#x27;, &#x27;&#x27;);
+			&#x2F;&#x2F; timeInput is automatically cleared
+		}
+		else
+		{
+			this.resetDateTime();
 		}
 	}
 });

@@ -211,8 +211,6 @@
             
                 <li><a href="..&#x2F;classes/PageLayout.html">PageLayout</a></li>
             
-                <li><a href="..&#x2F;classes/Paginator.html">Paginator</a></li>
-            
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
             
                 <li><a href="..&#x2F;classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
@@ -248,8 +246,6 @@
                 <li><a href="..&#x2F;classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
-            
-                <li><a href="..&#x2F;classes/Plugin.MultivalueInput.html">Plugin.MultivalueInput</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.Neon.html">Plugin.Neon</a></li>
             
@@ -362,8 +358,6 @@
                 <li><a href="..&#x2F;modules/gallery-mru-cache.html">gallery-mru-cache</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-multiobject.html">gallery-multiobject</a></li>
-            
-                <li><a href="..&#x2F;modules/gallery-multivalue-input.html">gallery-multivalue-input</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-neon.html">gallery-neon</a></li>
             
@@ -487,13 +481,12 @@ function getHeight(
 }
 
 Y.PageLayoutCols.resize = function(
-	&#x2F;* PageLayout *&#x2F;	host,
 	&#x2F;* enum *&#x2F;			mode,
 	&#x2F;* int *&#x2F;			body_width,
 	&#x2F;* int *&#x2F;			body_height)
 {
-	var match_heights = host.get(&#x27;matchColumnHeights&#x27;);
-	var col_count     = host.body_info.outers.size();
+	var match_heights = this.get(&#x27;matchColumnHeights&#x27;);
+	var col_count     = this.body_info.outers.size();
 
 	&#x2F;&#x2F; fit-to-viewport: adjust for vertically collapsed modules
 
@@ -503,14 +496,14 @@ Y.PageLayoutCols.resize = function(
 			col_heights = [];
 		for (var i=0; i&lt;col_count; i++)
 		{
-			var heights = host.body_info.inner_sizes[i].slice(0);
+			var heights = this.body_info.inner_sizes[i].slice(0);
 			row_heights.push(heights);
 			col_heights.push(body_height);
 
 			var uncollapsed_count = 0,
 				sum               = 0;
 
-			var modules = host.body_info.modules[i];
+			var modules = this.body_info.modules[i];
 			var count   = modules.size();
 			for (var j=0; j&lt;count; j++)
 			{
@@ -544,15 +537,15 @@ Y.PageLayoutCols.resize = function(
 	&#x2F;&#x2F; adjust for horizontally collapsed or fixed width modules
 
 	var module_info = {};
-	var col_widths  = host.body_info.outer_sizes.slice(0);
+	var col_widths  = this.body_info.outer_sizes.slice(0);
 
 	var uncollapsed_count = 0,
 		sum               = 0;
 	for (var i=0; i&lt;col_count; i++)
 	{
-		var col       = host.body_info.outers.item(i);
+		var col       = this.body_info.outers.item(i);
 		var collapsed = col.hasClass(Y.PageLayout.collapsed_horiz_class);
-		var modules   = host.body_info.modules[i];
+		var modules   = this.body_info.modules[i];
 		if (collapsed || col_widths[i] &lt; 0)
 		{
 			col_widths[i] = 0;
@@ -563,7 +556,7 @@ Y.PageLayoutCols.resize = function(
 			}
 			else if (has_explosive_modules_bug)
 			{
-				var children = host._analyzeModule(modules.item(0));
+				var children = modules.item(0)._page_layout.children;
 				if (children.bd)
 				{
 					var root_w = children.bd.totalWidth() + modules.item(j).horizMarginBorderPadding();
@@ -603,8 +596,8 @@ Y.PageLayoutCols.resize = function(
 	{
 		if (col_widths[i] == 0)
 		{
-			var module   = host.body_info.modules[i].item(0);
-			var children = host._analyzeModule(module);
+			var module   = this.body_info.modules[i].item(0);
+			var children = module._page_layout.children;
 			if (mode === Y.PageLayout.FIT_TO_VIEWPORT)
 			{
 				var h = getHeight(col_heights[i], row_heights, i, 0, module, module_info);
@@ -614,14 +607,14 @@ Y.PageLayoutCols.resize = function(
 				{
 					var h1 = adjustHeight(h, children);
 					var w1 = children.bd.insideWidth();
-					host.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
+					this.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
 					children.bd.setStyle(&#x27;height&#x27;, h1+&#x27;px&#x27;);
-					host.fire(&#x27;afterResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
+					this.fire(&#x27;afterResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
 				}
 			}
 			else if (children.bd)
 			{
-				host.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: &#x27;auto&#x27;, width: &#x27;auto&#x27; });
+				this.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: &#x27;auto&#x27;, width: &#x27;auto&#x27; });
 
 				children.root.setStyle(&#x27;height&#x27;, &#x27;auto&#x27;);
 				children.bd.setStyle(&#x27;height&#x27;, &#x27;auto&#x27;);
@@ -632,7 +625,7 @@ Y.PageLayoutCols.resize = function(
 				}
 				else
 				{
-					host.fire(&#x27;afterResizeModule&#x27;,
+					this.fire(&#x27;afterResizeModule&#x27;,
 					{
 						bd:     children.bd,
 						height: children.bd.insideHeight(),
@@ -651,11 +644,11 @@ Y.PageLayoutCols.resize = function(
 			w += body_width - total_w;
 		}
 
-		w = Math.max(1, w - host.body_info.outers.item(i).horizMarginBorderPadding());
-		host.body_info.outers.item(i).setStyle(&#x27;width&#x27;, w+&#x27;px&#x27;);
-		w = Math.max(1, w - host.body_info.modules[0].item(0).horizMarginBorderPadding());
+		w = Math.max(1, w - this.body_info.outers.item(i).horizMarginBorderPadding());
+		this.body_info.outers.item(i).setStyle(&#x27;width&#x27;, w+&#x27;px&#x27;);
+		w = Math.max(1, w - this.body_info.modules[0].item(0).horizMarginBorderPadding());
 
-		var modules = host.body_info.modules[i];
+		var modules = this.body_info.modules[i];
 		if (mode === Y.PageLayout.FIT_TO_VIEWPORT)
 		{
 			&#x2F;&#x2F; adjust for vertically collapsed or fixed height modules
@@ -679,15 +672,15 @@ Y.PageLayoutCols.resize = function(
 			for (var j=0; j&lt;count; j++)
 			{
 				var module   = modules.item(j);
-				var children = host._analyzeModule(module);
+				var children = module._page_layout.children;
 				if (row_heights[i][j] &lt; 0)
 				{
 					var h1 = children.bd.insideHeight();
 					var w1 = w - children.root.horizMarginBorderPadding() -
 							 children.bd.horizMarginBorderPadding();
-					host.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
+					this.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
 					module.setStyle(&#x27;width&#x27;, w+&#x27;px&#x27;);
-					host.fire(&#x27;afterResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
+					this.fire(&#x27;afterResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
 					continue;
 				}
 				k++;
@@ -704,10 +697,10 @@ Y.PageLayoutCols.resize = function(
 					}
 
 					var w1 = Math.max(1, w - children.bd.horizMarginBorderPadding());
-					host.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
-					host._setWidth(children, w);
+					this.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
+					this._setWidth(children, w);
 					children.bd.setStyle(&#x27;height&#x27;, h1+&#x27;px&#x27;);
-					host.fire(&#x27;afterResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
+					this.fire(&#x27;afterResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
 				}
 			}
 		}
@@ -720,12 +713,12 @@ Y.PageLayoutCols.resize = function(
 			var count = modules.size();
 			for (var j=0; j&lt;count; j++)
 			{
-				var children = host._analyzeModule(modules.item(j));
+				var children = modules.item(j)._page_layout.children;
 				if (children.bd)
 				{
 					var w1 = Math.max(1, w - children.bd.horizMarginBorderPadding());
-					host.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: &#x27;auto&#x27;, width: w1 });
-					host._setWidth(children, w);
+					this.fire(&#x27;beforeResizeModule&#x27;, { bd: children.bd, height: &#x27;auto&#x27;, width: w1 });
+					this._setWidth(children, w);
 					children.root.setStyle(&#x27;height&#x27;, &#x27;auto&#x27;);
 					children.bd.setStyle(&#x27;height&#x27;, &#x27;auto&#x27;);
 
@@ -735,7 +728,7 @@ Y.PageLayoutCols.resize = function(
 					}
 					else
 					{
-						host.fire(&#x27;afterResizeModule&#x27;,
+						this.fire(&#x27;afterResizeModule&#x27;,
 						{
 							bd:     children.bd,
 							height: children.bd.insideHeight(),
@@ -754,12 +747,12 @@ Y.PageLayoutCols.resize = function(
 		var h = 0;
 		for (var i=0; i&lt;col_count; i++)
 		{
-			h = Math.max(h, host.body_info.outers.item(i).get(&#x27;offsetHeight&#x27;));
+			h = Math.max(h, this.body_info.outers.item(i).get(&#x27;offsetHeight&#x27;));
 		}
 
 		for (var i=0; i&lt;col_count; i++)
 		{
-			var modules = host.body_info.modules[i],
+			var modules = this.body_info.modules[i],
 				count   = modules.size(),
 				module  = null,
 				w1      = 0;
@@ -769,7 +762,7 @@ Y.PageLayoutCols.resize = function(
 				if (count == 1 ||
 					(!module &amp;&amp;
 					 !module1.hasClass(Y.PageLayout.collapsed_vert_class) &amp;&amp;
-					 host.body_info.inner_sizes[i][j] &gt; 0))
+					 this.body_info.inner_sizes[i][j] &gt; 0))
 				{
 					module = module1;
 					w1     = ftc_size[i][j][1];
@@ -777,7 +770,7 @@ Y.PageLayoutCols.resize = function(
 				else
 				{
 					var bd = ftc_size[i][j][0];
-					host.fire(&#x27;afterResizeModule&#x27;,
+					this.fire(&#x27;afterResizeModule&#x27;,
 					{
 						bd:     bd,
 						height: bd.insideHeight(),
@@ -788,20 +781,20 @@ Y.PageLayoutCols.resize = function(
 
 			if (module)
 			{
-				var delta = h - host.body_info.outers.item(i).get(&#x27;offsetHeight&#x27;);
+				var delta = h - this.body_info.outers.item(i).get(&#x27;offsetHeight&#x27;);
 				if (delta &gt; 0 &amp;&amp; module.get(&#x27;parentNode&#x27;).hasClass(Y.PageLayout.collapsed_horiz_class))
 				{
 					module.setStyle(&#x27;height&#x27;, (module.insideHeight() + delta)+&#x27;px&#x27;);
 				}
 				else	&#x2F;&#x2F; always fire afterResizeModule
 				{
-					var children = host._analyzeModule(module);
+					var children = module._page_layout.children;
 					if (children.bd)
 					{
 						var h1 = children.bd.insideHeight() + delta;
 						module.setStyle(&#x27;height&#x27;, &#x27;auto&#x27;);
 						children.bd.setStyle(&#x27;height&#x27;, h1+&#x27;px&#x27;);
-						host.fire(&#x27;afterResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
+						this.fire(&#x27;afterResizeModule&#x27;, { bd: children.bd, height: h1, width: w1 });
 					}
 				}
 			}
