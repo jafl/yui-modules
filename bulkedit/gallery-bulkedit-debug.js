@@ -2435,7 +2435,7 @@ BulkEditor.markup =
 		var checkbox =
 			'<div class="{cont}{key}">' +
 				'<input type="checkbox" id="{id}" {value} class="{field}{key}" /> ' +
-				'<label for="{id}">{label}</label>' +
+				'{label}' +
 				'{msg}' +
 			'</div>';
 
