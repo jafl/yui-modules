@@ -1,0 +1,12 @@
+#!/bin/sh
+
+YOGI="../../node_modules/yogi/bin/yogi.js"
+
+for d in src/*; do
+	if [[ ! -d $d/tests ]]; then continue; fi
+
+	pushd $d
+	if ! $YOGI build --no-lint; then exit 1; fi
+	if ! $YOGI test; then exit 1; fi
+	popd
+done
