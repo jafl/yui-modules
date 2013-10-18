@@ -332,11 +332,11 @@ Y.DateTimeUtils =
 		if (self.CLOCK_DISPLAY_TYPE == 12)
 		{
 			var s = self.TIME_FIELD_DELIMITER + pad2(time.minute) + ' ';
-			if (time.hour === 0)
+			if (time.hour == 0)
 			{
 				return '12' + s + self.AM_STRING;
 			}
-			else if (time.hour === 12)
+			else if (time.hour == 12)
 			{
 				return '12' + s + self.PM_STRING;
 			}

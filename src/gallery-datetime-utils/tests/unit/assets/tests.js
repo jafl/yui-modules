@@ -110,8 +110,8 @@ YUI.add('gallery-datetime-utils-tests', function(Y) {
 			Y.Assert.areSame('2:05 PM', Y.DateTimeUtils.formatTime({hour:14, minute:5}));
 			Y.Assert.areSame('2:05 PM', Y.DateTimeUtils.formatTime(date));
 
-//			Y.Assert.areSame('12:00 AM', Y.DateTimeUtils.formatTime({hour:0, minute:0}));
-//			Y.Assert.areSame('12:02 AM', Y.DateTimeUtils.formatTime({hour:0, minute:2}));
+			Y.Assert.areSame('12:00 AM', Y.DateTimeUtils.formatTime({hour:0, minute:0}));
+			Y.Assert.areSame('12:02 AM', Y.DateTimeUtils.formatTime({hour:0, minute:2}));
 			Y.Assert.areSame('12:00 PM', Y.DateTimeUtils.formatTime({hour:12, minute:0}));
 			Y.Assert.areSame('12:05 PM', Y.DateTimeUtils.formatTime({hour:12, minute:5}));
 
