@@ -10,7 +10,7 @@ for d in src/*; do
 	if [[ ! -d $d/tests ]]; then continue; fi
 
 	pushd $d
-	if ! $YOGI build --no-lint; then exit 1; fi
+#	if ! $YOGI build --no-lint; then exit 1; fi
 	if ! $YOGI test; then exit 1; fi
 	popd
 done
