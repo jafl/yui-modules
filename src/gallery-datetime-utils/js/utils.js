@@ -399,7 +399,7 @@ Y.DateTimeUtils =
 		}
 		else if (t.length < 2 || 3 < t.length || !Y.every(t, validInteger))
 		{
-			throw Error('Unparseable time format: ' + time);
+			throw Error('xxx Unparseable time format: ' + time);
 		}
 
 		if (am && t[0] == '12')

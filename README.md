@@ -1,5 +1,7 @@
 Modules contributed to YUI Gallery
 
+[![Build Status](https://secure.travis-ci.org/jafl/yui-modules.png?branch=master)](http://travis-ci.org/jafl/yui-modules)
+
 Software Copyright License Agreement (BSD License)
 --------------------------------------------------
 
