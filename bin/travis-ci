@@ -14,6 +14,7 @@ for d in src/gallery-datetime-utils; do
 	pushd $d
 	ls -l
 	cat js/utils.js
+	if ! $YOGI build --no-lint; then exit 1; fi
 	if ! $YOGI test; then exit 1; fi
 	popd
 done
