@@ -6,11 +6,13 @@ echo ===;
 
 YOGI="../../node_modules/yogi/bin/yogi.js"
 
+ls -l
+
 for d in src/*; do
 	if [[ ! -d $d/tests ]]; then continue; fi
 
 	pushd $d
-#	if ! $YOGI build --no-lint; then exit 1; fi
+	ls -l
 	if ! $YOGI test; then exit 1; fi
 	popd
 done
