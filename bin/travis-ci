@@ -6,14 +6,10 @@ echo ===;
 
 YOGI="../../node_modules/yogi/bin/yogi.js"
 
-ls -l
-
-for d in src/gallery-datetime-utils; do
+for d in src/*; do
 	if [[ ! -d $d/tests ]]; then continue; fi
 
 	pushd $d
-	ls -l
-	cat js/utils.js
 	if ! $YOGI build --no-lint; then exit 1; fi
 	if ! $YOGI test; then exit 1; fi
 	popd
