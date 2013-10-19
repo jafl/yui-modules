@@ -8,11 +8,12 @@ YOGI="../../node_modules/yogi/bin/yogi.js"
 
 ls -l
 
-for d in src/*; do
+for d in src/gallery-datetime-utils; do
 	if [[ ! -d $d/tests ]]; then continue; fi
 
 	pushd $d
 	ls -l
+	cat js/utils.js
 	if ! $YOGI test; then exit 1; fi
 	popd
 done
