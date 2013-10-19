@@ -709,7 +709,7 @@ Y.DateTimeUtils =
 		var d = date.split(delimiter);
 		if (d.length != 3 || !Y.every(d, validInteger))
 		{
-			throw Error(&#x27;Unparseable date format.&#x27;);
+			throw Error(&#x27;Unparseable date format: &#x27; + date);
 		}
 
 		return self.normalize(
@@ -825,7 +825,7 @@ Y.DateTimeUtils =
 		}
 		else if (t.length &lt; 2 || 3 &lt; t.length || !Y.every(t, validInteger))
 		{
-			throw Error(&#x27;Unparseable time format.&#x27;);
+			throw Error(&#x27;Unparseable time format: &#x27; + time);
 		}
 
 		if (am &amp;&amp; t[0] == &#x27;12&#x27;)

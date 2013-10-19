@@ -84,7 +84,7 @@ Y.extend(AsyncFunctionDataSource, Y.DataSource.Local,
 		{
 			try
 			{
-				fn(Y.bind(callback, this), e.request, this, e);
+				fn.call(this, Y.bind(callback, this), e.request, this, e);
 			}
 			catch (ex)
 			{

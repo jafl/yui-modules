@@ -44,6 +44,12 @@ YUI.add('gallery-layout', function (Y, NAME) {
  * layout because browsers lie about the total height of the container in
  * this case.  Use padding instead of margin on elements inside headers and
  * footers.
+ * 
+ * If you wish to display a loading message that automatically disappears
+ * after the first time the layout is calculated, add the class
+ * `layout-loading` to the div containing the message.  (To be visible,
+ * this div must not be inside the div with class `layout-bd`, since that
+ * has `visibility:hidden`.)
  *
  * @class PageLayout
  * @extends Base
