@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Popup Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.10.2/build/yui/yui.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.10.2/build/cssreset/cssreset-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.10.2/build/cssfonts/cssfonts-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.10.2/build/cssbase/cssbase-min.css" />
+
+	<script src="gallery-popup-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-popup.css" />
+
+	<style>
+	.yui3-widget-loading { display:none; }
+
+	.yui3-overlay { border:1px solid black; padding:10px; background-color:white; }
+	</style>
+
+	<meta name="MSSmartTagsPreventParsing" content="TRUE" />
+	<meta http-equiv="X-UI-Compatible" content="IE=edge,chrome=1" />
+</head>
+<body class="yui3-skin-sam">
+
+<h1>YUI 3 Popup Example</h1>
+
+<button id="show-popup1">Toggle popup #1</button>
+<div id="popup1" class="yui3-widget-loading">
+	<div class="yui3-widget-bd">
+		Popup #1
+	</div>
+</div>
+
+<hr>
+
+<label for="input-popup2">Focus to show popup #2:</label>
+<input type="text" id="input-popup2" />
+<div id="popup2" class="yui3-widget-loading">
+	<div class="yui3-widget-bd">
+		<input type="text" value="123" />
+	</div>
+</div>
+
+<hr>
+
+<p><a href="../yuidoc/modules/gallery-popup.html">Show me the documentation</a></p>
+<p><a href="/yui-modules/">Back to project list</a></p>
+
+<script type="text/javascript">
+YUI({
+//	filter: 'raw', combine: false,
+	gallery: 'gallery-2013.06.26-23-09'
+}).use('gallery-popup', function(Y) {
+"use strict";
+
+	new Y.Popup(
+	{
+		srcNode: '#popup1',
+		zIndex:  100,
+		visible: false,
+		align:
+		{
+			node:   '#show-popup1',
+			points: [ Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.BL ]
+		},
+		showOn:
+		[
+			{
+				node:      '#show-popup1',
+				eventName: 'click'
+			}
+		]
+	})
+	.render();
+
+	new Y.Popup(
+	{
+		srcNode: '#popup2',
+		zIndex:  100,
+		visible: false,
+		align:
+		{
+			node:   '#input-popup2',
+			points: [ Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.BL ]
+		},
+		showOn:
+		[
+			{
+				node:      '#input-popup2',
+				eventName: 'focus'
+			},
+			{
+				node:      '#input-popup2',
+				eventName: 'click'		// re-show after esc
+			}
+		],
+		stayOpenOn:
+		[
+			{
+				node:      '#input-popup2',
+				eventName: 'click'
+			}
+		],
+	})
+	.render();
+});
+</script>
+
+</body>
+</html>
