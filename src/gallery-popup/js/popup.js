@@ -30,7 +30,7 @@ Y.Popup = Y.Base.create('popup', Y.Overlay, [Y.WidgetAutohide],
 		});
 		this.set('hideOn', hide);
 
-        Y.after(this._attachUIHandlesPopup, this, 'bindUI');
+		Y.after(this._attachUIHandlesPopup, this, 'bindUI');
 
 		this.after('showOnChange', this._resetUIHandlesPopup);
 		this.after('stayOpenOnChange', this._resetUIHandlesPopup);
@@ -39,7 +39,7 @@ Y.Popup = Y.Base.create('popup', Y.Overlay, [Y.WidgetAutohide],
 		{
 			if (e.newVal)
 			{
-				if (visible_popup)
+				if (visible_popup && visible_popup != this)
 				{
 					visible_popup.hide();
 				}
