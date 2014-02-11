@@ -1,5 +1,5 @@
 /**********************************************************************
- * A widget showing a temporary, "popup" overlay.
+ * Widgets for showing a temporary, "popup" overlay.
  *
  * @module gallery-popup
  * @main gallery-popup
