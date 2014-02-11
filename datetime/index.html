@@ -10,9 +10,20 @@
 	<script src="gallery-input-calendar-sync-debug.js"></script>
 	<script src="gallery-datetime-utils-debug.js"></script>
 	<script src="gallery-node-event-set-debug.js"></script>
+	<script src="gallery-calendar-popup-debug.js"></script>
+	<script src="gallery-popup-debug.js"></script>
 	<script src="gallery-funcprog-debug.js"></script>
 	<script src="gallery-object-extras-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-datetime.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-popup.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-calendar-popup.css" />
+
+	<script src="patch-calendar.js"></script>
+	<script src="patch-autohide.js"></script>
+
+	<style>
+	.yui3-js-enabled .yui3-calendarpopup-loading { top:-1000em; left:-1000em; position:absolute; }
+	</style>
 </head>
 <body class="yui3-skin-sam">
 
@@ -41,6 +52,17 @@
 		<button id="reset-date2" class="reset-date">Reset Date/Time</button>
 		<button id="clear-date2" class="clear-date">Clear Date/Time</button>
 		<div id="calendar2"></div>
+	</fieldset>
+	<fieldset>
+		<legend>Date Popup</legend>
+		<label for="date9">Date:</label><input type="text" id="date9" />
+		<button id="show-date9" class="log-to-console">Print to Console</button>
+		<button id="set-date9" class="set-date">Set Date/Time</button>
+		<button id="reset-date9" class="reset-date">Reset Date/Time</button>
+		<button id="clear-date9" class="clear-date">Clear Date/Time</button>
+		<div id="popup-calendar9" class="yui3-calendarpopup-loading">
+			<div id="calendar9" class="yui3-widget-bd"></div>
+		</div>
 	</fieldset>
 	<fieldset>
 		<legend>Date &amp; Time</legend>
@@ -104,7 +126,8 @@ YUI({
 	gallery: 'gallery-2013.06.26-23-09'
 }).use(
 	'gallery-datetime', 'gallery-input-calendar-sync', 'datatype-date-math',
-	'gallery-timepicker',
+	'gallery-timepicker', 'gallery-calendar-popup',
+	'patch-calendar', 'patch-autohide',
 function(Y)
 {
 	var now    = new Date(),
@@ -335,6 +358,39 @@ function(Y)
 		minDateTime:     new Date(today.getTime() - delta),
 		maxDateTime:     new Date(today.getTime() + delta - 60000)
 	});
+
+	// calendar inside popup
+
+	var cal9 = new Y.Calendar(
+	{
+		width:         300,
+		showPrevMonth: true,
+		showNextMonth: true
+	});
+	cal9.render('#calendar9');
+
+	Y.one('#date9').plug(Y.Plugin.InputCalendarSync,	// must be before Y.DateTime
+	{
+		calendar:   cal9,
+		allowBlank: false
+	});
+
+	dt_map.date9 = new Y.DateTime(
+	{
+		dateInput:       '#date9',
+		defaultDateTime: now,
+		minDateTime:     new Date(today.getTime() - delta),
+		maxDateTime:     new Date(today.getTime() + delta - 60000)
+	});
+
+	new Y.CalendarPopup(
+	{
+		srcNode:   '#popup-calendar9',
+		zIndex:    100,
+		visible:   false,
+		dateInput: '#date9'
+	})
+	.render();
 
 	// printout
 

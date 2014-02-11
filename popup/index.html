@@ -14,6 +14,8 @@
 	<script src="gallery-popup-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-popup.css" />
 
+	<script src="patch-autohide.js"></script>
+
 	<style>
 	.yui3-widget-loading { display:none; }
 
@@ -53,7 +55,7 @@
 YUI({
 //	filter: 'raw', combine: false,
 	gallery: 'gallery-2013.06.26-23-09'
-}).use('gallery-popup', function(Y) {
+}).use('gallery-popup', 'patch-autohide', function(Y) {
 "use strict";
 
 	new Y.Popup(
@@ -103,8 +105,9 @@ YUI({
 				node:      '#input-popup2',
 				eventName: 'click'
 			}
-		],
+		]
 	})
+//	.appendHideOn({ node: '#input-popup2', eventName: 'blur' })		// disallows focus to popup contents
 	.render();
 });
 </script>
