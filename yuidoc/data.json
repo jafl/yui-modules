@@ -1174,6 +1174,26 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/gallery-popup/js/input-popup.js": {
+            "name": "src/gallery-popup/js/input-popup.js",
+            "modules": {},
+            "classes": {
+                "InputPopup": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/gallery-popup/js/popup.js": {
+            "name": "src/gallery-popup/js/popup.js",
+            "modules": {
+                "gallery-popup": 1
+            },
+            "classes": {
+                "Popup": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/gallery-querybuilder/js/QueryBuilder.js": {
             "name": "src/gallery-querybuilder/js/QueryBuilder.js",
             "modules": {
@@ -2052,6 +2072,21 @@
             "tag": "module",
             "file": "src/gallery-paginator/js/ValidationPageLinks.js",
             "line": 5
+        },
+        "gallery-popup": {
+            "name": "gallery-popup",
+            "submodules": {},
+            "classes": {
+                "InputPopup": 1,
+                "Popup": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "main",
+            "file": "src/gallery-popup/js/popup.js",
+            "line": 10,
+            "description": "Widgets for showing a temporary, \"popup\" overlay.",
+            "itemtype": "main"
         },
         "gallery-querybuilder": {
             "name": "gallery-querybuilder",
@@ -4601,6 +4636,41 @@
                     "type": "Pagintor"
                 }
             ]
+        },
+        "InputPopup": {
+            "name": "InputPopup",
+            "shortname": "InputPopup",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-popup",
+            "namespace": "",
+            "file": "src/gallery-popup/js/input-popup.js",
+            "line": 5,
+            "description": "<p>A popup tuned to attach to an input field and contain a clickable\nvalue selector, e.g., `Y.Calendar` or `Y.Saw.Timepicker`.</p>",
+            "extends": "Popup",
+            "is_constructor": 1
+        },
+        "Popup": {
+            "name": "Popup",
+            "shortname": "Popup",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-popup",
+            "namespace": "",
+            "file": "src/gallery-popup/js/popup.js",
+            "line": 10,
+            "description": "<p>Popup provides an overlay which opens on a definable set of events,\ncloses on ESC or clicks outside the popup, and which can block the\noverlay from closing based on a definable set of events which take\nprecendence over the default close events.</p>",
+            "extends": "Overlay",
+            "uses": [
+                "WidgetAutohide"
+            ],
+            "is_constructor": 1
         },
         "QueryBuilder": {
             "name": "QueryBuilder",
@@ -7466,7 +7536,7 @@
         },
         {
             "file": "src/gallery-checkboxgroups/js/AtLeastOneCheckboxGroup.js",
-            "line": 67,
+            "line": 72,
             "itemtype": "method",
             "name": "enforceConstraints",
             "params": [
@@ -7637,7 +7707,7 @@
         },
         {
             "file": "src/gallery-checkboxgroups/js/SelectAllCheckboxGroup.js",
-            "line": 43,
+            "line": 44,
             "itemtype": "method",
             "name": "getSelectAllCheckbox",
             "return": {
@@ -7649,7 +7719,7 @@
         },
         {
             "file": "src/gallery-checkboxgroups/js/SelectAllCheckboxGroup.js",
-            "line": 52,
+            "line": 53,
             "description": "Toggle the setting of the \"select all\" checkbox.",
             "itemtype": "method",
             "name": "toggleSelectAll",
@@ -7658,7 +7728,7 @@
         },
         {
             "file": "src/gallery-checkboxgroups/js/SelectAllCheckboxGroup.js",
-            "line": 63,
+            "line": 64,
             "itemtype": "method",
             "name": "enforceConstraints",
             "params": [
@@ -12057,7 +12127,7 @@
         },
         {
             "file": "src/gallery-layout-datatable/js/layout-datatable.js",
-            "line": 97,
+            "line": 102,
             "description": "By default, the scroll position is restored after Y.PageLayout\nreflows the page.  In certain cases, e.g., switching to a different\npage of data, the scroll position should be reset instead.  Call\nthis function to request that the scroll position be reset after the\nnext layout reflow.",
             "itemtype": "method",
             "name": "resetScroll",
@@ -17098,7 +17168,7 @@
         },
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
-            "line": 265,
+            "line": 267,
             "description": "Force a rebuild of the page links.",
             "itemtype": "method",
             "name": "rebuild",
@@ -17114,7 +17184,7 @@
         },
         {
             "file": "src/gallery-paginator/js/PageLinks.js",
-            "line": 275,
+            "line": 277,
             "description": "Listener for the container's onclick event.  Looks for qualifying link\nclicks, and pulls the page number from the link's page attribute.\nSends link's page attribute to the Paginator's setPage method.",
             "itemtype": "method",
             "name": "onClick",
@@ -18048,6 +18118,89 @@
             "module": "gallery-paginator"
         },
         {
+            "file": "src/gallery-popup/js/input-popup.js",
+            "line": 58,
+            "description": "Input field to use.",
+            "itemtype": "attribute",
+            "name": "inputField",
+            "type": "{Node|String}",
+            "required": 1,
+            "writeonce": "",
+            "class": "InputPopup",
+            "module": "gallery-popup"
+        },
+        {
+            "file": "src/gallery-popup/js/input-popup.js",
+            "line": 75,
+            "description": "Selector for clickable elements inside the popup that should close it.",
+            "itemtype": "attribute",
+            "name": "clickNodes",
+            "type": "{String}",
+            "required": 1,
+            "writeonce": "",
+            "class": "InputPopup",
+            "module": "gallery-popup"
+        },
+        {
+            "file": "src/gallery-popup/js/input-popup.js",
+            "line": 90,
+            "description": "Selector for clickable nodes in a `Y.Calendar` instance.",
+            "itemtype": "property",
+            "name": "CalendarNodes",
+            "type": "{String}",
+            "static": 1,
+            "class": "InputPopup",
+            "module": "gallery-popup"
+        },
+        {
+            "file": "src/gallery-popup/js/input-popup.js",
+            "line": 99,
+            "description": "Selector for clickable nodes in a `Y.Saw.Timepicker` instance.",
+            "itemtype": "property",
+            "name": "TimePickerNodes",
+            "type": "{String}",
+            "static": 1,
+            "class": "InputPopup",
+            "module": "gallery-popup"
+        },
+        {
+            "file": "src/gallery-popup/js/popup.js",
+            "line": 54,
+            "description": "Add an additional event which should hide the popup.",
+            "itemtype": "method",
+            "name": "appendHideOn",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "o",
+                    "description": "The event description (node, eventName, keyCode)",
+                    "type": "Object"
+                }
+            ],
+            "class": "Popup",
+            "module": "gallery-popup"
+        },
+        {
+            "file": "src/gallery-popup/js/popup.js",
+            "line": 124,
+            "description": "List of { node, eventName, keyCode } describing the events that\nshould trigger showing the popup.  `node` and `eventName` are\nrequired.",
+            "itemtype": "attribute",
+            "name": "showOn",
+            "type": "{Array}",
+            "class": "Popup",
+            "module": "gallery-popup"
+        },
+        {
+            "file": "src/gallery-popup/js/popup.js",
+            "line": 138,
+            "description": "List of { node, eventName, keyCode } describing the events that\nshould keep the popup open.  These block hideOn from being\ntriggered.  `node` and `eventName` are required.",
+            "itemtype": "attribute",
+            "name": "stayOpenOn",
+            "type": "{Array}",
+            "class": "Popup",
+            "module": "gallery-popup"
+        },
+        {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
             "line": 110,
             "description": "The prompt displayed when a new item is added to the query.",
@@ -18591,7 +18744,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 674,
+            "line": 673,
             "description": "Validate the QuickEdit data.",
             "itemtype": "method",
             "name": "validate",
@@ -18605,7 +18758,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 702,
+            "line": 701,
             "description": "Clear all validation messages in QuickEdit mode.",
             "itemtype": "method",
             "name": "clearMessages",
@@ -18615,7 +18768,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 722,
+            "line": 721,
             "description": "Display a message for a QuickEdit field.  If an existing message with\na higher precedence is already visible, it will not be replaced.",
             "itemtype": "method",
             "name": "displayMessage",
@@ -18647,7 +18800,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 770,
+            "line": 769,
             "description": "Return the status of the field.",
             "itemtype": "method",
             "name": "_getElementStatus",
@@ -18675,7 +18828,7 @@
         },
         {
             "file": "src/gallery-quickedit/js/QuickEdit.js",
-            "line": 787,
+            "line": 786,
             "description": "Return the column key for the specified field.",
             "itemtype": "method",
             "name": "_getColumnKey",

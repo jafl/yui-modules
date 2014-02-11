@@ -95,6 +95,8 @@
             
                 <li><a href="..&#x2F;classes/HTMLTableBulkEditor.html">HTMLTableBulkEditor</a></li>
             
+                <li><a href="..&#x2F;classes/InputPopup.html">InputPopup</a></li>
+            
                 <li><a href="..&#x2F;classes/InstanceManager.html">InstanceManager</a></li>
             
                 <li><a href="..&#x2F;classes/io~multiresponse.html">io~multiresponse</a></li>
@@ -255,6 +257,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.PageLayoutDataTableModule.html">Plugin.PageLayoutDataTableModule</a></li>
             
+                <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
+            
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
@@ -371,6 +375,8 @@
             
                 <li><a href="..&#x2F;modules/gallery-paginator.html">gallery-paginator</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
@@ -466,9 +472,9 @@ Paginator.ATTRS.pageStatus =
  *&#x2F;
 Paginator.ui.ValidationPageLinks.templates =
 {
-    currentPageLink:  &#x27;&lt;span class=&quot;{link} {curr} {status}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;,
-    pageLink:         &#x27;&lt;a href=&quot;#&quot; class=&quot;{link} {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;a&gt;&#x27;,
-    disabledPageLink: &#x27;&lt;span class=&quot;{link} disabled {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;
+	currentPageLink:  &#x27;&lt;span class=&quot;{link} {curr} {status}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;,
+	pageLink:         &#x27;&lt;a href=&quot;#&quot; class=&quot;{link} {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;a&gt;&#x27;,
+	disabledPageLink: &#x27;&lt;span class=&quot;{link} disabled {status}&quot; page=&quot;{page}&quot;&gt;{label}&lt;&#x2F;span&gt;&#x27;
 };
 
 Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
@@ -498,46 +504,52 @@ Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
 
 			var content = &#x27;&#x27;;
 
-			if (range[0] &gt; 1) {
-				range[0]++;
-				content += Y.Lang.sub(linkMarkup,
-				{
-					link:   linkClass,
-					curr:   &#x27;&#x27;,
-					status: status[0] ? vpl_status_prefix + status[0] : &#x27;&#x27;,
-					page:   1,
-					label:  labelBuilder(1, this.paginator)
-				});
-				content += &#x27;&amp;hellip;&#x27;
-			}
-
-			if (range[1] &lt; totalPages) {
-				range[1]--;
-				var showLast = true;
-			}
-
-			for (var i=range[0]; i&lt;=range[1]; i++)
+			if (0 &lt; range[0] &amp;&amp; range[0] &lt;= range[1])
 			{
-				content += Y.Lang.sub(i === currentPage ? Paginator.ui.ValidationPageLinks.templates.currentPageLink : linkMarkup,
+				if (range[0] &gt; 1)
 				{
-					link:   linkClass,
-					curr:   (i === currentPage ? this.paginator.get(&#x27;currentPageClass&#x27;) : &#x27;&#x27;),
-					status: status[i-1] ? vpl_status_prefix + status[i-1] : &#x27;&#x27;,
-					page:   i,
-					label:  labelBuilder(i, this.paginator)
-				});
-			}
+					range[0]++;
+					content += Y.Lang.sub(linkMarkup,
+					{
+						link:   linkClass,
+						curr:   &#x27;&#x27;,
+						status: status[0] ? vpl_status_prefix + status[0] : &#x27;&#x27;,
+						page:   1,
+						label:  labelBuilder(1, this.paginator)
+					});
+					content += &#x27;&amp;hellip;&#x27;
+				}
 
-			if (showLast) {
-				content += &#x27;&amp;hellip;&#x27;;
-				content += Y.Lang.sub(linkMarkup,
+				if (range[1] &lt; totalPages)
 				{
-					link:   linkClass,
-					curr:   &#x27;&#x27;,
-					status: status[totalPages-1] ? vpl_status_prefix + status[totalPages-1] : &#x27;&#x27;,
-					page:   totalPages,
-					label:  labelBuilder(totalPages, this.paginator)
-				});
+					range[1]--;
+					var showLast = true;
+				}
+
+				for (var i=range[0]; i&lt;=range[1]; i++)
+				{
+					content += Y.Lang.sub(i === currentPage ? Paginator.ui.ValidationPageLinks.templates.currentPageLink : linkMarkup,
+					{
+						link:   linkClass,
+						curr:   (i === currentPage ? this.paginator.get(&#x27;currentPageClass&#x27;) : &#x27;&#x27;),
+						status: status[i-1] ? vpl_status_prefix + status[i-1] : &#x27;&#x27;,
+						page:   i,
+						label:  labelBuilder(i, this.paginator)
+					});
+				}
+
+				if (showLast)
+				{
+					content += &#x27;&amp;hellip;&#x27;;
+					content += Y.Lang.sub(linkMarkup,
+					{
+						link:   linkClass,
+						curr:   &#x27;&#x27;,
+						status: status[totalPages-1] ? vpl_status_prefix + status[totalPages-1] : &#x27;&#x27;,
+						page:   totalPages,
+						label:  labelBuilder(totalPages, this.paginator)
+					});
+				}
 			}
 
 			this.container.set(&#x27;innerHTML&#x27;, content);

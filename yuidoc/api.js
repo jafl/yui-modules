@@ -28,6 +28,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "ExpressionBuilder",
         "FormManager",
         "HTMLTableBulkEditor",
+        "InputPopup",
         "InstanceManager",
         "Iterable",
         "LinkedList",
@@ -107,6 +108,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Plugin.NodeFXSequence",
         "Plugin.OverlayForm",
         "Plugin.PageLayoutDataTableModule",
+        "Popup",
         "QueryBuilder",
         "QueryBuilder.MultiselectInput",
         "QueryBuilder.Select",
@@ -166,6 +168,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-nodelist-extras2",
         "gallery-object-extras",
         "gallery-paginator",
+        "gallery-popup",
         "gallery-querybuilder",
         "gallery-querybuilder-multiselect-input",
         "gallery-quickedit",
@@ -408,6 +411,11 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "gallery-paginator",
             "name": "gallery-paginator"
+        },
+        {
+            "displayName": "gallery-popup",
+            "name": "gallery-popup",
+            "description": "Widgets for showing a temporary, \"popup\" overlay."
         },
         {
             "displayName": "gallery-querybuilder",

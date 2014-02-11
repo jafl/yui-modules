@@ -95,6 +95,8 @@
             
                 <li><a href="..&#x2F;classes/HTMLTableBulkEditor.html">HTMLTableBulkEditor</a></li>
             
+                <li><a href="..&#x2F;classes/InputPopup.html">InputPopup</a></li>
+            
                 <li><a href="..&#x2F;classes/InstanceManager.html">InstanceManager</a></li>
             
                 <li><a href="..&#x2F;classes/io~multiresponse.html">io~multiresponse</a></li>
@@ -255,6 +257,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.PageLayoutDataTableModule.html">Plugin.PageLayoutDataTableModule</a></li>
             
+                <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
+            
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
@@ -370,6 +374,8 @@
                 <li><a href="..&#x2F;modules/gallery-object-extras.html">gallery-object-extras</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-paginator.html">gallery-paginator</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
             
@@ -655,32 +661,34 @@ Paginator.ui.PageLinks.prototype = {
                     Paginator.ui.PageLinks.templates.disabledPageLink :
                     Paginator.ui.PageLinks.templates.pageLink;
 
-            if (start &gt; 1) {
-                start++;
-                params.page  = 1;
-                params.label = labelBuilder(1,p);
-                content     += Y.Lang.sub(pageLink, params);
-                content     += &#x27;&amp;hellip;&#x27;;
-            }
+            if (0 &lt; start &amp;&amp; start &lt;= end) {
+                if (start &gt; 1) {
+                    start++;
+                    params.page  = 1;
+                    params.label = labelBuilder(1,p);
+                    content     += Y.Lang.sub(pageLink, params);
+                    content     += &#x27;&amp;hellip;&#x27;;
+                }
 
-            if (end &lt; totalPages) {
-                end--;
-                showLast = true;
-            }
+                if (end &lt; totalPages) {
+                    end--;
+                    showLast = true;
+                }
 
-            for (i = start; i &lt;= end; ++i) {
-                params.page  = i;
-                params.label = labelBuilder(i,p);
-                content += Y.Lang.sub(i === currentPage ?
-                    Paginator.ui.PageLinks.templates.currentPageLink : pageLink,
-                    params);
-            }
+                for (i = start; i &lt;= end; ++i) {
+                    params.page  = i;
+                    params.label = labelBuilder(i,p);
+                    content += Y.Lang.sub(i === currentPage ?
+                        Paginator.ui.PageLinks.templates.currentPageLink : pageLink,
+                        params);
+                }
 
-            if (showLast) {
-                params.page  = totalPages;
-                params.label = labelBuilder(totalPages,p);
-                content     += &#x27;&amp;hellip;&#x27;;
-                content     += Y.Lang.sub(pageLink, params);
+                if (showLast) {
+                    params.page  = totalPages;
+                    params.label = labelBuilder(totalPages,p);
+                    content     += &#x27;&amp;hellip;&#x27;;
+                    content     += Y.Lang.sub(pageLink, params);
+                }
             }
 
             this.container.set(&#x27;className&#x27;, p.get(&#x27;pageLinksContainerClass&#x27;));
