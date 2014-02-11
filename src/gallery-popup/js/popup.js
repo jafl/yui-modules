@@ -22,13 +22,7 @@ Y.Popup = Y.Base.create('popup', Y.Overlay, [Y.WidgetAutohide],
 {
 	initializer: function(config)
 	{
-		var hide = this.get('hideOn');
-		hide.push(
-		{
-			node:      this.get('boundingBox'),
-			eventName: 'clickoutside'
-		});
-		this.set('hideOn', hide);
+		this.appendHideOn({ eventName: 'clickoutside' });
 
 		Y.after(this._attachUIHandlesPopup, this, 'bindUI');
 
@@ -55,6 +49,21 @@ Y.Popup = Y.Base.create('popup', Y.Overlay, [Y.WidgetAutohide],
 	destructor: function()
 	{
 		this._detachUIHandlesPopup();
+	},
+
+	/**
+	 * Add an additional event which should hide the popup.
+	 * 
+	 * @method appendHideOn
+	 * @chainable
+	 * @param o {Object} The event description (node, eventName, keyCode)
+	 */
+	appendHideOn: function(o)
+	{
+		var hide = this.get('hideOn');
+		hide.push(o);
+		this.set('hideOn', hide);
+		return this;
 	},
 
 	_resetUIHandlesPopup: function()
