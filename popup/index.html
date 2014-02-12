@@ -79,36 +79,13 @@ YUI({
 	})
 	.render();
 
-	new Y.Popup(
+	new Y.InputPopup(
 	{
-		srcNode: '#popup2',
-		zIndex:  100,
-		visible: false,
-		align:
-		{
-			node:   '#input-popup2',
-			points: [ Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.BL ]
-		},
-		showOn:
-		[
-			{
-				node:      '#input-popup2',
-				eventName: 'focus'
-			},
-			{
-				node:      '#input-popup2',
-				eventName: 'click'		// re-show after esc
-			}
-		],
-		stayOpenOn:
-		[
-			{
-				node:      '#input-popup2',
-				eventName: 'click'
-			}
-		]
+		srcNode:    '#popup2',
+		zIndex:     100,
+		visible:    false,
+		inputField: '#input-popup2'
 	})
-//	.appendHideOn({ node: '#input-popup2', eventName: 'blur' })		// disallows focus to popup contents
 	.render();
 });
 </script>
