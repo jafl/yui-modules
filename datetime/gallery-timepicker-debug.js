@@ -1,4 +1,4 @@
-YUI.add('gallery-timepicker', function(Y) {
+YUI.add('gallery-timepicker', function (Y, NAME) {
 
 /*
 Copyright (c) 2009, Stephen Woods
@@ -35,12 +35,12 @@ or used for this project.
 
 /**
  * A yui 3 timepicker
- * 
+ *
  * @module Timepicker
  * @requires oop, event-custom, attribute, base, dom, classnamemanager, widget, event
  */
- 
- 
+
+
  /**
   * a YUI 3 implementation of the classic jQuery
   * timepicker widget
@@ -49,7 +49,7 @@ or used for this project.
   * @extends Widget
   */
 
-    
+
 
 var array = Y.Array,
 getClassName = Y.ClassNameManager.getClassName,
@@ -80,10 +80,10 @@ PM          = 1;
 
 //create the constructor, chain the parent
 function Timepicker(config) {
-	Timepicker.superclass.constructor.apply(this, arguments); 
-     /* the "model", actually a cache of dom refrences to find 
+    Timepicker.superclass.constructor.apply(this, arguments);
+     /* the "model", actually a cache of dom refrences to find
         elements quickly later */
-	this._model = {ampm : {},hour : {} , minute : {}};
+    this._model = {ampm : {},hour : {} , minute : {}};
 }
 
  /* utils */
@@ -101,7 +101,7 @@ function pad(num) {
 }
 
 /**
- * Creates a cell based on the little template defined in "str" 
+ * Creates a cell based on the little template defined in "str"
  * @protected
  * @method makeCell
  * @param {String} str The contents of the cell
@@ -122,7 +122,7 @@ function makeCell(str, rowId){
 Timepicker[NAME] = 'timepicker';
 
 Timepicker.ATTRS = {
-    
+
     time:{
         value:{
             hour:0,
@@ -130,7 +130,7 @@ Timepicker.ATTRS = {
             ampm:AM
         }
     },
-    
+
     delay:{
         value:15
     },
@@ -157,35 +157,35 @@ Timepicker[ACTIVE_CLASS] = getClassName(Timepicker[NAME], ACTIVE_CLASS);
 
 
 Y.extend(Timepicker, Y.Widget, {
-    
-    
+
+
           /* static vars */
-          
+
           AM:AM,
-          
+
           PM:PM,
-          
+
           /* allow a short delay before highlight */
           _timer: null,
-          
-    
-        
+
+
+
           initializer:function(){
               this.set('time.ampm', AM);
               var hour = this.get('time.hour');
               this.set('time.hour', ((hour === 0) ? 12 : hour));
 
           },
-          
+
           destructor: function(){
               // nuke the model, which is storing references to dom objects
-              
+
               delete(this._model.ampm);
               delete(this._model.hour);
               delete(this._model.minute);
-              
+
           },
-          
+
           /**
            * This method syncs the value of time object,
            * including building the strings for 12hr and 24hr
@@ -220,20 +220,20 @@ Y.extend(Timepicker, Y.Widget, {
                 * @param event {Event.Facade} An Event Facade object
                 */
               var time = this.get('time'),
-              
+
               ampm = time.ampm,
               seperator = this.get('strings.seperator'),
               minute    = pad(time.minute),
-              
+
               //build the string for ampm based on the strings
               ampmString = (ampm === AM) ? this.get(AMSTR_KEY) : this.get(PMSTR_KEY);
-              
+
               //store the string representation of the 12 hour time
 
-              this.set('time.s12hour', 
-                      ((time.hour === 0) ? 12 : time.hour) + 
+              this.set('time.s12hour',
+                      ((time.hour === 0) ? 12 : time.hour) +
                       seperator + minute + ampmString);
-              
+
               //convert 12 hour to 24
               var hour = (ampm === PM) ? parseInt(time.hour,10) + 12 : parseInt(time.hour,10);
               if(hour == 24 || hour === 0 ) {hour = Math.abs(hour-12);}
@@ -241,34 +241,34 @@ Y.extend(Timepicker, Y.Widget, {
 
               //store the string for 24 hour time
               this.set('time.s24hour', hour + seperator + minute);
-              
+
               //fire time change event
               this.fire('timeset', this.get('time'));
           },
-          
+
           _handleClick:function(e){
               //dispatch 'cellclick' event on any clicks
               if(e.target.test('.'+Timepicker[CELL_CLASS])){
                   this.fire('cellclick', this.get('time'));
               }
           },
-          
+
           _handleOver:function(e){
               //this handles mouseover events, which it uses to change
               //the store value of time as defined in the params
-              
+
               var targ = e.target, delay = this.get(DELAY_KEY);
-              
+
               if(this._timer){
                   this._timer.cancel();
                   this._timer = null;
               }
-              
+
               this._timer = Y.later(delay, this, this._highlight, targ);
-              
-              
+
+
           },
-          
+
           _highlight:function(targ){
               //make sure this is one of our cells
                 if(targ.test('.'+Timepicker[CELL_CLASS])){
@@ -299,47 +299,47 @@ Y.extend(Timepicker, Y.Widget, {
 
                 this.syncUI();
           },
-          
+
           _handleOut:function(e){
               if(this._timer){
                   this._timer.cancel();
                   this._timer = null;
-              }  
+              }
           },
-          
+
           renderUI: function(){
               //FIXME: This could be more efficient!
-              
+
               /*
-              current implementation builds three ordered lists, one for 
+              current implementation builds three ordered lists, one for
               each row. Then we use the makeCell private method tp create a cell
               with the given class, based on string constants defined up top
               */
               var cb = this.get('contentBox'),
                    m = this._model,
-				   rows = [], 
-				   i;
-                   
+                   rows = [],
+                   i;
+
               //create row function is very simple...
               function createRow(){ return cb.create('<ol>');}
-              
+
               var row = [];
               //only need three rows
               for (i=0; i <= 3; i++) {
                   row[i] = createRow();
               }
-              
+
               //wrap make cell in node create
               function mc (str, c){
                   return cb.create(makeCell(str, c));
               }
-              
+
 
               m[AMPM_CLASS].AM = mc(this.get(AMSTR_KEY),AMPM_CLASS);
               m[AMPM_CLASS].PM = mc(this.get(PMSTR_KEY),AMPM_CLASS);
               row[0].appendChild(m[AMPM_CLASS].AM);
               row[0].appendChild(m[AMPM_CLASS].PM);
-              
+
               //build rows, creating a function to use only twice, but
               //still remove duplicates
               function assembleRow(start, row, max, step, c){
@@ -347,61 +347,62 @@ Y.extend(Timepicker, Y.Widget, {
                       var cell = mc(i, c);
                       m[c][i] = cell;
                       row.appendChild(cell);
-                  } 
+                  }
               }
-                 
+
               assembleRow(1, row[1], 12, 1, HOUR_CLASS);
 
               assembleRow(0, row[2], 45, 15, MINUTE_CLASS);
-              
+
               this._model[AMPM_CLASS].row = row[0];
               this._model[HOUR_CLASS].row = row[1];
               this._model[MINUTE_CLASS].row = row[2];
-              
+
               var parent = cb.create('<div>');
-              
-              
+
+
               array.each(row, function(item){
                   parent.appendChild(item);
               });
 
               cb.appendChild(parent);
-        
+
               //store for later
               this.allCells = cb.all('li');
-         
+
           },
-          
+
           /**
            * Show/hide the widget
            * @method toggle
-           */              
+           */
           toggle: function(){
+  Y.log('Toggling picker visability', 'info', CONSTRUCTOR);
               this[(this.get('visible') ? 'hide' : 'show')]();
               this.syncUI(); //IE 6 has an issue without this
           },
-          
+
           bindUI: function(){
-              
+
               var cb = this.get('contentBox');
 
               cb.on('click', this._handleClick, this);
               cb.on('mouseover', this._handleOver, this);
               cb.on('mouseout', this._handleOut, this);
           },
-          
+
           syncUI: function(){
               Y.log('Syncing picker time', 'info', CONSTRUCTOR);
               //get the current tine vlaue
               var time = this.get('time');
-             
+
               //get all of the li elements to clear their active state
               this.allCells.removeClass(Timepicker[ACTIVE_CLASS]);
-              
+
               var m = this._model,
                   offset = m.ampm.AM.getX(),
                   apos = 0;
-              
+
               //handle ampm row, because of l10n can't count on
               //the value, so instead we use the "constant"
               if(time.ampm == AM){
@@ -410,24 +411,36 @@ Y.extend(Timepicker, Y.Widget, {
                   m.ampm.PM.addClass(Timepicker[ACTIVE_CLASS]);
                   apos = m.ampm.PM.getX() - offset;
               }
-              
+
               //handle minute row
               m.minute[time.minute].addClass(Timepicker[ACTIVE_CLASS]);
-             
-              
+
+
               //handle hour row
               m.hour[time.hour].addClass(Timepicker[ACTIVE_CLASS]);
-              
-              m.hour.row.setStyle('margin-left', apos+'px');
 
-              m.minute.row.setStyle('margin-left', (m.hour[time.hour].getX() - offset)+'px');
- 
+              m.hour.row.setStyle('marginLeft', apos+'px');
+
+              m.minute.row.setStyle('marginLeft', (apos + m.hour[time.hour].getX() - m.hour[1].getX())+'px');
+
           }
       });
-      
+
 Y.Base.build(Timepicker.NAME, Timepicker, {dynamic:false});
 Y.namespace(NAMESPACE +'.'+CONSTRUCTOR);
 Y[NAMESPACE][CONSTRUCTOR] = Timepicker;
 
 
-}, 'gallery-2011.10.12-20-24' ,{requires:['oop', 'event-custom', 'attribute', 'base', 'dom', 'classnamemanager', 'widget', 'event']});
+}, '@VERSION@', {
+    "skinnable": "true",
+    "requires": [
+        "oop",
+        "event-custom",
+        "attribute",
+        "base",
+        "dom",
+        "classnamemanager",
+        "widget",
+        "event"
+    ]
+});

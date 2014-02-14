@@ -19,7 +19,7 @@
 
 <!--	<script src="patch-calendar.js"></script> -->
 	<script src="patch-autohide.js"></script>
-	<link rel="stylesheet" type="text/css" href="assets/timepicker.css" />
+	<link rel="stylesheet" type="text/css" href="assets/gallery-timepicker.css" />
 
 	<style>
 	.yui3-js-enabled .yui3-inputpopup-loading { top:-1000em; left:-1000em; position:absolute; }
@@ -383,9 +383,9 @@ function(Y)
 	var tp9 = new Y.Saw.Timepicker();
 	tp9.render('#timepicker9');
 
-	tp9.on('timeset', function(data)
+	tp9.on('cellclick', function()
 	{
-		Y.one('#time9').set('value', data.s24hour);
+		Y.one('#time9').set('value', tp9.get('time').s24hour);
 	});
 
 	dt_map.date9 = new Y.DateTime(

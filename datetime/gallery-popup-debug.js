@@ -28,6 +28,15 @@ Y.Popup = Y.Base.create('popup', Y.Overlay, [Y.WidgetAutohide],
 
 		Y.after(this._attachUIHandlesPopup, this, 'bindUI');
 
+		if (this.get('reparentToBody'))
+		{
+			Y.after(function()
+			{
+				Y.one('body').append(this.get('boundingBox'));
+			},
+			this, 'renderUI');
+		}
+
 		this.after('showOnChange', this._resetUIHandlesPopup);
 		this.after('stayOpenOnChange', this._resetUIHandlesPopup);
 
@@ -149,6 +158,21 @@ Y.Popup = Y.Base.create('popup', Y.Overlay, [Y.WidgetAutohide],
 		{
 			validator: Y.Lang.isArray,
 			value:     []
+		},
+
+		/**
+		 * Set to `true` to reparent the popup to the body element.
+		 *
+		 * @attribute reparentToBody
+		 * @type {Boolean}
+		 * @default false
+		 * @writeonce
+		 */
+		reparentToBody:
+		{
+			validator: Y.Lang.isBoolean,
+			writeOnce: true,
+			value:     false
 		}
 	}
 });
@@ -248,7 +272,7 @@ InputPopup.ATTRS =
  * @type {String}
  * @static
  */
-InputPopup.CalendarNodes = '.yui3-calendar-grid tbody td';
+InputPopup.CalendarNodes = '.yui3-calendar-grid .yui3-calendar-day';
 
 /**
  * Selector for clickable nodes in a `Y.Saw.Timepicker` instance.
@@ -265,25 +289,28 @@ Y.extend(InputPopup, Y.Popup,
 	{
 		this.after('render', function()
 		{
-			var input = this.get('inputField'),
-				box   = this.get('boundingBox');
+			var input   = this.get('inputField'),
+				bound   = this.get('boundingBox'),
+				content = this.get('contentBox');
 
-			// close after selecting a date
+			// close after selecting a value
 
 			Y.delegate('click', function()
 			{
 				this.hide();
 				Y.later(1, input, input.focus);
 			},
-			box, this.get('clickNodes'), this);
+			bound, this.get('clickNodes'), this);
 
 			// close when focus shifts to another element outside popup
+
+			content.set('tabIndex', 1);
 
 			input.on('blur', function()
 			{
 				Y.later(10, this, function()
 				{
-					if (!Y.DOM.contains(Y.Node.getDOMNode(box), document.activeElement))
+					if (!Y.DOM.contains(Y.Node.getDOMNode(bound), document.activeElement))
 					{
 						this.hide();
 					}
