@@ -297,8 +297,8 @@ Y.extend(InputPopup, Y.Popup,
 
 			Y.delegate('click', function()
 			{
+				input.focus();
 				this.hide();
-				Y.later(1, input, input.focus);
 			},
 			bound, this.get('clickNodes'), this);
 
