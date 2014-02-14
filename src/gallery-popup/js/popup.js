@@ -26,6 +26,15 @@ Y.Popup = Y.Base.create('popup', Y.Overlay, [Y.WidgetAutohide],
 
 		Y.after(this._attachUIHandlesPopup, this, 'bindUI');
 
+		if (this.get('reparentToBody'))
+		{
+			Y.after(function()
+			{
+				Y.one('body').append(this.get('boundingBox'));
+			},
+			this, 'renderUI');
+		}
+
 		this.after('showOnChange', this._resetUIHandlesPopup);
 		this.after('stayOpenOnChange', this._resetUIHandlesPopup);
 
@@ -147,6 +156,21 @@ Y.Popup = Y.Base.create('popup', Y.Overlay, [Y.WidgetAutohide],
 		{
 			validator: Y.Lang.isArray,
 			value:     []
+		},
+
+		/**
+		 * Set to `true` to reparent the popup to the body element.
+		 *
+		 * @attribute reparentToBody
+		 * @type {Boolean}
+		 * @default false
+		 * @writeonce
+		 */
+		reparentToBody:
+		{
+			validator: Y.Lang.isBoolean,
+			writeOnce: true,
+			value:     false
 		}
 	}
 });

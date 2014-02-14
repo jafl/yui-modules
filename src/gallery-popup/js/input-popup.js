@@ -94,7 +94,7 @@ InputPopup.ATTRS =
  * @type {String}
  * @static
  */
-InputPopup.CalendarNodes = '.yui3-calendar-grid tbody td';
+InputPopup.CalendarNodes = '.yui3-calendar-grid .yui3-calendar-day';
 
 /**
  * Selector for clickable nodes in a `Y.Saw.Timepicker` instance.
@@ -111,25 +111,28 @@ Y.extend(InputPopup, Y.Popup,
 	{
 		this.after('render', function()
 		{
-			var input = this.get('inputField'),
-				box   = this.get('boundingBox');
+			var input   = this.get('inputField'),
+				bound   = this.get('boundingBox'),
+				content = this.get('contentBox');
 
-			// close after selecting a date
+			// close after selecting a value
 
 			Y.delegate('click', function()
 			{
+				input.focus();
 				this.hide();
-				Y.later(1, input, input.focus);
 			},
-			box, this.get('clickNodes'), this);
+			bound, this.get('clickNodes'), this);
 
 			// close when focus shifts to another element outside popup
+
+			content.set('tabIndex', 1);
 
 			input.on('blur', function()
 			{
 				Y.later(10, this, function()
 				{
-					if (!Y.DOM.contains(Y.Node.getDOMNode(box), document.activeElement))
+					if (!Y.DOM.contains(Y.Node.getDOMNode(bound), document.activeElement))
 					{
 						this.hide();
 					}
