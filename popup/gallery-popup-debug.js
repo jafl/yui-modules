@@ -324,4 +324,13 @@ Y.extend(InputPopup, Y.Popup,
 Y.InputPopup = InputPopup;
 
 
-}, '@VERSION@', {"skinnable": "true", "requires": ["overlay", "widget-autohide", "event-outside", "gallery-funcprog"]});
+}, '@VERSION@', {
+    "skinnable": "true",
+    "requires": [
+        "overlay",
+        "widget-autohide",
+        "event-outside",
+        "gallery-funcprog",
+        "array-invoke"
+    ]
+});
