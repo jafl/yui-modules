@@ -158,7 +158,10 @@ function(Y) {
 		pg.render();
 	});
 
-	pg.on(['changeRequest','pageChange'], console.log);
+	pg.on(['changeRequest','pageChange'], function(e)
+	{
+		console.log(e)
+	});
 
 // DataTable
 
