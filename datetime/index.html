@@ -4,7 +4,7 @@
 	<title>YUI 3 DateTime Examples</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
-	<script src="http://yui.yahooapis.com/3.10.1/build/yui/yui-min.js"></script>
+	<script src="http://yui.yahooapis.com/3.15.0/build/yui/yui-min.js"></script>
 
 	<script src="gallery-datetime-debug.js"></script>
 	<script src="gallery-input-calendar-sync-debug.js"></script>
@@ -17,7 +17,6 @@
 	<link rel="stylesheet" type="text/css" href="assets/gallery-datetime.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-popup.css" />
 
-	<script src="patch-calendar.js"></script>
 	<script src="patch-autohide.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-timepicker.css" />
 
@@ -25,6 +24,9 @@
 	.yui3-js-enabled .yui3-inputpopup-loading { top:-1000em; left:-1000em; position:absolute; }
 
 	#popup-timepicker9 { border:1px solid black; background-color:white; }
+
+	/* hack for 3.15.0 */
+	.yui3-skin-sam .yui3-calendar-pane { display:block; }
 	</style>
 </head>
 <body class="yui3-skin-sam">
@@ -128,7 +130,7 @@
 <script type="text/javascript">
 YUI({
 	filter: 'raw', combine: false,
-	gallery: 'gallery-2013.06.26-23-09'
+	gallery: 'gallery-2014.02.20-23-55'
 }).use(
 	'gallery-datetime', 'gallery-input-calendar-sync', 'datatype-date-math',
 	'gallery-timepicker',
