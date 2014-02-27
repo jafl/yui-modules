@@ -141,6 +141,7 @@ function show()
 	{
 		return;
 	}
+	this.neon.orig_show.call(this);
 
 	var plugin           = this.neon;
 	plugin.node          = this;
