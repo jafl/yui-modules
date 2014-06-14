@@ -105,7 +105,9 @@ QueryBuilder.String.prototype =
 			this.value_input.unplug(Y.Plugin.AutoComplete);
 		}
 
-		this.op_menu     = null;
+		this.op_menu.remove(true);
+		this.value_input.remove(true);
+
 		this.value_input = null;
 	},
 
@@ -114,14 +116,6 @@ QueryBuilder.String.prototype =
 	{
 		this.op_menu.setAttribute('name', this.operationName(new_index));
 		this.value_input.setAttribute('name', this.valueName(new_index));
-	},
-
-	set: function(
-		/* int */	query_index,
-		/* map */	data)
-	{
-		this.op_menu.set('value', data[ this.operationName(query_index) ]);
-		this.value_input.set('value', data[ this.valueName(query_index) ]);
 	},
 
 	toDatabaseQuery: function()
@@ -176,7 +170,7 @@ QueryBuilder.String.prototype =
 		{
 			n: input_name,
 			f: Y.FormManager.field_marker_class,
-			c: validation_class + ' ' + this.qb.getClassName('field')
+			c: (validation_class || '') + ' ' + this.qb.getClassName('field')
 		});
 	}
 };

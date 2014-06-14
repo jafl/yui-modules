@@ -43,9 +43,6 @@ var has_bubble_problem = (0 < Y.UA.ie && Y.UA.ie < 9);
  *		and purge all events.)</dd>
  * <dt>`updateName(new_index)`</dt>
  * <dd>Update the names of the form fields managed by the plugin.</dd>
- * <dt>`set(query_index, data)`</dt>
- * <dd>Set the displayed value(s) by extracting values from data (a map)
- *		based on the current names of the plugin's form fields.</dd>
  * <dt>`toDatabaseQuery()`</dt>
  * <dd>Return an array of arrays.  Each inner array contains an operation
  *		and a value.  The default String and Select plugins each return
@@ -433,8 +430,8 @@ Y.extend(QueryBuilder, Y.Widget,
 	 * @param value {Mixed} If specified, the value to set (Refer to the appropriate plugin documentation to figure out what data to pass.)
 	 */
 	update: function(
-		/* int */		row_index,
-		/* string */	value)
+		/* int */	row_index,
+		/* mixed */	value)
 	{
 		var query_row    = this.row_list[row_index].row;
 		var control_cell = this.row_list[row_index].control;

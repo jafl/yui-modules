@@ -66,11 +66,15 @@ QueryBuilder.Select.prototype =
 		/* array */		op_list,
 		/* array */		value)
 	{
-		this.value_menu.focus();
+		if (this.value_menu)		// could be destroyed
+		{
+			this.value_menu.focus();
+		}
 	},
 
 	destroy: function()
 	{
+		this.value_menu.remove(true);
 		this.value_menu = null;
 	},
 
@@ -78,13 +82,6 @@ QueryBuilder.Select.prototype =
 		/* int */	new_index)
 	{
 		this.value_menu.setAttribute('name', this.valueName(new_index));
-	},
-
-	set: function(
-		/* int */	query_index,
-		/* map */	data)
-	{
-		this.value_menu.set('value', data[ this.valueName(query_index) ]);
 	},
 
 	toDatabaseQuery: function()

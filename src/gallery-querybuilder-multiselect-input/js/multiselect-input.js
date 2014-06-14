@@ -137,7 +137,9 @@ Y.QueryBuilder.MultiselectInput.prototype =
 			this.value_input.unplug(Y.Plugin.AutoComplete);
 		}
 
-		this.op_menu     = null;
+		this.op_menu.remove(true);
+		this.value_input.remove(true);
+
 		this.value_input = null;
 	},
 
@@ -150,18 +152,6 @@ Y.QueryBuilder.MultiselectInput.prototype =
 		}
 		this.value_input.setAttribute('name', this.valueName(new_index));
 	},
-
-	// multiselect-input doesn't support programmatically modifying the value after initialization
-
-//	set: function(
-//		/* int */	query_index,
-//		/* map */	data)
-//	{
-//		if (this.op_menu)
-//		{
-//			this.op_menu.set('value', data[ this.operationName(query_index) ]);
-//		}
-//	},
 
 	toDatabaseQuery: function()
 	{
