@@ -415,7 +415,12 @@ Y.extend(QueryBuilder, Y.Widget,
 			error:    error_cell
 		};
 		this.row_list.push(obj);
-		this.update(new_index, value);
+		this.update(new_index, value, true);
+
+		if (name || Y.Lang.isValue(value))
+		{
+			this._notifyChanged();
+		}
 
 		query_body.scrollIntoView();
 
@@ -431,7 +436,8 @@ Y.extend(QueryBuilder, Y.Widget,
 	 */
 	update: function(
 		/* int */	row_index,
-		/* mixed */	value)
+		/* mixed */	value,
+		/* bool */	silent)
 	{
 		var query_row    = this.row_list[row_index].row;
 		var control_cell = this.row_list[row_index].control;
@@ -515,6 +521,11 @@ Y.extend(QueryBuilder, Y.Widget,
 			this.row_list[row_index].plugin.postCreate(
 				row_index, selected_var,
 				this.op_list[ selected_var.type ], value);
+		}
+
+		if (!silent && Y.Lang.isValue(value))
+		{
+			this._notifyChanged();
 		}
 	},
 
