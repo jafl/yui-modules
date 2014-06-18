@@ -1,4 +1,4 @@
-/* node `which jison` MathParser.jison; mv MathParser.js ../js/ */
+/* jison MathParser.jison; mv MathParser.js ../js/ */
 
 /* http://zaach.github.com/jison/docs/ */
 
