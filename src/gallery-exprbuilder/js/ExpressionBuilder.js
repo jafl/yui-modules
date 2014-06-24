@@ -270,7 +270,7 @@ function insertText(text, offset)
 	offset = offset || text.length;
 
 	this.field.focus();
-	var el = Y.Node.getDOMNode(this.field);
+	var el = this.field.getDOMNode();
 
 	if (el.setSelectionRange)		// For Mozilla/WebKit
 	{

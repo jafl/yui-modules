@@ -826,13 +826,13 @@ Y.extend(Accordion, Y.Widget,
 	findSection: function(
 		/* string|element */	el)
 	{
-		el = Y.Node.getDOMNode(Y.one(el));
+		el = Y.one(el).getDOMNode();
 
 		var count = this.section_list.length;
 		for (var i=0; i<count; i++)
 		{
-			var title   = Y.Node.getDOMNode(this.section_list[i].title);
-			var content = Y.Node.getDOMNode(this.section_list[i].content);
+			var title   = this.section_list[i].title.getDOMNode();
+			var content = this.section_list[i].content.getDOMNode();
 			if (el == title   || Y.DOM.contains(title, el) ||
 				el == content || Y.DOM.contains(content, el))
 			{

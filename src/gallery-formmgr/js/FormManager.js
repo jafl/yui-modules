@@ -40,6 +40,10 @@
  * <code>populateForm()</code>.  (This is automatically called by
  * <code>prepareForm()</code>.)</p>
  * 
+ * <p>Hidden fields are ignored.  If you want `FormManager` to process a
+ * value that is invisible to the user, use a normal input with
+ * `display:none;`.</p>
+ * 
  * <p><strong>Displaying Messages</strong></p>
  * 
  * <p>To display a message for a single form row, call

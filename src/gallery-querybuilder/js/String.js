@@ -45,7 +45,7 @@ QueryBuilder.String.prototype =
 		op_cell.set('innerHTML', this._operationsMenu(this.operationName(query_index)));
 		this.op_menu = op_cell.one('select');
 
-		var options = Y.Node.getDOMNode(this.op_menu).options;
+		var options = this.op_menu.getDOMNode().options;
 		for (var i=0; i<op_list.length; i++)
 		{
 			options[i] = new Option(op_list[i].text, op_list[i].value);

@@ -368,7 +368,7 @@ Y.extend(QueryBuilder, Y.Widget,
 		var var_menu = var_cell.one('select');
 		var_menu.on('change', changeVar, this, query_row);
 
-		var options = Y.Node.getDOMNode(var_menu).options;
+		var options = var_menu.getDOMNode().options;
 		for (var i=0; i<this.var_list.length; i++)
 		{
 			options[i] = new Option(this.var_list[i].text, this.var_list[i].name);

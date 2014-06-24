@@ -152,7 +152,7 @@ Y.Node.prototype.one = function(selector)
 		if (selector == '*')
 		{
 			Y.log('one() returning children[0]', 'debug', 'Node');
-			return Y.one(Y.Node.getDOMNode(this).children[0]);
+			return Y.one(this.getDOMNode().children[0]);
 		}
 
 		var m = tag_class_name_re.exec(selector);
@@ -218,7 +218,7 @@ Y.Node.prototype.getElementsByClassName = function(
 	/* string */	class_name,
 	/* string */	tag_name)
 {
-	var descendants = Y.Node.getDOMNode(this).getElementsByTagName(tag_name || '*');
+	var descendants = this.getDOMNode().getElementsByTagName(tag_name || '*');
 
 	var list = new Y.NodeList();
 	for (var i=0; i<descendants.length; i++)
@@ -251,7 +251,7 @@ Y.Node.prototype.getFirstElementByClassName = function(
 	{
 		// breadth first search
 
-		var list1 = [ Y.Node.getDOMNode(this) ], list2 = [];
+		var list1 = [ this.getDOMNode() ], list2 = [];
 		while (list1.length)
 		{
 			for (var i=0; i<list1.length; i++)
@@ -276,7 +276,7 @@ Y.Node.prototype.getFirstElementByClassName = function(
 	}
 	else
 	{
-		var descendants = Y.Node.getDOMNode(this).getElementsByTagName(tag_name || '*');
+		var descendants = this.getDOMNode().getElementsByTagName(tag_name || '*');
 
 		for (var i=0; i<descendants.length; i++)
 		{

@@ -44,7 +44,7 @@ Treeble.buildTwistdownFormatter = function(sendRequest)
 			o.td.replaceClass('row-(open|closed)',
 				ds.isOpen(path) ? 'row-open' : 'row-closed');
 
-			YUI.Env.add(Y.Node.getDOMNode(o.td), 'click', function()
+			YUI.Env.add(o.td.getDOMNode(), 'click', function()
 			{
 				ds.toggle(path, {}, sendRequest);
 			});

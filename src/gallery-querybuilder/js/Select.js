@@ -38,7 +38,7 @@ QueryBuilder.Select.prototype =
 		value_cell.set('innerHTML', this._valuesMenu(this.valueName(query_index)));
 		this.value_menu = value_cell.one('select');
 
-		var options    = Y.Node.getDOMNode(this.value_menu).options;
+		var options    = this.value_menu.getDOMNode().options;
 		var value_list = var_config.value_list;
 		for (var i=0; i<value_list.length; i++)
 		{

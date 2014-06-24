@@ -119,7 +119,7 @@ function getCharacterRange()
 
 function getCell(x,y)
 {
-	return Y.Node.getDOMNode(this.table).firstChild.childNodes[y].childNodes[x];
+	return this.table.getDOMNode().firstChild.childNodes[y].childNodes[x];
 }
 
 function startTimer(id)
@@ -160,7 +160,7 @@ function renderTable()
 		var c_max = c_range[0],
 			w_max = table.totalWidth(),
 			c_end = c_range[1],
-			cell  = Y.Node.getDOMNode(this.container).getElementsByTagName('td')[0];
+			cell  = this.container.getDOMNode().getElementsByTagName('td')[0];
 		for (c=c_max+1; c<=c_end; c++)
 		{
 			cell.innerHTML = String.fromCharCode(c);
