@@ -572,21 +572,7 @@ Y.extend(QueryBuilder, Y.Widget,
 
 		query_body.remove(true);
 		this.row_list.splice(row_index, 1);
-
-		// renumber remaining rows
-
-		Y.Array.each(this.row_list, function(row, i)
-		{
-			var var_menu = row.var_menu;
-			var_menu.setAttribute('name', this.variableName(i));
-
-			var selected_var = this.var_list[ var_menu.get('selectedIndex') ];
-			if (selected_var.type != 'none')
-			{
-				row.plugin.updateName(i);
-			}
-		},
-		this);
+		this._renumberRows();
 
 		this.fire('queryChanged', {remove: true});
 		return true;
@@ -710,6 +696,52 @@ Y.extend(QueryBuilder, Y.Widget,
 		}
 
 		return result;
+	},
+
+	/**
+	 * Updates internal data to match ordering of rows.  Useful after
+	 * Drag-and-Drop operation is finished.
+	 * 
+	 * @method rowsReordered
+	 */
+	rowsReordered: function()
+	{
+		var orig = this.row_list.slice(0);
+
+		this.row_list = [];
+		this.table.all('tbody').each(function(n)
+		{
+			var i = Y.Array.findIndexOf(orig, function(r)
+			{
+				return (r.body === n);
+			});
+
+			this.row_list.push(orig[i]);
+		},
+		this);
+
+		this._renumberRows();
+		this._notifyChanged();
+	},
+
+	/**
+	 * @method _renumberRows
+	 * @private
+	 */
+	_renumberRows: function()
+	{
+		Y.Array.each(this.row_list, function(row, i)
+		{
+			var var_menu = row.var_menu;
+			var_menu.setAttribute('name', this.variableName(i));
+
+			var selected_var = this.var_list[ var_menu.get('selectedIndex') ];
+			if (selected_var.type != 'none')
+			{
+				row.plugin.updateName(i);
+			}
+		},
+		this);
 	},
 
 	/*
