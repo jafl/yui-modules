@@ -9,8 +9,9 @@
  * 
  * There must be exactly one operator specified for this plugin.
  * 
- * The `value` argument passed to `QueryBuilder.appendNew()` must be a
- * string: the value of the menu item to select.
+ * The `value` argument passed to `QueryBuilder.appendNew()` can be a
+ * string (the value of the menu item to select) or an array with two
+ * elements (`[ operator, value ]`).
  * 
  * @namespace QueryBuilder
  * @class Select
@@ -45,7 +46,12 @@ QueryBuilder.Select.prototype =
 			options[i] = new Option(value_list[i].text, value_list[i].value);
 		}
 
-		if (value)
+		var is_array = Y.Lang.isArray(value);
+		if (is_array && value[0] == op_list[0])
+		{
+			this.value_menu.set('value', value[1]);
+		}
+		else if (!is_array && Y.Lang.isValue(value))
 		{
 			this.value_menu.set('value', value);
 		}
