@@ -213,7 +213,7 @@ Y.Node.prototype.scrollIntoView = function(config)
 		return this;
 	}
 
-	var ancestor = this.get('offsetParent').getDOMNode();
+	var ancestor = this.get('offsetParent');
 	if (!ancestor)
 	{
 		return this;
@@ -239,7 +239,7 @@ Y.Node.prototype.scrollIntoView = function(config)
 
 	this.scrollIntoViewData =
 	{
-		a: ancestor,
+		a: ancestor.getDOMNode(),
 		r: r
 	}
 
