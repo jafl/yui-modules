@@ -628,7 +628,10 @@ Y.extend(BulkEditor, Y.Widget,
 			node.addClass(ping);
 			Y.later(this.get('pingTimeout')*1000, null, function()
 			{
-				node.removeClass(ping);
+				if (node.inDoc())
+				{
+					node.removeClass(ping);
+				}
 			});
 		}
 	},
