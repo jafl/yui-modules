@@ -310,7 +310,7 @@ Y.extend(InputPopup, Y.Popup,
 			{
 				Y.later(10, this, function()
 				{
-					if (!Y.DOM.contains(Y.Node.getDOMNode(bound), document.activeElement))
+					if (!Y.DOM.contains(bound.getDOMNode(), document.activeElement))
 					{
 						this.hide();
 					}

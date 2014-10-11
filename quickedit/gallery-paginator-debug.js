@@ -1463,7 +1463,7 @@ Paginator.ui.ItemRangeDropdown.prototype =
 			size  != this.prev_page_size  ||
 			recs  != this.prev_rec_count)
 		{
-			var options    = Y.Node.getDOMNode(this.menu).options;
+			var options    = this.menu.getDOMNode().options;
 			options.length = 0;
 
 			for (var i=1; i<=count; i++)
@@ -2448,7 +2448,7 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
         var p       = this.paginator,
             sel     = this.select,
             options = p.get('rowsPerPageOptions'),
-            opts    = Y.Node.getDOMNode(sel).options,
+            opts    = sel.getDOMNode().options,
             opt,cfg,val,i,len;
 
         this.all = null;
@@ -2489,7 +2489,7 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
         }
 
         var rpp     = this.paginator.get('rowsPerPage')+'',
-            options = Y.Node.getDOMNode(this.select).options,
+            options = this.select.getDOMNode().options,
             i,len;
 
         for (i = 0, len = options.length; i < len; ++i) {
@@ -2509,7 +2509,7 @@ Paginator.ui.RowsPerPageDropdown.prototype = {
      */
     onChange : function (e) {
         this.paginator.setRowsPerPage(
-            parseInt(Y.Node.getDOMNode(this.select).options[this.select.get('selectedIndex')].value,10));
+            parseInt(this.select.getDOMNode().options[this.select.get('selectedIndex')].value,10));
     },
 
     /**

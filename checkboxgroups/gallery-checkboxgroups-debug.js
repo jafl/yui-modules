@@ -214,7 +214,14 @@ function AtLeastOneCheckboxGroup(
 
 	if (this.allUnchecked())
 	{
-		this.cb_list.item(0).set('checked', true);
+		this.cb_list.some(function(cb)
+		{
+			if (!cb.get('disabled'))
+			{
+				cb.set('checked', true);
+				return true;
+			}
+		});
 	}
 }
 

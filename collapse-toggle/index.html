@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>YUI 3 CollapseToggle Example</title>
+	<meta http-equiv=content-type content="text/html; charset=utf-8">
+
+	<script src="http://yui.yahooapis.com/3.15.0/build/yui/yui-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssfonts/cssfonts-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssbase/cssbase-min.css" />
+
+	<script src="gallery-collapse-toggle-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-collapse-toggle.css" />
+
+	<style type="text/css">
+	.yui3-js-enabled .yui3-widget-loading { display:none; }
+	</style>
+</head>
+<body class="yui3-skin-sam">
+
+<h1><a href="http://yuilibrary.com/gallery/show/collapse-toggle">YUI 3 CollapseToggle</a> Examples</h1>
+
+<div id="example">
+	<div class="summary"></div>
+	<div class="content">
+		<p>
+			<label for="field1">Label1</label>
+			<input type="text" id="field1" value="a" />
+		</p>
+		<p>
+			<label for="field2">Label2</label>
+			<input type="text" id="field2" value="b" />
+		</p>
+		<p>
+			<label for="field3">Label3</label>
+			<input type="text" id="field3" value="c" />
+		</p>
+	</div>
+</div>
+
+<script type="text/javascript">
+YUI({
+//	filter: 'raw', combine: false,
+	gallery: 'gallery-2014.02.20-23-55'
+}).use(
+	'gallery-collapse-toggle',
+function(Y)
+{
+	var t = new Y.CollapseToggle({ srcNode: '#example' });
+	t.render();
+
+	t.after('collapsedChange', function(e)
+	{
+		if (e.newVal)
+		{
+			Y.one('#example .summary').set('innerHTML', Y.Lang.sub('1:{v1} 2:{v2} 3:{v3}',
+			{
+				v1: Y.one('#field1').get('value'),
+				v2: Y.one('#field2').get('value'),
+				v3: Y.one('#field3').get('value')
+			}));
+		}
+	});
+});
+</script>
+
+</body>
+</html>

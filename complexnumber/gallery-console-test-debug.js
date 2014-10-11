@@ -25,7 +25,7 @@ ConsoleTest.NS   = "test";
 
 function updateMenu(menu)
 {
-	var options    = Y.Node.getDOMNode(menu);
+	var options    = menu.getDOMNode();
 	options.length = 0;
 
 	options[0] = new Option('All tests', -1);

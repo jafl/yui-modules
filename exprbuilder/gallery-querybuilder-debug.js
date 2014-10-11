@@ -45,9 +45,6 @@ var has_bubble_problem = (0 < Y.UA.ie && Y.UA.ie < 9);
  *		and purge all events.)</dd>
  * <dt>`updateName(new_index)`</dt>
  * <dd>Update the names of the form fields managed by the plugin.</dd>
- * <dt>`set(query_index, data)`</dt>
- * <dd>Set the displayed value(s) by extracting values from data (a map)
- *		based on the current names of the plugin's form fields.</dd>
  * <dt>`toDatabaseQuery()`</dt>
  * <dd>Return an array of arrays.  Each inner array contains an operation
  *		and a value.  The default String and Select plugins each return
@@ -373,7 +370,7 @@ Y.extend(QueryBuilder, Y.Widget,
 		var var_menu = var_cell.one('select');
 		var_menu.on('change', changeVar, this, query_row);
 
-		var options = Y.Node.getDOMNode(var_menu).options;
+		var options = var_menu.getDOMNode().options;
 		for (var i=0; i<this.var_list.length; i++)
 		{
 			options[i] = new Option(this.var_list[i].text, this.var_list[i].name);
@@ -420,7 +417,12 @@ Y.extend(QueryBuilder, Y.Widget,
 			error:    error_cell
 		};
 		this.row_list.push(obj);
-		this.update(new_index, value);
+		this.update(new_index, value, true);
+
+		if (name || Y.Lang.isValue(value))
+		{
+			this._notifyChanged();
+		}
 
 		query_body.scrollIntoView();
 
@@ -435,8 +437,9 @@ Y.extend(QueryBuilder, Y.Widget,
 	 * @param value {Mixed} If specified, the value to set (Refer to the appropriate plugin documentation to figure out what data to pass.)
 	 */
 	update: function(
-		/* int */		row_index,
-		/* string */	value)
+		/* int */	row_index,
+		/* mixed */	value,
+		/* bool */	silent)
 	{
 		var query_row    = this.row_list[row_index].row;
 		var control_cell = this.row_list[row_index].control;
@@ -521,6 +524,11 @@ Y.extend(QueryBuilder, Y.Widget,
 				row_index, selected_var,
 				this.op_list[ selected_var.type ], value);
 		}
+
+		if (!silent && Y.Lang.isValue(value))
+		{
+			this._notifyChanged();
+		}
 	},
 
 	/**
@@ -566,21 +574,7 @@ Y.extend(QueryBuilder, Y.Widget,
 
 		query_body.remove(true);
 		this.row_list.splice(row_index, 1);
-
-		// renumber remaining rows
-
-		Y.Array.each(this.row_list, function(row, i)
-		{
-			var var_menu = row.var_menu;
-			var_menu.setAttribute('name', this.variableName(i));
-
-			var selected_var = this.var_list[ var_menu.get('selectedIndex') ];
-			if (selected_var.type != 'none')
-			{
-				row.plugin.updateName(i);
-			}
-		},
-		this);
+		this._renumberRows();
 
 		this.fire('queryChanged', {remove: true});
 		return true;
@@ -704,6 +698,52 @@ Y.extend(QueryBuilder, Y.Widget,
 		}
 
 		return result;
+	},
+
+	/**
+	 * Updates internal data to match ordering of rows.  Useful after
+	 * Drag-and-Drop operation is finished.
+	 * 
+	 * @method rowsReordered
+	 */
+	rowsReordered: function()
+	{
+		var orig = this.row_list.slice(0);
+
+		this.row_list = [];
+		this.table.all('tbody').each(function(n)
+		{
+			var i = Y.Array.findIndexOf(orig, function(r)
+			{
+				return (r.body === n);
+			});
+
+			this.row_list.push(orig[i]);
+		},
+		this);
+
+		this._renumberRows();
+		this._notifyChanged();
+	},
+
+	/**
+	 * @method _renumberRows
+	 * @private
+	 */
+	_renumberRows: function()
+	{
+		Y.Array.each(this.row_list, function(row, i)
+		{
+			var var_menu = row.var_menu;
+			var_menu.setAttribute('name', this.variableName(i));
+
+			var selected_var = this.var_list[ var_menu.get('selectedIndex') ];
+			if (selected_var.type != 'none')
+			{
+				row.plugin.updateName(i);
+			}
+		},
+		this);
 	},
 
 	/*
@@ -860,7 +900,7 @@ QueryBuilder.String.prototype =
 		op_cell.set('innerHTML', this._operationsMenu(this.operationName(query_index)));
 		this.op_menu = op_cell.one('select');
 
-		var options = Y.Node.getDOMNode(this.op_menu).options;
+		var options = this.op_menu.getDOMNode().options;
 		for (var i=0; i<op_list.length; i++)
 		{
 			options[i] = new Option(op_list[i].text, op_list[i].value);
@@ -920,7 +960,9 @@ QueryBuilder.String.prototype =
 			this.value_input.unplug(Y.Plugin.AutoComplete);
 		}
 
-		this.op_menu     = null;
+		this.op_menu.remove(true);
+		this.value_input.remove(true);
+
 		this.value_input = null;
 	},
 
@@ -929,14 +971,6 @@ QueryBuilder.String.prototype =
 	{
 		this.op_menu.setAttribute('name', this.operationName(new_index));
 		this.value_input.setAttribute('name', this.valueName(new_index));
-	},
-
-	set: function(
-		/* int */	query_index,
-		/* map */	data)
-	{
-		this.op_menu.set('value', data[ this.operationName(query_index) ]);
-		this.value_input.set('value', data[ this.valueName(query_index) ]);
 	},
 
 	toDatabaseQuery: function()
@@ -991,7 +1025,7 @@ QueryBuilder.String.prototype =
 		{
 			n: input_name,
 			f: Y.FormManager.field_marker_class,
-			c: validation_class + ' ' + this.qb.getClassName('field')
+			c: (validation_class || '') + ' ' + this.qb.getClassName('field')
 		});
 	}
 };
@@ -1006,8 +1040,9 @@ QueryBuilder.String.prototype =
  * 
  * There must be exactly one operator specified for this plugin.
  * 
- * The `value` argument passed to `QueryBuilder.appendNew()` must be a
- * string: the value of the menu item to select.
+ * The `value` argument passed to `QueryBuilder.appendNew()` can be a
+ * string (the value of the menu item to select) or an array with two
+ * elements (`[ operator, value ]`).
  * 
  * @namespace QueryBuilder
  * @class Select
@@ -1035,14 +1070,19 @@ QueryBuilder.Select.prototype =
 		value_cell.set('innerHTML', this._valuesMenu(this.valueName(query_index)));
 		this.value_menu = value_cell.one('select');
 
-		var options    = Y.Node.getDOMNode(this.value_menu).options;
+		var options    = this.value_menu.getDOMNode().options;
 		var value_list = var_config.value_list;
 		for (var i=0; i<value_list.length; i++)
 		{
 			options[i] = new Option(value_list[i].text, value_list[i].value);
 		}
 
-		if (value)
+		var is_array = Y.Lang.isArray(value);
+		if (is_array && value[0] == op_list[0])
+		{
+			this.value_menu.set('value', value[1]);
+		}
+		else if (!is_array && Y.Lang.isValue(value))
 		{
 			this.value_menu.set('value', value);
 		}
@@ -1063,11 +1103,15 @@ QueryBuilder.Select.prototype =
 		/* array */		op_list,
 		/* array */		value)
 	{
-		this.value_menu.focus();
+		if (this.value_menu)		// could be destroyed
+		{
+			this.value_menu.focus();
+		}
 	},
 
 	destroy: function()
 	{
+		this.value_menu.remove(true);
 		this.value_menu = null;
 	},
 
@@ -1075,13 +1119,6 @@ QueryBuilder.Select.prototype =
 		/* int */	new_index)
 	{
 		this.value_menu.setAttribute('name', this.valueName(new_index));
-	},
-
-	set: function(
-		/* int */	query_index,
-		/* map */	data)
-	{
-		this.value_menu.set('value', data[ this.valueName(query_index) ]);
 	},
 
 	toDatabaseQuery: function()
@@ -1155,7 +1192,8 @@ QueryBuilder.plugin_mapping =
     "skinnable": "true",
     "requires": [
         "widget",
-        "gallery-formmgr"
+        "gallery-formmgr",
+        "gallery-funcprog"
     ],
     "optional": [
         "gallery-scrollintoview",

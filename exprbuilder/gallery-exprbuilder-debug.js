@@ -400,7 +400,7 @@ function setValidation(f)
 	f.validateForm = function()
 	{
 		resetQB.call(self);
-		orig_validateForm.apply(this, arguments);
+		return orig_validateForm.apply(this, arguments);
 	};
 
 	f.setFunction(this.get('fieldId'), function(form, e)

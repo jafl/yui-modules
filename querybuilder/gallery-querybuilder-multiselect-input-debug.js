@@ -67,7 +67,7 @@ Y.QueryBuilder.MultiselectInput.prototype =
 			op_cell.set('innerHTML', this._operationsMenu(this.operationName(query_index)));
 			this.op_menu = op_cell.one('select');
 
-			var options = Y.Node.getDOMNode(this.op_menu).options;
+			var options = this.op_menu.getDOMNode().options;
 			for (var i=0; i<op_list.length; i++)
 			{
 				options[i] = new Option(op_list[i].text, op_list[i].value);
@@ -126,14 +126,7 @@ Y.QueryBuilder.MultiselectInput.prototype =
 					values: value[1]
 				});
 
-				try
-				{
-					this.value_input.focus();
-				}
-				catch (e)
-				{
-					// IE will complain if field is invisible, instead of just ignoring it
-				}
+				this.value_input.focus();
 			}
 		});
 	},
@@ -146,7 +139,9 @@ Y.QueryBuilder.MultiselectInput.prototype =
 			this.value_input.unplug(Y.Plugin.AutoComplete);
 		}
 
-		this.op_menu     = null;
+		this.op_menu.remove(true);
+		this.value_input.remove(true);
+
 		this.value_input = null;
 	},
 
@@ -159,18 +154,6 @@ Y.QueryBuilder.MultiselectInput.prototype =
 		}
 		this.value_input.setAttribute('name', this.valueName(new_index));
 	},
-
-	// multiselect-input doesn't support programmatically modifying the value after initialization
-
-//	set: function(
-//		/* int */	query_index,
-//		/* map */	data)
-//	{
-//		if (this.op_menu)
-//		{
-//			this.op_menu.set('value', data[ this.operationName(query_index) ]);
-//		}
-//	},
 
 	toDatabaseQuery: function()
 	{

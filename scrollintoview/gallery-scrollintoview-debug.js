@@ -27,7 +27,7 @@ function scrollContainer(node)
 		var hit_top = (info.a.offsetParent === null);
 
 		var a = Y.one(info.a),
-			b = (Y.Node.getDOMNode(a) === Y.config.doc.body),
+			b = (a.getDOMNode() === Y.config.doc.body),
 			w = b ? Y.DOM.winWidth() : info.a.clientWidth,
 			h = b ? Y.DOM.winHeight() : info.a.clientHeight;
 		if (info.a.scrollWidth - a.horizMarginBorderPadding() > w ||
@@ -215,7 +215,7 @@ Y.Node.prototype.scrollIntoView = function(config)
 		return this;
 	}
 
-	var ancestor = Y.Node.getDOMNode(this.get('offsetParent'));
+	var ancestor = this.get('offsetParent');
 	if (!ancestor)
 	{
 		return this;
@@ -241,7 +241,7 @@ Y.Node.prototype.scrollIntoView = function(config)
 
 	this.scrollIntoViewData =
 	{
-		a: ancestor,
+		a: ancestor.getDOMNode(),
 		r: r
 	}
 

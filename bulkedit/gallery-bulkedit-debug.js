@@ -1329,7 +1329,7 @@ Y.extend(BulkEditor, Y.Widget,
 				}
 				else if (tag == 'SELECT' && node.get('multiple'))
 				{
-					value = Y.reduce(Y.Node.getDOMNode(node).options, [], function(v, o)
+					value = Y.reduce(node.getDOMNode().options, [], function(v, o)
 					{
 						if (o.selected)
 						{
@@ -1641,7 +1641,10 @@ Y.extend(BulkEditor, Y.Widget,
 			node.addClass(ping);
 			Y.later(this.get('pingTimeout')*1000, null, function()
 			{
-				node.removeClass(ping);
+				if (node.inDoc())
+				{
+					node.removeClass(ping);
+				}
 			});
 		}
 	},
@@ -2560,7 +2563,7 @@ function multiselectMarkup(type, o)
 				var value_list = node.mvi.get('values'),
 					select     = node.ancestor('.checkbox-multiselect').next('select');
 
-				Y.each(Y.Node.getDOMNode(select).options, function(o)
+				Y.each(select.getDOMNode().options, function(o)
 				{
 					o.selected = (Y.Array.indexOf(value_list, o.text) >= 0);
 				});
@@ -2638,7 +2641,7 @@ function handleCheckboxMultiselectClickOnCheckbox(e)
 		value  = cb.get('value'),
 		select = cb.ancestor('.checkbox-multiselect').next('select');
 
-	Y.some(Y.Node.getDOMNode(select).options, function(o)
+	Y.some(select.getDOMNode().options, function(o)
 	{
 		if (o.value == value)
 		{
