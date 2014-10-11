@@ -7,7 +7,7 @@ var has_bubble_problem = (0 < Y.UA.ie && Y.UA.ie < 9);
  * searching.  All the conditions are either AND'ed or OR'ed.  For a more
  * general query builder, see gallery-exprbuilder.
  * 
- * @main gallery-mathcanvas
+ * @main gallery-querybuilder
  * @module gallery-querybuilder
  */
 
