@@ -156,10 +156,13 @@ BulkEditDataSource.ATTRS =
 var uniqueIdPrefix = 'bulk-edit-new-id-',
 	idCounter = 0,
 
-	inserted_prefix = 'be-ds-i:',
-	inserted_re     = /^be-ds-i:/,
-	removed_prefix  = 'be-ds-r:',
-	removed_re      = /^be-ds-r:/;
+	inserted_prefix   = 'be-ds-i:',
+	inserted_re       = /^be-ds-i:/,
+	removed_prefix    = 'be-ds-r:',
+	removed_re        = /^be-ds-r:/,
+	hidden_prefix     = 'be-ds-h:',
+	hidden_re         = /^be-ds-h:/,
+	removed_hidden_re = /^be-ds-[rh]:/;
 
 BulkEditDataSource.comparator =
 {
@@ -170,12 +173,16 @@ BulkEditDataSource.comparator =
 
 	'integer': function(a,b)
 	{
-		return (parseInt(a,10) === parseInt(b,10));
+		return (Y.FormManager.integer_value_re.test(a) &&
+				Y.FormManager.integer_value_re.test(b) &&
+				parseInt(a,10) === parseInt(b,10));
 	},
 
 	'decimal': function(a,b)
 	{
-		return (parseFloat(a,10) === parseFloat(b,10));
+		return (Y.FormManager.decimal_value_re.test(a) &&
+				Y.FormManager.decimal_value_re.test(b) &&
+				parseFloat(a,10) === parseFloat(b,10));
 	},
 
 	'boolean': function(a,b)
@@ -191,7 +198,7 @@ function fromDisplayIndex(
 	for (var i=0; i<this._index.length; i++)
 	{
 		var j = this._index[i];
-		if (!removed_re.test(j))
+		if (!removed_hidden_re.test(j))
 		{
 			count++;
 			if (count === index)
@@ -221,28 +228,28 @@ function adjustRequest()
 	// find index of first record to request
 
 	var start = Math.min(r.startIndex, this._index.length);
-	var end   = 0;
+	var count = 0;
 	for (var i=0; i<start; i++)
 	{
 		var j = this._index[i];
 		if (!inserted_re.test(j))
 		{
-			end++;
+			count++;
 		}
 
-		if (removed_re.test(j))
+		if (removed_hidden_re.test(j))
 		{
 			start++;
 		}
 	}
 
-	r.startIndex = end;
+	r.startIndex = count;
 
 	this._callback.adjust.indexStart = i;
 
 	// adjust number of records to request
 
-	var count = 0;
+	count = 0;
 	while (i < this._index.length && count < this._callback.adjust.origCount)
 	{
 		var j = this._index[i];
@@ -251,7 +258,7 @@ function adjustRequest()
 			r.resultCount--;
 		}
 
-		if (removed_re.test(j))
+		if (removed_hidden_re.test(j))
 		{
 			r.resultCount++;
 		}
@@ -358,7 +365,7 @@ function checkFinished()
 				var id = j.substr(inserted_prefix.length);
 				response.results.splice(k,0, Y.clone(this._new[id], true));
 			}
-			else if (removed_re.test(j))
+			else if (removed_hidden_re.test(j))
 			{
 				response.results.splice(k,1);
 				k--;
@@ -368,9 +375,9 @@ function checkFinished()
 
 	// save results so we can refer to them later
 
-	var uniqueIdKey = this.get('uniqueIdKey');
+	var unique_id_key = this.get('uniqueIdKey');
 
-	if (!this._callback.request.out_of_band)
+	if (!this._callback.request.outOfBand)
 	{
 		this._records   = [];
 		this._recordMap = {};
@@ -379,7 +386,7 @@ function checkFinished()
 		{
 			var rec = Y.clone(value, true);
 			this._records.push(rec);
-			this._recordMap[ rec[ uniqueIdKey ] ] = rec;
+			this._recordMap[ rec[ unique_id_key ] ] = rec;
 		},
 		this);
 	}
@@ -388,7 +395,7 @@ function checkFinished()
 
 	Y.Array.each(response.results, function(rec)
 	{
-		var diff = this._diff[ rec[ uniqueIdKey ] ];
+		var diff = this._diff[ rec[ unique_id_key ] ];
 		if (diff)
 		{
 			Y.mix(rec, diff, true);
@@ -459,7 +466,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * Use this instead of any meta information in response.
 	 * 
 	 * @method getRecordCount
-	 * @return {Number} the total number of records
+	 * @return {Number} the total number of visible records
 	 */
 	getRecordCount: function()
 	{
@@ -529,8 +536,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
-	 * When using a remote datasource, this will include changes made to
-	 * deleted records.
+	 * This includes changes made to deleted records.
 	 * 
 	 * @method getChanges
 	 * @return {Object} map of all changed values, keyed by record id
@@ -559,7 +565,25 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
-	 * You must reload() the widget after calling this function!
+	 * @method getHiddenRecordIndexes
+	 * @return {Array} list of hidden record indices, based on initial ordering
+	 */
+	getHiddenRecordIndexes: function()
+	{
+		var list = [];
+		Y.Array.each(this._index, function(j)
+		{
+			if (hidden_re.test(j))
+			{
+				list.push(parseInt(j.substr(hidden_prefix.length), 10));
+			}
+		});
+
+		return list;
+	},
+
+	/**
+	 * You must `reload` the widget after calling this function!
 	 * 
 	 * @method insertRecord
 	 * @protected
@@ -573,10 +597,11 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	{
 		this._count++;
 
-		var record_id = String(this.get('generateUniqueId')());
+		var record_id     = String(this.get('generateUniqueId')()),
+			unique_id_key = this.get('uniqueIdKey');
 
-		this._new[ record_id ]                            = {};
-		this._new[ record_id ][ this.get('uniqueIdKey') ] = record_id;
+		this._new[ record_id ]                  = {};
+		this._new[ record_id ][ unique_id_key ] = record_id;
 
 		var j = fromDisplayIndex.call(this, index);
 		if (j === false)
@@ -598,10 +623,9 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		if (record)		// insert initial values into _diff
 		{
-			var uniqueIdKey = this.get('uniqueIdKey');
 			Y.Object.each(record, function(value, key)
 			{
-				if (key != uniqueIdKey)
+				if (key != unique_id_key)
 				{
 					this.updateValue(record_id, key, value);
 				}
@@ -613,7 +637,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
-	 * You must reload() the widget after calling this function!
+	 * You must `reload` the widget after calling this function!
 	 * 
 	 * @method removeRecord
 	 * @protected
@@ -639,20 +663,28 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		}
 		else
 		{
-			if (this._dataIsLocal())
-			{
-				var record_id = this.get('ds').get('source')[ this._index[j] ][ this.get('uniqueIdKey') ].toString();
-			}
-
 			this._index[j] = removed_prefix + this._index[j];
 		}
 
-		if (record_id)
-		{
-			delete this._diff[ record_id ];
-		}
-
 		return true;
+	},
+
+	/**
+	 * Inverse of `removeRecord`, but only for pre-existing records and
+	 * only with `DataSource.Local`.  Changes made before the record was
+	 * removed are restored.
+	 *
+	 * You must `reload` the widget after calling this function!
+	 * 
+	 * @method restoreRecord
+	 * @protected
+	 * @param record_id {String}
+	 * @return {int} the restored record's index or -1 if record id is not found
+	 */
+	restoreRecord: function(
+		/* string */ record_id)
+	{
+		return this._restoreRecord(record_id, removed_re, removed_prefix, 'restoreRecord');
 	},
 
 	/**
@@ -682,6 +714,11 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 			if (this._diff[ record_id ])
 			{
 				delete this._diff[ record_id ][ key ];
+
+				if (Y.Object.keys(this._diff[ record_id ]).length === 0)
+				{
+					delete this._diff[ record_id ];
+				}
 			}
 		}
 		else	// might be new record
@@ -734,11 +771,12 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 			Y.error('BulkEditDataSource.mergeChanges() can only be called when using a local datasource');
 		}
 
-		record_id = record_id.toString();
+		record_id         = record_id.toString();
+		var unique_id_key = this.get('uniqueIdKey');
 
 		function merge(rec)
 		{
-			if (rec[ this.get('uniqueIdKey') ].toString() === record_id)
+			if (rec[ unique_id_key ].toString() === record_id)
 			{
 				var diff = this._diff[ record_id ];
 				if (diff)
@@ -783,7 +821,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * best-effort save on the server, call this for each record that was
 	 * successfully deleted.</p>
 	 * 
-	 * <p>You must reload() the widget after calling this function!</p>
+	 * <p>You must `reload` the widget after calling this function!</p>
 	 * 
 	 * @method killRecord
 	 * @param record_id {String}
@@ -796,11 +834,12 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 			Y.error('BulkEditDataSource.killRecord() can only be called when using a local datasource');
 		}
 
-		record_id = record_id.toString();
+		record_id         = record_id.toString();
+		var unique_id_key = this.get('uniqueIdKey');
 
 		function kill(rec)
 		{
-			if (rec[ this.get('uniqueIdKey') ].toString() === record_id)
+			if (rec[ unique_id_key ].toString() === record_id)
 			{
 				var info = {};
 				this.recordIdToIndex(record_id, info);
@@ -816,6 +855,11 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 						{
 							this._index[i] = removed_prefix +
 								(parseInt(k.substr(removed_prefix.length), 10)-1);
+						}
+						else if (hidden_re.test(k))
+						{
+							this._index[i] = hidden_prefix +
+								(parseInt(k.substr(hidden_prefix.length), 10)-1);
 						}
 						else if (!inserted_re.test(k))
 						{
@@ -865,7 +909,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * When using best-effort save on the server, call this for each newly
 	 * created record that was successfully saved.</p>
 	 * 
-	 * <p>You must reload() the widget after calling this function!</p>
+	 * <p>You must `reload` the widget after calling this function!</p>
 	 * 
 	 * @method updateRecordId
 	 * @param orig_record_id {String}
@@ -880,12 +924,13 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 			Y.error('BulkEditDataSource.updateRecordId() can only be called when using a local datasource');
 		}
 
-		orig_record_id = orig_record_id.toString();
-		new_record_id  = new_record_id.toString();
+		orig_record_id    = orig_record_id.toString();
+		new_record_id     = new_record_id.toString();
+		var unique_id_key = this.get('uniqueIdKey');
 
 		function update(rec)
 		{
-			if (rec[ this.get('uniqueIdKey') ].toString() === orig_record_id)
+			if (rec[ unique_id_key ].toString() === orig_record_id)
 			{
 				var info = {};
 				this.recordIdToIndex(orig_record_id, info);
@@ -895,7 +940,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 					this._index[j] = inserted_prefix + new_record_id;
 				}
 
-				rec[ this.get('uniqueIdKey') ] = new_record_id;
+				rec[ unique_id_key ] = new_record_id;
 				if (this._diff[ orig_record_id ])
 				{
 					this._diff[ new_record_id ] = this._diff[ orig_record_id ];
@@ -935,12 +980,115 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * Only usable with `DataSource.Local`.
+	 *
+	 * You must `reload` the widget after calling this function!
+	 * 
+	 * @method showRecord
+	 * @protected
+	 * @param record_id {String}
+	 * @return {int} the newly visible record's index or -1 if record id is not found
+	 */
+	showRecord: function(
+		/* string */ record_id)
+	{
+		return this._restoreRecord(record_id, hidden_re, hidden_prefix, 'showRecord');
+	},
+
+	/**
+	 * Only usable with `DataSource.Local`.
+	 *
+	 * You must `reload` the widget after calling this function!
+	 * 
+	 * You can only hide pre-existing, unmodified records.  Otherwise, you
+	 * might get a validation error on a hidden record.
+	 * 
+	 * @method hideRecord
+	 * @protected
+	 * @param index {Number} index of record to hide
+	 * @return {boolean} true if record is now hidden
+	 */
+	hideRecord: function(
+		/* int */ index)
+	{
+		if (!this._dataIsLocal())
+		{
+			Y.error('BulkEditDataSource.hideRecord() can only be called when using a local datasource');
+		}
+
+		var j = fromDisplayIndex.call(this, index);
+		if (j === false || inserted_re.test(this._index[j]))
+		{
+			return false;
+		}
+
+		var record_id = this.get('ds').get('source')[ this._index[j] ][ this.get('uniqueIdKey') ].toString();
+		if (this._diff[ record_id ])
+		{
+			return false;
+		}
+
+		this._count--;
+		this._index[j] = hidden_prefix + this._index[j];
+		return true;
+	},
+
+	/**
+	 * Only usable with `DataSource.Local`.
+	 *
+	 * You must `reload` the widget after calling this function!
+	 * 
+	 * @method showRecord
+	 * @private
+	 * @param record_id {String}
+	 * @return {int} the newly visible record's index or -1 if record id is not found
+	 */
+	_restoreRecord: function(
+		/* string */	record_id,
+		/* RegExp */	re,
+		/* string */	prefix,
+		/* string */	caller_name)
+	{
+		if (!this._dataIsLocal())
+		{
+			Y.error('BulkEditDataSource.' + caller_name + '() can only be called when using a local datasource');
+		}
+
+		record_id         = record_id.toString();
+		var unique_id_key = this.get('uniqueIdKey');
+
+		var records = this.get('ds').get('source');
+		var count   = 0;
+		for (var i=0; i<this._index.length; i++)
+		{
+			var j = this._index[i];
+			if (re.test(j))
+			{
+				var k = j.substr(prefix.length);
+				if (records[k][ unique_id_key ].toString() === record_id)
+				{
+					this._count++;
+					this._index[i] = k;
+					return count;
+				}
+			}
+
+			if (!removed_re.test(j))
+			{
+				count++;
+			}
+		}
+
+		return -1;
+	},
+
+	/**
 	 * Find the index of the given record id.  Only usable with
-	 * DataSource.Local.
+	 * `DataSource.Local`.
 	 * 
 	 * @method recordIdToIndex
 	 * @param record_id {String}
-	 * @return {Number} index or record or -1 if not found
+	 * @return {Number} index of record or -1 if not found
 	 */
 	recordIdToIndex: function(
 		/* string */	record_id,
@@ -951,7 +1099,8 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 			Y.error('BulkEditDataSource.recordIdToIndex() can only be called when using a local datasource');
 		}
 
-		record_id = record_id.toString();
+		record_id         = record_id.toString();
+		var unique_id_key = this.get('uniqueIdKey');
 
 		var records = this.get('ds').get('source');
 		var count   = 0;
@@ -959,11 +1108,11 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		{
 			var j   = this._index[i];
 			var ins = inserted_re.test(j);
-			var del = removed_re.test(j);
+			var del = removed_hidden_re.test(j);
 			if ((ins &&
 				 j.substr(inserted_prefix.length) === record_id) ||
 				(!ins && !del &&
-				 records[j][ this.get('uniqueIdKey') ].toString() === record_id))
+				 records[j][ unique_id_key ].toString() === record_id))
 			{
 				if (return_info)
 				{
@@ -1363,7 +1512,7 @@ Y.extend(BulkEditor, Y.Widget,
 		{
 			startIndex:  0,
 			resultCount: this.get('ds').getRecordCount(),
-			out_of_band: true
+			outOfBand:   true
 		};
 		Y.mix(request, this.get('requestExtra'));
 
@@ -1386,7 +1535,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * <p>Insert a new record.</p>
 	 * 
-	 * <p>You must reload() the widget after calling this function!</p>
+	 * <p>You must `reload` the widget after calling this function!</p>
 	 * 
 	 * @method insertRecord
 	 * @param index {Number} insertion index
@@ -1408,12 +1557,11 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
-	 * <p>Remove a record.  The removal will be recorded in the diffs.
-	 * There is no way to un-remove a record, so if you need that
-	 * functionality, you may want to use highlighting to indicate removed
-	 * records instead.</p>
+	 * <p>Remove a record.  There is no simple way to un-remove a record,
+	 * so if you need that functionality, you may want to use highlighting
+	 * to indicate removed records instead.</p>
 	 * 
-	 * <p>You must reload() the widget after calling this function!</p>
+	 * <p>You must `reload` the widget after calling this function!</p>
 	 * 
 	 * @method removeRecord
 	 * @param index {Number}
@@ -1430,6 +1578,81 @@ Y.extend(BulkEditor, Y.Widget,
 				this.server_errors.records.splice(index,1);
 				delete this.server_errors.record_map[ rec[ this.get('ds').get('uniqueIdKey') ] ];
 				this._updatePageStatus();
+			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	/**
+	 * <p>Restore a removed record.</p>
+	 * 
+	 * <p>You must `reload` the widget after calling this function!</p>
+	 * 
+	 * @method restoreRecord
+	 * @param record_id {String}
+	 * @return {int} the restored record's index or -1 if record id is not found
+	 */
+	restoreRecord: function(
+		/* string */ record_id)
+	{
+		var i = this.get('ds').restoreRecord(record_id);
+		if (i >= 0)
+		{
+			this.clearServerErrors();
+		}
+
+		return i;
+	},
+
+	/**
+	 * <p>Show a record.  Do not call this if you use server-side
+	 * pagination.</p>
+	 * 
+	 * <p>You must `reload` the widget after calling this function!</p>
+	 * 
+	 * @method showRecord
+	 * @param record_id {String}
+	 * @return {Boolean} true if the record is now visible
+	 */
+	showRecord: function(
+		/* string */ record_id)
+	{
+		if (this.get('ds').showRecord(record_id))
+		{
+			this.clearServerErrors();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	/**
+	 * <p>Hide a record.  Do not call this if you use server-side
+	 * pagination.</p>
+	 * 
+	 * <p>You must `reload` the widget after calling this function!</p>
+	 * 
+	 * @method hideRecord
+	 * @param index {Number}
+	 * @return {boolean} true if record is now hidden
+	 */
+	hideRecord: function(
+		/* int */ index)
+	{
+		if (this.get('ds').hideRecord(index))
+		{
+			if (index < this.server_errors.records.length)
+			{
+				var rec = this.server_errors.records[index];
+				this.server_errors.records.splice(index,1);
+				delete this.server_errors.record_map[ rec[ this.get('ds').get('uniqueIdKey') ] ];
+				this._updatePageStatus();	// paranoia, since records with changes cannot be hidden
 			}
 			return true;
 		}

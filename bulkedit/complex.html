@@ -8,7 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssfonts/cssfonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssbase/cssbase-min.css" />
-<!--
+
 	<script src="gallery-bulkedit-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
@@ -21,7 +21,7 @@
 	<link rel="stylesheet" type="text/css" href="assets/gallery-bulkedit.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
 	<link rel="stylesheet" type="text/css" href="assets/gallery-busyoverlay.css" />
--->
+
 	<style type="text/css">
 	.yui3-js-enabled .yui3-widget-loading { display: none; }
 
@@ -34,8 +34,9 @@
 	.yui3-skin-sam .yui3-htmltablebulkedit .bulkedit-haserror .yui3-bulkedit-message-text { color: #BE1E2D; }
 	.yui3-skin-sam .yui3-htmltablebulkedit .bulkedit-haswarn .yui3-bulkedit-message-text { color: darkorange; font-weight: bold; }
 
-	#validate { margin-left: 20px; }
-	#server { margin-left: 20px; }
+	#validate,
+	#server,
+	#filter { margin-left: 20px; }
 	#server-note { display: none; }
 
 	.yui3-skin-sam .yui3-htmltablebulkedit-cell-multi10 { white-space:nowrap; }
@@ -54,6 +55,7 @@
 	<button id="clone">Clone</button>
 	<button id="remove">Remove</button>
 	<button id="validate">Validate</button>
+	<button id="filter">Filter</button>
 	<button id="server">Fake server errors</button>
 	<button id="clear">Clear server errors</button>
 	<span id="server-note">(Shift-reload the page to enable <q>Fake server errors</q>.)</span>
@@ -81,42 +83,42 @@ function(Y)
 
 	var data =
 	[
-		{id:'n1', year:1950, quantity:10, title:"The Lion, the Witch and the Wardrobe", foo:"The", bar:"Lion@baz", color:"red"},
-		{id:'n2', year:1951, quantity:5, title:"Prince Caspian: The Return to Narnia", foo:"Prince", bar:"Caspian@baz", color:"green"},
-		{id:'n3', year:1952, quantity:2, title:"The Voyage of the Dawn Treader", foo:"The", bar:"Voyage@baz", color:"blue"},
-		{id:'n4', year:1953, quantity:6, title:"The Silver Chair", foo:"The", bar:"Silver@baz", color:"red"},
-		{id:'n5', year:1954, quantity:9, title:"The Horse and His Boy", foo:"The", bar:"Horse@baz", color:"green"},
-		{id:'n6', year:1955, quantity:4, title:"The Magician's Nephew", foo:"The", bar:"Magician's@baz", color:"blue"},
-		{id:'n7', year:1956, quantity:8, title:"The Last Battle", foo:"The", bar:"Last@baz", color:"red"},
-		{id:'lsf1', year:1938, quantity:10, title:"Out of the Silent Planet", foo:"Out", bar:"of@baz", color:"green"},
-		{id:'lsf2', year:1943, quantity:5, title:"Perelandra", foo:"A", bar:"B@baz", color:"blue"},
-		{id:'lsf3', year:1945, quantity:2, title:"That Hideous Strength", foo:"That", bar:"Hideous@baz", color:"red"},
-		{id:'p1', year:1995, quantity:7, title:"Northern Lights", foo:"Northern", bar:"Lights@baz", color:"green"},
-		{id:'p2', year:1997, quantity:5, title:"The Subtle Knife", foo:"The", bar:"Subtle@baz", color:"blue"},
-		{id:'p3', year:2000, quantity:8, title:"The Amber Spyglass", foo:"The", bar:"Amber@baz", color:"red"},
-		{id:'t0', year:1937, quantity:5, title:"The Hobbit", foo:"The", bar:"Hobbit@baz", color:"green"},
-		{id:'t1', year:1955, quantity:12, title:"The Fellowship of the Ring", foo:"The", bar:"Fellowship@baz", color:"blue"},
-		{id:'t2', year:1955, quantity:0, title:"The Two Towers", foo:"The", bar:"Two@baz", color:"red"},
-		{id:'t3', year:1955, quantity:8, title:"The Return of the King", foo:"The", bar:"Return@baz", color:"green"},
-		{id:'pd', year:1966, quantity:5, title:"Do Androids Dream of Electric Sheep?", foo:"Do", bar:"Androids@baz", color:"blue"},
-		{id:'h1', year:1959, quantity:4, title:"Starship Troopers", foo:"Starship", bar:"Troopers@baz", color:"red"},
-		{id:'h2', year:1961, quantity:7, title:"Stranger in a Strange Land", foo:"Stranger", bar:"in@baz", color:"green"},
+		{id:'n1', year:1950, quantity:10, title:"The Lion, the Witch and the Wardrobe", foo:"The", bar:"Lion@baz", color:"red", hue:4},
+		{id:'n2', year:1951, quantity:5, title:"Prince Caspian: The Return to Narnia", foo:"Prince", bar:"Caspian@baz", color:"green", hue:1},
+		{id:'n3', year:1952, quantity:2, title:"The Voyage of the Dawn Treader", foo:"The", bar:"Voyage@baz", color:"blue", hue:5},
+		{id:'n4', year:1953, quantity:6, title:"The Silver Chair", foo:"The", bar:"Silver@baz", color:"red", hue:4},
+		{id:'n5', year:1954, quantity:9, title:"The Horse and His Boy", foo:"The", bar:"Horse@baz", color:"green", hue:1},
+		{id:'n6', year:1955, quantity:4, title:"The Magician's Nephew", foo:"The", bar:"Magician's@baz", color:"blue", hue:5},
+		{id:'n7', year:1956, quantity:8, title:"The Last Battle", foo:"The", bar:"Last@baz", color:"red", hue:4},
+		{id:'lsf1', year:1938, quantity:10, title:"Out of the Silent Planet", foo:"Out", bar:"of@baz", color:"green", hue:1},
+		{id:'lsf2', year:1943, quantity:5, title:"Perelandra", foo:"A", bar:"B@baz", color:"blue", hue:5},
+		{id:'lsf3', year:1945, quantity:2, title:"That Hideous Strength", foo:"That", bar:"Hideous@baz", color:"red", hue:4},
+		{id:'p1', year:1995, quantity:7, title:"Northern Lights", foo:"Northern", bar:"Lights@baz", color:"green", hue:1},
+		{id:'p2', year:1997, quantity:5, title:"The Subtle Knife", foo:"The", bar:"Subtle@baz", color:"blue", hue:5},
+		{id:'p3', year:2000, quantity:8, title:"The Amber Spyglass", foo:"The", bar:"Amber@baz", color:"red", hue:4},
+		{id:'t0', year:1937, quantity:5, title:"The Hobbit", foo:"The", bar:"Hobbit@baz", color:"green", hue:1},
+		{id:'t1', year:1955, quantity:12, title:"The Fellowship of the Ring", foo:"The", bar:"Fellowship@baz", color:"blue", hue:5},
+		{id:'t2', year:1955, quantity:0, title:"The Two Towers", foo:"The", bar:"Two@baz", color:"red", hue:4},
+		{id:'t3', year:1955, quantity:8, title:"The Return of the King", foo:"The", bar:"Return@baz", color:"green", hue:1},
+		{id:'pd', year:1966, quantity:5, title:"Do Androids Dream of Electric Sheep?", foo:"Do", bar:"Androids@baz", color:"blue", hue:5},
+		{id:'h1', year:1959, quantity:4, title:"Starship Troopers", foo:"Starship", bar:"Troopers@baz", color:"red", hue:4},
+		{id:'h2', year:1961, quantity:7, title:"Stranger in a Strange Land", foo:"Stranger", bar:"in@baz", color:"green", hue:1},
 		{id:'h3', year:1966, quantity:3, title:"The Moon Is a Harsh Mistress", foo:"The", bar:"Moon@baz", color:""},
-		{id:'v1', year:1946, quantity:3, title:"Slan", foo:"X", bar:"Y@baz", color:"red"},
-		{id:'v2', year:1950, quantity:5, title:"The Voyage of the Space Beagle", foo:"The", bar:"Voyage@baz", color:"green"},
-		{id:'v3', year:1970, quantity:8, title:"Quest for the Future", foo:"Quest", bar:"for@baz", color:"blue"},
-		{id:'d1', year:1859, quantity:5, title:"On the Origin of Species by Means of Natural Selection, or the Preservation of Favoured Races in the Struggle for Life", foo:"On", bar:"the@baz", color:"red"},
-		{id:'d2', year:1881, quantity:2, title:"The Formation of Vegetable Mould through the Action of Worms", foo:"The", bar:"Formation@baz", color:"green"},
-		{id:'e1', year:1905, quantity:8, title:"On a Heuristic Viewpoint Concerning the Production and Transformation of Light", foo:"On", bar:"a@baz", color:"blue"},
-		{id:'e2', year:1905, quantity:5, title:"On the Electrodynamics of Moving Bodies", foo:"On", bar:"the@baz", color:"red"},
-		{id:'e3', year:1917, quantity:7, title:"Kosmologische Betrachtungen zur allgemeinen Relativit&auml;tstheorie", foo:"Kosmologische", bar:"Betrachtungen@baz", color:"green"},
-		{id:'e4', year:1935, quantity:3, title:"Can Quantum-Mechanical Description of Physical Reality Be Considered Complete?", foo:"Can", bar:"Quantum-Mechanical@baz", color:"blue"},
-		{id:'g1', year:1610, quantity:5, title:"Sidereus Nuncius", foo:"Sidereus", bar:"Nuncius@baz", color:"red"},
-		{id:'g2', year:1615, quantity:2, title:"Letter to the Grand Duchess Christina", foo:"Letter", bar:"to@baz", color:"green"},
-		{id:'g3', year:1632, quantity:6, title:"Dialogo sopra i due massimi sistemi del mondo", foo:"Dialogo", bar:"sopra@baz", color:"blue"},
-		{id:'i1', year:1671, quantity:7, title:"Method of Fluxions", foo:"Method", bar:"of@baz", color:"red"},
-		{id:'i2', year:1687, quantity:4, title:"Philosophi&aelig; Naturalis Principia Mathematica", foo:"Philosophi&aelig;", bar:"Naturalis@baz", color:"green"},
-		{id:'i3', year:1704, quantity:3, title:"Opticks", foo:"G", bar:"H@baz", color:"blue"}
+		{id:'v1', year:1946, quantity:3, title:"Slan", foo:"X", bar:"Y@baz", color:"red", hue:4},
+		{id:'v2', year:1950, quantity:5, title:"The Voyage of the Space Beagle", foo:"The", bar:"Voyage@baz", color:"green", hue:1},
+		{id:'v3', year:1970, quantity:8, title:"Quest for the Future", foo:"Quest", bar:"for@baz", color:"blue", hue:5},
+		{id:'d1', year:1859, quantity:5, title:"On the Origin of Species by Means of Natural Selection, or the Preservation of Favoured Races in the Struggle for Life", foo:"On", bar:"the@baz", color:"red", hue:4},
+		{id:'d2', year:1881, quantity:2, title:"The Formation of Vegetable Mould through the Action of Worms", foo:"The", bar:"Formation@baz", color:"green", hue:1},
+		{id:'e1', year:1905, quantity:8, title:"On a Heuristic Viewpoint Concerning the Production and Transformation of Light", foo:"On", bar:"a@baz", color:"blue", hue:5},
+		{id:'e2', year:1905, quantity:5, title:"On the Electrodynamics of Moving Bodies", foo:"On", bar:"the@baz", color:"red", hue:4},
+		{id:'e3', year:1917, quantity:7, title:"Kosmologische Betrachtungen zur allgemeinen Relativit&auml;tstheorie", foo:"Kosmologische", bar:"Betrachtungen@baz", color:"green", hue:1},
+		{id:'e4', year:1935, quantity:3, title:"Can Quantum-Mechanical Description of Physical Reality Be Considered Complete?", foo:"Can", bar:"Quantum-Mechanical@baz", color:"blue", hue:5},
+		{id:'g1', year:1610, quantity:5, title:"Sidereus Nuncius", foo:"Sidereus", bar:"Nuncius@baz", color:"red", hue:4},
+		{id:'g2', year:1615, quantity:2, title:"Letter to the Grand Duchess Christina", foo:"Letter", bar:"to@baz", color:"green", hue:1},
+		{id:'g3', year:1632, quantity:6, title:"Dialogo sopra i due massimi sistemi del mondo", foo:"Dialogo", bar:"sopra@baz", color:"blue", hue:5},
+		{id:'i1', year:1671, quantity:7, title:"Method of Fluxions", foo:"Method", bar:"of@baz", color:"red", hue:4},
+		{id:'i2', year:1687, quantity:4, title:"Philosophi&aelig; Naturalis Principia Mathematica", foo:"Philosophi&aelig;", bar:"Naturalis@baz", color:"green", hue:1},
+		{id:'i3', year:1704, quantity:3, title:"Opticks", foo:"G", bar:"H@baz", color:"blue", hue:5}
 	];
 
 	var states =
@@ -278,6 +280,10 @@ function(Y)
 			},
 			"title",
 			"color",
+			{
+				key: "hue",
+				comparator: 'integer'
+			},
 			"foo",
 			"bar"
 		]
@@ -529,6 +535,46 @@ function(Y)
 		editor.validate();
 	},
 	'#validate');
+
+	var hidden_record_ids = [];
+	Y.on('click', function()
+	{
+		editor.saveChanges();
+
+		if (hidden_record_ids.length > 0)
+		{
+			Y.each(hidden_record_ids, function(id)
+			{
+				editor.showRecord(id);
+			});
+			hidden_record_ids = [];
+
+			pg.setPage(1, true);
+			editor.reload();
+		}
+		else
+		{
+			editor.getAllValues(
+			{
+				success: function(e)
+				{
+					var rec = e.response.results;
+					for (var i=rec.length-1; i>=0; i--)
+					{
+						if (rec[i].title.substr(0,3).toLowerCase() != 'the')
+						{
+							editor.hideRecord(i);
+							hidden_record_ids.push(rec[i].id);
+						}
+					}
+
+					pg.setPage(1, true);
+					editor.reload();
+				}
+			});
+		}
+	},
+	'#filter');
 
 	Y.on('click', function()
 	{

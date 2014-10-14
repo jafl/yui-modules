@@ -80,4 +80,4 @@ Y.extend(CollapseToggle, Y.Widget,
 Y.CollapseToggle = CollapseToggle;
 
 
-}, '@VERSION@', {"requires": ["widget"]});
+}, '@VERSION@', {"skinnable": "true", "requires": ["widget"]});
