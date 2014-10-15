@@ -350,7 +350,7 @@ Y.extend(BulkEditor, Y.Widget,
 		{
 			startIndex:  0,
 			resultCount: this.get('ds').getRecordCount(),
-			out_of_band: true
+			outOfBand:   true
 		};
 		Y.mix(request, this.get('requestExtra'));
 
@@ -373,7 +373,7 @@ Y.extend(BulkEditor, Y.Widget,
 	/**
 	 * <p>Insert a new record.</p>
 	 * 
-	 * <p>You must reload() the widget after calling this function!</p>
+	 * <p>You must `reload` the widget after calling this function!</p>
 	 * 
 	 * @method insertRecord
 	 * @param index {Number} insertion index
@@ -395,12 +395,11 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	/**
-	 * <p>Remove a record.  The removal will be recorded in the diffs.
-	 * There is no way to un-remove a record, so if you need that
-	 * functionality, you may want to use highlighting to indicate removed
-	 * records instead.</p>
+	 * <p>Remove a record.  There is no simple way to un-remove a record,
+	 * so if you need that functionality, you may want to use highlighting
+	 * to indicate removed records instead.</p>
 	 * 
-	 * <p>You must reload() the widget after calling this function!</p>
+	 * <p>You must `reload` the widget after calling this function!</p>
 	 * 
 	 * @method removeRecord
 	 * @param index {Number}
@@ -417,6 +416,81 @@ Y.extend(BulkEditor, Y.Widget,
 				this.server_errors.records.splice(index,1);
 				delete this.server_errors.record_map[ rec[ this.get('ds').get('uniqueIdKey') ] ];
 				this._updatePageStatus();
+			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	/**
+	 * <p>Restore a removed record.</p>
+	 * 
+	 * <p>You must `reload` the widget after calling this function!</p>
+	 * 
+	 * @method restoreRecord
+	 * @param record_id {String}
+	 * @return {int} the restored record's index or -1 if record id is not found
+	 */
+	restoreRecord: function(
+		/* string */ record_id)
+	{
+		var i = this.get('ds').restoreRecord(record_id);
+		if (i >= 0)
+		{
+			this.clearServerErrors();
+		}
+
+		return i;
+	},
+
+	/**
+	 * <p>Show a record.  Do not call this if you use server-side
+	 * pagination.</p>
+	 * 
+	 * <p>You must `reload` the widget after calling this function!</p>
+	 * 
+	 * @method showRecord
+	 * @param record_id {String}
+	 * @return {Boolean} true if the record is now visible
+	 */
+	showRecord: function(
+		/* string */ record_id)
+	{
+		if (this.get('ds').showRecord(record_id))
+		{
+			this.clearServerErrors();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	/**
+	 * <p>Hide a record.  Do not call this if you use server-side
+	 * pagination.</p>
+	 * 
+	 * <p>You must `reload` the widget after calling this function!</p>
+	 * 
+	 * @method hideRecord
+	 * @param index {Number}
+	 * @return {boolean} true if record is now hidden
+	 */
+	hideRecord: function(
+		/* int */ index)
+	{
+		if (this.get('ds').hideRecord(index))
+		{
+			if (index < this.server_errors.records.length)
+			{
+				var rec = this.server_errors.records[index];
+				this.server_errors.records.splice(index,1);
+				delete this.server_errors.record_map[ rec[ this.get('ds').get('uniqueIdKey') ] ];
+				this._updatePageStatus();	// paranoia, since records with changes cannot be hidden
 			}
 			return true;
 		}
