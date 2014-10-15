@@ -561,15 +561,21 @@ function(Y)
 					var rec = e.response.results;
 					for (var i=rec.length-1; i>=0; i--)
 					{
-						if (rec[i].title.substr(0,3).toLowerCase() != 'the')
+						if (rec[i].title.substr(0,3).toLowerCase() != 'the' &&
+							editor.hideRecord(i))
 						{
-							editor.hideRecord(i);
 							hidden_record_ids.push(rec[i].id);
 						}
 					}
 
-					pg.setPage(1, true);
-					editor.reload();
+					if (hidden_record_ids.length > 0)
+					{
+						Y.later(0, null, function()
+						{
+							pg.setPage(1, true);
+							editor.reload();
+						});
+					}
 				}
 			});
 		}
