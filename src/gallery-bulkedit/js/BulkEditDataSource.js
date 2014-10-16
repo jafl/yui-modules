@@ -380,9 +380,9 @@ function checkFinished()
 		this._records   = [];
 		this._recordMap = {};
 
-		Y.Array.each(response.results, function(value)
+		Y.Array.each(response.results, function(r)
 		{
-			var rec = Y.clone(value, true);
+			var rec = Y.clone(r, true);
 			this._records.push(rec);
 			this._recordMap[ rec[ unique_id_key ] ] = rec;
 		},
