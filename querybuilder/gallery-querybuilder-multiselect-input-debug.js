@@ -139,7 +139,10 @@ Y.QueryBuilder.MultiselectInput.prototype =
 			this.value_input.unplug(Y.Plugin.AutoComplete);
 		}
 
-		this.op_menu.remove(true);
+		if (this.op_menu)
+		{
+			this.op_menu.remove(true);
+		}
 		this.value_input.remove(true);
 
 		this.value_input = null;
