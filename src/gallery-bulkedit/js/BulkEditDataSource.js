@@ -534,7 +534,8 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	},
 
 	/**
-	 * This includes changes made to deleted records.
+	 * When using a remote datasource, this will include changes made to
+	 * deleted records.
 	 * 
 	 * @method getChanges
 	 * @return {Object} map of all changed values, keyed by record id
@@ -661,7 +662,17 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		}
 		else
 		{
+			if (this._dataIsLocal())
+			{
+				var record_id = this.get('ds').get('source')[ this._index[j] ][ this.get('uniqueIdKey') ].toString();
+			}
+
 			this._index[j] = removed_prefix + this._index[j];
+		}
+
+		if (record_id)
+		{
+			delete this._diff[ record_id ];
 		}
 
 		return true;
@@ -670,7 +681,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	/**
 	 * Inverse of `removeRecord`, but only for pre-existing records and
 	 * only with `DataSource.Local`.  Changes made before the record was
-	 * removed are restored.
+	 * removed are not restored.
 	 *
 	 * You must `reload` the widget after calling this function!
 	 * 
