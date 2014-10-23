@@ -454,20 +454,18 @@ Y.extend(BulkEditor, Y.Widget,
 	 * 
 	 * @method showRecord
 	 * @param record_id {String}
-	 * @return {Boolean} true if the record is now visible
+	 * @return {int} the newly visible record's index or -1 if record id is not found
 	 */
 	showRecord: function(
 		/* string */ record_id)
 	{
-		if (this.get('ds').showRecord(record_id))
+		var i = this.get('ds').showRecord(record_id);
+		if (i >= 0)
 		{
 			this.clearServerErrors();
-			return true;
 		}
-		else
-		{
-			return false;
-		}
+
+		return i;
 	},
 
 	/**
