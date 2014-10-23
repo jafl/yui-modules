@@ -1047,7 +1047,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 *
 	 * You must `reload` the widget after calling this function!
 	 * 
-	 * @method showRecord
+	 * @method _restoreRecord
 	 * @private
 	 * @param record_id {String}
 	 * @return {int} the newly visible record's index or -1 if record id is not found
