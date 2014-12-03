@@ -36,6 +36,18 @@ OverlayFormPlugin.ATTRS =
 	formmgr:
 	{
 		writeOnce: true
+	},
+
+	/**
+	 * Configuration passed to Y.FormManager ctor.
+	 *
+	 * @attribute formmgrConfig
+	 * @type {Object}
+	 * @writeonce
+	 */
+	formmgrConfig:
+	{
+		writeOnce: true
 	}
 };
 
@@ -48,7 +60,7 @@ Y.extend(OverlayFormPlugin, Y.Plugin.Base,
 		{
 			f.set('name', Y.guid('form-overlay-'));
 		}
-		this.set('formmgr', new Y.FormManager(f.get('name')));
+		this.set('formmgr', new Y.FormManager(f.get('name'), this.get('formmgrConfig')));
 
 		this.onHostEvent('visibleChange', function(e)
 		{
