@@ -9,7 +9,7 @@ var has_bubble_problem = (0 < Y.UA.ie && Y.UA.ie < 9);
  * searching.  All the conditions are either AND'ed or OR'ed.  For a more
  * general query builder, see gallery-exprbuilder.
  * 
- * @main gallery-mathcanvas
+ * @main gallery-querybuilder
  * @module gallery-querybuilder
  */
 
@@ -75,17 +75,6 @@ function QueryBuilder(
 	/* object */	operators,
 	/* object */	config)
 {
-	if (!Y.FormManager)
-	{
-		Y.FormManager =
-		{
-			row_marker_class:    '',
-			field_marker_class:  '',
-			status_marker_class: '',
-			required_class:      ''
-		};
-	}
-
 	// list of variables that can be queried
 
 	this.var_list = var_list.slice(0);
@@ -318,15 +307,7 @@ Y.extend(QueryBuilder, Y.Widget,
 			var var_menu = this.row_list[0].var_menu;
 			if (var_menu.get('selectedIndex') === 0)
 			{
-				for (var i=0; i<this.var_list.length; i++)
-				{
-					if (this.var_list[i].name == name)
-					{
-						var_menu.set('selectedIndex', i);
-						break;
-					}
-				}
-
+				var_menu.set('value', name);
 				this.update(0, value);
 				return this.row_list[0].plugin;
 			}
@@ -374,11 +355,8 @@ Y.extend(QueryBuilder, Y.Widget,
 		for (var i=0; i<this.var_list.length; i++)
 		{
 			options[i] = new Option(this.var_list[i].text, this.var_list[i].name);
-			if (this.var_list[i].name == name)
-			{
-				var_menu.set('selectedIndex', i);
-			}
 		}
+		var_menu.set('value', name);
 
 		if (has_bubble_problem)
 		{
@@ -932,25 +910,19 @@ QueryBuilder.String.prototype =
 		/* array */		op_list,
 		/* array */		value)
 	{
-		Y.Lang.later(1, this, function()	// hack for IE7
+		if (var_config.autocomplete)
 		{
-			if (this.value_input)		// could be destroyed
+			var config    = Y.clone(var_config.autocomplete, true);
+			config.render = Y.one('body');
+			this.value_input.plug(Y.Plugin.AutoComplete, config);
+
+			if (var_config.autocomplete.containerClassName)
 			{
-				if (var_config.autocomplete)
-				{
-					var config    = Y.clone(var_config.autocomplete, true);
-					config.render = Y.one('body');
-					this.value_input.plug(Y.Plugin.AutoComplete, config);
-
-					if (var_config.autocomplete.containerClassName)
-					{
-						this.value_input.ac.get('boundingBox').addClass(var_config.autocomplete.containerClassName);
-					}
-				}
-
-				this.value_input.focus();
+				this.value_input.ac.get('boundingBox').addClass(var_config.autocomplete.containerClassName);
 			}
-		});
+		}
+
+		this.value_input.focus();
 	},
 
 	destroy: function()

@@ -314,11 +314,13 @@ function enforceDateTimeLimits(
 			this.ignore_value_set = false;
 
 			this.prev_date_time = null;
+			this.fire('limitsEnforced');
 			return;
 		}
 		else if (date_len > 0 && this.get('timeInput').get('value').length === 0)
 		{
 			this.get('timeInput').set('value', Y.DateTimeUtils.formatTime(this.get('blankTime')));		// recursive
+			this.fire('limitsEnforced');
 			return;
 		}
 	}

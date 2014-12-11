@@ -6,14 +6,26 @@
 
 	<script src="http://yui.yahooapis.com/3.15.0/build/yui/yui-min.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css">
-<!--
+
 	<script src="gallery-querybuilder-debug.js"></script>
 	<script src="gallery-formmgr-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
 	<script src="gallery-node-optimizations-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-querybuilder.css" />
 	<script src="gallery-querybuilder-multiselect-input-debug.js"></script>
--->
+	<script src="gallery-querybuilder-daterange-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-querybuilder-daterange.css" />
+	<script src="gallery-datetime-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-datetime.css" />
+	<script src="gallery-datetime-range-debug.js"></script>
+	<script src="gallery-input-calendar-sync-debug.js"></script>
+	<script src="gallery-datetime-utils-debug.js"></script>
+	<script src="gallery-popup-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-popup.css" />
+	<script src="gallery-node-event-set-debug.js"></script>
+	<script src="gallery-timepicker-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/gallery-timepicker.css" />
+
 	<style type="text/css">
 	#query
 	{
@@ -63,6 +75,7 @@ YUI({
 	gallery: 'gallery-2014.02.20-23-55'
 }).use(
 	'gallery-querybuilder', 'gallery-querybuilder-multiselect-input',
+	'gallery-querybuilder-daterange', 'gallery-timepicker',
 	'autocomplete', 'autocomplete-filters', 'autocomplete-highlighters',
 function(Y)
 {
@@ -160,6 +173,17 @@ function(Y)
 				{ value: "A", text: 'Submission Accepted' },
 				{ value: "B", text: 'Submission Auto-Accepted' }
 			]
+		},
+		{
+			name: 'date_range',
+			type: 'daterange',
+			text: 'Date range'
+		},
+		{
+			name: 'date_time_range',
+			type: 'daterange',
+			text: 'Date/Time range',
+			show_time: true
 		}
 	];
 
@@ -185,6 +209,11 @@ function(Y)
 		select:
 		[
 			'equals'
+		],
+
+		daterange:
+		[
+			'>', '<'
 		],
 
 		'multiselect-input':
