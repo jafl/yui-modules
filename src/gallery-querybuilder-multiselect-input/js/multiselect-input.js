@@ -58,6 +58,8 @@ Y.QueryBuilder.MultiselectInput.prototype =
 	{
 		value = value || ['', null];
 
+		var result = [];
+
 		if (op_list.length > 1)
 		{
 			var op_cell = this.qb._createContainer();
@@ -80,6 +82,8 @@ Y.QueryBuilder.MultiselectInput.prototype =
 			{
 				this.op_menu.on('change', this.qb._notifyChanged, this.qb);
 			}
+
+			result.push(op_cell);
 		}
 		else
 		{
@@ -90,8 +94,9 @@ Y.QueryBuilder.MultiselectInput.prototype =
 		value_cell.set('className', this.qb.getClassName('value'));
 		value_cell.set('innerHTML', this._valueInput(this.valueName(query_index)));
 		this.value_input = value_cell.one('input');
+		result.push(value_cell);
 
-		return [ op_cell, value_cell ];
+		return result;
 	},
 
 	postCreate: function(
@@ -102,31 +107,25 @@ Y.QueryBuilder.MultiselectInput.prototype =
 	{
 		value = value || ['', null];
 
-		Y.Lang.later(1, this, function()	// hack for IE7
+		this.value_input.plug(Y.Plugin.AutoComplete,
 		{
-			if (this.value_input)		// could be destroyed
-			{
-				this.value_input.plug(Y.Plugin.AutoComplete,
-				{
-					resultFilters:     'phraseMatch',
-					resultHighlighter: 'phraseMatch',
-					source:            var_config.value_list,
-					render:            Y.one('body')
-				});
-
-				if (var_config.autocomplete && var_config.autocomplete.containerClassName)
-				{
-					this.value_input.ac.get('boundingBox').addClass(var_config.autocomplete.containerClassName);
-				}
-
-				this.value_input.plug(Y.Plugin.MultivalueInput,
-				{
-					values: value[1]
-				});
-
-				this.value_input.focus();
-			}
+			resultFilters:     'phraseMatch',
+			resultHighlighter: 'phraseMatch',
+			source:            var_config.value_list,
+			render:            Y.one('body')
 		});
+
+		if (var_config.autocomplete && var_config.autocomplete.containerClassName)
+		{
+			this.value_input.ac.get('boundingBox').addClass(var_config.autocomplete.containerClassName);
+		}
+
+		this.value_input.plug(Y.Plugin.MultivalueInput,
+		{
+			values: value[1]
+		});
+
+		this.value_input.focus();
 	},
 
 	destroy: function()
