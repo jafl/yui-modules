@@ -627,7 +627,7 @@ function resize()
 		h: Y.DOM.winHeight()
 	};
 
-	var resize_event = arguments[0] && arguments[0].type == 'resize';	// IE7 generates no-op's
+	var resize_event = arguments[0] && arguments[0].type == 'resize';
 	if (resize_event &&
 		(viewport.w === this.viewport.w &&
 		 viewport.h === this.viewport.h))
