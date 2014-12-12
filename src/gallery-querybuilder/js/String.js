@@ -77,25 +77,19 @@ QueryBuilder.String.prototype =
 		/* array */		op_list,
 		/* array */		value)
 	{
-		Y.Lang.later(1, this, function()	// hack for IE7
+		if (var_config.autocomplete)
 		{
-			if (this.value_input)		// could be destroyed
+			var config    = Y.clone(var_config.autocomplete, true);
+			config.render = Y.one('body');
+			this.value_input.plug(Y.Plugin.AutoComplete, config);
+
+			if (var_config.autocomplete.containerClassName)
 			{
-				if (var_config.autocomplete)
-				{
-					var config    = Y.clone(var_config.autocomplete, true);
-					config.render = Y.one('body');
-					this.value_input.plug(Y.Plugin.AutoComplete, config);
-
-					if (var_config.autocomplete.containerClassName)
-					{
-						this.value_input.ac.get('boundingBox').addClass(var_config.autocomplete.containerClassName);
-					}
-				}
-
-				this.value_input.focus();
+				this.value_input.ac.get('boundingBox').addClass(var_config.autocomplete.containerClassName);
 			}
-		});
+		}
+
+		this.value_input.focus();
 	},
 
 	destroy: function()
