@@ -73,17 +73,6 @@ function QueryBuilder(
 	/* object */	operators,
 	/* object */	config)
 {
-	if (!Y.FormManager)
-	{
-		Y.FormManager =
-		{
-			row_marker_class:    '',
-			field_marker_class:  '',
-			status_marker_class: '',
-			required_class:      ''
-		};
-	}
-
 	// list of variables that can be queried
 
 	this.var_list = var_list.slice(0);
@@ -316,15 +305,7 @@ Y.extend(QueryBuilder, Y.Widget,
 			var var_menu = this.row_list[0].var_menu;
 			if (var_menu.get('selectedIndex') === 0)
 			{
-				for (var i=0; i<this.var_list.length; i++)
-				{
-					if (this.var_list[i].name == name)
-					{
-						var_menu.set('selectedIndex', i);
-						break;
-					}
-				}
-
+				var_menu.set('value', name);
 				this.update(0, value);
 				return this.row_list[0].plugin;
 			}
@@ -372,11 +353,8 @@ Y.extend(QueryBuilder, Y.Widget,
 		for (var i=0; i<this.var_list.length; i++)
 		{
 			options[i] = new Option(this.var_list[i].text, this.var_list[i].name);
-			if (this.var_list[i].name == name)
-			{
-				var_menu.set('selectedIndex', i);
-			}
 		}
+		var_menu.set('value', name);
 
 		if (has_bubble_problem)
 		{
