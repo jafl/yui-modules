@@ -148,12 +148,16 @@ QueryBuilder.ATTRS =
 
 function initVarList()
 {
-	this.var_list.unshift(
+	var prompt = this.get('chooseVarPrompt');
+	if (prompt)
 	{
-		name: 'yui3-querybuilder-choose-prompt',
-		type: 'none',
-		text: this.get('chooseVarPrompt')
-	});
+		this.var_list.unshift(
+		{
+			name: 'yui3-querybuilder-choose-prompt',
+			type: 'none',
+			text: prompt
+		});
+	}
 }
 
 function findRow(
@@ -302,8 +306,9 @@ Y.extend(QueryBuilder, Y.Widget,
 
 		if (name && this.row_list.length == 1)
 		{
-			var var_menu = this.row_list[0].var_menu;
-			if (var_menu.get('selectedIndex') === 0)
+			var var_menu     = this.row_list[0].var_menu,
+				selected_var = this.var_list[ var_menu.get('selectedIndex') ];
+			if (selected_var.type == 'none')
 			{
 				var_menu.set('value', name);
 				this.update(0, value);
