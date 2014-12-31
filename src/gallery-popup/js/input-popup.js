@@ -12,17 +12,6 @@
  */
 var InputPopup = function(config)
 {
-	if (Y.Lang.isUndefined(config.align))
-	{
-		config.align =
-		{
-			node:   config.inputField,
-			points: [ Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.BL ]
-		};
-
-		config.preventOverlap = true;
-	}
-
 	if (Y.Lang.isUndefined(config.constrain))
 	{
 		config.constrain = true;
@@ -48,7 +37,7 @@ var InputPopup = function(config)
 		}
 	];
 
-	InputPopup.superclass.constructor.apply(this, arguments);
+	InputPopup.superclass.constructor.call(this, config);
 };
 
 InputPopup.NAME = "inputpopup";
@@ -140,6 +129,22 @@ Y.extend(InputPopup, Y.Popup,
 			},
 			this);
 		});
+	},
+
+	show: function()
+	{
+		if (!this.get('align'))
+		{
+			this.set('align',
+			{
+				node:   this.get('inputField'),
+				points: [ Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.BL ]
+			});
+
+			this.set('preventOverlap', true);
+		}
+
+		InputPopup.superclass.show.apply(this, arguments);
 	}
 });
 
