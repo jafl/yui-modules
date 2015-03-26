@@ -62,15 +62,18 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 
 			layout.on('beforeResizeModule', function(e)
 			{
-				if (e.bd.get('id') == module_bd.get('id') && e.height == 'auto')
+				if (e.bd.get('id') == module_bd.get('id'))
 				{
 					if (table._yScrollNode)
 					{
 						scroll_top = table._yScrollNode.get('scrollTop');
 					}
 
-					table.set('height', 'auto');
-					table.set('scrollable', 'x');
+					if (e.height == 'auto')
+					{
+						table.set('height', 'auto');
+						table.set('scrollable', 'x');
+					}
 				}
 			},
 			this);
