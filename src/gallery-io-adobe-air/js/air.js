@@ -75,7 +75,10 @@ Y.IO.transports['adobe-air'] = function()
 					delete config.headers['Content-Type'];
 				}
 
-				request.requestHeaders = config.headers;
+				Y.each(config.headers, function(value, name)
+				{
+					request.requestHeaders[ name ] = value;
+				});
 			}
 
 			if (config.request)
@@ -122,7 +125,7 @@ Y.IO.transports['adobe-air'] = function()
 				}
 
 				config.notify('complete', transaction, config);
-				config.notify(((data && (data.statusCode >= 200 && data.statusCode <= 299)) ? 'success' : 'failure'), transaction, config);
+				config.notify(((data && (status_code >= 200 && status_code <= 299)) ? 'success' : 'failure'), transaction, config);
 			});
 
 			loader.addEventListener('ioError', function(event)
