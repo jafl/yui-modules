@@ -13,6 +13,7 @@ Y.namespace('air');
  */
 
 var module_prefix,
+	dom_containers,
 	dom_root,
 	use_layout,
 	page_layout,
@@ -43,14 +44,12 @@ function show(page_name)
 
 Y.air.PageManager =
 {
-	init: function(
-		/* string */		_module_prefix,
-		/* string/node */	_dom_root,
-		/* bool */			_use_layout)
+	init: function(config)
 	{
-		module_prefix = _module_prefix;
-		dom_root      = _dom_root;
-		use_layout    = _use_layout;
+		module_prefix  = config.module_prefix;
+		dom_containers = config.dom_containers;
+		dom_root       = config.dom_root;
+		use_layout     = config.use_layout;
 	},
 
 	getPageLayout: function()
@@ -79,6 +78,9 @@ Y.air.PageManager =
 		var markup = stream.readUTFBytes(stream.bytesAvailable);
 		stream.close();
 
+		var c = Y.all(dom_containers);
+		c.setStyle('visibility', 'hidden');		// avoid multiple redraws
+
 		Y.use(module_prefix + page_name, function(Y)
 		{
 			var p = page_map[ page_name ];
@@ -86,6 +88,9 @@ Y.air.PageManager =
 			air.Localizer.localizer.update();	// insert text into nodes
 			p.init();
 			p.root.remove();
+
+			c.setStyle('visibility', '');
+
 			show(page_name);
 		});
 	},
