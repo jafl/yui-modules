@@ -57,13 +57,17 @@ Y.air.PageManager =
 		return page_layout;
 	},
 
-	show: function(page_name)
+	show: function(page_name, callback)
 	{
 		Y.log('Showing ' + page_name, 'info', 'air-page-manager');
 
 		if (page_map[ page_name ])
 		{
 			show(page_name);
+			if (Y.Lang.isFunction(callback))
+			{
+				callback();
+			}
 			return;
 		}
 
@@ -92,6 +96,11 @@ Y.air.PageManager =
 			c.setStyle('visibility', '');
 
 			show(page_name);
+
+			if (Y.Lang.isFunction(callback))
+			{
+				callback();
+			}
 		});
 	},
 
