@@ -166,7 +166,7 @@ BulkEditDataSource.comparator =
 {
 	'string': function(a,b)
 	{
-		return (Y.Lang.trim(a.toString()) === Y.Lang.trim(b.toString()));
+		return (a.toString() === b.toString());
 	},
 
 	'integer': function(a,b)
