@@ -330,7 +330,8 @@ function checkFinished()
 	var dataStartIndex = 0;
 	if (this.get('startIndexExpr'))
 	{
-		eval('dataStartIndex=this._callback.response'+this.get('startIndexExpr'));
+//		eval('dataStartIndex=this._callback.response'+this.get('startIndexExpr'));
+		dataStartIndex = Y.Object.evalGet(this._callback.response, this.get('startIndexExpr'));
 	}
 
 	var startIndex   = this._callback.request.startIndex - dataStartIndex;
@@ -342,7 +343,8 @@ function checkFinished()
 	{
 		if (this.get('totalRecordsReturnExpr'))
 		{
-			eval('response'+this.get('totalRecordsReturnExpr')+'='+this._callback.response.results.length);
+//			eval('response'+this.get('totalRecordsReturnExpr')+'='+this._callback.response.results.length);
+			Y.Object.evalSet(response, this.get('totalRecordsReturnExpr'), this._callback.response.results.length);
 		}
 		this._count = this.get('extractTotalRecords')(response);
 
