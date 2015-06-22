@@ -16,7 +16,7 @@
 
 <body class="yui3-skin-sam">
 
-<h1><a href="http://yuilibrary.com/gallery/show/iterable-extras">YUI 3 Array Iterator</a> Unit Tests</h1>
+<h1><a href="http://yuilibrary.com/gallery/show/iterable-extras">YUI 3 Array Iterator</a> Performance</h1>
 
 <p><a href="../yuidoc/modules/gallery-iterable-extras.html">Show me the documentation</a></p>
 <p><a href="/yui-modules/">Back to project list</a></p>
@@ -33,52 +33,9 @@ YUI({
 //	filter: 'raw', combine: false,
 	logInclude: { TestRunner: true }
 }).use(
-	'gallery-iterable-extras', 'oop', 'test',
-	'console', 'console-filters', 'dd-plugin',
+	'gallery-iterable-extras', 'oop', 'node',
 function(Y)
 {
-	Y.Test.Runner.add(new Y.Test.Case(
-	{
-		name: 'Array Iterator',
-
-		testForward: function()
-		{
-			var iter = new Y.ArrayIterator([1,2,3]);
-			var list = [];
-			while (!iter.atEnd())
-			{
-				list.push(iter.next());
-			}
-
-			Y.ArrayAssert.itemsAreSame([1,2,3], list);
-		},
-
-		testBackward: function()
-		{
-			var iter = new Y.ArrayIterator([1,2,3]);
-			var list = [];
-
-			iter.moveToEnd();
-			while (!iter.atBeginning())
-			{
-				list.push(iter.prev());
-			}
-
-			Y.ArrayAssert.itemsAreSame([3,2,1], list);
-		}
-	}));
-
-	new Y.Console(
-	{
-		newestOnTop: false,
-		plugins: [ {fn: Y.Plugin.Drag, cfg: {handles: ['.yui3-console-hd']}}, Y.Plugin.ConsoleFilters ]
-	})
-	.render();
-
-	Y.Test.Runner.run();
-
-// performance
-
 	var list = [];
 	for (var i=0; i<1000000; i++)
 	{
