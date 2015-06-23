@@ -62,6 +62,7 @@ Y.IO.transports['adobe-air'] = function()
 			}
 
 			Y.log('Initiating ' + config.method + ' request to: ' + uri, 'info', 'io');
+			Y.log('Message body: ' + body, 'info', 'io');
 
 			var request    = new air.URLRequest(uri);
 			request.method = air.URLRequestMethod[ config.method ];
