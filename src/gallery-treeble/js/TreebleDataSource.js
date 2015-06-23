@@ -628,7 +628,6 @@ function treeSuccess(e, reqIndex)
 	var dataStartIndex = 0;
 	if (req.ds.treeble_config.startIndexExpr)
 	{
-//		eval('dataStartIndex=req.resp'+req.ds.treeble_config.startIndexExpr);
 		dataStartIndex = Y.Object.evalGet(req.resp, req.ds.treeble_config.startIndexExpr);
 	}
 
@@ -646,7 +645,6 @@ function treeSuccess(e, reqIndex)
 
 	if (!parent && req.ds.treeble_config.totalRecordsExpr)
 	{
-//		eval('this._topNodeTotal=e.response'+req.ds.treeble_config.totalRecordsExpr);
 		this._topNodeTotal = Y.Object.evalGet(e.response, req.ds.treeble_config.totalRecordsExpr);
 	}
 	else if (!parent && req.ds.treeble_config.totalRecordsReturnExpr)
@@ -771,12 +769,10 @@ function checkFinished()
 	var rootDS = this.get('root');
 	if (rootDS.treeble_config.totalRecordsExpr)
 	{
-//		eval('response'+rootDS.treeble_config.totalRecordsExpr+'='+countVisibleNodes.call(this));
 		Y.Object.evalSet(response, rootDS.treeble_config.totalRecordsExpr, countVisibleNodes.call(this));
 	}
 	else if (rootDS.treeble_config.totalRecordsReturnExpr)
 	{
-//		eval('response'+rootDS.treeble_config.totalRecordsReturnExpr+'='+countVisibleNodes.call(this));
 		Y.Object.evalSet(response, rootDS.treeble_config.totalRecordsReturnExpr, countVisibleNodes.call(this));
 	}
 
@@ -788,7 +784,6 @@ function toggleSuccess(e, node, completion, path)
 {
 	if (node.ds.treeble_config.totalRecordsExpr)
 	{
-//		eval('node.childTotal=e.response'+node.ds.treeble_config.totalRecordsExpr);
 		node.childTotal = Y.Object.evalGet(e.response, node.ds.treeble_config.totalRecordsExpr);
 	}
 	else if (node.ds.treeble_config.totalRecordsReturnExpr)
