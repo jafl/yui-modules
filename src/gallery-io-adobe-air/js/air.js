@@ -130,7 +130,7 @@ Y.IO.transports['adobe-air'] = function()
 
 			loader.addEventListener('ioError', function(event)
 			{
-				Y.log('An IO error occurred', 'warn', 'io');
+				Y.log('An IO error occurred (' + status_code + '): ' + event.target.data, 'warn', 'io');
 
 				transaction.c =
 				{
