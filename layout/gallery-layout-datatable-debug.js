@@ -64,15 +64,18 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 
 			layout.on('beforeResizeModule', function(e)
 			{
-				if (e.bd.get('id') == module_bd.get('id') && e.height == 'auto')
+				if (e.bd.get('id') == module_bd.get('id'))
 				{
 					if (table._yScrollNode)
 					{
 						scroll_top = table._yScrollNode.get('scrollTop');
 					}
 
-					table.set('height', 'auto');
-					table.set('scrollable', 'x');
+					if (e.height == 'auto')
+					{
+						table.set('height', 'auto');
+						table.set('scrollable', 'x');
+					}
 				}
 			},
 			this);
@@ -85,9 +88,10 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 					table.set('height', e.height+'px');
 					table.set('scrollable', true);
 
-					if (table._yScrollNode && !this.ignore_scroll_top)
+					if (table._yScrollNode)
 					{
-						table._yScrollNode.set('scrollTop', scroll_top);
+						table._yScrollNode.set('scrollTop',
+							this.ignore_scroll_top ? 0 : scroll_top);
 					}
 					this.ignore_scroll_top = false;
 				}

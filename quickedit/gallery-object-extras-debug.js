@@ -316,6 +316,81 @@ Y.mix(Y.Object,
 		});
 
 		return result;
+	},
+
+	/**
+	 * Extracts a value from an object, given a string containing a valid
+	 * JavaScript expression.  In a browser, this uses eval().  In Adobe
+	 * AIR, it parses the string, thereby restricting the syntax to only
+	 * dot notation.
+	 *
+	 * @method evalGet
+	 * @static
+	 * @param o {Object} the object from which to extract a value
+	 * @param s {String} the expression
+	 * @return {mixed} requested value
+	 */
+	evalGet: function(o, s)
+	{
+		if (s.indexOf(';') >= 0)
+		{
+			throw 'Semi-colon detected in evalGet. Security error.';
+		}
+
+		if (!window.air)
+		{
+			var tmp;
+			eval('tmp=o'+s);
+			return tmp;
+		}
+
+		s = s.split('.');
+		s.shift();	// expression must begin with a dot
+
+		var tmp = o;
+		while (s.length > 0)
+		{
+			tmp = tmp[ s.shift() ];
+		}
+
+		return tmp;
+	},
+
+	/**
+	 * Sets a value inside an object, given a string containing a valid
+	 * JavaScript expression.  In a browser, this uses eval().  In Adobe
+	 * AIR, it parses the string, thereby restricting the syntax to only
+	 * dot notation.
+	 *
+	 * @method evalSet
+	 * @static
+	 * @param o {Object} the object in which to set a value
+	 * @param s {String} the expression
+	 * @param v {mixed} the value to set
+	 */
+	evalSet: function(o, s, v)
+	{
+		if (s.indexOf(';') >= 0)
+		{
+			throw 'Semi-colon detected in evalSet. Security error.';
+		}
+
+		if (!window.air)
+		{
+			eval('o'+s+'=v');
+			return;
+		}
+
+		s = s.split('.');
+		s.shift();	// expression must begin with a dot
+
+		var tmp = o;
+		while (s.length > 1)
+		{
+			tmp = tmp[ s.shift() ];
+		}
+
+		tmp[ s.shift() ] = v;
 	}
 });
 

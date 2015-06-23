@@ -102,7 +102,10 @@ Y.QueryBuilder.DateRange.prototype =
 			var_config.start_config.DateTime.defaultDateTime = value[0];
 		}
 		this.start_widgets = this._attachDateTimeWidgets(this.start_id, var_config.start_config);
-		delete var_config.start_config.DateTime.defaultDateTime;
+		if (value[0])
+		{
+			delete var_config.start_config.DateTime.defaultDateTime;
+		}
 
 		if (value[1])
 		{
@@ -110,7 +113,10 @@ Y.QueryBuilder.DateRange.prototype =
 			var_config.end_config.DateTime.defaultDateTime = value[1];
 		}
 		this.end_widgets = this._attachDateTimeWidgets(this.end_id, var_config.end_config);
-		delete var_config.end_config.DateTime.defaultDateTime;
+		if (value[1])
+		{
+			delete var_config.end_config.DateTime.defaultDateTime;
+		}
 
 		this.range = new Y.DateTimeRange(
 		{
