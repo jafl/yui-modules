@@ -1,13 +1,11 @@
 #!/bin/sh
 
-cd ~/open-source/yui-modules/src
+cd ~/tools/yui-modules/src
 
-for f in ~/open-source/jafl.github-yui3/*; do
-	d=${f##*/}
-
+for d in *; do
 	if [[ ! -d $f || "$d" == "yuidoc" ]]; then continue; fi
 
-	pushd gallery-$d
+	pushd $d
 	yogi build --no-lint
 	popd
 done
