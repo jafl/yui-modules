@@ -160,6 +160,68 @@ YUI.add('gallery-object-extras-tests', function(Y) {
 			Y.Assert.areSame(a[0], o[1]);
 			Y.Assert.areSame(a[1], o[2]);
 			Y.Assert.areSame(a[2], o[3]);
+		},
+
+		testEvalGet: function()
+		{
+			var o =
+			{
+				a: {id:1,name:'foo'},
+				b: {id:2,name:'bar'},
+				c: {id:3,name:'baz'},
+				d:
+				[
+					{id:1,name:'foo'},
+					{id:2,name:'bar'},
+					{id:3,name:'baz'}
+				]
+			};
+
+			Y.Assert.areSame(1, Y.Object.evalGet(o, '.a.id'));
+			Y.Assert.areSame('bar', Y.Object.evalGet(o, '.b.name'));
+			Y.Assert.areSame('foo', Y.Object.evalGet(o, '.d[0].name'));
+
+			window.air = true;
+
+			Y.Assert.areSame(1, Y.Object.evalGet(o, '.a.id'));
+			Y.Assert.areSame('bar', Y.Object.evalGet(o, '.b.name'));
+
+			delete window.air;
+		},
+
+		testEvalSet: function()
+		{
+			var o =
+			{
+				a: {id:1,name:'foo'},
+				b: {id:2,name:'bar'},
+				c: {id:3,name:'baz'},
+				d:
+				[
+					{id:1,name:'foo'},
+					{id:2,name:'bar'},
+					{id:3,name:'baz'}
+				]
+			};
+
+			Y.Object.evalSet(o, '.a.id', 4);
+			Y.Assert.areSame(4, o.a.id);
+
+			Y.Object.evalSet(o, '.b.name', 'shug');
+			Y.Assert.areSame('shug', o.b.name);
+
+			Y.Object.evalSet(o, '.d[0].name', 'shug');
+			Y.Assert.areSame('shug', o.d[0].name);
+
+			window.air = true;
+
+			Y.Object.evalSet(o, '.a.id', -4);
+			Y.Assert.areSame(-4, o.a.id);
+
+			Y.Object.evalSet(o, '.b.name', 'root');
+			Y.Assert.areSame('root', o.b.name);
+
+			delete window.air;
 		}
 	}));
 
