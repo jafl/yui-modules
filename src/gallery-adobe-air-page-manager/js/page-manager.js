@@ -24,11 +24,11 @@ function show(page_name)
 {
 	if (current_page)
 	{
-		current_page.root.remove();
+		page_map[ current_page ].root.remove();
 	}
 
-	current_page = page_map[ page_name ];
-	Y.one(dom_root).prepend(current_page.root);
+	current_page = page_name;
+	Y.one(dom_root).prepend(page_map[ current_page ].root);
 
 	if (use_layout && !page_layout)
 	{
@@ -39,7 +39,7 @@ function show(page_name)
 		page_layout.rescanBody();
 	}
 
-	current_page.prepare();
+	page_map[ current_page ].prepare();
 }
 
 Y.air.PageManager =
@@ -55,6 +55,11 @@ Y.air.PageManager =
 	getPageLayout: function()
 	{
 		return page_layout;
+	},
+
+	getCurrentPage: function()
+	{
+		return current_page;
 	},
 
 	show: function(page_name, callback)
