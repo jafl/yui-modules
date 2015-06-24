@@ -192,10 +192,22 @@ Y.extend(BulkEditor, Y.Widget,
 	{
 		if (config.paginator)
 		{
-			config.paginator.on('changeRequest', switchPage, this);
+			this._pg_event_handle =
+				config.paginator.on('changeRequest', switchPage, this);
 		}
 
 		this._hopper = [];
+	},
+
+	destructor: function()
+	{
+		if (this._pg_event_handle)
+		{
+			this._pg_event_handle.detach();
+		}
+
+		this._set('ds', null);
+		this._set('paginator', null);
 	},
 
 	renderUI: function()
