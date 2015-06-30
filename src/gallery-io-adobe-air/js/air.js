@@ -62,7 +62,7 @@ Y.IO.transports['adobe-air'] = function()
 			}
 
 			Y.log('Initiating ' + config.method + ' request to: ' + uri, 'info', 'io');
-			Y.log('Message body: ' + body, 'info', 'io');
+			Y.log('Message body: ' + body, 'debug', 'io');
 
 			var request    = new air.URLRequest(uri);
 			request.method = air.URLRequestMethod[ config.method ];
@@ -101,6 +101,7 @@ Y.IO.transports['adobe-air'] = function()
 			loader.addEventListener(air.Event.COMPLETE, function(event)
 			{
 				Y.log('Request Transaction Complete', 'info', 'io');
+				Y.log('Response body: ' + event.target.data, 'debug', 'io');
 
 				var data = event.target.data;
 				if (data)
