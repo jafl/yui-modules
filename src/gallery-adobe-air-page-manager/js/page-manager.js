@@ -24,6 +24,7 @@ function show(page_name)
 {
 	if (current_page)
 	{
+		page_map[ current_page ].unload();
 		page_map[ current_page ].root.remove();
 	}
 
@@ -109,12 +110,13 @@ Y.air.PageManager =
 		});
 	},
 
-	registerPage: function(name, init, prepare)
+	registerPage: function(name, init, prepare, unload)
 	{
 		page_map[ name ] =
 		{
 			init:    init,
 			prepare: prepare,
+			unload:  unload,
 			root:    Y.one('#' + name + '-page')
 		};
 	}
