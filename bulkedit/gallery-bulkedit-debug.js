@@ -332,7 +332,6 @@ function checkFinished()
 	var dataStartIndex = 0;
 	if (this.get('startIndexExpr'))
 	{
-//		eval('dataStartIndex=this._callback.response'+this.get('startIndexExpr'));
 		dataStartIndex = Y.Object.evalGet(this._callback.response, this.get('startIndexExpr'));
 	}
 
@@ -345,7 +344,6 @@ function checkFinished()
 	{
 		if (this.get('totalRecordsReturnExpr'))
 		{
-//			eval('response'+this.get('totalRecordsReturnExpr')+'='+this._callback.response.results.length);
 			Y.Object.evalSet(response, this.get('totalRecordsReturnExpr'), this._callback.response.results.length);
 		}
 		this._count = this.get('extractTotalRecords')(response);
@@ -1367,10 +1365,22 @@ Y.extend(BulkEditor, Y.Widget,
 	{
 		if (config.paginator)
 		{
-			config.paginator.on('changeRequest', switchPage, this);
+			this._pg_event_handle =
+				config.paginator.on('changeRequest', switchPage, this);
 		}
 
 		this._hopper = [];
+	},
+
+	destructor: function()
+	{
+		if (this._pg_event_handle)
+		{
+			this._pg_event_handle.detach();
+		}
+
+		this._set('ds', null);
+		this._set('paginator', null);
 	},
 
 	renderUI: function()
