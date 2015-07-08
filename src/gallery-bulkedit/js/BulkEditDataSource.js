@@ -1152,6 +1152,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		this._generatingRequest = true;
 
+		delete this._callback._tId;		// clear it so internalSuccess works for synch response
 		this._callback._tId = this.get('ds').sendRequest(
 		{
 			request: this.get('generateRequest')(this._callback.request),
