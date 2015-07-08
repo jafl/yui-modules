@@ -145,7 +145,11 @@ BulkEditor.checkbox_multiselect_column_height = 6;
  */
 /**
  * @event pageRendered
- * @description Fired every time after the editor has rendered a page.
+ * @description Fired after the editor has rendered a page.
+ */
+/**
+ * @event recordVisible
+ * @description Fired after showRecord*() succeeds, including switching pages.
  */
 
 var default_page_size = 1e9,
@@ -666,9 +670,11 @@ Y.extend(BulkEditor, Y.Widget,
 		var count = pg ? pg.getRowsPerPage() : default_page_size;
 		if (start <= index && index < start+count)
 		{
-			var node = this.getRecordContainer(this.get('ds').getCurrentRecords()[ index - start ]);
+			var rec  = this.get('ds').getCurrentRecords()[ index - start ],
+				node = this.getRecordContainer(rec);
 			node.scrollIntoView();
 			this.pingRecord(node);
+			this.fire('recordVisible', { index: index, id: this.getRecordId(rec) });
 		}
 		else if (pg)
 		{
