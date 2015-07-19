@@ -27,9 +27,9 @@ State.NS   = "state";
 State.ATTRS =
 {
 	/**
-	 * Id of a column (usually not displayed) that yields a
-	 * unique value for each record.  The saved state is index by the value
-	 * of this column.
+	 * Id of a column (usually not displayed) that yields a unique value
+	 * for each record.  The saved state is indexed by the value of this
+	 * column.
 	 *
 	 * @attribute uniqueIdKey
 	 * @type {String}
