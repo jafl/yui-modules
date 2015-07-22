@@ -148,7 +148,7 @@ function saveState()
 				}
 			}
 
-			var rec = host.getRecord(i);
+			var rec = host.data.item(i);
 			var id  = rec.get(id_key);
 			if (!this.state[id])
 			{
@@ -174,7 +174,7 @@ function restoreState()
 
 		for (var i=0; i<count; i++)
 		{
-			var rec   = host.getRecord(i);
+			var rec   = host.data.item(i);
 			var state = this.state[ rec.get(id_key) ];
 			if (state)
 			{
