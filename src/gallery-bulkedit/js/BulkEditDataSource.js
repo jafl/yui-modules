@@ -704,21 +704,28 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * @param record_id {String}
 	 * @param key {String} field key
 	 * @param value {String} new item value
+	 * @param [set_as_default] {boolean} pass `true` to make this the new default value - must call editor.reload() afterwards!
 	 */
 	updateValue: function(
 		/* string */	record_id,
 		/* string */	key,
-		/* string */	value)
+		/* string */	value,
+		/* bool */		set_as_default)
 	{
 		if (key == this.get('uniqueIdKey'))
 		{
 			Y.error('BulkEditDataSource.updateValue() does not allow changing the id for a record.  Use BulkEditDataSource.updateRecordId() instead.');
 		}
 
-		record_id = record_id.toString();
+		if (set_as_default && !this._dataIsLocal())
+		{
+			Y.error('BulkEditDataSource.updateValue() can only be called with set_as_default=true when using a local datasource');
+		}
 
+		record_id  = record_id.toString();
 		var record = this._recordMap[ record_id ];
-		if (record && this._getComparator(key)(Y.Lang.isValue(record[key]) ? record[key] : '', Y.Lang.isValue(value) ? value : ''))
+
+		function removeFromDiff()
 		{
 			if (this._diff[ record_id ])
 			{
@@ -729,6 +736,25 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 					delete this._diff[ record_id ];
 				}
 			}
+		}
+
+		if (set_as_default)
+		{
+			var unique_id_key = this.get('uniqueIdKey');
+			Y.Array.some(this.get('ds').get('source'), function(rec)
+			{
+				if (rec[ unique_id_key ].toString() === record_id)
+				{
+					rec[ key ] = value;
+					removeFromDiff.call(this);
+					return true;
+				}
+			},
+			this);
+		}
+		else if (record && this._getComparator(key)(Y.Lang.isValue(record[key]) ? record[key] : '', Y.Lang.isValue(value) ? value : ''))
+		{
+			removeFromDiff.call(this);
 		}
 		else	// might be new record
 		{
@@ -800,9 +826,9 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		var found = false;
 		this._flushCache();
 
-		Y.Array.some(this.get('ds').get('source'), function(value)
+		Y.Array.some(this.get('ds').get('source'), function(rec)
 		{
-			if (merge.call(this, value))
+			if (merge.call(this, rec))
 			{
 				found = true;
 				return true;
@@ -812,9 +838,9 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		if (!found)
 		{
-			Y.Object.some(this._new, function(value)
+			Y.Object.some(this._new, function(rec)
 			{
-				if (merge.call(this, value))
+				if (merge.call(this, rec))
 				{
 					found = true;
 					return true;
