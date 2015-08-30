@@ -948,13 +948,41 @@ Y.extend(BulkEditor, Y.Widget,
 
 		this.first_error_page = -1;
 
-		var r = this.server_errors.records;
+		var r = this.server_errors.records, s;
 		for (var i=0; i<r.length; i++)
 		{
-			if (r[i].recordError || r[i].fieldErrors)
+			s = '';
+			if (Y.Lang.isObject(r[i].recordError))
+			{
+				s = r[i].recordError.type;
+			}
+			else if (Y.Lang.isString(r[i].recordError))
+			{
+				s = 'error';
+			}
+
+			if (s != 'error' && Y.Lang.isArray(r[i].fieldErrors))
+			{
+				Y.some(r[i].fieldErrors, function(e, k)
+				{
+					if (Y.Lang.isObject(e) &&
+						Y.FormManager.statusTakesPrecedence(s, e.type))
+					{
+						s = e.type;
+					}
+					else if (Y.Lang.isString(e))
+					{
+						s = 'error';
+					}
+
+					return (s == 'error');
+				});
+			}
+
+			if (s)
 			{
 				var j     = Math.floor(i / page_size);
-				status[j] = 'error';
+				status[j] = s;
 				if (this.first_error_page == -1)
 				{
 					this.first_error_page = j+1;
