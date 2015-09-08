@@ -961,7 +961,7 @@ Y.extend(BulkEditor, Y.Widget,
 				s = 'error';
 			}
 
-			if (s != 'error' && Y.Lang.isArray(r[i].fieldErrors))
+			if (s != 'error' && Y.Lang.isObject(r[i].fieldErrors))
 			{
 				Y.some(r[i].fieldErrors, function(e, k)
 				{
