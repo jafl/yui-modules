@@ -4,8 +4,8 @@
 
 /**
  * <p>Converts data to a DataSource.  Data can be an object containing both
- * <code>dataType</code> and <code>liveData</code>, or it can be <q>free
- * form</q>, e.g., an array of records or an XHR URL.</p>
+ * `dataType` and `liveData`, or it can be <q>free form</q>, e.g., an array
+ * of records or an XHR URL.</p>
  *
  * @class Parsers
  */

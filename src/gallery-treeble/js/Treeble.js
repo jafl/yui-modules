@@ -20,14 +20,29 @@ function Treeble()
 
 Treeble.NAME = "datatable";		// same styling
 
+Treeble.ATTRS =
+{
+	/**
+	 * Object returned by saveOpenState()
+	 * 
+	 * @attribute openState
+	 * @type Object
+	 * @writeonce
+	 */
+	openState:
+	{
+		writeOnce: true
+	},
+};
+
 /**
  * <p>Formatter for open/close twistdown.</p>
  *
  * @method twistdownFormatter
  * @static
- * @param sendRequest {Function} Function that reloads DataTable
+ * @param send_request {Function} Function that reloads DataTable
  */
-Treeble.buildTwistdownFormatter = function(sendRequest)
+Treeble.buildTwistdownFormatter = function(send_request)
 {
 	return function(o)
 	{
@@ -46,7 +61,7 @@ Treeble.buildTwistdownFormatter = function(sendRequest)
 
 			YUI.Env.add(o.td.getDOMNode(), 'click', function()
 			{
-				ds.toggle(path, {}, sendRequest);
+				ds.toggle(path, {}, send_request);
 			});
 
 			o.cell.set('innerHTML', '<a class="treeble-expand-nub" href="javascript:void(0);"></a>');
@@ -80,9 +95,27 @@ Y.extend(Treeble, Y.DataTable,
 			recordType.ATTRS[ config.datasource.get('root').treeble_config.childNodesKey ] = {};
 			recordType.ATTRS._yui_node_path  = {};
 			recordType.ATTRS._yui_node_depth = {};
+
+			var open_state = this.get('openState');
+			if (open_state && Y.Lang.isArray(open_state.ids))
+			{
+				config.datasource.setOpenNodeIds(open_state.ids);
+			}
 		}
 
 		Treeble.superclass.plug.apply(this, arguments);
+	},
+
+	/**
+	 * @return {Object} opaque object containing the open state of all the nodes
+	 */
+	saveOpenState: function()
+	{
+		var state =
+		{
+			ids: this.get('ds').getOpenNodeIds()
+		};
+		return state;
 	}
 });
 

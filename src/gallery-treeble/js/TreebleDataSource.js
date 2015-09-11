@@ -36,10 +36,11 @@ TreebleDataSource.ATTRS =
 	/**
 	 * <p>The root datasource.</p>
 	 * 
-	 * <p>You <em>must</em> directly set a <code>treeble_config</code>
-	 * object on this datasource.  (You cannot use
-	 * <code>set('treeble_config',...)</code>.) <code>treeble_config</code> can
-	 * contain the following configuration:</p>
+	 * <p>You <em>must</em> directly set a `treeble_config` object on this
+	 * datasource.  (You cannot use `set('treeble_config',...)`.)  By
+	 * setting it on each datasource, we allow hetrogeneous datasources to
+	 * be displayed in a single tree. `treeble_config` can contain the
+	 * following configuration:</p>
 	 * 
 	 * <dl>
 	 * <dt>generateRequest</dt>
@@ -49,12 +50,11 @@ TreebleDataSource.ATTRS =
 	 *		(an array of node indices telling how to reach the node).
 	 *		</dd>
 	 * <dt>requestCfg</dt>
-	 * <dd>(optional) Configuration object passed as <code>cfg</code> to
-	 *		<code>sendRequest</code>.</dd>
+	 * <dd>(optional) Configuration object passed as `cfg` to `sendRequest`.</dd>
 	 * <dt>schemaPluginConfig</dt>
-	 * <dd>(required) Object to pass to <code>plug</code> to install a schema.</dd>
+	 * <dd>(required) Object to pass to `plug` to install a schema.</dd>
 	 * <dt>cachePluginConfig</dt>
-	 * <dd>(optional) Object to pass to <code>plug</code> to install a cache.</dd>
+	 * <dd>(optional) Object to pass to `plug` to install a cache.</dd>
 	 * <dt>childNodesKey</dt>
 	 * <dd>(semi-optional) The name of the key inside a node which contains
 	 *		the data used to construct the DataSource for retrieving the children.
@@ -66,20 +66,20 @@ TreebleDataSource.ATTRS =
 	 *		it will remember the state set by the user.)</dd>
 	 * <dt>startIndexExpr</dt>
 	 * <dd>(optional) OGNL expression telling how to extract the startIndex
-	 *		from the received data, e.g., <code>.meta.startIndex</code>.
-	 *		If it is not provided, startIndex is always assumed to be zero.</dd>
+	 *		from the received data, e.g., `.meta.startIndex`.  If it is not
+	 *		provided, startIndex is always assumed to be zero.</dd>
 	 * <dt>totalRecordsExpr</dt>
 	 * <dd>(semi-optional) OGNL expression telling how to extract the total number
-	 *		of records from the received data, e.g., <code>.meta.totalRecords</code>.
-	 *		If this is not provided, <code>totalRecordsReturnExpr</code> must be
+	 *		of records from the received data, e.g., `.meta.totalRecords`.
+	 *		If this is not provided, `totalRecordsReturnExpr` must be
 	 *		specified.</dd>
 	 * <dt>totalRecordsReturnExpr</dt>
 	 * <dd>(semi-optional) OGNL expression telling where in the response to store
-	 *		the total number of records, e.g., <code>.meta.totalRecords</code>.
+	 *		the total number of records, e.g., `.meta.totalRecords`.
 	 *		This is only appropriate for DataSources that always return the
-	 *		entire data set.  If this is not provided,
-	 *		<code>totalRecordsExpr</code> must be specified.  If both are provided,
-	 *		<code>totalRecordsExpr</code> takes priority.</dd>
+	 *		entire data set.  If this is not provided, `totalRecordsExpr` must
+	 *		be specified.  If both are provided, `totalRecordsExpr` takes
+	 *		priority.</dd>
 	 * </dl>
 	 * 
 	 * @attribute root
@@ -92,9 +92,9 @@ TreebleDataSource.ATTRS =
 	},
 
 	/**
-	 * Pass <code>true</code> to paginate the result after merging child
-	 * nodes into the list.  The default (<code>false</code>) is to
-	 * paginate only root nodes, so all children are visible.
+	 * Pass `true` to paginate the result after merging child nodes into
+	 * the list.  The default (`false`) is to paginate only root nodes, so
+	 * all children are visible.
 	 * 
 	 * @attribute paginateChildren
 	 * @type {boolean}
@@ -152,26 +152,26 @@ function populateOpen(
 	/* array */		open,
 	/* object */	req)
 {
-	var data          = req.data;
-	var startIndex    = req.start;
-	var childNodesKey = req.ds.treeble_config.childNodesKey;
-	var nodeOpenKey   = req.ds.treeble_config.nodeOpenKey;
+	var data            = req.data,
+		start_index     = req.start,
+		child_nodes_key = req.ds.treeble_config.childNodesKey,
+		node_open_key   = req.ds.treeble_config.nodeOpenKey;
 
 	for (var j=0; j<open.length; j++)
 	{
-		if (open[j].index >= startIndex)
+		if (open[j].index >= start_index)
 		{
 			break;
 		}
 	}
 
-	var uniqueIdKey = this.get('uniqueIdKey');
+	var unique_id_key = this.get('uniqueIdKey');
 
 	var result = true;
 	for (var k=0; k<data.length; k++)
 	{
-		var i = startIndex + k;
-		var ds = data[k][ childNodesKey ];
+		var i = start_index + k;
+		var ds = data[k][ child_nodes_key ];
 		if (!ds)
 		{
 			continue;
@@ -182,9 +182,9 @@ function populateOpen(
 			open.splice(j, 1);
 			result = false;
 
-			if (uniqueIdKey)
+			if (unique_id_key)
 			{
-				delete this._open_cache[ data[k][ uniqueIdKey ] ];
+				delete this._open_cache[ data[k][ unique_id_key ] ];
 			}
 		}
 
@@ -201,9 +201,9 @@ function populateOpen(
 			};
 
 			var cached_item = null;
-			if (uniqueIdKey)
+			if (unique_id_key)
 			{
-				cached_item = this._open_cache[ data[k][ uniqueIdKey ] ];
+				cached_item = this._open_cache[ data[k][ unique_id_key ] ];
 				if (cached_item)
 				{
 					item.open       = cached_item.open;
@@ -211,10 +211,10 @@ function populateOpen(
 					this._redo      = this._redo || item.open;
 				}
 
-				this._open_cache[ data[k][ uniqueIdKey ] ] = item;
+				this._open_cache[ data[k][ unique_id_key ] ] = item;
 			}
 
-			if (!cached_item && nodeOpenKey && data[k][ nodeOpenKey ])
+			if (!cached_item && node_open_key && data[k][ node_open_key ])
 			{
 				this._toggle.push(req.path.concat(i));
 			}
@@ -231,11 +231,11 @@ function populateOpen(
 // TODO: worth switching to binary search?
 function searchOpen(
 	/* array */	list,
-	/* int */	nodeIndex)
+	/* int */	node_index)
 {
 	for (var i=0; i<list.length; i++)
 	{
-		if (list[i].index == nodeIndex)
+		if (list[i].index == node_index)
 		{
 			return list[i];
 		}
@@ -412,7 +412,7 @@ function getVisibleSlicesPgTop(
 function getVisibleSlicesPgAll(
 	/* int */			skip,
 	/* int */			show,
-	/* DataSource */	rootDS,
+	/* DataSource */	root_ds,
 	/* array */			open,
 
 	// not sent by initiator
@@ -432,7 +432,7 @@ function getVisibleSlicesPgAll(
 		slices = [];
 	}
 
-	var ds = parent ? parent.ds : rootDS;
+	var ds = parent ? parent.ds : root_ds;
 
 	open = open.concat(
 	{
@@ -491,7 +491,7 @@ function getVisibleSlicesPgAll(
 
 		if (node.childTotal > 0)
 		{
-			var info = getVisibleSlicesPgAll(skip, show, rootDS, node.children,
+			var info = getVisibleSlicesPgAll(skip, show, root_ds, node.children,
 											 path.concat(node.index),
 											 node, pre+n, send, slices);
 			if (Y.Lang.isArray(info))
@@ -601,7 +601,7 @@ function findRequest(
 	return null;
 }
 
-function treeSuccess(e, reqIndex)
+function treeSuccess(e, req_index)
 {
 	if (!e.response || e.error ||
 		!Y.Lang.isArray(e.response.results))
@@ -610,7 +610,7 @@ function treeSuccess(e, reqIndex)
 		return;
 	}
 
-	var req = searchTxId(this._req, e.tId, reqIndex);
+	var req = searchTxId(this._req, e.tId, req_index);
 	if (!req)
 	{
 		return;		// cancelled request
@@ -625,15 +625,15 @@ function treeSuccess(e, reqIndex)
 	req.resp  = e.response;
 	req.error = false;
 
-	var dataStartIndex = 0;
+	var data_start_index = 0;
 	if (req.ds.treeble_config.startIndexExpr)
 	{
-		dataStartIndex = Y.Object.evalGet(req.resp, req.ds.treeble_config.startIndexExpr);
+		data_start_index = Y.Object.evalGet(req.resp, req.ds.treeble_config.startIndexExpr);
 	}
 
-	var sliceStartIndex = req.start - dataStartIndex;
-	req.data            = e.response.results.slice(sliceStartIndex, req.end - dataStartIndex + 1);
-	setNodeInfo(req.data, req.start, req.path, req.ds);
+	var slice_start_index = req.start - data_start_index;
+	req.data              = e.response.results.slice(slice_start_index, req.end - data_start_index + 1);
+	setNodeInfo.call(this, req.data, req.start, req.path, req.ds);
 
 	var parent = (req.path.length > 0 ? getNode.call(this, req.path) : null);
 	var open   = (parent !== null ? parent.children : this._open);
@@ -655,9 +655,9 @@ function treeSuccess(e, reqIndex)
 	checkFinished.call(this);
 }
 
-function treeFailure(e, reqIndex)
+function treeFailure(e, req_index)
 {
-	var req = searchTxId(this._req, e.tId, reqIndex);
+	var req = searchTxId(this._req, e.tId, req_index);
 	if (!req)
 	{
 		return;		// cancelled request
@@ -676,19 +676,34 @@ function setNodeInfo(
 	/* array */			path,
 	/* datasource */	ds)
 {
+	var unique_id_key = this.get('uniqueIdKey'),
+		node_open_key = ds.treeble_config.nodeOpenKey,
+		set_open      = unique_id_key && node_open_key && this._open_ids.length > 0;
+
 	var depth = path.length;
 	for (var i=0; i<list.length; i++)
 	{
 		list[i]._yui_node_depth = depth;
 		list[i]._yui_node_path  = path.concat(offset+i);
 		list[i]._yui_node_ds    = ds;
+
+		if (set_open)
+		{
+			var k = list[i][ unique_id_key ],
+				j = this._open_ids.indexOf(k);
+			if (j >= 0)
+			{
+				list[i][ node_open_key ] = true;
+				this._open_ids.splice(j, 1);
+			}
+		}
 	}
 }
 
 function searchTxId(
 	/* array */	req,
 	/* int */	id,
-	/* int */	fallbackIndex)
+	/* int */	fallback_index)
 {
 	for (var i=0; i<req.length; i++)
 	{
@@ -700,10 +715,10 @@ function searchTxId(
 
 	// synch response arrives before setting txId
 
-	if (fallbackIndex < req.length &&
-		Y.Lang.isUndefined(req[ fallbackIndex ].txId))
+	if (fallback_index < req.length &&
+		Y.Lang.isUndefined(req[ fallback_index ].txId))
 	{
-		return req[ fallbackIndex ];
+		return req[ fallback_index ];
 	}
 
 	return null;
@@ -766,14 +781,14 @@ function checkFinished()
 		response.results = response.results.concat(data);
 	}
 
-	var rootDS = this.get('root');
-	if (rootDS.treeble_config.totalRecordsExpr)
+	var root_ds = this.get('root');
+	if (root_ds.treeble_config.totalRecordsExpr)
 	{
-		Y.Object.evalSet(response, rootDS.treeble_config.totalRecordsExpr, countVisibleNodes.call(this));
+		Y.Object.evalSet(response, root_ds.treeble_config.totalRecordsExpr, countVisibleNodes.call(this));
 	}
-	else if (rootDS.treeble_config.totalRecordsReturnExpr)
+	else if (root_ds.treeble_config.totalRecordsReturnExpr)
 	{
-		Y.Object.evalSet(response, rootDS.treeble_config.totalRecordsReturnExpr, countVisibleNodes.call(this));
+		Y.Object.evalSet(response, root_ds.treeble_config.totalRecordsReturnExpr, countVisibleNodes.call(this));
 	}
 
 	this._callback.response = response;
@@ -895,6 +910,7 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 
 		this._open       = [];
 		this._open_cache = {};
+		this._open_ids   = [];
 		this._toggle     = [];
 		this._req        = [];
 	},
@@ -972,6 +988,26 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 			});
 		}
 		return true;
+	},
+
+	/**
+	 * @return {Array} id's of open nodes
+	 */
+	getOpenNodeIds: function()
+	{
+		return this.get('uniqueIdKey') ? Y.Object.keys(this._open_cache) : [];
+	},
+
+	/**
+	 * @param {Array} id's of nodes that should be opened
+	 */
+	setOpenNodeIds: function(ids)
+	{
+		if (Y.Lang.isArray(ids) &&
+			this.get('uniqueIdKey') && this.get('root').treeble_config.nodeOpenKey)
+		{
+			this._open_ids = ids;
+		}
 	},
 
 	_defRequestFn: function(e)
