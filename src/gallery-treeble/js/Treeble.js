@@ -85,6 +85,22 @@ Treeble.treeValueFormatter = function(o)
 	return '<span class="'+depth_class+'">'+o.value+'</span>';
 };
 
+/**
+ * Add node id's to an existing openState object.
+ *
+ * @method augementOpenState
+ * @static
+ * @param open_state {Object} opaque object containing the open state of all the nodes
+ * @param ids {Array} list of ids to add to the open state
+ */
+Treeble.augementOpenState = function(open_state, ids)
+{
+	if (open_state && Y.Lang.isArray(open_state.ids))
+	{
+		open_state.ids = open_state.ids.concat(ids);
+	}
+};
+
 Y.extend(Treeble, Y.DataTable,
 {
 	plug: function(plugin, config)
