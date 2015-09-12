@@ -36,7 +36,7 @@ Treeble.ATTRS =
 };
 
 /**
- * <p>Formatter for open/close twistdown.</p>
+ * Formatter for open/close twistdown.
  *
  * @method twistdownFormatter
  * @static
@@ -72,7 +72,7 @@ Treeble.buildTwistdownFormatter = function(send_request)
 };
 
 /**
- * <p>Default formatter for indented column.</p>
+ * Default formatter for indented column.
  *
  * @method treeValueFormatter
  * @static
@@ -113,7 +113,7 @@ Y.extend(Treeble, Y.DataTable,
 	{
 		var state =
 		{
-			ids: this.get('ds').getOpenNodeIds()
+			ids: this.datasource.get('datasource').getOpenNodeIds()
 		};
 		return state;
 	}

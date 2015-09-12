@@ -141,6 +141,7 @@ TreebleDataSource.ATTRS =
 		childTotal: {Number} total number of child nodes
 		children:   {Array} (recursive) child nodes which are or have been opened
 		parent:     {Object} parent item
+		id:         {String} the unique id, if uniqueIdKey has been set
 
 	Each level is sorted by index to allow simple traversal in display
 	order.
@@ -203,6 +204,8 @@ function populateOpen(
 			var cached_item = null;
 			if (unique_id_key)
 			{
+				item.id = data[k][ unique_id_key ].toString();
+
 				cached_item = this._open_cache[ data[k][ unique_id_key ] ];
 				if (cached_item)
 				{
@@ -247,15 +250,18 @@ function searchOpen(
 function getNode(
 	/* array */	path)
 {
-	var open = this._open;
-	var last = path.length-1;
-	for (var i=0; i<last; i++)
+	var list = this._open;
+	for (var i=0; i<path.length; i++)
 	{
-		var node = searchOpen(open, path[i]);
-		open     = node.children;
+		var node = searchOpen(list, path[i]);
+		if (!node)
+		{
+			return false;
+		}
+		list = node.children;
 	}
 
-	return searchOpen(open, path[last]);
+	return node;
 }
 
 function countVisibleNodes(
@@ -690,7 +696,7 @@ function setNodeInfo(
 		if (set_open)
 		{
 			var k = list[i][ unique_id_key ],
-				j = this._open_ids.indexOf(k);
+				j = this._open_ids.indexOf(k.toString());
 			if (j >= 0)
 			{
 				list[i][ node_open_key ] = true;
@@ -925,7 +931,7 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 		var list = this._open;
 		for (var i=0; i<path.length; i++)
 		{
-			var node = searchOpen.call(this, list, path[i]);
+			var node = searchOpen(list, path[i]);
 			if (!node || !node.open)
 			{
 				return false;
@@ -950,15 +956,10 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 	 */
 	toggle: function(path, request, completion)
 	{
-		var list = this._open;
-		for (var i=0; i<path.length; i++)
+		var node = getNode.call(this, path);
+		if (!node)
 		{
-			var node = searchOpen.call(this, list, path[i]);
-			if (!node)
-			{
-				return false;
-			}
-			list = node.children;
+			return false;
 		}
 
 		if (node.open === null)
@@ -991,14 +992,34 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 	},
 
 	/**
+	 * @method getOpenNodeIds
 	 * @return {Array} id's of open nodes
 	 */
 	getOpenNodeIds: function()
 	{
-		return this.get('uniqueIdKey') ? Y.Object.keys(this._open_cache) : [];
+		if (!this.get('uniqueIdKey'))
+		{
+			return [];
+		}
+
+		function collectOpenIds(open)
+		{
+			return Y.reduce(open, [], function(list, node)
+			{
+				if (node.open)
+				{
+					list.push(node.id);
+					list = list.concat(collectOpenIds(node.children));
+				}
+				return list;
+			});
+		}
+
+		return collectOpenIds(this._open);
 	},
 
 	/**
+	 * @method setOpenNodeIds
 	 * @param {Array} id's of nodes that should be opened
 	 */
 	setOpenNodeIds: function(ids)
@@ -1007,6 +1028,28 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 			this.get('uniqueIdKey') && this.get('root').treeble_config.nodeOpenKey)
 		{
 			this._open_ids = ids;
+		}
+	},
+
+	/**
+	 * @method flushCache
+	 * @param path {Array} Path to node
+	 */
+	flushCache: function(path, send_request)
+	{
+		var node = getNode.call(this, path);
+		if (node && node.ds)
+		{
+			if (node.ds.cache)
+			{
+				node.ds.cache.flush();
+			}
+
+			if (node.open)
+			{
+				node.open = null;
+				this.toggle(path, {}, send_request);
+			}
 		}
 	},
 
