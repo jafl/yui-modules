@@ -1045,9 +1045,10 @@ Y.extend(TreebleDataSource, Y.DataSource.Local,
 				node.ds.cache.flush();
 			}
 
-			if (node.open)
+			var was_open = node.open;
+			node.open    = null;
+			if (was_open)
 			{
-				node.open = null;
 				this.toggle(path, {}, send_request);
 			}
 		}
