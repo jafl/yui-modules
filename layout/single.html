@@ -18,6 +18,7 @@
 	<script src="gallery-object-extras-debug.js"></script>
 	<script src="gallery-nodelist-extras2-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
+	<script src="gallery-datatable-paginator-debug.js"></script>
 	<script src="gallery-layout-datatable-debug.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="assets/gallery-layout.css">
@@ -99,21 +100,11 @@ YUI({
 }).use(
 	'gallery-layout', 'gallery-layout-datatable',
 	'datatable-datasource',
-	'gallery-paginator',
+	'gallery-paginator', 'gallery-datatable-paginator',
 function(Y) {
 "use strict";
 
 	var page_layout = new Y.PageLayout();
-
-// show something interesting in the module
-
-	function sendRequest()
-	{
-		table.datasource.load(
-		{
-			request: pg.getState()
-		});
-	}
 
 // Raw data
 
@@ -191,14 +182,6 @@ function(Y) {
 
 // Paginator
 
-	function updatePaginator(
-		/* object */	state)
-	{
-		this.setPage(state.page, true);
-		this.setRowsPerPage(state.rowsPerPage, true);
-		sendRequest();
-	}
-
 	var pg = new Y.Paginator(
 	{
 		totalRecords: 10,
@@ -210,14 +193,10 @@ function(Y) {
 		nextPageLinkLabel:     '&gt;',
 		lastPageLinkLabel:     '&gt;|'
 	});
-	pg.on('changeRequest', updatePaginator);
 	pg.render('#pg');
 
 	ds.on('response', function(e)
 	{
-		pg.setTotalRecords(e.response.meta.totalRecords, true);
-		pg.render();
-
 		page_layout.elementResized('#table');
 	});
 
@@ -244,10 +223,19 @@ function(Y) {
 		height:     '10px'	// force scrollbar on .yui3-datatable-data
 	});
 	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
+	table.plug(Y.Plugin.DataTablePaginator,
+	{
+		paginator:    pg,
+		buildRequest: function()
+		{
+			return pg.getState();
+		},
+		totalRecordsExpr: '.meta.totalRecords'
+	});
 	table.plug(Y.Plugin.PageLayoutDataTableModule, {layout: page_layout});
 	table.render('#table');
 
-	sendRequest();
+	table.paginator.sendRequest();
 });
 </script>
 

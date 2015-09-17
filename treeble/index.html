@@ -8,6 +8,9 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssfonts/cssfonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssbase/cssbase-min.css" />
+
+	<script src="gallery-datatable-paginator-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
 <!--
 	<script src="gallery-treeble-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
@@ -56,6 +59,7 @@ YUI({
 }).use(
 	'datatable', 'datasource-arrayschema',
 	'gallery-treeble', 'gallery-paginator',
+	'gallery-datatable-paginator',
 function(Y)
 {
 	function sendRequest()
@@ -270,7 +274,12 @@ function(Y)
 
 	var table = new Y.Treeble({columns: cols});
 	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
-
+	table.plug(Y.Plugin.DataTablePaginator,
+	{
+		paginator:        pg,
+		sendRequest:      sendRequest,
+		totalRecordsExpr: '.meta.totalRecords'
+	});
 	table.render("#treeble");
 
 	sendRequest();

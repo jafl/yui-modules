@@ -706,21 +706,28 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 	 * @param record_id {String}
 	 * @param key {String} field key
 	 * @param value {String} new item value
+	 * @param [set_as_default] {boolean} pass `true` to make this the new default value - must call editor.reload() afterwards!
 	 */
 	updateValue: function(
 		/* string */	record_id,
 		/* string */	key,
-		/* string */	value)
+		/* string */	value,
+		/* bool */		set_as_default)
 	{
 		if (key == this.get('uniqueIdKey'))
 		{
 			Y.error('BulkEditDataSource.updateValue() does not allow changing the id for a record.  Use BulkEditDataSource.updateRecordId() instead.');
 		}
 
-		record_id = record_id.toString();
+		if (set_as_default && !this._dataIsLocal())
+		{
+			Y.error('BulkEditDataSource.updateValue() can only be called with set_as_default=true when using a local datasource');
+		}
 
+		record_id  = record_id.toString();
 		var record = this._recordMap[ record_id ];
-		if (record && this._getComparator(key)(Y.Lang.isValue(record[key]) ? record[key] : '', Y.Lang.isValue(value) ? value : ''))
+
+		function removeFromDiff()
 		{
 			if (this._diff[ record_id ])
 			{
@@ -731,6 +738,25 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 					delete this._diff[ record_id ];
 				}
 			}
+		}
+
+		if (set_as_default)
+		{
+			var unique_id_key = this.get('uniqueIdKey');
+			Y.Array.some(this.get('ds').get('source'), function(rec)
+			{
+				if (rec[ unique_id_key ].toString() === record_id)
+				{
+					rec[ key ] = value;
+					removeFromDiff.call(this);
+					return true;
+				}
+			},
+			this);
+		}
+		else if (record && this._getComparator(key)(Y.Lang.isValue(record[key]) ? record[key] : '', Y.Lang.isValue(value) ? value : ''))
+		{
+			removeFromDiff.call(this);
 		}
 		else	// might be new record
 		{
@@ -802,9 +828,9 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 		var found = false;
 		this._flushCache();
 
-		Y.Array.some(this.get('ds').get('source'), function(value)
+		Y.Array.some(this.get('ds').get('source'), function(rec)
 		{
-			if (merge.call(this, value))
+			if (merge.call(this, rec))
 			{
 				found = true;
 				return true;
@@ -814,9 +840,9 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		if (!found)
 		{
-			Y.Object.some(this._new, function(value)
+			Y.Object.some(this._new, function(rec)
 			{
-				if (merge.call(this, value))
+				if (merge.call(this, rec))
 				{
 					found = true;
 					return true;
@@ -1154,6 +1180,7 @@ Y.extend(BulkEditDataSource, Y.DataSource.Local,
 
 		this._generatingRequest = true;
 
+		delete this._callback._tId;		// clear it so internalSuccess works for synch response
 		this._callback._tId = this.get('ds').sendRequest(
 		{
 			request: this.get('generateRequest')(this._callback.request),
@@ -1318,7 +1345,11 @@ BulkEditor.checkbox_multiselect_column_height = 6;
  */
 /**
  * @event pageRendered
- * @description Fired every time after the editor has rendered a page.
+ * @description Fired after the editor has rendered a page.
+ */
+/**
+ * @event recordVisible
+ * @description Fired after showRecord*() succeeds, including switching pages.
  */
 
 var default_page_size = 1e9,
@@ -1839,9 +1870,11 @@ Y.extend(BulkEditor, Y.Widget,
 		var count = pg ? pg.getRowsPerPage() : default_page_size;
 		if (start <= index && index < start+count)
 		{
-			var node = this.getRecordContainer(this.get('ds').getCurrentRecords()[ index - start ]);
+			var rec  = this.get('ds').getCurrentRecords()[ index - start ],
+				node = this.getRecordContainer(rec);
 			node.scrollIntoView();
 			this.pingRecord(node);
+			this.fire('recordVisible', { index: index, id: this.getRecordId(rec) });
 		}
 		else if (pg)
 		{
@@ -2115,13 +2148,41 @@ Y.extend(BulkEditor, Y.Widget,
 
 		this.first_error_page = -1;
 
-		var r = this.server_errors.records;
+		var r = this.server_errors.records, s;
 		for (var i=0; i<r.length; i++)
 		{
-			if (r[i].recordError || r[i].fieldErrors)
+			s = '';
+			if (Y.Lang.isObject(r[i].recordError))
+			{
+				s = r[i].recordError.type;
+			}
+			else if (Y.Lang.isString(r[i].recordError))
+			{
+				s = 'error';
+			}
+
+			if (s != 'error' && Y.Lang.isObject(r[i].fieldErrors))
+			{
+				Y.some(r[i].fieldErrors, function(e, k)
+				{
+					if (Y.Lang.isObject(e) &&
+						Y.FormManager.statusTakesPrecedence(s, e.type))
+					{
+						s = e.type;
+					}
+					else if (Y.Lang.isString(e))
+					{
+						s = 'error';
+					}
+
+					return (s == 'error');
+				});
+			}
+
+			if (s)
 			{
 				var j     = Math.floor(i / page_size);
-				status[j] = 'error';
+				status[j] = s;
 				if (this.first_error_page == -1)
 				{
 					this.first_error_page = j+1;

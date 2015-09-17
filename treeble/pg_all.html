@@ -8,10 +8,13 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssfonts/cssfonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssbase/cssbase-min.css" />
-<!--
+
 	<script src="gallery-treeble-debug.js"></script>
-	<script src="gallery-paginator-debug.js"></script>
+	<script src="gallery-datatable-paginator-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-treeble.css" />
+<!--
+	<script src="gallery-paginator-debug.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-paginator.css" />
 -->
 	<style type="text/css">
@@ -56,6 +59,7 @@ YUI({
 }).use(
 	'datatable', 'datasource-arrayschema',
 	'gallery-treeble', 'gallery-paginator',
+	'gallery-datatable-paginator',
 function(Y)
 {
 	function sendRequest()
@@ -251,25 +255,20 @@ function(Y)
 	});
 	pg.render('#pg');
 
-	pg.on('changeRequest', function(state)
-	{
-		this.setPage(state.page, true);
-		this.setRowsPerPage(state.rowsPerPage, true);
-		this.setTotalRecords(state.totalRecords, true);
-		sendRequest();
-	});
-
-	ds.on('response', function(e)
-	{
-		pg.setTotalRecords(e.response.meta.totalRecords, true);
-		pg.render();
-	});
-
 	// DataTable
 
-	var table = new Y.Treeble({columns: cols});
+	var table = new Y.Treeble(
+	{
+		columns: cols,
+		moreRowsMessage: 'See more rows on the <a href="{href}" class="{css}">next page</a>.'
+	});
 	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
-
+	table.plug(Y.Plugin.DataTablePaginator,
+	{
+		paginator:        pg,
+		sendRequest:      sendRequest,
+		totalRecordsExpr: '.meta.totalRecords'
+	});
 	table.render("#treeble");
 
 	sendRequest();

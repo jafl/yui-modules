@@ -29,9 +29,9 @@ State.NS   = "state";
 State.ATTRS =
 {
 	/**
-	 * Id of a column (usually not displayed) that yields a
-	 * unique value for each record.  The saved state is index by the value
-	 * of this column.
+	 * Id of a column (usually not displayed) that yields a unique value
+	 * for each record.  The saved state is indexed by the value of this
+	 * column.
 	 *
 	 * @attribute uniqueIdKey
 	 * @type {String}
@@ -150,7 +150,7 @@ function saveState()
 				}
 			}
 
-			var rec = host.getRecord(i);
+			var rec = host.data.item(i);
 			var id  = rec.get(id_key);
 			if (!this.state[id])
 			{
@@ -176,7 +176,7 @@ function restoreState()
 
 		for (var i=0; i<count; i++)
 		{
-			var rec   = host.getRecord(i);
+			var rec   = host.data.item(i);
 			var state = this.state[ rec.get(id_key) ];
 			if (state)
 			{
@@ -221,7 +221,7 @@ function clearTempState()
 
 function listenToPaginator(pg)
 {
-	pg.on('datatable-state-paginator|changeRequest', clearTempState, this);
+	this.pg_event_handler = pg.on('changeRequest', clearTempState, this);
 }
 
 Y.extend(State, Y.Plugin.Base,
@@ -241,7 +241,11 @@ Y.extend(State, Y.Plugin.Base,
 
 		this.on('paginatorChange', function(e)
 		{
-			Y.detach('datatable-state-paginator|*');
+			if (this.pg_event_handler)
+			{
+				this.pg_event_handler.detach();
+				this.pg_event_handler = null;
+			}
 
 			if (e.newVal)
 			{
@@ -273,6 +277,11 @@ Y.extend(State, Y.Plugin.Base,
 	destructor: function()
 	{
 		this.get('host').syncUI = this.orig_syncUI;
+
+		if (this.pg_event_handler)
+		{
+			this.pg_event_handler.detach();
+		}
 	},
 
 	/**

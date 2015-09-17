@@ -6,6 +6,9 @@
 
 	<script src="http://yui.yahooapis.com/3.15.0/build/yui/yui-min.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css">
+
+	<script src="gallery-datatable-paginator-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
 <!--
 	<script src="gallery-quickedit-debug.js"></script>
 	<script src="gallery-formmgr-css-validation-debug.js"></script>
@@ -65,16 +68,9 @@ YUI({
 	'datatable-datasource',
 	'gallery-quickedit',
 	'gallery-paginator',
+	'gallery-datatable-paginator',
 function(Y) {
 "use strict";
-
-	function sendRequest()
-	{
-		table.datasource.load(
-		{
-			request: pg.getState()
-		});
-	}
 
 // Raw data
 
@@ -165,19 +161,6 @@ function(Y) {
 	});
 	pg.render('#pg');
 
-	pg.on('changeRequest', function(state)
-	{
-		this.setPage(state.page, true);
-		this.setRowsPerPage(state.rowsPerPage, true);
-		sendRequest();
-	});
-
-	ds.on('response', function(e)
-	{
-		pg.setTotalRecords(e.response.meta.totalRecords, true);
-		pg.render();
-	});
-
 // DataTable
 
 	var cols =
@@ -195,11 +178,19 @@ function(Y) {
 
 	var table = new Y.DataTable({columns: cols});
 	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
+	table.plug(Y.Plugin.DataTablePaginator,
+	{
+		paginator:    pg,
+		buildRequest: function()
+		{
+			return pg.getState();
+		},
+		totalRecordsExpr: '.meta.totalRecords'
+	});
 	table.plug(Y.Plugin.DataTableQuickEdit, {changesAlwaysInclude: ['id']});
-
 	table.render("#table");
 
-	sendRequest();
+	table.paginator.sendRequest();
 
 // Controls
 
@@ -260,7 +251,7 @@ function(Y) {
 				}
 			}
 
-			sendRequest();
+			table.paginator.sendRequest();
 
 			finish();
 		}

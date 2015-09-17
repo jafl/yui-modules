@@ -8,6 +8,9 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssfonts/cssfonts-min.css" />
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssbase/cssbase-min.css" />
+
+	<script src="gallery-datatable-paginator-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
 <!--
 	<script src="gallery-treeble-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
@@ -56,7 +59,11 @@
 YUI({
 //	filter: 'raw', combine: false,
 	gallery: 'gallery-2014.02.20-23-55'
-}).use('datatable', 'gallery-treeble', 'gallery-paginator', 'gallery-datatable-state', function(Y)
+}).use(
+	'datatable', 'gallery-treeble',
+	'gallery-paginator', 'gallery-datatable-paginator',
+	'gallery-datatable-state',
+function(Y)
 {
 	function sendRequest()
 	{
@@ -146,24 +153,16 @@ YUI({
 	});
 	pg.render('#pg');
 
-	pg.on('changeRequest', function(state)
-	{
-		this.setPage(state.page, true);
-		this.setRowsPerPage(state.rowsPerPage, true);
-		this.setTotalRecords(state.totalRecords, true);
-		sendRequest();
-	});
-
-	ds.on('response', function(e)
-	{
-		pg.setTotalRecords(e.response.meta.totalRecords, true);
-		pg.render();
-	});
-
 	// DataTable
 
 	var table = new Y.Treeble({columns: cols});
 	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
+	table.plug(Y.Plugin.DataTablePaginator,
+	{
+		paginator:        pg,
+		sendRequest:      sendRequest,
+		totalRecordsExpr: '.meta.totalRecords'
+	});
 	table.plug(Y.Plugin.DataTableState,
 	{
 		uniqueIdKey: 'title',	// normally, it would be a database row id, but title happens to be unique in this example

@@ -9,12 +9,14 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssfonts/cssfonts-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssbase/cssbase-min.css">
+
+	<script src="gallery-datatable-paginator-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
 <!--
 	<script src="gallery-datatable-row-expansion-debug.js"></script>
 	<script src="gallery-datatable-state-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
 	<script src="gallery-funcprog-debug.js"></script>
-	<script src="gallery-object-extras-debug.js"></script>
 	<script src="gallery-node-optimizations-debug.js"></script>
 	<script src="gallery-math-debug.js"></script>
 	<script src="gallery-console-test-debug.js"></script>
@@ -48,21 +50,12 @@ YUI({
 }).use(
 	'gallery-datatable-row-expansion',
 	'gallery-datatable-state',
+	'gallery-datatable-paginator',
 	'datatable-datasource',
 	'gallery-paginator',
 	'test', 'console', 'console-filters', 'gallery-console-test', 'dd-plugin',
 function(Y) {
 "use strict";
-
-// show something interesting in the module
-
-	function sendRequest()
-	{
-		table.datasource.load(
-		{
-			request: pg.getState()
-		});
-	}
 
 // Raw data
 
@@ -140,14 +133,6 @@ function(Y) {
 
 // Paginator
 
-	function updatePaginator(
-		/* object */	state)
-	{
-		this.setPage(state.page, true);
-		this.setRowsPerPage(state.rowsPerPage, true);
-		sendRequest();
-	}
-
 	var pg = new Y.Paginator(
 	{
 		totalRecords: 10,
@@ -159,14 +144,7 @@ function(Y) {
 		nextPageLinkLabel:     '&gt;',
 		lastPageLinkLabel:     '&gt;|'
 	});
-	pg.on('changeRequest', updatePaginator);
 	pg.render('#pg');
-
-	ds.on('response', function(e)
-	{
-		pg.setTotalRecords(e.response.meta.totalRecords, true);
-		pg.render();
-	});
 
 // DataTable
 
@@ -186,6 +164,15 @@ function(Y) {
 
 	var table = new Y.DataTable({ columns: cols });
 	table.plug(Y.Plugin.DataTableDataSource, { datasource: ds });
+	table.plug(Y.Plugin.DataTablePaginator,
+	{
+		paginator:    pg,
+		buildRequest: function()
+		{
+			return pg.getState();
+		},
+		totalRecordsExpr: '.meta.totalRecords'
+	});
 	table.plug(Y.Plugin.DataTableRowExpansion,
 	{
 		uniqueIdKey: 'id',
@@ -215,7 +202,7 @@ function(Y) {
 	table.render('#table');
 
 	var first_request = true;
-	sendRequest();
+	table.paginator.sendRequest();
 
 	// executed after first load
 

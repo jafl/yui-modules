@@ -6,6 +6,9 @@
 
 	<script src="http://yui.yahooapis.com/3.15.0/build/yui/yui-min.js"></script>
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css">
+
+	<script src="gallery-datatable-paginator-debug.js"></script>
+	<script src="gallery-object-extras-debug.js"></script>
 <!--
 	<script src="gallery-querybuilder-debug.js"></script>
 	<script src="gallery-formmgr-debug.js"></script>
@@ -72,6 +75,7 @@ YUI({
 }).use(
 	'datatable-datasource',
 	'datasource-arrayschema',
+	'gallery-datatable-paginator',
 	'gallery-querybuilder',
 	'gallery-formmgr',
 	'gallery-paginator',
@@ -83,14 +87,6 @@ function(Y)
 		var state    = pg.getState();
 		state.filter = query.toDatabaseQuery();
 		return state;
-	}
-
-	function sendRequest()
-	{
-		table.datasource.load(
-		{
-			request: generateRequest()
-		});
 	}
 
 // Raw data
@@ -359,19 +355,6 @@ function(Y)
 	});
 	pg.render('#pg');
 
-	pg.on('changeRequest', function(state)
-	{
-		this.setPage(state.page, true);
-		this.setRowsPerPage(state.rowsPerPage, true);
-		sendRequest();
-	});
-
-	ds.on('response', function(e)
-	{
-		pg.setTotalRecords(e.response.meta.totalRecords, true);
-		pg.render();
-	});
-
 // DataTable
 
 	var cols =
@@ -383,10 +366,15 @@ function(Y)
 
 	var table = new Y.DataTable({columns: cols});
 	table.plug(Y.Plugin.DataTableDataSource, {datasource: ds});
-
+	table.plug(Y.Plugin.DataTablePaginator,
+	{
+		paginator:        pg,
+		buildRequest:     generateRequest,
+		totalRecordsExpr: '.meta.totalRecords'
+	});
 	table.render("#table");
 
-	sendRequest();
+	table.paginator.sendRequest();
 });
 </script>
 

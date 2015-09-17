@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>DataTable State Example</title>
+	<title>DataTable Paginator Plugin Example</title>
 	<meta http-equiv=content-type content="text/html; charset=utf-8">
 
 	<script src="http://yui.yahooapis.com/3.15.0/build/yui/yui-min.js"></script>
@@ -13,7 +13,6 @@
 	<script src="gallery-datatable-paginator-debug.js"></script>
 	<script src="gallery-object-extras-debug.js"></script>
 <!--
-	<script src="gallery-datatable-state-debug.js"></script>
 	<script src="gallery-paginator-debug.js"></script>
 	<script src="gallery-funcprog-debug.js"></script>
 	<script src="gallery-node-optimizations-debug.js"></script>
@@ -23,7 +22,7 @@
 
 <body class="yui3-skin-sam">
 
-<h1><a href="http://yuilibrary.com/gallery/show/datatable-state">YUI 3 DataTable State</a> Example</h1>
+<h1><a href="http://yuilibrary.com/gallery/show/datatable-state">YUI 3 DataTable Paginator Plugin</a> Example</h1>
 <hr>
 
 <div id="pg"></div>
@@ -39,11 +38,9 @@ YUI({
 //	filter: 'raw', combine: false,
 	gallery: 'gallery-2014.02.20-23-55'
 }).use(
-	'gallery-datatable-state',
 	'datatable-datasource',
 	'gallery-paginator',
 	'gallery-datatable-paginator',
-	'dial',
 function(Y) {
 "use strict";
 
@@ -126,9 +123,9 @@ function(Y) {
 	var pg = new Y.Paginator(
 	{
 		totalRecords: 2,
-		rowsPerPage: 2,
+		rowsPerPage: 10,
 		template: '{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} <span class="rpp">Rows per page:</span> {RowsPerPageDropdown}',
-		rowsPerPageOptions:    [2,5,10,50],
+		rowsPerPageOptions:    [5,10,50],
 		firstPageLinkLabel:    '|&lt;',
 		previousPageLinkLabel: '&lt;',
 		nextPageLinkLabel:     '&gt;',
@@ -145,39 +142,10 @@ function(Y) {
 
 	var cols =
 	[
-		{ key: 'select', label: '&nbsp;', allowHTML: true,
-			formatter: function(o)
-			{
-				return '<input type="checkbox" />';
-			}
-		},
 		{ key: 'title', label: 'Title' },
+		{ key: 'author', label: 'Author' },
 		{ key: 'year', label: 'Year' },
-		{ key: 'quantity', label: 'Quantity',
-			nodeFormatter: function(o)
-			{
-				new Y.Dial(
-				{
-					min:                0,
-					max:                50,
-					stepsPerRevolution: 50,
-					value:              o.value
-				})
-				.set('strings',
-				{
-					'label':         'In stock:',
-					'resetStr':      'Reset',
-					'tooltipHandle': 'Drag to change quantity in stock.'
-				})
-				.render(o.cell);
-			}
-		},
-		{ key: 'notes', label: 'Notes', allowHTML: true,
-			formatter: function(o)
-			{
-				return '<textarea></textarea>';
-			}
-		}
+		{ key: 'quantity', label: 'Quantity' }
 	];
 
 	var table = new Y.DataTable({ columns: cols });
@@ -190,30 +158,6 @@ function(Y) {
 			return pg.getState();
 		},
 		totalRecordsExpr: '.meta.totalRecords'
-	});
-	table.plug(Y.Plugin.DataTableState,
-	{
-		uniqueIdKey: 'id',
-		paginator:   pg,
-		save:
-		[
-			{
-				column: 'select',
-				node:   'input',
-				key:    'checked',
-				temp:   true 
-			},
-			{
-				column: 'quantity',
-				widget: '.yui3-dial',
-				key:    'value'
-			},
-			{
-				column: 'notes',
-				node:   'textarea',
-				key:    'value'
-			}
-		]
 	});
 	table.render('#table');
 
