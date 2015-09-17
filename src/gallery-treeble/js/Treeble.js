@@ -67,6 +67,37 @@ Treeble.buildTwistdownFormatter = function(send_request)
 			o.cell.set('innerHTML', '<a class="treeble-expand-nub" href="javascript:void(0);"></a>');
 		}
 
+		if (o.rowIndex === 0 && this.paginator)
+		{
+			var self  = this,
+				tbody = o.td.ancestor('tbody');
+			Y.Lang.later(0, null, function()
+			{
+				var row = tbody.get('lastElementChild'),
+					c   = self.getClassName('next-page');
+
+				var more_row = Y.Lang.sub(
+					'<tr class="{c}">' +
+						'<td colspan="{span}" class="yui3-datatable-cell post-row-expansion">{text}</td>' +
+					'</tr>',
+					{
+						c:    row.get('className') + ' ' + Treeble.more_row_class,
+						span: row.get('childElementCount'),
+						text: Y.Lang.sub('See more rows on the <a href="javascript:void(0);" class="{c}">next page</a>.', { c:c })
+					});
+
+				tbody.append(more_row);
+
+				tbody.one('a.' + c).on('click', function(e)
+				{
+					e.halt();
+
+					var pg = self.paginator.get('paginator');
+					pg.setPage(pg.getPage() + 1);
+				});
+			});
+		}
+
 		return false;	// discard Y.Node instances
 	};
 };

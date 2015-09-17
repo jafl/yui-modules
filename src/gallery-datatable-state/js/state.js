@@ -271,6 +271,7 @@ Y.extend(State, Y.Plugin.Base,
 	destructor: function()
 	{
 		this.get('host').syncUI = this.orig_syncUI;
+		Y.detach('datatable-state-paginator|*');
 	},
 
 	/**
