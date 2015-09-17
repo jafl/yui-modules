@@ -219,7 +219,7 @@ function clearTempState()
 
 function listenToPaginator(pg)
 {
-	pg.on('datatable-state-paginator|changeRequest', clearTempState, this);
+	this.pg_event_handler = pg.on('changeRequest', clearTempState, this);
 }
 
 Y.extend(State, Y.Plugin.Base,
@@ -239,7 +239,11 @@ Y.extend(State, Y.Plugin.Base,
 
 		this.on('paginatorChange', function(e)
 		{
-			Y.detach('datatable-state-paginator|*');
+			if (this.pg_event_handler)
+			{
+				this.pg_event_handler.detach();
+				this.pg_event_handler = null;
+			}
 
 			if (e.newVal)
 			{
@@ -271,7 +275,11 @@ Y.extend(State, Y.Plugin.Base,
 	destructor: function()
 	{
 		this.get('host').syncUI = this.orig_syncUI;
-		Y.detach('datatable-state-paginator|*');
+
+		if (this.pg_event_handler)
+		{
+			this.pg_event_handler.detach();
+		}
 	},
 
 	/**

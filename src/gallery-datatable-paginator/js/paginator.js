@@ -61,6 +61,18 @@ PaginatorPlugin.ATTRS =
 	sendRequest:
 	{
 		validator: Y.Lang.isFunction
+	},
+
+	/**
+	 * OGNL expression telling how to extract the total number of records
+	 * from the received data, e.g., `.meta.totalRecords`.
+	 * 
+	 * @attribute totalRecordsExpr
+	 * @type {String}
+	 */
+	totalRecordsExpr:
+	{
+		validator: Y.Lang.isString
 	}
 };
 
@@ -92,12 +104,74 @@ function switchPage(state)
 	}
 }
 
-function listenToPaginator(pg)
+function updateDataSource(e)
 {
-	pg.on('datatable-paginator|changeRequest', switchPage, this);
+	if (this.ds_response_handler)
+	{
+		this.ds_response_handler.detach();
+		this.ds_response_handler = null;
+	}
+
+	if (e.newVal)
+	{
+		this.ds_response_handler = e.newVal.on('response', updateTotalRecords, this);
+	}
 }
 
-Y.extend(State, Y.Plugin.Base,
+function updateTotalRecords(e)
+{
+	var expr = this.get('totalRecordsExpr');
+	if (expr)
+	{
+		var pg = this.get('paginator');
+		pg.setTotalRecords(Y.Object.evalGet(e, '.response' + expr), true);
+		pg.render();
+	}
+}
+
+function listenToPaginator(pg)
+{
+	this.pg_event_handler = pg.on('changeRequest', switchPage, this);
+}
+
+function listenToDataSource()
+{
+	if (this.ds_change_handler)
+	{
+		this.ds_change_handler.detach();
+		this.ds_change_handler = null;
+	}
+
+	if (this.ds_response_handler)
+	{
+		this.ds_response_handler.detach();
+		this.ds_response_handler = null;
+	}
+
+	var ds = this.get('host').datasource;
+	if (ds)
+	{
+		this.ds_change_handler = ds.on('datasourceChange', updateDataSource, this);
+
+		ds = ds.get('datasource');
+		if (ds)
+		{
+			this.ds_response_handler = ds.on('response', updateTotalRecords, this);
+		}
+	}
+}
+
+function plug(self, plugin, config)
+{
+	self.orig_plug.apply(this, Y.Array(arguments, 1));
+
+	if (plugin === Y.Plugin.DataTableDataSource)
+	{
+		listenToDataSource.call(self);
+	}
+}
+
+Y.extend(PaginatorPlugin, Y.Plugin.Base,
 {
 	initializer: function(config)
 	{
@@ -108,18 +182,43 @@ Y.extend(State, Y.Plugin.Base,
 
 		this.on('paginatorChange', function(e)
 		{
-			Y.detach('datatable-paginator|*');
+			if (this.pg_event_handler)
+			{
+				this.pg_event_handler.detach();
+				this.pg_event_handler = null;
+			}
 
 			if (e.newVal)
 			{
 				listenToPaginator.call(this, e.newVal);
 			}
 		});
+
+		listenToDataSource.call(this);
+
+		var host       = this.get('host');
+		this.orig_plug = host.plug;
+		host.plug      = Y.bind(plug, host, this);
 	},
 
 	destructor: function()
 	{
-		Y.detach('datatable-paginator|*');
+		this.get('host').plug = this.orig_plug;
+
+		if (this.pg_event_handler)
+		{
+			this.pg_event_handler.detach();
+		}
+
+		if (this.ds_change_handler)
+		{
+			this.ds_change_handler.detach();
+		}
+
+		if (this.ds_response_handler)
+		{
+			this.ds_response_handler.detach();
+		}
 	}
 });
 
