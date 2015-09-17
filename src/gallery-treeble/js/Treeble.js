@@ -36,6 +36,15 @@ Treeble.ATTRS =
 };
 
 /**
+ * The class added to rows created by this plugin.
+ *
+ * @property Y.RowExpansion.row_class
+ * @type {String}
+ * @value "row-expansion"
+ */
+Treeble.more_row_class = 'row-more-items';
+
+/**
  * Formatter for open/close twistdown.
  *
  * @method twistdownFormatter
