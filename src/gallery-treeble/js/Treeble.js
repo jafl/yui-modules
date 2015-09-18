@@ -23,7 +23,8 @@ Treeble.NAME = "datatable";		// same styling
 Treeble.ATTRS =
 {
 	/**
-	 * Object returned by saveOpenState()
+	 * Object returned by saveOpenState(), used to initialize the open
+	 * elements.
 	 * 
 	 * @attribute openState
 	 * @type Object
@@ -33,6 +34,23 @@ Treeble.ATTRS =
 	{
 		writeOnce: true
 	},
+
+	/**
+	 * Message displayed below the last row if paginating children.  The
+	 * message must include `&lt;a href="{href}" class="{css}"&gt;` to
+	 * provide a link to go to the next page.
+	 * 
+	 * @attribute moreRowsMessage
+	 * @type String
+	 */
+	moreRowsMessage:
+	{
+		validator: function(s)
+		{
+			return (Y.Lang.isString(s) &&
+					s.indexOf('<a href="{href}" class="{css}">') >= 0);
+		}
+	}
 };
 
 /**
@@ -76,7 +94,8 @@ Treeble.buildTwistdownFormatter = function(send_request)
 			o.cell.set('innerHTML', '<a class="treeble-expand-nub" href="javascript:void(0);"></a>');
 		}
 
-		if (o.rowIndex === 0 && this.paginator)
+		if (o.rowIndex === 0 && ds.get('paginateChildren') &&
+			this.paginator && this.paginator.get('paginator').hasNextPage())
 		{
 			var self  = this,
 				tbody = o.td.ancestor('tbody');
@@ -85,14 +104,22 @@ Treeble.buildTwistdownFormatter = function(send_request)
 				var row = tbody.get('lastElementChild'),
 					c   = self.getClassName('next-page');
 
+				var row_class =
+					row.get('className').indexOf('-even') >= 0 ?
+						'yui3-datatable-odd' : 'yui3-datatable-even';
+
 				var more_row = Y.Lang.sub(
-					'<tr class="{c}">' +
-						'<td colspan="{span}" class="yui3-datatable-cell post-row-expansion">{text}</td>' +
+					'<tr class="{css}">' +
+						'<td colspan="{span}" class="yui3-datatable-cell">{text}</td>' +
 					'</tr>',
 					{
-						c:    row.get('className') + ' ' + Treeble.more_row_class,
+						css:  row_class + ' ' + Treeble.more_row_class,
 						span: row.get('childElementCount'),
-						text: Y.Lang.sub('See more rows on the <a href="javascript:void(0);" class="{c}">next page</a>.', { c:c })
+						text: Y.Lang.sub(self.get('moreRowsMessage'),
+						{
+							href: 'javascript:void(0);',
+							css:  c
+						})
 					});
 
 				tbody.append(more_row);
@@ -102,7 +129,7 @@ Treeble.buildTwistdownFormatter = function(send_request)
 					e.halt();
 
 					var pg = self.paginator.get('paginator');
-					pg.setPage(pg.getPage() + 1);
+					pg.setPage(pg.getCurrentPage() + 1);
 				});
 			});
 		}
@@ -128,12 +155,12 @@ Treeble.treeValueFormatter = function(o)
 /**
  * Add node id's to an existing openState object.
  *
- * @method augementOpenState
+ * @method augmentOpenState
  * @static
  * @param open_state {Object} opaque object containing the open state of all the nodes
  * @param ids {Array} list of ids to add to the open state
  */
-Treeble.augementOpenState = function(open_state, ids)
+Treeble.augmentOpenState = function(open_state, ids)
 {
 	if (open_state && Y.Lang.isArray(open_state.ids))
 	{
