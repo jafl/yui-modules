@@ -89,19 +89,7 @@ function switchPage(state)
 	pg.setRowsPerPage(state.rowsPerPage, true);
 	pg.setTotalRecords(state.totalRecords, true);
 
-	var send  = this.get('sendRequest'),
-		build = this.get('buildRequest');
-	if (send)
-	{
-		send();
-	}
-	else if (build)
-	{
-		table.datasource.load(
-		{
-			request: build()
-		});
-	}
+	this.sendRequest();
 }
 
 function updateDataSource(e)
@@ -218,6 +206,26 @@ Y.extend(PaginatorPlugin, Y.Plugin.Base,
 		if (this.ds_response_handler)
 		{
 			this.ds_response_handler.detach();
+		}
+	},
+
+	/**
+	 * Sends a request to the datatable to load the current page.
+	 */
+	sendRequest: function()
+	{
+		var send  = this.get('sendRequest'),
+			build = this.get('buildRequest');
+		if (send)
+		{
+			send();
+		}
+		else if (build)
+		{
+			this.get('host').datasource.load(
+			{
+				request: build()
+			});
 		}
 	}
 });
