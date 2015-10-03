@@ -82,6 +82,15 @@ RowExpansion.column_key = 'row-expander';
  */
 RowExpansion.row_class = 'row-expansion';
 
+/**
+ * The key used to deactivate row expansion for individual rows.
+ *
+ * @property Y.RowExpansion.do_not_open_key
+ * @type {boolean}
+ * @value "_row_expansion_do_not_open"
+ */
+RowExpansion.do_not_open_key = '_row_expansion_do_not_open';
+
 function insertRow(o)
 {
 	var plugin = this.rowexpander;
@@ -120,6 +129,11 @@ function insertRow(o)
 
 function formatTwistdown(o)
 {
+	if (o.data[ RowExpansion.do_not_open_key ] === true)
+	{
+		return '&nbsp;';
+	}
+
 	var plugin = this.rowexpander,
 		row_id = o.data[ plugin.get('uniqueIdKey') ],
 		open   = plugin.open_rows[ row_id ];

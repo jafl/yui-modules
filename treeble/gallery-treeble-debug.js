@@ -1246,7 +1246,8 @@ Treeble.buildTwistdownFormatter = function(send_request)
 			o.cell.set('innerHTML', '<a class="treeble-expand-nub" href="javascript:void(0);"></a>');
 		}
 
-		if (o.rowIndex === 0 && ds.get('paginateChildren') &&
+		var more_rows_msg = this.get('moreRowsMessage');
+		if (o.rowIndex === 0 && more_rows_msg && ds.get('paginateChildren') &&
 			this.paginator && this.paginator.get('paginator').hasNextPage())
 		{
 			var self  = this,
@@ -1267,7 +1268,7 @@ Treeble.buildTwistdownFormatter = function(send_request)
 					{
 						css:  row_class + ' ' + Treeble.more_row_class,
 						span: row.get('childElementCount'),
-						text: Y.Lang.sub(self.get('moreRowsMessage'),
+						text: Y.Lang.sub(more_rows_msg,
 						{
 							href: 'javascript:void(0);',
 							css:  c

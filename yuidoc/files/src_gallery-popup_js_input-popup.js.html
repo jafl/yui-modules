@@ -69,6 +69,8 @@
             
                 <li><a href="..&#x2F;classes/Chipper.html">Chipper</a></li>
             
+                <li><a href="..&#x2F;classes/CollapseToggle.html">CollapseToggle</a></li>
+            
                 <li><a href="..&#x2F;classes/ComplexMath.html">ComplexMath</a></li>
             
                 <li><a href="..&#x2F;classes/ComplexNumber.html">ComplexNumber</a></li>
@@ -239,6 +241,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
@@ -260,6 +264,8 @@
                 <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
+            
+                <li><a href="..&#x2F;classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
             
@@ -283,6 +289,12 @@
             
                 <li><a href="..&#x2F;modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
@@ -299,11 +311,15 @@
             
                 <li><a href="..&#x2F;modules/gallery-chipper.html">gallery-chipper</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-console-test.html">gallery-console-test</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
             
@@ -332,6 +348,8 @@
                 <li><a href="..&#x2F;modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
             
@@ -378,6 +396,8 @@
                 <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
             
@@ -444,17 +464,6 @@
  *&#x2F;
 var InputPopup = function(config)
 {
-	if (Y.Lang.isUndefined(config.align))
-	{
-		config.align =
-		{
-			node:   config.inputField,
-			points: [ Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.BL ]
-		};
-
-		config.preventOverlap = true;
-	}
-
 	if (Y.Lang.isUndefined(config.constrain))
 	{
 		config.constrain = true;
@@ -480,7 +489,7 @@ var InputPopup = function(config)
 		}
 	];
 
-	InputPopup.superclass.constructor.apply(this, arguments);
+	InputPopup.superclass.constructor.call(this, config);
 };
 
 InputPopup.NAME = &quot;inputpopup&quot;;
@@ -526,7 +535,7 @@ InputPopup.ATTRS =
  * @type {String}
  * @static
  *&#x2F;
-InputPopup.CalendarNodes = &#x27;.yui3-calendar-grid tbody td&#x27;;
+InputPopup.CalendarNodes = &#x27;.yui3-calendar-grid .yui3-calendar-day&#x27;;
 
 &#x2F;**
  * Selector for clickable nodes in a &#x60;Y.Saw.Timepicker&#x60; instance.
@@ -543,25 +552,28 @@ Y.extend(InputPopup, Y.Popup,
 	{
 		this.after(&#x27;render&#x27;, function()
 		{
-			var input = this.get(&#x27;inputField&#x27;),
-				box   = this.get(&#x27;boundingBox&#x27;);
+			var input   = this.get(&#x27;inputField&#x27;),
+				bound   = this.get(&#x27;boundingBox&#x27;),
+				content = this.get(&#x27;contentBox&#x27;);
 
-			&#x2F;&#x2F; close after selecting a date
+			&#x2F;&#x2F; close after selecting a value
 
 			Y.delegate(&#x27;click&#x27;, function()
 			{
+				input.focus();
 				this.hide();
-				Y.later(1, input, input.focus);
 			},
-			box, this.get(&#x27;clickNodes&#x27;), this);
+			bound, this.get(&#x27;clickNodes&#x27;), this);
 
 			&#x2F;&#x2F; close when focus shifts to another element outside popup
+
+			content.set(&#x27;tabIndex&#x27;, 1);
 
 			input.on(&#x27;blur&#x27;, function()
 			{
 				Y.later(10, this, function()
 				{
-					if (!Y.DOM.contains(Y.Node.getDOMNode(box), document.activeElement))
+					if (!Y.DOM.contains(bound.getDOMNode(), document.activeElement))
 					{
 						this.hide();
 					}
@@ -569,6 +581,22 @@ Y.extend(InputPopup, Y.Popup,
 			},
 			this);
 		});
+	},
+
+	show: function()
+	{
+		if (!this.get(&#x27;align&#x27;))
+		{
+			this.set(&#x27;align&#x27;,
+			{
+				node:   this.get(&#x27;inputField&#x27;),
+				points: [ Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.BL ]
+			});
+
+			this.set(&#x27;preventOverlap&#x27;, true);
+		}
+
+		InputPopup.superclass.show.apply(this, arguments);
 	}
 });
 

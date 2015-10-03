@@ -69,6 +69,8 @@
             
                 <li><a href="..&#x2F;classes/Chipper.html">Chipper</a></li>
             
+                <li><a href="..&#x2F;classes/CollapseToggle.html">CollapseToggle</a></li>
+            
                 <li><a href="..&#x2F;classes/ComplexMath.html">ComplexMath</a></li>
             
                 <li><a href="..&#x2F;classes/ComplexNumber.html">ComplexNumber</a></li>
@@ -239,6 +241,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
@@ -260,6 +264,8 @@
                 <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
+            
+                <li><a href="..&#x2F;classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
             
@@ -283,6 +289,12 @@
             
                 <li><a href="..&#x2F;modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
@@ -299,11 +311,15 @@
             
                 <li><a href="..&#x2F;modules/gallery-chipper.html">gallery-chipper</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-console-test.html">gallery-console-test</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
             
@@ -332,6 +348,8 @@
                 <li><a href="..&#x2F;modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
             
@@ -378,6 +396,8 @@
                 <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
             
@@ -702,7 +722,7 @@ function insertText(text, offset)
 	offset = offset || text.length;
 
 	this.field.focus();
-	var el = Y.Node.getDOMNode(this.field);
+	var el = this.field.getDOMNode();
 
 	if (el.setSelectionRange)		&#x2F;&#x2F; For Mozilla&#x2F;WebKit
 	{
@@ -830,7 +850,7 @@ function setValidation(f)
 	f.validateForm = function()
 	{
 		resetQB.call(self);
-		orig_validateForm.apply(this, arguments);
+		return orig_validateForm.apply(this, arguments);
 	};
 
 	f.setFunction(this.get(&#x27;fieldId&#x27;), function(form, e)

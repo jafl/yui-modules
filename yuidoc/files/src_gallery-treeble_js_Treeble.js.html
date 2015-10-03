@@ -69,6 +69,8 @@
             
                 <li><a href="..&#x2F;classes/Chipper.html">Chipper</a></li>
             
+                <li><a href="..&#x2F;classes/CollapseToggle.html">CollapseToggle</a></li>
+            
                 <li><a href="..&#x2F;classes/ComplexMath.html">ComplexMath</a></li>
             
                 <li><a href="..&#x2F;classes/ComplexNumber.html">ComplexNumber</a></li>
@@ -239,6 +241,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
@@ -260,6 +264,8 @@
                 <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
+            
+                <li><a href="..&#x2F;classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
             
@@ -283,6 +289,12 @@
             
                 <li><a href="..&#x2F;modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
@@ -299,11 +311,15 @@
             
                 <li><a href="..&#x2F;modules/gallery-chipper.html">gallery-chipper</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-console-test.html">gallery-console-test</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
             
@@ -332,6 +348,8 @@
                 <li><a href="..&#x2F;modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
             
@@ -378,6 +396,8 @@
                 <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
             
@@ -452,14 +472,56 @@ function Treeble()
 
 Treeble.NAME = &quot;datatable&quot;;		&#x2F;&#x2F; same styling
 
+Treeble.ATTRS =
+{
+	&#x2F;**
+	 * Object returned by saveOpenState(), used to initialize the open
+	 * elements.
+	 * 
+	 * @attribute openState
+	 * @type Object
+	 * @writeonce
+	 *&#x2F;
+	openState:
+	{
+		writeOnce: true
+	},
+
+	&#x2F;**
+	 * Message displayed below the last row if paginating children.  The
+	 * message must include &#x60;&amp;lt;a href=&quot;{href}&quot; class=&quot;{css}&quot;&amp;gt;&#x60; to
+	 * provide a link to go to the next page.
+	 * 
+	 * @attribute moreRowsMessage
+	 * @type String
+	 *&#x2F;
+	moreRowsMessage:
+	{
+		validator: function(s)
+		{
+			return (Y.Lang.isString(s) &amp;&amp;
+					s.indexOf(&#x27;&lt;a href=&quot;{href}&quot; class=&quot;{css}&quot;&gt;&#x27;) &gt;= 0);
+		}
+	}
+};
+
 &#x2F;**
- * &lt;p&gt;Formatter for open&#x2F;close twistdown.&lt;&#x2F;p&gt;
+ * The class added to rows created by this plugin.
+ *
+ * @property Y.RowExpansion.row_class
+ * @type {String}
+ * @value &quot;row-expansion&quot;
+ *&#x2F;
+Treeble.more_row_class = &#x27;row-more-items&#x27;;
+
+&#x2F;**
+ * Formatter for open&#x2F;close twistdown.
  *
  * @method twistdownFormatter
  * @static
- * @param sendRequest {Function} Function that reloads DataTable
+ * @param send_request {Function} Function that reloads DataTable
  *&#x2F;
-Treeble.buildTwistdownFormatter = function(sendRequest)
+Treeble.buildTwistdownFormatter = function(send_request)
 {
 	return function(o)
 	{
@@ -476,12 +538,53 @@ Treeble.buildTwistdownFormatter = function(sendRequest)
 			o.td.replaceClass(&#x27;row-(open|closed)&#x27;,
 				ds.isOpen(path) ? &#x27;row-open&#x27; : &#x27;row-closed&#x27;);
 
-			YUI.Env.add(Y.Node.getDOMNode(o.td), &#x27;click&#x27;, function()
+			YUI.Env.add(o.td.getDOMNode(), &#x27;click&#x27;, function()
 			{
-				ds.toggle(path, {}, sendRequest);
+				ds.toggle(path, {}, send_request);
 			});
 
 			o.cell.set(&#x27;innerHTML&#x27;, &#x27;&lt;a class=&quot;treeble-expand-nub&quot; href=&quot;javascript:void(0);&quot;&gt;&lt;&#x2F;a&gt;&#x27;);
+		}
+
+		var more_rows_msg = this.get(&#x27;moreRowsMessage&#x27;);
+		if (o.rowIndex === 0 &amp;&amp; more_rows_msg &amp;&amp; ds.get(&#x27;paginateChildren&#x27;) &amp;&amp;
+			this.paginator &amp;&amp; this.paginator.get(&#x27;paginator&#x27;).hasNextPage())
+		{
+			var self  = this,
+				tbody = o.td.ancestor(&#x27;tbody&#x27;);
+			Y.Lang.later(0, null, function()
+			{
+				var row = tbody.get(&#x27;lastElementChild&#x27;),
+					c   = self.getClassName(&#x27;next-page&#x27;);
+
+				var row_class =
+					row.get(&#x27;className&#x27;).indexOf(&#x27;-even&#x27;) &gt;= 0 ?
+						&#x27;yui3-datatable-odd&#x27; : &#x27;yui3-datatable-even&#x27;;
+
+				var more_row = Y.Lang.sub(
+					&#x27;&lt;tr class=&quot;{css}&quot;&gt;&#x27; +
+						&#x27;&lt;td colspan=&quot;{span}&quot; class=&quot;yui3-datatable-cell&quot;&gt;{text}&lt;&#x2F;td&gt;&#x27; +
+					&#x27;&lt;&#x2F;tr&gt;&#x27;,
+					{
+						css:  row_class + &#x27; &#x27; + Treeble.more_row_class,
+						span: row.get(&#x27;childElementCount&#x27;),
+						text: Y.Lang.sub(more_rows_msg,
+						{
+							href: &#x27;javascript:void(0);&#x27;,
+							css:  c
+						})
+					});
+
+				tbody.append(more_row);
+
+				tbody.one(&#x27;a.&#x27; + c).on(&#x27;click&#x27;, function(e)
+				{
+					e.halt();
+
+					var pg = self.paginator.get(&#x27;paginator&#x27;);
+					pg.setPage(pg.getCurrentPage() + 1);
+				});
+			});
 		}
 
 		return false;	&#x2F;&#x2F; discard Y.Node instances
@@ -489,7 +592,7 @@ Treeble.buildTwistdownFormatter = function(sendRequest)
 };
 
 &#x2F;**
- * &lt;p&gt;Default formatter for indented column.&lt;&#x2F;p&gt;
+ * Default formatter for indented column.
  *
  * @method treeValueFormatter
  * @static
@@ -502,6 +605,22 @@ Treeble.treeValueFormatter = function(o)
 	return &#x27;&lt;span class=&quot;&#x27;+depth_class+&#x27;&quot;&gt;&#x27;+o.value+&#x27;&lt;&#x2F;span&gt;&#x27;;
 };
 
+&#x2F;**
+ * Add node id&#x27;s to an existing openState object.
+ *
+ * @method augmentOpenState
+ * @static
+ * @param open_state {Object} opaque object containing the open state of all the nodes
+ * @param ids {Array} list of ids to add to the open state
+ *&#x2F;
+Treeble.augmentOpenState = function(open_state, ids)
+{
+	if (open_state &amp;&amp; Y.Lang.isArray(open_state.ids))
+	{
+		open_state.ids = open_state.ids.concat(ids);
+	}
+};
+
 Y.extend(Treeble, Y.DataTable,
 {
 	plug: function(plugin, config)
@@ -512,9 +631,27 @@ Y.extend(Treeble, Y.DataTable,
 			recordType.ATTRS[ config.datasource.get(&#x27;root&#x27;).treeble_config.childNodesKey ] = {};
 			recordType.ATTRS._yui_node_path  = {};
 			recordType.ATTRS._yui_node_depth = {};
+
+			var open_state = this.get(&#x27;openState&#x27;);
+			if (open_state &amp;&amp; Y.Lang.isArray(open_state.ids))
+			{
+				config.datasource.setOpenNodeIds(open_state.ids);
+			}
 		}
 
 		Treeble.superclass.plug.apply(this, arguments);
+	},
+
+	&#x2F;**
+	 * @return {Object} opaque object containing the open state of all the nodes
+	 *&#x2F;
+	saveOpenState: function()
+	{
+		var state =
+		{
+			ids: this.datasource.get(&#x27;datasource&#x27;).getOpenNodeIds()
+		};
+		return state;
 	}
 });
 

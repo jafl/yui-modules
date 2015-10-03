@@ -69,6 +69,8 @@
             
                 <li><a href="..&#x2F;classes/Chipper.html">Chipper</a></li>
             
+                <li><a href="..&#x2F;classes/CollapseToggle.html">CollapseToggle</a></li>
+            
                 <li><a href="..&#x2F;classes/ComplexMath.html">ComplexMath</a></li>
             
                 <li><a href="..&#x2F;classes/ComplexNumber.html">ComplexNumber</a></li>
@@ -239,6 +241,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
@@ -260,6 +264,8 @@
                 <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
+            
+                <li><a href="..&#x2F;classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
             
@@ -283,6 +289,12 @@
             
                 <li><a href="..&#x2F;modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
@@ -299,11 +311,15 @@
             
                 <li><a href="..&#x2F;modules/gallery-chipper.html">gallery-chipper</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-console-test.html">gallery-console-test</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
             
@@ -332,6 +348,8 @@
                 <li><a href="..&#x2F;modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
             
@@ -378,6 +396,8 @@
                 <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
             
@@ -746,6 +766,81 @@ Y.mix(Y.Object,
 		});
 
 		return result;
+	},
+
+	&#x2F;**
+	 * Extracts a value from an object, given a string containing a valid
+	 * JavaScript expression.  In a browser, this uses eval().  In Adobe
+	 * AIR, it parses the string, thereby restricting the syntax to only
+	 * dot notation.
+	 *
+	 * @method evalGet
+	 * @static
+	 * @param o {Object} the object from which to extract a value
+	 * @param s {String} the expression
+	 * @return {mixed} requested value
+	 *&#x2F;
+	evalGet: function(o, s)
+	{
+		if (s.indexOf(&#x27;;&#x27;) &gt;= 0)
+		{
+			throw &#x27;Semi-colon detected in evalGet. Security error.&#x27;;
+		}
+
+		if (!window.air)
+		{
+			var tmp;
+			eval(&#x27;tmp=o&#x27;+s);
+			return tmp;
+		}
+
+		s = s.split(&#x27;.&#x27;);
+		s.shift();	&#x2F;&#x2F; expression must begin with a dot
+
+		var tmp = o;
+		while (s.length &gt; 0)
+		{
+			tmp = tmp[ s.shift() ];
+		}
+
+		return tmp;
+	},
+
+	&#x2F;**
+	 * Sets a value inside an object, given a string containing a valid
+	 * JavaScript expression.  In a browser, this uses eval().  In Adobe
+	 * AIR, it parses the string, thereby restricting the syntax to only
+	 * dot notation.
+	 *
+	 * @method evalSet
+	 * @static
+	 * @param o {Object} the object in which to set a value
+	 * @param s {String} the expression
+	 * @param v {mixed} the value to set
+	 *&#x2F;
+	evalSet: function(o, s, v)
+	{
+		if (s.indexOf(&#x27;;&#x27;) &gt;= 0)
+		{
+			throw &#x27;Semi-colon detected in evalSet. Security error.&#x27;;
+		}
+
+		if (!window.air)
+		{
+			eval(&#x27;o&#x27;+s+&#x27;=v&#x27;);
+			return;
+		}
+
+		s = s.split(&#x27;.&#x27;);
+		s.shift();	&#x2F;&#x2F; expression must begin with a dot
+
+		var tmp = o;
+		while (s.length &gt; 1)
+		{
+			tmp = tmp[ s.shift() ];
+		}
+
+		tmp[ s.shift() ] = v;
 	}
 });
 

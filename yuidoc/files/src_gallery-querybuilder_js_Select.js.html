@@ -69,6 +69,8 @@
             
                 <li><a href="..&#x2F;classes/Chipper.html">Chipper</a></li>
             
+                <li><a href="..&#x2F;classes/CollapseToggle.html">CollapseToggle</a></li>
+            
                 <li><a href="..&#x2F;classes/ComplexMath.html">ComplexMath</a></li>
             
                 <li><a href="..&#x2F;classes/ComplexNumber.html">ComplexNumber</a></li>
@@ -239,6 +241,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
@@ -260,6 +264,8 @@
                 <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
+            
+                <li><a href="..&#x2F;classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
             
@@ -283,6 +289,12 @@
             
                 <li><a href="..&#x2F;modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
@@ -299,11 +311,15 @@
             
                 <li><a href="..&#x2F;modules/gallery-chipper.html">gallery-chipper</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-console-test.html">gallery-console-test</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
             
@@ -332,6 +348,8 @@
                 <li><a href="..&#x2F;modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
             
@@ -378,6 +396,8 @@
                 <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
             
@@ -441,8 +461,9 @@
  * 
  * There must be exactly one operator specified for this plugin.
  * 
- * The &#x60;value&#x60; argument passed to &#x60;QueryBuilder.appendNew()&#x60; must be a
- * string: the value of the menu item to select.
+ * The &#x60;value&#x60; argument passed to &#x60;QueryBuilder.appendNew()&#x60; can be a
+ * string (the value of the menu item to select) or an array with two
+ * elements (&#x60;[ operator, value ]&#x60;).
  * 
  * @namespace QueryBuilder
  * @class Select
@@ -470,14 +491,19 @@ QueryBuilder.Select.prototype =
 		value_cell.set(&#x27;innerHTML&#x27;, this._valuesMenu(this.valueName(query_index)));
 		this.value_menu = value_cell.one(&#x27;select&#x27;);
 
-		var options    = Y.Node.getDOMNode(this.value_menu).options;
+		var options    = this.value_menu.getDOMNode().options;
 		var value_list = var_config.value_list;
 		for (var i=0; i&lt;value_list.length; i++)
 		{
 			options[i] = new Option(value_list[i].text, value_list[i].value);
 		}
 
-		if (value)
+		var is_array = Y.Lang.isArray(value);
+		if (is_array &amp;&amp; value[0] == op_list[0])
+		{
+			this.value_menu.set(&#x27;value&#x27;, value[1]);
+		}
+		else if (!is_array &amp;&amp; Y.Lang.isValue(value))
 		{
 			this.value_menu.set(&#x27;value&#x27;, value);
 		}
@@ -498,18 +524,15 @@ QueryBuilder.Select.prototype =
 		&#x2F;* array *&#x2F;		op_list,
 		&#x2F;* array *&#x2F;		value)
 	{
-		try
+		if (this.value_menu)		&#x2F;&#x2F; could be destroyed
 		{
 			this.value_menu.focus();
-		}
-		catch (e)
-		{
-			&#x2F;&#x2F; IE will complain if field is invisible, instead of just ignoring it
 		}
 	},
 
 	destroy: function()
 	{
+		this.value_menu.remove(true);
 		this.value_menu = null;
 	},
 
@@ -517,13 +540,6 @@ QueryBuilder.Select.prototype =
 		&#x2F;* int *&#x2F;	new_index)
 	{
 		this.value_menu.setAttribute(&#x27;name&#x27;, this.valueName(new_index));
-	},
-
-	set: function(
-		&#x2F;* int *&#x2F;	query_index,
-		&#x2F;* map *&#x2F;	data)
-	{
-		this.value_menu.set(&#x27;value&#x27;, data[ this.valueName(query_index) ]);
 	},
 
 	toDatabaseQuery: function()

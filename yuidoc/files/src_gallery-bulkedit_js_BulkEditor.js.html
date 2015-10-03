@@ -69,6 +69,8 @@
             
                 <li><a href="..&#x2F;classes/Chipper.html">Chipper</a></li>
             
+                <li><a href="..&#x2F;classes/CollapseToggle.html">CollapseToggle</a></li>
+            
                 <li><a href="..&#x2F;classes/ComplexMath.html">ComplexMath</a></li>
             
                 <li><a href="..&#x2F;classes/ComplexNumber.html">ComplexNumber</a></li>
@@ -239,6 +241,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
@@ -260,6 +264,8 @@
                 <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
+            
+                <li><a href="..&#x2F;classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
             
@@ -283,6 +289,12 @@
             
                 <li><a href="..&#x2F;modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
@@ -299,11 +311,15 @@
             
                 <li><a href="..&#x2F;modules/gallery-chipper.html">gallery-chipper</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-console-test.html">gallery-console-test</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
             
@@ -332,6 +348,8 @@
                 <li><a href="..&#x2F;modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
             
@@ -378,6 +396,8 @@
                 <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
             
@@ -577,7 +597,11 @@ BulkEditor.checkbox_multiselect_column_height = 6;
  *&#x2F;
 &#x2F;**
  * @event pageRendered
- * @description Fired every time after the editor has rendered a page.
+ * @description Fired after the editor has rendered a page.
+ *&#x2F;
+&#x2F;**
+ * @event recordVisible
+ * @description Fired after showRecord*() succeeds, including switching pages.
  *&#x2F;
 
 var default_page_size = 1e9,
@@ -624,10 +648,22 @@ Y.extend(BulkEditor, Y.Widget,
 	{
 		if (config.paginator)
 		{
-			config.paginator.on(&#x27;changeRequest&#x27;, switchPage, this);
+			this._pg_event_handle =
+				config.paginator.on(&#x27;changeRequest&#x27;, switchPage, this);
 		}
 
 		this._hopper = [];
+	},
+
+	destructor: function()
+	{
+		if (this._pg_event_handle)
+		{
+			this._pg_event_handle.detach();
+		}
+
+		this._set(&#x27;ds&#x27;, null);
+		this._set(&#x27;paginator&#x27;, null);
 	},
 
 	renderUI: function()
@@ -748,7 +784,7 @@ Y.extend(BulkEditor, Y.Widget,
 				}
 				else if (tag == &#x27;SELECT&#x27; &amp;&amp; node.get(&#x27;multiple&#x27;))
 				{
-					value = Y.reduce(Y.Node.getDOMNode(node).options, [], function(v, o)
+					value = Y.reduce(node.getDOMNode().options, [], function(v, o)
 					{
 						if (o.selected)
 						{
@@ -782,7 +818,7 @@ Y.extend(BulkEditor, Y.Widget,
 		{
 			startIndex:  0,
 			resultCount: this.get(&#x27;ds&#x27;).getRecordCount(),
-			out_of_band: true
+			outOfBand:   true
 		};
 		Y.mix(request, this.get(&#x27;requestExtra&#x27;));
 
@@ -805,7 +841,7 @@ Y.extend(BulkEditor, Y.Widget,
 	&#x2F;**
 	 * &lt;p&gt;Insert a new record.&lt;&#x2F;p&gt;
 	 * 
-	 * &lt;p&gt;You must reload() the widget after calling this function!&lt;&#x2F;p&gt;
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;&#x2F;p&gt;
 	 * 
 	 * @method insertRecord
 	 * @param index {Number} insertion index
@@ -827,12 +863,11 @@ Y.extend(BulkEditor, Y.Widget,
 	},
 
 	&#x2F;**
-	 * &lt;p&gt;Remove a record.  The removal will be recorded in the diffs.
-	 * There is no way to un-remove a record, so if you need that
-	 * functionality, you may want to use highlighting to indicate removed
-	 * records instead.&lt;&#x2F;p&gt;
+	 * &lt;p&gt;Remove a record.  There is no simple way to un-remove a record,
+	 * so if you need that functionality, you may want to use highlighting
+	 * to indicate removed records instead.&lt;&#x2F;p&gt;
 	 * 
-	 * &lt;p&gt;You must reload() the widget after calling this function!&lt;&#x2F;p&gt;
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;&#x2F;p&gt;
 	 * 
 	 * @method removeRecord
 	 * @param index {Number}
@@ -849,6 +884,79 @@ Y.extend(BulkEditor, Y.Widget,
 				this.server_errors.records.splice(index,1);
 				delete this.server_errors.record_map[ rec[ this.get(&#x27;ds&#x27;).get(&#x27;uniqueIdKey&#x27;) ] ];
 				this._updatePageStatus();
+			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	&#x2F;**
+	 * &lt;p&gt;Restore a removed record.&lt;&#x2F;p&gt;
+	 * 
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;&#x2F;p&gt;
+	 * 
+	 * @method restoreRecord
+	 * @param record_id {String}
+	 * @return {int} the restored record&#x27;s index or -1 if record id is not found
+	 *&#x2F;
+	restoreRecord: function(
+		&#x2F;* string *&#x2F; record_id)
+	{
+		var i = this.get(&#x27;ds&#x27;).restoreRecord(record_id);
+		if (i &gt;= 0)
+		{
+			this.clearServerErrors();
+		}
+
+		return i;
+	},
+
+	&#x2F;**
+	 * &lt;p&gt;Show a record.  Do not call this if you use server-side
+	 * pagination.&lt;&#x2F;p&gt;
+	 * 
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;&#x2F;p&gt;
+	 * 
+	 * @method showRecord
+	 * @param record_id {String}
+	 * @return {int} the newly visible record&#x27;s index or -1 if record id is not found
+	 *&#x2F;
+	showRecord: function(
+		&#x2F;* string *&#x2F; record_id)
+	{
+		var i = this.get(&#x27;ds&#x27;).showRecord(record_id);
+		if (i &gt;= 0)
+		{
+			this.clearServerErrors();
+		}
+
+		return i;
+	},
+
+	&#x2F;**
+	 * &lt;p&gt;Hide a record.  Do not call this if you use server-side
+	 * pagination.&lt;&#x2F;p&gt;
+	 * 
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;&#x2F;p&gt;
+	 * 
+	 * @method hideRecord
+	 * @param index {Number}
+	 * @return {boolean} true if record is now hidden
+	 *&#x2F;
+	hideRecord: function(
+		&#x2F;* int *&#x2F; index)
+	{
+		if (this.get(&#x27;ds&#x27;).hideRecord(index))
+		{
+			if (index &lt; this.server_errors.records.length)
+			{
+				var rec = this.server_errors.records[index];
+				this.server_errors.records.splice(index,1);
+				delete this.server_errors.record_map[ rec[ this.get(&#x27;ds&#x27;).get(&#x27;uniqueIdKey&#x27;) ] ];
+				this._updatePageStatus();	&#x2F;&#x2F; paranoia, since records with changes cannot be hidden
 			}
 			return true;
 		}
@@ -1014,9 +1122,11 @@ Y.extend(BulkEditor, Y.Widget,
 		var count = pg ? pg.getRowsPerPage() : default_page_size;
 		if (start &lt;= index &amp;&amp; index &lt; start+count)
 		{
-			var node = this.getRecordContainer(this.get(&#x27;ds&#x27;).getCurrentRecords()[ index - start ]);
+			var rec  = this.get(&#x27;ds&#x27;).getCurrentRecords()[ index - start ],
+				node = this.getRecordContainer(rec);
 			node.scrollIntoView();
 			this.pingRecord(node);
+			this.fire(&#x27;recordVisible&#x27;, { index: index, id: this.getRecordId(rec) });
 		}
 		else if (pg)
 		{
@@ -1060,7 +1170,10 @@ Y.extend(BulkEditor, Y.Widget,
 			node.addClass(ping);
 			Y.later(this.get(&#x27;pingTimeout&#x27;)*1000, null, function()
 			{
-				node.removeClass(ping);
+				if (node.inDoc())
+				{
+					node.removeClass(ping);
+				}
 			});
 		}
 	},
@@ -1287,13 +1400,41 @@ Y.extend(BulkEditor, Y.Widget,
 
 		this.first_error_page = -1;
 
-		var r = this.server_errors.records;
+		var r = this.server_errors.records, s;
 		for (var i=0; i&lt;r.length; i++)
 		{
-			if (r[i].recordError || r[i].fieldErrors)
+			s = &#x27;&#x27;;
+			if (Y.Lang.isObject(r[i].recordError))
+			{
+				s = r[i].recordError.type;
+			}
+			else if (Y.Lang.isString(r[i].recordError))
+			{
+				s = &#x27;error&#x27;;
+			}
+
+			if (s != &#x27;error&#x27; &amp;&amp; Y.Lang.isObject(r[i].fieldErrors))
+			{
+				Y.some(r[i].fieldErrors, function(e, k)
+				{
+					if (Y.Lang.isObject(e) &amp;&amp;
+						Y.FormManager.statusTakesPrecedence(s, e.type))
+					{
+						s = e.type;
+					}
+					else if (Y.Lang.isString(e))
+					{
+						s = &#x27;error&#x27;;
+					}
+
+					return (s == &#x27;error&#x27;);
+				});
+			}
+
+			if (s)
 			{
 				var j     = Math.floor(i &#x2F; page_size);
-				status[j] = &#x27;error&#x27;;
+				status[j] = s;
 				if (this.first_error_page == -1)
 				{
 					this.first_error_page = j+1;
@@ -1959,7 +2100,7 @@ function multiselectMarkup(type, o)
 					list.push(v.text);
 					return list;
 				})
-			})
+			});
 
 			node.plug(Y.Plugin.MultivalueInput,
 			{
@@ -1979,7 +2120,7 @@ function multiselectMarkup(type, o)
 				var value_list = node.mvi.get(&#x27;values&#x27;),
 					select     = node.ancestor(&#x27;.checkbox-multiselect&#x27;).next(&#x27;select&#x27;);
 
-				Y.each(Y.Node.getDOMNode(select).options, function(o)
+				Y.each(select.getDOMNode().options, function(o)
 				{
 					o.selected = (Y.Array.indexOf(value_list, o.text) &gt;= 0);
 				});
@@ -2057,7 +2198,7 @@ function handleCheckboxMultiselectClickOnCheckbox(e)
 		value  = cb.get(&#x27;value&#x27;),
 		select = cb.ancestor(&#x27;.checkbox-multiselect&#x27;).next(&#x27;select&#x27;);
 
-	Y.some(Y.Node.getDOMNode(select).options, function(o)
+	Y.some(select.getDOMNode().options, function(o)
 	{
 		if (o.value == value)
 		{

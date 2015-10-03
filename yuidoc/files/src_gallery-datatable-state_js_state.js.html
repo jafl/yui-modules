@@ -69,6 +69,8 @@
             
                 <li><a href="..&#x2F;classes/Chipper.html">Chipper</a></li>
             
+                <li><a href="..&#x2F;classes/CollapseToggle.html">CollapseToggle</a></li>
+            
                 <li><a href="..&#x2F;classes/ComplexMath.html">ComplexMath</a></li>
             
                 <li><a href="..&#x2F;classes/ComplexNumber.html">ComplexNumber</a></li>
@@ -239,6 +241,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
@@ -260,6 +264,8 @@
                 <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
+            
+                <li><a href="..&#x2F;classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
             
@@ -283,6 +289,12 @@
             
                 <li><a href="..&#x2F;modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
@@ -299,11 +311,15 @@
             
                 <li><a href="..&#x2F;modules/gallery-chipper.html">gallery-chipper</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-console-test.html">gallery-console-test</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
             
@@ -332,6 +348,8 @@
                 <li><a href="..&#x2F;modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
             
@@ -378,6 +396,8 @@
                 <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
             
@@ -459,9 +479,9 @@ State.NS   = &quot;state&quot;;
 State.ATTRS =
 {
 	&#x2F;**
-	 * Id of a column (usually not displayed) that yields a
-	 * unique value for each record.  The saved state is index by the value
-	 * of this column.
+	 * Id of a column (usually not displayed) that yields a unique value
+	 * for each record.  The saved state is indexed by the value of this
+	 * column.
 	 *
 	 * @attribute uniqueIdKey
 	 * @type {String}
@@ -580,7 +600,7 @@ function saveState()
 				}
 			}
 
-			var rec = host.getRecord(i);
+			var rec = host.data.item(i);
 			var id  = rec.get(id_key);
 			if (!this.state[id])
 			{
@@ -606,7 +626,7 @@ function restoreState()
 
 		for (var i=0; i&lt;count; i++)
 		{
-			var rec   = host.getRecord(i);
+			var rec   = host.data.item(i);
 			var state = this.state[ rec.get(id_key) ];
 			if (state)
 			{
@@ -651,7 +671,7 @@ function clearTempState()
 
 function listenToPaginator(pg)
 {
-	pg.on(&#x27;datatable-state-paginator|changeRequest&#x27;, clearTempState, this);
+	this.pg_event_handler = pg.on(&#x27;changeRequest&#x27;, clearTempState, this);
 }
 
 Y.extend(State, Y.Plugin.Base,
@@ -671,7 +691,11 @@ Y.extend(State, Y.Plugin.Base,
 
 		this.on(&#x27;paginatorChange&#x27;, function(e)
 		{
-			Y.detach(&#x27;datatable-state-paginator|*&#x27;);
+			if (this.pg_event_handler)
+			{
+				this.pg_event_handler.detach();
+				this.pg_event_handler = null;
+			}
 
 			if (e.newVal)
 			{
@@ -703,6 +727,11 @@ Y.extend(State, Y.Plugin.Base,
 	destructor: function()
 	{
 		this.get(&#x27;host&#x27;).syncUI = this.orig_syncUI;
+
+		if (this.pg_event_handler)
+		{
+			this.pg_event_handler.detach();
+		}
 	},
 
 	&#x2F;**

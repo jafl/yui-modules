@@ -15,6 +15,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Canvas.Context2d",
         "CheckboxGroup",
         "Chipper",
+        "CollapseToggle",
         "ComplexMath",
         "ComplexNumber",
         "DataSource.AsyncFunction",
@@ -99,6 +100,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Parsers",
         "Plugin.BusyOverlay",
         "Plugin.ConsoleTest",
+        "Plugin.DataTablePaginator",
         "Plugin.DataTableQuickEdit",
         "Plugin.DataTableRowExpansion",
         "Plugin.DataTableState",
@@ -110,6 +112,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Plugin.PageLayoutDataTableModule",
         "Popup",
         "QueryBuilder",
+        "QueryBuilder.DateRange",
         "QueryBuilder.MultiselectInput",
         "QueryBuilder.Select",
         "QueryBuilder.String",
@@ -122,6 +125,9 @@ YUI.add("yuidoc-meta", function(Y) {
     ],
     "modules": [
         "gallery-accordion-horiz-vert",
+        "gallery-adobe-air-config",
+        "gallery-adobe-air-page-manager",
+        "gallery-adobe-air-prefs",
         "gallery-algorithms",
         "gallery-anim-class",
         "gallery-anim-sequence",
@@ -130,9 +136,11 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-canvas",
         "gallery-checkboxgroups",
         "gallery-chipper",
+        "gallery-collapse-toggle",
         "gallery-complexnumber",
         "gallery-console-test",
         "gallery-datasource-async-function",
+        "gallery-datatable-paginator",
         "gallery-datatable-row-expansion",
         "gallery-datatable-state",
         "gallery-datetime",
@@ -147,6 +155,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-funcprog",
         "gallery-input-calendar-sync",
         "gallery-instancemanager",
+        "gallery-io-adobe-air",
         "gallery-io-multiresponse",
         "gallery-iterable-extras",
         "gallery-layout",
@@ -170,6 +179,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "gallery-paginator",
         "gallery-popup",
         "gallery-querybuilder",
+        "gallery-querybuilder-daterange",
         "gallery-querybuilder-multiselect-input",
         "gallery-quickedit",
         "gallery-scrollintoview",
@@ -182,6 +192,21 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-accordion-horiz-vert",
             "name": "gallery-accordion-horiz-vert",
             "description": "Widget to manage an accordion, either horizontally or vertically.\nAllows either multiple open sections or only a single open section.\nProvides option to always force at least one item to be open."
+        },
+        {
+            "displayName": "gallery-adobe-air-config",
+            "name": "gallery-adobe-air-config",
+            "description": "Implements read-only configuration data, loaded from `app:/config.json`.\n\nThis is a singleton because there should only be one application configuration."
+        },
+        {
+            "displayName": "gallery-adobe-air-page-manager",
+            "name": "gallery-adobe-air-page-manager",
+            "description": "Implements simple page manager for Adobe AIR.  Page HTML is loaded from\nthe modules directory, and JavaScript is loaded using the module prefix\nand the page name.\n\nThis is a singleton because there should only be one page manager."
+        },
+        {
+            "displayName": "gallery-adobe-air-prefs",
+            "name": "gallery-adobe-air-prefs",
+            "description": "Implements read-write preferences data, loaded from `app-storage:/prefs.json`.\n\nThis is a singleton because there should only be one set of application preferences."
         },
         {
             "displayName": "gallery-algorithms",
@@ -224,6 +249,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "<p>Destroys objects asynchronously.</p>"
         },
         {
+            "displayName": "gallery-collapse-toggle",
+            "name": "gallery-collapse-toggle",
+            "description": "Overrides Y.Node.show() to make it look like a flickering neon sign."
+        },
+        {
             "displayName": "gallery-complexnumber",
             "name": "gallery-complexnumber",
             "description": "Support for complex numbers."
@@ -237,6 +267,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-datasource-async-function",
             "name": "gallery-datasource-async-function",
             "description": "<p>Data source that calls an asynchronous function.</p>"
+        },
+        {
+            "displayName": "gallery-datatable-paginator",
+            "name": "gallery-datatable-paginator",
+            "description": "Plugin for DataTable to connect a paginator."
         },
         {
             "displayName": "gallery-datatable-row-expansion",
@@ -307,6 +342,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-instancemanager",
             "name": "gallery-instancemanager",
             "description": "<p>Stores instances of JavaScript components.  Allows a constructor or\nfactory method to be passed in place of an instance.  This enables lazy\nconstruction on demand.</p>\n\n<p>One use is to create a global repository of JavaScript components\nattached to DOM id's, e.g., YUI Buttons built on top of HTML\nbuttons.</p>"
+        },
+        {
+            "displayName": "gallery-io-adobe-air",
+            "name": "gallery-io-adobe-air",
+            "description": "Implements transport protocol for Adobe AIR.  Based on YUI io-nodejs module."
         },
         {
             "displayName": "gallery-io-multiresponse",
@@ -421,6 +461,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "gallery-querybuilder",
             "name": "gallery-querybuilder",
             "description": "Widget which allows user to build a list of query criteria, e.g., for\nsearching.  All the conditions are either AND'ed or OR'ed.  For a more\ngeneral query builder, see gallery-exprbuilder."
+        },
+        {
+            "displayName": "gallery-querybuilder-daterange",
+            "name": "gallery-querybuilder-daterange",
+            "description": "Plugin for accepting date/time range.\n\nThe `value` argument passed to `QueryBuilder.appendNew()` must be an\narray with two elements: `[ start_date, end_date ]`.\n\n`var_config` accepts `show_time`, `start_config`, `end_config`.  The\nconfigs must define objects: `Calendar`, `InputCalendarSync`,\n`DateTime`, `date_InputPopup`, `time_InputPopup`.\n\n`op_list` must be an array: `[ greater_than, less_than ]`."
         },
         {
             "displayName": "gallery-querybuilder-multiselect-input",

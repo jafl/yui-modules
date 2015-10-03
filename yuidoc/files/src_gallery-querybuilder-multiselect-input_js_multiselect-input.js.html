@@ -69,6 +69,8 @@
             
                 <li><a href="..&#x2F;classes/Chipper.html">Chipper</a></li>
             
+                <li><a href="..&#x2F;classes/CollapseToggle.html">CollapseToggle</a></li>
+            
                 <li><a href="..&#x2F;classes/ComplexMath.html">ComplexMath</a></li>
             
                 <li><a href="..&#x2F;classes/ComplexNumber.html">ComplexNumber</a></li>
@@ -239,6 +241,8 @@
             
                 <li><a href="..&#x2F;classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
             
+                <li><a href="..&#x2F;classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+            
                 <li><a href="..&#x2F;classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
             
                 <li><a href="..&#x2F;classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
@@ -260,6 +264,8 @@
                 <li><a href="..&#x2F;classes/Popup.html">Popup</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.html">QueryBuilder</a></li>
+            
+                <li><a href="..&#x2F;classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
             
                 <li><a href="..&#x2F;classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
             
@@ -283,6 +289,12 @@
             
                 <li><a href="..&#x2F;modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-algorithms.html">gallery-algorithms</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-anim-class.html">gallery-anim-class</a></li>
@@ -299,11 +311,15 @@
             
                 <li><a href="..&#x2F;modules/gallery-chipper.html">gallery-chipper</a></li>
             
+                <li><a href="..&#x2F;modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+            
                 <li><a href="..&#x2F;modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-console-test.html">gallery-console-test</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
             
@@ -332,6 +348,8 @@
                 <li><a href="..&#x2F;modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
             
@@ -378,6 +396,8 @@
                 <li><a href="..&#x2F;modules/gallery-popup.html">gallery-popup</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+            
+                <li><a href="..&#x2F;modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
             
                 <li><a href="..&#x2F;modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
             
@@ -490,6 +510,8 @@ Y.QueryBuilder.MultiselectInput.prototype =
 	{
 		value = value || [&#x27;&#x27;, null];
 
+		var result = [];
+
 		if (op_list.length &gt; 1)
 		{
 			var op_cell = this.qb._createContainer();
@@ -497,7 +519,7 @@ Y.QueryBuilder.MultiselectInput.prototype =
 			op_cell.set(&#x27;innerHTML&#x27;, this._operationsMenu(this.operationName(query_index)));
 			this.op_menu = op_cell.one(&#x27;select&#x27;);
 
-			var options = Y.Node.getDOMNode(this.op_menu).options;
+			var options = this.op_menu.getDOMNode().options;
 			for (var i=0; i&lt;op_list.length; i++)
 			{
 				options[i] = new Option(op_list[i].text, op_list[i].value);
@@ -512,6 +534,8 @@ Y.QueryBuilder.MultiselectInput.prototype =
 			{
 				this.op_menu.on(&#x27;change&#x27;, this.qb._notifyChanged, this.qb);
 			}
+
+			result.push(op_cell);
 		}
 		else
 		{
@@ -522,8 +546,9 @@ Y.QueryBuilder.MultiselectInput.prototype =
 		value_cell.set(&#x27;className&#x27;, this.qb.getClassName(&#x27;value&#x27;));
 		value_cell.set(&#x27;innerHTML&#x27;, this._valueInput(this.valueName(query_index)));
 		this.value_input = value_cell.one(&#x27;input&#x27;);
+		result.push(value_cell);
 
-		return [ op_cell, value_cell ];
+		return result;
 	},
 
 	postCreate: function(
@@ -534,38 +559,25 @@ Y.QueryBuilder.MultiselectInput.prototype =
 	{
 		value = value || [&#x27;&#x27;, null];
 
-		Y.Lang.later(1, this, function()	&#x2F;&#x2F; hack for IE7
+		this.value_input.plug(Y.Plugin.AutoComplete,
 		{
-			if (this.value_input)		&#x2F;&#x2F; could be destroyed
-			{
-				this.value_input.plug(Y.Plugin.AutoComplete,
-				{
-					resultFilters:     &#x27;phraseMatch&#x27;,
-					resultHighlighter: &#x27;phraseMatch&#x27;,
-					source:            var_config.value_list,
-					render:            Y.one(&#x27;body&#x27;)
-				});
-
-				if (var_config.autocomplete &amp;&amp; var_config.autocomplete.containerClassName)
-				{
-					this.value_input.ac.get(&#x27;boundingBox&#x27;).addClass(var_config.autocomplete.containerClassName);
-				}
-
-				this.value_input.plug(Y.Plugin.MultivalueInput,
-				{
-					values: value[1]
-				});
-
-				try
-				{
-					this.value_input.focus();
-				}
-				catch (e)
-				{
-					&#x2F;&#x2F; IE will complain if field is invisible, instead of just ignoring it
-				}
-			}
+			resultFilters:     &#x27;phraseMatch&#x27;,
+			resultHighlighter: &#x27;phraseMatch&#x27;,
+			source:            var_config.value_list,
+			render:            Y.one(&#x27;body&#x27;)
 		});
+
+		if (var_config.autocomplete &amp;&amp; var_config.autocomplete.containerClassName)
+		{
+			this.value_input.ac.get(&#x27;boundingBox&#x27;).addClass(var_config.autocomplete.containerClassName);
+		}
+
+		this.value_input.plug(Y.Plugin.MultivalueInput,
+		{
+			values: value[1]
+		});
+
+		this.value_input.focus();
 	},
 
 	destroy: function()
@@ -576,7 +588,12 @@ Y.QueryBuilder.MultiselectInput.prototype =
 			this.value_input.unplug(Y.Plugin.AutoComplete);
 		}
 
-		this.op_menu     = null;
+		if (this.op_menu)
+		{
+			this.op_menu.remove(true);
+		}
+		this.value_input.remove(true);
+
 		this.value_input = null;
 	},
 
@@ -589,18 +606,6 @@ Y.QueryBuilder.MultiselectInput.prototype =
 		}
 		this.value_input.setAttribute(&#x27;name&#x27;, this.valueName(new_index));
 	},
-
-	&#x2F;&#x2F; multiselect-input doesn&#x27;t support programmatically modifying the value after initialization
-
-&#x2F;&#x2F;	set: function(
-&#x2F;&#x2F;		&#x2F;* int *&#x2F;	query_index,
-&#x2F;&#x2F;		&#x2F;* map *&#x2F;	data)
-&#x2F;&#x2F;	{
-&#x2F;&#x2F;		if (this.op_menu)
-&#x2F;&#x2F;		{
-&#x2F;&#x2F;			this.op_menu.set(&#x27;value&#x27;, data[ this.operationName(query_index) ]);
-&#x2F;&#x2F;		}
-&#x2F;&#x2F;	},
 
 	toDatabaseQuery: function()
 	{
