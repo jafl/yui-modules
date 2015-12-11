@@ -67,7 +67,7 @@ RowExpansion.ATTRS =
 /**
  * The key used to indicate which column contains the twistdown.
  *
- * @property Y.RowExpansion.column_key
+ * @property Y.Plugin.DataTableRowExpansion.column_key
  * @type {String}
  * @value "row-expander"
  */
@@ -76,7 +76,7 @@ RowExpansion.column_key = 'row-expander';
 /**
  * The class added to rows created by this plugin.
  *
- * @property Y.RowExpansion.row_class
+ * @property Y.Plugin.DataTableRowExpansion.row_class
  * @type {String}
  * @value "row-expansion"
  */
