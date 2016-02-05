@@ -100,8 +100,16 @@ Treeble.buildTwistdownFormatter = function(send_request)
 		{
 			var self  = this,
 				tbody = o.td.ancestor('tbody');
-			Y.Lang.later(0, null, function()
+
+			if (this._treeble_more_rows_task)
 			{
+				this._treeble_more_rows_task.cancel();
+			}
+
+			this._treeble_more_rows_task = Y.Lang.later(0, null, function()
+			{
+				self._treeble_more_rows_task = null;
+
 				var row = tbody.get('lastElementChild'),
 					c   = self.getClassName('next-page');
 
