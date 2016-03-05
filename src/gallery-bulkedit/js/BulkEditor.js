@@ -1638,6 +1638,10 @@ function multiselectMarkup(type, o)
 		Y.later(0, this, function()
 		{
 			var node = Y.one('#' + id + '-multivalue-input');
+			if (!node)
+			{
+				return;
+			}
 
 			node.plug(Y.Plugin.AutoComplete,
 			{
