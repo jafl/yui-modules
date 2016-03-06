@@ -55,11 +55,11 @@ MatrixBackground.ATTRS =
 	 *
 	 * @attribute monospace
 	 * @type {Boolean}
-	 * @default false
+	 * @default true for IE, false for all other browsers
 	 */
 	monospace:
 	{
-		value:     false,
+		value:     !!Y.UA.ie,
 		validator: Y.Lang.isBoolean
 	},
 
