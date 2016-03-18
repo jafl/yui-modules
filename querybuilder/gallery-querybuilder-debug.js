@@ -310,7 +310,7 @@ Y.extend(QueryBuilder, Y.Widget,
 		{
 			var var_menu     = this.row_list[0].var_menu,
 				selected_var = this.var_list[ var_menu.get('selectedIndex') ];
-			if (selected_var.type == 'none')
+			if (!selected_var || selected_var.type == 'none')
 			{
 				var_menu.set('value', name);
 				this.update(0, value);
@@ -451,7 +451,7 @@ Y.extend(QueryBuilder, Y.Widget,
 		var selected_var = this.var_list[ var_menu.get('selectedIndex') ];
 
 		var cells = [];
-		if (selected_var.type == 'none')
+		if (!selected_var || selected_var.type == 'none')
 		{
 			query_row.addClass(this.getClassName('empty'));
 		}
