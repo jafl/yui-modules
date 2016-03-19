@@ -14,30 +14,30 @@ YUI.add('gallery-formmgr', function (Y, NAME) {
 
 /**
  * <p><strong>Required Markup Structure</strong></p>
- * 
+ *
  * <p>Each element (or tighly coupled set of elements) must be contained by
  * an element that has the CSS class <code>formmgr-row</code>.  Within each
  * row, validation messages are displayed inside the container with CSS
  * class <code>formmgr-message-text</code>.
- * 
+ *
  * <p>When a message is displayed inside a row, the CSS class
  * <code>formmgr-has{type}</code> is placed on the row container and the
  * containing fieldset (if any), where <code>{type}</code> is the message
  * type passed to <code>displayMessage()</code>.</p>
- * 
+ *
  * <p><strong>Initializing the Form</strong></p>
- * 
+ *
  * <p>Default values can be either encoded in the markup or passed to the
  * FormManager constructor via <code>config.default_value_map</code>.  (The
  * former method is obviously better for progressive enhancement.)  The
  * values passed to the constructor override the values encoded in the
  * markup.</p>
- * 
+ *
  * <p><code>prepareForm()</code> must be called before the form is
  * displayed.  To initialize focus to the first element in a form, call
  * <code>initFocus()</code>.  If the form is in an overlay, you can delay
  * these calls until just before showing the overlay.</p>
- * 
+ *
  * <p>The default values passed to the constructor are inserted by
  * <code>populateForm()</code>.  (This is automatically called by
  * <code>prepareForm()</code>.)</p>
@@ -45,9 +45,9 @@ YUI.add('gallery-formmgr', function (Y, NAME) {
  * <p>Hidden fields are ignored.  If you want `FormManager` to process a
  * value that is invisible to the user, use a normal input with
  * `display:none;`.</p>
- * 
+ *
  * <p><strong>Displaying Messages</strong></p>
- * 
+ *
  * <p>To display a message for a single form row, call
  * <code>displayMessage()</code>.  To display a message for the form in
  * general, call <code>displayFormMessage()</code>.  These functions can be
