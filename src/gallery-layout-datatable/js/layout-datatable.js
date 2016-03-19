@@ -82,7 +82,8 @@ Y.extend(PLDTModule, Y.Plugin.Base,
 			{
 				if (e.bd.get('id') == module_bd.get('id'))
 				{
-					table.set('width', (e.width - Y.DOM.getScrollbarWidth())+'px');
+					var w = e.width - (layout.single_module ? Y.DOM.getScrollbarWidth() : 0);
+					table.set('width', w+'px');
 					table.set('height', e.height+'px');
 					table.set('scrollable', true);
 
