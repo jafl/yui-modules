@@ -32,9 +32,9 @@ Y.Node.adjustTextareaHeight = function(textarea)
 	textarea.setStyle('height', 'auto');
 	textarea.setStyle('height', Math.min(
 		 Y.Node.max_textarea_height, textarea.get('scrollHeight')) + 'px');
-}
+};
 
-Y.mix(Y.NodeList.prototype,
+Y.mix(Y.Node.prototype,
 {
 	/**
 	 * Positions the caret inside a text input or textarea.
