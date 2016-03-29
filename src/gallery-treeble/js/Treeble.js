@@ -199,6 +199,7 @@ Y.extend(Treeble, Y.DataTable,
 	},
 
 	/**
+	 * @method saveOpenState
 	 * @return {Object} opaque object containing the open state of all the nodes
 	 */
 	saveOpenState: function()

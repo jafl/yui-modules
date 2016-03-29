@@ -187,7 +187,7 @@ Y.DateTimeUtils =
 	 * @method formatDate
 	 * @static
 	 * @param date {Mixed} string (returned as-is), Date, milliseconds, or object specifying day,month,year
-	 * @return {String} formatted date, using positions and delimiters
+	 * @return {String} formatted date, using positions and delimiter
 	 */
 	formatDate: function(date)
 	{
@@ -302,7 +302,7 @@ Y.DateTimeUtils =
 	 * @method formatTime
 	 * @static
 	 * @param time {Mixed} string (returned as-is), Date, milliseconds, or object specifying hour,minute
-	 * @return {String} formatted date, using positions and delimiters
+	 * @return {String} formatted time, using delimiter
 	 */
 	formatTime: function(time)
 	{

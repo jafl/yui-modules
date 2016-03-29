@@ -211,6 +211,8 @@ Y.extend(PaginatorPlugin, Y.Plugin.Base,
 
 	/**
 	 * Sends a request to the datatable to load the current page.
+	 *
+	 * @method sendRequest
 	 */
 	sendRequest: function()
 	{
