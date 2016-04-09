@@ -79,6 +79,6 @@ Y.mix(Y.Node.prototype,
 	 */
 	selectAllText: function()
 	{
-		this.selectRange(0, e.value.length);
+		this.selectRange(0, this.get('value').length);
 	}
 });
