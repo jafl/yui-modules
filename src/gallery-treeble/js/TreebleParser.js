@@ -23,7 +23,9 @@ Y.namespace("Parsers").treebledatasource = function(oData)
 		return null;
 	}
 
-	var type = oData.dataType;
+	var treeble_config = this.get('host').treeble_config;
+
+	var type = oData.dataType || treeble_config.dataSourceType;
 	if (type)
 	{
 		// use it
@@ -41,8 +43,7 @@ Y.namespace("Parsers").treebledatasource = function(oData)
 		type = 'Local';
 	}
 
-	var src            = oData.dataType ? oData.liveData : oData;
-	var treeble_config = this.get('host').treeble_config;
+	var src = oData.dataType ? oData.liveData : oData;
 	if (type == 'Local')
 	{
 		treeble_config = Y.clone(treeble_config, true);
@@ -54,7 +55,12 @@ Y.namespace("Parsers").treebledatasource = function(oData)
 		src = Y.Lang.isString(src) ? window[ src ] : src;
 	}
 
-	var ds            = new Y.DataSource[ type ]({ source: src });
+	var ds = new Y.DataSource[ type ](
+	{
+		source:   src,
+		ioConfig: treeble_config.dataSourceIOConfig
+	});
+
 	ds.treeble_config = treeble_config;
 
 	if (ds.treeble_config.schemaPluginConfig)
