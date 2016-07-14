@@ -359,7 +359,11 @@ Y.extend(QueryBuilder, Y.Widget,
 		{
 			options[i] = new Option(this.var_list[i].text, this.var_list[i].name);
 		}
-		var_menu.set('value', name);
+
+		if (name)
+		{
+			var_menu.set('value', name);
+		}
 
 		if (has_bubble_problem)
 		{
