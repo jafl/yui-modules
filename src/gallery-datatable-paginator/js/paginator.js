@@ -153,7 +153,8 @@ function plug(self, plugin, config)
 {
 	self.orig_plug.apply(this, Y.Array(arguments, 1));
 
-	if (plugin === Y.Plugin.DataTableDataSource)
+	if (plugin.NAME === Y.Plugin.DataTableDataSource.NAME &&
+		Y.Lang.isFunction(plugin.prototype.onDataReturnInitializeTable))
 	{
 		listenToDataSource.call(self);
 	}

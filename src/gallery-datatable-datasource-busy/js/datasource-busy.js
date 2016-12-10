@@ -34,7 +34,7 @@ DataSourceBusy.ATTRS =
 	 */
 	showDelay:
 	{
-		default:   500,
+		value:     500,
 		validator: Y.Lang.isNumber
 	},
 };
@@ -54,12 +54,15 @@ Y.extend(DataSourceBusy, Y.Plugin.DataTableDataSource,
 			table.plug(Y.Plugin.BusyOverlay);
 		}
 
-		Y.later(this.get('showDelay'), this, this.showBusy);
+		this.busy_handler = Y.later(this.get('showDelay'), this, this.showBusy);
 		DataSourceBusy.superclass.load.apply(this, arguments);
 	},
 
 	onDataReturnInitializeTable: function()
 	{
+		this.busy_handler.cancel();
+		delete this.busy_handler;
+
 		DataSourceBusy.superclass.onDataReturnInitializeTable.apply(this, arguments);
 		this.hideBusy();
 	},
