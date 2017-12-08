@@ -183,14 +183,14 @@ function(Y)
 		if (form.validateForm())
 		{
 			pg.setPage(1, true);
-			sendRequest();
+			table.paginator.sendRequest();
 		}
 	}
 
 	Y.on('click', function()
 	{
 		query.reset();
-		sendRequest();
+		table.paginator.sendRequest();
 	},
 	'#reset');
 
