@@ -276,6 +276,19 @@
                 "DataSource": 1
             }
         },
+        "src/gallery-datatable-datasource-busy/js/datasource-busy.js": {
+            "name": "src/gallery-datatable-datasource-busy/js/datasource-busy.js",
+            "modules": {
+                "gallery-datatable-datasource-busy": 1
+            },
+            "classes": {
+                "Plugin.DataTableDataSourceBusy": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Plugin": 1
+            }
+        },
         "src/gallery-datatable-paginator/js/paginator.js": {
             "name": "src/gallery-datatable-paginator/js/paginator.js",
             "modules": {
@@ -356,6 +369,13 @@
             "classes": {
                 "Node~dimensions": 1
             },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/gallery-eventsource/js/eventsource.js": {
+            "name": "src/gallery-eventsource/js/eventsource.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -1689,6 +1709,23 @@
             "file": "src/gallery-datasource-async-function/js/AsyncFunctionDataSource.js",
             "line": 7,
             "description": "<p>Data source that calls an asynchronous function.</p>",
+            "itemtype": "main"
+        },
+        "gallery-datatable-datasource-busy": {
+            "name": "gallery-datatable-datasource-busy",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "Plugin.DataTableDataSourceBusy": 1
+            },
+            "fors": {},
+            "namespaces": {
+                "Plugin": 1
+            },
+            "tag": "main",
+            "file": "src/gallery-datatable-datasource-busy/js/datasource-busy.js",
+            "line": 7,
+            "description": "<p>Extension to datatable-datasource to show that the datasource is busy\nloading.</p>",
             "itemtype": "main"
         },
         "gallery-datatable-paginator": {
@@ -3027,6 +3064,33 @@
                 {
                     "name": "config",
                     "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "Plugin.DataTableDataSourceBusy": {
+            "name": "Plugin.DataTableDataSourceBusy",
+            "shortname": "Plugin.DataTableDataSourceBusy",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "gallery-datatable-datasource-busy",
+            "namespace": "Plugin",
+            "file": "src/gallery-datatable-datasource-busy/js/datasource-busy.js",
+            "line": 7,
+            "description": "<p>Extension to datatable-datasource to show that the datasource is busy\nloading.</p>",
+            "mainName": "gallery-datatable-datasource-busy",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true,
+            "extends": "Plugin.DataTableDataSource",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "configuration",
                     "type": "Object"
                 }
             ]
@@ -9150,6 +9214,17 @@
             "namespace": "DataSource"
         },
         {
+            "file": "src/gallery-datatable-datasource-busy/js/datasource-busy.js",
+            "line": 29,
+            "description": "Number of milliseconds to wait before showing the busy indicator.",
+            "itemtype": "attribute",
+            "name": "showDelay",
+            "type": "{Number}",
+            "class": "Plugin.DataTableDataSourceBusy",
+            "module": "gallery-datatable-datasource-busy",
+            "namespace": "Plugin"
+        },
+        {
             "file": "src/gallery-datatable-paginator/js/paginator.js",
             "line": 28,
             "itemtype": "attribute",
@@ -9866,6 +9941,272 @@
                 "type": "Number"
             },
             "class": "Node~dimensions",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 13,
+            "description": "The URL or the server-sent events.",
+            "type": "String",
+            "itemtype": "property",
+            "name": "url",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 20,
+            "description": "The current state of the object. Possible values are 0 for connecting,\n1 for connected, and 2 for disconnected.",
+            "type": "int",
+            "itemtype": "property",
+            "name": "readyState",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 28,
+            "description": "Object used to communicate with the server. May be an XHR or an\nEventSource.",
+            "type": "XMLHttpRequest|EventSource",
+            "itemtype": "property",
+            "name": "_transport",
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 45,
+            "description": "Fires the error event. When this happens, the readyState\nmust first be set to 2 so that error handlers querying\nthis value receive the correct value.",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "itemtype": "method",
+            "name": "_fireErrorEvent",
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 60,
+            "description": "Fires the open event. When this happens, the readyState\nmust first be set to 1 so that event listeners querying\nthis value receive the correct value.",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "itemtype": "method",
+            "name": "_fireOpenEvent",
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 78,
+            "description": "Fires a message event. This might be either an event of\ntype message or a custom event as received from the event\nstream.",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "An object containing the keys\n     type, data, lastEventId, and origin.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "itemtype": "method",
+            "name": "_fireMessageEvent",
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 109,
+            "description": "Map the common EventSource events to custom\nYUI events. These are delayed with a timer\nto avoid race conditions and provide consistency\nbetween the native EventSource usage and the\nXHR-based event source events.",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 182,
+            "description": "Initializes the EventSource object. Either creates an EventSource\ninstance or an XHR to mimic the functionality.",
+            "itemtype": "method",
+            "name": "_init",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 191,
+            "description": "Keeps track of where in the response buffer to start\nevaluating new data. Only used when native EventSource\nis not available.",
+            "type": "int",
+            "itemtype": "property",
+            "name": "_lastIndex",
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 201,
+            "description": "Keeps track of the last event ID received from the server.\nOnly used when native EventSource is not available.",
+            "type": "variant",
+            "itemtype": "property",
+            "name": "_lastEventId",
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 210,
+            "description": "Tracks the last piece of data from the messages stream.",
+            "type": "String",
+            "itemtype": "property",
+            "name": "_data",
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 218,
+            "description": "Tracks the last event name in the message stream.",
+            "type": "String",
+            "itemtype": "property",
+            "name": "_eventName",
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 309,
+            "description": "Called when XHR readyState 4 occurs. Processes the response,\nthen reopens the connection to the server unless close()\nhas been called.",
+            "itemtype": "method",
+            "name": "_validateResponse",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 343,
+            "description": "Updates the readyState property to 1 if it's still\nset at 0 and fires the open event.",
+            "itemtype": "method",
+            "name": "_signalOpen",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 356,
+            "description": "Responsible for parsing and interpreting a line of data\nin the event stream source.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The field name of the line.",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "The field value of the line.",
+                    "type": "Variant"
+                },
+                {
+                    "name": "secondPass",
+                    "description": "(Optional) Indicates that this\n     is the second time the function was called for this\n     line. Needed to prevent infinite recursion.",
+                    "type": "Boolean"
+                }
+            ],
+            "itemtype": "method",
+            "name": "_processDataLine",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 424,
+            "description": "Processes the data stream as server-sent events. Goes line by\nline looking for event information and fires the message\nevent where appropriate.",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "The text to parse.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "_processIncomingData",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 476,
+            "description": "Fires the message event with appropriate data, but only if\nthere is actual data to share. This uses the stored\nevent name and data value to fire the appropriate event.",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "itemtype": "method",
+            "name": "_fireMessageEvent",
+            "access": "private",
+            "tagname": "",
+            "class": "ExpirationCache",
+            "module": "gallery-dimensions"
+        },
+        {
+            "file": "src/gallery-eventsource/js/eventsource.js",
+            "line": 516,
+            "description": "Permanently close the connection with the server.",
+            "itemtype": "method",
+            "name": "close",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "ExpirationCache",
             "module": "gallery-dimensions"
         },
         {
@@ -19209,7 +19550,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 413,
+            "line": 417,
             "description": "Set the value of the specified row.",
             "itemtype": "method",
             "name": "update",
@@ -19230,7 +19571,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 515,
+            "line": 519,
             "description": "Removes the specified row.",
             "itemtype": "method",
             "name": "remove",
@@ -19250,7 +19591,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 564,
+            "line": 568,
             "description": "Validate the fields in each row.",
             "itemtype": "method",
             "name": "validateFields",
@@ -19263,7 +19604,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 601,
+            "line": 605,
             "itemtype": "method",
             "name": "clearFieldMessages",
             "class": "QueryBuilder",
@@ -19271,7 +19612,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 619,
+            "line": 623,
             "description": "Display a message for the specified field.",
             "itemtype": "method",
             "name": "displayFieldMessage",
@@ -19307,7 +19648,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 646,
+            "line": 650,
             "description": "Returns plugin used for the specified row, if any.",
             "itemtype": "method",
             "name": "getPlugin",
@@ -19327,7 +19668,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 659,
+            "line": 663,
             "itemtype": "method",
             "name": "toDatabaseQuery",
             "return": {
@@ -19339,7 +19680,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 684,
+            "line": 688,
             "description": "Updates internal data to match ordering of rows.  Useful after\nDrag-and-Drop operation is finished.",
             "itemtype": "method",
             "name": "rowsReordered",
@@ -19348,7 +19689,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 710,
+            "line": 714,
             "itemtype": "method",
             "name": "_renumberRows",
             "access": "private",
@@ -19358,7 +19699,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 734,
+            "line": 738,
             "itemtype": "method",
             "name": "_createContainer",
             "access": "protected",
@@ -19372,7 +19713,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 744,
+            "line": 748,
             "description": "Fires the queryChanged event.",
             "itemtype": "method",
             "name": "_notifyChanged",
@@ -19383,7 +19724,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 759,
+            "line": 763,
             "itemtype": "method",
             "name": "variableName",
             "params": [
@@ -19402,7 +19743,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 774,
+            "line": 778,
             "itemtype": "method",
             "name": "_variablesMenu",
             "access": "protected",
@@ -19423,7 +19764,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 795,
+            "line": 799,
             "itemtype": "method",
             "name": "_rowControls",
             "access": "protected",
@@ -19437,7 +19778,7 @@
         },
         {
             "file": "src/gallery-querybuilder/js/QueryBuilder.js",
-            "line": 821,
+            "line": 825,
             "description": "<p>Environment information.</p>\n\n<dl>\n<dt>has_bubble_problem</dt>\n<dd>True if change events from select elements do not bubble.</dd>\n</dl>",
             "itemtype": "property",
             "name": "Env",
@@ -20351,6 +20692,10 @@
         }
     ],
     "warnings": [
+        {
+            "message": "Missing item type\nMap the common EventSource events to custom\nYUI events. These are delayed with a timer\nto avoid race conditions and provide consistency\nbetween the native EventSource usage and the\nXHR-based event source events.",
+            "line": " src/gallery-eventsource/js/eventsource.js:109"
+        },
         {
             "message": "Missing item type\nAllows rearranging Page Layout modules via Drag-and-Drop.",
             "line": " src/gallery-layout-dd/js/PageLayoutDD.js:3"

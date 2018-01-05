@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/gallery-bulkedit/js/BulkEditor.js - YUI 3 Gallery Modules</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="YUI 3 Gallery Modules" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 1.0.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Accordion.html">Accordion</a></li>
+                                <li><a href="../classes/AnimSequence.html">AnimSequence</a></li>
+                                <li><a href="../classes/ArrayIterator.html">ArrayIterator</a></li>
+                                <li><a href="../classes/ArrayList~extras.html">ArrayList~extras</a></li>
+                                <li><a href="../classes/Array~algorithms.html">Array~algorithms</a></li>
+                                <li><a href="../classes/Array~funcprog-extras.html">Array~funcprog-extras</a></li>
+                                <li><a href="../classes/Array~object-extras.html">Array~object-extras</a></li>
+                                <li><a href="../classes/Assert.html">Assert</a></li>
+                                <li><a href="../classes/AtLeastOneCheckboxGroup.html">AtLeastOneCheckboxGroup</a></li>
+                                <li><a href="../classes/AtMostOneCheckboxGroup.html">AtMostOneCheckboxGroup</a></li>
+                                <li><a href="../classes/BulkEditor.html">BulkEditor</a></li>
+                                <li><a href="../classes/Canvas.Context2d.html">Canvas.Context2d</a></li>
+                                <li><a href="../classes/CheckboxGroup.html">CheckboxGroup</a></li>
+                                <li><a href="../classes/Chipper.html">Chipper</a></li>
+                                <li><a href="../classes/CollapseToggle.html">CollapseToggle</a></li>
+                                <li><a href="../classes/ComplexMath.html">ComplexMath</a></li>
+                                <li><a href="../classes/ComplexNumber.html">ComplexNumber</a></li>
+                                <li><a href="../classes/DataSource.AsyncFunction.html">DataSource.AsyncFunction</a></li>
+                                <li><a href="../classes/DataSource.BulkEdit.html">DataSource.BulkEdit</a></li>
+                                <li><a href="../classes/DataSource.Treeble.html">DataSource.Treeble</a></li>
+                                <li><a href="../classes/DateTime.html">DateTime</a></li>
+                                <li><a href="../classes/DateTimeRange.html">DateTimeRange</a></li>
+                                <li><a href="../classes/DateTimeUtils.html">DateTimeUtils</a></li>
+                                <li><a href="../classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
+                                <li><a href="../classes/ExpirationCache.html">ExpirationCache</a></li>
+                                <li><a href="../classes/ExpressionBuilder.html">ExpressionBuilder</a></li>
+                                <li><a href="../classes/FormManager.html">FormManager</a></li>
+                                <li><a href="../classes/HTMLTableBulkEditor.html">HTMLTableBulkEditor</a></li>
+                                <li><a href="../classes/InputPopup.html">InputPopup</a></li>
+                                <li><a href="../classes/InstanceManager.html">InstanceManager</a></li>
+                                <li><a href="../classes/io~multiresponse.html">io~multiresponse</a></li>
+                                <li><a href="../classes/Iterable.html">Iterable</a></li>
+                                <li><a href="../classes/LinkedList.html">LinkedList</a></li>
+                                <li><a href="../classes/LinkedListItem.html">LinkedListItem</a></li>
+                                <li><a href="../classes/LinkedListIterator.html">LinkedListIterator</a></li>
+                                <li><a href="../classes/LogFilter.html">LogFilter</a></li>
+                                <li><a href="../classes/Math.html">Math</a></li>
+                                <li><a href="../classes/MathCanvas.html">MathCanvas</a></li>
+                                <li><a href="../classes/MathCanvas.Parser.html">MathCanvas.Parser</a></li>
+                                <li><a href="../classes/MathCanvas.RectList.html">MathCanvas.RectList</a></li>
+                                <li><a href="../classes/MathFunction.html">MathFunction</a></li>
+                                <li><a href="../classes/MathFunction.Arccosine.html">MathFunction.Arccosine</a></li>
+                                <li><a href="../classes/MathFunction.Arcsine.html">MathFunction.Arcsine</a></li>
+                                <li><a href="../classes/MathFunction.Arctangent.html">MathFunction.Arctangent</a></li>
+                                <li><a href="../classes/MathFunction.Arctangent2.html">MathFunction.Arctangent2</a></li>
+                                <li><a href="../classes/MathFunction.Conjugate.html">MathFunction.Conjugate</a></li>
+                                <li><a href="../classes/MathFunction.Cosine.html">MathFunction.Cosine</a></li>
+                                <li><a href="../classes/MathFunction.E.html">MathFunction.E</a></li>
+                                <li><a href="../classes/MathFunction.Exponential.html">MathFunction.Exponential</a></li>
+                                <li><a href="../classes/MathFunction.FunctionWithArgs.html">MathFunction.FunctionWithArgs</a></li>
+                                <li><a href="../classes/MathFunction.HyperbolicCosine.html">MathFunction.HyperbolicCosine</a></li>
+                                <li><a href="../classes/MathFunction.HyperbolicSine.html">MathFunction.HyperbolicSine</a></li>
+                                <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
+                                <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
+                                <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
+                                <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
+                                <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
+                                <li><a href="../classes/MathFunction.Logarithm.html">MathFunction.Logarithm</a></li>
+                                <li><a href="../classes/MathFunction.Magnitude.html">MathFunction.Magnitude</a></li>
+                                <li><a href="../classes/MathFunction.Max.html">MathFunction.Max</a></li>
+                                <li><a href="../classes/MathFunction.Min.html">MathFunction.Min</a></li>
+                                <li><a href="../classes/MathFunction.NaturalLog.html">MathFunction.NaturalLog</a></li>
+                                <li><a href="../classes/MathFunction.Negate.html">MathFunction.Negate</a></li>
+                                <li><a href="../classes/MathFunction.Phase.html">MathFunction.Phase</a></li>
+                                <li><a href="../classes/MathFunction.Pi.html">MathFunction.Pi</a></li>
+                                <li><a href="../classes/MathFunction.Product.html">MathFunction.Product</a></li>
+                                <li><a href="../classes/MathFunction.Quotient.html">MathFunction.Quotient</a></li>
+                                <li><a href="../classes/MathFunction.RealPart.html">MathFunction.RealPart</a></li>
+                                <li><a href="../classes/MathFunction.Rotate.html">MathFunction.Rotate</a></li>
+                                <li><a href="../classes/MathFunction.Sine.html">MathFunction.Sine</a></li>
+                                <li><a href="../classes/MathFunction.SquareRoot.html">MathFunction.SquareRoot</a></li>
+                                <li><a href="../classes/MathFunction.Sum.html">MathFunction.Sum</a></li>
+                                <li><a href="../classes/MathFunction.Tangent.html">MathFunction.Tangent</a></li>
+                                <li><a href="../classes/MathFunction.Value.html">MathFunction.Value</a></li>
+                                <li><a href="../classes/MathFunction.Variable.html">MathFunction.Variable</a></li>
+                                <li><a href="../classes/MatrixBackground.html">MatrixBackground</a></li>
+                                <li><a href="../classes/MatrixCredits.html">MatrixCredits</a></li>
+                                <li><a href="../classes/MRUCache.html">MRUCache</a></li>
+                                <li><a href="../classes/MultiObject.html">MultiObject</a></li>
+                                <li><a href="../classes/NodeList~extras2.html">NodeList~extras2</a></li>
+                                <li><a href="../classes/Node~dimensions.html">Node~dimensions</a></li>
+                                <li><a href="../classes/Node~event-set.html">Node~event-set</a></li>
+                                <li><a href="../classes/Node~optimizations.html">Node~optimizations</a></li>
+                                <li><a href="../classes/Node~scrollIntoView.html">Node~scrollIntoView</a></li>
+                                <li><a href="../classes/Node~utils.html">Node~utils</a></li>
+                                <li><a href="../classes/Object~extras.html">Object~extras</a></li>
+                                <li><a href="../classes/PageLayout.html">PageLayout</a></li>
+                                <li><a href="../classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
+                                <li><a href="../classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
+                                <li><a href="../classes/Paginator.ui.FirstPageLink.html">Paginator.ui.FirstPageLink</a></li>
+                                <li><a href="../classes/Paginator.ui.ItemRangeDropdown.html">Paginator.ui.ItemRangeDropdown</a></li>
+                                <li><a href="../classes/Paginator.ui.LastPageLink.html">Paginator.ui.LastPageLink</a></li>
+                                <li><a href="../classes/Paginator.ui.NextPageLink.html">Paginator.ui.NextPageLink</a></li>
+                                <li><a href="../classes/Paginator.ui.PageLinks.html">Paginator.ui.PageLinks</a></li>
+                                <li><a href="../classes/Paginator.ui.PreviousPageLink.html">Paginator.ui.PreviousPageLink</a></li>
+                                <li><a href="../classes/Paginator.ui.RowsPerPageDropdown.html">Paginator.ui.RowsPerPageDropdown</a></li>
+                                <li><a href="../classes/Paginator.ui.ValidationPageLinks.html">Paginator.ui.ValidationPageLinks</a></li>
+                                <li><a href="../classes/Parsers.html">Parsers</a></li>
+                                <li><a href="../classes/Plugin.BusyOverlay.html">Plugin.BusyOverlay</a></li>
+                                <li><a href="../classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
+                                <li><a href="../classes/Plugin.DataTableDataSourceBusy.html">Plugin.DataTableDataSourceBusy</a></li>
+                                <li><a href="../classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+                                <li><a href="../classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
+                                <li><a href="../classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
+                                <li><a href="../classes/Plugin.DataTableState.html">Plugin.DataTableState</a></li>
+                                <li><a href="../classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
+                                <li><a href="../classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
+                                <li><a href="../classes/Plugin.Neon.html">Plugin.Neon</a></li>
+                                <li><a href="../classes/Plugin.NodeFXSequence.html">Plugin.NodeFXSequence</a></li>
+                                <li><a href="../classes/Plugin.OverlayForm.html">Plugin.OverlayForm</a></li>
+                                <li><a href="../classes/Plugin.PageLayoutAnyWidgetModule.html">Plugin.PageLayoutAnyWidgetModule</a></li>
+                                <li><a href="../classes/Plugin.PageLayoutDataTableModule.html">Plugin.PageLayoutDataTableModule</a></li>
+                                <li><a href="../classes/Popup.html">Popup</a></li>
+                                <li><a href="../classes/QueryBuilder.html">QueryBuilder</a></li>
+                                <li><a href="../classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
+                                <li><a href="../classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
+                                <li><a href="../classes/QueryBuilder.Select.html">QueryBuilder.Select</a></li>
+                                <li><a href="../classes/QueryBuilder.String.html">QueryBuilder.String</a></li>
+                                <li><a href="../classes/RPC.Mojito.html">RPC.Mojito</a></li>
+                                <li><a href="../classes/SelectAllCheckboxGroup.html">SelectAllCheckboxGroup</a></li>
+                                <li><a href="../classes/Sort.html">Sort</a></li>
+                                <li><a href="../classes/Treeble.html">Treeble</a></li>
+                                <li><a href="../classes/YUI~funcprog.html">YUI~funcprog</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
+                                <li><a href="../modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+                                <li><a href="../modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+                                <li><a href="../modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+                                <li><a href="../modules/gallery-algorithms.html">gallery-algorithms</a></li>
+                                <li><a href="../modules/gallery-anim-class.html">gallery-anim-class</a></li>
+                                <li><a href="../modules/gallery-anim-sequence.html">gallery-anim-sequence</a></li>
+                                <li><a href="../modules/gallery-bulkedit.html">gallery-bulkedit</a></li>
+                                <li><a href="../modules/gallery-busyoverlay.html">gallery-busyoverlay</a></li>
+                                <li><a href="../modules/gallery-canvas.html">gallery-canvas</a></li>
+                                <li><a href="../modules/gallery-checkboxgroups.html">gallery-checkboxgroups</a></li>
+                                <li><a href="../modules/gallery-chipper.html">gallery-chipper</a></li>
+                                <li><a href="../modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+                                <li><a href="../modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
+                                <li><a href="../modules/gallery-console-test.html">gallery-console-test</a></li>
+                                <li><a href="../modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+                                <li><a href="../modules/gallery-datatable-datasource-busy.html">gallery-datatable-datasource-busy</a></li>
+                                <li><a href="../modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
+                                <li><a href="../modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
+                                <li><a href="../modules/gallery-datatable-state.html">gallery-datatable-state</a></li>
+                                <li><a href="../modules/gallery-datetime.html">gallery-datetime</a></li>
+                                <li><a href="../modules/gallery-datetime-range.html">gallery-datetime-range</a></li>
+                                <li><a href="../modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
+                                <li><a href="../modules/gallery-dimensions.html">gallery-dimensions</a></li>
+                                <li><a href="../modules/gallery-expiration-cache.html">gallery-expiration-cache</a></li>
+                                <li><a href="../modules/gallery-exprbuilder.html">gallery-exprbuilder</a></li>
+                                <li><a href="../modules/gallery-formmgr.html">gallery-formmgr</a></li>
+                                <li><a href="../modules/gallery-formmgr-css-validation.html">gallery-formmgr-css-validation</a></li>
+                                <li><a href="../modules/gallery-formmgr-overlay-plugin.html">gallery-formmgr-overlay-plugin</a></li>
+                                <li><a href="../modules/gallery-funcprog.html">gallery-funcprog</a></li>
+                                <li><a href="../modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
+                                <li><a href="../modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+                                <li><a href="../modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
+                                <li><a href="../modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
+                                <li><a href="../modules/gallery-iterable-extras.html">gallery-iterable-extras</a></li>
+                                <li><a href="../modules/gallery-layout.html">gallery-layout</a></li>
+                                <li><a href="../modules/gallery-layout-anywidget.html">gallery-layout-anywidget</a></li>
+                                <li><a href="../modules/gallery-layout-cols.html">gallery-layout-cols</a></li>
+                                <li><a href="../modules/gallery-layout-datatable.html">gallery-layout-datatable</a></li>
+                                <li><a href="../modules/gallery-layout-rows.html">gallery-layout-rows</a></li>
+                                <li><a href="../modules/gallery-linkedlist.html">gallery-linkedlist</a></li>
+                                <li><a href="../modules/gallery-log-filter.html">gallery-log-filter</a></li>
+                                <li><a href="../modules/gallery-math.html">gallery-math</a></li>
+                                <li><a href="../modules/gallery-mathcanvas.html">gallery-mathcanvas</a></li>
+                                <li><a href="../modules/gallery-matrix-background.html">gallery-matrix-background</a></li>
+                                <li><a href="../modules/gallery-matrix-credits.html">gallery-matrix-credits</a></li>
+                                <li><a href="../modules/gallery-mojito-rpc.html">gallery-mojito-rpc</a></li>
+                                <li><a href="../modules/gallery-mru-cache.html">gallery-mru-cache</a></li>
+                                <li><a href="../modules/gallery-multiobject.html">gallery-multiobject</a></li>
+                                <li><a href="../modules/gallery-neon.html">gallery-neon</a></li>
+                                <li><a href="../modules/gallery-node-event-set.html">gallery-node-event-set</a></li>
+                                <li><a href="../modules/gallery-node-optimizations.html">gallery-node-optimizations</a></li>
+                                <li><a href="../modules/gallery-node-utils.html">gallery-node-utils</a></li>
+                                <li><a href="../modules/gallery-nodelist-extras2.html">gallery-nodelist-extras2</a></li>
+                                <li><a href="../modules/gallery-object-extras.html">gallery-object-extras</a></li>
+                                <li><a href="../modules/gallery-paginator.html">gallery-paginator</a></li>
+                                <li><a href="../modules/gallery-popup.html">gallery-popup</a></li>
+                                <li><a href="../modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+                                <li><a href="../modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
+                                <li><a href="../modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
+                                <li><a href="../modules/gallery-quickedit.html">gallery-quickedit</a></li>
+                                <li><a href="../modules/gallery-scrollintoview.html">gallery-scrollintoview</a></li>
+                                <li><a href="../modules/gallery-sort-extras.html">gallery-sort-extras</a></li>
+                                <li><a href="../modules/gallery-table-utils.html">gallery-table-utils</a></li>
+                                <li><a href="../modules/gallery-test-extras.html">gallery-test-extras</a></li>
+                                <li><a href="../modules/gallery-treeble.html">gallery-treeble</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: src/gallery-bulkedit/js/BulkEditor.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**********************************************************************
+ * A widget for editing many records at once.
+ *
+ * @module gallery-bulkedit
+ * @main gallery-bulkedit
+ */
+
+/**
+ * &lt;p&gt;BulkEditor provides the basic structure for editing all the records
+ * in a BulkEditDataSource.  The fields for editing a record are rendered
+ * into a &quot;row&quot;.  This could be a div, a tbody, or something else.&lt;/p&gt;
+ * 
+ * &lt;p&gt;All event handlers must be placed on the container, not individual
+ * DOM elements.&lt;/p&gt;
+ * 
+ * &lt;p&gt;Errors must be returned from the server in the order in which records
+ * are displayed.  Because of this, when data is sent to the server:&lt;/p&gt;
+ * &lt;ul&gt;
+ * &lt;li&gt;If the server knows the ordering, you can send the diffs.  (Diffs are an unordered map, keyed on the record id.)&lt;/li&gt;
+ * &lt;li&gt;If the server doesn&#x27;t know the ordering, you must send all the data.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @class BulkEditor
+ * @extends Widget
+ * @constructor
+ * @param config {Object}
+ */
+function BulkEditor()
+{
+	BulkEditor.superclass.constructor.apply(this, arguments);
+}
+
+BulkEditor.NAME = &quot;bulkedit&quot;;
+
+BulkEditor.ATTRS =
+{
+	/**
+	 * @attribute ds
+	 * @type {DataSource.BulkEdit}
+	 * @required
+	 * @writeonce
+	 */
+	ds:
+	{
+		validator: function(value)
+		{
+			return (value instanceof BulkEditDataSource);
+		},
+		writeOnce: true
+	},
+
+	/**
+	 * Configuration for each field: type (input|select|textarea), label,
+	 * validation (css, regex, msg, fn; see
+	 * gallery-formmgr-css-validation).  Derived classes can require
+	 * additional keys.
+	 *
+	 * @attribute fields
+	 * @type {Object}
+	 * @required
+	 * @writeonce
+	 */
+	fields:
+	{
+		validator: Y.Lang.isObject,
+		writeOnce: true
+	},
+
+	/**
+	 * Paginator for switching between pages of records.  BulkEditor
+	 * expects it to be configured to display ValidationPageLinks, so the
+	 * user can see which pages have errors that need to be fixed.
+	 *
+	 * @attribute paginator
+	 * @type {Paginator}
+	 * @writeonce
+	 */
+	paginator:
+	{
+		validator: function(value)
+		{
+			return (value instanceof Y.Paginator);
+		},
+		writeOnce: true
+	},
+
+	/**
+	 * Extra key/value pairs to pass in the DataSource request.
+	 * 
+	 * @attribute requestExtra
+	 * @type {Object}
+	 * @writeonce
+	 */
+	requestExtra:
+	{
+		value:     {},
+		validator: Y.Lang.isObject,
+		writeOnce: true
+	},
+
+	/**
+	 * CSS class used to temporarily highlight a record.
+	 *
+	 * @attribute pingClass
+	 * @type {String}
+	 * @default &quot;yui3-bulkedit-ping&quot;
+	 */
+	pingClass:
+	{
+		value:     Y.ClassNameManager.getClassName(BulkEditor.NAME, &#x27;ping&#x27;),
+		validator: Y.Lang.isString
+	},
+
+	/**
+	 * Duration in seconds that pingClass is applied to a record.
+	 *
+	 * @attribute pingTimeout
+	 * @type {Number}
+	 * @default 2
+	 */
+	pingTimeout:
+	{
+		value:     2,
+		validator: Y.Lang.isNumber
+	}
+};
+
+/**
+ * The number of checkboxes in each column of a checkboxMultiselect field.
+ * 
+ * @property checkbox_multiselect_column_height
+ * @type {Number}
+ * @static
+ */
+BulkEditor.checkbox_multiselect_column_height = 6;
+
+/**
+ * @event notifyErrors
+ * @description Fired when widget-level validation messages need to be displayed.
+ * @param msgs {Array} the messages to display
+ */
+/**
+ * @event clearErrorNotification
+ * @description Fired when widget-level validation messages should be cleared.
+ */
+/**
+ * @event pageRendered
+ * @description Fired after the editor has rendered a page.
+ */
+/**
+ * @event recordVisible
+ * @description Fired after showRecord*() succeeds, including switching pages.
+ */
+
+var default_page_size = 1e9,
+
+	id_prefix = &#x27;bulk-editor&#x27;,
+	id_separator = &#x27;__&#x27;,
+	id_regex = new RegExp(&#x27;^&#x27; + id_prefix + id_separator + &#x27;(.+?)(?:&#x27; + id_separator + &#x27;(.+?))?$&#x27;),
+
+	status_prefix  = &#x27;bulkedit-has&#x27;,
+	status_pattern = status_prefix + &#x27;([a-z]+)&#x27;,
+	status_re      = new RegExp(Y.Node.class_re_prefix + status_pattern + Y.Node.class_re_suffix),
+
+	record_status_prefix  = &#x27;bulkedit-hasrecord&#x27;,
+	record_status_pattern = record_status_prefix + &#x27;([a-z]+)&#x27;,
+	record_status_re      = new RegExp(Y.Node.class_re_prefix + record_status_pattern + Y.Node.class_re_suffix),
+
+	message_container_class = Y.ClassNameManager.getClassName(BulkEditor.NAME, &#x27;message-text&#x27;),
+
+	perl_flags_regex = /^\(\?([a-z]+)\)/;
+
+BulkEditor.record_container_class     = Y.ClassNameManager.getClassName(BulkEditor.NAME, &#x27;bd&#x27;);
+BulkEditor.record_msg_container_class = Y.ClassNameManager.getClassName(BulkEditor.NAME, &#x27;record-message-container&#x27;);
+
+BulkEditor.field_container_class        = Y.ClassNameManager.getClassName(BulkEditor.NAME, &#x27;field-container&#x27;);
+BulkEditor.field_container_class_prefix = BulkEditor.field_container_class + &#x27;-&#x27;;
+BulkEditor.field_class_prefix           = Y.ClassNameManager.getClassName(BulkEditor.NAME, &#x27;field&#x27;) + &#x27;-&#x27;;
+
+function switchPage(state)
+{
+	this.saveChanges();
+
+	var pg = this.get(&#x27;paginator&#x27;);
+	pg.setTotalRecords(state.totalRecords, true);
+	pg.setStartIndex(state.recordOffset, true);
+	pg.setRowsPerPage(state.rowsPerPage, true);
+	pg.setPage(state.page, true);
+	this._updatePageStatus();
+	this.reload();
+}
+
+Y.extend(BulkEditor, Y.Widget,
+{
+	initializer: function(config)
+	{
+		if (config.paginator)
+		{
+			this._pg_event_handle =
+				config.paginator.on(&#x27;changeRequest&#x27;, switchPage, this);
+		}
+
+		this._hopper = [];
+	},
+
+	destructor: function()
+	{
+		if (this._pg_event_handle)
+		{
+			this._pg_event_handle.detach();
+		}
+
+		this._set(&#x27;ds&#x27;, null);
+		this._set(&#x27;paginator&#x27;, null);
+	},
+
+	renderUI: function()
+	{
+		this.clearServerErrors();
+		this.reload();
+	},
+
+	bindUI: function()
+	{
+		this._attachEvents(this.get(&#x27;contentBox&#x27;));
+	},
+
+	/**
+	 * Attaches events to the container.
+	 *
+	 * @method _attachEvents
+	 * @param container {Node} node to which events should be attached
+	 * @protected
+	 */
+	_attachEvents: function(
+		/* node */	container)
+	{
+		Y.delegate(&#x27;bulkeditor|click&#x27;, handleCheckboxMultiselectClickOnCheckbox, container, &#x27;.checkbox-multiselect input[type=checkbox]&#x27;, this);
+	},
+
+	/**
+	 * @method _destroyOnRender
+	 * @param o {Object} object to destroy when BulkEditor is re-rendered
+	 * @protected
+	 */
+	_destroyOnRender: function(o)
+	{
+		this._hopper.push(o);
+	},
+
+	/**
+	 * Reloads the current page of records.  This will erase any changes
+	 * unsaved changes!
+	 * 
+	 * @method reload
+	 */
+	reload: function()
+	{
+		if (!this.busy)
+		{
+			this.plug(Y.Plugin.BusyOverlay);
+		}
+		this.busy.show();
+
+		var pg = this.get(&#x27;paginator&#x27;);
+		var request =
+		{
+			startIndex:  pg ? pg.getStartIndex() : 0,
+			resultCount: pg ? pg.getRowsPerPage() : default_page_size
+		};
+		Y.mix(request, this.get(&#x27;requestExtra&#x27;));
+
+		var ds = this.get(&#x27;ds&#x27;);
+		ds.sendRequest(
+		{
+			request: request,
+			callback:
+			{
+				success: Y.bind(function(e)
+				{
+					this.busy.hide();
+
+					var count = ds.getRecordCount();
+					if (count &gt; 0 &amp;&amp; pg &amp;&amp; pg.getStartIndex() &gt;= count)
+					{
+						pg.setPage(pg.getPreviousPage());
+						return;
+					}
+
+					this._render(e.response);
+					this._updatePaginator(e.response);
+					this.scroll_to_index = -1;
+				},
+				this),
+
+				failure: Y.bind(function()
+				{
+					Y.log(&#x27;error loading data in BulkEditor&#x27;, &#x27;error&#x27;);
+
+					this.busy.hide();
+					this.scroll_to_index = -1;
+				},
+				this)
+			}
+		});
+	},
+
+	/**
+	 * Save the modified values from the current page of records.
+	 * 
+	 * @method saveChanges
+	 */
+	saveChanges: function()
+	{
+		var ds      = this.get(&#x27;ds&#x27;);
+		var records = ds.getCurrentRecords();
+		var id_key  = ds.get(&#x27;uniqueIdKey&#x27;);
+		Y.Object.each(this.get(&#x27;fields&#x27;), function(field, key)
+		{
+			Y.Array.each(records, function(r)
+			{
+				var node = this.getFieldElement(r, key),
+					tag  = node.get(&#x27;tagName&#x27;),
+					value;
+
+				// Limited number of HTML form tags.  Behaviors should not be
+				// changed.  Thus, not using a lookup table.
+
+				if (tag == &#x27;INPUT&#x27; &amp;&amp; node.get(&#x27;type&#x27;).toLowerCase() == &#x27;checkbox&#x27;)
+				{
+					value = node.get(&#x27;checked&#x27;) ? field.values.on : field.values.off;
+				}
+				else if (tag == &#x27;SELECT&#x27; &amp;&amp; node.get(&#x27;multiple&#x27;))
+				{
+					value = Y.reduce(node.getDOMNode().options, [], function(v, o)
+					{
+						if (o.selected)
+						{
+							v.push(o.value);
+						}
+						return v;
+					});
+				}
+				else
+				{
+					value = node.get(&#x27;value&#x27;);
+				}
+
+				ds.updateValue(r[ id_key ], key, value);
+			},
+			this);
+		},
+		this);
+	},
+
+	/**
+	 * Retrieve *all* the data.  Do not call this if you use server-side
+	 * pagination.
+	 * 
+	 * @method getAllValues
+	 * @param callback {Object} callback object which will be invoked by DataSource
+	 */
+	getAllValues: function(callback)
+	{
+		var request =
+		{
+			startIndex:  0,
+			resultCount: this.get(&#x27;ds&#x27;).getRecordCount(),
+			outOfBand:   true
+		};
+		Y.mix(request, this.get(&#x27;requestExtra&#x27;));
+
+		this.get(&#x27;ds&#x27;).sendRequest(
+		{
+			request:  request,
+			callback: callback
+		});
+	},
+
+	/**
+	 * @method getChanges
+	 * @return {Object} map of all changed values, keyed by record id
+	 */
+	getChanges: function()
+	{
+		return this.get(&#x27;ds&#x27;).getChanges();
+	},
+
+	/**
+	 * &lt;p&gt;Insert a new record.&lt;/p&gt;
+	 * 
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;/p&gt;
+	 * 
+	 * @method insertRecord
+	 * @param index {Number} insertion index
+	 * @param record {Object|String} record to insert or id of record to clone
+	 * @return {String} the new record&#x27;s id
+	 */
+	insertRecord: function(
+		/* int */		index,
+		/* object */	record)
+	{
+		var record_id = this.get(&#x27;ds&#x27;).insertRecord(index, record);
+		if (index &lt;= this.server_errors.records.length)
+		{
+			this.server_errors.records.splice(index,0, { id: record_id });
+			// leave entry in record_map undefined
+			this._updatePageStatus();
+		}
+		return record_id;
+	},
+
+	/**
+	 * &lt;p&gt;Remove a record.  There is no simple way to un-remove a record,
+	 * so if you need that functionality, you may want to use highlighting
+	 * to indicate removed records instead.&lt;/p&gt;
+	 * 
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;/p&gt;
+	 * 
+	 * @method removeRecord
+	 * @param index {Number}
+	 * @return {Boolean} true if the record was successfully removed
+	 */
+	removeRecord: function(
+		/* int */ index)
+	{
+		if (this.get(&#x27;ds&#x27;).removeRecord(index))
+		{
+			if (index &lt; this.server_errors.records.length)
+			{
+				var rec = this.server_errors.records[index];
+				this.server_errors.records.splice(index,1);
+				delete this.server_errors.record_map[ rec[ this.get(&#x27;ds&#x27;).get(&#x27;uniqueIdKey&#x27;) ] ];
+				this._updatePageStatus();
+			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	/**
+	 * &lt;p&gt;Restore a removed record.&lt;/p&gt;
+	 * 
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;/p&gt;
+	 * 
+	 * @method restoreRecord
+	 * @param record_id {String}
+	 * @return {int} the restored record&#x27;s index or -1 if record id is not found
+	 */
+	restoreRecord: function(
+		/* string */ record_id)
+	{
+		var i = this.get(&#x27;ds&#x27;).restoreRecord(record_id);
+		if (i &gt;= 0)
+		{
+			this.clearServerErrors();
+		}
+
+		return i;
+	},
+
+	/**
+	 * &lt;p&gt;Show a record.  Do not call this if you use server-side
+	 * pagination.&lt;/p&gt;
+	 * 
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;/p&gt;
+	 * 
+	 * @method showRecord
+	 * @param record_id {String}
+	 * @return {int} the newly visible record&#x27;s index or -1 if record id is not found
+	 */
+	showRecord: function(
+		/* string */ record_id)
+	{
+		var i = this.get(&#x27;ds&#x27;).showRecord(record_id);
+		if (i &gt;= 0)
+		{
+			this.clearServerErrors();
+		}
+
+		return i;
+	},
+
+	/**
+	 * &lt;p&gt;Hide a record.  Do not call this if you use server-side
+	 * pagination.&lt;/p&gt;
+	 * 
+	 * &lt;p&gt;You must &#x60;reload&#x60; the widget after calling this function!&lt;/p&gt;
+	 * 
+	 * @method hideRecord
+	 * @param index {Number}
+	 * @return {boolean} true if record is now hidden
+	 */
+	hideRecord: function(
+		/* int */ index)
+	{
+		if (this.get(&#x27;ds&#x27;).hideRecord(index))
+		{
+			if (index &lt; this.server_errors.records.length)
+			{
+				var rec = this.server_errors.records[index];
+				this.server_errors.records.splice(index,1);
+				delete this.server_errors.record_map[ rec[ this.get(&#x27;ds&#x27;).get(&#x27;uniqueIdKey&#x27;) ] ];
+				this._updatePageStatus();	// paranoia, since records with changes cannot be hidden
+			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	/**
+	 * @method getFieldConfig
+	 * @param key {String} field key
+	 * @return {Object} field configuration
+	 */
+	getFieldConfig: function(
+		/* string */	key)
+	{
+		return this.get(&#x27;fields&#x27;)[key] || {};
+	},
+
+	/**
+	 * @method getRecordContainerId
+	 * @param record {String|Object} record id or record object
+	 * @return {String} id of DOM element containing the record&#x27;s input elements
+	 */
+	getRecordContainerId: function(
+		/* string/object */ record)
+	{
+		if (Y.Lang.isString(record))
+		{
+			return id_prefix + id_separator + record;
+		}
+		else
+		{
+			return id_prefix + id_separator + record[ this.get(&#x27;ds&#x27;).get(&#x27;uniqueIdKey&#x27;) ];
+		}
+	},
+
+	/**
+	 * @method getFieldId
+	 * @param record {String|Object} record id or record object
+	 * @param key {String} field key
+	 * @return {String} id of DOM element containing the field&#x27;s input element
+	 */
+	getFieldId: function(
+		/* string/object */	record,
+		/* string */		key)
+	{
+		return this.getRecordContainerId(record) + id_separator + key;
+	},
+
+	/**
+	 * @method getRecordAndFieldKey
+	 * @param key {String|Node} field key or field input element
+	 * @return {Object} object containing record and field_key
+	 */
+	getRecordAndFieldKey: function(
+		/* string/element */	field)
+	{
+		var m = id_regex.exec(Y.Lang.isString(field) ? field : field.get(&#x27;id&#x27;));
+		if (m &amp;&amp; m.length &gt; 0)
+		{
+			return { record: this.get(&#x27;ds&#x27;).getCurrentRecordMap()[ m[1] ], field_key: m[2] };
+		}
+	},
+
+	/**
+	 * @method getRecordId
+	 * @param obj {Object|Node} record object, record container, or any node inside record container
+	 * @return {String} record id
+	 */
+	getRecordId: function(
+		/* object/element */	obj)
+	{
+		if (Y.Lang.isObject(obj) &amp;&amp; !obj._node)
+		{
+			return obj[ this.get(&#x27;ds&#x27;).get(&#x27;uniqueIdKey&#x27;) ];
+		}
+
+		var node = obj.getAncestorByClassName(BulkEditor.record_container_class, true);
+		if (node)
+		{
+			var m  = id_regex.exec(node.get(&#x27;id&#x27;));
+			if (m &amp;&amp; m.length &gt; 0)
+			{
+				return m[1];
+			}
+		}
+	},
+
+	/**
+	 * @method getRecordContainer
+	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
+	 * @return {Node} node containing rendered record
+	 */
+	getRecordContainer: function(
+		/* string/object/element */ record)
+	{
+		if (Y.Lang.isString(record))
+		{
+			var id = id_prefix + id_separator + record;
+		}
+		else if (record &amp;&amp; record._node)
+		{
+			return record.getAncestorByClassName(BulkEditor.record_container_class, true);
+		}
+		else	// record object
+		{
+			var id = this.getRecordContainerId(record);
+		}
+
+		return Y.one(&#x27;#&#x27;+id);
+	},
+
+	/**
+	 * @method getFieldContainer
+	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
+	 * @param key {String} field key
+	 * @return {Node} node containing rendered field
+	 */
+	getFieldContainer: function(
+		/* string/object/element */	record,
+		/* string */				key)
+	{
+		var field = this.getFieldElement(record, key);
+		return field.getAncestorByClassName(BulkEditor.field_container_class, true);
+	},
+
+	/**
+	 * @method getFieldElement
+	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
+	 * @param key {String} field key
+	 * @return {Node} field&#x27;s input element
+	 */
+	getFieldElement: function(
+		/* string/object/element */	record,
+		/* string */				key)
+	{
+		if (record &amp;&amp; record._node)
+		{
+			record = this.getRecordId(record);
+		}
+		return Y.one(&#x27;#&#x27;+this.getFieldId(record, key));
+	},
+
+	/**
+	 * Paginate and/or scroll to make the specified record visible.  Record
+	 * is pinged to help the user find it.
+	 * 
+	 * @method showRecordIndex
+	 * @param index {Number} record index
+	 */
+	showRecordIndex: function(
+		/* int */ index)
+	{
+		if (index &lt; 0 || this.get(&#x27;ds&#x27;).getRecordCount() &lt;= index)
+		{
+			return;
+		}
+
+		var pg    = this.get(&#x27;paginator&#x27;);
+		var start = pg ? pg.getStartIndex() : 0;
+		var count = pg ? pg.getRowsPerPage() : default_page_size;
+		if (start &lt;= index &amp;&amp; index &lt; start+count)
+		{
+			var rec  = this.get(&#x27;ds&#x27;).getCurrentRecords()[ index - start ],
+				node = this.getRecordContainer(rec);
+			node.scrollIntoView();
+			this.pingRecord(node);
+			this.fire(&#x27;recordVisible&#x27;, { index: index, id: this.getRecordId(rec) });
+		}
+		else if (pg)
+		{
+			this.scroll_to_index = index;
+			pg.setPage(1 + Math.floor(index / count));
+		}
+	},
+
+	/**
+	 * Paginate and/or scroll to make the specified record visible.  Record
+	 * is pinged to help the user find it.
+	 * 
+	 * @method showRecordId
+	 * @param id {Number} record id
+	 */
+	showRecordId: function(
+		/* string */ id)
+	{
+		var index = this.get(&#x27;ds&#x27;).recordIdToIndex(id);
+		if (index &gt;= 0)
+		{
+			this.showRecordIndex(index);
+		}
+	},
+
+	/**
+	 * Apply a class to the DOM element containing the record for a short
+	 * while.  Your CSS can use this class to highlight the record in some
+	 * way.
+	 * 
+	 * @method pingRecord
+	 * @param record {String|Object|Node} record id, record object, record container, or any node inside record container
+	 */
+	pingRecord: function(
+		/* string/object/element */	record)
+	{
+		var ping = this.get(&#x27;pingClass&#x27;);
+		if (ping)
+		{
+			var node = this.getRecordContainer(record);
+			node.addClass(ping);
+			Y.later(this.get(&#x27;pingTimeout&#x27;)*1000, null, function()
+			{
+				if (node.inDoc())
+				{
+					node.removeClass(ping);
+				}
+			});
+		}
+	},
+
+	/**
+	 * Render the current page of records.
+	 *
+	 * @method _render
+	 * @protected
+	 * @param response {Object} response from data source
+	 */
+	_render: function(response)
+	{
+		Y.log(&#x27;_render&#x27;, &#x27;debug&#x27;);
+
+		Y.Chipper.destroy(this._hopper);
+		this._hopper = [];
+
+		var container = this.get(&#x27;contentBox&#x27;);
+		this._renderContainer(container);
+		container.set(&#x27;scrollTop&#x27;, 0);
+		container.set(&#x27;scrollLeft&#x27;, 0);
+
+		Y.Array.each(response.results, function(record)
+		{
+			var node = this._renderRecordContainer(container, record);
+			this._renderRecord(node, record);
+		},
+		this);
+
+		this.fire(&#x27;pageRendered&#x27;);
+
+		if (this.auto_validate)
+		{
+			this.validate();
+		}
+
+		if (this.scroll_to_index &gt;= 0)
+		{
+			this.showRecordIndex(this.scroll_to_index);
+			this.scroll_to_index = -1;
+		}
+	},
+
+	/**
+	 * Derived class should override to create a structure for the records.
+	 *
+	 * @method _renderContainer
+	 * @protected
+	 * @param container {Node}
+	 */
+	_renderContainer: function(
+		/* element */	container)
+	{
+		container.set(&#x27;innerHTML&#x27;, &#x27;&#x27;);
+	},
+
+	/**
+	 * Derived class must override to create a container for the record.
+	 * 
+	 * @method _renderRecordContainer
+	 * @protected
+	 * @param container {Node}
+	 * @param record {Object} record data
+	 */
+	_renderRecordContainer: function(
+		/* element */	container,
+		/* object */	record)
+	{
+		return null;
+	},
+
+	/**
+	 * Derived class can override if it needs to do more than just call
+	 * _renderField() for each field.
+	 * 
+	 * @method _renderRecord
+	 * @protected
+	 * @param container {Node} record container
+	 * @param record {Object} record data
+	 */
+	_renderRecord: function(
+		/* element */	container,
+		/* object */	record)
+	{
+		Y.Object.each(this.get(&#x27;fields&#x27;), function(field, key)
+		{
+			this._renderField(
+			{
+				container: container,
+				key:       key,
+				value:     record[key],
+				field:     field,
+				record:    record
+			});
+		},
+		this);
+	},
+
+	/**
+	 * If _renderRecord is not overridden, derived class must override this
+	 * function to render the field.
+	 * 
+	 * @method _renderField
+	 * @protected
+	 * @param o {Object}
+	 *	container {Node} record container,
+	 *	key {String} field key,
+	 *	value {Mixed} field value,
+	 *	field {Object} field configuration,
+	 *	record {Object} record data
+	 */
+	_renderField: function(
+		/* object */ o)
+	{
+	},
+
+	/**
+	 * Update the paginator to match the data source meta information.
+	 * 
+	 * @method _updatePaginator
+	 * @protected
+	 * @param response {Object} response from DataSource
+	 */
+	_updatePaginator: function(response)
+	{
+		var pg = this.get(&#x27;paginator&#x27;);
+		if (pg)
+		{
+			pg.setTotalRecords(this.get(&#x27;ds&#x27;).getRecordCount(), true);
+		}
+	},
+
+	/**
+	 * Clear errors received from the server.  This clears all displayed
+	 * messages.
+	 * 
+	 * @method clearServerErrors
+	 */
+	clearServerErrors: function()
+	{
+		if (this.server_errors &amp;&amp; this.server_errors.page &amp;&amp;
+			this.server_errors.page.length)
+		{
+			this.fire(&#x27;clearErrorNotification&#x27;);
+		}
+
+		this.server_errors =
+		{
+			page:       [],
+			records:    [],
+			record_map: {}
+		};
+
+		var pg = this.get(&#x27;paginator&#x27;);
+		if (pg)
+		{
+			pg.set(&#x27;pageStatus&#x27;, []);
+		}
+		this.first_error_page = -1;
+
+		this._clearValidationMessages();
+	},
+
+	/**
+	 * Set page level, record level, and field level errors received from
+	 * the server.  A message can be either a string (assumed to be an
+	 * error) or an object providing msg and type, where type can be
+	 * &#x27;error&#x27;, &#x27;warn&#x27;, &#x27;info&#x27;, or &#x27;success&#x27;.
+	 * 
+	 * @method setServerErrors
+	 * @param page_errors {Array} list of page-level error messages
+	 * @param record_field_errors {Array} list of objects *in record display order*,
+	 *		each of which defines id (String), recordError (message),
+	 *		and fieldErrors (map of field keys to error messages)
+	 */
+	setServerErrors: function(
+		/* array */	page_errors,
+		/* array */	record_field_errors)
+	{
+		if (this.server_errors.page.length &amp;&amp;
+			(!page_errors || !page_errors.length))
+		{
+			this.fire(&#x27;clearErrorNotification&#x27;);
+		}
+
+		this.server_errors =
+		{
+			page:       page_errors || [],
+			records:    record_field_errors || [],
+			record_map: Y.Array.toObject(record_field_errors || [], &#x27;id&#x27;)
+		};
+
+		this._updatePageStatus();
+
+		var pg = this.get(&#x27;paginator&#x27;);
+		if (!pg || pg.getCurrentPage() === this.first_error_page)
+		{
+			this.validate();
+		}
+		else
+		{
+			this.auto_validate = true;
+			pg.setPage(this.first_error_page);
+		}
+	},
+
+	/**
+	 * Update paginator to show which pages have errors.
+	 *
+	 * @method _updatePageStatus
+	 * @protected
+	 */
+	_updatePageStatus: function()
+	{
+		var pg = this.get(&#x27;paginator&#x27;);
+		if (!pg)
+		{
+			return;
+		}
+
+		var page_size = pg ? pg.getRowsPerPage() : default_page_size;
+		var status    = this.page_status.slice(0);
+
+		this.first_error_page = -1;
+
+		var r = this.server_errors.records, s;
+		for (var i=0; i&lt;r.length; i++)
+		{
+			s = &#x27;&#x27;;
+			if (Y.Lang.isObject(r[i].recordError))
+			{
+				s = r[i].recordError.type;
+			}
+			else if (Y.Lang.isString(r[i].recordError))
+			{
+				s = &#x27;error&#x27;;
+			}
+
+			if (s != &#x27;error&#x27; &amp;&amp; Y.Lang.isObject(r[i].fieldErrors))
+			{
+				Y.some(r[i].fieldErrors, function(e, k)
+				{
+					if (Y.Lang.isObject(e) &amp;&amp;
+						Y.FormManager.statusTakesPrecedence(s, e.type))
+					{
+						s = e.type;
+					}
+					else if (Y.Lang.isString(e))
+					{
+						s = &#x27;error&#x27;;
+					}
+
+					return (s == &#x27;error&#x27;);
+				});
+			}
+
+			if (s)
+			{
+				var j     = Math.floor(i / page_size);
+				status[j] = s;
+				if (this.first_error_page == -1)
+				{
+					this.first_error_page = j+1;
+				}
+			}
+		}
+
+		pg.set(&#x27;pageStatus&#x27;, status);
+	},
+
+	/**
+	 * Validate the visible values (if using server-side pagination) or all
+	 * the values (if using client-side pagination or no pagination).
+	 * 
+	 * @method validate
+	 * @return {Boolean} true if all checked values are acceptable
+	 */
+	validate: function()
+	{
+		this.saveChanges();
+
+		this._clearValidationMessages();
+		this.auto_validate = true;
+
+		var status = this._validateVisibleFields();
+		var pg     = this.get(&#x27;paginator&#x27;);
+		if (!status &amp;&amp; pg)
+		{
+			this.page_status[ pg.getCurrentPage()-1 ] = &#x27;error&#x27;;
+		}
+
+		status = this._validateAllPages() &amp;&amp; status;	// status last to guarantee call
+
+		if (!status || this.server_errors.page.length ||
+			this.server_errors.records.length)
+		{
+			var err = this.server_errors.page.slice(0);
+			if (err.length === 0)
+			{
+				err.push(Y.FormManager.Strings.validation_error);
+			}
+			this.fire(&#x27;notifyErrors&#x27;, { msgs: err });
+
+			this.get(&#x27;contentBox&#x27;).getElementsByClassName(BulkEditor.record_container_class).some(function(node)
+			{
+				if (node.hasClass(status_pattern))
+				{
+					node.scrollIntoView();
+					return true;
+				}
+			});
+		}
+
+		this._updatePageStatus();
+		return status;
+	},
+
+	/**
+	 * Validate the visible values.
+	 * 
+	 * @method _validateVisibleFields
+	 * @protected
+	 * @param container {Node} if null, uses contentBox
+	 * @return {Boolean} true if all checked values are acceptable
+	 */
+	_validateVisibleFields: function(
+		/* object */ container)
+	{
+		var status = true;
+
+		if (!container)
+		{
+			container = this.get(&#x27;contentBox&#x27;);
+		}
+
+		// fields
+
+		var e1 = container.getElementsByTagName(&#x27;input&#x27;);
+		var e2 = container.getElementsByTagName(&#x27;textarea&#x27;);
+		var e3 = container.getElementsByTagName(&#x27;select&#x27;);
+
+		Y.FormManager.cleanValues(e1);
+		Y.FormManager.cleanValues(e2);
+
+		status = this._validateElements(e1) &amp;&amp; status;	// status last to guarantee call
+		status = this._validateElements(e2) &amp;&amp; status;
+		status = this._validateElements(e3) &amp;&amp; status;
+
+		// records -- after fields, since field class regex would wipe out record class
+
+		container.getElementsByClassName(BulkEditor.record_container_class).each(function(node)
+		{
+			var id  = this.getRecordId(node);
+			var err = this.server_errors.record_map[id];
+			if (err &amp;&amp; err.recordError)
+			{
+				err = err.recordError;
+				if (Y.Lang.isString(err))
+				{
+					var msg  = err;
+					var type = &#x27;error&#x27;;
+				}
+				else
+				{
+					var msg  = err.msg;
+					var type = err.type;
+				}
+				this.displayRecordMessage(id, msg, type, false);
+				status = status &amp;&amp; !(type == &#x27;error&#x27; || type == &#x27;warn&#x27;);
+			}
+		},
+		this);
+
+		return status;
+	},
+
+	/**
+	 * Validate the given elements.
+	 * 
+	 * @method _validateElements
+	 * @protected
+	 * @param nodes {NodeList}
+	 * @return {Boolean} true if all checked values are acceptable
+	 */
+	_validateElements: function(
+		/* array */ nodes)
+	{
+		var status = true;
+		nodes.each(function(node)
+		{
+			var field_info = this.getRecordAndFieldKey(node);
+			if (!field_info)
+			{
+				return;
+			}
+
+			var field    = this.getFieldConfig(field_info.field_key);
+			var msg_list = field.validation &amp;&amp; field.validation.msg;
+
+			var info = Y.FormManager.validateFromCSSData(node, msg_list);
+			if (info.error)
+			{
+				this.displayFieldMessage(node, info.error, &#x27;error&#x27;, false);
+				status = false;
+				return;
+			}
+
+			if (info.keepGoing)
+			{
+				if (field.validation &amp;&amp; Y.Lang.isString(field.validation.regex))
+				{
+					var flags = &#x27;&#x27;;
+					var m     = perl_flags_regex.exec(field.validation.regex);
+					if (m &amp;&amp; m.length == 2)
+					{
+						flags                  = m[1];
+						field.validation.regex = field.validation.regex.replace(perl_flags_regex, &#x27;&#x27;);
+					}
+					field.validation.regex = new RegExp(field.validation.regex, flags);
+				}
+
+				if (field.validation &amp;&amp;
+					field.validation.regex instanceof RegExp &amp;&amp;
+					!field.validation.regex.test(node.get(&#x27;value&#x27;)))
+				{
+					this.displayFieldMessage(node, msg_list &amp;&amp; msg_list.regex, &#x27;error&#x27;, false);
+					status = false;
+					return;
+				}
+			}
+
+			if (field.validation &amp;&amp;
+				Y.Lang.isFunction(field.validation.fn) &amp;&amp;
+				!field.validation.fn.call(this, node))
+			{
+				status = false;
+				return;
+			}
+
+			var err = this.server_errors.record_map[ this.getRecordId(field_info.record) ];
+			if (err &amp;&amp; err.fieldErrors)
+			{
+				var f = err.fieldErrors[ field_info.field_key ];
+				if (f)
+				{
+					if (Y.Lang.isString(f))
+					{
+						var msg  = f;
+						var type = &#x27;error&#x27;;
+					}
+					else
+					{
+						var msg  = f.msg;
+						var type = f.type;
+					}
+					this.displayFieldMessage(node, msg, type, false);
+					status = status &amp;&amp; !(type == &#x27;error&#x27; || type == &#x27;warn&#x27;);
+					return;
+				}
+			}
+		},
+		this);
+
+		return status;
+	},
+
+	/**
+	 * If the data is stored locally and we paginate, validate all of it
+	 * and mark the pages that have invalid values.
+	 * 
+	 * @method _validateAllPages
+	 * @protected
+	 * @return {Boolean} true if all checked values are acceptable
+	 */
+	_validateAllPages: function()
+	{
+		var ds = this.get(&#x27;ds&#x27;);
+		var pg = this.get(&#x27;paginator&#x27;);
+		if (!pg || !ds._dataIsLocal())
+		{
+			return true;
+		}
+
+		if (!this.validation_node)
+		{
+			this.validation_node = Y.Node.create(&#x27;&lt;input&gt;&lt;/input&gt;&#x27;);
+		}
+
+		if (!this.validation_keys)
+		{
+			this.validation_keys = [];
+			Y.Object.each(this.get(&#x27;fields&#x27;), function(value, key)
+			{
+				if (value.validation)
+				{
+					this.validation_keys.push(key);
+				}
+			},
+			this);
+		}
+
+		var count     = ds.getRecordCount(),
+			page_size = pg.getRowsPerPage(),
+			status    = true;
+		for (var i=0; i&lt;count; i++)
+		{
+			var page_status = true;
+			Y.Array.each(this.validation_keys, function(key)
+			{
+				var field = this.get(&#x27;fields&#x27;)[key];
+				var value = ds.getValue(i, key);
+
+				this.validation_node.set(&#x27;value&#x27;, Y.Lang.isUndefined(value) ? &#x27;&#x27; : value);
+				this.validation_node.set(&#x27;className&#x27;, field.validation.css || &#x27;&#x27;);
+
+				var info = Y.FormManager.validateFromCSSData(this.validation_node);
+				if (info.error)
+				{
+					page_status = false;
+					return;
+				}
+
+				if (info.keepGoing)
+				{
+					if (field.validation.regex instanceof RegExp &amp;&amp;
+						!field.validation.regex.test(value))
+					{
+						page_status = false;
+						return;
+					}
+				}
+			},
+			this);
+
+			if (!page_status)
+			{
+				var j = Math.floor(i / page_size);
+				i     = (j+1)*page_size - 1;	// skip to next page
+
+				this.page_status[j] = &#x27;error&#x27;;
+				status              = false;
+			}
+		}
+
+		return status;
+	},
+
+	/**
+	 * Clear all displayed messages.
+	 * 
+	 * @method _clearValidationMessages
+	 */
+	_clearValidationMessages: function()
+	{
+		this.has_validation_messages = false;
+		this.auto_validate           = false;
+		this.page_status             = [];
+
+		this.fire(&#x27;clearErrorNotification&#x27;);
+
+		var container = this.get(&#x27;contentBox&#x27;);
+
+		container.getElementsByClassName(status_pattern).removeClass(status_pattern);
+		container.getElementsByClassName(record_status_pattern).removeClass(record_status_pattern);
+		container.getElementsByClassName(message_container_class).set(&#x27;innerHTML&#x27;, &#x27;&#x27;);
+	},
+
+	/**
+	 * Display a message for the specified field.
+	 * 
+	 * @method displayFieldMessage
+	 * @param e {Node} field input element
+	 * @param msg {String} message to display
+	 * @param type {String} message type:  error, warn, info, success
+	 * @param scroll {Boolean} whether or not to scroll to the field
+	 */
+	displayFieldMessage: function(
+		/* element */	e,
+		/* string */	msg,
+		/* string */	type,
+		/* boolean */	scroll)
+	{
+		if (Y.Lang.isUndefined(scroll))
+		{
+			scroll = !this.has_validation_messages;
+		}
+
+		var bd1     = this.getRecordContainer(e);
+		var changed = this._updateRecordStatus(bd1, type, status_pattern, status_re, status_prefix);
+
+		var bd2 = e.getAncestorByClassName(BulkEditor.field_container_class);
+		if (Y.FormManager.statusTakesPrecedence(this._getElementStatus(bd2, status_re), type))
+		{
+			if (msg)
+			{
+				var m = bd2.getElementsByClassName(message_container_class);
+				if (m &amp;&amp; m.size() &gt; 0)
+				{
+					m.item(0).set(&#x27;innerHTML&#x27;, msg);
+				}
+			}
+
+			bd2.replaceClass(status_pattern, status_prefix + type);
+			this.has_validation_messages = true;
+		}
+
+		if (changed &amp;&amp; scroll)
+		{
+			bd1.scrollIntoView();
+		}
+	},
+
+	/**
+	 * Display a message for the specified record.
+	 * 
+	 * @method displayRecordMessage
+	 * @param id {String} record id
+	 * @param msg {String} message to display
+	 * @param type {String} message type:  error, warn, info, success
+	 * @param scroll {Boolean} whether or not to scroll to the field
+	 */
+	displayRecordMessage: function(
+		/* string */	id,
+		/* string */	msg,
+		/* string */	type,
+		/* boolean */	scroll)
+	{
+		if (Y.Lang.isUndefined(scroll))
+		{
+			scroll = !this.has_validation_messages;
+		}
+
+		var bd1     = this.getRecordContainer(id);
+		var changed = this._updateRecordStatus(bd1, type, status_pattern, status_re, status_prefix);
+		if (this._updateRecordStatus(bd1, type, record_status_pattern, record_status_re, record_status_prefix) &amp;&amp;
+			msg)	// msg last to guarantee call
+		{
+			var bd2 = bd1.getElementsByClassName(BulkEditor.record_msg_container_class).item(0);
+			if (bd2)
+			{
+				var m = bd2.getElementsByClassName(message_container_class);
+				if (m &amp;&amp; m.size() &gt; 0)
+				{
+					m.item(0).set(&#x27;innerHTML&#x27;, msg);
+				}
+			}
+		}
+
+		if (changed &amp;&amp; scroll)
+		{
+			bd1.scrollIntoView();
+		}
+	},
+
+	/**
+	 * @method _getElementStatus
+	 * @protected
+	 * @param n {Node}
+	 * @param r {RegExp}
+	 * @return {Mixed} status or false
+	 */
+	_getElementStatus: function(
+		/* Node */	n,
+		/* regex */	r)
+	{
+		var m = r.exec(n.get(&#x27;className&#x27;));
+		return (m &amp;&amp; m.length &gt; 1 ? m[1] : false);
+	},
+
+	/**
+	 * Update the status of the node, if the new status has higher precedence.
+	 *
+	 * @method _updateRecordStatus
+	 * @param bd {Node}
+	 * @param type {String} new status
+	 * @param p {String} pattern for extracting status
+	 * @param r {RegExpr} regex for extracting status
+	 * @param prefix {String} status prefix
+	 * @return {Boolean} true if status was modified
+	 */
+	_updateRecordStatus: function(
+		/* element */	bd,
+		/* string */	type,
+		/* string */	p,
+		/* regex */		r,
+		/* string */	prefix)
+	{
+		if (Y.FormManager.statusTakesPrecedence(this._getElementStatus(bd, r), type))
+		{
+			bd.replaceClass(p, prefix + type);
+			this.has_validation_messages = true;
+			return true;
+		}
+
+		return false;
+	}
+});
+
+//
+// Markup
+//
+
+BulkEditor.cleanHTML = function(s)
+{
+	return (Y.Lang.isValue(s) ? Y.Escape.html(s) : &#x27;&#x27;);
+};
+
+/**
+ * @property Y.BulkEditor.error_msg_markup
+ * @type {String}
+ * @static
+ */
+BulkEditor.error_msg_markup = Y.Lang.sub(&#x27;&lt;div class=&quot;{c}&quot;&gt;&lt;/div&gt;&#x27;,
+{
+	c: message_container_class
+});
+
+/**
+ * @method labelMarkup
+ * @static
+ * @param o {Object}
+ *	key {String} field key,
+ *	value {Mixed} field value,
+ *	field {Object} field configuration,
+ *	record {Object} record data
+ * @return {String} markup for the label of the specified field
+ */
+BulkEditor.labelMarkup = function(o)
+{
+	var label = &#x27;&lt;label for=&quot;{id}&quot;&gt;{label}&lt;/label&gt;&#x27;;
+
+	return Y.Lang.sub(label,
+	{
+		id:    this.getFieldId(o.record, o.key),
+		label: o.field.label
+	});
+};
+
+/**
+ * Map of field type (input,select,textarea) to function that generates the
+ * required markup.  You can add additional entries.  Each function takes a
+ * single argument: an object defining
+ *	key {String} field key,
+ *	value {Mixed} field value,
+ *	field {Object} field configuration,
+ *	record {Object} record data
+ *
+ * @property Y.BulkEditor.markup
+ * @type {Object}
+ * @static
+ */
+BulkEditor.markup =
+{
+	input: function(o)
+	{
+		var input =
+			&#x27;&lt;div class=&quot;{cont}{key}&quot;&gt;&#x27; +
+				&#x27;{label}{msg1}&#x27; +
+				&#x27;&lt;input type=&quot;text&quot; id=&quot;{id}&quot; value=&quot;{value}&quot; class=&quot;{field}{key} {yiv}&quot; /&gt;&#x27; +
+				&#x27;{msg2}&#x27; +
+			&#x27;&lt;/div&gt;&#x27;;
+
+		var label = o.field &amp;&amp; o.field.label ? BulkEditor.labelMarkup.call(this, o) : &#x27;&#x27;;
+
+		return Y.Lang.sub(input,
+		{
+			cont:  BulkEditor.field_container_class + &#x27; &#x27; + BulkEditor.field_container_class_prefix,
+			field: BulkEditor.field_class_prefix,
+			key:   o.key,
+			id:    this.getFieldId(o.record, o.key),
+			label: label,
+			value: BulkEditor.cleanHTML(o.value),
+			yiv:   (o.field &amp;&amp; o.field.validation &amp;&amp; o.field.validation.css) || &#x27;&#x27;,
+			msg1:  label ? BulkEditor.error_msg_markup : &#x27;&#x27;,
+			msg2:  label ? &#x27;&#x27; : BulkEditor.error_msg_markup
+		});
+	},
+
+	select: function(o)
+	{
+		var select =
+			&#x27;&lt;div class=&quot;{cont}{key}&quot;&gt;&#x27; +
+				&#x27;{label}{msg1}&#x27; +
+				&#x27;&lt;select id=&quot;{id}&quot; class=&quot;{field}{key}&quot;&gt;{options}&lt;/select&gt;&#x27; +
+				&#x27;{msg2}&#x27; +
+			&#x27;&lt;/div&gt;&#x27;;
+
+		var option = &#x27;&lt;option value=&quot;{value}&quot; {selected}&gt;{text}&lt;/option&gt;&#x27;;
+
+		var options = Y.Array.reduce(o.field.values, &#x27;&#x27;, function(s, v)
+		{
+			return s + Y.Lang.sub(option,
+			{
+				value:    v.value,
+				text:     BulkEditor.cleanHTML(v.text),
+				selected: o.value &amp;&amp; o.value.toString() === v.value ? &#x27;selected=&quot;selected&quot;&#x27; : &#x27;&#x27;
+			});
+		});
+
+		var label = o.field &amp;&amp; o.field.label ? BulkEditor.labelMarkup.call(this, o) : &#x27;&#x27;;
+
+		return Y.Lang.sub(select,
+		{
+			cont:  	 BulkEditor.field_container_class + &#x27; &#x27; + BulkEditor.field_container_class_prefix,
+			field:   BulkEditor.field_class_prefix,
+			key:     o.key,
+			id:      this.getFieldId(o.record, o.key),
+			label:   label,
+			options: options,
+			yiv:     (o.field &amp;&amp; o.field.validation &amp;&amp; o.field.validation.css) || &#x27;&#x27;,
+			msg1:    label ? BulkEditor.error_msg_markup : &#x27;&#x27;,
+			msg2:    label ? &#x27;&#x27; : BulkEditor.error_msg_markup
+		});
+	},
+
+	checkbox: function(o)
+	{
+		var checkbox =
+			&#x27;&lt;div class=&quot;{cont}{key}&quot;&gt;&#x27; +
+				&#x27;&lt;input type=&quot;checkbox&quot; id=&quot;{id}&quot; {value} class=&quot;{field}{key}&quot; /&gt; &#x27; +
+				&#x27;{label}&#x27; +
+				&#x27;{msg}&#x27; +
+			&#x27;&lt;/div&gt;&#x27;;
+
+		var label = o.field &amp;&amp; o.field.label ? BulkEditor.labelMarkup.call(this, o) : &#x27;&#x27;;
+
+		return Y.Lang.sub(checkbox,
+		{
+			cont:  BulkEditor.field_container_class + &#x27; &#x27; + BulkEditor.field_container_class_prefix,
+			field: BulkEditor.field_class_prefix,
+			key:   o.key,
+			id:    this.getFieldId(o.record, o.key),
+			label: label,
+			value: o.value == o.field.values.on ? &#x27;checked=&quot;checked&quot;&#x27; : &#x27;&#x27;,
+			msg:   BulkEditor.error_msg_markup
+		});
+	},
+
+	checkboxMultiselect: function(o)
+	{
+		return multiselectMarkup.call(this, &#x27;checkboxes&#x27;, o);
+	},
+
+	autocompleteInputMultiselect: function(o)
+	{
+		return multiselectMarkup.call(this, &#x27;autocompleteMultivalueInput&#x27;, o);
+	},
+
+	textarea: function(o)
+	{
+		var textarea =
+			&#x27;&lt;div class=&quot;{cont}{key}&quot;&gt;&#x27; +
+				&#x27;{label}{msg1}&#x27; +
+				&#x27;&lt;textarea id=&quot;{id}&quot; class=&quot;satg-textarea-field {prefix}{key} {yiv}&quot;&gt;{value}&lt;/textarea&gt;&#x27; +
+				&#x27;{msg2}&#x27; +
+			&#x27;&lt;/div&gt;&#x27;;
+
+		var label = o.field &amp;&amp; o.field.label ? BulkEditor.labelMarkup.call(this, o) : &#x27;&#x27;;
+
+		return Y.Lang.sub(textarea,
+		{
+			cont:   BulkEditor.field_container_class + &#x27; &#x27; + BulkEditor.field_container_class_prefix,
+			prefix: BulkEditor.field_class_prefix,
+			key:    o.key,
+			id:     this.getFieldId(o.record, o.key),
+			label:  label,
+			value:  BulkEditor.cleanHTML(o.value),
+			yiv:    (o.field &amp;&amp; o.field.validation &amp;&amp; o.field.validation.css) || &#x27;&#x27;,
+			msg1:   label ? BulkEditor.error_msg_markup : &#x27;&#x27;,
+			msg2:   label ? &#x27;&#x27; : BulkEditor.error_msg_markup
+		});
+	}
+};
+
+/**
+ * @method fieldMarkup
+ * @static
+ * @param key {String} field key
+ * @param record {Object}
+ * @return {String} markup for the specified field
+ */
+BulkEditor.fieldMarkup = function(key, record)
+{
+	var field = this.getFieldConfig(key);
+	return BulkEditor.markup[ field.type || &#x27;input&#x27; ].call(this,
+	{
+		key:    key,
+		value:  record[key],
+		field:  field,
+		record: record
+	});
+};
+
+function multiselectMarkup(type, o)
+{
+	var select =
+		&#x27;&lt;div class=&quot;{cont}{key}&quot;&gt;&#x27; +
+			&#x27;{label}{msg}&#x27; +
+			&#x27;&lt;div id=&quot;{id}-multiselect&quot; class=&quot;checkbox-multiselect&quot;&gt;{input}&lt;/div&gt;&#x27; +
+			&#x27;&lt;select id=&quot;{id}&quot; class=&quot;{field}{key}&quot; multiple=&quot;multiple&quot; style=&quot;display:none;&quot;&gt;{options}&lt;/select&gt;&#x27; +
+		&#x27;&lt;/div&gt;&#x27;;
+
+	var id        = this.getFieldId(o.record, o.key),
+		has_value = Y.Lang.isArray(o.value);
+
+	if (type == &#x27;autocompleteMultivalueInput&#x27;)
+	{
+		var input_markup = Y.Lang.sub(&#x27;&lt;input type=&quot;text&quot; id=&quot;{id}-multivalue-input&quot; /&gt;&#x27;,
+		{
+			id: id
+		});
+
+		Y.later(0, this, function()
+		{
+			var node = Y.one(&#x27;#&#x27; + id + &#x27;-multivalue-input&#x27;);
+			if (!node)
+			{
+				return;
+			}
+
+			node.plug(Y.Plugin.AutoComplete,
+			{
+				resultFilters:     &#x27;phraseMatch&#x27;,
+				resultHighlighter: &#x27;phraseMatch&#x27;,
+				source: Y.reduce(o.field.values, [], function(list, v)
+				{
+					list.push(v.text);
+					return list;
+				})
+			});
+
+			node.plug(Y.Plugin.MultivalueInput,
+			{
+				values: Y.map(o.value, function(v)
+				{
+					var i = Y.Array.findIndexOf(o.field.values, function(v1)
+					{
+						return (v === v1.value.toString());
+					});
+
+					return (i &gt;= 0 ? o.field.values[i].text : &#x27;&#x27;);
+				})
+			});
+
+			node.mvi.on(&#x27;valuesChange&#x27;, function()
+			{
+				var value_list = node.mvi.get(&#x27;values&#x27;),
+					select     = node.ancestor(&#x27;.checkbox-multiselect&#x27;).next(&#x27;select&#x27;);
+
+				Y.each(select.getDOMNode().options, function(o)
+				{
+					o.selected = (Y.Array.indexOf(value_list, o.text) &gt;= 0);
+				});
+			});
+
+			this._destroyOnRender(node);
+		});
+	}
+	else if (type == &#x27;checkboxes&#x27;)
+	{
+		var checkbox =
+			&#x27;&lt;p class=&quot;checkbox-multiselect-checkbox&quot;&gt;&#x27; +
+				&#x27;&lt;input type=&quot;checkbox&quot; id=&quot;{id}-{value}&quot; value=&quot;{value}&quot; {checked} /&gt;&amp;nbsp;&#x27; +
+				&#x27;&lt;label for=&quot;{id}-{value}&quot;&gt;{label}&lt;/label&gt;&#x27; +
+			&#x27;&lt;/p&gt;&#x27;;
+
+		var column_start = &#x27;&lt;td class=&quot;checkbox-multiselect-column&quot;&gt;&#x27;,
+			column_end   = &#x27;&lt;/td&gt;&#x27;;
+
+		var input_markup = Y.Array.reduce(o.field.values, &#x27;&#x27;, function(s, v, i)
+		{
+			var m = Y.Lang.sub(checkbox,
+			{
+				id:      id,
+				value:   v.value,
+				checked: has_value &amp;&amp; Y.Array.indexOf(o.value, v.value.toString()) &gt;= 0 ? &#x27;checked=&quot;checked&quot;&#x27; : &#x27;&#x27;,
+				label:   BulkEditor.cleanHTML(v.text)
+			});
+
+			if (i &gt; 0 &amp;&amp; i % BulkEditor.checkbox_multiselect_column_height === 0)
+			{
+				m = column_end + column_start + m;
+			}
+
+			return s + m;
+		});
+
+		input_markup =
+			&#x27;&lt;table class=&quot;checkbox-multiselect-container&quot;&gt;&lt;tr&gt;&#x27; +
+			column_start + input_markup + column_end +
+			&#x27;&lt;/tr&gt;&lt;/table&gt;&#x27;;
+	}
+
+	var option = &#x27;&lt;option value=&quot;{value}&quot; {selected}&gt;{text}&lt;/option&gt;&#x27;;
+
+	var options = Y.Array.reduce(o.field.values, &#x27;&#x27;, function(s, v)
+	{
+		return s + Y.Lang.sub(option,
+		{
+			value:    v.value,
+			text:     BulkEditor.cleanHTML(v.text),
+			selected: has_value &amp;&amp; Y.Array.indexOf(o.value, v.value.toString()) &gt;= 0 ? &#x27;selected=&quot;selected&quot;&#x27; : &#x27;&#x27;
+		});
+	});
+
+	var label = o.field &amp;&amp; o.field.label ? BulkEditor.labelMarkup.call(this, o) : &#x27;&#x27;;
+
+	return Y.Lang.sub(select,
+	{
+		cont:  	 BulkEditor.field_container_class + &#x27; &#x27; + BulkEditor.field_container_class_prefix,
+		field:   BulkEditor.field_class_prefix,
+		key:     o.key,
+		id:      id,
+		label:   label,
+		input:   input_markup,
+		options: options,
+		yiv:     (o.field &amp;&amp; o.field.validation &amp;&amp; o.field.validation.css) || &#x27;&#x27;,
+		msg:     BulkEditor.error_msg_markup
+	});
+}
+
+function handleCheckboxMultiselectClickOnCheckbox(e)
+{
+	var cb     = e.currentTarget,
+		value  = cb.get(&#x27;value&#x27;),
+		select = cb.ancestor(&#x27;.checkbox-multiselect&#x27;).next(&#x27;select&#x27;);
+
+	Y.some(select.getDOMNode().options, function(o)
+	{
+		if (o.value == value)
+		{
+			o.selected = cb.get(&#x27;checked&#x27;);
+			return true;
+		}
+	});
+}
+
+Y.BulkEditor = BulkEditor;
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

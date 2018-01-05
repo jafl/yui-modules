@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/gallery-bulkedit/js/HTMLTableBulkEditor.js - YUI 3 Gallery Modules</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="YUI 3 Gallery Modules" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 1.0.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Accordion.html">Accordion</a></li>
+                                <li><a href="../classes/AnimSequence.html">AnimSequence</a></li>
+                                <li><a href="../classes/ArrayIterator.html">ArrayIterator</a></li>
+                                <li><a href="../classes/ArrayList~extras.html">ArrayList~extras</a></li>
+                                <li><a href="../classes/Array~algorithms.html">Array~algorithms</a></li>
+                                <li><a href="../classes/Array~funcprog-extras.html">Array~funcprog-extras</a></li>
+                                <li><a href="../classes/Array~object-extras.html">Array~object-extras</a></li>
+                                <li><a href="../classes/Assert.html">Assert</a></li>
+                                <li><a href="../classes/AtLeastOneCheckboxGroup.html">AtLeastOneCheckboxGroup</a></li>
+                                <li><a href="../classes/AtMostOneCheckboxGroup.html">AtMostOneCheckboxGroup</a></li>
+                                <li><a href="../classes/BulkEditor.html">BulkEditor</a></li>
+                                <li><a href="../classes/Canvas.Context2d.html">Canvas.Context2d</a></li>
+                                <li><a href="../classes/CheckboxGroup.html">CheckboxGroup</a></li>
+                                <li><a href="../classes/Chipper.html">Chipper</a></li>
+                                <li><a href="../classes/CollapseToggle.html">CollapseToggle</a></li>
+                                <li><a href="../classes/ComplexMath.html">ComplexMath</a></li>
+                                <li><a href="../classes/ComplexNumber.html">ComplexNumber</a></li>
+                                <li><a href="../classes/DataSource.AsyncFunction.html">DataSource.AsyncFunction</a></li>
+                                <li><a href="../classes/DataSource.BulkEdit.html">DataSource.BulkEdit</a></li>
+                                <li><a href="../classes/DataSource.Treeble.html">DataSource.Treeble</a></li>
+                                <li><a href="../classes/DateTime.html">DateTime</a></li>
+                                <li><a href="../classes/DateTimeRange.html">DateTimeRange</a></li>
+                                <li><a href="../classes/DateTimeUtils.html">DateTimeUtils</a></li>
+                                <li><a href="../classes/EnableIfAnyCheckboxGroup.html">EnableIfAnyCheckboxGroup</a></li>
+                                <li><a href="../classes/ExpirationCache.html">ExpirationCache</a></li>
+                                <li><a href="../classes/ExpressionBuilder.html">ExpressionBuilder</a></li>
+                                <li><a href="../classes/FormManager.html">FormManager</a></li>
+                                <li><a href="../classes/HTMLTableBulkEditor.html">HTMLTableBulkEditor</a></li>
+                                <li><a href="../classes/InputPopup.html">InputPopup</a></li>
+                                <li><a href="../classes/InstanceManager.html">InstanceManager</a></li>
+                                <li><a href="../classes/io~multiresponse.html">io~multiresponse</a></li>
+                                <li><a href="../classes/Iterable.html">Iterable</a></li>
+                                <li><a href="../classes/LinkedList.html">LinkedList</a></li>
+                                <li><a href="../classes/LinkedListItem.html">LinkedListItem</a></li>
+                                <li><a href="../classes/LinkedListIterator.html">LinkedListIterator</a></li>
+                                <li><a href="../classes/LogFilter.html">LogFilter</a></li>
+                                <li><a href="../classes/Math.html">Math</a></li>
+                                <li><a href="../classes/MathCanvas.html">MathCanvas</a></li>
+                                <li><a href="../classes/MathCanvas.Parser.html">MathCanvas.Parser</a></li>
+                                <li><a href="../classes/MathCanvas.RectList.html">MathCanvas.RectList</a></li>
+                                <li><a href="../classes/MathFunction.html">MathFunction</a></li>
+                                <li><a href="../classes/MathFunction.Arccosine.html">MathFunction.Arccosine</a></li>
+                                <li><a href="../classes/MathFunction.Arcsine.html">MathFunction.Arcsine</a></li>
+                                <li><a href="../classes/MathFunction.Arctangent.html">MathFunction.Arctangent</a></li>
+                                <li><a href="../classes/MathFunction.Arctangent2.html">MathFunction.Arctangent2</a></li>
+                                <li><a href="../classes/MathFunction.Conjugate.html">MathFunction.Conjugate</a></li>
+                                <li><a href="../classes/MathFunction.Cosine.html">MathFunction.Cosine</a></li>
+                                <li><a href="../classes/MathFunction.E.html">MathFunction.E</a></li>
+                                <li><a href="../classes/MathFunction.Exponential.html">MathFunction.Exponential</a></li>
+                                <li><a href="../classes/MathFunction.FunctionWithArgs.html">MathFunction.FunctionWithArgs</a></li>
+                                <li><a href="../classes/MathFunction.HyperbolicCosine.html">MathFunction.HyperbolicCosine</a></li>
+                                <li><a href="../classes/MathFunction.HyperbolicSine.html">MathFunction.HyperbolicSine</a></li>
+                                <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
+                                <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
+                                <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
+                                <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
+                                <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
+                                <li><a href="../classes/MathFunction.Logarithm.html">MathFunction.Logarithm</a></li>
+                                <li><a href="../classes/MathFunction.Magnitude.html">MathFunction.Magnitude</a></li>
+                                <li><a href="../classes/MathFunction.Max.html">MathFunction.Max</a></li>
+                                <li><a href="../classes/MathFunction.Min.html">MathFunction.Min</a></li>
+                                <li><a href="../classes/MathFunction.NaturalLog.html">MathFunction.NaturalLog</a></li>
+                                <li><a href="../classes/MathFunction.Negate.html">MathFunction.Negate</a></li>
+                                <li><a href="../classes/MathFunction.Phase.html">MathFunction.Phase</a></li>
+                                <li><a href="../classes/MathFunction.Pi.html">MathFunction.Pi</a></li>
+                                <li><a href="../classes/MathFunction.Product.html">MathFunction.Product</a></li>
+                                <li><a href="../classes/MathFunction.Quotient.html">MathFunction.Quotient</a></li>
+                                <li><a href="../classes/MathFunction.RealPart.html">MathFunction.RealPart</a></li>
+                                <li><a href="../classes/MathFunction.Rotate.html">MathFunction.Rotate</a></li>
+                                <li><a href="../classes/MathFunction.Sine.html">MathFunction.Sine</a></li>
+                                <li><a href="../classes/MathFunction.SquareRoot.html">MathFunction.SquareRoot</a></li>
+                                <li><a href="../classes/MathFunction.Sum.html">MathFunction.Sum</a></li>
+                                <li><a href="../classes/MathFunction.Tangent.html">MathFunction.Tangent</a></li>
+                                <li><a href="../classes/MathFunction.Value.html">MathFunction.Value</a></li>
+                                <li><a href="../classes/MathFunction.Variable.html">MathFunction.Variable</a></li>
+                                <li><a href="../classes/MatrixBackground.html">MatrixBackground</a></li>
+                                <li><a href="../classes/MatrixCredits.html">MatrixCredits</a></li>
+                                <li><a href="../classes/MRUCache.html">MRUCache</a></li>
+                                <li><a href="../classes/MultiObject.html">MultiObject</a></li>
+                                <li><a href="../classes/NodeList~extras2.html">NodeList~extras2</a></li>
+                                <li><a href="../classes/Node~dimensions.html">Node~dimensions</a></li>
+                                <li><a href="../classes/Node~event-set.html">Node~event-set</a></li>
+                                <li><a href="../classes/Node~optimizations.html">Node~optimizations</a></li>
+                                <li><a href="../classes/Node~scrollIntoView.html">Node~scrollIntoView</a></li>
+                                <li><a href="../classes/Node~utils.html">Node~utils</a></li>
+                                <li><a href="../classes/Object~extras.html">Object~extras</a></li>
+                                <li><a href="../classes/PageLayout.html">PageLayout</a></li>
+                                <li><a href="../classes/Paginator.ui.CurrentPageInput.html">Paginator.ui.CurrentPageInput</a></li>
+                                <li><a href="../classes/Paginator.ui.CurrentPageReport.html">Paginator.ui.CurrentPageReport</a></li>
+                                <li><a href="../classes/Paginator.ui.FirstPageLink.html">Paginator.ui.FirstPageLink</a></li>
+                                <li><a href="../classes/Paginator.ui.ItemRangeDropdown.html">Paginator.ui.ItemRangeDropdown</a></li>
+                                <li><a href="../classes/Paginator.ui.LastPageLink.html">Paginator.ui.LastPageLink</a></li>
+                                <li><a href="../classes/Paginator.ui.NextPageLink.html">Paginator.ui.NextPageLink</a></li>
+                                <li><a href="../classes/Paginator.ui.PageLinks.html">Paginator.ui.PageLinks</a></li>
+                                <li><a href="../classes/Paginator.ui.PreviousPageLink.html">Paginator.ui.PreviousPageLink</a></li>
+                                <li><a href="../classes/Paginator.ui.RowsPerPageDropdown.html">Paginator.ui.RowsPerPageDropdown</a></li>
+                                <li><a href="../classes/Paginator.ui.ValidationPageLinks.html">Paginator.ui.ValidationPageLinks</a></li>
+                                <li><a href="../classes/Parsers.html">Parsers</a></li>
+                                <li><a href="../classes/Plugin.BusyOverlay.html">Plugin.BusyOverlay</a></li>
+                                <li><a href="../classes/Plugin.ConsoleTest.html">Plugin.ConsoleTest</a></li>
+                                <li><a href="../classes/Plugin.DataTableDataSourceBusy.html">Plugin.DataTableDataSourceBusy</a></li>
+                                <li><a href="../classes/Plugin.DataTablePaginator.html">Plugin.DataTablePaginator</a></li>
+                                <li><a href="../classes/Plugin.DataTableQuickEdit.html">Plugin.DataTableQuickEdit</a></li>
+                                <li><a href="../classes/Plugin.DataTableRowExpansion.html">Plugin.DataTableRowExpansion</a></li>
+                                <li><a href="../classes/Plugin.DataTableState.html">Plugin.DataTableState</a></li>
+                                <li><a href="../classes/Plugin.FixedSizeAccordion.html">Plugin.FixedSizeAccordion</a></li>
+                                <li><a href="../classes/Plugin.InputCalendarSync.html">Plugin.InputCalendarSync</a></li>
+                                <li><a href="../classes/Plugin.Neon.html">Plugin.Neon</a></li>
+                                <li><a href="../classes/Plugin.NodeFXSequence.html">Plugin.NodeFXSequence</a></li>
+                                <li><a href="../classes/Plugin.OverlayForm.html">Plugin.OverlayForm</a></li>
+                                <li><a href="../classes/Plugin.PageLayoutAnyWidgetModule.html">Plugin.PageLayoutAnyWidgetModule</a></li>
+                                <li><a href="../classes/Plugin.PageLayoutDataTableModule.html">Plugin.PageLayoutDataTableModule</a></li>
+                                <li><a href="../classes/Popup.html">Popup</a></li>
+                                <li><a href="../classes/QueryBuilder.html">QueryBuilder</a></li>
+                                <li><a href="../classes/QueryBuilder.DateRange.html">QueryBuilder.DateRange</a></li>
+                                <li><a href="../classes/QueryBuilder.MultiselectInput.html">QueryBuilder.MultiselectInput</a></li>
+                                <li><a href="../classes/QueryBuilder.Select.html">QueryBuilder.Select</a></li>
+                                <li><a href="../classes/QueryBuilder.String.html">QueryBuilder.String</a></li>
+                                <li><a href="../classes/RPC.Mojito.html">RPC.Mojito</a></li>
+                                <li><a href="../classes/SelectAllCheckboxGroup.html">SelectAllCheckboxGroup</a></li>
+                                <li><a href="../classes/Sort.html">Sort</a></li>
+                                <li><a href="../classes/Treeble.html">Treeble</a></li>
+                                <li><a href="../classes/YUI~funcprog.html">YUI~funcprog</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/gallery-accordion-horiz-vert.html">gallery-accordion-horiz-vert</a></li>
+                                <li><a href="../modules/gallery-adobe-air-config.html">gallery-adobe-air-config</a></li>
+                                <li><a href="../modules/gallery-adobe-air-page-manager.html">gallery-adobe-air-page-manager</a></li>
+                                <li><a href="../modules/gallery-adobe-air-prefs.html">gallery-adobe-air-prefs</a></li>
+                                <li><a href="../modules/gallery-algorithms.html">gallery-algorithms</a></li>
+                                <li><a href="../modules/gallery-anim-class.html">gallery-anim-class</a></li>
+                                <li><a href="../modules/gallery-anim-sequence.html">gallery-anim-sequence</a></li>
+                                <li><a href="../modules/gallery-bulkedit.html">gallery-bulkedit</a></li>
+                                <li><a href="../modules/gallery-busyoverlay.html">gallery-busyoverlay</a></li>
+                                <li><a href="../modules/gallery-canvas.html">gallery-canvas</a></li>
+                                <li><a href="../modules/gallery-checkboxgroups.html">gallery-checkboxgroups</a></li>
+                                <li><a href="../modules/gallery-chipper.html">gallery-chipper</a></li>
+                                <li><a href="../modules/gallery-collapse-toggle.html">gallery-collapse-toggle</a></li>
+                                <li><a href="../modules/gallery-complexnumber.html">gallery-complexnumber</a></li>
+                                <li><a href="../modules/gallery-console-test.html">gallery-console-test</a></li>
+                                <li><a href="../modules/gallery-datasource-async-function.html">gallery-datasource-async-function</a></li>
+                                <li><a href="../modules/gallery-datatable-datasource-busy.html">gallery-datatable-datasource-busy</a></li>
+                                <li><a href="../modules/gallery-datatable-paginator.html">gallery-datatable-paginator</a></li>
+                                <li><a href="../modules/gallery-datatable-row-expansion.html">gallery-datatable-row-expansion</a></li>
+                                <li><a href="../modules/gallery-datatable-state.html">gallery-datatable-state</a></li>
+                                <li><a href="../modules/gallery-datetime.html">gallery-datetime</a></li>
+                                <li><a href="../modules/gallery-datetime-range.html">gallery-datetime-range</a></li>
+                                <li><a href="../modules/gallery-datetime-utils.html">gallery-datetime-utils</a></li>
+                                <li><a href="../modules/gallery-dimensions.html">gallery-dimensions</a></li>
+                                <li><a href="../modules/gallery-expiration-cache.html">gallery-expiration-cache</a></li>
+                                <li><a href="../modules/gallery-exprbuilder.html">gallery-exprbuilder</a></li>
+                                <li><a href="../modules/gallery-formmgr.html">gallery-formmgr</a></li>
+                                <li><a href="../modules/gallery-formmgr-css-validation.html">gallery-formmgr-css-validation</a></li>
+                                <li><a href="../modules/gallery-formmgr-overlay-plugin.html">gallery-formmgr-overlay-plugin</a></li>
+                                <li><a href="../modules/gallery-funcprog.html">gallery-funcprog</a></li>
+                                <li><a href="../modules/gallery-input-calendar-sync.html">gallery-input-calendar-sync</a></li>
+                                <li><a href="../modules/gallery-instancemanager.html">gallery-instancemanager</a></li>
+                                <li><a href="../modules/gallery-io-adobe-air.html">gallery-io-adobe-air</a></li>
+                                <li><a href="../modules/gallery-io-multiresponse.html">gallery-io-multiresponse</a></li>
+                                <li><a href="../modules/gallery-iterable-extras.html">gallery-iterable-extras</a></li>
+                                <li><a href="../modules/gallery-layout.html">gallery-layout</a></li>
+                                <li><a href="../modules/gallery-layout-anywidget.html">gallery-layout-anywidget</a></li>
+                                <li><a href="../modules/gallery-layout-cols.html">gallery-layout-cols</a></li>
+                                <li><a href="../modules/gallery-layout-datatable.html">gallery-layout-datatable</a></li>
+                                <li><a href="../modules/gallery-layout-rows.html">gallery-layout-rows</a></li>
+                                <li><a href="../modules/gallery-linkedlist.html">gallery-linkedlist</a></li>
+                                <li><a href="../modules/gallery-log-filter.html">gallery-log-filter</a></li>
+                                <li><a href="../modules/gallery-math.html">gallery-math</a></li>
+                                <li><a href="../modules/gallery-mathcanvas.html">gallery-mathcanvas</a></li>
+                                <li><a href="../modules/gallery-matrix-background.html">gallery-matrix-background</a></li>
+                                <li><a href="../modules/gallery-matrix-credits.html">gallery-matrix-credits</a></li>
+                                <li><a href="../modules/gallery-mojito-rpc.html">gallery-mojito-rpc</a></li>
+                                <li><a href="../modules/gallery-mru-cache.html">gallery-mru-cache</a></li>
+                                <li><a href="../modules/gallery-multiobject.html">gallery-multiobject</a></li>
+                                <li><a href="../modules/gallery-neon.html">gallery-neon</a></li>
+                                <li><a href="../modules/gallery-node-event-set.html">gallery-node-event-set</a></li>
+                                <li><a href="../modules/gallery-node-optimizations.html">gallery-node-optimizations</a></li>
+                                <li><a href="../modules/gallery-node-utils.html">gallery-node-utils</a></li>
+                                <li><a href="../modules/gallery-nodelist-extras2.html">gallery-nodelist-extras2</a></li>
+                                <li><a href="../modules/gallery-object-extras.html">gallery-object-extras</a></li>
+                                <li><a href="../modules/gallery-paginator.html">gallery-paginator</a></li>
+                                <li><a href="../modules/gallery-popup.html">gallery-popup</a></li>
+                                <li><a href="../modules/gallery-querybuilder.html">gallery-querybuilder</a></li>
+                                <li><a href="../modules/gallery-querybuilder-daterange.html">gallery-querybuilder-daterange</a></li>
+                                <li><a href="../modules/gallery-querybuilder-multiselect-input.html">gallery-querybuilder-multiselect-input</a></li>
+                                <li><a href="../modules/gallery-quickedit.html">gallery-quickedit</a></li>
+                                <li><a href="../modules/gallery-scrollintoview.html">gallery-scrollintoview</a></li>
+                                <li><a href="../modules/gallery-sort-extras.html">gallery-sort-extras</a></li>
+                                <li><a href="../modules/gallery-table-utils.html">gallery-table-utils</a></li>
+                                <li><a href="../modules/gallery-test-extras.html">gallery-test-extras</a></li>
+                                <li><a href="../modules/gallery-treeble.html">gallery-treeble</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: src/gallery-bulkedit/js/HTMLTableBulkEditor.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * @module gallery-bulkedit
+ */
+
+/**
+ * &lt;p&gt;HTMLTableBulkEditor builds an HTML table with one tbody for each
+ * record.&lt;/p&gt;
+ *
+ * @class HTMLTableBulkEditor
+ * @extends BulkEditor 
+ * @constructor
+ * @param config {Object}
+ */
+function HTMLTableBulkEditor()
+{
+	HTMLTableBulkEditor.superclass.constructor.apply(this, arguments);
+}
+
+HTMLTableBulkEditor.NAME = &quot;htmltablebulkedit&quot;;
+
+HTMLTableBulkEditor.ATTRS =
+{
+	/**
+	 * Configuration for each column: key, label, formatter.
+	 *
+	 * @attribute columns
+	 * @type {Array}
+	 * @required
+	 * @writeonce
+	 */
+	columns:
+	{
+		validator: Y.Lang.isObject,
+		writeOnce: true
+	},
+
+	/**
+	 * &lt;p&gt;Array of event delegations that will be attached to the container
+	 * via Y.delegate().  Each item is an object defining type, nodes, fn.
+	 * The function will be called in the context of the BulkEditor
+	 * instance.&lt;/p&gt;
+	 * 
+	 * &lt;p&gt;Attaching events to the container before the table is created does
+	 * not work in all browsers.&lt;/p&gt;
+	 *
+	 * @attribute events
+	 * @type {Array}
+	 * @writeonce
+	 */
+	events:
+	{
+		validator: Y.Lang.isObject,
+		writeOnce: true
+	}
+};
+
+var cell_class        = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;cell&#x27;),
+	cell_class_prefix = cell_class + &#x27;-&#x27;,
+	odd_class         = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;odd&#x27;),
+	even_class        = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;even&#x27;),
+	msg_class         = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;record-message&#x27;),
+	liner_class       = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;liner&#x27;),
+
+	input_class          = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;input&#x27;),
+	textarea_class       = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;textarea&#x27;),
+	select_class         = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;select&#x27;),
+	checkbox_class       = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;checkbox&#x27;),
+	cb_multiselect_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;checkbox-multiselect&#x27;),
+	cb_multi_input_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;input-multiselect&#x27;);
+
+/**
+ * Renders an input element in the cell.
+ *
+ * @method inputFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.inputFormatter = function(o)
+{
+	o.cell.set(&#x27;innerHTML&#x27;, BulkEditor.markup.input.call(this, o));
+	o.cell.addClass(input_class);
+};
+
+/**
+ * Renders a textarea element in the cell.
+ *
+ * @method textareaFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.textareaFormatter = function(o)
+{
+	o.cell.set(&#x27;innerHTML&#x27;, BulkEditor.markup.textarea.call(this, o));
+	o.cell.addClass(textarea_class);
+};
+
+/**
+ * Renders a select element in the cell.
+ *
+ * @method selectFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.selectFormatter = function(o)
+{
+	o.cell.set(&#x27;innerHTML&#x27;, BulkEditor.markup.select.call(this, o));
+	o.cell.addClass(select_class);
+};
+
+/**
+ * Renders a checkbox element in the cell.
+ *
+ * @method checkboxFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.checkboxFormatter = function(o)
+{
+	o.cell.set(&#x27;innerHTML&#x27;, BulkEditor.markup.checkbox.call(this, o));
+	o.cell.addClass(checkbox_class);
+};
+
+/**
+ * Renders a set of checkboxes for multiselect in the cell.
+ *
+ * @method checkboxMultiselectFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.checkboxMultiselectFormatter = function(o)
+{
+	o.cell.set(&#x27;innerHTML&#x27;, BulkEditor.markup.checkboxMultiselect.call(this, o));
+	o.cell.addClass(cb_multiselect_class);
+};
+
+/**
+ * Renders a multi-value input for multiselect in the cell.
+ *
+ * @method autocompleteInputMultiselectFormatter
+ * @static
+ * @param o {Object} cell, key, value, field, column, record
+ */
+HTMLTableBulkEditor.autocompleteInputMultiselectFormatter = function(o)
+{
+	o.cell.set(&#x27;innerHTML&#x27;, BulkEditor.markup.autocompleteInputMultiselect.call(this, o));
+	o.cell.addClass(cb_multi_input_class);
+};
+
+/**
+ * Map of field type to cell &#x60;formatter&#x60; and container &#x60;css&#x60;.
+ *
+ * @property Y.HTMLTableBulkEditor.defaults
+ * @type {Object}
+ * @static
+ */
+HTMLTableBulkEditor.defaults =
+{
+	input:
+	{
+		formatter: HTMLTableBulkEditor.inputFormatter,
+		css:       input_class
+	},
+
+	select:
+	{
+		formatter: HTMLTableBulkEditor.selectFormatter,
+		css:       select_class
+	},
+
+	checkbox:
+	{
+		formatter: HTMLTableBulkEditor.checkboxFormatter,
+		css:       checkbox_class
+	},
+
+	checkboxMultiselect:
+	{
+		formatter: HTMLTableBulkEditor.checkboxMultiselectFormatter,
+		css:       cb_multiselect_class
+	},
+
+	autocompleteInputMultiselect:
+	{
+		formatter: HTMLTableBulkEditor.autocompleteInputMultiselectFormatter,
+		css:       cb_multi_input_class
+	},
+
+	textarea:
+	{
+		formatter: HTMLTableBulkEditor.textareaFormatter,
+		css:       textarea_class
+	}
+};
+
+function moveFocus(e)
+{
+	e.halt();
+
+	var info = this.getRecordAndFieldKey(e.target);
+	if (!info)
+	{
+		return;
+	}
+
+	var bd = this.getRecordContainer(e.target);
+	if (bd &amp;&amp; e.keyCode == 38)
+	{
+		bd = bd.previous();
+	}
+	else if (bd)
+	{
+		bd = bd.next();
+	}
+
+	var id = bd &amp;&amp; this.getRecordId(bd);
+	if (id)
+	{
+		var field = this.getFieldElement(id, info.field_key);
+		if (field)
+		{
+			field.focus();
+			try
+			{
+				field.select();
+			}
+			catch (ex)
+			{
+				// select elements don&#x27;t support select()
+			}
+		}
+	}
+}
+
+Y.extend(HTMLTableBulkEditor, BulkEditor,
+{
+	bindUI: function()
+	{
+		// attach events after creating the table
+	},
+
+	_renderContainer: function(
+		/* element */	container)
+	{
+		var table_class = Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME);
+
+		if (!this.table ||
+			container.get(&#x27;firstChild&#x27;).get(&#x27;tagName&#x27;) != &#x27;TABLE&#x27; ||
+			!container.get(&#x27;firstChild&#x27;).hasClass(table_class))
+		{
+			var s = Y.Lang.sub(&#x27;&lt;table class=&quot;{t}&quot;&gt;&lt;thead class=&quot;{hd}&quot;&gt;&lt;tr&gt;&#x27;,
+			{
+				t:  table_class,
+				hd: Y.ClassNameManager.getClassName(HTMLTableBulkEditor.NAME, &#x27;hd&#x27;)
+			});
+
+			var row_markup = &#x27;&lt;th class=&quot;{cell} {prefix}{key}&quot;&gt;{label}&lt;/th&gt;&#x27;;
+
+			s = Y.Array.reduce(this.get(&#x27;columns&#x27;), s, function(s, column)
+			{
+				return s + Y.Lang.sub(row_markup,
+				{
+					cell:   cell_class,
+					prefix: cell_class_prefix,
+					key:    column.key,
+					label:  column.label || &#x27;&amp;nbsp;&#x27;
+				});
+			});
+
+			s += &#x27;&lt;/tr&gt;&lt;/thead&gt;&lt;/table&gt;&#x27;;
+
+			container.set(&#x27;innerHTML&#x27;, s);
+			this.table = container.get(&#x27;firstChild&#x27;);
+
+			this._attachEvents(this.table);
+			Y.on(&#x27;key&#x27;, moveFocus, this.table, &#x27;down:38,40+ctrl&#x27;, this);
+
+			Y.Object.each(this.get(&#x27;events&#x27;), function(e)
+			{
+				Y.delegate(e.type, e.fn, this.table, e.nodes, this);
+			},
+			this);
+		}
+		else
+		{
+			while (this.table.get(&#x27;children&#x27;).size() &gt; 1)
+			{
+				this.table.get(&#x27;lastChild&#x27;).remove().destroy(true);
+			}
+		}
+	},
+
+	_renderRecordContainer: function(
+		/* element */	container,
+		/* object */	record)
+	{
+		var body = Y.Node.create(&#x27;&lt;tbody&gt;&lt;/tbody&gt;&#x27;);
+		body.set(&#x27;id&#x27;, this.getRecordContainerId(record));
+		body.set(&#x27;className&#x27;,
+			BulkEditor.record_container_class + &#x27; &#x27; +
+			((this.table.get(&#x27;children&#x27;).size() % 2) ? odd_class : even_class));	// accounts for th row
+
+		var msg_row = Y.Node.create(&#x27;&lt;tr&gt;&lt;/tr&gt;&#x27;);
+		msg_row.set(&#x27;className&#x27;, BulkEditor.record_msg_container_class);
+
+		var msg_cell = Y.Node.create(&#x27;&lt;td&gt;&lt;/td&gt;&#x27;);
+		msg_cell.set(&#x27;colSpan&#x27;, this.get(&#x27;columns&#x27;).length);
+		msg_cell.set(&#x27;className&#x27;, msg_class);
+		msg_cell.set(&#x27;innerHTML&#x27;, BulkEditor.error_msg_markup);
+
+		msg_row.appendChild(msg_cell);
+		body.appendChild(msg_row);
+
+		var row = Y.Node.create(&#x27;&lt;tr&gt;&lt;/tr&gt;&#x27;);
+		body.appendChild(row);
+
+		this.table.appendChild(body);
+		return row;
+	},
+
+	_renderRecord: function(
+		/* element */	row,
+		/* object */	record)
+	{
+		Y.Array.each(this.get(&#x27;columns&#x27;), function(column)
+		{
+			var key    = column.key;
+			var field  = this.getFieldConfig(key);
+
+			// create cell
+
+			var cell = Y.Node.create(&#x27;&lt;td&gt;&lt;/td&gt;&#x27;);
+			cell.set(&#x27;className&#x27;, cell_class + &#x27; &#x27; + cell_class_prefix + key);
+
+			// create liner
+
+			var liner = Y.Node.create(&#x27;&lt;div&gt;&lt;/div&gt;&#x27;);
+			liner.set(&#x27;className&#x27;, liner_class);
+
+			// fill in liner
+
+			var f = null;
+			if (Y.Lang.isFunction(column.formatter))
+			{
+				f = column.formatter;
+			}
+			else if (field.type &amp;&amp; HTMLTableBulkEditor.defaults[ field.type ])
+			{
+				f = HTMLTableBulkEditor.defaults[ field.type ].formatter;
+			}
+			else
+			{
+				if (field.type)
+				{
+					Y.log(&#x27;no defaults for type &#x27; + field.type + &#x27;, using type &quot;input&quot;&#x27;, &#x27;warn&#x27;, &#x27;HTMLTableBulkEditor&#x27;);
+				}
+
+				f = HTMLTableBulkEditor.defaults.input.formatter;
+			}
+
+			if (f)
+			{
+				f.call(this,
+				{
+					cell:   liner,
+					key:    key,
+					value:  record[key],
+					field:  field,
+					column: column,
+					record: record
+				});
+			}
+
+			// append cell
+
+			cell.appendChild(liner);
+			row.appendChild(cell);
+		},
+		this);
+	}
+});
+
+Y.HTMLTableBulkEditor = HTMLTableBulkEditor;
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
