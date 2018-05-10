@@ -181,7 +181,7 @@ Y.extend(Treeble, Y.DataTable,
 {
 	plug: function(plugin, config)
 	{
-		if (plugin === Y.Plugin.DataTableDataSource)
+		if (plugin.NAME === Y.Plugin.DataTableDataSource.NAME)
 		{
 			var recordType = this.get('recordType');
 			recordType.ATTRS[ config.datasource.get('root').treeble_config.childNodesKey ] = {};
