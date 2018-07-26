@@ -56,7 +56,7 @@ Y.extend(MathQuotient, MathFunctionWithArgs,
 			right:  top_left.x
 		};
 
-		var space_width = context.getStringWidth(font_size, ' ');
+		var space_width = context.getSpaceWidth(font_size);
 
 		var arg_top_left = Y.clone(top_left, true);
 		arg_top_left.x += space_width;

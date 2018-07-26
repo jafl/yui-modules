@@ -56,7 +56,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 		var total_midline = RectList.ycenter(total_rect);
 		var orig_midline  = total_midline;
 
-		var space_width = context.getStringWidth(font_size, ' ');
+		var space_width = context.getSpaceWidth(font_size);
 		var plus_width  = context.getStringWidth(font_size, '+');
 		var minus_width = context.getStringWidth(font_size, '-');
 
@@ -128,7 +128,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 	{
 		var info        = rect_list.find(this);
 		var x           = info.rect.left;
-		var space_width = context.getStringWidth(info.font_size, ' ');
+		var space_width = context.getSpaceWidth(info.font_size);
 
 		Y.Array.each(this.args, function(arg, index)
 		{

@@ -148,48 +148,50 @@ Y.extend(MathCanvas, Y.Widget,
 		this.set('height', w+'px');
 
 		this.canvas = Y.Node.create(
-			'<canvas width="' + w + '" height="' + h + '" tabindex="0"></canvas>');
+			'<svg width="' + w + '" height="' + h + '" tabindex="0" xmlns="http://www.w3.org/2000/svg"></svg>');
 		if (!this.canvas)
 		{
-			throw Error("This browser does not support canvas rendering.");
+			throw Error("This browser does not support svg rendering.");
 		}
 
 		container.appendChild(this.canvas);
 
-		this.context = new Y.Canvas.Context2d(this.canvas);
-		Y.mix(this.context, math_rendering);
+		this.context             = math_rendering;
 		this.context.math_canvas = this;
 
 		this._renderExpression();
 
 		// input (for mobile)
 
+		const clazz = this.getClassName();
 		function buttonRow(list)
 		{
 			var s = Y.Array.reduce(list, '', function(s, obj)
 			{
-				return s + Y.Lang.sub('<button type="button" class="keyboard-{value}" value="{value}">{label}</button>',
+				return s + Y.Lang.sub('<button type="button" class="{clazz}-keyboard-{value}" value="{value}">{label}</button>',
 				{
+					clazz: clazz,
 					value: obj.value || obj,
 					label: obj.label || obj
 				});
-			});
+			},
+			this);
 
 			return '<p>' + s + '</p>';
 		}
 
 		if (this.touch || YUI.config.debug_mathcanvas_keyboard)
 		{
-			this.keyboard = Y.Node.create(
-				'<div class="keyboard">' +
+			this.keyboard = Y.Node.create(Y.Lang.sub(
+				'<div class="{clazz}-keyboard">' +
 					buttonRow([1,2,3,4,5,6,7,8,9,0]) +
 					buttonRow(['+', {value:'-',label:'&ndash;'}, {value:'*',label:'&times;'}, '/', '^', '|', ',', 'e', '\u03c0', '.']) +
 					'<p class="last">' +
-						'<button type="button" class="keyboard-hide" value="hide" title="Hide keyboard">&dArr;</button>' +
-						'<button type="button" class="keyboard-eval" value="=" title="Evaluate expression">=</button>' +
-						'<button type="button" class="keyboard-delete" value="delete" title="Delete selection">&empty;</button>' +
-						'<button type="button" class="keyboard-expand" value="expand" title="Expand selection">&hArr;</button>' +
-						'<select class="keyboard-func">' +
+						'<button type="button" class="{clazz}-keyboard-hide" value="hide" title="Hide keyboard">&dArr;</button>' +
+						'<button type="button" class="{clazz}-keyboard-eval" value="=" title="Evaluate expression">=</button>' +
+						'<button type="button" class="{clazz}-keyboard-delete" value="delete" title="Delete selection">&empty;</button>' +
+						'<button type="button" class="{clazz}-keyboard-expand" value="expand" title="Expand selection">&hArr;</button>' +
+						'<select class="{clazz}-keyboard-func">' +
 							'<option>Functions</option>' +
 							'<optgroup>' +
 								'<option>abs</option>' +
@@ -219,7 +221,7 @@ Y.extend(MathCanvas, Y.Widget,
 							'</optgroup>' +
 						'</select>' +
 						'<br>' +
-						'<select class="keyboard-const">' +
+						'<select class="{clazz}-keyboard-const">' +
 							'<option>Constants</option>' +
 							'<optgroup>' +
 								'<option>c</option>' +
@@ -228,7 +230,10 @@ Y.extend(MathCanvas, Y.Widget,
 						'</select>' +
 					'</p>' +
 				'</div>'
-			);
+			,
+			{
+				clazz: clazz
+			}));
 			container.appendChild(this.keyboard);
 
 			this.keyboard.setStyle('bottom', (-this.keyboard.get('offsetHeight'))+'px');
@@ -237,39 +242,31 @@ Y.extend(MathCanvas, Y.Widget,
 
 	bindUI: function()
 	{
+		const document = Y.one(Y.config.doc);
+
 		this.canvas.on('mousedown', function(e)
 		{
+			function getMousePosition(e)
+			{
+				const CTM = e.currentTarget.getDOMNode().getScreenCTM();
+				return [
+					((e.clientX - CTM.e) / CTM.a) - this.canvas_offset.x,
+					((e.clientY - CTM.f) / CTM.d) - this.canvas_offset.y
+				];
+			};
+
 			function select(e)
 			{
-				var xy = this.canvas.getXY();
-				var pt =
-				[
-					Math.round(e.pageX - xy[0]) - offset[0],
-					Math.round(e.pageY - xy[1]) - offset[1]
-				];
-
-				this.selection = this.rect_list.getSelection(anchor, pt);
+				this.selection = this.rect_list.getSelection(anchor, getMousePosition.call(this, e));
 				this._renderExpression();
 			}
 
-			var bounds = this.rect_list.getBounds();
-			var offset =
-			[
-				Math.floor((this.canvas.getAttribute('width') - RectList.width(bounds)) / 2),
-				Math.floor((this.canvas.getAttribute('height') - RectList.height(bounds)) / 2)
-			];
-
-			var xy = this.canvas.getXY();
-			var anchor =
-			[
-				Math.round(e.pageX - xy[0]) - offset[0],
-				Math.round(e.pageY - xy[1]) - offset[1]
-			];
+			var anchor = getMousePosition.call(this, e);
 
 			select.call(this, e);
 			var handler = this.canvas.on('mousemove', select, this);
 
-			Y.one(Y.config.doc).once('mouseup', function(e)
+			document.once('mouseup', function(e)
 			{
 				handler.detach();
 				if (this.selection >= 0)
@@ -285,9 +282,9 @@ Y.extend(MathCanvas, Y.Widget,
 		},
 		this);
 
-		this.canvas.on('keydown', function(e)
+		document.on('keydown', function(e)
 		{
-//			console.log(e.charCode);
+			console.log(e.charCode);
 
 			if (e.charCode == 32)
 			{
@@ -325,12 +322,12 @@ Y.extend(MathCanvas, Y.Widget,
 			},
 			'button', this);
 
-			this.keyboard.one('.keyboard-func').on('change', function(e)
+			this.keyboard.one('.yui3-mathcanvas-keyboard-func').on('change', function(e)
 			{
 				this.set('selectedIndex', 0);
 			});
 
-			this.keyboard.one('.keyboard-const').on('change', function(e)
+			this.keyboard.one('.yui3-mathcanvas-keyboard-const').on('change', function(e)
 			{
 				this.set('selectedIndex', 0);
 			});
@@ -490,9 +487,12 @@ Y.extend(MathCanvas, Y.Widget,
 	 */
 	_renderExpression: function()
 	{
-		this.context.clearRect(0,0,
-			this.canvas.getAttribute('width'),
-			this.canvas.getAttribute('height'));
+		if (this.canvas_root)
+		{
+			this.canvas_root.remove(true);
+		}
+		this.canvas_root = Y.Node(document.createElementNS('http://www.w3.org/2000/svg', 'g'));
+		this.canvas.appendChild(this.canvas_root);
 
 		var f = this.get('func');
 		if (!f)
@@ -513,23 +513,20 @@ Y.extend(MathCanvas, Y.Widget,
 		this.render_height = RectList.height(bounds);
 		setSize.call(this, 'height');
 
-		this.context.save();
-		this.context.translate(
-			Math.floor((this.canvas.getAttribute('width') - RectList.width(bounds)) / 2),
-			Math.floor((this.canvas.getAttribute('height') - RectList.height(bounds)) / 2));
+		this.canvas_offset =
+		{
+			x: Math.floor((this.canvas.getAttribute('width') - RectList.width(bounds)) / 2),
+			y: Math.floor((this.canvas.getAttribute('height') - RectList.height(bounds)) / 2)
+		};
+
+		this.canvas_root.setAttribute('transform', Y.Lang.sub('translate({x},{y})', this.canvas_offset));
 
 		if (this.selection >= 0)
 		{
-			var r = this.rect_list.get(this.selection).rect;
-			this.context.save();
-			this.context.set('fillStyle', '#99FFFF');
-			this.context.fillRect(r.left, r.top, RectList.width(r), RectList.height(r));
-			this.context.restore();
+			this.context.drawSelection(this.rect_list.get(this.selection).rect);
 		}
 
 		f.render(this.context, this.rect_list);
-
-		this.context.restore();
 	}
 });
 
@@ -537,41 +534,71 @@ var paren_angle = Math.PI/6;	// 30 degrees
 
 var math_rendering =
 {
+	_text_node: null,
+
 	drawString: function(
 		/* int */			left,
 		/* int */			midline,
 		/* percentage */	font_size,
 		/* string */		s)
 	{
-		var h = this.getLineHeight(font_size);
-		this._setFont(font_size);
-		this.set('textBaseline', 'top');
-		this.fillText(s, left, Math.floor(midline - h/2));
+		var n = this._createNode('text',
+		{
+			x:                   left,
+			y:                   midline,
+			'dominant-baseline': 'middle',
+			clazz:               'text'
+		});
+
+		this._setFont(n, font_size);
+		n.innerHTML = s;
 	},
 
 	getLineHeight: function(
 		/* percentage */	font_size)
 	{
-		return (13 * this.math_canvas.get('fontSize') * font_size/100.0);
+		this._createTextNode();
+		this._setFont(this._text_node, font_size);
+		this._text_node.innerHTML = "Mg";
+		return this._text_node.getBBox().height;
 	},
 
 	getStringWidth: function(
 		/* percentage */	font_size,
 		/* string */		text)
 	{
-		this.save();
-		this._setFont(font_size);
-		var w = this.measureText(text).width;
-		this.restore();
-		return w;
+		this._createTextNode();
+		this._setFont(this._text_node, font_size);
+		this._text_node.innerHTML = text;
+		return this._text_node.getComputedTextLength()*1.1;
+	},
+
+	getSpaceWidth: function(
+		/* percentage */	font_size)
+	{
+		return this.getStringWidth(font_size, '&nbsp;');
+	},
+
+	_createTextNode: function()
+	{
+		if (!this._text_node)
+		{
+			this._text_node = this._createNode('text',
+			{
+				x:          0,
+				y:          -1000,
+				visibility: 'hidden'
+			});
+			this.math_canvas.canvas.appendChild(this._text_node);
+		}
 	},
 
 	_setFont: function(
+		/* Node */			node,
 		/* percentage */	font_size)
 	{
-		this.set('font',
-			(this.math_canvas.get('fontSize') * font_size/100.0) + 'em ' +
-			 this.math_canvas.get('fontName'));
+		node.setAttribute('font-family', this.math_canvas.get('fontName'));
+		node.setAttribute('font-size', (this.math_canvas.get('fontSize') * font_size/100.0) + 'em');
 	},
 
 	getSuperSubFontSize: function(
@@ -596,20 +623,20 @@ var math_rendering =
 	drawSquareBrackets: function(
 		/* rect */	r)
 	{
-		var h = r.bottom - r.top;
-		var w = this.getSquareBracketWidth(r)-2;
+		var h = r.bottom - r.top,
+			w = this.getSquareBracketWidth(r)-2;
 
-		this.moveTo(r.left-2, r.top);
-		this.line(-w,0);
-		this.line(0,h-1);
-		this.line(w,0);
-		this.stroke();
+		this.drawLines(
+			r.left-2, r.top,
+			'd', -w,  null,
+			null,     'd', h-1,
+			'd', w,   null);
 
-		this.moveTo(r.right+1, r.top);
-		this.line(w,0);
-		this.line(0,h-1);
-		this.line(-w,0);
-		this.stroke();
+		this.drawLines(
+			r.right+1, r.top,
+			'd', w,    null,
+			null,      'd', h-1,
+			'd', -w,   null);
 	},
 
 	getSquareBracketWidth: function(
@@ -622,19 +649,13 @@ var math_rendering =
 	drawParentheses: function(
 		/* rect */	r)
 	{
-		var h       = r.bottom - r.top;
-		var radius  = h/(2.0*Math.sin(paren_angle));
-		var radius1 = Math.round(radius);
-		var yc      = RectList.ycenter(r);
-		var pw      = this.getParenthesisWidth(r);
+		var h      = r.bottom - r.top,
+			radius = h/(2.0*Math.sin(paren_angle)),
+			yc     = RectList.ycenter(r),
+			pw     = this.getParenthesisWidth(r);
 
-		this.beginPath();
-		this.arc(r.left - pw + radius, yc, radius1, Math.PI-paren_angle, Math.PI+paren_angle, false);
-		this.stroke();
-
-		this.beginPath();
-		this.arc(r.right + pw - radius, yc, radius1, paren_angle, -paren_angle, true);
-		this.stroke();
+		this.drawArc(r.left - pw + radius, yc, radius, Math.PI-paren_angle, Math.PI+paren_angle, false);
+		this.drawArc(r.right + pw - radius, yc, radius, paren_angle, -paren_angle, true);
 	},
 
 	getParenthesisWidth: function(
@@ -647,9 +668,9 @@ var math_rendering =
 	drawVerticalBar: function(
 		/* rect */	r)
 	{
-		this.moveTo(r.left+1, r.top);
-		this.lineTo(r.left+1, r.bottom);
-		this.stroke();
+		this.drawLines(
+			r.left+1, r.top,
+			null,     r.bottom);
 	},
 
 	getVerticalBarWidth: function()
@@ -660,15 +681,137 @@ var math_rendering =
 	drawHorizontalBar: function(
 		/* rect */	r)
 	{
-		var y = r.top+1;
-		this.moveTo(r.left, y);
-		this.lineTo(r.right-1, y);
-		this.stroke();
+		this.drawLines(
+			r.left,    r.top+1,
+			r.right-1, null);
 	},
 
 	getHorizontalBarHeight: function()
 	{
 		return 3;
+	},
+
+	drawLines: function(/* x,y,...,x,y */)
+	{
+		var x = arguments[0],
+			y = arguments[1];
+
+		var d = 'M ' + x + ' ' + y;
+
+		var i = 2;
+		while (i < arguments.length)
+		{
+			var z  = this._parseLineValue(arguments[i], arguments[i+1], x);
+			var x1 = z[0];
+			i     += z[1];
+
+			z = this._parseLineValue(arguments[i], arguments[i+1], y);
+			var y1 = z[0];
+			i     += z[1];
+
+			d += ' L ' + x1 + ' ' + y1;
+			x  = x1;
+			y  = y1;
+		}
+
+		this._createNode('path',
+		{
+			d:     d,
+			clazz: 'path'
+		});
+	},
+
+	_parseLineValue: function(a1, a2, v)
+	{
+		if (a1 === null)
+		{
+			return [v, 1];
+		}
+		else if (a1 === 'd')
+		{
+			return [v + a2, 2];
+		}
+		else
+		{
+			return [a1, 1];
+		}
+	},
+
+	// from https://github.com/gliffy/canvas2svg
+
+	drawArc: function(xc, yc, radius, startAngle, endAngle, counterClockwise)
+	{
+		var startX       = xc+radius*Math.cos(startAngle),
+			startY       = yc+radius*Math.sin(startAngle),
+			endX         = xc+radius*Math.cos(endAngle),
+			endY         = yc+radius*Math.sin(endAngle),
+			largeArcFlag = 0,
+			diff         = endAngle - startAngle;
+
+		if (diff < 0)
+		{
+			diff += 2*Math.PI;
+		}
+
+		if (counterClockwise)
+		{
+			largeArcFlag = diff > Math.PI ? 0 : 1;
+		}
+		else
+		{
+			largeArcFlag = diff > Math.PI ? 1 : 0;
+		}
+
+		this._createNode('path',
+		{
+			d: Y.Lang.sub('M {x1} {y1} A {r} {r} 0 {a} {s} {x2} {y2}',
+			{
+				x1: startX,
+				y1: startY,
+				r:  radius,
+				a:  largeArcFlag,
+				s:  counterClockwise ? 0 : 1,
+				x2: endX,
+				y2: endY
+			}),
+			clazz: 'path'
+		});
+	},
+
+	drawSelection: function(
+		/* map */	r)
+	{
+		this._createNode('rect',
+		{
+			x:      r.left,
+			y:      r.top,
+			width:  RectList.width(r),
+			height: RectList.height(r),
+			clazz:  'selection'
+		});
+	},
+
+	_createNode: function(
+		/* string */	type,
+		/* map */		attr)
+	{
+		var n = document.createElementNS('http://www.w3.org/2000/svg', type);
+
+		var clazz = this.math_canvas.getClassName('node');
+		if (attr.clazz)
+			{
+			clazz += ' ' + attr.clazz;
+			delete attr.clazz;
+			}
+		n.setAttribute('class', clazz);
+
+		Y.each(attr, function(value, name)
+		{
+			n.setAttribute(name, value);
+		});
+
+		this.math_canvas.canvas_root.appendChild(n);
+		return n;
 	}
 };
 

@@ -90,23 +90,15 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 		/* Context2d */		context,
 		/* rect */			rect)
 	{
-		var h = RectList.height(rect);
-		var x = rect.left;
-		var y = rect.top + Math.round(3.0*h/4.0);
-		var w = Math.round((h-3)/(4.0*Math.sqrt(3.0)));
+		var h = RectList.height(rect),
+			w = Math.round((h-3)/(4.0*Math.sqrt(3.0)));
 
-		context.beginPath();
-		context.moveTo(x,y);
-		x += w;
-		y  = rect.bottom - 1;
-		context.lineTo(x,y);
-		x += w;
-		y  = rect.top+2;
-		context.lineTo(x,y);
-		x  = rect.right-1;
-		context.lineTo(x,y);
-		context.line(0, Math.round(h/8.0));
-		context.stroke();
+		context.drawLines(
+			rect.left,     rect.top + Math.round(3.0*h/4.0),
+			'd', w,        rect.bottom - 1,
+			'd', w,        rect.top+2,
+			rect.right-1,  null,
+			null,          'd', Math.round(h/8.0));
 	}
 });
 

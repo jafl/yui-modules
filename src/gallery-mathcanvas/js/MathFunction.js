@@ -98,7 +98,17 @@ MathFunction.prototype =
 	parenthesizeForPrint: function(
 		/* MathFunction */	f)
 	{
-		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+		const data =
+		{
+			MathExponential: [1, 1, 1, 1, 1, 1],
+			MathNegate:      [0, 1, 0, 0, 1, 1],
+			MathProduct:     [0, 1, 0, 0, 1, 1],
+			MathQuotient:    [1, 1, 1, 1, 1, 1],
+			MathSum:         [0, 0, 0, 0, 0, 1],
+			negative:        [0, 0, 0, 0, 0, 0],
+		};
+
+		return this._needParentheses(f, data);
 	},
 
 	/**
@@ -110,7 +120,44 @@ MathFunction.prototype =
 	parenthesizeForRender: function(
 		/* MathFunction */	f)
 	{
-		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+		const data =
+		{
+			MathExponential: [1, 1, 1, 1, 1, 1],
+			MathNegate:      [0, 1, 0, 0, 1, 1],
+			MathProduct:     [0, 1, 1, 0, 1, 1],
+			MathQuotient:    [0, 0, 0, 0, 0, 0],
+			MathSum:         [0, 0, 0, 0, 1, 1],
+			negative:        [0, 0, 0, 0, 0, 0],
+		};
+
+		return this._needParentheses(f, data);
+	},
+
+	_needParentheses: function(
+		/* MathFunction */	f,
+		/* map */			data)
+	{
+		const ftype = f.constructor.name;
+		if (!data[ftype])
+			{
+			return false;
+			}
+
+		var type = this.constructor.name;
+		if (type == 'MathValue' && this.evaluate() < 0)
+			{
+			type = 'negative';
+			}
+
+		if (!data[type])
+			{
+			return false;
+			}
+
+		const keys = Y.Object.keys(data).sort(),
+			  i    = Y.Array.indexOf(keys, type);
+
+		return data[ftype][i];
 	}
 };
 

@@ -65,7 +65,7 @@
 
 %left '+' '-'
 %left '*' '/'
-%left '^'
+%right '^'
 %left UMINUS
 
 %start expression

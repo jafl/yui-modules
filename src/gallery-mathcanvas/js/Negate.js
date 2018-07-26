@@ -51,7 +51,7 @@ Y.extend(MathNegate, MathFunctionWithArgs,
 		var arg = this.args[0];
 		if (arg instanceof MathQuotient)
 		{
-			arg_top_left.x += context.getStringWidth(font_size, ' ');
+			arg_top_left.x += context.getSpaceWidth(font_size);
 		}
 
 		var total_rect =
