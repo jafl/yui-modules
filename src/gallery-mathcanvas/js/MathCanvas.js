@@ -284,19 +284,21 @@ Y.extend(MathCanvas, Y.Widget,
 
 		document.on('keydown', function(e)
 		{
-			console.log(e.charCode);
+			console.log(e);
 
 			if (e.charCode == 32)
 			{
 				this.expandSelection();
 			}
+			else if (this.selection >= 0 &&
+					 this.rect_list.get(this.selection).func
+					 	.handleKeyPress(this, e.charCode, e._event.key))
+			{
+				this._renderExpression();
+			}
 			else if (e.charCode == 8)
 			{
 				this.deleteSelection();
-			}
-			else if (e.charCode == 43 && this.selection >= 0)
-			{
-				
 			}
 		},
 		this);

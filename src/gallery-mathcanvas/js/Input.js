@@ -14,6 +14,8 @@
 function MathInput()
 {
 	MathInput.superclass.constructor.call(this);
+
+	this.text = '?';
 }
 
 Y.extend(MathInput, MathFunction,
@@ -42,15 +44,18 @@ Y.extend(MathInput, MathFunction,
 		/* percentage */	font_size,
 		/* RectList */		rect_list)
 	{
-		var total_rect =
+		var r =
 		{
 			top:    top_left.y,
 			left:   top_left.x,
 			bottom: top_left.y + context.getLineHeight(font_size),
-			right:  top_left.x + 10*context.getSpaceWidth(font_size)
+			right:  top_left.x + context.getStringWidth(font_size, this.text)
 		};
 
-		return rect_list.add(total_rect, total_rect.ycenter(), font_size, this);
+		this.bracket_width = context.getSquareBracketWidth(r);
+		r.right           += 2 * this.bracket_width;
+
+		return rect_list.add(r, RectList.ycenter(r), font_size, this);
 	},
 
 	/**
@@ -62,17 +67,15 @@ Y.extend(MathInput, MathFunction,
 		/* Context2d */	context,
 		/* RectList */	rect_list)
 	{
-		var info = rect_list.find(this);
+		const info = rect_list.find(this),
+			  x    = info.rect.left + this.bracket_width,
+			  r    = Y.clone(info.rect, true);
 
-		var root = context._createNode('foreignObject',
-		{
-			x:      info.rect.left,
-			y:      info.rect.top,
-			width:  RectList.width(info.rect),
-			height: RectList.height(info.rect)
-		});
+		r.left  += this.bracket_width;
+		r.right -= this.bracket_width;
 
-		root.appendChild(document.createElement('input'));
+		context.drawSquareBrackets(r);
+		context.drawString(x, info.midline, info.font_size, this.text);
 	},
 
 	/**
@@ -81,7 +84,43 @@ Y.extend(MathInput, MathFunction,
 	 */
 	toString: function()
 	{
-		return this.value;
+		return this.text;
+	},
+
+	/**
+	 * @method handleKeyPress
+	 * @param canvas {MathCanvas}
+	 * @param code {int} character code
+	 * @param c {string} character
+	 * @return true if function changed
+	 */
+	handleKeyPress: function(
+		/* MathCanvas */	canvas,
+		/* int */			code,
+		/* char */			c)
+	{
+		if (code == 8 && this.text == '?')
+			{
+			canvas.deleteFunction(this);
+			}
+		else if (code == 8)
+			{
+			this.text = this.text.substr(0, this.text.length-1);
+			if (this.text.length === 0)
+				{
+				this.text = '?';
+				}
+			}
+		else if (this.text == '?')
+			{
+			this.text = c;
+			}
+		else if (c.length == 1 && c != ' ')
+			{
+			this.text += c;
+			}
+
+		return true;
 	}
 });
 

@@ -90,6 +90,23 @@ MathFunction.prototype =
 	 */
 
 	/**
+	 * Overridden by Input.
+	 *
+	 * @method handleKeyPress
+	 * @param canvas {MathCanvas}
+	 * @param code {int} character code
+	 * @param c {string} character
+	 * @return true if function changed
+	 */
+	handleKeyPress: function(
+		/* MathCanvas */	canvas,
+		/* int */			code,
+		/* char */			c)
+	{
+		return false;
+	},
+
+	/**
 	 * @method parenthesizeForPrint
 	 * @protected
 	 * @param f {MathFunction}
