@@ -17,6 +17,7 @@
 "\u03c0"	return 'PI';
 "e"			return 'E';
 "i"			return 'I';
+"?"			return 'INPUT';
 
 "*"	return '*';
 "/"	return '/';
@@ -54,7 +55,7 @@
 "arccosh"	return 'ARCCOSH';
 "arctanh"	return 'ARCTANH';
 
-[^-*/+^(),\s0-9][^-*/+^(),\s]*	return 'VARIABLE';
+[^-*/+^(),\s0-9?][^-*/+^(),\s]*	return 'VARIABLE';
 
 \s+		/* skip whitespace */
 <<EOF>>	return 'EOF';
@@ -88,6 +89,8 @@ e
 		{$$ = new yy.MathFunction.I();}
 	| VARIABLE
 		{$$ = new yy.MathFunction.Variable(yytext);}
+	| INPUT
+		{$$ = new yy.MathFunction.Input(yytext);}
 
 	| '(' e ')'
 		{$$ = $2;}

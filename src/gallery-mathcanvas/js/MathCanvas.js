@@ -294,6 +294,10 @@ Y.extend(MathCanvas, Y.Widget,
 			{
 				this.deleteSelection();
 			}
+			else if (e.charCode == 43 && this.selection >= 0)
+			{
+				
+			}
 		},
 		this);
 
