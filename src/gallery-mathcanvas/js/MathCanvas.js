@@ -4,7 +4,7 @@
 
 /**********************************************************************
  * Displays an arithmetical expression the way you would write it on paper.
- * 
+ *
  * @main gallery-mathcanvas
  * @class MathCanvas
  * @extends Widget
@@ -23,7 +23,7 @@ MathCanvas.ATTRS =
 {
 	/**
 	 * The function to display.
-	 * 
+	 *
 	 * @attribute func
 	 * @type {Y.MathFunction|String}
 	 */
@@ -39,7 +39,7 @@ MathCanvas.ATTRS =
 
 	/**
 	 * The font name to use.
-	 * 
+	 *
 	 * @attribute fontName
 	 * @type {String}
 	 */
@@ -51,7 +51,7 @@ MathCanvas.ATTRS =
 
 	/**
 	 * The font size to use, in em's.
-	 * 
+	 *
 	 * @attribute fontSize
 	 * @type {number}
 	 */
@@ -64,7 +64,7 @@ MathCanvas.ATTRS =
 	/**
 	 * The minimum width of the canvas.  If the expression is wider, the
 	 * width will increase to fit.
-	 * 
+	 *
 	 * @attribute minWidth
 	 * @type {Integer}
 	 */
@@ -77,7 +77,7 @@ MathCanvas.ATTRS =
 	/**
 	 * The minimum height of the canvas.  If the expression is taller, the
 	 * height will increase to fit.
-	 * 
+	 *
 	 * @attribute minHeight
 	 * @type {Integer}
 	 */
@@ -137,6 +137,12 @@ Y.extend(MathCanvas, Y.Widget,
 		this.touch = touchOS || agent.indexOf("iphone") != -1;
 	},
 
+	destructor: function()
+	{
+		this.canvas  = null;
+		this.context = null;
+	},
+
 	renderUI: function()
 	{
 		var container = this.get('contentBox');
@@ -182,10 +188,12 @@ Y.extend(MathCanvas, Y.Widget,
 
 		if (this.touch || YUI.config.debug_mathcanvas_keyboard)
 		{
+			const fn_names = Object.keys(Y.MathFunction.name_map).sort();
+
 			this.keyboard = Y.Node.create(Y.Lang.sub(
 				'<div class="{clazz}-keyboard">' +
 					buttonRow([1,2,3,4,5,6,7,8,9,0]) +
-					buttonRow(['+', {value:'-',label:'&ndash;'}, {value:'*',label:'&times;'}, '/', '^', '|', ',', 'e', '\u03c0', '.']) +
+					buttonRow(['+', {value:'-',label:'&ndash;'}, {value:'*',label:'&times;'}, '/', '^', 'null', 'e', '\u03c0', ',', '.']) +
 					'<p class="last">' +
 						'<button type="button" class="{clazz}-keyboard-hide" value="hide" title="Hide keyboard">&dArr;</button>' +
 						'<button type="button" class="{clazz}-keyboard-eval" value="=" title="Evaluate expression">=</button>' +
@@ -194,34 +202,15 @@ Y.extend(MathCanvas, Y.Widget,
 						'<select class="{clazz}-keyboard-func">' +
 							'<option>Functions</option>' +
 							'<optgroup>' +
-								'<option>abs</option>' +
-								'<option>arccos</option>' +
-								'<option>arcsin</option>' +
-								'<option>arctan</option>' +
-								'<option>arctan2</option>' +
-								'<option>conjugate</option>' +
-								'<option>cos</option>' +
-								'<option>cosh</option>' +
-								'<option>sinh</option>' +
-								'<option>tanh</option>' +
-								'<option>imag</option>' +
-								'<option>arccosh</option>' +
-								'<option>arcsinh</option>' +
-								'<option>arctanh</option>' +
-								'<option>log</option>' +
-								'<option>max</option>' +
-								'<option>min</option>' +
-								'<option>ln</option>' +
-								'<option>phase</option>' +
-								'<option>real</option>' +
-								'<option>rotate</option>' +
-								'<option>sin</option>' +
-								'<option>sqrt</option>' +
-								'<option>tan</option>' +
+								fn_names.reduce(function(s, n)
+								{
+									return s + '<option>' + n + '</option>';
+								},
+								'') +
 							'</optgroup>' +
 						'</select>' +
 						'<br>' +
-						'<select class="{clazz}-keyboard-const">' +
+						'<select class="{clazz}-keyboard-const {clazz}-keyboard-null">' +
 							'<option>Constants</option>' +
 							'<optgroup>' +
 								'<option>c</option>' +
@@ -229,8 +218,7 @@ Y.extend(MathCanvas, Y.Widget,
 							'</optgroup>' +
 						'</select>' +
 					'</p>' +
-				'</div>'
-			,
+				'</div>',
 			{
 				clazz: clazz
 			}));
@@ -242,113 +230,111 @@ Y.extend(MathCanvas, Y.Widget,
 
 	bindUI: function()
 	{
-		const document = Y.one(Y.config.doc);
-
-		this.canvas.on('mousedown', function(e)
-		{
-			function getMousePosition(e)
-			{
-				const CTM = e.currentTarget.getDOMNode().getScreenCTM();
-				return [
-					((e.clientX - CTM.e) / CTM.a) - this.canvas_offset.x,
-					((e.clientY - CTM.f) / CTM.d) - this.canvas_offset.y
-				];
-			};
-
-			function select(e)
-			{
-				this.selection = this.rect_list.getSelection(anchor, getMousePosition.call(this, e));
-				this._renderExpression();
-			}
-
-			var anchor = getMousePosition.call(this, e);
-
-			select.call(this, e);
-			var handler = this.canvas.on('mousemove', select, this);
-
-			document.once('mouseup', function(e)
-			{
-				handler.detach();
-				if (this.selection >= 0)
-				{
-					this.showKeyboard();
-				}
-				else
-				{
-					this.hideKeyboard();
-				}
-			},
-			this);
-		},
-		this);
-
-		document.on('keydown', function(e)
-		{
-			console.log(e);
-
-			if (e.charCode == 32)
-			{
-				this.expandSelection();
-			}
-			else if (this.selection >= 0 &&
-					 this.rect_list.get(this.selection).func
-					 	.handleKeyPress(this, e.charCode, e._event.key))
-			{
-				this._renderExpression();
-			}
-			else if (e.charCode == 8)
-			{
-				this.deleteSelection();
-			}
-		},
-		this);
+		this.canvas.on('mousedown', this._handleMouseDown, this);
+		Y.one(Y.config.doc).on('keydown', this._handleKeyPress, this);
 
 		if (this.keyboard)
 		{
-			this.keyboard.delegate('click', function(e)
-			{
-				var op = e.currentTarget.get('value');
-				if (op == 'hide')
-				{
-					this.hideKeyboard();
-				}
-				else if (op == 'expand')
-				{
-					this.expandSelection();
-				}
-				else if (op == 'delete')
-				{
-					this.deleteSelection();
-				}
-				else if (op == '=')
-				{
-					this.fire('evaluate');
-					this.hideKeyboard();
-				}
-			},
-			'button', this);
+			this.keyboard.delegate('click', this._handleKeyboard, 'button', this);
 
 			this.keyboard.one('.yui3-mathcanvas-keyboard-func').on('change', function(e)
 			{
-				this.set('selectedIndex', 0);
-			});
+				this.applyFunctionToSelection(e.currentTarget.get('value'));
+				e.currentTarget.set('selectedIndex', 0);	// clear menu
+			},
+			this);
 
 			this.keyboard.one('.yui3-mathcanvas-keyboard-const').on('change', function(e)
 			{
-				this.set('selectedIndex', 0);
-			});
+				this.selection = -1;
+				this._renderExpression();
+
+				e.currentTarget.set('selectedIndex', 0);	// clear menu
+			},
+			this);
 		}
 	},
 
-	destructor: function()
+	_handleMouseDown: function(e)
 	{
-		this.canvas  = null;
-		this.context = null;
+		function getMousePosition(e)
+		{
+			const CTM = e.currentTarget.getDOMNode().getScreenCTM();
+			return [
+				((e.clientX - CTM.e) / CTM.a) - this.canvas_offset.x,
+				((e.clientY - CTM.f) / CTM.d) - this.canvas_offset.y
+			];
+		};
+
+		function select(e)
+		{
+			this.selection = this.rect_list.getSelection(anchor, getMousePosition.call(this, e));
+			this._renderExpression();
+		}
+
+		var anchor = getMousePosition.call(this, e);
+
+		select.call(this, e);
+		var handler = this.canvas.on('mousemove', select, this);
+
+		Y.one(Y.config.doc).once('mouseup', function(e)
+		{
+			handler.detach();
+			if (this.selection >= 0)
+			{
+				this.showKeyboard();
+			}
+			else
+			{
+				this.hideKeyboard();
+			}
+		},
+		this);
+	},
+
+	_handleKeyPress: function(e)
+	{
+		if (e.charCode == 32)
+		{
+			this.expandSelection();
+		}
+		else if (this.selection >= 0 &&
+				 this.rect_list.get(this.selection).func
+					.handleKeyPress(this, e.charCode, e._event.key))
+		{
+			this._renderExpression();
+		}
+		else if (e.charCode == 8)
+		{
+			this.deleteSelection();
+		}
+	},
+
+	_handleKeyboard: function(e)
+	{
+		var op = e.currentTarget.get('value');
+		if (op == 'hide')
+		{
+			this.hideKeyboard();
+		}
+		else if (op == 'expand')
+		{
+			this.expandSelection();
+		}
+		else if (op == 'delete')
+		{
+			this.deleteSelection();
+		}
+		else if (op == '=')
+		{
+			this.fire('evaluate');
+			this.hideKeyboard();
+		}
 	},
 
 	/**
 	 * Shows touch keyboard.
-	 * 
+	 *
 	 * @method showKeyboard
 	 */
 	showKeyboard: function()
@@ -379,7 +365,7 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Hides touch keyboard.
-	 * 
+	 *
 	 * @method hideKeyboard
 	 */
 	hideKeyboard: function()
@@ -410,7 +396,7 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Expands the selection up one level of the parse tree.
-	 * 
+	 *
 	 * @method expandSelection
 	 */
 	expandSelection: function()
@@ -428,7 +414,7 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Deletes the selected sub-expression.
-	 * 
+	 *
 	 * @method deleteSelection
 	 */
 	deleteSelection: function()
@@ -437,6 +423,28 @@ Y.extend(MathCanvas, Y.Widget,
 		{
 			this.deleteFunction(this.rect_list.get(this.selection).func);
 		}
+	},
+
+	/**
+	 * @method applyFunctionToSelection
+	 * @param fn_name {string} name of function to apply
+	 */
+	applyFunctionToSelection: function(
+		/* string */ fn_name)
+	{
+		if (this.selection == -1)
+		{
+			return;
+		}
+
+		const f = this.rect_list.get(this.selection).func;
+
+		f.getParent().replaceArg(f, Y.MathFunction.name_map[ fn_name ].applyTo(f));
+
+		this.selection = -1;
+		this._renderExpression();									// update rect_list
+		this.selection = this.rect_list.findIndex(f.getParent());	// parent changed
+		this._renderExpression();
 	},
 
 	/**
@@ -487,7 +495,7 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Renders the expression.
-	 * 
+	 *
 	 * @method _renderExpression
 	 * @protected
 	 */
@@ -829,14 +837,14 @@ Y.MathCanvas.Parser   = MathParser;
 
 /**********************************************************************
  * Parser used to convert a string expression into Y.MathFunction
- * 
+ *
  * @class Parser
  * @namespace MathCanvas
  */
 
 /**
  * Parses a string into a Y.MathFunction.
- * 
+ *
  * @method parse
  * @static
  * @param expr {String} expression to parse
