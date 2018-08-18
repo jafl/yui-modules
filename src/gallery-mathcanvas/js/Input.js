@@ -15,11 +15,29 @@ function MathInput()
 {
 	MathInput.superclass.constructor.call(this);
 
-	this.text = '?';
+	this.clear();
 }
 
 Y.extend(MathInput, MathFunction,
 {
+	/**
+	 * @method isEmpty
+	 * @return true if function is empty
+	 */
+	isEmpty: function()
+	{
+		return this.text == '?';
+	},
+
+	/**
+	 * @method isEmpty
+	 * @return true if function is empty
+	 */
+	clear: function()
+	{
+		this.text = '?';
+	},
+
 	/**
 	 * @method evaluate
 	 * @param var_list {Object} map of variable names to values or MathFunctions
@@ -99,26 +117,41 @@ Y.extend(MathInput, MathFunction,
 		/* int */			code,
 		/* char */			c)
 	{
-		if (code == 8 && this.text == '?')
-			{
+		if (code == 8 && this.isEmpty())
+		{
 			canvas.deleteFunction(this);
-			}
+		}
 		else if (code == 8)
-			{
+		{
 			this.text = this.text.substr(0, this.text.length-1);
 			if (this.text.length === 0)
-				{
-				this.text = '?';
-				}
-			}
-		else if (this.text == '?')
 			{
+				this.clear();
+			}
+		}
+		else if (c == '(')
+		{
+			if (this.isEmpty())
+			{
+				// ignore
+			}
+			else if (canvas.applyFunctionToSelection(this.text))
+			{
+				this.clear();
+			}
+			else
+			{
+				alert('invalid function: ' + this.text);	// XXX
+			}
+		}
+		else if (this.isEmpty())
+		{
 			this.text = c;
-			}
+		}
 		else if (c.length == 1 && c != ' ')
-			{
+		{
 			this.text += c;
-			}
+		}
 
 		return true;
 	}
