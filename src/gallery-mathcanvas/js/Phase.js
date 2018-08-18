@@ -15,8 +15,10 @@
 function MathPhase(
 	/* MathFunction */	f)
 {
-	MathPhase.superclass.constructor.call(this, "phase", f);
+	MathPhase.superclass.constructor.call(this, MathPhase.NAME, f);
 }
+
+MathPhase.NAME = 'phase';
 
 Y.extend(MathPhase, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathPhase, MathFunctionWithArgs,
 });
 
 MathFunction.Phase = MathPhase;
+
+MathFunction.name_map[ MathPhase.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathPhase(f);
+	}
+};

@@ -15,8 +15,10 @@
 function MathArctangent(
 	/* MathFunction */	f)
 {
-	MathArctangent.superclass.constructor.call(this, "arctan", f);
+	MathArctangent.superclass.constructor.call(this, MathArctangent.NAME, f);
 }
+
+MathArctangent.NAME = 'arctan';
 
 Y.extend(MathArctangent, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathArctangent, MathFunctionWithArgs,
 });
 
 MathFunction.Arctangent = MathArctangent;
+
+MathFunction.name_map[ MathArctangent.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathArctangent(f);
+	}
+};

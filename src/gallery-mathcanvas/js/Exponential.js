@@ -17,8 +17,10 @@ function MathExponential(
 	/* MathFunction */	b,
 	/* MathFunction */	e)
 {
-	MathExponential.superclass.constructor.call(this, "^", b, e);
+	MathExponential.superclass.constructor.call(this, MathExponential.NAME, b, e);
 }
+
+MathExponential.NAME = 'exp';
 
 Y.extend(MathExponential, MathFunctionWithArgs,
 {
@@ -127,3 +129,11 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 });
 
 MathFunction.Exponential = MathExponential;
+
+MathFunction.name_map[ MathExponential.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathExponential(f, new Y.MathFunction.Input());
+	}
+};

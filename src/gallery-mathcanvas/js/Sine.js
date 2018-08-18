@@ -15,8 +15,10 @@
 function MathSine(
 	/* MathFunction */	f)
 {
-	MathSine.superclass.constructor.call(this, "sin", f);
+	MathSine.superclass.constructor.call(this, MathSine.NAME, f);
 }
+
+MathSine.NAME = 'sin';
 
 Y.extend(MathSine, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathSine, MathFunctionWithArgs,
 });
 
 MathFunction.Sine = MathSine;
+
+MathFunction.name_map[ MathSine.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathSine(f);
+	}
+};

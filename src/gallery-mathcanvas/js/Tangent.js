@@ -15,8 +15,10 @@
 function MathTangent(
 	/* MathFunction */	f)
 {
-	MathTangent.superclass.constructor.call(this, "tan", f);
+	MathTangent.superclass.constructor.call(this, MathTangent.NAME, f);
 }
+
+MathTangent.NAME = 'tan';
 
 Y.extend(MathTangent, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathTangent, MathFunctionWithArgs,
 });
 
 MathFunction.Tangent = MathTangent;
+
+MathFunction.name_map[ MathTangent.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathTangent(f);
+	}
+};

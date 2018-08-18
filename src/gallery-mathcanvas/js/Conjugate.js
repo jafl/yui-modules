@@ -15,8 +15,10 @@
 function MathConjugate(
 	/* MathFunction */	f)
 {
-	MathConjugate.superclass.constructor.call(this, "conjugate", f);
+	MathConjugate.superclass.constructor.call(this, MathConjugate.NAME, f);
 }
+
+MathConjugate.NAME = 'conjugate';
 
 Y.extend(MathConjugate, MathFunctionWithArgs,
 {
@@ -75,3 +77,11 @@ Y.extend(MathConjugate, MathFunctionWithArgs,
 });
 
 MathFunction.Conjugate = MathConjugate;
+
+MathFunction.name_map[ MathConjugate.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathConjugate(f);
+	}
+};

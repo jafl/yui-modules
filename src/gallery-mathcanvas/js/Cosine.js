@@ -15,8 +15,10 @@
 function MathCosine(
 	/* MathFunction */	f)
 {
-	MathCosine.superclass.constructor.call(this, "cos", f);
+	MathCosine.superclass.constructor.call(this, MathCosine.NAME, f);
 }
+
+MathCosine.NAME = 'cos';
 
 Y.extend(MathCosine, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathCosine, MathFunctionWithArgs,
 });
 
 MathFunction.Cosine = MathCosine;
+
+MathFunction.name_map[ MathCosine.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathCosine(f);
+	}
+};

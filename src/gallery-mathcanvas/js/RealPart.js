@@ -15,8 +15,10 @@
 function MathRealPart(
 	/* MathFunction */	f)
 {
-	MathRealPart.superclass.constructor.call(this, "re", f);
+	MathRealPart.superclass.constructor.call(this, MathRealPart.NAME, f);
 }
+
+MathRealPart.NAME = 're';
 
 Y.extend(MathRealPart, MathFunctionWithArgs,
 {
@@ -34,3 +36,11 @@ Y.extend(MathRealPart, MathFunctionWithArgs,
 });
 
 MathFunction.RealPart = MathRealPart;
+
+MathFunction.name_map[ MathRealPart.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathRealPart(f);
+	}
+};

@@ -13,8 +13,10 @@
 
 function MathMax()
 {
-	MathMax.superclass.constructor.call(this, "max", new Y.Array(arguments));
+	MathMax.superclass.constructor.call(this, MathMax.NAME, new Y.Array(arguments));
 }
+
+MathMax.NAME = 'max';
 
 Y.extend(MathMax, MathFunctionWithArgs,
 {
@@ -31,3 +33,11 @@ Y.extend(MathMax, MathFunctionWithArgs,
 });
 
 MathFunction.Max = MathMax;
+
+MathFunction.name_map[ MathMax.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathMax(f, new Y.MathFunction.Input());
+	}
+};

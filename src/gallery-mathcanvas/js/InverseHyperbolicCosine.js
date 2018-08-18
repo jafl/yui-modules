@@ -15,8 +15,10 @@
 function MathInverseHyperbolicCosine(
 	/* MathFunction */	f)
 {
-	MathInverseHyperbolicCosine.superclass.constructor.call(this, "arccosh", f);
+	MathInverseHyperbolicCosine.superclass.constructor.call(this, MathInverseHyperbolicCosine.NAME, f);
 }
+
+MathInverseHyperbolicCosine.NAME = 'arccosh';
 
 Y.extend(MathInverseHyperbolicCosine, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathInverseHyperbolicCosine, MathFunctionWithArgs,
 });
 
 MathFunction.InverseHyperbolicCosine = MathInverseHyperbolicCosine;
+
+MathFunction.name_map[ MathInverseHyperbolicCosine.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathInverseHyperbolicCosine(f);
+	}
+};

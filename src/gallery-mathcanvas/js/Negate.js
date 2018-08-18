@@ -15,8 +15,10 @@
 function MathNegate(
 	/* MathFunction */	f)
 {
-	MathNegate.superclass.constructor.call(this, "-", f);
+	MathNegate.superclass.constructor.call(this, MathNegate.NAME, f);
 }
+
+MathNegate.NAME = 'negate';
 
 Y.extend(MathNegate, MathFunctionWithArgs,
 {
@@ -110,3 +112,11 @@ Y.extend(MathNegate, MathFunctionWithArgs,
 });
 
 MathFunction.Negate = MathNegate;
+
+MathFunction.name_map[ MathNegate.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathNegate(f);
+	}
+};

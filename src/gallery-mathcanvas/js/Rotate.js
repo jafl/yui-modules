@@ -15,8 +15,10 @@
 function MathRotate(
 	/* MathFunction */	f)
 {
-	MathRotate.superclass.constructor.call(this, "rotate", f);
+	MathRotate.superclass.constructor.call(this, MathRotate.NAME, f);
 }
+
+MathRotate.NAME = 'rotate';
 
 Y.extend(MathRotate, MathFunctionWithArgs,
 {
@@ -34,3 +36,11 @@ Y.extend(MathRotate, MathFunctionWithArgs,
 });
 
 MathFunction.Rotate = MathRotate;
+
+MathFunction.name_map[ MathRotate.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathRotate(f, new Y.MathFunction.Input());
+	}
+};

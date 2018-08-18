@@ -15,8 +15,10 @@
 function MathImaginaryPart(
 	/* MathFunction */	f)
 {
-	MathImaginaryPart.superclass.constructor.call(this, "im", f);
+	MathImaginaryPart.superclass.constructor.call(this, MathImaginaryPart.NAME, f);
 }
+
+MathImaginaryPart.NAME = 'im';
 
 Y.extend(MathImaginaryPart, MathFunctionWithArgs,
 {
@@ -34,3 +36,11 @@ Y.extend(MathImaginaryPart, MathFunctionWithArgs,
 });
 
 MathFunction.ImaginaryPart = MathImaginaryPart;
+
+MathFunction.name_map[ MathImaginaryPart.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathImaginaryPart(f);
+	}
+};

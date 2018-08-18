@@ -15,8 +15,10 @@
 function MathHyperbolicCosine(
 	/* MathFunction */	f)
 {
-	MathHyperbolicCosine.superclass.constructor.call(this, "cosh", f);
+	MathHyperbolicCosine.superclass.constructor.call(this, MathHyperbolicCosine.NAME, f);
 }
+
+MathHyperbolicCosine.NAME = 'cosh';
 
 Y.extend(MathHyperbolicCosine, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathHyperbolicCosine, MathFunctionWithArgs,
 });
 
 MathFunction.HyperbolicCosine = MathHyperbolicCosine;
+
+MathFunction.name_map[ MathHyperbolicCosine.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathHyperbolicCosine(f);
+	}
+};

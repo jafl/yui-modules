@@ -15,8 +15,10 @@
 function MathSquareRoot(
 	/* MathFunction */	f)
 {
-	MathSquareRoot.superclass.constructor.call(this, "sqrt", f);
+	MathSquareRoot.superclass.constructor.call(this, MathSquareRoot.NAME, f);
 }
+
+MathSquareRoot.NAME = 'sqrt';
 
 Y.extend(MathSquareRoot, MathFunctionWithArgs,
 {
@@ -103,3 +105,11 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 });
 
 MathFunction.SquareRoot = MathSquareRoot;
+
+MathFunction.name_map[ MathSquareRoot.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathSquareRoot(f);
+	}
+};

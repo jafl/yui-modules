@@ -17,8 +17,10 @@ function MathLogarithm(
 	/* MathFunction */	b,
 	/* MathFunction */	v)
 {
-	MathLogarithm.superclass.constructor.call(this, "log", b, v);
+	MathLogarithm.superclass.constructor.call(this, MathLogarithm.NAME, b, v);
 }
+
+MathLogarithm.NAME = 'log';
 
 Y.extend(MathLogarithm, MathFunctionWithArgs,
 {
@@ -115,3 +117,11 @@ Y.extend(MathLogarithm, MathFunctionWithArgs,
 });
 
 MathFunction.Logarithm = MathLogarithm;
+
+MathFunction.name_map[ MathLogarithm.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathLogarithm(new Y.MathFunction.Input(), f);
+	}
+};

@@ -15,8 +15,10 @@
 function MathMagnitude(
 	/* MathFunction */	f)
 {
-	MathMagnitude.superclass.constructor.call(this, "abs", f);
+	MathMagnitude.superclass.constructor.call(this, MathMagnitude.NAME, f);
 }
+
+MathMagnitude.NAME = 'abs';
 
 Y.extend(MathMagnitude, MathFunctionWithArgs,
 {
@@ -85,3 +87,11 @@ Y.extend(MathMagnitude, MathFunctionWithArgs,
 });
 
 MathFunction.Magnitude = MathMagnitude;
+
+MathFunction.name_map[ MathMagnitude.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathMagnitude(f);
+	}
+};

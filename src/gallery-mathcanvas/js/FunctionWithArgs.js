@@ -103,9 +103,12 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 		var i = Y.Array.indexOf(this.args, origArg);
 		if (i >= 0)
 		{
-			origArg.parent = null;
-			newArg.parent  = this;
-			this.args[i]   = newArg;
+			if (origArg.parent == this)		// might already have moved
+				{
+				origArg.parent = null;
+				}
+			newArg.parent = this;
+			this.args[i]  = newArg;
 		}
 	},
 

@@ -18,6 +18,8 @@ function MathFunction()
 	this.parent = null;
 }
 
+MathFunction.name_map = {};		// applyTo
+
 MathFunction.prototype =
 {
 	/**

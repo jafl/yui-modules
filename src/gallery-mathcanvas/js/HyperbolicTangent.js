@@ -15,8 +15,10 @@
 function MathHyperbolicTangent(
 	/* MathFunction */	f)
 {
-	MathHyperbolicTangent.superclass.constructor.call(this, "tanh", f);
+	MathHyperbolicTangent.superclass.constructor.call(this, MathHyperbolicTangent.NAME, f);
 }
+
+MathHyperbolicTangent.NAME = 'tanh';
 
 Y.extend(MathHyperbolicTangent, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathHyperbolicTangent, MathFunctionWithArgs,
 });
 
 MathFunction.HyperbolicTangent = MathHyperbolicTangent;
+
+MathFunction.name_map[ MathHyperbolicTangent.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathHyperbolicTangent(f);
+	}
+};

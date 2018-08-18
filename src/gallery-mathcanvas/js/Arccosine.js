@@ -15,8 +15,10 @@
 function MathArccosine(
 	/* MathFunction */	f)
 {
-	MathArccosine.superclass.constructor.call(this, "arccos", f);
+	MathArccosine.superclass.constructor.call(this, MathArccosine.NAME, f);
 }
+
+MathArccosine.NAME = 'arccos';
 
 Y.extend(MathArccosine, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathArccosine, MathFunctionWithArgs,
 });
 
 MathFunction.Arccosine = MathArccosine;
+
+MathFunction.name_map[ MathArccosine.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathArccosine(f);
+	}
+};

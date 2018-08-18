@@ -13,8 +13,10 @@
 
 function MathMin()
 {
-	MathMin.superclass.constructor.call(this, "min", new Y.Array(arguments));
+	MathMin.superclass.constructor.call(this, MathMin.NAME, new Y.Array(arguments));
 }
+
+MathMin.NAME = 'min';
 
 Y.extend(MathMin, MathFunctionWithArgs,
 {
@@ -31,3 +33,11 @@ Y.extend(MathMin, MathFunctionWithArgs,
 });
 
 MathFunction.Min = MathMin;
+
+MathFunction.name_map[ MathMin.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathMin(f, new Y.MathFunction.Input());
+	}
+};

@@ -15,8 +15,10 @@
 function MathNaturalLog(
 	/* MathFunction */	f)
 {
-	MathNaturalLog.superclass.constructor.call(this, "ln", f);
+	MathNaturalLog.superclass.constructor.call(this, MathNaturalLog.NAME, f);
 }
+
+MathNaturalLog.NAME = 'ln';
 
 Y.extend(MathNaturalLog, MathFunctionWithArgs,
 {
@@ -33,3 +35,11 @@ Y.extend(MathNaturalLog, MathFunctionWithArgs,
 });
 
 MathFunction.NaturalLog = MathNaturalLog;
+
+MathFunction.name_map[ MathNaturalLog.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathNaturalLog(f);
+	}
+};
