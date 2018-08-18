@@ -231,7 +231,7 @@ Y.extend(MathCanvas, Y.Widget,
 	bindUI: function()
 	{
 		this.canvas.on('mousedown', this._handleMouseDown, this);
-		Y.one(Y.config.doc).on('keydown', this._handleKeyPress, this);
+		Y.one(Y.config.doc).on('keydown', this._handleKeyDown, this);
 
 		if (this.keyboard)
 		{
@@ -292,22 +292,9 @@ Y.extend(MathCanvas, Y.Widget,
 		this);
 	},
 
-	_handleKeyPress: function(e)
+	_handleKeyDown: function(e)
 	{
-		if (e.charCode == 32)
-		{
-			this.expandSelection();
-		}
-		else if (this.selection >= 0 &&
-				 this.rect_list.get(this.selection).func
-					.handleKeyPress(this, e.charCode, e._event.key))
-		{
-			this._renderExpression();
-		}
-		else if (e.charCode == 8)
-		{
-			this.deleteSelection();
-		}
+		this._handleKeyPress(e.charCode, e._event.key);
 	},
 
 	_handleKeyboard: function(e)
@@ -325,10 +312,33 @@ Y.extend(MathCanvas, Y.Widget,
 		{
 			this.deleteSelection();
 		}
-		else if (op == '=')
+		else
+		{
+			this._handleKeyPress(0, op);
+		}
+	},
+
+	_handleKeyPress: function(
+		/* int */	code,
+		/* char */	c)
+	{
+		if (c == ' ')
+		{
+			this.expandSelection();
+		}
+		else if (c == '=')
 		{
 			this.fire('evaluate');
 			this.hideKeyboard();
+		}
+		else if (this.selection >= 0 &&
+				 this.rect_list.get(this.selection).func.handleKeyPress(this, code, c))
+		{
+			this._renderExpression();
+		}
+		else if (code == 8)
+		{
+			this.deleteSelection();
 		}
 	},
 
