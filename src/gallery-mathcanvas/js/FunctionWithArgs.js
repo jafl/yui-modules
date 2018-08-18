@@ -64,6 +64,15 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	},
 
 	/**
+	 * @method getArgs
+	 * @return {Array} array of arguments
+	 */
+	getArgs: function()
+	{
+		return this.args;
+	},
+
+	/**
 	 * @method appendArg
 	 * @param f {MathFunction}
 	 */

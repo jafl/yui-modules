@@ -452,8 +452,19 @@ Y.extend(MathCanvas, Y.Widget,
 		f.getParent().replaceArg(f, Y.MathFunction.name_map[ fn_name ].applyTo(f));
 
 		this.selection = -1;
-		this._renderExpression();									// update rect_list
-		this.selection = this.rect_list.findIndex(f.getParent());	// parent changed
+		this._renderExpression();		// update rect_list
+
+		var select_f = f.getParent();	// parent changed
+		select_f.getArgs().some(function(a)
+		{
+			if (a instanceof Y.MathFunction.Input)
+			{
+				select_f = a;
+				return true;
+			}
+		});
+
+		this.selection = this.rect_list.findIndex(select_f);
 		this._renderExpression();
 	},
 
