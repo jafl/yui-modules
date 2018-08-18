@@ -241,6 +241,7 @@ Y.extend(MathCanvas, Y.Widget,
 			{
 				this.applyFunctionToSelection(e.currentTarget.get('value'));
 				e.currentTarget.set('selectedIndex', 0);	// clear menu
+				this.canvas.focus();
 			},
 			this);
 
@@ -429,22 +430,34 @@ Y.extend(MathCanvas, Y.Widget,
 	 */
 	deleteSelection: function()
 	{
-		if (this.selection >= 0)
+		if (this.selection == -1)
 		{
-			this.deleteFunction(this.rect_list.get(this.selection).func);
+			return;
 		}
+
+		const f = this.rect_list.get(this.selection).func;
+		if (f instanceof Y.MathFunction.Input && !f.isEmpty())
+			{
+			f.clear();
+			this._renderExpression();
+			}
+		else
+			{
+			this.deleteFunction(f);
+			}
 	},
 
 	/**
 	 * @method applyFunctionToSelection
 	 * @param fn_name {string} name of function to apply
+	 * @return true if function name is valid
 	 */
 	applyFunctionToSelection: function(
 		/* string */ fn_name)
 	{
-		if (this.selection == -1)
+		if (this.selection == -1 || !Y.MathFunction.name_map[ fn_name ])
 		{
-			return;
+			return false;
 		}
 
 		const f = this.rect_list.get(this.selection).func;
@@ -466,6 +479,7 @@ Y.extend(MathCanvas, Y.Widget,
 
 		this.selection = this.rect_list.findIndex(select_f);
 		this._renderExpression();
+		return true;
 	},
 
 	/**
