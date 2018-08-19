@@ -144,11 +144,14 @@ Y.extend(MathInput, MathFunction,
 				alert('invalid function: ' + this.text);	// XXX
 			}
 		}
-		else if (this.isEmpty())
+		else if (c == ' ' || code == 13)
+		{
+		}
+		else if (c.length == 1 && this.isEmpty())
 		{
 			this.text = c;
 		}
-		else if (c.length == 1 && c != ' ')
+		else if (c.length == 1)
 		{
 			this.text += c;
 		}
