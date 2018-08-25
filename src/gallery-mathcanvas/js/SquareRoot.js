@@ -34,20 +34,20 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 	},
 
 	/**
-	 * @method prepareToRender
+	 * @method layout
 	 * @param canvas {MathCanvas} the drawing canvas
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
 		/* RectList */		rect_list)
 	{
-		var arg_index = this.args[0].prepareToRender(context, top_left, font_size, rect_list);
+		var arg_index = this.args[0].layout(context, top_left, font_size, rect_list);
 		var arg_info  = rect_list.get(arg_index);
 		var arg_h     = RectList.height(arg_info.rect);
 

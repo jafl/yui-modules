@@ -618,7 +618,7 @@ Y.extend(MathCanvas, Y.Widget,
 		this.rect_list = new RectList();
 
 		var top_left = { x:0, y:0 };
-		f.prepareToRender(this.context, top_left, 100, this.rect_list);
+		f.layout(this.context, top_left, 100, this.rect_list);
 
 		var bounds = this.rect_list.getBounds();
 

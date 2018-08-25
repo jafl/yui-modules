@@ -37,14 +37,14 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 	},
 
 	/**
-	 * @method prepareToRender
+	 * @method layout
 	 * @param canvas {MathCanvas} the drawing canvas
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
@@ -57,7 +57,7 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 
 		// get rectangle for base
 
-		var b_arg_index = this.args[0].prepareToRender(context, arg_top_left, font_size, rect_list);
+		var b_arg_index = this.args[0].layout(context, arg_top_left, font_size, rect_list);
 		var b_arg_info  = rect_list.get(b_arg_index);
 		arg_top_left.x  = b_arg_info.rect.right;
 
@@ -72,7 +72,7 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 
 		var e_font_size = context.getSuperSubFontSize(font_size);
 
-		var e_arg_index = this.args[1].prepareToRender(context, arg_top_left, e_font_size, rect_list);
+		var e_arg_index = this.args[1].layout(context, arg_top_left, e_font_size, rect_list);
 		var e_arg_info  = rect_list.get(e_arg_index);
 
 		// calculate our rectangle

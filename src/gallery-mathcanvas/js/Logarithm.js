@@ -38,14 +38,14 @@ Y.extend(MathLogarithm, MathFunctionWithArgs,
 	},
 
 	/**
-	 * @method prepareToRender
+	 * @method layout
 	 * @param canvas {MathCanvas} the drawing canvas
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
@@ -69,13 +69,13 @@ Y.extend(MathLogarithm, MathFunctionWithArgs,
 
 		var b_font_size = context.getSuperSubFontSize(font_size);
 
-		var b_arg_index = this.args[0].prepareToRender(context, arg_top_left, b_font_size, rect_list);
+		var b_arg_index = this.args[0].layout(context, arg_top_left, b_font_size, rect_list);
 		var b_arg_info  = rect_list.get(b_arg_index);
 		arg_top_left.x  = b_arg_info.rect.right;
 
 		// get rectangle for value -- gives our midline
 
-		var v_arg_index = this.args[1].prepareToRender(context, arg_top_left, font_size, rect_list);
+		var v_arg_index = this.args[1].layout(context, arg_top_left, font_size, rect_list);
 		var v_arg_info  = rect_list.get(v_arg_index);
 		total_rect      = RectList.cover(total_rect, v_arg_info.rect);
 

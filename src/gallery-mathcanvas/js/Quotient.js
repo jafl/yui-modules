@@ -35,14 +35,14 @@ Y.extend(MathQuotient, MathFunctionWithArgs,
 	},
 
 	/**
-	 * @method prepareToRender
+	 * @method layout
 	 * @param canvas {MathCanvas} the drawing canvas
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
@@ -63,7 +63,7 @@ Y.extend(MathQuotient, MathFunctionWithArgs,
 
 		// get rectangle for numerator
 
-		var n_arg_index = this.args[0].prepareToRender(context, arg_top_left, font_size, rect_list);
+		var n_arg_index = this.args[0].layout(context, arg_top_left, font_size, rect_list);
 		var n_arg_info  = rect_list.get(n_arg_index);
 		arg_top_left.y  = n_arg_info.rect.bottom;
 		total_rect      = RectList.cover(total_rect, n_arg_info.rect);
@@ -76,7 +76,7 @@ Y.extend(MathQuotient, MathFunctionWithArgs,
 
 		// get rectangle for denominator
 
-		var d_arg_index = this.args[1].prepareToRender(context, arg_top_left, font_size, rect_list);
+		var d_arg_index = this.args[1].layout(context, arg_top_left, font_size, rect_list);
 		var d_arg_info  = rect_list.get(d_arg_index);
 		total_rect      = RectList.cover(total_rect, d_arg_info.rect);
 
