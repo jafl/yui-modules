@@ -19,6 +19,15 @@ function MathSum()
 Y.extend(MathSum, MathFunctionWithArgs,
 {
 	/**
+	 * @method getMaxArgCount
+	 * @return {int} maximum number of arguments
+	 */
+	getMaxArgCount: function()
+	{
+		return 1000;
+	},
+
+	/**
 	 * @method evaluate
 	 * @param var_list {Object} map of variable names to values or MathFunctions
 	 * @return the value of the function

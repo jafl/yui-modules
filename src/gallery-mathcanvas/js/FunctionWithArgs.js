@@ -45,6 +45,18 @@ function MathFunctionWithArgs(
 Y.extend(MathFunctionWithArgs, MathFunction,
 {
 	/**
+	 * By default, we assume the number of arguments is fixed.  Derived
+	 * classes can override.
+	 *
+	 * @method getMaxArgCount
+	 * @return {int} maximum number of arguments
+	 */
+	getMaxArgCount: function()
+	{
+		return this.args.length;
+	},
+
+	/**
 	 * @method getArgCount
 	 * @return {int} number of arguments
 	 */
@@ -70,6 +82,48 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	getArgs: function()
 	{
 		return this.args;
+	},
+
+	/**
+	 * @method insertArgBefore
+	 * @param f {MathFunction}
+	 * @param before {MathFunction}
+	 */
+	insertArgBefore: function(
+		/* MathFunction */	f,
+		/* MathFunction */	before)
+	{
+		var i = Y.Array.indexOf(this.args, before);
+		if (i >= 0)
+		{
+			f.parent = this;
+			this.args.splice(i, 0, f);
+		}
+		else
+		{
+			this.appendArg(f);
+		}
+	},
+
+	/**
+	 * @method insertArgAfter
+	 * @param f {MathFunction}
+	 * @param after {MathFunction}
+	 */
+	insertArgAfter: function(
+		/* MathFunction */	f,
+		/* MathFunction */	after)
+	{
+		var i = Y.Array.indexOf(this.args, after);
+		if (i >= 0)
+		{
+			f.parent = this;
+			this.args.splice(i+1, 0, f);
+		}
+		else
+		{
+			this.appendArg(f);
+		}
 	},
 
 	/**

@@ -144,8 +144,87 @@ Y.extend(MathInput, MathFunction,
 				alert('invalid function: ' + this.text);	// XXX
 			}
 		}
-		else if (c == ' ' || code == 13)
+		else if (c == '+')
 		{
+			this._applyNArgFunction(canvas, Y.MathFunction.Sum);
+		}
+		else if (c == '-')
+		{
+			var v = Y.MathCanvas.parse(this.text);
+			if (c == '-')
+			{
+				v = new Y.MathFunction.Negate(v);
+			}
+
+			var p = this.getParent(),
+				a = this;
+			if (p instanceof Y.MathFunction.Negate)
+			{
+				a = p;
+				p = p.getParent();
+			}
+
+			if (p instanceof Y.MathFunction.Sum && a == this)
+			{
+				p.insertArgBefore(v, a);
+			}
+			else if (p instanceof Y.MathFunction.Sum)
+			{
+				p.insertArgAfter(v, a);
+			}
+			else if (p != null)
+			{
+				p.replaceArg(a, new Y.MathFunction.Sum(v, this));
+			}
+			else
+			{
+				canvas.set('func', new Y.MathFunction.Sum(v, this));
+			}
+
+			this.clear();
+			canvas.selectFunction(this);
+		}
+		else if (c == '*')
+		{
+			this._applyNArgFunction(canvas, Y.MathFunction.Product);
+		}
+		else if (c == '/')
+		{
+			this._apply2ArgFunction(canvas, Y.MathFunction.Quotient);
+		}
+		else if (c == '^')
+		{
+			this._apply2ArgFunction(canvas, Y.MathFunction.Exponential);
+		}
+		else if (c == ',')
+		{
+			const p = this.getParent();
+			if (p != null && p.getArgCount() < p.getMaxArgCount())
+			{
+				const v = Y.MathCanvas.parse(this.text);
+				p.insertArgBefore(v, this);
+				this.clear();
+				canvas.selectFunction(this);
+			}
+		}
+		else if (c == ' ' || code == 13 || c == '=')
+		{
+			const v = Y.MathCanvas.parse(this.text),
+				  p = this.getParent();
+
+			if (p != null)
+			{
+				this.getParent().replaceArg(this, v);
+			}
+			else
+			{
+				canvas.set('func', v);
+			}
+
+			if (c == '=')
+			{
+				canvas.fire('evaluate');
+			}
 		}
 		else if (c.length == 1 && this.isEmpty())
 		{
@@ -157,6 +236,69 @@ Y.extend(MathInput, MathFunction,
 		}
 
 		return true;
+	},
+
+	_apply2ArgFunction: function(
+		/* MathCanvas */	canvas,
+		/* function */		ctor)
+	{
+		const p = this.getParent(),		// before constructing new parent
+			  f = new ctor(Y.MathCanvas.parse(this.text), this);
+
+		if (p != null)
+		{
+			p.replaceArg(this, f);
+		}
+		else
+		{
+			canvas.set('func', f);
+		}
+
+		this.clear();
+		canvas.selectFunction(this);
+	},
+
+	_applyNArgFunction: function(
+		/* MathCanvas */	canvas,
+		/* function */		ctor)
+	{
+		const v = Y.MathCanvas.parse(this.text);
+
+		var p = this.getParent();
+		if (p instanceof Y.MathFunction.Negate)
+		{
+			const a = p;
+			a.replaceArg(this, v);
+
+			p = p.getParent();
+			if (p instanceof ctor)
+			{
+				p.insertArgAfter(this, a);
+			}
+			else if (p != null)
+			{
+				p.replaceArg(a, new ctor(a, this));
+			}
+			else
+			{
+				canvas.set('func', new ctor(a, this));
+			}
+		}
+		else if (p instanceof ctor)
+		{
+			p.insertArgBefore(v, this);
+		}
+		else if (p != null)
+		{
+			p.replaceArg(this, new ctor(v, this));
+		}
+		else
+		{
+			canvas.set('func', new ctor(v, this));
+		}
+
+		this.clear();
+		canvas.selectFunction(this);
 	}
 });
 

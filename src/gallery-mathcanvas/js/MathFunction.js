@@ -105,7 +105,120 @@ MathFunction.prototype =
 		/* int */			code,
 		/* char */			c)
 	{
+		if (c == '+')
+		{
+			this._applyNArgFunction(canvas, Y.MathFunction.Sum);
+			return true;
+		}
+		else if (c == '-')
+		{
+			const i = new Y.MathFunction.Input();
+
+			var v = c == '-' ? new Y.MathFunction.Negate(i) : i;
+
+			const p = this.getParent();
+			if (p instanceof Y.MathFunction.Sum)
+			{
+				p.insertArgAfter(v, this);
+			}
+			else if (p != null)
+			{
+				p.replaceArg(this, new Y.MathFunction.Sum(this, v));
+			}
+			else if (this instanceof Y.MathFunction.Sum)
+			{
+				this.appendArg(v);
+			}
+			else
+			{
+				canvas.set('func', new Y.MathFunction.Sum(this, v));
+			}
+
+			canvas.selectFunction(i);
+			return true;
+		}
+		else if (c == '*')
+		{
+			this._applyNArgFunction(canvas, Y.MathFunction.Product);
+			return true;
+		}
+		else if (c == '/')
+		{
+			this._apply2ArgFunction(canvas, Y.MathFunction.Quotient);
+			return true;
+		}
+		else if (c == '^')
+		{
+			this._apply2ArgFunction(canvas, Y.MathFunction.Exponential);
+			return true;
+		}
+		else if (c == ',')
+		{
+			const p = this.getParent();
+			if (p != null && p.getArgCount() < p.getMaxArgCount())
+			{
+				const i = new Y.MathFunction.Input();
+				p.insertArgAfter(i, this);
+				canvas.selectFunction(i);
+				return true;
+			}
+		}
+
 		return false;
+	},
+
+	_apply2ArgFunction: function(
+		/* MathCanvas */	canvas,
+		/* function */		ctor)
+	{
+		const i = new Y.MathFunction.Input(),
+			  f = new ctor(this, i);
+
+		const p = this.getParent();
+		if (p != null)
+		{
+			p.replaceArg(this, f);
+		}
+		else
+		{
+			canvas.set('func', f);
+		}
+
+		canvas.selectFunction(i);
+	},
+
+	_applyNArgFunction: function(
+		/* MathCanvas */	canvas,
+		/* function */		ctor)
+	{
+		const i = new Y.MathFunction.Input();
+
+		var p = this.getParent(),
+			a = this;
+		if (p instanceof Y.MathFunction.Negate)
+		{
+			a = p;
+			p = p.getParent();
+		}
+
+		if (this instanceof ctor)
+		{
+			this.appendArg(i);
+		}
+		else if (p instanceof ctor)
+		{
+			p.insertArgAfter(i, a);
+		}
+		else if (p != null)
+		{
+			p.replaceArg(a, new ctor(a, i));
+		}
+		else
+		{
+			canvas.set('func', new ctor(a, i));
+		}
+
+		canvas.selectFunction(i);
 	},
 
 	/**
@@ -158,20 +271,20 @@ MathFunction.prototype =
 	{
 		const ftype = f.constructor.name;
 		if (!data[ftype])
-			{
+		{
 			return false;
-			}
+		}
 
 		var type = this.constructor.name;
 		if (type == 'MathValue' && this.evaluate() < 0)
-			{
+		{
 			type = 'negative';
-			}
+		}
 
 		if (!data[type])
-			{
+		{
 			return false;
-			}
+		}
 
 		const keys = Y.Object.keys(data).sort(),
 			  i    = Y.Array.indexOf(keys, type);

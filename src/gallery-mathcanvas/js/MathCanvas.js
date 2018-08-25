@@ -29,11 +29,11 @@ MathCanvas.ATTRS =
 	 */
 	func:
 	{
-		value: new Y.MathFunction.Value(0),
+		value: new Y.MathFunction.Input(),
 		setter: function(value)
 		{
 			return Y.Lang.isString(value) ?
-				Y.MathCanvas.Parser.parse(value) : value;
+				Y.MathCanvas.parse(value) : value;
 		}
 	},
 
@@ -96,6 +96,30 @@ function setSize(
 	this.set(type, v+'px');
 	this.canvas.setAttribute(type, v);
 }
+
+/**
+ * @method parse
+ * @static
+ * @param expr {string}
+ * @return {MathFunction}
+ */
+MathCanvas.parse = function(
+	/* string */ expr)
+{
+	try
+	{
+		return MathParser.parse(expr);
+	}
+	catch (e)
+	{
+		if (e.message.startsWith('Parse error'))
+		{
+			const s = e.message.split('\n');
+			alert('Parse error:\n' + s[1] + '\n' + s[2]);	// XXX
+		}
+		throw e;
+	}
+};
 
 Y.extend(MathCanvas, Y.Widget,
 {
@@ -326,7 +350,12 @@ Y.extend(MathCanvas, Y.Widget,
 		/* int */	code,
 		/* char */	c)
 	{
-		if (c == ' ')
+		if (this.selection >= 0 &&
+			this.rect_list.get(this.selection).func.handleKeyPress(this, code, c))
+		{
+			this._renderExpression();
+		}
+		else if (c == ' ')
 		{
 			this.expandSelection();
 		}
@@ -334,11 +363,6 @@ Y.extend(MathCanvas, Y.Widget,
 		{
 			this.fire('evaluate');
 			this.hideKeyboard();
-		}
-		else if (this.selection >= 0 &&
-				 this.rect_list.get(this.selection).func.handleKeyPress(this, code, c))
-		{
-			this._renderExpression();
 		}
 		else if (code == 8)
 		{
@@ -420,9 +444,40 @@ Y.extend(MathCanvas, Y.Widget,
 			var p = this.rect_list.get(this.selection).func.getParent();
 			if (p)
 			{
-				this.selection = this.rect_list.findIndex(p);
+				do
+				{
+					this.selection = this.rect_list.findIndex(p);
+					p              = p.getParent();
+				}
+				while (this.selection == -1);
+
 				this._renderExpression();
 			}
+		}
+	},
+
+	/**
+	 * Selects the specified function, if it can be found.
+	 *
+	 * @method selectFunction
+	 * @param f {MathFunction}
+	 * @return true if selected
+	 */
+	selectFunction: function(
+		/* MathFunction */	f)
+	{
+		this._renderExpression();		// update rect_list
+
+		const i = this.rect_list.findIndex(f);
+		if (i >= 0)
+		{
+			this.selection = i;
+			this._renderExpression();
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	},
 
@@ -463,9 +518,18 @@ Y.extend(MathCanvas, Y.Widget,
 			return false;
 		}
 
-		const f = this.rect_list.get(this.selection).func;
+		const f = this.rect_list.get(this.selection).func,
+			  p = f.getParent(),
+			  v = Y.MathFunction.name_map[ fn_name ].applyTo(f);
 
-		f.getParent().replaceArg(f, Y.MathFunction.name_map[ fn_name ].applyTo(f));
+		if (p != null)
+		{
+			p.replaceArg(f, v);
+		}
+		else
+		{
+			this.set('func', v);
+		}
 
 		this.selection = -1;
 		this._renderExpression();		// update rect_list
@@ -496,9 +560,8 @@ Y.extend(MathCanvas, Y.Widget,
 		var s = p;
 		if (!p)
 		{
-			this.selection = 0;
-			this.set('func', '0');
-			return;
+			s = new Y.MathFunction.Input();
+			this.set('func', s);
 		}
 		else if (p.getArgCount() == 1)
 		{
@@ -871,7 +934,6 @@ MathParser.yy.MathFunction = Y.MathFunction;
 
 Y.MathCanvas          = MathCanvas;
 Y.MathCanvas.RectList = RectList;
-Y.MathCanvas.Parser   = MathParser;
 
 /**********************************************************************
  * Parser used to convert a string expression into Y.MathFunction
