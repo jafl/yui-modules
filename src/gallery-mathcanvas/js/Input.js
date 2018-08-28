@@ -19,7 +19,8 @@ function MathInput()
 }
 
 // sync with MathParson.jison
-const validation = /^[a-z]|^0x[0-9a-f]+$|^[0-9]+e[-+]?[0-9]+$|^([0-9]+\.([0-9]+)?|([0-9]+)?\.[0-9]+)(e[-+]?[0-9]+)?$|^[1-9][0-9]*$|^0$/i;
+const number_pattern = /^0x[0-9a-f]+$|^[0-9]+e[-+]?[0-9]+$|^([0-9]+\.([0-9]+)?|([0-9]+)?\.[0-9]+)(e[-+]?[0-9]+)?$|^[1-9][0-9]*$|^0$/i,
+	  name_pattern   = /^[a-z]/i;
 
 Y.extend(MathInput, MathFunction,
 {
@@ -98,7 +99,7 @@ Y.extend(MathInput, MathFunction,
 		const brackets = context.drawSquareBrackets(r);
 		context.drawString(x, info.midline, info.font_size, this.text);
 
-		if (!validation.test(this.text))
+		if (!number_pattern.test(this.text) && !name_pattern.test(this.text))
 		{
 			brackets.forEach(function(n)
 			{
@@ -155,11 +156,18 @@ Y.extend(MathInput, MathFunction,
 				alert('invalid function: ' + this.text);	// XXX
 			}
 		}
+		else if (c == 'e' && number_pattern.test(this.text))
+		{
+			this._applyNArgFunction(canvas, Y.MathFunction.Product);
+
+			this.getParent().replaceArg(this, new Y.MathFunction.Exponential(new Y.MathFunction.Value(10), this));
+			canvas.selectFunction(this);
+		}
 		else if (c == '+')
 		{
 			this._applyNArgFunction(canvas, Y.MathFunction.Sum);
 		}
-		else if (c == '-')
+		else if (c == '-' && !this.isEmpty())
 		{
 			this._applyNArgFunction(canvas, Y.MathFunction.Sum);
 
