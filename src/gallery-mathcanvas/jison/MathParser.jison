@@ -6,6 +6,7 @@
 %lex
 
 %%
+		/* sync with Input.validation */
 "0"[xX][0-9a-fA-F]+						return 'NUMBER';	/* hex */
 [0-9]+[eE][-+]?[0-9]+					return 'NUMBER';	/* integer w/ exponent */
 [0-9]+"."([0-9]+)?([eE][-+]?[0-9]+)?	return 'NUMBER';	/* decimal w/ exponent */

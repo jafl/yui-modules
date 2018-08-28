@@ -112,29 +112,7 @@ MathFunction.prototype =
 		}
 		else if (c == '-')
 		{
-			const i = new Y.MathFunction.Input();
-
-			var v = c == '-' ? new Y.MathFunction.Negate(i) : i;
-
-			const p = this.getParent();
-			if (p instanceof Y.MathFunction.Sum)
-			{
-				p.insertArgAfter(v, this);
-			}
-			else if (p != null)
-			{
-				p.replaceArg(this, new Y.MathFunction.Sum(this, v));
-			}
-			else if (this instanceof Y.MathFunction.Sum)
-			{
-				this.appendArg(v);
-			}
-			else
-			{
-				canvas.set('func', new Y.MathFunction.Sum(this, v));
-			}
-
-			canvas.selectFunction(i);
+			this._applyNArgFunction(canvas, Y.MathFunction.Sum, true);
 			return true;
 		}
 		else if (c == '*')
@@ -171,10 +149,10 @@ MathFunction.prototype =
 		/* MathCanvas */	canvas,
 		/* function */		ctor)
 	{
-		const i = new Y.MathFunction.Input(),
+		const p = this.getParent(),		// before constructing new parent
+			  i = new Y.MathFunction.Input(),
 			  f = new ctor(this, i);
 
-		const p = this.getParent();
 		if (p != null)
 		{
 			p.replaceArg(this, f);
@@ -189,9 +167,11 @@ MathFunction.prototype =
 
 	_applyNArgFunction: function(
 		/* MathCanvas */	canvas,
-		/* function */		ctor)
+		/* function */		ctor,
+		/* bool */			negate)
 	{
-		const i = new Y.MathFunction.Input();
+		const i = new Y.MathFunction.Input(),
+			  v = negate ? new Y.MathFunction.Negate(i) : i;
 
 		var p = this.getParent(),
 			a = this;
@@ -203,19 +183,19 @@ MathFunction.prototype =
 
 		if (this instanceof ctor)
 		{
-			this.appendArg(i);
+			this.appendArg(v);
 		}
 		else if (p instanceof ctor)
 		{
-			p.insertArgAfter(i, a);
+			p.insertArgAfter(v, a);
 		}
 		else if (p != null)
 		{
-			p.replaceArg(a, new ctor(a, i));
+			p.replaceArg(a, new ctor(a, v));
 		}
 		else
 		{
-			canvas.set('func', new ctor(a, i));
+			canvas.set('func', new ctor(a, v));
 		}
 
 		canvas.selectFunction(i);

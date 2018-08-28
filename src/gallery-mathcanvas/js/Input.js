@@ -18,6 +18,9 @@ function MathInput()
 	this.clear();
 }
 
+// sync with MathParson.jison
+const validation = /^[a-z]|^0x[0-9a-f]+$|^[0-9]+e[-+]?[0-9]+$|^([0-9]+\.([0-9]+)?|([0-9]+)?\.[0-9]+)(e[-+]?[0-9]+)?$|^[1-9][0-9]*$|^0$/i;
+
 Y.extend(MathInput, MathFunction,
 {
 	/**
@@ -92,8 +95,16 @@ Y.extend(MathInput, MathFunction,
 		r.left  += this.bracket_width;
 		r.right -= this.bracket_width;
 
-		context.drawSquareBrackets(r);
+		const brackets = context.drawSquareBrackets(r);
 		context.drawString(x, info.midline, info.font_size, this.text);
+
+		if (!validation.test(this.text))
+		{
+			brackets.forEach(function(n)
+			{
+				n.classList.add('invalid-input');
+			});
+		}
 	},
 
 	/**
@@ -150,38 +161,9 @@ Y.extend(MathInput, MathFunction,
 		}
 		else if (c == '-')
 		{
-			var v = Y.MathCanvas.parse(this.text);
-			if (c == '-')
-			{
-				v = new Y.MathFunction.Negate(v);
-			}
+			this._applyNArgFunction(canvas, Y.MathFunction.Sum);
 
-			var p = this.getParent(),
-				a = this;
-			if (p instanceof Y.MathFunction.Negate)
-			{
-				a = p;
-				p = p.getParent();
-			}
-
-			if (p instanceof Y.MathFunction.Sum && a == this)
-			{
-				p.insertArgBefore(v, a);
-			}
-			else if (p instanceof Y.MathFunction.Sum)
-			{
-				p.insertArgAfter(v, a);
-			}
-			else if (p != null)
-			{
-				p.replaceArg(a, new Y.MathFunction.Sum(v, this));
-			}
-			else
-			{
-				canvas.set('func', new Y.MathFunction.Sum(v, this));
-			}
-
-			this.clear();
+			this.getParent().replaceArg(this, new Y.MathFunction.Negate(this));
 			canvas.selectFunction(this);
 		}
 		else if (c == '*')
@@ -214,7 +196,7 @@ Y.extend(MathInput, MathFunction,
 
 			if (p != null)
 			{
-				this.getParent().replaceArg(this, v);
+				p.replaceArg(this, v);
 			}
 			else
 			{
@@ -260,7 +242,8 @@ Y.extend(MathInput, MathFunction,
 
 	_applyNArgFunction: function(
 		/* MathCanvas */	canvas,
-		/* function */		ctor)
+		/* function */		ctor,
+		/* bool */			negate)
 	{
 		const v = Y.MathCanvas.parse(this.text);
 

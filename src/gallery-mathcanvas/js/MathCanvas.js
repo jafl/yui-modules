@@ -233,14 +233,6 @@ Y.extend(MathCanvas, Y.Widget,
 								'') +
 							'</optgroup>' +
 						'</select>' +
-						'<br>' +
-						'<select class="{clazz}-keyboard-const {clazz}-keyboard-null">' +
-							'<option>Constants</option>' +
-							'<optgroup>' +
-								'<option>c</option>' +
-								'<option>g</option>' +
-							'</optgroup>' +
-						'</select>' +
 					'</p>' +
 				'</div>',
 			{
@@ -266,15 +258,6 @@ Y.extend(MathCanvas, Y.Widget,
 				this.applyFunctionToSelection(e.currentTarget.get('value'));
 				e.currentTarget.set('selectedIndex', 0);	// clear menu
 				this.canvas.focus();
-			},
-			this);
-
-			this.keyboard.one('.yui3-mathcanvas-keyboard-const').on('change', function(e)
-			{
-				this.selection = -1;
-				this._renderExpression();
-
-				e.currentTarget.set('selectedIndex', 0);	// clear menu
 			},
 			this);
 		}
@@ -667,6 +650,7 @@ var math_rendering =
 
 		this._setFont(n, font_size);
 		n.innerHTML = s;
+		return n;
 	},
 
 	getLineHeight: function(
@@ -741,17 +725,19 @@ var math_rendering =
 		var h = r.bottom - r.top,
 			w = this.getSquareBracketWidth(r)-2;
 
-		this.drawLines(
-			r.left-2, r.top,
-			'd', -w,  null,
-			null,     'd', h-1,
-			'd', w,   null);
+		return [
+			this.drawLines(
+				r.left-2, r.top,
+				'd', -w,  null,
+				null,     'd', h-1,
+				'd', w,   null),
 
-		this.drawLines(
-			r.right+1, r.top,
-			'd', w,    null,
-			null,      'd', h-1,
-			'd', -w,   null);
+			this.drawLines(
+				r.right+1, r.top,
+				'd', w,    null,
+				null,      'd', h-1,
+				'd', -w,   null)
+		];
 	},
 
 	getSquareBracketWidth: function(
@@ -769,8 +755,10 @@ var math_rendering =
 			yc     = RectList.ycenter(r),
 			pw     = this.getParenthesisWidth(r);
 
-		this.drawArc(r.left - pw + radius, yc, radius, Math.PI-paren_angle, Math.PI+paren_angle, false);
-		this.drawArc(r.right + pw - radius, yc, radius, paren_angle, -paren_angle, true);
+		return [
+			this.drawArc(r.left - pw + radius, yc, radius, Math.PI-paren_angle, Math.PI+paren_angle, false),
+			this.drawArc(r.right + pw - radius, yc, radius, paren_angle, -paren_angle, true)
+		];
 	},
 
 	getParenthesisWidth: function(
@@ -783,7 +771,7 @@ var math_rendering =
 	drawVerticalBar: function(
 		/* rect */	r)
 	{
-		this.drawLines(
+		return this.drawLines(
 			r.left+1, r.top,
 			null,     r.bottom);
 	},
@@ -796,7 +784,7 @@ var math_rendering =
 	drawHorizontalBar: function(
 		/* rect */	r)
 	{
-		this.drawLines(
+		return this.drawLines(
 			r.left,    r.top+1,
 			r.right-1, null);
 	},
@@ -829,7 +817,7 @@ var math_rendering =
 			y  = y1;
 		}
 
-		this._createNode('path',
+		return this._createNode('path',
 		{
 			d:     d,
 			clazz: 'path'
@@ -877,7 +865,7 @@ var math_rendering =
 			largeArcFlag = diff > Math.PI ? 1 : 0;
 		}
 
-		this._createNode('path',
+		return this._createNode('path',
 		{
 			d: Y.Lang.sub('M {x1} {y1} A {r} {r} 0 {a} {s} {x2} {y2}',
 			{
@@ -896,7 +884,7 @@ var math_rendering =
 	drawSelection: function(
 		/* map */	r)
 	{
-		this._createNode('rect',
+		return this._createNode('rect',
 		{
 			x:      r.left,
 			y:      r.top,
