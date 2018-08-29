@@ -19,7 +19,7 @@ function MathInput()
 }
 
 // sync with MathParson.jison
-const number_pattern = /^0x[0-9a-f]+$|^[0-9]+e[-+]?[0-9]+$|^([0-9]+\.([0-9]+)?|([0-9]+)?\.[0-9]+)(e[-+]?[0-9]+)?$|^[1-9][0-9]*$|^0$/i,
+const number_pattern = /^0x[0-9a-f]+$|^-?[1-9][0-9]*(\.([0-9]+)?)?$|^-?([0-9]+)?\.[0-9]+?$|^0$/i,
 	  name_pattern   = /^[a-z]/i;
 
 Y.extend(MathInput, MathFunction,
@@ -209,11 +209,6 @@ Y.extend(MathInput, MathFunction,
 			else
 			{
 				canvas.set('func', v);
-			}
-
-			if (c == '=')
-			{
-				canvas.fire('evaluate');
 			}
 		}
 		else if (c.length == 1 && this.isEmpty())

@@ -193,38 +193,32 @@ Y.extend(MathCanvas, Y.Widget,
 
 		// input (for mobile)
 
-		const clazz = this.getClassName();
-		function buttonRow(list)
-		{
-			var s = Y.Array.reduce(list, '', function(s, obj)
-			{
-				return s + Y.Lang.sub('<button type="button" class="{clazz}-keyboard-{value}" value="{value}">{label}</button>',
-				{
-					clazz: clazz,
-					value: obj.value || obj,
-					label: obj.label || obj
-				});
-			},
-			this);
-
-			return '<p>' + s + '</p>';
-		}
-
 		if (this.touch || YUI.config.debug_mathcanvas_keyboard)
 		{
 			const fn_names = Object.keys(Y.MathFunction.name_map).sort();
 
 			this.keyboard = Y.Node.create(Y.Lang.sub(
 				'<div class="{clazz}-keyboard">' +
-					buttonRow([1,2,3,4,5,6,7,8,9,0]) +
-					buttonRow(['+', {value:'-',label:'&ndash;'}, {value:'*',label:'&times;'}, '/', '^', 'null', 'e', '\u03c0', ',', '.']) +
-					'<p class="last">' +
-						'<button type="button" class="{clazz}-keyboard-hide" value="hide" title="Hide keyboard">&dArr;</button>' +
-						'<button type="button" class="{clazz}-keyboard-eval" value="=" title="Evaluate expression">=</button>' +
-						'<button type="button" class="{clazz}-keyboard-delete" value="delete" title="Delete selection">&empty;</button>' +
-						'<button type="button" class="{clazz}-keyboard-expand" value="expand" title="Expand selection">&hArr;</button>' +
-						'<select class="{clazz}-keyboard-func">' +
-							'<option>Functions</option>' +
+					'<div class="operators">' +
+						'<button value="+">+</button>' +
+						'<button value="-">&ndash;</button>' +
+						'<button value="*">&times;</button>' +
+						'<button value="/">/</button>' +
+						'<button value="^">^</button>' +
+						'<button value=",">,</button>' +
+					'</div>' +
+					'<div class="digits">' +
+						'<button class="number" value="1">1</button>' +
+						'<button class="number" value="2">2</button>' +
+						'<button class="number" value="3">3</button>' +
+						'<button class="number" value="4">4</button>' +
+						'<button class="number" value="5">5</button>' +
+						'<button class="number" value="6">6</button>' +
+						'<button class="number" value="7">7</button>' +
+						'<button class="number" value="8">8</button>' +
+						'<button class="number" value="9">9</button>' +
+						'<select class="functions">' +
+							'<option>\u0192</option>' +
 							'<optgroup>' +
 								fn_names.reduce(function(s, n)
 								{
@@ -233,10 +227,19 @@ Y.extend(MathCanvas, Y.Widget,
 								'') +
 							'</optgroup>' +
 						'</select>' +
-					'</p>' +
+						'<button class="number" value="0">0</button>' +
+						'<button class="number" value=".">.</button>' +
+					'</div>' +
+					'<div class="misc">' +
+						'<button value="\u03c0">\u03c0</button>' +
+						'<button value="e">e</button>' +
+						'<button value="expand">&hArr;</button>' +
+						'<button value="=">=</button>' +
+						'<button class="delete" value="delete">\u232b</button>' +
+					'</div>' +
 				'</div>',
 			{
-				clazz: clazz
+				clazz: this.getClassName()
 			}));
 			container.appendChild(this.keyboard);
 
@@ -253,7 +256,7 @@ Y.extend(MathCanvas, Y.Widget,
 		{
 			this.keyboard.delegate('click', this._handleKeyboard, 'button', this);
 
-			this.keyboard.one('.yui3-mathcanvas-keyboard-func').on('change', function(e)
+			this.keyboard.one('.functions').on('change', function(e)
 			{
 				this.applyFunctionToSelection(e.currentTarget.get('value'));
 				e.currentTarget.set('selectedIndex', 0);	// clear menu
@@ -342,14 +345,15 @@ Y.extend(MathCanvas, Y.Widget,
 		{
 			this.expandSelection();
 		}
-		else if (c == '=')
-		{
-			this.fire('evaluate');
-			this.hideKeyboard();
-		}
 		else if (code == 8)
 		{
 			this.deleteSelection();
+		}
+
+		if (c == '=')
+		{
+			this.fire('evaluate');
+			this.hideKeyboard();
 		}
 	},
 
