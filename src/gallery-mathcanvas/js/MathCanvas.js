@@ -279,6 +279,7 @@ Y.extend(MathCanvas, Y.Widget,
 
 		function select(e)
 		{
+			this._deactivateSelection();
 			this.selection = this.rect_list.getSelection(anchor, getMousePosition.call(this, e));
 			this._renderExpression();
 		}
@@ -426,20 +427,24 @@ Y.extend(MathCanvas, Y.Widget,
 	 */
 	expandSelection: function()
 	{
-		if (this.selection >= 0)
+		if (this.selection == -1)
 		{
-			var p = this.rect_list.get(this.selection).func.getParent();
-			if (p)
-			{
-				do
-				{
-					this.selection = this.rect_list.findIndex(p);
-					p              = p.getParent();
-				}
-				while (this.selection == -1);
+			return;
+		}
 
-				this._renderExpression();
+		this._deactivateSelection();
+
+		var p = this.rect_list.get(this.selection).func.getParent();
+		if (p)
+		{
+			do
+			{
+				this.selection = this.rect_list.findIndex(p);
+				p              = p.getParent();
 			}
+			while (this.selection == -1);
+
+			this._renderExpression();
 		}
 	},
 
@@ -458,6 +463,7 @@ Y.extend(MathCanvas, Y.Widget,
 		const i = this.rect_list.findIndex(f);
 		if (i >= 0)
 		{
+			this._deactivateSelection();
 			this.selection = i;
 			this._renderExpression();
 			return true;
@@ -579,6 +585,18 @@ Y.extend(MathCanvas, Y.Widget,
 		this._renderExpression();	// update rect_list
 		this.selection = this.rect_list.findIndex(s);
 		this._renderExpression();
+	},
+
+	_deactivateSelection: function()
+	{
+		if (this.selection >= 0)
+		{
+			const f = this.rect_list.get(this.selection).func;
+			if (f instanceof Y.MathFunction.Input)
+			{
+				f.handleKeyPress(this, 13, '\n');
+			}
+		}
 	},
 
 	/**
