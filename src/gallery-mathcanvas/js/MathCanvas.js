@@ -306,9 +306,10 @@ Y.extend(MathCanvas, Y.Widget,
 
 	_handleKeyDown: function(e)
 	{
-		if (!e.altKey && !e.ctrlKey && !e.metaKey)
+		if (!e.altKey && !e.ctrlKey && !e.metaKey && this.selection >= 0)
 		{
 			this._handleKeyPress(e.charCode, e._event.key);
+			e.halt();
 		}
 	},
 
