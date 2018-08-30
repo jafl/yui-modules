@@ -22,6 +22,29 @@ function MathInput()
 const number_pattern = /^0x[0-9a-f]+$|^-?[1-9][0-9]*(\.([0-9]+)?)?$|^-?([0-9]+)?\.[0-9]+?$|^0$/i,
 	  name_pattern   = /^[a-z]/i;
 
+/**
+ * @method replace
+ * @static
+ * @param f {MathFunction} function to be replaced by Input
+ */
+MathInput.replace = function(
+	/* MathFunction */	f)
+{
+	const p = f.getParent(),
+		  i = new Y.MathFunction.Input();
+
+	if (p != null)
+	{
+		p.replaceArg(f, i);
+	}
+	else
+	{
+		canvas.set('func', i);
+	}
+
+	return i;
+};
+
 Y.extend(MathInput, MathFunction,
 {
 	/**

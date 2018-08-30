@@ -233,7 +233,7 @@ Y.extend(MathCanvas, Y.Widget,
 					'<div class="misc">' +
 						'<button value="\u03c0">\u03c0</button>' +
 						'<button value="e">e</button>' +
-						'<button value="expand">&hArr;</button>' +
+						'<button value="i">i</button>' +
 						'<button value="=">=</button>' +
 						'<button class="delete" value="delete">\u232b</button>' +
 					'</div>' +
@@ -350,6 +350,15 @@ Y.extend(MathCanvas, Y.Widget,
 		else if (code == 8)
 		{
 			this.deleteSelection();
+		}
+		else if (this.selection >= 0 && c != '=')
+		{
+			const i = Y.MathFunction.Input.replace(this.rect_list.get(this.selection).func);
+			i.handleKeyPress(this, code, c);
+
+			this._renderExpression();
+			this.selection = this.rect_list.findIndex(i);	// selectFunction() deactivates Input
+			this._renderExpression();
 		}
 
 		if (c == '=')
@@ -493,9 +502,17 @@ Y.extend(MathCanvas, Y.Widget,
 			f.clear();
 			this._renderExpression();
 			}
-		else
+		else if (f instanceof Y.MathFunction.Input)
 			{
 			this.deleteFunction(f);
+			}
+		else
+			{
+			const i = Y.MathFunction.Input.replace(f);
+
+			this._renderExpression();
+			this.selection = this.rect_list.findIndex(i);	// selectFunction() deactivates Input
+			this._renderExpression();
 			}
 	},
 
