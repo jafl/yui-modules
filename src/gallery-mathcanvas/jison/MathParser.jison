@@ -2,23 +2,18 @@
 
 /* http://zaach.github.com/jison/docs/ */
 
-/* lexical grammar */
+/* lexical grammar
+	* Sync numbers with Input.number_pattern
+	* Must each 3e5 as one token to avoid e5 parsing as a variable name
+*/
 %lex
 
 %%
-		/* sync with Input.number_pattern */
-"0"[xX][0-9a-fA-F]+						return 'NUMBER';	/* hex */
-[1-9][0-9]*[eE][-+]?[0-9]+				return 'NUMBER';	/* integer w/ exponent */
-[0-9]+"."([0-9]+)?([eE][-+]?[0-9]+)?	return 'NUMBER';	/* decimal w/ exponent */
-([0-9]+)?"."[0-9]+([eE][-+]?[0-9]+)?	return 'NUMBER';	/* decimal w/ exponent */
-[1-9][0-9]*								return 'NUMBER';	/* decimal integer */
-"0"										return 'NUMBER';	/* zero */
-
-"pi"		return 'PI';
-"\u03c0"	return 'PI';
-"e"			return 'E';
-"i"			return 'I';
-"?"			return 'INPUT';
+0[xX][0-9a-fA-F]+				return 'HEX';		/* hex */
+[0-9]+\.([0-9]+)?([eE][0-9]+)?	return 'NUMBER';	/* decimal w/ exponent */
+([0-9]+)?\.[0-9]+([eE][0-9]+)?	return 'NUMBER';	/* decimal w/ exponent */
+0([eE][0-9]+)?					return 'NUMBER';	/* zero */
+[1-9][0-9]*([eE][0-9]+)?		return 'NUMBER';	/* decimal integer */
 
 "*"	return '*';
 "/"	return '/';
@@ -32,7 +27,7 @@
 "re"		return 'RE';
 "im"		return 'IM';
 "abs"		return 'ABS';
-"phase"		return 'PHASE';
+"arg"		return 'ARG';
 "conjugate"	return 'CONJUGATE';
 "rotate"	return 'ROTATE';
 "max"		return 'MAX';
@@ -56,7 +51,13 @@
 "arccosh"	return 'ARCCOSH';
 "arctanh"	return 'ARCTANH';
 
-[^-*/+^(),\s0-9?][^-*/+^(),\s]*	return 'VARIABLE';
+"pi"		return 'PI';
+"\u03c0"	return 'PI';
+"e"			return 'E';
+[iIjJ]		return 'I';
+"?"			return 'INPUT';
+
+[a-zA-Z][a-zA-Z0-9_]*	return 'VARIABLE';
 
 \s+		/* skip whitespace */
 <<EOF>>	return 'EOF';
@@ -81,6 +82,36 @@ expression
 
 e
 	: NUMBER
+	{
+		var s = yytext.toLowerCase().split('e', 2);
+		if (s.length == 2)
+		{
+			$$ = new yy.MathFunction.Product();
+			$$.appendArg(new yy.MathFunction.Value(s[0]));
+			$$.appendArg(new yy.MathFunction.Exponential(
+				new yy.MathFunction.Value(10), new yy.MathFunction.Value(s[1])));
+		}
+		else
+		{
+			$$ = new yy.MathFunction.Value(yytext);
+		}
+	}
+	| NUMBER E '+' NUMBER
+	{
+		$$ = new yy.MathFunction.Product();
+		$$.appendArg(new yy.MathFunction.Value($1));
+		$$.appendArg(new yy.MathFunction.Exponential(
+			new yy.MathFunction.Value(10), new yy.MathFunction.Value($4)));
+	}
+	| NUMBER E '-' NUMBER
+	{
+		$$ = new yy.MathFunction.Product();
+		$$.appendArg(new yy.MathFunction.Value($1));
+		$$.appendArg(new yy.MathFunction.Exponential(
+			new yy.MathFunction.Value(10),
+			new yy.MathFunction.Negate(new yy.MathFunction.Value($4))));
+	}
+	| HEX
 		{$$ = new yy.MathFunction.Value(yytext);}
 	| E
 		{$$ = new yy.MathFunction.E();}
@@ -111,12 +142,12 @@ e
 
 	| ABS '(' e ')'
 		{$$ = new yy.MathFunction.Magnitude($3);}
-	| PHASE '(' e ')'
+	| ARG '(' e ')'
 		{$$ = new yy.MathFunction.Phase($3);}
 	| CONJUGATE '(' e ')'
 		{$$ = new yy.MathFunction.Conjugate($3);}
-	| ROTATE '(' arglist ')'
-		{$$ = new yy.MathFunction.Rotate($3);}
+	| ROTATE '(' e ',' e ')'
+		{$$ = new yy.MathFunction.Rotate($3, $5);}
 	| RE '(' e ')'
 		{$$ = new yy.MathFunction.RealPart($3);}
 	| IM '(' e ')'
@@ -130,8 +161,8 @@ e
 	| SQRT '(' e ')'
 		{$$ = new yy.MathFunction.SquareRoot($3);}
 
-	| LOG '(' arglist ')'
-		{$$ = new yy.MathFunction.Logarithm($3);}
+	| LOG '(' e ',' e ')'
+		{$$ = new yy.MathFunction.Logarithm($3, $5);}
 	| LOG2 '(' e ')'
 		{$$ = new yy.MathFunction.Logarithm(new yy.MathFunction.Value(2), $3);}
 	| LOG10 '(' e ')'
@@ -145,8 +176,8 @@ e
 		{$$ = new yy.MathFunction.Arccosine($3);}
 	| ARCTAN '(' e ')'
 		{$$ = new yy.MathFunction.Arctangent($3);}
-	| ARCTAN2 '(' arglist ')'
-		{$$ = new yy.MathFunction.Arctangent2($3);}
+	| ARCTAN2 '(' e ',' e ')'
+		{$$ = new yy.MathFunction.Arctangent2($3, $5);}
 
 	| SIN '(' e ')'
 		{$$ = new yy.MathFunction.Sine($3);}
