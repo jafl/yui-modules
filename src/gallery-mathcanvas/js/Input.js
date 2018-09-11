@@ -28,6 +28,7 @@ const number_pattern = /^0x[0-9a-f]+$|^-?[1-9][0-9]*(\.([0-9]+)?)?$|^-?([0-9]+)?
  * @param f {MathFunction} function to be replaced by Input
  */
 MathInput.replace = function(
+	/* MathCanvas */	canvas,
 	/* MathFunction */	f)
 {
 	const p = f.getParent(),
@@ -77,7 +78,7 @@ Y.extend(MathInput, MathFunction,
 
 	/**
 	 * @method layout
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
@@ -105,7 +106,7 @@ Y.extend(MathInput, MathFunction,
 
 	/**
 	 * @method render
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(

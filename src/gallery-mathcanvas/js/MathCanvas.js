@@ -353,7 +353,7 @@ Y.extend(MathCanvas, Y.Widget,
 		}
 		else if (this.selection >= 0 && c != '=')
 		{
-			const i = Y.MathFunction.Input.replace(this.rect_list.get(this.selection).func);
+			const i = Y.MathFunction.Input.replace(this, this.rect_list.get(this.selection).func);
 			i.handleKeyPress(this, code, c);
 
 			this._renderExpression();
@@ -508,7 +508,7 @@ Y.extend(MathCanvas, Y.Widget,
 			}
 		else
 			{
-			const i = Y.MathFunction.Input.replace(f);
+			const i = Y.MathFunction.Input.replace(this, f);
 
 			this._renderExpression();
 			this.selection = this.rect_list.findIndex(i);	// selectFunction() deactivates Input

@@ -13,9 +13,10 @@
  */
 
 function MathRotate(
-	/* MathFunction */	f)
+	/* MathFunction */	v,
+	/* MathFunction */	a)
 {
-	MathRotate.superclass.constructor.call(this, MathRotate.NAME, f);
+	MathRotate.superclass.constructor.call(this, MathRotate.NAME, v, a);
 }
 
 MathRotate.NAME = 'rotate';

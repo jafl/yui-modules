@@ -18,7 +18,7 @@ function MathPhase(
 	MathPhase.superclass.constructor.call(this, MathPhase.NAME, f);
 }
 
-MathPhase.NAME = 'phase';
+MathPhase.NAME = 'arg';
 
 Y.extend(MathPhase, MathFunctionWithArgs,
 {
