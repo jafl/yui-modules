@@ -15,46 +15,61 @@
 	<script src="gallery-math-debug.js"></script>
 	<script src="gallery-complexnumber-debug.js"></script>
 	<script src="gallery-mathcanvas-debug.js"></script>
+	<script src="gallery-mathcanvas-tests.js"></script>
 	<link rel="stylesheet" type="text/css" href="assets/gallery-mathcanvas.css">
 
 	<style type="text/css">
-	#canvas { border: 1px solid black; }
-	#expr { width: 320px; }
+	#help { margin-bottom:0; }
+	#canvas { border:1px solid black; margin-bottom:1em; }
+	#expr-input { width:320px; }
 
 	.small-screen-break { display:none; }
 
-	@media screen and (max-device-width: 801px)
+	@media screen and (max-device-width:801px)
 	{
 		.small-screen-break { display:inline; }
 	}
 	</style>
 </head>
 
-<body>
+<body class="yui3-skin-sam">
 
 <h1><a href="http://yuilibrary.com/gallery/show/mathcanvas">YUI 3 MathCanvas</a> Example</h1>
 
-<div id="controls">
-	<input type="text" id="expr" value="max(sin(sqrt(5)),sqrt(abs(cos(pi))),e)"></input>
-	<br class="small-screen-break" />
-	<button id="render">Display</button>
-	<button id="font-down">Smaller</button>
-	<button id="font-up">Larger</button>
-</div>
-
+<p id="help">Click on the input and type an expression:</p>
 <div id="canvas"></div>
 <p>Value: <span id="value">0</span></p>
-<p>Expr: <span id="expr2">0</span></p>
+<p>Printed expression: <span id="expr-output">0</span></p>
+
+<div id="controls">
+	<p>
+		Text input:
+		<input type="text" id="expr-input" value="max(sin(sqrt(5)),sqrt(abs(cos(pi))),e)"></input>
+		<br class="small-screen-break" />
+		<button id="render">Display</button>
+	</p>
+	<p>
+		Font size:
+		<button id="font-down">Smaller</button>
+		<button id="font-up">Larger</button>
+	</p>
+</div>
 
 <p><a href="../yuidoc/modules/gallery-mathcanvas.html">Show me the documentation</a></p>
 <p><a href="/yui-modules/">Back to project list</a></p>
+
+<div>
+	<button id="test">Run tests</button>
+	<div id="log"></div>
+</div>
 
 <script type="text/javascript">
 YUI.config.debug_mathcanvas_keyboard = /debug=true/.test(window.location.search);
 
 YUI({
-	filter: 'raw', combine: false
-}).use('gallery-mathcanvas', function(Y) {
+	filter: 'raw', combine: false,
+	coverage:['gallery-mathcanvas']
+}).use('gallery-mathcanvas', 'test-console', 'gallery-mathcanvas-tests', function(Y) {
 "use strict";
 
 	var canvas = new Y.MathCanvas(
@@ -80,15 +95,15 @@ YUI({
 		{
 			x:  1,
 			y:  2,
-			z:  Y.MathCanvas.Parser.parse('x+y'),
+			z:  Y.MathCanvas.parse('x+y'),
 			w1: Y.ComplexMath.I,
 			w2: new Y.ComplexNumber(0,-1)
 		}));
 
-		Y.one('#expr2').set('innerHTML', canvas.get('func').toString());
+		Y.one('#expr-output').set('innerHTML', canvas.get('func').toString());
 	}
 
-	var expr_input = Y.one('#expr');
+	var expr_input = Y.one('#expr-input');
 	Y.on('click', function()
 	{
 		try
@@ -131,6 +146,19 @@ YUI({
 		canvas.set('fontSize', canvas.get('fontSize') + 1);
 	},
 	'#font-up');
+
+	var log_console;
+	Y.on('click', function()
+	{
+		if (!log_console)
+		{
+			log_console = (new Y.Test.Console()).render('#log');
+		}
+
+		Y.Test.Runner.setName('gallery-mathcanvas');
+		Y.Test.Runner.run();
+	},
+	'#test');
 });
 </script>
 
