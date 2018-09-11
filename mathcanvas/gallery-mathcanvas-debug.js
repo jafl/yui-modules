@@ -150,6 +150,15 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method size
+	 * @return number of items
+	 */
+	size: function()
+	{
+		return this.list.length;
+	},
+
+	/**
 	 * @method get
 	 * @param index {int}
 	 * @return item at index
@@ -1033,7 +1042,10 @@ Y.extend(MathInput, MathFunction,
 			}
 			else
 			{
-				alert('invalid function: ' + this.text);	// XXX
+				alert(Y.Lang.sub(Y.MathCanvas.Strings.unknown_function,
+				{
+					name: this.text
+				}));
 			}
 		}
 		else if (c == 'e' && number_pattern.test(this.text))
@@ -4551,14 +4563,25 @@ MathCanvas.ATTRS =
 	}
 };
 
-function setSize(
-	/* width/height */	type)
+/**
+ * <p>Map of localizable strings.</p>
+ * 
+ * <dl>
+ * <dt>parse_error</dt>
+ * <dd>Displayed by `MathCanvas.parse()` when expression parsing fails.</dd>
+ * <dt>unknown_function</dt>
+ * <dd>Displayed when the user enters an unknown function name.</dd>
+ * </dl>
+ * 
+ * @property Strings
+ * @type {Object}
+ * @static
+ */
+MathCanvas.Strings =
 {
-	var c = type.charAt(0).toUpperCase() + type.substr(1);
-	var v = Math.max(this.get('min'+c), this[ 'render_'+type ]+5);
-	this.set(type, v+'px');
-	this.canvas.setAttribute(type, v);
-}
+	parse_error:      'The expression contains an error:\n{line1}\n{line2}',
+	unknown_function: 'There is no function named "{name}"'
+};
 
 /**
  * @method parse
@@ -4578,7 +4601,11 @@ MathCanvas.parse = function(
 		if (e.message.startsWith('Parse error'))
 		{
 			const s = e.message.split('\n');
-			alert('Parse error:\n' + s[1] + '\n' + s[2]);	// XXX
+			alert(Y.Lang.sub(Y.MathCanvas.Strings.parse_error,
+			{
+				line1: s[1],
+				line2: s[2]
+			}));
 		}
 		throw e;
 	}
@@ -4801,8 +4828,12 @@ Y.extend(MathCanvas, Y.Widget,
 		/* int */	code,
 		/* char */	c)
 	{
-		if (this.selection >= 0 &&
-			this.rect_list.get(this.selection).func.handleKeyPress(this, code, c))
+		if (code == 9 && this.selection >= 0)
+		{
+			this.focusNextInput(this.rect_list.get(this.selection).func);
+		}
+		else if (this.selection >= 0 &&
+				 this.rect_list.get(this.selection).func.handleKeyPress(this, code, c))
 		{
 			this._renderExpression();
 		}
@@ -4814,7 +4845,7 @@ Y.extend(MathCanvas, Y.Widget,
 		{
 			this.deleteSelection();
 		}
-		else if (this.selection >= 0 && c != '=')
+		else if (this.selection >= 0 && c.length == 1 && c != '=')
 		{
 			const i = Y.MathFunction.Input.replace(this, this.rect_list.get(this.selection).func);
 			i.handleKeyPress(this, code, c);
@@ -4944,6 +4975,50 @@ Y.extend(MathCanvas, Y.Widget,
 		else
 		{
 			return false;
+		}
+	},
+
+	/**
+	 * Switches focus to the next Input, if it can find one.
+	 *
+	 * @method focusNextInput
+	 */
+	focusNextInput: function(
+		/* Input */	f)
+	{
+		const i = this.rect_list.findIndex(f);
+		if (i < 0)
+		{
+			return;
+		}
+
+		function checkForInput()
+		{
+			const info = this.rect_list.get(j);
+			if (info.func instanceof Y.MathFunction.Input)
+			{
+				this._deactivateSelection();
+				this.selection = j;
+				this._renderExpression();
+				return true;
+			}
+		}
+
+		const count = this.rect_list.size();
+		for (var j=i+1; j<count; j++)
+		{
+			if (checkForInput.call(this))
+			{
+				return;
+			}
+		}
+
+		for (var j=0; j<i; j++)
+		{
+			if (checkForInput.call(this))
+			{
+				return;
+			}
 		}
 	},
 
@@ -5107,6 +5182,15 @@ Y.extend(MathCanvas, Y.Widget,
 		f.layout(this.context, top_left, 100, this.rect_list);
 
 		var bounds = this.rect_list.getBounds();
+
+		function setSize(
+			/* width/height */	type)
+		{
+			var c = type.charAt(0).toUpperCase() + type.substr(1);
+			var v = Math.max(this.get('min'+c), this[ 'render_'+type ]+5);
+			this.set(type, v+'px');
+			this.canvas.setAttribute(type, v);
+		}
 
 		this.render_width  = RectList.width(bounds);
 		setSize.call(this, 'width');
