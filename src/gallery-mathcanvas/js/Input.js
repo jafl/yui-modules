@@ -177,7 +177,10 @@ Y.extend(MathInput, MathFunction,
 			}
 			else
 			{
-				alert('invalid function: ' + this.text);	// XXX
+				alert(Y.Lang.sub(Y.MathCanvas.Strings.unknown_function,
+				{
+					name: this.text
+				}));
 			}
 		}
 		else if (c == 'e' && number_pattern.test(this.text))

@@ -148,6 +148,15 @@ RectList.prototype =
 	},
 
 	/**
+	 * @method size
+	 * @return number of items
+	 */
+	size: function()
+	{
+		return this.list.length;
+	},
+
+	/**
 	 * @method get
 	 * @param index {int}
 	 * @return item at index
