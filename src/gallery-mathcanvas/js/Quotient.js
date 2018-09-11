@@ -36,7 +36,7 @@ Y.extend(MathQuotient, MathFunctionWithArgs,
 
 	/**
 	 * @method layout
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
@@ -102,7 +102,7 @@ Y.extend(MathQuotient, MathFunctionWithArgs,
 
 	/**
 	 * @method render
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(
