@@ -11,7 +11,7 @@
  * @class Assert
  */
 
-var logToLog10 = 1/Math.log(10);
+const logToLog10 = 1/Math.log(10);
 
 Y.mix(Y.Assert,
 {
