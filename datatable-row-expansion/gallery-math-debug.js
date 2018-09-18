@@ -14,6 +14,8 @@ YUI.add('gallery-math', function (Y, NAME) {
  * @class Math
  */
 
+const logToLog10 = 1/Math.log(10);
+
 Y.mix(Math,
 {
 	/**
@@ -24,6 +26,24 @@ Y.mix(Math,
 	sign: function(v)
 	{
 		return (v < 0 ? -1 : (v > 0 ? +1 : 0));
+	},
+
+	/**
+	 * @method roundTo
+	 * @static
+	 * @param v {Number}
+	 * @param p {Number} precision
+	 * @return {Number} +1 if value > 0, -1 if value < 0, else zero
+	 */
+	roundTo: function(v, p)
+	{
+		if (v == 0)
+		{
+			return v;
+		}
+
+		var scale = Math.pow(10, Math.floor(Math.log(Math.abs(v))*logToLog10) - p);
+		return Math.round(v / scale) * scale
 	},
 
 	/**
