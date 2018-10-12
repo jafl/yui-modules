@@ -149,31 +149,6 @@ Y.extend(MathCanvas, Y.Widget,
 		this.after('fontSizeChange', this._renderExpression);
 		this.after('minWidthChange', this._renderExpression);
 		this.after('minHeightChange', this._renderExpression);
-
-		// http://www.thegalaxytabforum.com/index.php?/topic/621-detecting-android-tablets-with-javascript
-
-		var agent    = navigator.userAgent.toLowerCase();
-		var platform = navigator.platform;
-		// We need to eliminate Symbian, Series 60, Windows Mobile and Blackberry
-		// browsers for this quick and dirty check. This can be done with the user agent.
-		var otherBrowser = agent.indexOf("series60")   != -1 ||
-						   agent.indexOf("symbian")    != -1 ||
-						   agent.indexOf("windows ce") != -1 ||
-						   agent.indexOf("blackberry") != -1;
-		// If the screen orientation is defined we are in a modern mobile OS
-		var mobileOS = typeof orientation != 'undefined';
-		// If touch events are defined we are in a modern touch screen OS
-		var touchOS = 'ontouchstart' in document.documentElement;
-		// iPhone and iPad can be reliably identified with the navigator.platform
-		// string, which is currently only available on these devices.
-		var iOS = platform.indexOf("iPhone") != -1 || platform.indexOf("iPad") != -1;
-		// If the user agent string contains "android" then it's Android. If it
-		// doesn't but it's not another browser, not an iOS device and we're in
-		// a mobile and touch OS then we can be 99% certain that it's Android.
-		var android = agent.indexOf("android") != -1 || (!iOS && !otherBrowser && touchOS && mobileOS);
-
-		 // navigator.platform doesn't work for iPhoney
-		this.touch = touchOS || agent.indexOf("iphone") != -1;
 	},
 
 	destructor: function()
@@ -208,7 +183,7 @@ Y.extend(MathCanvas, Y.Widget,
 
 		// input (for mobile)
 
-		if (this.touch || YUI.config.debug_mathcanvas_keyboard)
+		if (Y.UA.touchEnabled || YUI.config.debug_mathcanvas_keyboard)
 		{
 			const fn_names = Object.keys(Y.MathFunction.name_map).sort();
 
@@ -822,7 +797,7 @@ var math_rendering =
 	getSuperscriptHeight: function(
 		/* rect */	r)
 	{
-		return RectList.height(r)/2;
+		return RectList.height(r)*2/3;
 	},
 
 	getSubscriptDepth: function(
