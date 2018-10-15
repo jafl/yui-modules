@@ -10,7 +10,11 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssreset/cssreset-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssfonts/cssfonts-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.15.0/build/cssbase/cssbase-min.css">
-
+<!--
+	<script src="../../vendomatic/combo.php?yui/yui/yui-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../../vendomatic/combo.php?yui/cssreset/cssreset-min.css&yui/cssfonts/cssfonts-min.css&yui/cssbase/cssbase-min.css&yui/cssbutton/cssbutton-min.css" />
+-->
+	<script src="gallery-node-optimizations-debug.js"></script>
 	<script src="gallery-canvas-debug.js"></script>
 	<script src="gallery-math-debug.js"></script>
 	<script src="gallery-complexnumber-debug.js"></script>
@@ -18,14 +22,14 @@
 	<link rel="stylesheet" type="text/css" href="assets/gallery-mathcanvas.css">
 
 	<style type="text/css">
-	.help { margin-bottom:0; }
-	.help.desktop { display:block; }
+	.help { margin-bottom:0; display:none; }
+	.desktop .desktop { display:block; }
 	.touch .desktop { display:none; }
-	.help.mobile { display:none; }
+	.desktop .mobile { display:none; }
 	.touch .mobile { display:block;}
 
 	#canvas { border:1px solid black; margin-bottom:1em; }
-	#expr-input { width:320px; }
+	#expr-input { width:100%; }
 	.value { font-size:2em; }
 	</style>
 </head>
@@ -38,7 +42,7 @@
 <p class="help mobile">Tap the ? and then use the keyboard to type an expression.    Press = to evaluate.</p>
 <div id="canvas"></div>
 <p class="value">Value: <span id="value">0</span></p>
-<p class="desktop">Available functions (Type the name followed by open parenthesis):<ul id="fn-names"></ul></p>
+<p class="help desktop">Available functions (Type the name followed by open parenthesis):<ul id="fn-names"></ul></p>
 
 <script type="text/javascript">
 YUI().use('gallery-mathcanvas', function(Y) {
@@ -50,6 +54,8 @@ YUI().use('gallery-mathcanvas', function(Y) {
 	}
 	else
 	{
+		Y.one('body').addClass('desktop');
+
 		Y.one('#fn-names').set('innerHTML',
 			Object.keys(Y.MathFunction.name_map).sort().reduce(function(s, n)
 			{
@@ -60,7 +66,7 @@ YUI().use('gallery-mathcanvas', function(Y) {
 
 	var canvas = new Y.MathCanvas(
 	{
-		minWidth:  300,
+		minWidth:  Y.one('body').get('clientWidth'),
 		minHeight: 100,
 		fontSize:  2
 	});
