@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -286,8 +287,10 @@
 function MathSquareRoot(
 	/* MathFunction */	f)
 {
-	MathSquareRoot.superclass.constructor.call(this, &quot;sqrt&quot;, f);
+	MathSquareRoot.superclass.constructor.call(this, MathSquareRoot.NAME, f);
 }
+
+MathSquareRoot.NAME = &#x27;sqrt&#x27;;
 
 Y.extend(MathSquareRoot, MathFunctionWithArgs,
 {
@@ -303,20 +306,20 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 	},
 
 	/**
-	 * @method prepareToRender
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @method layout
+	 * @param context {object} the drawing context
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
 		/* RectList */		rect_list)
 	{
-		var arg_index = this.args[0].prepareToRender(context, top_left, font_size, rect_list);
+		var arg_index = this.args[0].layout(context, top_left, font_size, rect_list);
 		var arg_info  = rect_list.get(arg_index);
 		var arg_h     = RectList.height(arg_info.rect);
 
@@ -339,7 +342,7 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 
 	/**
 	 * @method render
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(
@@ -361,27 +364,27 @@ Y.extend(MathSquareRoot, MathFunctionWithArgs,
 		/* Context2d */		context,
 		/* rect */			rect)
 	{
-		var h = RectList.height(rect);
-		var x = rect.left;
-		var y = rect.top + Math.round(3.0*h/4.0);
-		var w = Math.round((h-3)/(4.0*Math.sqrt(3.0)));
+		var h = RectList.height(rect),
+			w = Math.round((h-3)/(4.0*Math.sqrt(3.0)));
 
-		context.beginPath();
-		context.moveTo(x,y);
-		x += w;
-		y  = rect.bottom - 1;
-		context.lineTo(x,y);
-		x += w;
-		y  = rect.top+2;
-		context.lineTo(x,y);
-		x  = rect.right-1;
-		context.lineTo(x,y);
-		context.line(0, Math.round(h/8.0));
-		context.stroke();
+		context.drawLines(
+			rect.left,     rect.top + Math.round(3.0*h/4.0),
+			&#x27;d&#x27;, w,        rect.bottom - 1,
+			&#x27;d&#x27;, w,        rect.top+2,
+			rect.right-1,  null,
+			null,          &#x27;d&#x27;, Math.round(h/8.0));
 	}
 });
 
 MathFunction.SquareRoot = MathSquareRoot;
+
+MathFunction.name_map[ MathSquareRoot.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathSquareRoot(f);
+	}
+};
 
     </pre>
 </div>

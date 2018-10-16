@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -305,6 +306,8 @@ ComplexNumber.fromPolar = function(magnitude, phase)
 		magnitude * Math.sin(phase));
 };
 
+const logToLog10 = 1/Math.log(10);
+
 ComplexNumber.prototype =
 {
 	/**
@@ -489,6 +492,28 @@ ComplexNumber.prototype =
 		failIfConstant(this);
 
 		this.multiply(ComplexNumber.fromPolar(1, angle));
+
+		return this;
+	},
+
+	/**
+	 * @method roundTo
+	 * @chainable
+	 * @param p {number} precision
+	 */
+	roundTo: function(p)
+	{
+		failIfConstant(this);
+
+		function computeScale(v)
+		{
+			return Math.pow(10, Math.floor(Math.log(Math.abs(v))*logToLog10) - p);
+		}
+
+		var scale = Math.max(computeScale(this.r), computeScale(this.i));
+
+		this.r = Math.round(this.r / scale, p) * scale;
+		this.i = Math.round(this.i / scale, p) * scale;
 
 		return this;
 	},

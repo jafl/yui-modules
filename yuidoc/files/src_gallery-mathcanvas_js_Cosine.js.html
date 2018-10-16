@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -286,8 +287,10 @@
 function MathCosine(
 	/* MathFunction */	f)
 {
-	MathCosine.superclass.constructor.call(this, &quot;cos&quot;, f);
+	MathCosine.superclass.constructor.call(this, MathCosine.NAME, f);
 }
+
+MathCosine.NAME = &#x27;cos&#x27;;
 
 Y.extend(MathCosine, MathFunctionWithArgs,
 {
@@ -304,6 +307,14 @@ Y.extend(MathCosine, MathFunctionWithArgs,
 });
 
 MathFunction.Cosine = MathCosine;
+
+MathFunction.name_map[ MathCosine.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathCosine(f);
+	}
+};
 
     </pre>
 </div>

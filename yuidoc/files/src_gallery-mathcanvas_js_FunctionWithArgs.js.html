@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -316,6 +317,18 @@ function MathFunctionWithArgs(
 Y.extend(MathFunctionWithArgs, MathFunction,
 {
 	/**
+	 * By default, we assume the number of arguments is fixed.  Derived
+	 * classes can override.
+	 *
+	 * @method getMaxArgCount
+	 * @return {int} maximum number of arguments
+	 */
+	getMaxArgCount: function()
+	{
+		return this.args.length;
+	},
+
+	/**
 	 * @method getArgCount
 	 * @return {int} number of arguments
 	 */
@@ -332,6 +345,57 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 		/* int */ index)
 	{
 		return this.args[index];
+	},
+
+	/**
+	 * @method getArgs
+	 * @return {Array} array of arguments
+	 */
+	getArgs: function()
+	{
+		return this.args;
+	},
+
+	/**
+	 * @method insertArgBefore
+	 * @param f {MathFunction}
+	 * @param before {MathFunction}
+	 */
+	insertArgBefore: function(
+		/* MathFunction */	f,
+		/* MathFunction */	before)
+	{
+		var i = Y.Array.indexOf(this.args, before);
+		if (i &gt;= 0)
+		{
+			f.parent = this;
+			this.args.splice(i, 0, f);
+		}
+		else
+		{
+			this.appendArg(f);
+		}
+	},
+
+	/**
+	 * @method insertArgAfter
+	 * @param f {MathFunction}
+	 * @param after {MathFunction}
+	 */
+	insertArgAfter: function(
+		/* MathFunction */	f,
+		/* MathFunction */	after)
+	{
+		var i = Y.Array.indexOf(this.args, after);
+		if (i &gt;= 0)
+		{
+			f.parent = this;
+			this.args.splice(i+1, 0, f);
+		}
+		else
+		{
+			this.appendArg(f);
+		}
 	},
 
 	/**
@@ -374,9 +438,12 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 		var i = Y.Array.indexOf(this.args, origArg);
 		if (i &gt;= 0)
 		{
-			origArg.parent = null;
-			newArg.parent  = this;
-			this.args[i]   = newArg;
+			if (origArg.parent == this)		// might already have moved
+				{
+				origArg.parent = null;
+				}
+			newArg.parent = this;
+			this.args[i]  = newArg;
 		}
 	},
 
@@ -396,14 +463,14 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 	},
 
 	/**
-	 * @method prepareToRender
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @method layout
+	 * @param context {object} the drawing context
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
@@ -430,7 +497,7 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 		var arg_i = [];
 		for (var i=0; i&lt;arg_count; i++)
 		{
-			var j     = this.args[i].prepareToRender(context, arg_top_left, font_size, rect_list);
+			var j     = this.args[i].layout(context, arg_top_left, font_size, rect_list);
 			var info  = rect_list.get(j);
 			var arg_r = info.rect;
 
@@ -475,7 +542,7 @@ Y.extend(MathFunctionWithArgs, MathFunction,
 
 	/**
 	 * @method render
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(

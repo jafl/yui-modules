@@ -56,6 +56,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "MathFunction.HyperbolicTangent",
         "MathFunction.I",
         "MathFunction.ImaginaryPart",
+        "MathFunction.Input",
         "MathFunction.InverseHyperbolicCosine",
         "MathFunction.InverseHyperbolicSine",
         "MathFunction.InverseHyperbolicTangent",

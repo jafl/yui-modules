@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -290,6 +291,15 @@ function MathSum()
 Y.extend(MathSum, MathFunctionWithArgs,
 {
 	/**
+	 * @method getMaxArgCount
+	 * @return {int} maximum number of arguments
+	 */
+	getMaxArgCount: function()
+	{
+		return 1000;
+	},
+
+	/**
 	 * @method evaluate
 	 * @param var_list {Object} map of variable names to values or MathFunctions
 	 * @return the value of the function
@@ -301,14 +311,14 @@ Y.extend(MathSum, MathFunctionWithArgs,
 	},
 
 	/**
-	 * @method prepareToRender
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @method layout
+	 * @param context {object} the drawing context
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
@@ -327,7 +337,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 		var total_midline = RectList.ycenter(total_rect);
 		var orig_midline  = total_midline;
 
-		var space_width = context.getStringWidth(font_size, &#x27; &#x27;);
+		var space_width = context.getSpaceWidth(font_size);
 		var plus_width  = context.getStringWidth(font_size, &#x27;+&#x27;);
 		var minus_width = context.getStringWidth(font_size, &#x27;-&#x27;);
 
@@ -350,7 +360,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 				arg_top_left.x += plus_width + 2*space_width;
 			}
 
-			var arg_index  = arg.prepareToRender(context, arg_top_left, font_size, rect_list);
+			var arg_index  = arg.layout(context, arg_top_left, font_size, rect_list);
 			var arg_info   = rect_list.get(arg_index);
 			arg_top_left.x = arg_info.rect.right;
 
@@ -390,7 +400,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 
 	/**
 	 * @method render
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(
@@ -399,7 +409,7 @@ Y.extend(MathSum, MathFunctionWithArgs,
 	{
 		var info        = rect_list.find(this);
 		var x           = info.rect.left;
-		var space_width = context.getStringWidth(info.font_size, &#x27; &#x27;);
+		var space_width = context.getSpaceWidth(info.font_size);
 
 		Y.Array.each(this.args, function(arg, index)
 		{

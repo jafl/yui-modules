@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -288,8 +289,10 @@ function MathArctangent2(
 	/* MathFunction */	y,
 	/* MathFunction */	x)
 {
-	MathArctangent2.superclass.constructor.call(this, &quot;arctan2&quot;, y, x);
+	MathArctangent2.superclass.constructor.call(this, MathArctangent2.NAME, y, x);
 }
+
+MathArctangent2.NAME = &#x27;arctan2&#x27;;
 
 Y.extend(MathArctangent2, MathFunctionWithArgs,
 {
@@ -307,6 +310,14 @@ Y.extend(MathArctangent2, MathFunctionWithArgs,
 });
 
 MathFunction.Arctangent2 = MathArctangent2;
+
+MathFunction.name_map[ MathArctangent2.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathArctangent2(f, new Y.MathFunction.Input());
+	}
+};
 
     </pre>
 </div>

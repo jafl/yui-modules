@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -284,10 +285,13 @@
  */
 
 function MathRotate(
-	/* MathFunction */	f)
+	/* MathFunction */	v,
+	/* MathFunction */	a)
 {
-	MathRotate.superclass.constructor.call(this, &quot;rotate&quot;, f);
+	MathRotate.superclass.constructor.call(this, MathRotate.NAME, v, a);
 }
+
+MathRotate.NAME = &#x27;rotate&#x27;;
 
 Y.extend(MathRotate, MathFunctionWithArgs,
 {
@@ -305,6 +309,14 @@ Y.extend(MathRotate, MathFunctionWithArgs,
 });
 
 MathFunction.Rotate = MathRotate;
+
+MathFunction.name_map[ MathRotate.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathRotate(f, new Y.MathFunction.Input());
+	}
+};
 
     </pre>
 </div>

@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -278,7 +279,7 @@
  * 
  * &lt;p&gt;Derived classes must implement toString() and evaluate().  To override
  * the default rendering which displays the output from toString(), implement
- * prepareToRender() and render().&lt;/p&gt;
+ * layout() and render().&lt;/p&gt;
  * 
  * @class MathFunction
  * @constructor
@@ -288,6 +289,8 @@ function MathFunction()
 {
 	this.parent = null;
 }
+
+MathFunction.name_map = {};		// applyTo
 
 MathFunction.prototype =
 {
@@ -304,14 +307,14 @@ MathFunction.prototype =
 	 * Add the layout information for this object and its descendants to
 	 * rect_list.
 	 *
-	 * @method prepareToRender
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @method layout
+	 * @param context {object} the drawing context
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
@@ -334,7 +337,7 @@ MathFunction.prototype =
 	 * Draw this object and its descendants.
 	 * 
 	 * @method render
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(
@@ -361,6 +364,116 @@ MathFunction.prototype =
 	 */
 
 	/**
+	 * Overridden by Input.
+	 *
+	 * @method handleKeyPress
+	 * @param canvas {MathCanvas}
+	 * @param code {int} character code
+	 * @param c {string} character
+	 * @return true if function changed
+	 */
+	handleKeyPress: function(
+		/* MathCanvas */	canvas,
+		/* int */			code,
+		/* char */			c)
+	{
+		if (c == &#x27;+&#x27;)
+		{
+			this._applyNArgFunction(canvas, Y.MathFunction.Sum);
+			return true;
+		}
+		else if (c == &#x27;-&#x27;)
+		{
+			this._applyNArgFunction(canvas, Y.MathFunction.Sum, true);
+			return true;
+		}
+		else if (c == &#x27;*&#x27;)
+		{
+			this._applyNArgFunction(canvas, Y.MathFunction.Product);
+			return true;
+		}
+		else if (c == &#x27;/&#x27;)
+		{
+			this._apply2ArgFunction(canvas, Y.MathFunction.Quotient);
+			return true;
+		}
+		else if (c == &#x27;^&#x27;)
+		{
+			this._apply2ArgFunction(canvas, Y.MathFunction.Exponential);
+			return true;
+		}
+		else if (c == &#x27;,&#x27;)
+		{
+			const p = this.getParent();
+			if (p != null &amp;&amp; p.getArgCount() &lt; p.getMaxArgCount())
+			{
+				const i = new Y.MathFunction.Input();
+				p.insertArgAfter(i, this);
+				canvas.selectFunction(i);
+				return true;
+			}
+		}
+
+		return false;
+	},
+
+	_apply2ArgFunction: function(
+		/* MathCanvas */	canvas,
+		/* function */		ctor)
+	{
+		const p = this.getParent(),		// before constructing new parent
+			  i = new Y.MathFunction.Input(),
+			  f = new ctor(this, i);
+
+		if (p != null)
+		{
+			p.replaceArg(this, f);
+		}
+		else
+		{
+			canvas.set(&#x27;func&#x27;, f);
+		}
+
+		canvas.selectFunction(i);
+	},
+
+	_applyNArgFunction: function(
+		/* MathCanvas */	canvas,
+		/* function */		ctor,
+		/* bool */			negate)
+	{
+		const i = new Y.MathFunction.Input(),
+			  v = negate ? new Y.MathFunction.Negate(i) : i;
+
+		var p = this.getParent(),
+			a = this;
+		if (p instanceof Y.MathFunction.Negate)
+		{
+			a = p;
+			p = p.getParent();
+		}
+
+		if (this instanceof ctor)
+		{
+			this.appendArg(v);
+		}
+		else if (p instanceof ctor)
+		{
+			p.insertArgAfter(v, a);
+		}
+		else if (p != null)
+		{
+			p.replaceArg(a, new ctor(a, v));
+		}
+		else
+		{
+			canvas.set(&#x27;func&#x27;, new ctor(a, v));
+		}
+
+		canvas.selectFunction(i);
+	},
+
+	/**
 	 * @method parenthesizeForPrint
 	 * @protected
 	 * @param f {MathFunction}
@@ -369,7 +482,17 @@ MathFunction.prototype =
 	parenthesizeForPrint: function(
 		/* MathFunction */	f)
 	{
-		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+		const data =
+		{
+			MathExponential: [1, 1, 1, 1, 1, 1],
+			MathNegate:      [0, 1, 0, 0, 1, 1],
+			MathProduct:     [0, 1, 0, 0, 1, 1],
+			MathQuotient:    [1, 1, 1, 1, 1, 1],
+			MathSum:         [0, 0, 0, 0, 0, 1],
+			negative:        [0, 0, 0, 0, 0, 0],
+		};
+
+		return this._needParentheses(f, data);
 	},
 
 	/**
@@ -381,7 +504,44 @@ MathFunction.prototype =
 	parenthesizeForRender: function(
 		/* MathFunction */	f)
 	{
-		return (this instanceof MathFunctionWithArgs);	// replace with JFunctionData.cpp
+		const data =
+		{
+			MathExponential: [1, 1, 1, 1, 1, 1],
+			MathNegate:      [0, 1, 0, 0, 1, 1],
+			MathProduct:     [0, 1, 1, 0, 1, 1],
+			MathQuotient:    [0, 0, 0, 0, 0, 0],
+			MathSum:         [0, 0, 0, 0, 1, 1],
+			negative:        [0, 0, 0, 0, 0, 0],
+		};
+
+		return this._needParentheses(f, data);
+	},
+
+	_needParentheses: function(
+		/* MathFunction */	f,
+		/* map */			data)
+	{
+		const ftype = f.constructor.name;
+		if (!data[ftype])
+		{
+			return false;
+		}
+
+		var type = this.constructor.name;
+		if (type == &#x27;MathValue&#x27; &amp;&amp; this.evaluate() &lt; 0)
+		{
+			type = &#x27;negative&#x27;;
+		}
+
+		if (!data[type])
+		{
+			return false;
+		}
+
+		const keys = Y.Object.keys(data).sort(),
+			  i    = Y.Array.indexOf(keys, type);
+
+		return data[ftype][i];
 	}
 };
 

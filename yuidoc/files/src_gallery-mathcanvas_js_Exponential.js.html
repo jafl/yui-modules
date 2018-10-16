@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -288,8 +289,10 @@ function MathExponential(
 	/* MathFunction */	b,
 	/* MathFunction */	e)
 {
-	MathExponential.superclass.constructor.call(this, &quot;^&quot;, b, e);
+	MathExponential.superclass.constructor.call(this, MathExponential.NAME, b, e);
 }
+
+MathExponential.NAME = &#x27;exp&#x27;;
 
 Y.extend(MathExponential, MathFunctionWithArgs,
 {
@@ -306,27 +309,27 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 	},
 
 	/**
-	 * @method prepareToRender
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @method layout
+	 * @param context {object} the drawing context
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
 		/* RectList */		rect_list)
 	{
-		var space_width = context.getStringWidth(font_size, &#x27; &#x27;);
+		var space_width = context.getSpaceWidth(font_size);
 
 		var arg_top_left = Y.clone(top_left, true);
 		arg_top_left.x += space_width;
 
 		// get rectangle for base
 
-		var b_arg_index = this.args[0].prepareToRender(context, arg_top_left, font_size, rect_list);
+		var b_arg_index = this.args[0].layout(context, arg_top_left, font_size, rect_list);
 		var b_arg_info  = rect_list.get(b_arg_index);
 		arg_top_left.x  = b_arg_info.rect.right;
 
@@ -341,7 +344,7 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 
 		var e_font_size = context.getSuperSubFontSize(font_size);
 
-		var e_arg_index = this.args[1].prepareToRender(context, arg_top_left, e_font_size, rect_list);
+		var e_arg_index = this.args[1].layout(context, arg_top_left, e_font_size, rect_list);
 		var e_arg_info  = rect_list.get(e_arg_index);
 
 		// calculate our rectangle
@@ -370,7 +373,7 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 
 	/**
 	 * @method render
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(
@@ -398,6 +401,14 @@ Y.extend(MathExponential, MathFunctionWithArgs,
 });
 
 MathFunction.Exponential = MathExponential;
+
+MathFunction.name_map[ MathExponential.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathExponential(f, new Y.MathFunction.Input());
+	}
+};
 
     </pre>
 </div>

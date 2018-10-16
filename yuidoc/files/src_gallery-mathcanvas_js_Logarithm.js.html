@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -288,8 +289,10 @@ function MathLogarithm(
 	/* MathFunction */	b,
 	/* MathFunction */	v)
 {
-	MathLogarithm.superclass.constructor.call(this, &quot;log&quot;, b, v);
+	MathLogarithm.superclass.constructor.call(this, MathLogarithm.NAME, b, v);
 }
+
+MathLogarithm.NAME = &#x27;log&#x27;;
 
 Y.extend(MathLogarithm, MathFunctionWithArgs,
 {
@@ -307,14 +310,14 @@ Y.extend(MathLogarithm, MathFunctionWithArgs,
 	},
 
 	/**
-	 * @method prepareToRender
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @method layout
+	 * @param context {object} the drawing context
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
@@ -338,13 +341,13 @@ Y.extend(MathLogarithm, MathFunctionWithArgs,
 
 		var b_font_size = context.getSuperSubFontSize(font_size);
 
-		var b_arg_index = this.args[0].prepareToRender(context, arg_top_left, b_font_size, rect_list);
+		var b_arg_index = this.args[0].layout(context, arg_top_left, b_font_size, rect_list);
 		var b_arg_info  = rect_list.get(b_arg_index);
 		arg_top_left.x  = b_arg_info.rect.right;
 
 		// get rectangle for value -- gives our midline
 
-		var v_arg_index = this.args[1].prepareToRender(context, arg_top_left, font_size, rect_list);
+		var v_arg_index = this.args[1].layout(context, arg_top_left, font_size, rect_list);
 		var v_arg_info  = rect_list.get(v_arg_index);
 		total_rect      = RectList.cover(total_rect, v_arg_info.rect);
 
@@ -367,7 +370,7 @@ Y.extend(MathLogarithm, MathFunctionWithArgs,
 
 	/**
 	 * @method render
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(
@@ -386,6 +389,14 @@ Y.extend(MathLogarithm, MathFunctionWithArgs,
 });
 
 MathFunction.Logarithm = MathLogarithm;
+
+MathFunction.name_map[ MathLogarithm.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathLogarithm(new Y.MathFunction.Input(), f);
+	}
+};
 
     </pre>
 </div>

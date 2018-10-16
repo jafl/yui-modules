@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -286,8 +287,10 @@
 function MathMagnitude(
 	/* MathFunction */	f)
 {
-	MathMagnitude.superclass.constructor.call(this, &quot;abs&quot;, f);
+	MathMagnitude.superclass.constructor.call(this, MathMagnitude.NAME, f);
 }
+
+MathMagnitude.NAME = &#x27;abs&#x27;;
 
 Y.extend(MathMagnitude, MathFunctionWithArgs,
 {
@@ -303,14 +306,14 @@ Y.extend(MathMagnitude, MathFunctionWithArgs,
 	},
 
 	/**
-	 * @method prepareToRender
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @method layout
+	 * @param context {object} the drawing context
 	 * @param top_left {point} x,y coordinates of the top left of the bounding box
 	 * @param font_size {float} percentage of the base font size
 	 * @param rect_list {RectList} layout information
 	 * @return {int} index of this items info in rect_list
 	 */
-	prepareToRender: function(
+	layout: function(
 		/* Context2d */		context,
 		/* point */			top_left,
 		/* percentage */	font_size,
@@ -319,7 +322,7 @@ Y.extend(MathMagnitude, MathFunctionWithArgs,
 		var bar_width = context.getVerticalBarWidth();
 
 		var arg       = this.args[0];
-		var arg_index = arg.prepareToRender(context, top_left, font_size, rect_list);
+		var arg_index = arg.layout(context, top_left, font_size, rect_list);
 		var arg_info  = rect_list.get(arg_index);
 
 		rect_list.shift(arg_index, bar_width, 0);		// make space for leading bar
@@ -337,7 +340,7 @@ Y.extend(MathMagnitude, MathFunctionWithArgs,
 
 	/**
 	 * @method render
-	 * @param canvas {MathCanvas} the drawing canvas
+	 * @param context {object} the drawing context
 	 * @param rect_list {RectList} layout information
 	 */
 	render: function(
@@ -356,6 +359,14 @@ Y.extend(MathMagnitude, MathFunctionWithArgs,
 });
 
 MathFunction.Magnitude = MathMagnitude;
+
+MathFunction.name_map[ MathMagnitude.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathMagnitude(f);
+	}
+};
 
     </pre>
 </div>

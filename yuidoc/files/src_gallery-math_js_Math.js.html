@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -283,6 +284,8 @@
  * @class Math
  */
 
+const logToLog10 = 1/Math.log(10);
+
 Y.mix(Math,
 {
 	/**
@@ -293,6 +296,24 @@ Y.mix(Math,
 	sign: function(v)
 	{
 		return (v &lt; 0 ? -1 : (v &gt; 0 ? +1 : 0));
+	},
+
+	/**
+	 * @method roundTo
+	 * @static
+	 * @param v {Number}
+	 * @param p {Number} precision
+	 * @return {Number}
+	 */
+	roundTo: function(v, p)
+	{
+		if (v == 0)
+		{
+			return v;
+		}
+
+		var scale = Math.pow(10, Math.floor(Math.log(Math.abs(v))*logToLog10) - p);
+		return Math.round(v / scale) * scale
 	},
 
 	/**

@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -452,7 +453,7 @@ Y.extend(Treeble, Y.DataTable,
 {
 	plug: function(plugin, config)
 	{
-		if (plugin === Y.Plugin.DataTableDataSource)
+		if (plugin.NAME === Y.Plugin.DataTableDataSource.NAME)
 		{
 			var recordType = this.get(&#x27;recordType&#x27;);
 			recordType.ATTRS[ config.datasource.get(&#x27;root&#x27;).treeble_config.childNodesKey ] = {};

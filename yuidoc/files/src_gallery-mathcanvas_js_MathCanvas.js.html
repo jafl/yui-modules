@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -275,7 +276,7 @@
 
 /**********************************************************************
  * Displays an arithmetical expression the way you would write it on paper.
- * 
+ *
  * @main gallery-mathcanvas
  * @class MathCanvas
  * @extends Widget
@@ -294,23 +295,23 @@ MathCanvas.ATTRS =
 {
 	/**
 	 * The function to display.
-	 * 
+	 *
 	 * @attribute func
 	 * @type {Y.MathFunction|String}
 	 */
 	func:
 	{
-		value: new Y.MathFunction.Value(0),
+		value: new Y.MathFunction.Input(),
 		setter: function(value)
 		{
 			return Y.Lang.isString(value) ?
-				Y.MathCanvas.Parser.parse(value) : value;
+				Y.MathCanvas.parse(value) : value;
 		}
 	},
 
 	/**
 	 * The font name to use.
-	 * 
+	 *
 	 * @attribute fontName
 	 * @type {String}
 	 */
@@ -322,7 +323,7 @@ MathCanvas.ATTRS =
 
 	/**
 	 * The font size to use, in em&#x27;s.
-	 * 
+	 *
 	 * @attribute fontSize
 	 * @type {number}
 	 */
@@ -335,7 +336,7 @@ MathCanvas.ATTRS =
 	/**
 	 * The minimum width of the canvas.  If the expression is wider, the
 	 * width will increase to fit.
-	 * 
+	 *
 	 * @attribute minWidth
 	 * @type {Integer}
 	 */
@@ -348,7 +349,7 @@ MathCanvas.ATTRS =
 	/**
 	 * The minimum height of the canvas.  If the expression is taller, the
 	 * height will increase to fit.
-	 * 
+	 *
 	 * @attribute minHeight
 	 * @type {Integer}
 	 */
@@ -359,14 +360,53 @@ MathCanvas.ATTRS =
 	}
 };
 
-function setSize(
-	/* width/height */	type)
+/**
+ * &lt;p&gt;Map of localizable strings.&lt;/p&gt;
+ *
+ * &lt;dl&gt;
+ * &lt;dt&gt;parse_error&lt;/dt&gt;
+ * &lt;dd&gt;Displayed by &#x60;MathCanvas.parse()&#x60; when expression parsing fails.&lt;/dd&gt;
+ * &lt;dt&gt;unknown_function&lt;/dt&gt;
+ * &lt;dd&gt;Displayed when the user enters an unknown function name.&lt;/dd&gt;
+ * &lt;/dl&gt;
+ *
+ * @property Strings
+ * @type {Object}
+ * @static
+ */
+MathCanvas.Strings =
 {
-	var c = type.charAt(0).toUpperCase() + type.substr(1);
-	var v = Math.max(this.get(&#x27;min&#x27;+c), this[ &#x27;render_&#x27;+type ]+5);
-	this.set(type, v+&#x27;px&#x27;);
-	this.canvas.setAttribute(type, v);
-}
+	parse_error:      &#x27;The expression contains an error:\n{line1}\n{line2}&#x27;,
+	unknown_function: &#x27;There is no function named &quot;{name}&quot;&#x27;
+};
+
+/**
+ * @method parse
+ * @static
+ * @param expr {string}
+ * @return {MathFunction}
+ */
+MathCanvas.parse = function(
+	/* string */ expr)
+{
+	try
+	{
+		return MathParser.parse(expr);
+	}
+	catch (e)
+	{
+		if (e.message.startsWith(&#x27;Parse error&#x27;))
+		{
+			const s = e.message.split(&#x27;\n&#x27;);
+			alert(Y.Lang.sub(Y.MathCanvas.Strings.parse_error,
+			{
+				line1: s[1],
+				line2: s[2]
+			}));
+		}
+		throw e;
+	}
+};
 
 Y.extend(MathCanvas, Y.Widget,
 {
@@ -381,31 +421,12 @@ Y.extend(MathCanvas, Y.Widget,
 		this.after(&#x27;fontSizeChange&#x27;, this._renderExpression);
 		this.after(&#x27;minWidthChange&#x27;, this._renderExpression);
 		this.after(&#x27;minHeightChange&#x27;, this._renderExpression);
+	},
 
-		// http://www.thegalaxytabforum.com/index.php?/topic/621-detecting-android-tablets-with-javascript
-
-		var agent    = navigator.userAgent.toLowerCase();
-		var platform = navigator.platform;
-		// We need to eliminate Symbian, Series 60, Windows Mobile and Blackberry
-		// browsers for this quick and dirty check. This can be done with the user agent.
-		var otherBrowser = agent.indexOf(&quot;series60&quot;)   != -1 ||
-						   agent.indexOf(&quot;symbian&quot;)    != -1 ||
-						   agent.indexOf(&quot;windows ce&quot;) != -1 ||
-						   agent.indexOf(&quot;blackberry&quot;) != -1;
-		// If the screen orientation is defined we are in a modern mobile OS
-		var mobileOS = typeof orientation != &#x27;undefined&#x27;;
-		// If touch events are defined we are in a modern touch screen OS
-		var touchOS = &#x27;ontouchstart&#x27; in document.documentElement;
-		// iPhone and iPad can be reliably identified with the navigator.platform
-		// string, which is currently only available on these devices.
-		var iOS = platform.indexOf(&quot;iPhone&quot;) != -1 || platform.indexOf(&quot;iPad&quot;) != -1;
-		// If the user agent string contains &quot;android&quot; then it&#x27;s Android. If it
-		// doesn&#x27;t but it&#x27;s not another browser, not an iOS device and we&#x27;re in
-		// a mobile and touch OS then we can be 99% certain that it&#x27;s Android.
-		var android = agent.indexOf(&quot;android&quot;) != -1 || (!iOS &amp;&amp; !otherBrowser &amp;&amp; touchOS &amp;&amp; mobileOS);
-
-		 // navigator.platform doesn&#x27;t work for iPhoney
-		this.touch = touchOS || agent.indexOf(&quot;iphone&quot;) != -1;
+	destructor: function()
+	{
+		this.canvas  = null;
+		this.context = null;
 	},
 
 	renderUI: function()
@@ -419,87 +440,69 @@ Y.extend(MathCanvas, Y.Widget,
 		this.set(&#x27;height&#x27;, w+&#x27;px&#x27;);
 
 		this.canvas = Y.Node.create(
-			&#x27;&lt;canvas width=&quot;&#x27; + w + &#x27;&quot; height=&quot;&#x27; + h + &#x27;&quot; tabindex=&quot;0&quot;&gt;&lt;/canvas&gt;&#x27;);
+			&#x27;&lt;svg width=&quot;&#x27; + w + &#x27;&quot; height=&quot;&#x27; + h + &#x27;&quot; tabindex=&quot;0&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&lt;/svg&gt;&#x27;);
 		if (!this.canvas)
 		{
-			throw Error(&quot;This browser does not support canvas rendering.&quot;);
+			throw Error(&quot;This browser does not support svg rendering.&quot;);
 		}
 
 		container.appendChild(this.canvas);
 
-		this.context = new Y.Canvas.Context2d(this.canvas);
-		Y.mix(this.context, math_rendering);
+		this.context             = math_rendering;
 		this.context.math_canvas = this;
 
 		this._renderExpression();
 
 		// input (for mobile)
 
-		function buttonRow(list)
+		if (Y.UA.touchEnabled || YUI.config.debug_mathcanvas_keyboard)
 		{
-			var s = Y.Array.reduce(list, &#x27;&#x27;, function(s, obj)
+			const fn_names = Object.keys(Y.MathFunction.name_map).sort();
+
+			this.keyboard = Y.Node.create(Y.Lang.sub(
+				&#x27;&lt;div class=&quot;{clazz}-keyboard&quot;&gt;&#x27; +
+					&#x27;&lt;div class=&quot;operators&quot;&gt;&#x27; +
+						&#x27;&lt;button value=&quot;+&quot;&gt;+&lt;/button&gt;&#x27; +
+						&#x27;&lt;button value=&quot;-&quot;&gt;&amp;ndash;&lt;/button&gt;&#x27; +
+						&#x27;&lt;button value=&quot;*&quot;&gt;&amp;times;&lt;/button&gt;&#x27; +
+						&#x27;&lt;button value=&quot;/&quot;&gt;/&lt;/button&gt;&#x27; +
+						&#x27;&lt;button value=&quot;^&quot;&gt;^&lt;/button&gt;&#x27; +
+						&#x27;&lt;button value=&quot;,&quot;&gt;,&lt;/button&gt;&#x27; +
+					&#x27;&lt;/div&gt;&#x27; +
+					&#x27;&lt;div class=&quot;digits&quot;&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;1&quot;&gt;1&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;2&quot;&gt;2&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;3&quot;&gt;3&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;4&quot;&gt;4&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;5&quot;&gt;5&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;6&quot;&gt;6&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;7&quot;&gt;7&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;8&quot;&gt;8&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;9&quot;&gt;9&lt;/button&gt;&#x27; +
+						&#x27;&lt;select class=&quot;functions&quot;&gt;&#x27; +
+							&#x27;&lt;option&gt;\u0192&lt;/option&gt;&#x27; +
+							&#x27;&lt;optgroup&gt;&#x27; +
+								fn_names.reduce(function(s, n)
+								{
+									return s + &#x27;&lt;option&gt;&#x27; + n + &#x27;&lt;/option&gt;&#x27;;
+								},
+								&#x27;&#x27;) +
+							&#x27;&lt;/optgroup&gt;&#x27; +
+						&#x27;&lt;/select&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;0&quot;&gt;0&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;number&quot; value=&quot;.&quot;&gt;.&lt;/button&gt;&#x27; +
+					&#x27;&lt;/div&gt;&#x27; +
+					&#x27;&lt;div class=&quot;misc&quot;&gt;&#x27; +
+						&#x27;&lt;button value=&quot;\u03c0&quot;&gt;\u03c0&lt;/button&gt;&#x27; +
+						&#x27;&lt;button value=&quot;e&quot;&gt;e&lt;/button&gt;&#x27; +
+						&#x27;&lt;button value=&quot;i&quot;&gt;i&lt;/button&gt;&#x27; +
+						&#x27;&lt;button value=&quot;=&quot;&gt;=&lt;/button&gt;&#x27; +
+						&#x27;&lt;button class=&quot;delete&quot; value=&quot;delete&quot;&gt;\u232b&lt;/button&gt;&#x27; +
+					&#x27;&lt;/div&gt;&#x27; +
+				&#x27;&lt;/div&gt;&#x27;,
 			{
-				return s + Y.Lang.sub(&#x27;&lt;button type=&quot;button&quot; class=&quot;keyboard-{value}&quot; value=&quot;{value}&quot;&gt;{label}&lt;/button&gt;&#x27;,
-				{
-					value: obj.value || obj,
-					label: obj.label || obj
-				});
-			});
-
-			return &#x27;&lt;p&gt;&#x27; + s + &#x27;&lt;/p&gt;&#x27;;
-		}
-
-		if (this.touch || YUI.config.debug_mathcanvas_keyboard)
-		{
-			this.keyboard = Y.Node.create(
-				&#x27;&lt;div class=&quot;keyboard&quot;&gt;&#x27; +
-					buttonRow([1,2,3,4,5,6,7,8,9,0]) +
-					buttonRow([&#x27;+&#x27;, {value:&#x27;-&#x27;,label:&#x27;&amp;ndash;&#x27;}, {value:&#x27;*&#x27;,label:&#x27;&amp;times;&#x27;}, &#x27;/&#x27;, &#x27;^&#x27;, &#x27;|&#x27;, &#x27;,&#x27;, &#x27;e&#x27;, &#x27;\u03c0&#x27;, &#x27;.&#x27;]) +
-					&#x27;&lt;p class=&quot;last&quot;&gt;&#x27; +
-						&#x27;&lt;button type=&quot;button&quot; class=&quot;keyboard-hide&quot; value=&quot;hide&quot; title=&quot;Hide keyboard&quot;&gt;&amp;dArr;&lt;/button&gt;&#x27; +
-						&#x27;&lt;button type=&quot;button&quot; class=&quot;keyboard-eval&quot; value=&quot;=&quot; title=&quot;Evaluate expression&quot;&gt;=&lt;/button&gt;&#x27; +
-						&#x27;&lt;button type=&quot;button&quot; class=&quot;keyboard-delete&quot; value=&quot;delete&quot; title=&quot;Delete selection&quot;&gt;&amp;empty;&lt;/button&gt;&#x27; +
-						&#x27;&lt;button type=&quot;button&quot; class=&quot;keyboard-expand&quot; value=&quot;expand&quot; title=&quot;Expand selection&quot;&gt;&amp;hArr;&lt;/button&gt;&#x27; +
-						&#x27;&lt;select class=&quot;keyboard-func&quot;&gt;&#x27; +
-							&#x27;&lt;option&gt;Functions&lt;/option&gt;&#x27; +
-							&#x27;&lt;optgroup&gt;&#x27; +
-								&#x27;&lt;option&gt;abs&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;arccos&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;arcsin&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;arctan&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;arctan2&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;conjugate&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;cos&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;cosh&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;sinh&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;tanh&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;imag&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;arccosh&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;arcsinh&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;arctanh&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;log&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;max&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;min&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;ln&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;phase&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;real&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;rotate&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;sin&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;sqrt&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;tan&lt;/option&gt;&#x27; +
-							&#x27;&lt;/optgroup&gt;&#x27; +
-						&#x27;&lt;/select&gt;&#x27; +
-						&#x27;&lt;br&gt;&#x27; +
-						&#x27;&lt;select class=&quot;keyboard-const&quot;&gt;&#x27; +
-							&#x27;&lt;option&gt;Constants&lt;/option&gt;&#x27; +
-							&#x27;&lt;optgroup&gt;&#x27; +
-								&#x27;&lt;option&gt;c&lt;/option&gt;&#x27; +
-								&#x27;&lt;option&gt;g&lt;/option&gt;&#x27; +
-							&#x27;&lt;/optgroup&gt;&#x27; +
-						&#x27;&lt;/select&gt;&#x27; +
-					&#x27;&lt;/p&gt;&#x27; +
-				&#x27;&lt;/div&gt;&#x27;
-			);
+				clazz: this.getClassName()
+			}));
 			container.appendChild(this.keyboard);
 
 			this.keyboard.setStyle(&#x27;bottom&#x27;, (-this.keyboard.get(&#x27;offsetHeight&#x27;))+&#x27;px&#x27;);
@@ -508,115 +511,137 @@ Y.extend(MathCanvas, Y.Widget,
 
 	bindUI: function()
 	{
-		this.canvas.on(&#x27;mousedown&#x27;, function(e)
-		{
-			function select(e)
-			{
-				var xy = this.canvas.getXY();
-				var pt =
-				[
-					Math.round(e.pageX - xy[0]) - offset[0],
-					Math.round(e.pageY - xy[1]) - offset[1]
-				];
-
-				this.selection = this.rect_list.getSelection(anchor, pt);
-				this._renderExpression();
-			}
-
-			var bounds = this.rect_list.getBounds();
-			var offset =
-			[
-				Math.floor((this.canvas.getAttribute(&#x27;width&#x27;) - RectList.width(bounds)) / 2),
-				Math.floor((this.canvas.getAttribute(&#x27;height&#x27;) - RectList.height(bounds)) / 2)
-			];
-
-			var xy = this.canvas.getXY();
-			var anchor =
-			[
-				Math.round(e.pageX - xy[0]) - offset[0],
-				Math.round(e.pageY - xy[1]) - offset[1]
-			];
-
-			select.call(this, e);
-			var handler = this.canvas.on(&#x27;mousemove&#x27;, select, this);
-
-			Y.one(Y.config.doc).once(&#x27;mouseup&#x27;, function(e)
-			{
-				handler.detach();
-				if (this.selection &gt;= 0)
-				{
-					this.showKeyboard();
-				}
-				else
-				{
-					this.hideKeyboard();
-				}
-			},
-			this);
-		},
-		this);
-
-		this.canvas.on(&#x27;keydown&#x27;, function(e)
-		{
-//			console.log(e.charCode);
-
-			if (e.charCode == 32)
-			{
-				this.expandSelection();
-			}
-			else if (e.charCode == 8)
-			{
-				this.deleteSelection();
-			}
-		},
-		this);
+		this.canvas.on(&#x27;mousedown&#x27;, this._handleMouseDown, this);
+		Y.one(Y.config.doc).on(&#x27;keydown&#x27;, this._handleKeyDown, this);
 
 		if (this.keyboard)
 		{
-			this.keyboard.delegate(&#x27;click&#x27;, function(e)
+			this.keyboard.delegate(&#x27;click&#x27;, this._handleKeyboard, &#x27;button&#x27;, this);
+
+			this.keyboard.one(&#x27;.functions&#x27;).on(&#x27;change&#x27;, function(e)
 			{
-				var op = e.currentTarget.get(&#x27;value&#x27;);
-				if (op == &#x27;hide&#x27;)
-				{
-					this.hideKeyboard();
-				}
-				else if (op == &#x27;expand&#x27;)
-				{
-					this.expandSelection();
-				}
-				else if (op == &#x27;delete&#x27;)
-				{
-					this.deleteSelection();
-				}
-				else if (op == &#x27;=&#x27;)
-				{
-					this.fire(&#x27;evaluate&#x27;);
-					this.hideKeyboard();
-				}
+				this.applyFunctionToSelection(e.currentTarget.get(&#x27;value&#x27;));
+				e.currentTarget.set(&#x27;selectedIndex&#x27;, 0);	// clear menu
+				this.canvas.focus();
 			},
-			&#x27;button&#x27;, this);
-
-			this.keyboard.one(&#x27;.keyboard-func&#x27;).on(&#x27;change&#x27;, function(e)
-			{
-				this.set(&#x27;selectedIndex&#x27;, 0);
-			});
-
-			this.keyboard.one(&#x27;.keyboard-const&#x27;).on(&#x27;change&#x27;, function(e)
-			{
-				this.set(&#x27;selectedIndex&#x27;, 0);
-			});
+			this);
 		}
 	},
 
-	destructor: function()
+	_handleMouseDown: function(e)
 	{
-		this.canvas  = null;
-		this.context = null;
+		function getMousePosition(e)
+		{
+			const CTM = e.currentTarget.getDOMNode().getScreenCTM();
+			return [
+				((e.clientX - CTM.e) / CTM.a) - this.canvas_offset.x,
+				((e.clientY - CTM.f) / CTM.d) - this.canvas_offset.y
+			];
+		};
+
+		function select(e)
+		{
+			this._deactivateSelection();
+			this.selection = this.rect_list.getSelection(anchor, getMousePosition.call(this, e));
+			this._renderExpression();
+		}
+
+		var anchor = getMousePosition.call(this, e);
+
+		select.call(this, e);
+		var handler = this.canvas.on(&#x27;mousemove&#x27;, select, this);
+
+		Y.one(Y.config.doc).once(&#x27;mouseup&#x27;, function(e)
+		{
+			handler.detach();
+			if (this.selection &gt;= 0)
+			{
+				this.showKeyboard();
+			}
+			else
+			{
+				this.hideKeyboard();
+			}
+		},
+		this);
+	},
+
+	_handleKeyDown: function(e)
+	{
+		if (!e.altKey &amp;&amp; !e.ctrlKey &amp;&amp; !e.metaKey &amp;&amp; this.selection &gt;= 0)
+		{
+			this._handleKeyPress(e.charCode, e._event.key);
+			e.halt();
+		}
+	},
+
+	_handleKeyboard: function(e)
+	{
+		var op = e.currentTarget.get(&#x27;value&#x27;);
+		if (op == &#x27;hide&#x27;)
+		{
+			this.hideKeyboard();
+		}
+		else if (op == &#x27;expand&#x27;)
+		{
+			this.expandSelection();
+		}
+		else if (op == &#x27;delete&#x27;)
+		{
+			this.deleteSelection();
+		}
+		else
+		{
+			this._handleKeyPress(0, op);
+		}
+	},
+
+	_handleKeyPress: function(
+		/* int */	code,
+		/* char */	c)
+	{
+		if (code == 9 &amp;&amp; this.selection &gt;= 0)
+		{
+			this.focusNextInput(this.rect_list.get(this.selection).func);
+		}
+		else if (this.selection &gt;= 0 &amp;&amp;
+				 this.rect_list.get(this.selection).func.handleKeyPress(this, code, c))
+		{
+			if (!this.rect_list.get(this.selection))
+			{
+				this.selection = -1;
+			}
+			this._renderExpression();
+		}
+		else if (c == &#x27; &#x27;)
+		{
+			this.expandSelection();
+		}
+		else if (code == 8)
+		{
+			this.deleteSelection();
+		}
+		else if (this.selection &gt;= 0 &amp;&amp; c.length == 1 &amp;&amp; c != &#x27;=&#x27;)
+		{
+			const i = Y.MathFunction.Input.replace(this, this.rect_list.get(this.selection).func);
+			i.handleKeyPress(this, code, c);
+
+			this.selection = -1;
+			this._renderExpression();
+			this.selection = this.rect_list.findIndex(i);	// selectFunction() deactivates Input
+			this._renderExpression();
+		}
+
+		if (c == &#x27;=&#x27;)
+		{
+			this.fire(&#x27;evaluate&#x27;);
+			this.hideKeyboard();
+		}
 	},
 
 	/**
 	 * Shows touch keyboard.
-	 * 
+	 *
 	 * @method showKeyboard
 	 */
 	showKeyboard: function()
@@ -647,7 +672,7 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Hides touch keyboard.
-	 * 
+	 *
 	 * @method hideKeyboard
 	 */
 	hideKeyboard: function()
@@ -678,33 +703,177 @@ Y.extend(MathCanvas, Y.Widget,
 
 	/**
 	 * Expands the selection up one level of the parse tree.
-	 * 
+	 *
 	 * @method expandSelection
 	 */
 	expandSelection: function()
 	{
-		if (this.selection &gt;= 0)
+		if (this.selection == -1)
 		{
-			var p = this.rect_list.get(this.selection).func.getParent();
-			if (p)
+			return;
+		}
+
+		this._deactivateSelection();
+
+		var p = this.rect_list.get(this.selection).func.getParent();
+		if (p)
+		{
+			do
 			{
 				this.selection = this.rect_list.findIndex(p);
+				p              = p.getParent();
+			}
+			while (this.selection == -1);
+
+			this._renderExpression();
+		}
+	},
+
+	/**
+	 * Selects the specified function, if it can be found.
+	 *
+	 * @method selectFunction
+	 * @param f {MathFunction}
+	 * @return true if selected
+	 */
+	selectFunction: function(
+		/* MathFunction */	f)
+	{
+		this._renderExpression();		// update rect_list
+
+		const i = this.rect_list.findIndex(f);
+		if (i &gt;= 0)
+		{
+			this._deactivateSelection();
+			this.selection = i;
+			this._renderExpression();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	},
+
+	/**
+	 * Switches focus to the next Input, if it can find one.
+	 *
+	 * @method focusNextInput
+	 */
+	focusNextInput: function(
+		/* Input */	f)
+	{
+		const i = this.rect_list.findIndex(f);
+		if (i &lt; 0)
+		{
+			return;
+		}
+
+		function checkForInput()
+		{
+			const info = this.rect_list.get(j);
+			if (info.func instanceof Y.MathFunction.Input)
+			{
+				this._deactivateSelection();
+				this.selection = j;
 				this._renderExpression();
+				return true;
+			}
+		}
+
+		const count = this.rect_list.size();
+		for (var j=i+1; j&lt;count; j++)
+		{
+			if (checkForInput.call(this))
+			{
+				return;
+			}
+		}
+
+		for (var j=0; j&lt;i; j++)
+		{
+			if (checkForInput.call(this))
+			{
+				return;
 			}
 		}
 	},
 
 	/**
 	 * Deletes the selected sub-expression.
-	 * 
+	 *
 	 * @method deleteSelection
 	 */
 	deleteSelection: function()
 	{
-		if (this.selection &gt;= 0)
+		if (this.selection == -1)
 		{
-			this.deleteFunction(this.rect_list.get(this.selection).func);
+			return;
 		}
+
+		const f = this.rect_list.get(this.selection).func;
+		if (f instanceof Y.MathFunction.Input &amp;&amp; !f.isEmpty())
+			{
+			f.clear();
+			this._renderExpression();
+			}
+		else if (f instanceof Y.MathFunction.Input)
+			{
+			this.deleteFunction(f);
+			}
+		else
+			{
+			const i = Y.MathFunction.Input.replace(this, f);
+
+			this.selection = -1;
+			this._renderExpression();
+			this.selection = this.rect_list.findIndex(i);	// selectFunction() deactivates Input
+			this._renderExpression();
+			}
+	},
+
+	/**
+	 * @method applyFunctionToSelection
+	 * @param fn_name {string} name of function to apply
+	 * @return true if function name is valid
+	 */
+	applyFunctionToSelection: function(
+		/* string */ fn_name)
+	{
+		if (this.selection == -1 || !Y.MathFunction.name_map[ fn_name ])
+		{
+			return false;
+		}
+
+		const f = this.rect_list.get(this.selection).func,
+			  p = f.getParent(),
+			  v = Y.MathFunction.name_map[ fn_name ].applyTo(f);
+
+		if (p != null)
+		{
+			p.replaceArg(f, v);
+		}
+		else
+		{
+			this.set(&#x27;func&#x27;, v);
+		}
+
+		this.selection = -1;
+		this._renderExpression();		// update rect_list
+
+		var select_f = f.getParent();	// parent changed
+		select_f.getArgs().some(function(a)
+		{
+			if (a instanceof Y.MathFunction.Input)
+			{
+				select_f = a;
+				return true;
+			}
+		});
+
+		this.selection = this.rect_list.findIndex(select_f);
+		this._renderExpression();
+		return true;
 	},
 
 	/**
@@ -718,9 +887,8 @@ Y.extend(MathCanvas, Y.Widget,
 		var s = p;
 		if (!p)
 		{
-			this.selection = 0;
-			this.set(&#x27;func&#x27;, &#x27;0&#x27;);
-			return;
+			s = new Y.MathFunction.Input();
+			this.set(&#x27;func&#x27;, s);
 		}
 		else if (p.getArgCount() == 1)
 		{
@@ -753,17 +921,32 @@ Y.extend(MathCanvas, Y.Widget,
 		this._renderExpression();
 	},
 
+	_deactivateSelection: function()
+	{
+		if (this.selection &gt;= 0)
+		{
+			const f = this.rect_list.get(this.selection).func;
+			if (f instanceof Y.MathFunction.Input)
+			{
+				f.handleKeyPress(this, 13, &#x27;\n&#x27;);
+			}
+		}
+	},
+
 	/**
 	 * Renders the expression.
-	 * 
+	 *
 	 * @method _renderExpression
 	 * @protected
 	 */
 	_renderExpression: function()
 	{
-		this.context.clearRect(0,0,
-			this.canvas.getAttribute(&#x27;width&#x27;),
-			this.canvas.getAttribute(&#x27;height&#x27;));
+		if (this.canvas_root)
+		{
+			this.canvas_root.remove(true);
+		}
+		this.canvas_root = Y.Node(document.createElementNS(&#x27;http://www.w3.org/2000/svg&#x27;, &#x27;g&#x27;));
+		this.canvas.appendChild(this.canvas_root);
 
 		var f = this.get(&#x27;func&#x27;);
 		if (!f)
@@ -774,9 +957,18 @@ Y.extend(MathCanvas, Y.Widget,
 		this.rect_list = new RectList();
 
 		var top_left = { x:0, y:0 };
-		f.prepareToRender(this.context, top_left, 100, this.rect_list);
+		f.layout(this.context, top_left, 100, this.rect_list);
 
 		var bounds = this.rect_list.getBounds();
+
+		function setSize(
+			/* width/height */	type)
+		{
+			var c = type.charAt(0).toUpperCase() + type.substr(1);
+			var v = Math.max(this.get(&#x27;min&#x27;+c), this[ &#x27;render_&#x27;+type ]+5);
+			this.set(type, v+&#x27;px&#x27;);
+			this.canvas.setAttribute(type, v);
+		}
 
 		this.render_width  = RectList.width(bounds);
 		setSize.call(this, &#x27;width&#x27;);
@@ -784,23 +976,20 @@ Y.extend(MathCanvas, Y.Widget,
 		this.render_height = RectList.height(bounds);
 		setSize.call(this, &#x27;height&#x27;);
 
-		this.context.save();
-		this.context.translate(
-			Math.floor((this.canvas.getAttribute(&#x27;width&#x27;) - RectList.width(bounds)) / 2),
-			Math.floor((this.canvas.getAttribute(&#x27;height&#x27;) - RectList.height(bounds)) / 2));
+		this.canvas_offset =
+		{
+			x: Math.floor((this.canvas.getAttribute(&#x27;width&#x27;) - RectList.width(bounds)) / 2),
+			y: Math.floor((this.canvas.getAttribute(&#x27;height&#x27;) - RectList.height(bounds)) / 2)
+		};
+
+		this.canvas_root.setAttribute(&#x27;transform&#x27;, Y.Lang.sub(&#x27;translate({x},{y})&#x27;, this.canvas_offset));
 
 		if (this.selection &gt;= 0)
 		{
-			var r = this.rect_list.get(this.selection).rect;
-			this.context.save();
-			this.context.set(&#x27;fillStyle&#x27;, &#x27;#99FFFF&#x27;);
-			this.context.fillRect(r.left, r.top, RectList.width(r), RectList.height(r));
-			this.context.restore();
+			this.context.drawSelection(this.rect_list.get(this.selection).rect);
 		}
 
 		f.render(this.context, this.rect_list);
-
-		this.context.restore();
 	}
 });
 
@@ -808,41 +997,72 @@ var paren_angle = Math.PI/6;	// 30 degrees
 
 var math_rendering =
 {
+	_text_node: null,
+
 	drawString: function(
 		/* int */			left,
 		/* int */			midline,
 		/* percentage */	font_size,
 		/* string */		s)
 	{
-		var h = this.getLineHeight(font_size);
-		this._setFont(font_size);
-		this.set(&#x27;textBaseline&#x27;, &#x27;top&#x27;);
-		this.fillText(s, left, Math.floor(midline - h/2));
+		var n = this._createNode(&#x27;text&#x27;,
+		{
+			x:                   left,
+			y:                   midline,
+			&#x27;dominant-baseline&#x27;: &#x27;middle&#x27;,
+			clazz:               &#x27;text&#x27;
+		});
+
+		this._setFont(n, font_size);
+		n.innerHTML = s;
+		return n;
 	},
 
 	getLineHeight: function(
 		/* percentage */	font_size)
 	{
-		return (13 * this.math_canvas.get(&#x27;fontSize&#x27;) * font_size/100.0);
+		this._createTextNode();
+		this._setFont(this._text_node, font_size);
+		this._text_node.innerHTML = &quot;Mg&quot;;
+		return this._text_node.getBBox().height;
 	},
 
 	getStringWidth: function(
 		/* percentage */	font_size,
 		/* string */		text)
 	{
-		this.save();
-		this._setFont(font_size);
-		var w = this.measureText(text).width;
-		this.restore();
-		return w;
+		this._createTextNode();
+		this._setFont(this._text_node, font_size);
+		this._text_node.innerHTML = text;
+		return this._text_node.getComputedTextLength()*1.1;
+	},
+
+	getSpaceWidth: function(
+		/* percentage */	font_size)
+	{
+		return this.getStringWidth(font_size, &#x27;&amp;nbsp;&#x27;);
+	},
+
+	_createTextNode: function()
+	{
+		if (!this._text_node)
+		{
+			this._text_node = this._createNode(&#x27;text&#x27;,
+			{
+				x:          0,
+				y:          -1000,
+				visibility: &#x27;hidden&#x27;
+			});
+			this.math_canvas.canvas.appendChild(this._text_node);
+		}
 	},
 
 	_setFont: function(
+		/* Node */			node,
 		/* percentage */	font_size)
 	{
-		this.set(&#x27;font&#x27;,
-			(this.math_canvas.get(&#x27;fontSize&#x27;) * font_size/100.0) + &#x27;em &#x27; +
-			 this.math_canvas.get(&#x27;fontName&#x27;));
+		node.setAttribute(&#x27;font-family&#x27;, this.math_canvas.get(&#x27;fontName&#x27;));
+		node.setAttribute(&#x27;font-size&#x27;, (this.math_canvas.get(&#x27;fontSize&#x27;) * font_size/100.0) + &#x27;em&#x27;);
 	},
 
 	getSuperSubFontSize: function(
@@ -855,7 +1075,7 @@ var math_rendering =
 	getSuperscriptHeight: function(
 		/* rect */	r)
 	{
-		return RectList.height(r)/2;
+		return RectList.height(r)*2/3;
 	},
 
 	getSubscriptDepth: function(
@@ -867,20 +1087,22 @@ var math_rendering =
 	drawSquareBrackets: function(
 		/* rect */	r)
 	{
-		var h = r.bottom - r.top;
-		var w = this.getSquareBracketWidth(r)-2;
+		var h = r.bottom - r.top,
+			w = this.getSquareBracketWidth(r)-2;
 
-		this.moveTo(r.left-2, r.top);
-		this.line(-w,0);
-		this.line(0,h-1);
-		this.line(w,0);
-		this.stroke();
+		return [
+			this.drawLines(
+				r.left-2, r.top,
+				&#x27;d&#x27;, -w,  null,
+				null,     &#x27;d&#x27;, h-1,
+				&#x27;d&#x27;, w,   null),
 
-		this.moveTo(r.right+1, r.top);
-		this.line(w,0);
-		this.line(0,h-1);
-		this.line(-w,0);
-		this.stroke();
+			this.drawLines(
+				r.right+1, r.top,
+				&#x27;d&#x27;, w,    null,
+				null,      &#x27;d&#x27;, h-1,
+				&#x27;d&#x27;, -w,   null)
+		];
 	},
 
 	getSquareBracketWidth: function(
@@ -893,19 +1115,15 @@ var math_rendering =
 	drawParentheses: function(
 		/* rect */	r)
 	{
-		var h       = r.bottom - r.top;
-		var radius  = h/(2.0*Math.sin(paren_angle));
-		var radius1 = Math.round(radius);
-		var yc      = RectList.ycenter(r);
-		var pw      = this.getParenthesisWidth(r);
+		var h      = r.bottom - r.top,
+			radius = h/(2.0*Math.sin(paren_angle)),
+			yc     = RectList.ycenter(r),
+			pw     = this.getParenthesisWidth(r);
 
-		this.beginPath();
-		this.arc(r.left - pw + radius, yc, radius1, Math.PI-paren_angle, Math.PI+paren_angle, false);
-		this.stroke();
-
-		this.beginPath();
-		this.arc(r.right + pw - radius, yc, radius1, paren_angle, -paren_angle, true);
-		this.stroke();
+		return [
+			this.drawArc(r.left - pw + radius, yc, radius, Math.PI-paren_angle, Math.PI+paren_angle, false),
+			this.drawArc(r.right + pw - radius, yc, radius, paren_angle, -paren_angle, true)
+		];
 	},
 
 	getParenthesisWidth: function(
@@ -918,9 +1136,9 @@ var math_rendering =
 	drawVerticalBar: function(
 		/* rect */	r)
 	{
-		this.moveTo(r.left+1, r.top);
-		this.lineTo(r.left+1, r.bottom);
-		this.stroke();
+		return this.drawLines(
+			r.left+1, r.top,
+			null,     r.bottom);
 	},
 
 	getVerticalBarWidth: function()
@@ -931,15 +1149,137 @@ var math_rendering =
 	drawHorizontalBar: function(
 		/* rect */	r)
 	{
-		var y = r.top+1;
-		this.moveTo(r.left, y);
-		this.lineTo(r.right-1, y);
-		this.stroke();
+		return this.drawLines(
+			r.left,    r.top+1,
+			r.right-1, null);
 	},
 
 	getHorizontalBarHeight: function()
 	{
 		return 3;
+	},
+
+	drawLines: function(/* x,y,...,x,y */)
+	{
+		var x = arguments[0],
+			y = arguments[1];
+
+		var d = &#x27;M &#x27; + x + &#x27; &#x27; + y;
+
+		var i = 2;
+		while (i &lt; arguments.length)
+		{
+			var z  = this._parseLineValue(arguments[i], arguments[i+1], x);
+			var x1 = z[0];
+			i     += z[1];
+
+			z = this._parseLineValue(arguments[i], arguments[i+1], y);
+			var y1 = z[0];
+			i     += z[1];
+
+			d += &#x27; L &#x27; + x1 + &#x27; &#x27; + y1;
+			x  = x1;
+			y  = y1;
+		}
+
+		return this._createNode(&#x27;path&#x27;,
+		{
+			d:     d,
+			clazz: &#x27;path&#x27;
+		});
+	},
+
+	_parseLineValue: function(a1, a2, v)
+	{
+		if (a1 === null)
+		{
+			return [v, 1];
+		}
+		else if (a1 === &#x27;d&#x27;)
+		{
+			return [v + a2, 2];
+		}
+		else
+		{
+			return [a1, 1];
+		}
+	},
+
+	// from https://github.com/gliffy/canvas2svg
+
+	drawArc: function(xc, yc, radius, startAngle, endAngle, counterClockwise)
+	{
+		var startX       = xc+radius*Math.cos(startAngle),
+			startY       = yc+radius*Math.sin(startAngle),
+			endX         = xc+radius*Math.cos(endAngle),
+			endY         = yc+radius*Math.sin(endAngle),
+			largeArcFlag = 0,
+			diff         = endAngle - startAngle;
+
+		if (diff &lt; 0)
+		{
+			diff += 2*Math.PI;
+		}
+
+		if (counterClockwise)
+		{
+			largeArcFlag = diff &gt; Math.PI ? 0 : 1;
+		}
+		else
+		{
+			largeArcFlag = diff &gt; Math.PI ? 1 : 0;
+		}
+
+		return this._createNode(&#x27;path&#x27;,
+		{
+			d: Y.Lang.sub(&#x27;M {x1} {y1} A {r} {r} 0 {a} {s} {x2} {y2}&#x27;,
+			{
+				x1: startX,
+				y1: startY,
+				r:  radius,
+				a:  largeArcFlag,
+				s:  counterClockwise ? 0 : 1,
+				x2: endX,
+				y2: endY
+			}),
+			clazz: &#x27;path&#x27;
+		});
+	},
+
+	drawSelection: function(
+		/* map */	r)
+	{
+		return this._createNode(&#x27;rect&#x27;,
+		{
+			x:      r.left,
+			y:      r.top,
+			width:  RectList.width(r),
+			height: RectList.height(r),
+			clazz:  &#x27;selection&#x27;
+		});
+	},
+
+	_createNode: function(
+		/* string */	type,
+		/* map */		attr)
+	{
+		var n = document.createElementNS(&#x27;http://www.w3.org/2000/svg&#x27;, type);
+
+		var clazz = this.math_canvas.getClassName(&#x27;node&#x27;);
+		if (attr.clazz)
+			{
+			clazz += &#x27; &#x27; + attr.clazz;
+			delete attr.clazz;
+			}
+		n.setAttribute(&#x27;class&#x27;, clazz);
+
+		Y.each(attr, function(value, name)
+		{
+			n.setAttribute(name, value);
+		});
+
+		this.math_canvas.canvas_root.appendChild(n);
+		return n;
 	}
 };
 
@@ -947,18 +1287,17 @@ MathParser.yy.MathFunction = Y.MathFunction;
 
 Y.MathCanvas          = MathCanvas;
 Y.MathCanvas.RectList = RectList;
-Y.MathCanvas.Parser   = MathParser;
 
 /**********************************************************************
  * Parser used to convert a string expression into Y.MathFunction
- * 
+ *
  * @class Parser
  * @namespace MathCanvas
  */
 
 /**
  * Parses a string into a Y.MathFunction.
- * 
+ *
  * @method parse
  * @static
  * @param expr {String} expression to parse

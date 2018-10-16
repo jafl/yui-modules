@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -286,8 +287,10 @@
 function MathHyperbolicTangent(
 	/* MathFunction */	f)
 {
-	MathHyperbolicTangent.superclass.constructor.call(this, &quot;tanh&quot;, f);
+	MathHyperbolicTangent.superclass.constructor.call(this, MathHyperbolicTangent.NAME, f);
 }
+
+MathHyperbolicTangent.NAME = &#x27;tanh&#x27;;
 
 Y.extend(MathHyperbolicTangent, MathFunctionWithArgs,
 {
@@ -304,6 +307,14 @@ Y.extend(MathHyperbolicTangent, MathFunctionWithArgs,
 });
 
 MathFunction.HyperbolicTangent = MathHyperbolicTangent;
+
+MathFunction.name_map[ MathHyperbolicTangent.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathHyperbolicTangent(f);
+	}
+};
 
     </pre>
 </div>

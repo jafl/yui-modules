@@ -93,6 +93,7 @@
                                 <li><a href="../classes/MathFunction.HyperbolicTangent.html">MathFunction.HyperbolicTangent</a></li>
                                 <li><a href="../classes/MathFunction.I.html">MathFunction.I</a></li>
                                 <li><a href="../classes/MathFunction.ImaginaryPart.html">MathFunction.ImaginaryPart</a></li>
+                                <li><a href="../classes/MathFunction.Input.html">MathFunction.Input</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicCosine.html">MathFunction.InverseHyperbolicCosine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicSine.html">MathFunction.InverseHyperbolicSine</a></li>
                                 <li><a href="../classes/MathFunction.InverseHyperbolicTangent.html">MathFunction.InverseHyperbolicTangent</a></li>
@@ -286,8 +287,10 @@
 function MathArcsine(
 	/* MathFunction */	f)
 {
-	MathArcsine.superclass.constructor.call(this, &quot;arcsin&quot;, f);
+	MathArcsine.superclass.constructor.call(this, MathArcsine.NAME, f);
 }
+
+MathArcsine.NAME = &#x27;arcsin&#x27;;
 
 Y.extend(MathArcsine, MathFunctionWithArgs,
 {
@@ -304,6 +307,14 @@ Y.extend(MathArcsine, MathFunctionWithArgs,
 });
 
 MathFunction.Arcsine = MathArcsine;
+
+MathFunction.name_map[ MathArcsine.NAME ] =
+{
+	applyTo: function(f)
+	{
+		return new MathArcsine(f);
+	}
+};
 
     </pre>
 </div>
