@@ -4810,6 +4810,10 @@ Y.extend(MathCanvas, Y.Widget,
 		else if (this.selection >= 0 &&
 				 this.rect_list.get(this.selection).func.handleKeyPress(this, code, c))
 		{
+			if (!this.rect_list.get(this.selection))
+			{
+				this.selection = -1;
+			}
 			this._renderExpression();
 		}
 		else if (c == ' ')
@@ -4825,6 +4829,7 @@ Y.extend(MathCanvas, Y.Widget,
 			const i = Y.MathFunction.Input.replace(this, this.rect_list.get(this.selection).func);
 			i.handleKeyPress(this, code, c);
 
+			this.selection = -1;
 			this._renderExpression();
 			this.selection = this.rect_list.findIndex(i);	// selectFunction() deactivates Input
 			this._renderExpression();
@@ -5023,6 +5028,7 @@ Y.extend(MathCanvas, Y.Widget,
 			{
 			const i = Y.MathFunction.Input.replace(this, f);
 
+			this.selection = -1;
 			this._renderExpression();
 			this.selection = this.rect_list.findIndex(i);	// selectFunction() deactivates Input
 			this._renderExpression();

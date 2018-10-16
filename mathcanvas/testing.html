@@ -91,16 +91,16 @@ YUI({
 
 	function evaluate()
 	{
-		Y.one('#value').set('innerHTML', Math.roundTo(canvas.get('func').evaluate(
+		const data =
 		{
 			x:  1,
 			y:  2,
 			z:  Y.MathCanvas.parse('x+y'),
 			w1: Y.ComplexMath.I,
 			w2: new Y.ComplexNumber(0,-1)
-		}),
-		8));
+		};
 
+		Y.one('#value').set('innerHTML', canvas.get('func').evaluate(data).roundTo(8));
 		Y.one('#expr-output').set('innerHTML', canvas.get('func').toString());
 	}
 

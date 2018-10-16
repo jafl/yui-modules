@@ -39,6 +39,7 @@
 <h1>Calculator</h1>
 
 <p class="help desktop">Click the ? and then type an expression.  Type = to evaluate.</p>
+<p class="help desktop">Tab switches to next ?.  Space expands selection.</p>
 <p class="help mobile">Tap the ? and then use the keyboard to type an expression.    Press = to evaluate.</p>
 <div id="canvas"></div>
 <p class="value">Value: <span id="value">0</span></p>
@@ -86,7 +87,7 @@ YUI().use('gallery-mathcanvas', function(Y) {
 		try
 		{
 			Y.one('#value').set('innerHTML',
-				Math.roundTo(canvas.get('func').evaluate(), 8));
+				canvas.get('func').evaluate().roundTo(8));
 		}
 		catch (e)
 		{
