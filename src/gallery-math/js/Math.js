@@ -31,7 +31,7 @@ Y.mix(Math,
 	 * @static
 	 * @param v {Number}
 	 * @param p {Number} precision
-	 * @return {Number} +1 if value > 0, -1 if value < 0, else zero
+	 * @return {Number}
 	 */
 	roundTo: function(v, p)
 	{
