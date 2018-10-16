@@ -34,6 +34,8 @@ ComplexNumber.fromPolar = function(magnitude, phase)
 		magnitude * Math.sin(phase));
 };
 
+const logToLog10 = 1/Math.log(10);
+
 ComplexNumber.prototype =
 {
 	/**
@@ -218,6 +220,28 @@ ComplexNumber.prototype =
 		failIfConstant(this);
 
 		this.multiply(ComplexNumber.fromPolar(1, angle));
+
+		return this;
+	},
+
+	/**
+	 * @method roundTo
+	 * @chainable
+	 * @param p {number} precision
+	 */
+	roundTo: function(p)
+	{
+		failIfConstant(this);
+
+		function computeScale(v)
+		{
+			return Math.pow(10, Math.floor(Math.log(Math.abs(v))*logToLog10) - p);
+		}
+
+		var scale = Math.max(computeScale(this.r), computeScale(this.i));
+
+		this.r = Math.round(this.r / scale, p) * scale;
+		this.i = Math.round(this.i / scale, p) * scale;
 
 		return this;
 	},
