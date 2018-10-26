@@ -2,6 +2,8 @@ Modules contributed to YUI Gallery
 
 [![Build Status](https://secure.travis-ci.org/jafl/yui-modules.png?branch=master)](http://travis-ci.org/jafl/yui-modules)
 
+To run the tests locally, clone the [yui3](https://github.com/yui/yui3.git) repo in the same directory as yui-modules.
+
 Software Copyright License Agreement (BSD License)
 --------------------------------------------------
 
