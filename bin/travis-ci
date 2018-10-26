@@ -4,6 +4,13 @@ echo ===;
 whoami;
 echo ===;
 
+YOGI=`readlink -f /usr/local/bin/yogi`;
+YOGI=${YOGI%/*};
+cp -f ./bin/grover_patch_wrapper.js $YOGI/../node_modules/grover/lib/wrapper/wrapper.js;
+
+echo patched grover;
+echo ===;
+
 for d in src/*; do
 	if [[ ! -d $d/tests ]]; then continue; fi
 
