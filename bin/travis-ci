@@ -4,12 +4,13 @@ echo ===;
 whoami;
 echo ===;
 
-YOGI=`readlink -f /usr/local/bin/yogi`;
+YOGI=`readlink -f $(which yogi)`;
 YOGI=${YOGI%/*};
 echo $YOGI;
 ls -l $YOGI;
 echo ---;
-ls /home/travis/.nvm/versions/node/v6.14.4/lib/node_modules/yogi/;
+pwd;
+ls;
 echo ---;
 cp -f ./bin/grover_patch_wrapper.js /home/travis/.nvm/versions/node/v6.14.4/lib/node_modules/yogi/node_modules/grover/lib/wrapper/wrapper.js;
 
