@@ -6,17 +6,17 @@ echo ===;
 
 YOGI=`readlink -f /usr/local/bin/yogi`;
 YOGI=${YOGI%/*};
+echo $YOGI;
 ls $YOGI;
 echo ---;
-ls $YOGI/../node_modules;
+YOGI=`realpath /usr/local/bin/yogi`;
+YOGI=${YOGI%/*};
+echo $YOGI;
+ls $YOGI;
 echo ---;
-$YOGI/../node_modules/grover;
+ls /home/travis/.nvm/versions/node/v6.14.4/lib/node_modules/yogi/;
 echo ---;
-$YOGI/../node_modules/grover/lib;
-echo ---;
-ls $YOGI/../node_modules/grover/lib/wrapper;
-echo ---;
-cp -f ./bin/grover_patch_wrapper.js $YOGI/../node_modules/grover/lib/wrapper/wrapper.js;
+cp -f ./bin/grover_patch_wrapper.js /home/travis/.nvm/versions/node/v6.14.4/lib/node_modules/yogi/node_modules/grover/lib/wrapper/wrapper.js;
 
 echo patched grover;
 echo ===;
