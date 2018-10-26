@@ -6,6 +6,16 @@ echo ===;
 
 YOGI=`readlink -f /usr/local/bin/yogi`;
 YOGI=${YOGI%/*};
+ls $YOGI;
+echo ---;
+ls $YOGI/../node_modules;
+echo ---;
+$YOGI/../node_modules/grover;
+echo ---;
+$YOGI/../node_modules/grover/lib;
+echo ---;
+ls $YOGI/../node_modules/grover/lib/wrapper;
+echo ---;
 cp -f ./bin/grover_patch_wrapper.js $YOGI/../node_modules/grover/lib/wrapper/wrapper.js;
 
 echo patched grover;
