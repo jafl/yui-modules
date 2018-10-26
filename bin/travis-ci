@@ -4,13 +4,13 @@ echo ===;
 whoami;
 echo ===;
 
-PATH=`readlink -f $(which yogi)`;
-PATH=${PATH%/*};
+YOGI=`readlink -f $(which yogi)`;
+YOGI=${YOGI%/*};
 echo ---;
 pwd;
 ls ..;
 echo ---;
-cp -f ./bin/grover_patch_wrapper.js $PATH/../node_modules/grover/lib/wrapper/wrapper.js;
+cp -f ./bin/grover_patch_wrapper.js $YOGI/../node_modules/grover/lib/wrapper/wrapper.js;
 
 echo patched grover;
 echo ===;
