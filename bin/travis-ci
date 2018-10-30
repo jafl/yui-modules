@@ -6,10 +6,6 @@ echo ===;
 
 YOGI=`readlink -f $(which yogi)`;
 YOGI=${YOGI%/*};
-echo ---;
-pwd;
-ls ..;
-echo ---;
 cp -f ./bin/grover_patch_wrapper.js $YOGI/../node_modules/grover/lib/wrapper/wrapper.js;
 
 echo patched grover;
@@ -20,6 +16,6 @@ for d in src/*; do
 
 	pushd $d
 	if ! yogi build --no-lint; then exit 1; fi
-	if ! yogi test; then exit 1; fi
+	if ! yogi test --debug; then exit 1; fi
 	popd
 done
