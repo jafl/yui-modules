@@ -25,6 +25,6 @@ for d in src/*; do
 	if [[ ! -d $d/tests/unit  ]]; then continue; fi
 
 	pushd $d
-	if ! yogi test --debug; then exit 1; fi
+	if ! yogi test; then exit 1; fi
 	popd
 done
