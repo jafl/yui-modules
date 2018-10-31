@@ -12,7 +12,7 @@
  * @class Math
  */
 
-const logToLog10 = 1/Math.log(10);
+var logToLog10 = 1/Math.log(10);
 
 Y.mix(Math,
 {

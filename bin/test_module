@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e;
+
+while [[ `pwd` != "/" && ! -f build.json ]]; do
+	cd ..;
+done
+
+if [[ -d tests/unit ]]; then
+	yogi test --debug;
+else
+	echo "no tests found";
+fi

@@ -614,4 +614,4 @@ YUI.add('gallery-linkedlist-tests', function(Y) {
 		}
 	}));
 
-}, '@VERSION@', {requires:['gallery-linkedlist','test','gallery-funcprog','gallery-test-extras']});
+}, '@VERSION@', {requires:['gallery-linkedlist','test','gallery-funcprog']});

@@ -78,4 +78,4 @@ YUI.add('gallery-math-tests', function(Y) {
 		}
 	}));
 
-}, '@VERSION@', {requires:['gallery-math','test','gallery-test-extras']});
+}, '@VERSION@', {requires:['gallery-math','gallery-test-extras']});

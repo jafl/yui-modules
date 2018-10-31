@@ -326,4 +326,4 @@ YUI.add('gallery-node-event-set-tests', function(Y) {
 		}
 	}));
 
-}, '@VERSION@', {requires:['gallery-node-event-set','node-screen','test','gallery-test-extras']});
+}, '@VERSION@', {requires:['gallery-node-event-set','node-screen','gallery-test-extras']});

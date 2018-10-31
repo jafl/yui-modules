@@ -11,11 +11,20 @@ cp -f ./bin/grover_patch_wrapper.js $YOGI/../node_modules/grover/lib/wrapper/wra
 echo patched grover;
 echo ===;
 
-for d in src/*; do
-	if [[ ! -d $d/tests ]]; then continue; fi
+# build everything
 
+for d in src/*; do
 	pushd $d
 	if ! yogi build --no-lint; then exit 1; fi
+	popd
+done
+
+# test everything after all modules have been built
+
+for d in src/*; do
+	if [[ ! -d $d/tests/unitcd  ]]; then continue; fi
+
+	pushd $d
 	if ! yogi test --debug; then exit 1; fi
 	popd
 done

@@ -77,4 +77,4 @@ YUI.add('gallery-expiration-cache-tests', function(Y) {
 		}
 	}));
 
-}, '@VERSION@', {requires:['gallery-expiration-cache','test','gallery-instancemanager','gallery-test-extras']});
+}, '@VERSION@', {requires:['gallery-expiration-cache','test','gallery-instancemanager']});
