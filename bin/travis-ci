@@ -22,7 +22,7 @@ done
 # test everything after all modules have been built
 
 for d in src/*; do
-	if [[ ! -d $d/tests/unitcd  ]]; then continue; fi
+	if [[ ! -d $d/tests/unit  ]]; then continue; fi
 
 	pushd $d
 	if ! yogi test --debug; then exit 1; fi
