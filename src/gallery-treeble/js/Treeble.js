@@ -169,6 +169,23 @@ Treeble.treeValueFormatter = function(o)
  * @param open_state {Object} opaque object containing the open state of all the nodes
  * @param ids {Array} list of ids to add to the open state
  */
+Treeble.initOpenState = function(open_state, ids)
+{
+	var result =
+	{
+		ids: []
+	};
+	return result;
+};
+
+/**
+ * Add node id's to an existing openState object.
+ *
+ * @method augmentOpenState
+ * @static
+ * @param open_state {Object} opaque object containing the open state of all the nodes
+ * @param ids {Array} list of ids to add to the open state
+ */
 Treeble.augmentOpenState = function(open_state, ids)
 {
 	if (open_state && Y.Lang.isArray(open_state.ids))
