@@ -36,7 +36,7 @@ ComplexNumber.fromPolar = function(magnitude, phase)
 		magnitude * Math.sin(phase));
 };
 
-const logToLog10 = 1/Math.log(10);
+var logToLog10 = 1/Math.log(10);
 
 ComplexNumber.prototype =
 {

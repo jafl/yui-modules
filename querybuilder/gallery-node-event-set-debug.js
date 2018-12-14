@@ -10,19 +10,22 @@ YUI.add('gallery-node-event-set', function (Y, NAME) {
  * Patches Y.Node to provide "set" events for attributes and styles similar
  * to the "change" events provided by `Y.Attribute`.  Simply subscribe to
  * _attr_Set or _style_Set, e.g., valueSet, z-indexSet, or classSet.
- * 
+ *
  * IMPORTANT: "set" events will ONLY fire if changes are made through
- * Y.Node, NOT when directly operating on the DOM element.  Also NOT when a
- * different sandbox operates on a separate Y.Node instance for the same
+ * `Y.Node`, NOT when directly operating on the DOM element.  Also NOT when a
+ * different sandbox operates on a separate `Y.Node` instance for the same
  * element.
- * 
+ *
+ * IMPORTANT: "set" events must be subscribed directly on the `Y.Node`, not
+ * via `Y.on(...)`.
+ *
  * Note: The valuechange event provided by YUI captures all changes to the
  * element's value attribute, but only when the element has focus.
- * 
+ *
  * To minimize the performance impact, this module initially overrides only
  * Y.Node.on().  Patches are then applied to the appropriate functions on
  * individual instances when a "set" event is requested.
- * 
+ *
  * <dl>
  * <dt>set, setAttrs, setAttribute, setStyle, setStyles</dt>
  * <dd>Fires _attr_Set or _style_Set event with prevVal, newVal.</dd>
@@ -32,7 +35,7 @@ YUI.add('gallery-node-event-set', function (Y, NAME) {
  * <dd>Fires classNameSet event with prevVal, newVal -- consistent with set('className', ...).  Also includes addedClass or removedClass, as appropriate.</dd>
  * <dt>setX, setY, setXY</dt>
  * <dd>Fires xySet event with prevVal and newVal defining x, y, or both.</dd>
- * 
+ *
  * @main gallery-node-event-set
  * @class Node~event-set
  */

@@ -155,7 +155,7 @@ function plug(self, plugin, config)
 {
 	self.orig_plug.apply(this, Y.Array(arguments, 1));
 
-	if (plugin === Y.Plugin.DataTableDataSource)
+	if (plugin.NS === Y.Plugin.DataTableDataSource.NS)
 	{
 		listenToDataSource.call(self);
 	}
@@ -213,6 +213,8 @@ Y.extend(PaginatorPlugin, Y.Plugin.Base,
 
 	/**
 	 * Sends a request to the datatable to load the current page.
+	 *
+	 * @method sendRequest
 	 */
 	sendRequest: function()
 	{
