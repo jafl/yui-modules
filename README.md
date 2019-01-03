@@ -1,6 +1,8 @@
 Modules contributed to YUI Gallery
 
 [![Build Status](https://secure.travis-ci.org/jafl/yui-modules.png?branch=master)](http://travis-ci.org/jafl/yui-modules)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/jafl/yui-modules.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jafl/yui-modules/alerts/)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/jafl/yui-modules.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jafl/yui-modules/context:javascript)
 
 To run the tests locally:
 * Clone the [yui3](https://github.com/yui/yui3.git) repo in the same directory as yui-modules.
