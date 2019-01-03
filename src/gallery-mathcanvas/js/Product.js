@@ -114,8 +114,6 @@ Y.extend(MathProduct, MathFunctionWithArgs,
 		var info = rect_list.find(this);
 		var x    = info.rect.left;
 
-		var times_width = context.getStringWidth(info.font_size, '\u00b7');
-
 		Y.Array.each(this.args, function(arg, index)
 		{
 			if (index > 0)

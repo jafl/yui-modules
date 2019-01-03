@@ -64,7 +64,7 @@ Y.mix(Y.Node.prototype,
 		}
 		else if (e.createTextRange)
 		{
-			var range = e.createTextRange();
+			e.createTextRange();
 			e.collapse(true);
 			e.moveEnd('character', start + length);
 			e.moveStart('character', start);

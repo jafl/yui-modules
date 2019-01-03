@@ -176,8 +176,6 @@ Context2d.prototype =
 	{
 		this.beginPath();
 
-		var delta = this.pixel_offset;
-
 		this.moveTo(left + radius, top);
 		this.lineTo(right - radius, top);
 

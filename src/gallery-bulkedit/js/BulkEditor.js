@@ -943,8 +943,8 @@ Y.extend(BulkEditor, Y.Widget,
 			return;
 		}
 
-		var page_size = pg ? pg.getRowsPerPage() : default_page_size;
-		var status    = this.page_status.slice(0);
+		var page_size = pg.getRowsPerPage(),
+			status    = this.page_status.slice(0);
 
 		this.first_error_page = -1;
 

@@ -54,9 +54,7 @@ Y.extend(PLAWModule, Y.Plugin.Base,
 
 				module_bd =
 					widget.get('boundingBox')
-						  .ancestor('.' + Y.PageLayout.module_body_class),
-
-				scroll_top = 0;
+						  .ancestor('.' + Y.PageLayout.module_body_class);
 
 			module_bd.generateID();
 

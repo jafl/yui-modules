@@ -17,7 +17,6 @@ var waitTimer,
     testTimer,
     file = system.args[1],
     timeout = parseInt(system.args[2], 10),
-    timer,
     exited = false,
     debug = false, //Internal debugging of wrapper
     logConsole = (system.args[3] === 'true' ? true : false),
@@ -131,8 +130,7 @@ var waitForResults = function(page, cb) {
 
 var executeTest = function(file, cb) {
     log('executing tests in ', file);
-    var page = require('webpage').create(),
-        opened = false;
+    var page = require('webpage').create();
 
     page.settings.javascriptEnabled = true;
     page.settings.localToRemoteUrlAccessEnabled = true;
@@ -170,30 +168,24 @@ var executeTest = function(file, cb) {
         throwError(msg, trace);
     };
 
-    if (!opened) {
-        log('Opening File', file, opened);
-        page.open(file, function(status) {
-            log('Opened File', file);
-            if (opened) {
-                return;
-            }
-            if (status === 'fail') {
-                throwError('Phantom failed to load this page');
-            }
-            log('Status: ', status);
-            log('Injecting getYUITest');
-            page.evaluate(injectGetYUITest);
+    log('Opening File', file);
+    page.open(file, function(status) {
+        log('Opened File', file);
+        if (status === 'fail') {
+            throwError('Phantom failed to load this page');
+        }
+        log('Status: ', status);
+        log('Injecting getYUITest');
+        page.evaluate(injectGetYUITest);
 
-            startTest(page, function() {
-                log('YUITest Found..');
-                waitForResults(page, function(results) {
-                    log('YUITest Results Returned');
-                    cb(page, results);
-                });
+        startTest(page, function() {
+            log('YUITest Found..');
+            waitForResults(page, function(results) {
+                log('YUITest Results Returned');
+                cb(page, results);
             });
-            opened = true;
         });
-    }
+    });
 };
 
 
@@ -205,7 +197,7 @@ if (system.args.length < 2) {
 if (isNaN(timeout)) {
     timeout = 60; //Default to one minute before failing the test
 }
-timer = setTimeout(function() {
+setTimeout(function() {
     throwError('Script Timeout');
 }, (timeout * 1000));
 

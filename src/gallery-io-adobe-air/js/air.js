@@ -112,7 +112,7 @@ Y.IO.transports['adobe-air'] = function()
 						statusCode:   status_code,
 						statusText:   '',
 						headers:      [],
-						responseText: data || '',
+						responseText: data,
 						responseXML:  null,
 
 						getResponseHeader: function(name)

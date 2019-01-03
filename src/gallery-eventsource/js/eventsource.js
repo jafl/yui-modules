@@ -103,8 +103,7 @@
             
                 //any number of things could go wrong in here
                 try {
-                    var src = new EventSource(this.url),
-                        that = this;
+                    var src = new EventSource(this.url);
                         
                     /**
                      * Map the common EventSource events to custom
@@ -439,8 +438,7 @@
                 var lines = text.split("\n"),
                     parts,
                     i = 0,
-                    len = lines.length,
-                    tempData;
+                    len = lines.length;
                     
                 while (i < len){
                     

@@ -85,7 +85,7 @@ Y.extend(Paginator.ui.ValidationPageLinks, Paginator.ui.PageLinks,
 						page:   1,
 						label:  labelBuilder(1, this.paginator)
 					});
-					content += '&hellip;'
+					content += '&hellip;';
 				}
 
 				if (range[1] < totalPages)

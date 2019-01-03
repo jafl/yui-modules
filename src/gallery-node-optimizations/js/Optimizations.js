@@ -276,7 +276,7 @@ Y.Node.prototype.getFirstElementByClassName = function(
 	}
 	else
 	{
-		var descendants = this.getDOMNode().getElementsByTagName(tag_name || '*');
+		var descendants = this.getDOMNode().getElementsByTagName(tag_name);
 
 		for (var i=0; i<descendants.length; i++)
 		{

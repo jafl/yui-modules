@@ -32,7 +32,7 @@ function save()
 {
 	var stream = new air.FileStream();
 	stream.open(file, air.FileMode.WRITE);
-	var s = stream.writeUTFBytes(Y.JSON.stringify(data));
+	stream.writeUTFBytes(Y.JSON.stringify(data));
 	stream.close();
 }
 
