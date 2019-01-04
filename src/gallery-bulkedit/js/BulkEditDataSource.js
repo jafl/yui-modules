@@ -180,7 +180,7 @@ BulkEditDataSource.comparator =
 	{
 		return (Y.FormManager.decimal_value_re.test(a) &&
 				Y.FormManager.decimal_value_re.test(b) &&
-				parseFloat(a,10) === parseFloat(b,10));
+				parseFloat(a) === parseFloat(b));
 	},
 
 	'boolean': function(a,b)
