@@ -7,6 +7,7 @@ echo ===;
 YOGI=`readlink -f $(which yogi)`;
 YOGI=${YOGI%/*};
 cp -f ./bin/grover_patch_wrapper.js $YOGI/../node_modules/grover/lib/wrapper/wrapper.js;
+cp -f ./bin/yogi_patch_complete.js $YOGI/../node_modules/complete/lib/complete.js;
 
 echo patched grover;
 echo ===;
