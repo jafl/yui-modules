@@ -150,7 +150,7 @@ Y.Node.prototype.parseDimensionStyle = function(
 		return 0;
 	}
 
-	var v = parseFloat(s, 10);
+	var v = parseFloat(s);
 	if (/em$/.test(s))
 	{
 		v *= Y.Node.emToPx(1);

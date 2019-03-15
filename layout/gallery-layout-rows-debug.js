@@ -34,7 +34,7 @@ function adjustHeight(
 
 	if (is_borked_dom_access)
 	{
-		var access_dom_so_it_will_be_right_next_time = children.bd.get('offsetHeight');
+		var access_dom_so_it_will_be_right_next_time = children.bd.get('offsetHeight');	// lgtm[js/unused-local-variable]
 	}
 
 	var b = children.root.get('offsetHeight') - children.bd.get('offsetHeight');

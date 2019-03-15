@@ -290,7 +290,7 @@ Y.FormManager.validateFromCSSData = function(
 				{
 					msg = Strings.decimal;
 				}
-				msg = Y.substitute(msg, {min: parseFloat(m[1], 10), max: parseFloat(m[2], 10)});
+				msg = Y.substitute(msg, {min: parseFloat(m[1]), max: parseFloat(m[2])});
 				return { keepGoing: false, error: msg };
 			}
 		}

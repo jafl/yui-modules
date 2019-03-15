@@ -220,7 +220,7 @@ function nextPage()
 
 	this.frame.setContent(intro + lines);
 	this.frame_top = Math.floor((this.get('height') - this.frame.totalHeight())/2);
-	this.frame.setStyle('top', this.frame_top + 'px')
+	this.frame.setStyle('top', this.frame_top + 'px');
 
 	if (page.lines)
 	{

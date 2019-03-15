@@ -243,7 +243,7 @@ Y.Node.prototype.scrollIntoView = function(config)
 	{
 		a: ancestor.getDOMNode(),
 		r: r
-	}
+	};
 
 	config                         = config || {};
 	this.scrollIntoViewData.margin = config.margin;

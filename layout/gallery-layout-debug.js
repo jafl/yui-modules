@@ -895,7 +895,7 @@ Y.extend(PageLayout, Y.Base,
 		var row_count = this.body_info.outers.size();
 		Y.each(this.body_info.outers, function(row)
 		{
-			var row_id = row.generateID();
+			var row_id = row.generateID();		// lgtm[js/unused-local-variable]
 			this.body_info.outer_sizes.push(100.0/row_count);
 
 			var list = row.all('div.' + PageLayout.module_class);

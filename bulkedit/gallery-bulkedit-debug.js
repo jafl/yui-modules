@@ -182,7 +182,7 @@ BulkEditDataSource.comparator =
 	{
 		return (Y.FormManager.decimal_value_re.test(a) &&
 				Y.FormManager.decimal_value_re.test(b) &&
-				parseFloat(a,10) === parseFloat(b,10));
+				parseFloat(a) === parseFloat(b));
 	},
 
 	'boolean': function(a,b)
@@ -2143,8 +2143,8 @@ Y.extend(BulkEditor, Y.Widget,
 			return;
 		}
 
-		var page_size = pg ? pg.getRowsPerPage() : default_page_size;
-		var status    = this.page_status.slice(0);
+		var page_size = pg.getRowsPerPage(),
+			status    = this.page_status.slice(0);
 
 		this.first_error_page = -1;
 
