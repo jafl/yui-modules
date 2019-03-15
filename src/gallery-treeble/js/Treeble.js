@@ -86,9 +86,14 @@ Treeble.buildTwistdownFormatter = function(send_request)
 			o.td.replaceClass('row-(open|closed)',
 				ds.isOpen(path) ? 'row-open' : 'row-closed');
 
-			YUI.Env.add(o.td.getDOMNode(), 'click', function()
+			YUI.Env.add(o.td.getDOMNode(), 'click', function(e)
 			{
 				ds.toggle(path, {}, send_request);
+
+				Y.Lang.later(500, null, function()
+				{
+					Y.one(e.target).ancestor('td').plug(Y.Plugin.BusyOverlay).busy.show();
+				});
 			});
 
 			o.cell.set('innerHTML', '<a class="treeble-expand-nub" href="javascript:void(0);"></a>');
