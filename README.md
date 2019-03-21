@@ -1,6 +1,7 @@
 Modules contributed to YUI Gallery
 
 [![Build Status](https://secure.travis-ci.org/jafl/yui-modules.png?branch=master)](http://travis-ci.org/jafl/yui-modules)
+[![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/jafl/yui-modules.svg?style=flat)](https://app.snyk.io/org/jafl/projects/)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/jafl/yui-modules.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jafl/yui-modules/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/jafl/yui-modules.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jafl/yui-modules/context:javascript)
 
