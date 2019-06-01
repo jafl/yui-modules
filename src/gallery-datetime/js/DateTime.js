@@ -40,7 +40,7 @@ function setNode(n)
 function dateTimeSetter(value)
 {
 	return value ? Y.DateTimeUtils.normalize(value, this.get('blankTime')) : null;
-};
+}
 
 DateTime.ATTRS =
 {

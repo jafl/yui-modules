@@ -265,7 +265,7 @@ Y.extend(MathCanvas, Y.Widget,
 				((e.clientX - CTM.e) / CTM.a) - this.canvas_offset.x,
 				((e.clientY - CTM.f) / CTM.d) - this.canvas_offset.y
 			];
-		};
+		}
 
 		function select(e)
 		{

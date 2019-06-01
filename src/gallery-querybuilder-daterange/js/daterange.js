@@ -239,8 +239,8 @@ Y.QueryBuilder.DateRange.prototype =
 		c                = config.date_InputPopup || {};
 		c.srcNode        = selector + '-popup-calendar';
 		c.visible        = false;
-		c.inputField     = selector + '-date',
-		c.clickNodes     = Y.InputPopup.CalendarNodes,
+		c.inputField     = selector + '-date';
+		c.clickNodes     = Y.InputPopup.CalendarNodes;
 		c.reparentToBody = true;
 
 		if (Y.Lang.isUndefined(c.zIndex))
@@ -256,8 +256,8 @@ Y.QueryBuilder.DateRange.prototype =
 			c                = config.time_InputPopup || {};
 			c.srcNode        = selector + '-popup-timepicker';
 			c.visible        = false;
-			c.inputField     = selector + '-time',
-			c.clickNodes     = Y.InputPopup.SawTimepickerNodes,
+			c.inputField     = selector + '-time';
+			c.clickNodes     = Y.InputPopup.SawTimepickerNodes;
 			c.reparentToBody = true;
 
 			if (Y.Lang.isUndefined(c.zIndex))

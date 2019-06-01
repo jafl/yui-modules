@@ -37,7 +37,7 @@ function updateSelectAll()
 			cb.set('checked', checked);
 		}
 	}
-};
+}
 
 Y.extend(SelectAllCheckboxGroup, CheckboxGroup,
 {

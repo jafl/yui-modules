@@ -764,7 +764,7 @@ function restoreScrollPositions()
 				var bd = module._page_layout.children.bd;
 				bd.set('scrollTop', module._page_layout.bdScrollTop);
 				bd.get('scrollLeft', module._page_layout.bdScrollLeft);
-			};
+			}
 		}
 	}
 }
