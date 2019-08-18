@@ -1510,17 +1510,37 @@ BulkEditor.markup =
 				'{msg2}' +
 			'</div>';
 
-		var option = '<option value="{value}" {selected}>{text}</option>';
+		var heading = '<optgroup label="{text}">{options}</optgroup>',
+			option  = '<option value="{value}" {selected}>{text}</option>';
 
-		var options = Y.Array.reduce(o.field.values, '', function(s, v)
+		function buildOptions(values)
 		{
-			return s + Y.Lang.sub(option,
+			return Y.Array.reduce(values, '', function(s, v)
 			{
-				value:    v.value,
-				text:     BulkEditor.cleanHTML(v.text),
-				selected: o.value && o.value.toString() === v.value ? 'selected="selected"' : ''
+				return s + Y.Lang.sub(option,
+				{
+					value:    v.value,
+					text:     BulkEditor.cleanHTML(v.text),
+					selected: o.value && o.value.toString() === v.value ? 'selected="selected"' : ''
+				});
 			});
-		});
+		}
+
+		if (o.field.values._)
+		{
+			var options = Y.Array.reduce(o.field.values._, '', function(s, v)
+			{
+				return s + Y.Lang.sub(heading,
+				{
+					text:    v,
+					options: buildOptions(o.field.values[v])
+				});
+			});
+		}
+		else
+		{
+			var options = buildOptions(o.field.values);
+		}
 
 		var label = o.field && o.field.label ? BulkEditor.labelMarkup.call(this, o) : '';
 
