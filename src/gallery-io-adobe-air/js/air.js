@@ -78,7 +78,8 @@ Y.IO.transports['adobe-air'] = function()
 
 				Y.each(config.headers, function(value, name)
 				{
-					request.requestHeaders[ name ] = value;
+					request.requestHeaders.push(
+						new air.URLRequestHeader(name, value));
 				});
 			}
 
