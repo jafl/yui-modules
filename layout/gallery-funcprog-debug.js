@@ -16,31 +16,6 @@ YUI.add('gallery-funcprog', function (Y, NAME) {
  * @class YUI~funcprog
  */
 
-// adjusted from YUI's oop.js
-function dispatch(action, o)
-{
-	var args = Y.Array(arguments, 1, true);
-
-	switch (Y.Array.test(o))
-	{
-		case 1:
-			return Y.Array[action].apply(null, args);
-		case 2:
-			args[0] = Y.Array(o, 0, true);
-			return Y.Array[action].apply(null, args);
-		default:
-			if (o && o[action] && o !== Y)
-			{
-				args.shift();
-				return o[action].apply(o, args);
-			}
-			else
-			{
-				return Y.Object[action].apply(null, args);
-			}
-	}
-}
-
 Y.mix(Y,
 {
 	/**
@@ -61,7 +36,7 @@ Y.mix(Y,
 	 */
 	every: function(o, f, c, proto)
 	{
-		return dispatch('every', o, f, c, proto);
+		return Y.dispatchIterator('every', o, f, c, proto);
 	},
 
 	/**
@@ -82,7 +57,7 @@ Y.mix(Y,
 	 */
 	filter: function(o, f, c, proto)
 	{
-		return dispatch('filter', o, f, c, proto);
+		return Y.dispatchIterator('filter', o, f, c, proto);
 	},
 
 	/**
@@ -103,7 +78,7 @@ Y.mix(Y,
 	 */
 	find: function(o, f, c, proto)
 	{
-		return dispatch('find', o, f, c, proto);
+		return Y.dispatchIterator('find', o, f, c, proto);
 	},
 
 	/**
@@ -123,7 +98,7 @@ Y.mix(Y,
 	 */
 	map: function(o, f, c, proto)
 	{
-		return dispatch('map', o, f, c, proto);
+		return Y.dispatchIterator('map', o, f, c, proto);
 	},
 
 	/**
@@ -144,7 +119,7 @@ Y.mix(Y,
 	 */
 	partition: function(o, f, c, proto)
 	{
-		return dispatch('partition', o, f, c, proto);
+		return Y.dispatchIterator('partition', o, f, c, proto);
 	},
 
 	/**
@@ -168,7 +143,7 @@ Y.mix(Y,
 	 */
 	reduce: function(o, init, f, c, proto)
 	{
-		return dispatch('reduce', o, init, f, c, proto);
+		return Y.dispatchIterator('reduce', o, init, f, c, proto);
 	},
 
 	/**
@@ -192,7 +167,7 @@ Y.mix(Y,
 	 */
 	reduceRight: function(o, init, f, c, proto)
 	{
-		return dispatch('reduceRight', o, init, f, c, proto);
+		return Y.dispatchIterator('reduceRight', o, init, f, c, proto);
 	},
 
 	/**
@@ -213,7 +188,7 @@ Y.mix(Y,
 	 */
 	reject: function(o, f, c, proto)
 	{
-		return dispatch('reject', o, f, c, proto);
+		return Y.dispatchIterator('reject', o, f, c, proto);
 	}
 });
 /**
