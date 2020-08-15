@@ -2706,7 +2706,7 @@ BulkEditor.markup =
 		var select =
 			'<div class="{cont}{key}">' +
 				'{label}{msg1}' +
-				'<select id="{id}" class="{field}{key}">{options}</select>' +
+				'<select id="{id}" class="{field}{key} {yiv}">{options}</select>' +
 				'{msg2}' +
 			'</div>';
 
