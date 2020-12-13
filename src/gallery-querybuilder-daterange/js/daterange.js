@@ -245,7 +245,7 @@ Y.QueryBuilder.DateRange.prototype =
 
 		if (Y.Lang.isUndefined(c.zIndex))
 		{
-			c.zIndex = 100;
+			c.zIndex = 200;
 		}
 
 		var cal_popup = new Y.InputPopup(c);
@@ -262,7 +262,7 @@ Y.QueryBuilder.DateRange.prototype =
 
 			if (Y.Lang.isUndefined(c.zIndex))
 			{
-				c.zIndex = 100;
+				c.zIndex = 200;
 			}
 
 			var tp_popup = new Y.InputPopup(c);
