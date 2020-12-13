@@ -117,15 +117,13 @@ Y.extend(InputPopup, Y.Popup,
 
 			content.set('tabIndex', 1);
 
-			input.on('blur', function()
+			input.on('blur', function(e)
 			{
-				Y.later(10, this, function()
+				if (!e.relatedTarget ||
+					!Y.DOM.contains(bound.getDOMNode(), e.relatedTarget.getDOMNode()))
 				{
-					if (!Y.DOM.contains(bound.getDOMNode(), document.activeElement))
-					{
-						this.hide();
-					}
-				});
+					this.hide();
+				}
 			},
 			this);
 		});
