@@ -54,11 +54,11 @@ Treeble.ATTRS =
 };
 
 /**
- * The class added to rows created by this plugin.
+ * The class added to the "more rows" row at the bottom of the table.
  *
- * @property Y.RowExpansion.row_class
+ * @property Y.Treeble.more_row_class
  * @type {String}
- * @value "row-expansion"
+ * @value "row-more-items"
  */
 Treeble.more_row_class = 'row-more-items';
 

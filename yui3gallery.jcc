@@ -1,4 +1,4 @@
-jx_browser_data 87
+jx_browser_data 89
 # project tree
 0 "root"
 T
@@ -1851,11 +1851,11 @@ F
 # tasks
 4
 "echo Makefile must be updated manually"
-T "@" "yogi build --no-lint ; &test ; &update_demos" "" T F T T T F F "Build YUI Gallery component" "F10" "" F
-T "@" "yogi build --no-lint ; yogi serve --istanbul" "" T F T F T F F "Test YUI Gallery component" "" "" F
-T "./bin" "./update_gh_pages" "update_demos" F F F F T F F "Update demos" "" "" F
-T "./src/gallery-mathcanvas/jison/" "jison MathParser.jison ; mv MathParser.js ../js/" "" F F T F T T F "jison MathParser" "F11" "" F
-T "@" "/bin/sh -c 'if [[ -x ~/tools/yui-modules/bin/test_module ]]; then ~/tools/yui-modules/bin/test_module; fi'" "test" T F T F T F F "" "" "" F
+T "@" "yogi build --no-lint ; &test ; &update_demos" "" TFTTTFF "Build YUI Gallery component" "F10" "" F
+T "@" "yogi build --no-lint ; yogi serve --istanbul" "" TFTFTFF "Test YUI Gallery component" "" "" F
+T "./bin" "./update_gh_pages" "update_demos" FFFFTFF "Update demos" "" "" F
+T "./src/gallery-mathcanvas/jison/" "jison MathParser.jison ; mv MathParser.js ../js/" "" FFTFTTF "jison MathParser" "F11" "" F
+T "@" "/bin/sh -c 'if [[ -x ~/tools/yui-modules/bin/test_module ]]; then ~/tools/yui-modules/bin/test_module; fi'" "test" TFTFTFF "" "" "" F
 F
 # build settings
 0
