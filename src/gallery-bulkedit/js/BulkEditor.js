@@ -1521,7 +1521,7 @@ BulkEditor.markup =
 				{
 					value:    v.value,
 					text:     BulkEditor.cleanHTML(v.text),
-					selected: o.value && o.value.toString() === v.value ? 'selected="selected"' : ''
+					selected: o.value && o.value.toString() === v.value.toString() ? 'selected="selected"' : ''
 				});
 			});
 		}
@@ -1680,7 +1680,7 @@ function multiselectMarkup(type, o)
 				{
 					var i = Y.Array.findIndexOf(o.field.values, function(v1)
 					{
-						return (v === v1.value.toString());
+						return (v.toString() === v1.value.toString());
 					});
 
 					return (i >= 0 ? o.field.values[i].text : '');
