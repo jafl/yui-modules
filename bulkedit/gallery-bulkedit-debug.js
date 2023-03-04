@@ -2848,6 +2848,11 @@ function multiselectMarkup(type, o)
 	var id        = this.getFieldId(o.record, o.key),
 		has_value = Y.Lang.isArray(o.value);
 
+	if (has_value)
+	{
+		o.value = Y.Array.map(o.value, function(v) { return v.toString(); });
+	}
+
 	if (type == 'autocompleteMultivalueInput')
 	{
 		var input_markup = Y.Lang.sub('<input type="text" id="{id}-multivalue-input" />',
@@ -2876,7 +2881,7 @@ function multiselectMarkup(type, o)
 
 			node.plug(Y.Plugin.MultivalueInput,
 			{
-				values: Y.map(o.value, function(v)
+				values: !has_value ? [] : Y.map(o.value, function(v)
 				{
 					var i = Y.Array.findIndexOf(o.field.values, function(v1)
 					{
