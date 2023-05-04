@@ -4641,7 +4641,7 @@ Y.extend(MathCanvas, Y.Widget,
 		this.set('height', w+'px');
 
 		this.canvas = Y.Node.create(
-			'<svg width="' + w + '" height="' + h + '" tabindex="0" xmlns="http://www.w3.org/2000/svg"></svg>');
+			'<svg width="' + w + '" height="' + h + '" tabindex="0" xmlns="https://www.w3.org/2000/svg"></svg>');
 		if (!this.canvas)
 		{
 			throw Error("This browser does not support svg rendering.");
@@ -5146,7 +5146,7 @@ Y.extend(MathCanvas, Y.Widget,
 		{
 			this.canvas_root.remove(true);
 		}
-		this.canvas_root = Y.Node(document.createElementNS('http://www.w3.org/2000/svg', 'g'));
+		this.canvas_root = Y.Node(document.createElementNS('https://www.w3.org/2000/svg', 'g'));
 		this.canvas.appendChild(this.canvas_root);
 
 		var f = this.get('func');
@@ -5464,7 +5464,7 @@ var math_rendering =
 		/* string */	type,
 		/* map */		attr)
 	{
-		var n = document.createElementNS('http://www.w3.org/2000/svg', type);
+		var n = document.createElementNS('https://www.w3.org/2000/svg', type);
 
 		var clazz = this.math_canvas.getClassName('node');
 		if (attr.clazz)

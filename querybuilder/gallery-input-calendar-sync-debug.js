@@ -74,7 +74,7 @@ function syncFromInput()
 			this.ignore_selection_change = true;
 
 			var result = Y.DateTimeUtils.normalize(Y.DateTimeUtils.parseDate(value), {hour:0, minute:0});
-			cal.deselectDates();	// hack for http://yuilibrary.com/projects/yui3/ticket/2530928
+			cal.deselectDates();	// hack for https://yuilibrary.com/projects/yui3/ticket/2530928
 			cal.selectDates(result.date);
 			cal.set('date', result.date);
 		}

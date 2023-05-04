@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>EventSource Tests</title>
-<script src="http://yui.yahooapis.com/3.2.0/build/yui/yui-min.js"></script>
+<script src="https://yui.yahooapis.com/3.2.0/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
     <h1>EventSource Tests</h1>
@@ -60,7 +60,7 @@ YUI({
         },
 
         "Cross-domain requests without CORS should cause an error": function(){
-            this.src = new Y.EventSource("http://www.example.com");
+            this.src = new Y.EventSource("https://www.example.com");
             this.src.on("error", Y.bind(function(event){
                 var that = this;
                 this.resume(function(){

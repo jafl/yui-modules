@@ -26,7 +26,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-Inspired by: http://haineault.com/media/jquery/ui-timepickr/page/
+Inspired by: https://haineault.com/media/jquery/ui-timepickr/page/
 This software is based on a concept by Maxime Haineault in code licensed under
 an MIT license. However, none of his code or implementation details will reviewed
 or used for this project.

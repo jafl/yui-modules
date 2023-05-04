@@ -4,7 +4,7 @@ YUI.add('gallery-paginator', function (Y, NAME) {
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
@@ -865,7 +865,7 @@ Y.Paginator = Paginator;
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
@@ -998,7 +998,7 @@ Paginator.ui.CurrentPageInput.prototype =
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
@@ -1163,7 +1163,7 @@ Paginator.ui.CurrentPageReport.prototype = {
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
@@ -1339,7 +1339,7 @@ Paginator.ui.FirstPageLink.prototype = {
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
@@ -1493,7 +1493,7 @@ Paginator.ui.ItemRangeDropdown.prototype =
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
@@ -1700,7 +1700,7 @@ Paginator.ui.LastPageLink.prototype = {
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
@@ -1879,7 +1879,7 @@ Paginator.ui.NextPageLink.prototype = {
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
@@ -2173,7 +2173,7 @@ Paginator.ui.PageLinks.prototype = {
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
@@ -2327,7 +2327,7 @@ Paginator.ui.PreviousPageLink.prototype = {
 /*
 Copyright (c) 2009, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
-http://developer.yahoo.net/yui/license.txt
+
 */
 
 /**
