@@ -1481,7 +1481,7 @@ BulkEditor.markup =
 		var input =
 			'<div class="{cont}{key}">' +
 				'{label}{msg1}' +
-				'<input type="{input_type}" id="{id}" value="{value}" class="{field}{key} {yiv}" />' +
+				'<input type="{input_type}" id="{id}" value="{value}" class="{field}{key} {yiv}" {input_extra} />' +
 				'{msg2}' +
 			'</div>';
 
@@ -1499,7 +1499,8 @@ BulkEditor.markup =
 			msg1:  label ? BulkEditor.error_msg_markup : '',
 			msg2:  label ? '' : BulkEditor.error_msg_markup,
 
-			input_type:  o.field.input_type || 'text'
+			input_type:  o.field.input_type  || 'text',
+			input_extra: o.field.input_extra || ''
 		});
 	},
 
