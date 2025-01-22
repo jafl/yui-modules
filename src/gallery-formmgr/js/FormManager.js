@@ -418,18 +418,17 @@ function _isChanged(i)
 		}
 	}
 	else if (name == 'INPUT' &&
-			 (type == 'password' || type == 'text' || type == 'file'))
-	{
-		if (e.value != v)
-		{
-			return true;
-		}
-	}
-	else if (name == 'INPUT' &&
 			 (type == 'checkbox' || type == 'radio'))
 	{
 		var checked = (e.value == v);
 		if ((checked && !e.checked) || (!checked && e.checked))
+		{
+			return true;
+		}
+	}
+	else if (name == 'INPUT')
+	{
+		if (e.value != v)
 		{
 			return true;
 		}
