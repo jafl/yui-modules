@@ -138,9 +138,10 @@ function FormManager(
 	config = config || {};
 	FormManager.superclass.constructor.call(this, config);
 
-	this.form_name   = form_name;
-	this.status_node = Y.one(config.status_node);
-	this.enabled     = true;
+	this.form_name         = form_name;
+	this.status_node       = Y.one(config.status_node);
+	this.enabled           = true;
+	this.native_validation = false;
 
 	// default values for form elements
 
@@ -568,6 +569,16 @@ Y.extend(FormManager, Y.Plugin.Host,
 	},
 
 	/**
+	 * Use browser native validation instead of CSS data.
+	 * 
+	 * @method setNativeValidation
+	 */
+	setNativeValidation: function()
+	{
+		this.native_validation = true;
+	},
+
+	/**
 	 * @method setStatusNode
 	 * @param node {String|Y.Node} the node in which status should be displayed
 	 */
@@ -897,25 +908,39 @@ Y.extend(FormManager, Y.Plugin.Host,
 
 		for (var i=0; i<e.length; i++)
 		{
-			var e_id     = e[i].id;
-			var msg_list = this.validation_msgs[e_id];
+			const e_id = e[i].id;
 
-			var info = FormManager.validateFromCSSData(e[i], msg_list);
-			if (info.error)
+			if (this.native_validation)
 			{
-				this.displayMessage(e[i], info.error, 'error');
-				status = false;
-				continue;
-			}
-
-			if (info.keepGoing)
-			{
-				if (this.validation.regex[e_id] &&
-					!this.validation.regex[e_id].test(e[i].value))
+				var info = FormManager.validateFromBrowser(e[i]);
+				if (info.error)
 				{
-					this.displayMessage(e[i], msg_list ? msg_list.regex : null, 'error');
+					this.displayMessage(e[i], info.error, 'error');
 					status = false;
 					continue;
+				}
+			}
+			else
+			{
+				var msg_list = this.validation_msgs[e_id];
+
+				var info = FormManager.validateFromCSSData(e[i], msg_list);
+				if (info.error)
+				{
+					this.displayMessage(e[i], info.error, 'error');
+					status = false;
+					continue;
+				}
+
+				if (info.keepGoing)
+				{
+					if (this.validation.regex[e_id] &&
+						!this.validation.regex[e_id].test(e[i].value))
+					{
+						this.displayMessage(e[i], msg_list ? msg_list.regex : null, 'error');
+						status = false;
+						continue;
+					}
 				}
 			}
 

@@ -114,6 +114,45 @@ function hasLimit(
 }
 
 /**
+ * Validate an input based on native browser configuration.
+ * 
+ * The error message for pattern mismatch can be customized by setting the
+ * data-pattern-validation-error-message attribute on the node.
+ * 
+ * @method validateFromBrowser
+ * @static
+ * @param e {Element|Node} The field to validate.
+ * @return {Object} Status
+ * <dl>
+ * <dt>keepGoing</dt>
+ * <dd>(Boolean) <code>true</code> if further validation should be done.</dd>
+ * <dt>error</dt>
+ * <dd>(String) The error message, if any.</dd>
+ * </dl>
+ */
+Y.FormManager.validateFromBrowser = function(
+	/* element */	e)
+{
+	if (e._node)
+	{
+		e = e._node;
+	}
+
+	if (e.checkValidity())
+	{
+		return { keepGoing: true };
+	}
+	else if (e.validity.patternMismatch)
+	{
+		return { keepGoing: false, error: e.dataset.patternValidationErrorMessage || e.validationMessage };
+	}
+	else
+	{
+		return { keepGoing: false, error: e.validationMessage };
+	}
+}
+
+/**
  * Validate an input based on its CSS data.
  * 
  * @method validateFromCSSData

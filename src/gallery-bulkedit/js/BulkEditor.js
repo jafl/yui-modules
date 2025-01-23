@@ -200,7 +200,8 @@ Y.extend(BulkEditor, Y.Widget,
 				config.paginator.on('changeRequest', switchPage, this);
 		}
 
-		this._hopper = [];
+		this._hopper           = [];
+		this.native_validation = false;
 	},
 
 	destructor: function()
@@ -223,6 +224,16 @@ Y.extend(BulkEditor, Y.Widget,
 	bindUI: function()
 	{
 		this._attachEvents(this.get('contentBox'));
+	},
+
+	/**
+	 * Use browser native validation instead of CSS data.
+	 * 
+	 * @method setNativeValidation
+	 */
+	setNativeValidation: function()
+	{
+		this.native_validation = true;
 	},
 
 	/**
@@ -1119,38 +1130,50 @@ Y.extend(BulkEditor, Y.Widget,
 				return;
 			}
 
-			var field    = this.getFieldConfig(field_info.field_key);
-			var msg_list = field.validation && field.validation.msg;
-
-			var info = Y.FormManager.validateFromCSSData(node, msg_list);
-			if (info.error)
+			const field = this.getFieldConfig(field_info.field_key);
+			if (this.native_validation)
 			{
-				this.displayFieldMessage(node, info.error, 'error', false);
-				status = false;
-				return;
-			}
-
-			if (info.keepGoing)
-			{
-				if (field.validation && Y.Lang.isString(field.validation.regex))
+				const info = Y.FormManager.validateFromBrowser(node);
+				if (info.error)
 				{
-					var flags = '';
-					var m     = perl_flags_regex.exec(field.validation.regex);
-					if (m && m.length == 2)
-					{
-						flags                  = m[1];
-						field.validation.regex = field.validation.regex.replace(perl_flags_regex, '');
-					}
-					field.validation.regex = new RegExp(field.validation.regex, flags);
-				}
-
-				if (field.validation &&
-					field.validation.regex instanceof RegExp &&
-					!field.validation.regex.test(node.get('value')))
-				{
-					this.displayFieldMessage(node, msg_list && msg_list.regex, 'error', false);
+					this.displayFieldMessage(node, info.error, 'error', false);
 					status = false;
 					return;
+				}
+			}
+			else
+			{
+				const msg_list = field.validation && field.validation.msg,
+					  info     = Y.FormManager.validateFromCSSData(node, msg_list);
+				if (info.error)
+				{
+					this.displayFieldMessage(node, info.error, 'error', false);
+					status = false;
+					return;
+				}
+
+				if (info.keepGoing)
+				{
+					if (field.validation && Y.Lang.isString(field.validation.regex))
+					{
+						var flags = '';
+						var m     = perl_flags_regex.exec(field.validation.regex);
+						if (m && m.length == 2)
+						{
+							flags                  = m[1];
+							field.validation.regex = field.validation.regex.replace(perl_flags_regex, '');
+						}
+						field.validation.regex = new RegExp(field.validation.regex, flags);
+					}
+
+					if (field.validation &&
+						field.validation.regex instanceof RegExp &&
+						!field.validation.regex.test(node.get('value')))
+					{
+						this.displayFieldMessage(node, msg_list && msg_list.regex, 'error', false);
+						status = false;
+						return;
+					}
 				}
 			}
 
@@ -1235,23 +1258,42 @@ Y.extend(BulkEditor, Y.Widget,
 				var field = this.get('fields')[key];
 				var value = ds.getValue(i, key);
 
-				this.validation_node.set('value', Y.Lang.isUndefined(value) ? '' : value);
-				this.validation_node.set('className', field.validation.css || '');
-
-				var info = Y.FormManager.validateFromCSSData(this.validation_node);
-				if (info.error)
+				if (this.native_validation)
 				{
-					page_status = false;
-					return;
-				}
+					this.validation_node = Y.Node.create('<input></input>');
+					this.validation_node.set('value', Y.Lang.isUndefined(value) ? '' : value);
+					if (field.validation.html)
+					{
+						this._configureNativeValidation(this.validation_node, field.validation.html);
+					}
 
-				if (info.keepGoing)
-				{
-					if (field.validation.regex instanceof RegExp &&
-						!field.validation.regex.test(value))
+					const info = Y.FormManager.validateFromBrowser(this.validation_node);
+					if (info.error)
 					{
 						page_status = false;
 						return;
+					}
+				}
+				else
+				{
+					this.validation_node.set('value', Y.Lang.isUndefined(value) ? '' : value);
+					this.validation_node.set('className', field.validation.css || '');
+
+					const info = Y.FormManager.validateFromCSSData(this.validation_node);
+					if (info.error)
+					{
+						page_status = false;
+						return;
+					}
+
+					if (info.keepGoing)
+					{
+						if (field.validation.regex instanceof RegExp &&
+							!field.validation.regex.test(value))
+						{
+							page_status = false;
+							return;
+						}
 					}
 				}
 			},
@@ -1268,6 +1310,29 @@ Y.extend(BulkEditor, Y.Widget,
 		}
 
 		return status;
+	},
+
+	/**
+	 * Clear all displayed messages.
+	 * 
+	 * @method _configureNativeValidation
+	 */
+	_configureNativeValidation: function(n, v)
+	{
+		var s = v.trim().split(/\s+/);
+		for (var i=0; i<s.length; i++)
+		{
+			var a = s[i],
+				b = '';
+			if (a.includes('='))
+			{
+				const s = a.split('=');
+				a       = s[0];
+				b       = s[1].replaceAll('"', '');
+			}
+
+			n.setAttribute(a, b);
+		}
 	},
 
 	/**
@@ -1481,7 +1546,7 @@ BulkEditor.markup =
 		var input =
 			'<div class="{cont}{key}">' +
 				'{label}{msg1}' +
-				'<input type="{input_type}" id="{id}" value="{value}" class="{field}{key} {yiv}" {input_extra} />' +
+				'<input type="{input_type}" id="{id}" value="{value}" class="{field}{key} {yiv}" {validation} />' +
 				'{msg2}' +
 			'</div>';
 
@@ -1499,8 +1564,8 @@ BulkEditor.markup =
 			msg1:  label ? BulkEditor.error_msg_markup : '',
 			msg2:  label ? '' : BulkEditor.error_msg_markup,
 
-			input_type:  o.field.input_type  || 'text',
-			input_extra: o.field.input_extra || ''
+			input_type: (o.field && o.field.input_type) || 'text',
+			validation: (o.field && o.field.validation && o.field.validation.html) || ''
 		});
 	},
 
@@ -1509,7 +1574,7 @@ BulkEditor.markup =
 		var select =
 			'<div class="{cont}{key}">' +
 				'{label}{msg1}' +
-				'<select id="{id}" class="{field}{key} {yiv}">{options}</select>' +
+				'<select id="{id}" class="{field}{key} {yiv}" {validation}>{options}</select>' +
 				'{msg2}' +
 			'</div>';
 
@@ -1557,7 +1622,9 @@ BulkEditor.markup =
 			options: options,
 			yiv:     (o.field && o.field.validation && o.field.validation.css) || '',
 			msg1:    label ? BulkEditor.error_msg_markup : '',
-			msg2:    label ? '' : BulkEditor.error_msg_markup
+			msg2:    label ? '' : BulkEditor.error_msg_markup,
+
+			validation: (o.field && o.field.validation && o.field.validation.html) || ''
 		});
 	},
 
@@ -1599,7 +1666,7 @@ BulkEditor.markup =
 		var textarea =
 			'<div class="{cont}{key}">' +
 				'{label}{msg1}' +
-				'<textarea id="{id}" class="satg-textarea-field {prefix}{key} {yiv}">{value}</textarea>' +
+				'<textarea id="{id}" class="satg-textarea-field {prefix}{key} {yiv}" {validation}>{value}</textarea>' +
 				'{msg2}' +
 			'</div>';
 
@@ -1615,7 +1682,9 @@ BulkEditor.markup =
 			value:  BulkEditor.cleanHTML(o.value),
 			yiv:    (o.field && o.field.validation && o.field.validation.css) || '',
 			msg1:   label ? BulkEditor.error_msg_markup : '',
-			msg2:   label ? '' : BulkEditor.error_msg_markup
+			msg2:   label ? '' : BulkEditor.error_msg_markup,
+
+			validation: (o.field && o.field.validation && o.field.validation.html) || ''
 		});
 	}
 };
@@ -1645,7 +1714,7 @@ function multiselectMarkup(type, o)
 		'<div class="{cont}{key}">' +
 			'{label}{msg}' +
 			'<div id="{id}-multiselect" class="checkbox-multiselect">{input}</div>' +
-			'<select id="{id}" class="{field}{key}" multiple="multiple" style="display:none;">{options}</select>' +
+			'<select id="{id}" class="{field}{key} {yiv}" {validation} multiple="multiple" style="display:none;">{options}</select>' +
 		'</div>';
 
 	var id        = this.getFieldId(o.record, o.key),
@@ -1768,7 +1837,9 @@ function multiselectMarkup(type, o)
 		input:   input_markup,
 		options: options,
 		yiv:     (o.field && o.field.validation && o.field.validation.css) || '',
-		msg:     BulkEditor.error_msg_markup
+		msg:     BulkEditor.error_msg_markup,
+
+		validation: (o.field && o.field.validation && o.field.validation.html) || ''
 	});
 }
 
