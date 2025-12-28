@@ -330,8 +330,12 @@ Y.extend(BulkEditor, Y.Widget,
 		{
 			Y.Array.each(records, function(r)
 			{
-				var node = this.getFieldElement(r, key),
-					tag  = node.get('tagName'),
+				var node = this.getFieldElement(r, key);
+				if (!node)
+				{
+					return;
+				}
+				var tag  = node.get('tagName'),
 					value;
 
 				// Limited number of HTML form tags.  Behaviors should not be
@@ -1319,7 +1323,7 @@ Y.extend(BulkEditor, Y.Widget,
 	 */
 	_configureNativeValidation: function(n, v)
 	{
-		var s = v.trim().split(/\s+/);
+		var s = v.replace(/data-pattern-validation-error-message="[^"]+"/, '').trim().split(/\s+/);
 		for (var i=0; i<s.length; i++)
 		{
 			var a = s[i],
