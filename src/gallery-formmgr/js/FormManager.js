@@ -333,12 +333,7 @@ function _populateForm()
 		{
 			// save value for next time
 
-			if (name == 'INPUT' &&
-				(type == 'password' || type == 'text'))
-			{
-				this.default_value_map[ e.name ] = e.value;
-			}
-			else if (name == 'INPUT' && type == 'checkbox')
+			if (name == 'INPUT' && type == 'checkbox')
 			{
 				this.default_value_map[ e.name ] = (e.checked ? e.value : '');
 			}
@@ -363,21 +358,20 @@ function _populateForm()
 					}
 				}
 			}
-			else if ((name == 'SELECT' && type == 'select-one') ||
-					 name == 'TEXTAREA')
+			else if (name == 'INPUT' || name == 'TEXTAREA' ||
+					(name == 'SELECT' && type == 'select-one'))
 			{
 				this.default_value_map[ e.name ] = e.value;
 			}
 		}
 		else if (name == 'INPUT' &&
-				 (type == 'password' || type == 'text'))
-		{
-			e.value = v;
-		}
-		else if (name == 'INPUT' &&
 				 (type == 'checkbox' || type == 'radio'))
 		{
 			e.checked = (e.value == v);
+		}
+		else if (name == 'INPUT' || name == 'TEXTAREA')
+		{
+			e.value = v;
 		}
 		else if (name == 'SELECT' && type == 'select-one')
 		{
@@ -387,10 +381,6 @@ function _populateForm()
 			{
 				e.selectedIndex = -1;
 			}
-		}
-		else if (name == 'TEXTAREA')
-		{
-			e.value = v;
 		}
 	}
 }
@@ -427,15 +417,8 @@ function _isChanged(i)
 			return true;
 		}
 	}
-	else if (name == 'INPUT')
-	{
-		if (e.value != v)
-		{
-			return true;
-		}
-	}
-	else if ((name == 'SELECT' && type == 'select-one') ||
-			 name == 'TEXTAREA')
+	else if (name == 'INPUT' || name == 'TEXTAREA' ||
+			 (name == 'SELECT' && type == 'select-one'))
 	{
 		if (e.value != v)
 		{
